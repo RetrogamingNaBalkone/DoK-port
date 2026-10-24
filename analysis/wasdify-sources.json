@@ -1,0 +1,202 @@
+[
+  {
+    "path": "docs/games/dungeons-of-kremlin/analysis.md",
+    "sha256": "f611374be5471f89dce065a3dba9a8f3f9176c64f1ccde56471582941d576049"
+  },
+  {
+    "path": "docs/games/dungeons-of-kremlin/benchmark.md",
+    "sha256": "bf7322bcda6af091b87a50e6fe99945589565f1fefa7ad9e76f0375eb723d90e"
+  },
+  {
+    "path": "docs/games/dungeons-of-kremlin/conditional-extensions.md",
+    "sha256": "2534246af08a35a26f1212e06613e1feb3cded260d04c14c450663fcafb3eae6"
+  },
+  {
+    "path": "docs/games/dungeons-of-kremlin/font-scaling.md",
+    "sha256": "4a7cb78f76699aa8def75ab086f919e39149526d36fb581979b50149042f7702"
+  },
+  {
+    "path": "docs/games/dungeons-of-kremlin/numeric-hud.md",
+    "sha256": "36fea909bcbd2c2ececbac8614613042c3bfe6e5fa0d3db75489362634d11027"
+  },
+  {
+    "path": "docs/games/dungeons-of-kremlin/patches.md",
+    "sha256": "ccdc77b3f7b55787607b0d4f5b3c1a32ff1133ba43d004a15d4db65a6c5b0da3"
+  },
+  {
+    "path": "docs/games/dungeons-of-kremlin/performance.md",
+    "sha256": "b723540d4b78247918b0eb95627a0a36bf6801eccfe4fbb996c33e83885b2d4e"
+  },
+  {
+    "path": "docs/games/dungeons-of-kremlin/README.md",
+    "sha256": "6a82b1d1fe59354ad3373b0ef8d836fbf5450eb48e913c28b2f751fb3f2aa135"
+  },
+  {
+    "path": "docs/games/dungeons-of-kremlin/render.md",
+    "sha256": "c80bd1795839094c0e384040ee8e41b3a0d4a43f4fa83be883cb43a94837cff7"
+  },
+  {
+    "path": "docs/games/dungeons-of-kremlin/save-load-failures.md",
+    "sha256": "e2dc42439022d58304e162b2ddef86222797be7b14349b92e08abc30cc590e52"
+  },
+  {
+    "path": "docs/games/dungeons-of-kremlin/save-load-implementation.md",
+    "sha256": "a722fab95da5d8c8e3387da912521480626a80da22527f932b8ff21547afcee0"
+  },
+  {
+    "path": "docs/games/dungeons-of-kremlin/save-load-integration.md",
+    "sha256": "364792b8c8c43a7476d65ab938ff05d5dcb9ec78af84f45bf88e89538be4e8f4"
+  },
+  {
+    "path": "docs/games/dungeons-of-kremlin/save-load-levels.md",
+    "sha256": "91ab58dc8d3905c6668299c09b329854751d48a2db07856353fd6d914f5b5747"
+  },
+  {
+    "path": "docs/games/dungeons-of-kremlin/save-load-native.md",
+    "sha256": "09774242af79a20fe690df07a6a7da0309e138392b8e00a22cd1ba2b4c856aaf"
+  },
+  {
+    "path": "docs/games/dungeons-of-kremlin/save-load-pre-step4-review.md",
+    "sha256": "3f2e8f4e2aa22b564672d318b87741b4f9339ea8b218f84c506c33db24dff733"
+  },
+  {
+    "path": "docs/games/dungeons-of-kremlin/save-load-reentry.md",
+    "sha256": "a7eb1b8bca638d37f9a6ef32ac996c9bd622825a80730a1ac552d5e69ec10035"
+  },
+  {
+    "path": "docs/games/dungeons-of-kremlin/save-load-release-checks.md",
+    "sha256": "3b263e47000662568534ef41acc5dd22cf8b9e31dc0089221780c82f9a6e7902"
+  },
+  {
+    "path": "docs/games/dungeons-of-kremlin/save-load-spec.md",
+    "sha256": "021b1d55d11e68fec27230edf626971765579c6794f125a34a58d4820a6ad865"
+  },
+  {
+    "path": "docs/games/dungeons-of-kremlin/save-load-state-gaps.md",
+    "sha256": "fe87db237754d9a78794dcf432c82aaf78e6dbdf4b3ca00765d3059af8b6d362"
+  },
+  {
+    "path": "docs/games/dungeons-of-kremlin/save-load-status.md",
+    "sha256": "35c4a940bb0048f9005453cdeb5640ddc0f9f61facc2b407575150e741513437"
+  },
+  {
+    "path": "docs/games/dungeons-of-kremlin/settings.md",
+    "sha256": "93c76ec8acf5663c827006c9798efc01ae667fbb74feadbcb3cc6e57a077c9c9"
+  },
+  {
+    "path": "docs/games/dungeons-of-kremlin/versions.md",
+    "sha256": "9d53ac956824daa7d7f9dae8cf43df5998e57e81ed95fe46fa77a095ded267e9"
+  },
+  {
+    "path": "docs/games/dungeons-of-kremlin/wasd.md",
+    "sha256": "4712fc41e33baaf15a29b45cec63d8df184629aa804a7ba70d9832034eafa747"
+  },
+  {
+    "path": "docs/games/dungeons-of-kremlin/weapons.md",
+    "sha256": "65548ae2b88fd69912644b46766c693f0d62007ccab82b5e873531c142694a88"
+  },
+  {
+    "path": "scripts/GhidraPkrPerformance.java",
+    "sha256": "c7fa76dcc9895c293013eff93003c00c813a977991375dcc32170b2ded3f61d4"
+  },
+  {
+    "path": "scripts/GhidraKremlinWeapons.java",
+    "sha256": "a78093f8b48002f31028a96fa92366e2d9d3ddd277f9679b747384878d355aca"
+  },
+  {
+    "path": "scripts/GhidraKremlinSaveInventory.java",
+    "sha256": "3d0029a2293dc0899c612b97b4e152c2df59cba25bdbadbd4de7eefdc6c14830"
+  },
+  {
+    "path": "scripts/analyze_kremlin_save.ps1",
+    "sha256": "5b48b650f96c1b1cfd11d0aaaec44afa3fc435db56bb8e10eab129786041de87"
+  },
+  {
+    "path": "src/wasdify/patches/kremlin_config.inc",
+    "sha256": "3aecc7b5e81a7a2a828f97bca90540bddfd18c636a2146f998fdd30ba73b0195"
+  },
+  {
+    "path": "src/wasdify/patches/kremlin_font_scaling.asm",
+    "sha256": "21f3b72a911988e522a66a5bd1bc645efdf0f3b753b91cf1a258938c82ceb918"
+  },
+  {
+    "path": "src/wasdify/patches/kremlin_font_scaling.py",
+    "sha256": "72021a64c69ef0b6d4bb5ca7469d058a92a491449c75d106b5adf9dbd4e5fd8b"
+  },
+  {
+    "path": "src/wasdify/patches/kremlin_numeric_hud.asm",
+    "sha256": "ccc46af90d8260b685dc0ccc095b1006bcbc0ba524051fc0ed5b013b6ff3be68"
+  },
+  {
+    "path": "src/wasdify/patches/kremlin_numeric_hud.py",
+    "sha256": "aa1db1ea9fcf45881100c134ff6994fc7d6e5ab8885e4fe930d9f0e1913572a6"
+  },
+  {
+    "path": "src/wasdify/patches/kremlin_render.asm",
+    "sha256": "840d38007d4f671c2b31da6abcfd9c63e5ab2ca4e1c7c3d4b40b6b4f7f734a1b"
+  },
+  {
+    "path": "src/wasdify/patches/kremlin_render.py",
+    "sha256": "343e83ced8d692c895cb1ee160a776a5aa22c4d26b60938e54cdbabc1805fc45"
+  },
+  {
+    "path": "src/wasdify/patches/kremlin_resolution.py",
+    "sha256": "ec0a8b9b0d6dd009340f289dc362dc21984d4ae356a27ebb9f65f6e69f695e4a"
+  },
+  {
+    "path": "src/wasdify/patches/kremlin_save_crc.inc",
+    "sha256": "d6857a1dd0c45cbac7ecd32f283ff510f7e1bb20c5c46d90197d32490a108706"
+  },
+  {
+    "path": "src/wasdify/patches/kremlin_save_io.asm",
+    "sha256": "c19192198b75fd03e868d47b1e339d2d11e8fb795d7b2363930fa484ed72d6c3"
+  },
+  {
+    "path": "src/wasdify/patches/kremlin_save_native.asm",
+    "sha256": "f3a52655f498afb53e57965aa04e18d624ec16e84e94e11e00128e6ddb91813c"
+  },
+  {
+    "path": "src/wasdify/patches/kremlin_save_native.py",
+    "sha256": "408d52dde8b9780b2ead8ecf61dff4b203c3a1195acb076168c86520f5f20d01"
+  },
+  {
+    "path": "src/wasdify/patches/kremlin_save_native_tables.inc",
+    "sha256": "b736c0de6f3ed4bfd6fe0b83b6e3ae0e95602f0705c824078a8c83e321049df6"
+  },
+  {
+    "path": "src/wasdify/patches/kremlin_save_profile.inc",
+    "sha256": "24ab9082306ce4ee64f706c86c8566e264289b633f709b10aab9d5bdfc416f7e"
+  },
+  {
+    "path": "src/wasdify/patches/kremlin_save_world.asm",
+    "sha256": "697016151d3621feffbb4fa0ff6b7c211de27278ef10cccae82928c9349cb0f0"
+  },
+  {
+    "path": "src/wasdify/patches/kremlin_settings.asm",
+    "sha256": "12484744afe64f07fafa9340d9ee4eda4be89d9c69fbabd382ceb48890db7e7a"
+  },
+  {
+    "path": "src/wasdify/patches/kremlin_settings.py",
+    "sha256": "217d219f9dfbdb806f00f25929f06389ab0db641f32ffd539cc48af1178d0416"
+  },
+  {
+    "path": "src/wasdify/patches/kremlin_settings_spec.py",
+    "sha256": "27802e278c429d90e903023e4d3484430f23fd0b618435d5384e95c1499a9cfb"
+  },
+  {
+    "path": "src/wasdify/patches/kremlin_setup.asm",
+    "sha256": "c257251f4cf1e58af49ee0277ad57bd59bdade6e0b1b41f416f8d4d23e41837f"
+  },
+  {
+    "path": "src/wasdify/patches/kremlin_wasd.asm",
+    "sha256": "ba12801e306218308f44cbe0548bf13787786b2964fc8446622589c87abaa8b4"
+  },
+  {
+    "path": "src/wasdify/patches/kremlin_wasd.py",
+    "sha256": "284d5a025cd1edb7eea12c14b1a4eadba6d539920ea5971d849ec428ec616134"
+  },
+  {
+    "path": "src/wasdify/patches/kremlin_weapons.py",
+    "sha256": "510c9b1909d95f4665548279011aa82e25f06b408c680f443c9968f597886f5b"
+  }
+]

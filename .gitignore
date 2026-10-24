@@ -1,0 +1,6 @@
+/originals/
+/mqa/
+/build/
+/decompiled/
+__pycache__/
+*.pyc

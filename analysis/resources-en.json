@@ -1,0 +1,2003 @@
+{
+  "file": "originals/pkr/ENG/PKE.RES",
+  "sha256": "865da340621fa6f90548a84e9ae9bf0a85071befb32a40ca1d359e488f74d458",
+  "count": 146,
+  "directory_end": 4382,
+  "contiguous_payloads": true,
+  "trailing_bytes": 4,
+  "trailing_hex": "b0782900",
+  "categories": {
+    "text": 9,
+    "indexed_image18": 77,
+    "bitmap_font": 2,
+    "level_text": 3,
+    "vga_palette": 5,
+    "lighting_table": 3,
+    "unparsed": 24,
+    "sound_signature_unparsed": 23
+  },
+  "entries": [
+    {
+      "index": 0,
+      "name": "README",
+      "name_hex": "524541444d45",
+      "size": 426,
+      "offset": 4382,
+      "sha256": "64eabbb994ccb107d681de4cb75af778f15366fbcb3e071171cc8e8627f7c7d6",
+      "fnv1a32": "a94ef7b4",
+      "kind": "text"
+    },
+    {
+      "index": 1,
+      "name": "BINTRO1",
+      "name_hex": "42494e54524f31",
+      "size": 364,
+      "offset": 4808,
+      "sha256": "83497aad4a1b377bfea1011d8ad2a055a67348624a5347b3361612c0f1e5816c",
+      "fnv1a32": "3b394465",
+      "kind": "text"
+    },
+    {
+      "index": 2,
+      "name": "EINTRO1",
+      "name_hex": "45494e54524f31",
+      "size": 101,
+      "offset": 5172,
+      "sha256": "869b55df4569273c04170b821bc02a8b60677ebe5c13c74f3f1f170c4e1cdc13",
+      "fnv1a32": "ff1be6cb",
+      "kind": "text"
+    },
+    {
+      "index": 3,
+      "name": "BSPR1",
+      "name_hex": "4253505231",
+      "size": 64018,
+      "offset": 5273,
+      "sha256": "cda9de5715b3c48796fe3739969ac7c5611212e63840e2c84135931abf7b232b",
+      "fnv1a32": "9bce332b",
+      "kind": "indexed_image18",
+      "image": {
+        "width": 320,
+        "height": 200,
+        "flags": 0
+      }
+    },
+    {
+      "index": 4,
+      "name": "ESPR1",
+      "name_hex": "4553505231",
+      "size": 64018,
+      "offset": 69291,
+      "sha256": "0d95080726196ec17352eee3b67c259f86fba70cbbdc2e73b88ac1b3f58bdfab",
+      "fnv1a32": "fe0c619e",
+      "kind": "indexed_image18",
+      "image": {
+        "width": 320,
+        "height": 200,
+        "flags": 0
+      }
+    },
+    {
+      "index": 5,
+      "name": "BINTRO2",
+      "name_hex": "42494e54524f32",
+      "size": 251,
+      "offset": 133309,
+      "sha256": "6f8399fea5621ebba6d0120bf625b8370f93f5de2a2ff4f90612356ede3f6c26",
+      "fnv1a32": "137a7636",
+      "kind": "text"
+    },
+    {
+      "index": 6,
+      "name": "EINTRO2",
+      "name_hex": "45494e54524f32",
+      "size": 86,
+      "offset": 133560,
+      "sha256": "fe5abd958d628ef6046c6efacdb4dd4eb7365448f4fa92c89738a47151c43e64",
+      "fnv1a32": "c21da715",
+      "kind": "text"
+    },
+    {
+      "index": 7,
+      "name": "BSPR2",
+      "name_hex": "4253505232",
+      "size": 64018,
+      "offset": 133646,
+      "sha256": "4d97d82b6ac7f4411551eb0a7749666a5e93b5b51fcdc03b60762f35fe0a1ecf",
+      "fnv1a32": "48dcacaf",
+      "kind": "indexed_image18",
+      "image": {
+        "width": 320,
+        "height": 200,
+        "flags": 0
+      }
+    },
+    {
+      "index": 8,
+      "name": "ESPR2",
+      "name_hex": "4553505232",
+      "size": 64018,
+      "offset": 197664,
+      "sha256": "bdce39e2397bede9519579094033f82c6cedcedb881c66f0976993561a602773",
+      "fnv1a32": "fda0b722",
+      "kind": "indexed_image18",
+      "image": {
+        "width": 320,
+        "height": 200,
+        "flags": 0
+      }
+    },
+    {
+      "index": 9,
+      "name": "BINTRO3",
+      "name_hex": "42494e54524f33",
+      "size": 381,
+      "offset": 261682,
+      "sha256": "393a080a6383d6913f4dea9b86e99d91fa1247fdb08321fa3ccd2996b82347f0",
+      "fnv1a32": "d6c16dcd",
+      "kind": "text"
+    },
+    {
+      "index": 10,
+      "name": "EINTRO3",
+      "name_hex": "45494e54524f33",
+      "size": 153,
+      "offset": 262063,
+      "sha256": "af47c90d2b090931b78a11a966706188e6ca77986c51e04fcd3f18a1f070448c",
+      "fnv1a32": "859bdbaf",
+      "kind": "text"
+    },
+    {
+      "index": 11,
+      "name": "BSPR3",
+      "name_hex": "4253505233",
+      "size": 64018,
+      "offset": 262216,
+      "sha256": "5bd9edcba49537ca10f421bec2ddacb1f6c76604c91da08af8a588bb11e8b207",
+      "fnv1a32": "1f2873e8",
+      "kind": "indexed_image18",
+      "image": {
+        "width": 320,
+        "height": 200,
+        "flags": 0
+      }
+    },
+    {
+      "index": 12,
+      "name": "ESPR3",
+      "name_hex": "4553505233",
+      "size": 64018,
+      "offset": 326234,
+      "sha256": "5ad1841de3157f984808e1460503fd8be52b80da70444a868702100d2f85bbd7",
+      "fnv1a32": "945acead",
+      "kind": "indexed_image18",
+      "image": {
+        "width": 320,
+        "height": 200,
+        "flags": 0
+      }
+    },
+    {
+      "index": 13,
+      "name": "ENDTXT",
+      "name_hex": "454e44545854",
+      "size": 219,
+      "offset": 390252,
+      "sha256": "19438eb8ceab0925cc85d9287acca7301e2e944b79a08c5de38ee096f379dc52",
+      "fnv1a32": "70654b6c",
+      "kind": "text"
+    },
+    {
+      "index": 14,
+      "name": "INTRO4BSPR",
+      "name_hex": "494e54524f3442535052",
+      "size": 4626,
+      "offset": 390471,
+      "sha256": "c6b4f2ed53f8a8b56db9972e25ce7924eb3fc22cf793d78c45e552a445f4dcf1",
+      "fnv1a32": "3b534945",
+      "kind": "indexed_image18",
+      "image": {
+        "width": 48,
+        "height": 96,
+        "flags": 0
+      }
+    },
+    {
+      "index": 15,
+      "name": "FON",
+      "name_hex": "464f4e",
+      "size": 2134,
+      "offset": 395097,
+      "sha256": "f9619cc18116ed1723891e307e7055d7fae5196fa6b4cdd8f73abcad9bce814b",
+      "fnv1a32": "ba7ff012",
+      "kind": "indexed_image18",
+      "image": {
+        "width": 46,
+        "height": 46,
+        "flags": 0
+      }
+    },
+    {
+      "index": 16,
+      "name": "FONT8",
+      "name_hex": "464f4e5438",
+      "size": 2048,
+      "offset": 397231,
+      "sha256": "b850fc7ed5ce3e9d92e452a8b13e7f874718368fe3423056dd0ce563676f2508",
+      "fnv1a32": "c6d4191c",
+      "kind": "bitmap_font"
+    },
+    {
+      "index": 17,
+      "name": "FONT16",
+      "name_hex": "464f4e543136",
+      "size": 4096,
+      "offset": 399279,
+      "sha256": "c409cd790ec2712536c635a4ad4200272d1e0884dff98d44361d3d1774ab812a",
+      "fnv1a32": "10fb9885",
+      "kind": "bitmap_font"
+    },
+    {
+      "index": 18,
+      "name": "LEVEL1",
+      "name_hex": "4c4556454c31",
+      "size": 24239,
+      "offset": 403375,
+      "sha256": "ff9354074b91d020ab26892c803b984fd6367875efd190202927840afb39c089",
+      "fnv1a32": "fe18b2f0",
+      "kind": "level_text"
+    },
+    {
+      "index": 19,
+      "name": "LEVEL2",
+      "name_hex": "4c4556454c32",
+      "size": 24150,
+      "offset": 427614,
+      "sha256": "65869d72be30ccc30cb673a8a66ec1b3ebe12681a7beb5a6aa365b07fc0ced91",
+      "fnv1a32": "c36d6272",
+      "kind": "level_text"
+    },
+    {
+      "index": 20,
+      "name": "LEVEL3",
+      "name_hex": "4c4556454c33",
+      "size": 27909,
+      "offset": 451764,
+      "sha256": "f70efbcdf0801d59ccad30017b8953af7ecd80df9a87b6ef378a6d7bbfd5e6e7",
+      "fnv1a32": "68a55d1c",
+      "kind": "level_text"
+    },
+    {
+      "index": 21,
+      "name": "МЕНЮ_ПАЛ",
+      "name_hex": "8c858d9e5f8f808b",
+      "size": 768,
+      "offset": 479673,
+      "sha256": "c915f3cc4b1197a85b0984619c9f2c842180feadd19d5e5cbc09191be2493dba",
+      "fnv1a32": "42c544b8",
+      "kind": "vga_palette"
+    },
+    {
+      "index": 22,
+      "name": "GAMEP1",
+      "name_hex": "47414d455031",
+      "size": 768,
+      "offset": 480441,
+      "sha256": "b6d585de4e645ad0c7667bc7b67417e8badb9a83c2b4392ff968a3fe853b02c8",
+      "fnv1a32": "9672e85a",
+      "kind": "vga_palette"
+    },
+    {
+      "index": 23,
+      "name": "LIGHT1",
+      "name_hex": "4c4947485431",
+      "size": 4096,
+      "offset": 481209,
+      "sha256": "2bbbeaec641c5d4dc98b26b6751c2f22fc5206d7e96b2d25689a5b0be6983aa6",
+      "fnv1a32": "7cebd830",
+      "kind": "lighting_table"
+    },
+    {
+      "index": 24,
+      "name": "GAMEP2",
+      "name_hex": "47414d455032",
+      "size": 768,
+      "offset": 485305,
+      "sha256": "2940ec5c011714608299711974fd36c30818a3a333fb2137ca6aa71bffd8cd9b",
+      "fnv1a32": "dc4ec546",
+      "kind": "vga_palette"
+    },
+    {
+      "index": 25,
+      "name": "LIGHT2",
+      "name_hex": "4c4947485432",
+      "size": 4096,
+      "offset": 486073,
+      "sha256": "018750971533c4e40475c13bba5e902fd1a5eca757de1e885b5ff420c9dc8c89",
+      "fnv1a32": "9d384a70",
+      "kind": "lighting_table"
+    },
+    {
+      "index": 26,
+      "name": "GAMEP3",
+      "name_hex": "47414d455033",
+      "size": 768,
+      "offset": 490169,
+      "sha256": "c915f3cc4b1197a85b0984619c9f2c842180feadd19d5e5cbc09191be2493dba",
+      "fnv1a32": "42c544b8",
+      "kind": "vga_palette"
+    },
+    {
+      "index": 27,
+      "name": "LIGHT3",
+      "name_hex": "4c4947485433",
+      "size": 4096,
+      "offset": 490937,
+      "sha256": "2f605b090423811ced8830b2d1adb788bbed463ba7390e79936878f18ba734d2",
+      "fnv1a32": "e0f9aaa6",
+      "kind": "lighting_table"
+    },
+    {
+      "index": 28,
+      "name": "EXIT1",
+      "name_hex": "4558495431",
+      "size": 4626,
+      "offset": 495033,
+      "sha256": "c5c7cd0c3b995712641322cde43925c73446b38fe8277e0c846958475432eb16",
+      "fnv1a32": "f5ea0ccc",
+      "kind": "indexed_image18",
+      "image": {
+        "width": 48,
+        "height": 96,
+        "flags": 0
+      }
+    },
+    {
+      "index": 29,
+      "name": "EXIT2",
+      "name_hex": "4558495432",
+      "size": 4626,
+      "offset": 499659,
+      "sha256": "d00eb6aa30a23da6b0a6274f0b534e45009fda1b1672bf4b49bfd80da3cf3a4b",
+      "fnv1a32": "aea04180",
+      "kind": "indexed_image18",
+      "image": {
+        "width": 48,
+        "height": 96,
+        "flags": 0
+      }
+    },
+    {
+      "index": 30,
+      "name": "ПАНЕЛЬ",
+      "name_hex": "8f808d858b9c",
+      "size": 12498,
+      "offset": 504285,
+      "sha256": "2adc131edf55049de889da438c44b51e33a2ac4a3dd97a52b3e3136379b9cefd",
+      "fnv1a32": "2dd27193",
+      "kind": "indexed_image18",
+      "image": {
+        "width": 320,
+        "height": 39,
+        "flags": 0
+      }
+    },
+    {
+      "index": 31,
+      "name": "ПЖИЗНЬ",
+      "name_hex": "8f8688878d9c",
+      "size": 443,
+      "offset": 516783,
+      "sha256": "1d17af443259a237ccf57ca61aa0858b0c853f97a35a8a67e72401e341428bcc",
+      "fnv1a32": "f360a2fc",
+      "kind": "indexed_image18",
+      "image": {
+        "width": 25,
+        "height": 17,
+        "flags": 0
+      }
+    },
+    {
+      "index": 32,
+      "name": "ПМАГИЯ",
+      "name_hex": "8f8c8083889f",
+      "size": 324,
+      "offset": 517226,
+      "sha256": "e864aacf0cfd3895cd9b2765806f868aad86f79e29ea79ef633d5219b4f2b4cf",
+      "fnv1a32": "fd4bd3c6",
+      "kind": "indexed_image18",
+      "image": {
+        "width": 17,
+        "height": 18,
+        "flags": 0
+      }
+    },
+    {
+      "index": 33,
+      "name": "ПОРУЖИЕ1",
+      "name_hex": "8f8e909386888531",
+      "size": 3333,
+      "offset": 517550,
+      "sha256": "9e0974a0711c5a570a07178d19c0170df76098c9234a7a086143fdc6d372acba",
+      "fnv1a32": "723786ab",
+      "kind": "indexed_image18",
+      "image": {
+        "width": 85,
+        "height": 39,
+        "flags": 0
+      }
+    },
+    {
+      "index": 34,
+      "name": "ПОРУЖИЕ2",
+      "name_hex": "8f8e909386888532",
+      "size": 3333,
+      "offset": 520883,
+      "sha256": "54bdec0c470576682793a88bf3bb2bf2e0b661f1523584afeb05eb1723f5da46",
+      "fnv1a32": "0a2903b0",
+      "kind": "indexed_image18",
+      "image": {
+        "width": 85,
+        "height": 39,
+        "flags": 0
+      }
+    },
+    {
+      "index": 35,
+      "name": "ПКЛЮЧЖ",
+      "name_hex": "8f8a8b9e9786",
+      "size": 798,
+      "offset": 524216,
+      "sha256": "7c618e620e6cb77e8d3d7438d36f791527a1cd06cf3f7fd2bdd71ca0c7ee39b8",
+      "fnv1a32": "1c7cdda1",
+      "kind": "indexed_image18",
+      "image": {
+        "width": 26,
+        "height": 30,
+        "flags": 0
+      }
+    },
+    {
+      "index": 36,
+      "name": "ПКЛЮЧМ",
+      "name_hex": "8f8a8b9e978c",
+      "size": 798,
+      "offset": 525014,
+      "sha256": "065cb6e7653e48486e9007e6c24262d16b3e2aff79b930806499437f03655b47",
+      "fnv1a32": "54f3a68b",
+      "kind": "indexed_image18",
+      "image": {
+        "width": 26,
+        "height": 30,
+        "flags": 0
+      }
+    },
+    {
+      "index": 37,
+      "name": "ПКЛЮЧЗ",
+      "name_hex": "8f8a8b9e9787",
+      "size": 798,
+      "offset": 525812,
+      "sha256": "e44f28669c07712723d4b8d2a02affb8a07f1057d76f640fa284179cd01e86ba",
+      "fnv1a32": "56adf9b3",
+      "kind": "indexed_image18",
+      "image": {
+        "width": 26,
+        "height": 30,
+        "flags": 0
+      }
+    },
+    {
+      "index": 38,
+      "name": "PANEL_DAT",
+      "name_hex": "50414e454c5f444154",
+      "size": 9,
+      "offset": 526610,
+      "sha256": "17c5a53d74c3964517322f521bc777270f314072ab987a3f6a3b3a7edeb5d393",
+      "fnv1a32": "cf2722d2",
+      "kind": "text"
+    },
+    {
+      "index": 39,
+      "name": "КПОЛ2",
+      "name_hex": "8a8f8e8b32",
+      "size": 2322,
+      "offset": 526619,
+      "sha256": "8e015ee20f368335496eb32da17e2820d674621866c3629b436c60bdcde0b705",
+      "fnv1a32": "34a6d58c",
+      "kind": "indexed_image18",
+      "image": {
+        "width": 48,
+        "height": 48,
+        "flags": 0
+      }
+    },
+    {
+      "index": 40,
+      "name": "КПОЛ3",
+      "name_hex": "8a8f8e8b33",
+      "size": 2322,
+      "offset": 528941,
+      "sha256": "8e015ee20f368335496eb32da17e2820d674621866c3629b436c60bdcde0b705",
+      "fnv1a32": "34a6d58c",
+      "kind": "indexed_image18",
+      "image": {
+        "width": 48,
+        "height": 48,
+        "flags": 0
+      }
+    },
+    {
+      "index": 41,
+      "name": "КПОТОЛОК2",
+      "name_hex": "8a8f8e928e8b8e8a32",
+      "size": 2322,
+      "offset": 531263,
+      "sha256": "692db714dce42fe696e40acef825a4b0e41502888805fd675f6e869505ed2d63",
+      "fnv1a32": "41cca395",
+      "kind": "indexed_image18",
+      "image": {
+        "width": 48,
+        "height": 48,
+        "flags": 0
+      }
+    },
+    {
+      "index": 42,
+      "name": "КПОТОЛОК3",
+      "name_hex": "8a8f8e928e8b8e8a33",
+      "size": 2322,
+      "offset": 533585,
+      "sha256": "c2ee209961a274888ebc359d3506fcc93a5a1dc791de7e35cf89dbfc8c2d4f82",
+      "fnv1a32": "abbce48a",
+      "kind": "indexed_image18",
+      "image": {
+        "width": 48,
+        "height": 48,
+        "flags": 0
+      }
+    },
+    {
+      "index": 43,
+      "name": "ДВЕРЬ_Ж",
+      "name_hex": "848285909c5f86",
+      "size": 18450,
+      "offset": 535907,
+      "sha256": "77ee6a3afb9cb072c3345cb3d05eb025f85ddf47991c2874d006f56b8cef53cd",
+      "fnv1a32": "d5d2f9a6",
+      "kind": "indexed_image18",
+      "image": {
+        "width": 96,
+        "height": 192,
+        "flags": 0
+      }
+    },
+    {
+      "index": 44,
+      "name": "ДВЕРЬ_М",
+      "name_hex": "848285909c5f8c",
+      "size": 18450,
+      "offset": 554357,
+      "sha256": "e500ef8c15e0c5d75d4d29dd8783a53a4ad8a750ad37f03a04bb0fb4042710eb",
+      "fnv1a32": "44381fb3",
+      "kind": "indexed_image18",
+      "image": {
+        "width": 96,
+        "height": 192,
+        "flags": 0
+      }
+    },
+    {
+      "index": 45,
+      "name": "ДВЕРЬ_З",
+      "name_hex": "848285909c5f87",
+      "size": 18450,
+      "offset": 572807,
+      "sha256": "611446362e9a8d2ce87a05dd747f64a5cdb6fb57de957020949def45e5ad9482",
+      "fnv1a32": "ad27ee9e",
+      "kind": "indexed_image18",
+      "image": {
+        "width": 96,
+        "height": 192,
+        "flags": 0
+      }
+    },
+    {
+      "index": 46,
+      "name": "ДСТЕНАК1",
+      "name_hex": "849192858d808a31",
+      "size": 18450,
+      "offset": 591257,
+      "sha256": "5a10e48a58dc0de14fe8563c16ade387131be134808e39a550c94aca6202a000",
+      "fnv1a32": "b2a2b15b",
+      "kind": "indexed_image18",
+      "image": {
+        "width": 96,
+        "height": 192,
+        "flags": 0
+      }
+    },
+    {
+      "index": 47,
+      "name": "ДСТЕНАКС",
+      "name_hex": "849192858d808a91",
+      "size": 18450,
+      "offset": 609707,
+      "sha256": "7bae1921f0b1ac9ba266a733ccc7543a49df44dbd0b56d10bee39f4d0e797783",
+      "fnv1a32": "b8b8c0cf",
+      "kind": "indexed_image18",
+      "image": {
+        "width": 96,
+        "height": 192,
+        "flags": 0
+      }
+    },
+    {
+      "index": 48,
+      "name": "ДДВЕРЬ_С",
+      "name_hex": "84848285909c5f91",
+      "size": 18450,
+      "offset": 628157,
+      "sha256": "9cad44dfeb1efa847c19da68886c593e82adeab1dfeba8600cea091192217760",
+      "fnv1a32": "4f0c3675",
+      "kind": "indexed_image18",
+      "image": {
+        "width": 96,
+        "height": 192,
+        "flags": 0
+      }
+    },
+    {
+      "index": 49,
+      "name": "ДДВЕРЬ_Д",
+      "name_hex": "84848285909c5f84",
+      "size": 12306,
+      "offset": 646607,
+      "sha256": "1903b4ed1641de470de12d281d9f9edf636bf7a0f6ec32ebc24929f97f6c636b",
+      "fnv1a32": "2b02dfd8",
+      "kind": "indexed_image18",
+      "image": {
+        "width": 96,
+        "height": 128,
+        "flags": 0
+      }
+    },
+    {
+      "index": 50,
+      "name": "ДРЕШ1",
+      "name_hex": "8490859831",
+      "size": 12306,
+      "offset": 658913,
+      "sha256": "9409506a71cb60c29c42a9a5ecd088772d70ceb44abde325ce7d0ea95acf694d",
+      "fnv1a32": "1b157ea6",
+      "kind": "indexed_image18",
+      "image": {
+        "width": 96,
+        "height": 128,
+        "flags": 0
+      }
+    },
+    {
+      "index": 51,
+      "name": "ДПОТОЛОК1",
+      "name_hex": "848f8e928e8b8e8a31",
+      "size": 9234,
+      "offset": 671219,
+      "sha256": "a4f3cf2b48d3650be1901247a0da35acad30eeb81250de757bfd7b39a9565811",
+      "fnv1a32": "fea2f745",
+      "kind": "indexed_image18",
+      "image": {
+        "width": 96,
+        "height": 96,
+        "flags": 0
+      }
+    },
+    {
+      "index": 52,
+      "name": "ДПОЛ1",
+      "name_hex": "848f8e8b31",
+      "size": 9234,
+      "offset": 680453,
+      "sha256": "3ad8ddc41b20fec07b55e83dacae6912d53668956ca4c323d5884d2791f96b65",
+      "fnv1a32": "13819e60",
+      "kind": "indexed_image18",
+      "image": {
+        "width": 96,
+        "height": 96,
+        "flags": 0
+      }
+    },
+    {
+      "index": 53,
+      "name": "ОПОТОЛОК1",
+      "name_hex": "8e8f8e928e8b8e8a31",
+      "size": 2322,
+      "offset": 689687,
+      "sha256": "6d19806feead3a6e33f8f9e60f019d8ae2b3ca019150c39fb2bce1c37d6e1ff8",
+      "fnv1a32": "6db7c05d",
+      "kind": "indexed_image18",
+      "image": {
+        "width": 48,
+        "height": 48,
+        "flags": 0
+      }
+    },
+    {
+      "index": 54,
+      "name": "ОСТЕНАК1",
+      "name_hex": "8e9192858d808a31",
+      "size": 18450,
+      "offset": 692009,
+      "sha256": "954c32c97fbce9d7968d24706b750526b773fed93d7fc309b394ba7fde9140a8",
+      "fnv1a32": "2bb17ab9",
+      "kind": "indexed_image18",
+      "image": {
+        "width": 96,
+        "height": 192,
+        "flags": 0
+      }
+    },
+    {
+      "index": 55,
+      "name": "ОСТЕНАКС",
+      "name_hex": "8e9192858d808a91",
+      "size": 18450,
+      "offset": 710459,
+      "sha256": "954c32c97fbce9d7968d24706b750526b773fed93d7fc309b394ba7fde9140a8",
+      "fnv1a32": "2bb17ab9",
+      "kind": "indexed_image18",
+      "image": {
+        "width": 96,
+        "height": 192,
+        "flags": 0
+      }
+    },
+    {
+      "index": 56,
+      "name": "ОДВЕРЬ_Д",
+      "name_hex": "8e848285909c5f84",
+      "size": 10962,
+      "offset": 728909,
+      "sha256": "43a53efe0312a2643156b8daec3f19c071c17041ff15a83e3f92e1e6620b520d",
+      "fnv1a32": "f5bc254b",
+      "kind": "indexed_image18",
+      "image": {
+        "width": 96,
+        "height": 114,
+        "flags": 0
+      }
+    },
+    {
+      "index": 57,
+      "name": "ОДВЕРЬ_С",
+      "name_hex": "8e848285909c5f91",
+      "size": 18450,
+      "offset": 739871,
+      "sha256": "954c32c97fbce9d7968d24706b750526b773fed93d7fc309b394ba7fde9140a8",
+      "fnv1a32": "2bb17ab9",
+      "kind": "indexed_image18",
+      "image": {
+        "width": 96,
+        "height": 192,
+        "flags": 0
+      }
+    },
+    {
+      "index": 58,
+      "name": "ОПОЛ1",
+      "name_hex": "8e8f8e8b31",
+      "size": 2322,
+      "offset": 758321,
+      "sha256": "bd48f77191cf64f94c9c1525c884ab36fb4e53f8cf83ad9802f1d295a2632c64",
+      "fnv1a32": "6d043647",
+      "kind": "indexed_image18",
+      "image": {
+        "width": 48,
+        "height": 48,
+        "flags": 0
+      }
+    },
+    {
+      "index": 59,
+      "name": "ОРЕШ1",
+      "name_hex": "8e90859831",
+      "size": 12306,
+      "offset": 760643,
+      "sha256": "dc1952e34ccd1da9d36f181e064483dd1530586063f7fbc9292848c18c9bedab",
+      "fnv1a32": "0e1d961a",
+      "kind": "indexed_image18",
+      "image": {
+        "width": 96,
+        "height": 128,
+        "flags": 0
+      }
+    },
+    {
+      "index": 60,
+      "name": "ОДВЕРЬ_Ж",
+      "name_hex": "8e848285909c5f86",
+      "size": 18450,
+      "offset": 772949,
+      "sha256": "5d872a387c4ad00bd48d7cf95dcfa16c952ab6fd6150338ffdf6559eab9e7173",
+      "fnv1a32": "793e892c",
+      "kind": "indexed_image18",
+      "image": {
+        "width": 96,
+        "height": 192,
+        "flags": 0
+      }
+    },
+    {
+      "index": 61,
+      "name": "ОДВЕРЬ_М",
+      "name_hex": "8e848285909c5f8c",
+      "size": 18450,
+      "offset": 791399,
+      "sha256": "497740c78078e30a9267043a7ca267e8590aede39d4f474e164fe552339af796",
+      "fnv1a32": "025e0f22",
+      "kind": "indexed_image18",
+      "image": {
+        "width": 96,
+        "height": 192,
+        "flags": 0
+      }
+    },
+    {
+      "index": 62,
+      "name": "ОДВЕРЬ_З",
+      "name_hex": "8e848285909c5f87",
+      "size": 18450,
+      "offset": 809849,
+      "sha256": "fe0de39cf5ecab3d2c521543eb8d491204b12988293771c3dc5943b4928184f1",
+      "fnv1a32": "f53469f7",
+      "kind": "indexed_image18",
+      "image": {
+        "width": 96,
+        "height": 192,
+        "flags": 0
+      }
+    },
+    {
+      "index": 63,
+      "name": "КСТЕНАК1",
+      "name_hex": "8a9192858d808a31",
+      "size": 18450,
+      "offset": 828299,
+      "sha256": "52aec6b6e1f28a4d68b676def589a2daa5a2735f692051f790365325928dc920",
+      "fnv1a32": "95d0737c",
+      "kind": "indexed_image18",
+      "image": {
+        "width": 96,
+        "height": 192,
+        "flags": 0
+      }
+    },
+    {
+      "index": 64,
+      "name": "КСТЕНАК2",
+      "name_hex": "8a9192858d808a32",
+      "size": 18450,
+      "offset": 846749,
+      "sha256": "851fa0581fbd232b9b9e695c20d6d6f338f242ea7eca89b85095d124ad5c547f",
+      "fnv1a32": "f8f7d9ff",
+      "kind": "indexed_image18",
+      "image": {
+        "width": 96,
+        "height": 192,
+        "flags": 0
+      }
+    },
+    {
+      "index": 65,
+      "name": "КСТЕНАК3",
+      "name_hex": "8a9192858d808a33",
+      "size": 18450,
+      "offset": 865199,
+      "sha256": "421ee492c9294617ba7b755f430ee6d1229ca4d4e8e2d9bf61905589a00b5e19",
+      "fnv1a32": "55b919b6",
+      "kind": "indexed_image18",
+      "image": {
+        "width": 96,
+        "height": 192,
+        "flags": 0
+      }
+    },
+    {
+      "index": 66,
+      "name": "КСТЕНАКП",
+      "name_hex": "8a9192858d808a8f",
+      "size": 18450,
+      "offset": 883649,
+      "sha256": "851fa0581fbd232b9b9e695c20d6d6f338f242ea7eca89b85095d124ad5c547f",
+      "fnv1a32": "f8f7d9ff",
+      "kind": "indexed_image18",
+      "image": {
+        "width": 96,
+        "height": 192,
+        "flags": 0
+      }
+    },
+    {
+      "index": 67,
+      "name": "КСТЕНАКС",
+      "name_hex": "8a9192858d808a91",
+      "size": 18450,
+      "offset": 902099,
+      "sha256": "421ee492c9294617ba7b755f430ee6d1229ca4d4e8e2d9bf61905589a00b5e19",
+      "fnv1a32": "55b919b6",
+      "kind": "indexed_image18",
+      "image": {
+        "width": 96,
+        "height": 192,
+        "flags": 0
+      }
+    },
+    {
+      "index": 68,
+      "name": "КПОЛ1",
+      "name_hex": "8a8f8e8b31",
+      "size": 8482,
+      "offset": 920549,
+      "sha256": "1e5325cc99d78d08fa70f708789f0354bcce18342d228ea838658c42ff599fc4",
+      "fnv1a32": "eab25adc",
+      "kind": "indexed_image18",
+      "image": {
+        "width": 92,
+        "height": 92,
+        "flags": 0
+      }
+    },
+    {
+      "index": 69,
+      "name": "КРЕШ1",
+      "name_hex": "8a90859831",
+      "size": 10674,
+      "offset": 929031,
+      "sha256": "3a73abbf998755d729ad9596756a04f195818556086277b730e4590ffea6b987",
+      "fnv1a32": "98641134",
+      "kind": "indexed_image18",
+      "image": {
+        "width": 96,
+        "height": 111,
+        "flags": 0
+      }
+    },
+    {
+      "index": 70,
+      "name": "КПОТОЛОК1",
+      "name_hex": "8a8f8e928e8b8e8a31",
+      "size": 8482,
+      "offset": 939705,
+      "sha256": "f5a0b96d27cc38da4db0c467a8d75f51c0b4d0a2bf9fd357a46b5f688a7ac9a0",
+      "fnv1a32": "225b744a",
+      "kind": "indexed_image18",
+      "image": {
+        "width": 92,
+        "height": 92,
+        "flags": 0
+      }
+    },
+    {
+      "index": 71,
+      "name": "КДВЕРЬ_Ж",
+      "name_hex": "8a848285909c5f86",
+      "size": 18450,
+      "offset": 948187,
+      "sha256": "0f4b63cf7f255f9ec98a52e8e4a59fe4c94494d9ff603552ce06f8c85dcd3282",
+      "fnv1a32": "f7881afc",
+      "kind": "indexed_image18",
+      "image": {
+        "width": 96,
+        "height": 192,
+        "flags": 0
+      }
+    },
+    {
+      "index": 72,
+      "name": "КДВЕРЬ_М",
+      "name_hex": "8a848285909c5f8c",
+      "size": 18450,
+      "offset": 966637,
+      "sha256": "d6a699cc4701a3cc49bbd2d122cd976110d11b20666e7c70c9a78451b0c9926d",
+      "fnv1a32": "8a891573",
+      "kind": "indexed_image18",
+      "image": {
+        "width": 96,
+        "height": 192,
+        "flags": 0
+      }
+    },
+    {
+      "index": 73,
+      "name": "КДВЕРЬ_З",
+      "name_hex": "8a848285909c5f87",
+      "size": 18450,
+      "offset": 985087,
+      "sha256": "98ee683a15a978c4688442606a4bc2ea36c4cdb7fd363751fc3d09cad291e96b",
+      "fnv1a32": "6612ce30",
+      "kind": "indexed_image18",
+      "image": {
+        "width": 96,
+        "height": 192,
+        "flags": 0
+      }
+    },
+    {
+      "index": 74,
+      "name": "КДВЕРЬ_Д",
+      "name_hex": "8a848285909c5f84",
+      "size": 10578,
+      "offset": 1003537,
+      "sha256": "8ba943ca41c2bdfaba7f6620bde2f77fbfcfa7334745d050bc1e53e2def6f0c8",
+      "fnv1a32": "f02aed1f",
+      "kind": "indexed_image18",
+      "image": {
+        "width": 96,
+        "height": 110,
+        "flags": 0
+      }
+    },
+    {
+      "index": 75,
+      "name": "КДВЕРЬ_Р",
+      "name_hex": "8a848285909c5f90",
+      "size": 10578,
+      "offset": 1014115,
+      "sha256": "cc777f18caf40dbadf3f6029f65c4a3e2da8d896cca9754fb5ec18026ee7d57f",
+      "fnv1a32": "b93f8487",
+      "kind": "indexed_image18",
+      "image": {
+        "width": 96,
+        "height": 110,
+        "flags": 0
+      }
+    },
+    {
+      "index": 76,
+      "name": "КДВЕРЬ_С",
+      "name_hex": "8a848285909c5f91",
+      "size": 18450,
+      "offset": 1024693,
+      "sha256": "851fa0581fbd232b9b9e695c20d6d6f338f242ea7eca89b85095d124ad5c547f",
+      "fnv1a32": "f8f7d9ff",
+      "kind": "indexed_image18",
+      "image": {
+        "width": 96,
+        "height": 192,
+        "flags": 0
+      }
+    },
+    {
+      "index": 77,
+      "name": "КЛЮЧ_М",
+      "name_hex": "8a8b9e975f8c",
+      "size": 15234,
+      "offset": 1043143,
+      "sha256": "c77c3d269e963057f751864bee636f4a49ce8751724d75a8d81f1b71b8de9e90",
+      "fnv1a32": "77c98aad",
+      "kind": "unparsed"
+    },
+    {
+      "index": 78,
+      "name": "КЛЮЧ_Ж",
+      "name_hex": "8a8b9e975f86",
+      "size": 15234,
+      "offset": 1058377,
+      "sha256": "bd103e85651e98ac21d0e9c57d64cbc3fa23b68191b994fbe97ab24fd9616cd3",
+      "fnv1a32": "9c62a36a",
+      "kind": "unparsed"
+    },
+    {
+      "index": 79,
+      "name": "КЛЮЧ_З",
+      "name_hex": "8a8b9e975f87",
+      "size": 15234,
+      "offset": 1073611,
+      "sha256": "7b8f8c50186c1c50e1b69d95fd0a526368213494abde0863d99dd69006fae492",
+      "fnv1a32": "7fecb288",
+      "kind": "unparsed"
+    },
+    {
+      "index": 80,
+      "name": "БОЧКА",
+      "name_hex": "818e978a80",
+      "size": 4176,
+      "offset": 1088845,
+      "sha256": "f2a7fa56f97407563ccd0db5ad09931ee7ca2bf9f87842452ce5779a5772a732",
+      "fnv1a32": "354a82d6",
+      "kind": "indexed_image18",
+      "image": {
+        "width": 63,
+        "height": 66,
+        "flags": 0
+      }
+    },
+    {
+      "index": 81,
+      "name": "ВОДА1",
+      "name_hex": "828e848031",
+      "size": 9234,
+      "offset": 1093021,
+      "sha256": "7b3d9ac175e230cd39bca954c1e4de3e15b4de92273e260e3df57398b1829731",
+      "fnv1a32": "8e158fdd",
+      "kind": "indexed_image18",
+      "image": {
+        "width": 96,
+        "height": 96,
+        "flags": 0
+      }
+    },
+    {
+      "index": 82,
+      "name": "ВОДА2",
+      "name_hex": "828e848032",
+      "size": 9234,
+      "offset": 1102255,
+      "sha256": "7b3d9ac175e230cd39bca954c1e4de3e15b4de92273e260e3df57398b1829731",
+      "fnv1a32": "8e158fdd",
+      "kind": "indexed_image18",
+      "image": {
+        "width": 96,
+        "height": 96,
+        "flags": 0
+      }
+    },
+    {
+      "index": 83,
+      "name": "ВОДА3",
+      "name_hex": "828e848033",
+      "size": 9234,
+      "offset": 1111489,
+      "sha256": "7b3d9ac175e230cd39bca954c1e4de3e15b4de92273e260e3df57398b1829731",
+      "fnv1a32": "8e158fdd",
+      "kind": "indexed_image18",
+      "image": {
+        "width": 96,
+        "height": 96,
+        "flags": 0
+      }
+    },
+    {
+      "index": 84,
+      "name": "ВОДА4",
+      "name_hex": "828e848034",
+      "size": 9234,
+      "offset": 1120723,
+      "sha256": "7b3d9ac175e230cd39bca954c1e4de3e15b4de92273e260e3df57398b1829731",
+      "fnv1a32": "8e158fdd",
+      "kind": "indexed_image18",
+      "image": {
+        "width": 96,
+        "height": 96,
+        "flags": 0
+      }
+    },
+    {
+      "index": 85,
+      "name": "ЧИЧА",
+      "name_hex": "97889780",
+      "size": 2322,
+      "offset": 1129957,
+      "sha256": "9617cde4abebe2e22cd93dc7e7c38eefd23f224e1c26b911bd6b2c1e3b9fd777",
+      "fnv1a32": "85edd7bd",
+      "kind": "indexed_image18",
+      "image": {
+        "width": 48,
+        "height": 48,
+        "flags": 0
+      }
+    },
+    {
+      "index": 86,
+      "name": "зМЫШЬ_И",
+      "name_hex": "a78c9b989c5f88",
+      "size": 15742,
+      "offset": 1132279,
+      "sha256": "0f28bb32053a86d7012d11c9216b436cbef928f12148cf85e1524e8554754a72",
+      "fnv1a32": "3fae8d39",
+      "kind": "sound_signature_unparsed"
+    },
+    {
+      "index": 87,
+      "name": "зМЫШЬ_А",
+      "name_hex": "a78c9b989c5f80",
+      "size": 9836,
+      "offset": 1148021,
+      "sha256": "4f57b59ff1ca58d1775853cb9ad2f49b3ec9af995fe98a1b146c72d3245da6b0",
+      "fnv1a32": "6f57d33d",
+      "kind": "sound_signature_unparsed"
+    },
+    {
+      "index": 88,
+      "name": "зМЫШЬ_У",
+      "name_hex": "a78c9b989c5f93",
+      "size": 21936,
+      "offset": 1157857,
+      "sha256": "c3ffdd2c2da3b8fa32f2d4631e0bd4f67fed96d403fdc45ebb27246e51b97475",
+      "fnv1a32": "d009e5af",
+      "kind": "sound_signature_unparsed"
+    },
+    {
+      "index": 89,
+      "name": "зБОЯР_И",
+      "name_hex": "a7818e9f905f88",
+      "size": 18111,
+      "offset": 1179793,
+      "sha256": "0265d3f222a05794c21fa5d26172b14da7dac8e10f77b4a3669a60dd80e34e87",
+      "fnv1a32": "5c6031de",
+      "kind": "sound_signature_unparsed"
+    },
+    {
+      "index": 90,
+      "name": "зБОЯР_А",
+      "name_hex": "a7818e9f905f80",
+      "size": 7924,
+      "offset": 1197904,
+      "sha256": "daf06db0504e81dd61d69d7a5fd506d4316f34ff51911fa7b76edbe7476b7d58",
+      "fnv1a32": "da87ad4f",
+      "kind": "sound_signature_unparsed"
+    },
+    {
+      "index": 91,
+      "name": "зБОЯР_У",
+      "name_hex": "a7818e9f905f93",
+      "size": 26836,
+      "offset": 1205828,
+      "sha256": "567db0f4c2dd9f9832b8b32befd0f8c4fc0f991fba4f7a137114619511837aa2",
+      "fnv1a32": "92097f21",
+      "kind": "sound_signature_unparsed"
+    },
+    {
+      "index": 92,
+      "name": "зРУЖЬЕ",
+      "name_hex": "a79093869c85",
+      "size": 10603,
+      "offset": 1232664,
+      "sha256": "cd7fa3defebe0d4a39b180777d3301bb0dac9d18d8249f3887ab64d81048d88e",
+      "fnv1a32": "d00d8260",
+      "kind": "sound_signature_unparsed"
+    },
+    {
+      "index": 93,
+      "name": "зБАБА_И",
+      "name_hex": "a7818081805f88",
+      "size": 32456,
+      "offset": 1243267,
+      "sha256": "8e0b21e9154e78e448e7bca592c4c5b8d03ca2c9cb3ce399ad16af838f78f9d8",
+      "fnv1a32": "ab1329db",
+      "kind": "sound_signature_unparsed"
+    },
+    {
+      "index": 94,
+      "name": "зБАБА_А",
+      "name_hex": "a7818081805f80",
+      "size": 21436,
+      "offset": 1275723,
+      "sha256": "c1d5c16e0e68b9761bbd16daff2dd2017b10c68466691f514a6ce27a0f1513d2",
+      "fnv1a32": "7a4676fe",
+      "kind": "sound_signature_unparsed"
+    },
+    {
+      "index": 95,
+      "name": "зБАБА_У",
+      "name_hex": "a7818081805f93",
+      "size": 21480,
+      "offset": 1297159,
+      "sha256": "00a8c66257b83114fd37768c303e40571403bd070610e84e99c55b8c2afe4553",
+      "fnv1a32": "597432f7",
+      "kind": "sound_signature_unparsed"
+    },
+    {
+      "index": 96,
+      "name": "ЧЕЛЗ_УБИТ",
+      "name_hex": "97858b875f93818892",
+      "size": 16366,
+      "offset": 1318639,
+      "sha256": "8c9b5c535c9dd6df135aebb32b5858b3b79e4aaf3006af290fae5e7dc818aaf2",
+      "fnv1a32": "23de871a",
+      "kind": "sound_signature_unparsed"
+    },
+    {
+      "index": 97,
+      "name": "зРУЖЬЕ_ВЫСТРЕЛ",
+      "name_hex": "a79093869c855f829b919290858b",
+      "size": 10603,
+      "offset": 1335005,
+      "sha256": "cd7fa3defebe0d4a39b180777d3301bb0dac9d18d8249f3887ab64d81048d88e",
+      "fnv1a32": "d00d8260",
+      "kind": "sound_signature_unparsed"
+    },
+    {
+      "index": 98,
+      "name": "зЛАЗЕР_ВЫСТРЕЛ",
+      "name_hex": "a78b808785905f829b919290858b",
+      "size": 17354,
+      "offset": 1345608,
+      "sha256": "e8c8d54c419d6c72204f6e53e0ee3fe5c174312828c0f09002646717aeaa47b7",
+      "fnv1a32": "9d847831",
+      "kind": "sound_signature_unparsed"
+    },
+    {
+      "index": 99,
+      "name": "зВЗЯТЬ_КЛЮЧ",
+      "name_hex": "a782879f929c5f8a8b9e97",
+      "size": 39484,
+      "offset": 1362962,
+      "sha256": "60b5feaedf3a383e89861f4e0e492b654d57731b02aa52fc2e049d7b959e06db",
+      "fnv1a32": "4c573bc3",
+      "kind": "sound_signature_unparsed"
+    },
+    {
+      "index": 100,
+      "name": "зВЗЯТЬ_ПУЛЮ",
+      "name_hex": "a782879f929c5f8f938b9e",
+      "size": 32706,
+      "offset": 1402446,
+      "sha256": "c101a438c0477071ec8c11ae0b3329a1cbecea9b89966e9a1dac1ac9925590bb",
+      "fnv1a32": "babb1a49",
+      "kind": "sound_signature_unparsed"
+    },
+    {
+      "index": 101,
+      "name": "зВЗЯТЬ_ЖИЗНЬ",
+      "name_hex": "a782879f929c5f8688878d9c",
+      "size": 28836,
+      "offset": 1435152,
+      "sha256": "145dedda15621bcfabd8d76b37415374a2657972722a9520711ce34a9b03977b",
+      "fnv1a32": "0f9a56fc",
+      "kind": "sound_signature_unparsed"
+    },
+    {
+      "index": 102,
+      "name": "зВЗЯТЬ_МУХ",
+      "name_hex": "a782879f929c5f8c9395",
+      "size": 12948,
+      "offset": 1463988,
+      "sha256": "890d7a5bbb0f1c08f1620740eb2037137522b0d85023c71bd403065b3f6b29af",
+      "fnv1a32": "97627cd3",
+      "kind": "sound_signature_unparsed"
+    },
+    {
+      "index": 103,
+      "name": "зВЗЯТЬ_РУЖЬЕ",
+      "name_hex": "a782879f929c5f9093869c85",
+      "size": 33990,
+      "offset": 1476936,
+      "sha256": "6319ca2e8644f149797bd291715cbdef5a0a0b4a498c998347937b0f584e80c7",
+      "fnv1a32": "afabe31a",
+      "kind": "sound_signature_unparsed"
+    },
+    {
+      "index": 104,
+      "name": "зВЗЯТЬ_КАРТУ",
+      "name_hex": "a782879f929c5f8a80909293",
+      "size": 31004,
+      "offset": 1510926,
+      "sha256": "5ce488de5365880a87567eff81162fa984e9fe2f20e8535bea7cb5af3d962f6e",
+      "fnv1a32": "84d00ec3",
+      "kind": "sound_signature_unparsed"
+    },
+    {
+      "index": 105,
+      "name": "зРАЗРЫВ_ПУЛИ",
+      "name_hex": "a7908087909b825f8f938b88",
+      "size": 8172,
+      "offset": 1541930,
+      "sha256": "5e2db6fe8ac1b8fff624a685a2460086bedb11dcdb77df10038e246883309293",
+      "fnv1a32": "a3b5fc06",
+      "kind": "sound_signature_unparsed"
+    },
+    {
+      "index": 106,
+      "name": "зДВЕРЬД",
+      "name_hex": "a7848285909c84",
+      "size": 46298,
+      "offset": 1550102,
+      "sha256": "7925777226724ddab6ff2ea9bd889b9f445bfb3d6c2817ac68754b490cf18331",
+      "fnv1a32": "4be2e0c0",
+      "kind": "sound_signature_unparsed"
+    },
+    {
+      "index": 107,
+      "name": "зДВЕРЬК",
+      "name_hex": "a7848285909c8a",
+      "size": 23836,
+      "offset": 1596400,
+      "sha256": "b8c14e6b3bdafd26c7b971957fda4b085eccb886c2f2bbf2a84069704e68a63f",
+      "fnv1a32": "7625f41d",
+      "kind": "sound_signature_unparsed"
+    },
+    {
+      "index": 108,
+      "name": "ЗАСТАВКА_СПР",
+      "name_hex": "8780919280828a805f918f90",
+      "size": 64018,
+      "offset": 1620236,
+      "sha256": "c4326a615d1a433d8c4f2b3b45600481f7b69aae9cd18bbaf9596426ffab43f5",
+      "fnv1a32": "11673e51",
+      "kind": "indexed_image18",
+      "image": {
+        "width": 320,
+        "height": 200,
+        "flags": 0
+      }
+    },
+    {
+      "index": 109,
+      "name": "ЗАСТАВКА_ПАЛ",
+      "name_hex": "8780919280828a805f8f808b",
+      "size": 768,
+      "offset": 1684254,
+      "sha256": "72794e02fb1a02b850ceb8a4d8d62563cbdc44d7b0d5c0ab74fac11ddef7d35b",
+      "fnv1a32": "b66b5c5e",
+      "kind": "vga_palette"
+    },
+    {
+      "index": 110,
+      "name": "ЗАСТАВКА_ЗВУК",
+      "name_hex": "8780919280828a805f8782938a",
+      "size": 474397,
+      "offset": 1685022,
+      "sha256": "7c1c134c132749baea11c56503793230b4aad19f7a1a9988bb0145170a20ecc7",
+      "fnv1a32": "fb0c8fdd",
+      "kind": "sound_signature_unparsed"
+    },
+    {
+      "index": 111,
+      "name": "ВЫХОД",
+      "name_hex": "829b958e84",
+      "size": 1424,
+      "offset": 2159419,
+      "sha256": "0f80cd5666dc3d79f8d7ca546d45af4d09d8bcc25e356b1eac19f586bae942e2",
+      "fnv1a32": "cdfacfde",
+      "kind": "indexed_image18",
+      "image": {
+        "width": 38,
+        "height": 37,
+        "flags": 0
+      }
+    },
+    {
+      "index": 112,
+      "name": "КАРТА",
+      "name_hex": "8a80909280",
+      "size": 5742,
+      "offset": 2160843,
+      "sha256": "89fb72c0a00e42097f0e36ad5c283e464bf32257249400f002c0266a6e4cea76",
+      "fnv1a32": "69afdc6f",
+      "kind": "indexed_image18",
+      "image": {
+        "width": 106,
+        "height": 54,
+        "flags": 0
+      }
+    },
+    {
+      "index": 113,
+      "name": "БАБА_В",
+      "name_hex": "818081805f82",
+      "size": 1126,
+      "offset": 2166585,
+      "sha256": "a2297f78a5288ccf224a27462318d91dad971f0cff0941a87d82a51e3c351e33",
+      "fnv1a32": "d8914ccc",
+      "kind": "unparsed"
+    },
+    {
+      "index": 114,
+      "name": "БАБА_А",
+      "name_hex": "818081805f80",
+      "size": 21694,
+      "offset": 2167711,
+      "sha256": "ee363496357876636c8e457cefc45aef0f591caa315d0249e962a101b30452d0",
+      "fnv1a32": "6675a21a",
+      "kind": "unparsed"
+    },
+    {
+      "index": 115,
+      "name": "БАБА_И",
+      "name_hex": "818081805f88",
+      "size": 21821,
+      "offset": 2189405,
+      "sha256": "0d2513f25bb811387cac3e2be1b4c40b8b57aef91332a6d7bdd7dc7ca0648573",
+      "fnv1a32": "fdb7530b",
+      "kind": "unparsed"
+    },
+    {
+      "index": 116,
+      "name": "БАБА_У",
+      "name_hex": "818081805f93",
+      "size": 38018,
+      "offset": 2211226,
+      "sha256": "fc0bc01fb8ecd4b290703167f396221e067f8db3e12411dfb7bfedaaf176cf20",
+      "fnv1a32": "28e35461",
+      "kind": "unparsed"
+    },
+    {
+      "index": 117,
+      "name": "МЫШЬ_Л",
+      "name_hex": "8c9b989c5f8b",
+      "size": 24530,
+      "offset": 2249244,
+      "sha256": "1cdc5db574cf009a8091e36db10d18edfb1abe96d976251bb0b627270a635eb0",
+      "fnv1a32": "cbf858be",
+      "kind": "unparsed"
+    },
+    {
+      "index": 118,
+      "name": "МЫШЬ_А",
+      "name_hex": "8c9b989c5f80",
+      "size": 31684,
+      "offset": 2273774,
+      "sha256": "3b449299775cf589df96cc891dfaa309200ce32d33f048a79620bc1c690048e9",
+      "fnv1a32": "24d63123",
+      "kind": "unparsed"
+    },
+    {
+      "index": 119,
+      "name": "МЫШЬ_У",
+      "name_hex": "8c9b989c5f93",
+      "size": 30723,
+      "offset": 2305458,
+      "sha256": "f96c1e42c52f40698942587814972ca615a44e9cc1074f7b144138b173355533",
+      "fnv1a32": "53778000",
+      "kind": "unparsed"
+    },
+    {
+      "index": 120,
+      "name": "БОЯР_И",
+      "name_hex": "818e9f905f88",
+      "size": 27023,
+      "offset": 2336181,
+      "sha256": "c9ddfafc21f388d0b3a5f30a9e9187d0a293b99e669c4854a438ab24a8310f1b",
+      "fnv1a32": "9a3e9f5b",
+      "kind": "unparsed"
+    },
+    {
+      "index": 121,
+      "name": "БОЯР_А",
+      "name_hex": "818e9f905f80",
+      "size": 41733,
+      "offset": 2363204,
+      "sha256": "890fd2561ee56801637bde9226ff382b8349ae318686e6da5775b2d537808760",
+      "fnv1a32": "0acc0e2c",
+      "kind": "unparsed"
+    },
+    {
+      "index": 122,
+      "name": "БОЯР_А2",
+      "name_hex": "818e9f905f8032",
+      "size": 33636,
+      "offset": 2404937,
+      "sha256": "be3c93fe3f4cfbcbcb1ecf1360cfa24ab684dd4dafea0bd3ee962ea42c566800",
+      "fnv1a32": "1dc15d68",
+      "kind": "unparsed"
+    },
+    {
+      "index": 123,
+      "name": "БОЯР_У",
+      "name_hex": "818e9f905f93",
+      "size": 42614,
+      "offset": 2438573,
+      "sha256": "e4bf04f4833156e990f674b75761d4b83786e6ed2fa730cd004734c95cd4d234",
+      "fnv1a32": "11cfaa63",
+      "kind": "unparsed"
+    },
+    {
+      "index": 124,
+      "name": "БОЯР_В",
+      "name_hex": "818e9f905f82",
+      "size": 8947,
+      "offset": 2481187,
+      "sha256": "ecb2ecb875ed005c74ca85fd8dbbb98d9bcd7dbd98a9cb7a5f4309e33a50ef99",
+      "fnv1a32": "41afa213",
+      "kind": "unparsed"
+    },
+    {
+      "index": 125,
+      "name": "ТОПОР_И",
+      "name_hex": "928e8f8e905f88",
+      "size": 17133,
+      "offset": 2490134,
+      "sha256": "1e367b9c2d381592ea25b17bee85a9fc0ba4dfe99631a334ed6677b785a1c166",
+      "fnv1a32": "f1ec69d3",
+      "kind": "unparsed"
+    },
+    {
+      "index": 126,
+      "name": "ТОПОР_А",
+      "name_hex": "928e8f8e905f80",
+      "size": 22072,
+      "offset": 2507267,
+      "sha256": "d43734f7dc65b71473e7334f9d74e02b298cdbf74e3d657f4e248ce714469505",
+      "fnv1a32": "97ca21b7",
+      "kind": "unparsed"
+    },
+    {
+      "index": 127,
+      "name": "ТОПОР_У",
+      "name_hex": "928e8f8e905f93",
+      "size": 28859,
+      "offset": 2529339,
+      "sha256": "ecb5170214130cd809c25dc50a841cd0b7aea9e2f8ec45aa9b0a0c56f00f10ac",
+      "fnv1a32": "6db440fb",
+      "kind": "unparsed"
+    },
+    {
+      "index": 128,
+      "name": "MIMO",
+      "name_hex": "4d494d4f",
+      "size": 3778,
+      "offset": 2558198,
+      "sha256": "9fc0760c44f2fff8ca9db0b6372a956256cd0db67a25375cd660c84277f1d31e",
+      "fnv1a32": "a55e1354",
+      "kind": "unparsed"
+    },
+    {
+      "index": 129,
+      "name": "PULKA1",
+      "name_hex": "50554c4b4131",
+      "size": 45,
+      "offset": 2561976,
+      "sha256": "67376ff2d51dbe18403ef1103975b6beed92822da7681d4a82b2af3ae81c6e0f",
+      "fnv1a32": "98649e66",
+      "kind": "unparsed"
+    },
+    {
+      "index": 130,
+      "name": "PULKA2",
+      "name_hex": "50554c4b4132",
+      "size": 38,
+      "offset": 2562021,
+      "sha256": "c937fb438c7718e60342968b2ce951a54e181cc8822d82920f9e29f496c44c95",
+      "fnv1a32": "c005aa9f",
+      "kind": "unparsed"
+    },
+    {
+      "index": 131,
+      "name": "КРЕСТ1",
+      "name_hex": "8a9085919231",
+      "size": 20393,
+      "offset": 2562059,
+      "sha256": "8199d36945a5b11096c7787f05c0b764307649d9bad9c1d4a5ae0328d123745d",
+      "fnv1a32": "820440c0",
+      "kind": "indexed_image18",
+      "image": {
+        "width": 125,
+        "height": 163,
+        "flags": 0
+      }
+    },
+    {
+      "index": 132,
+      "name": "КРЕСТ2",
+      "name_hex": "8a9085919232",
+      "size": 14496,
+      "offset": 2582452,
+      "sha256": "c87ad602e36c666c85a7035054612e570f84918644b9e31b7031f2540878e06e",
+      "fnv1a32": "5f3883cb",
+      "kind": "indexed_image18",
+      "image": {
+        "width": 114,
+        "height": 127,
+        "flags": 0
+      }
+    },
+    {
+      "index": 133,
+      "name": "ЧЕРЕП",
+      "name_hex": "978590858f",
+      "size": 2125,
+      "offset": 2596948,
+      "sha256": "0fa44f035f2b372d5e8b32c06baf777cd2a456680fe0fe7eec11f4ebc88e340d",
+      "fnv1a32": "5269677f",
+      "kind": "indexed_image18",
+      "image": {
+        "width": 49,
+        "height": 43,
+        "flags": 0
+      }
+    },
+    {
+      "index": 134,
+      "name": "sРУЖЬЕ",
+      "name_hex": "739093869c85",
+      "size": 17238,
+      "offset": 2599073,
+      "sha256": "f163333a4d1691a3c618c6ea65cc09915d1f9221a392dee799583ec77d8cd5be",
+      "fnv1a32": "e1ba767c",
+      "kind": "indexed_image18",
+      "image": {
+        "width": 246,
+        "height": 70,
+        "flags": 0
+      }
+    },
+    {
+      "index": 135,
+      "name": "sЛАЗЕР",
+      "name_hex": "738b80878590",
+      "size": 2228,
+      "offset": 2616311,
+      "sha256": "e888d6c0bb77a95660edbf1d2386a8fd4aaf7dd082a62c3391cc0b14509b0133",
+      "fnv1a32": "c758c152",
+      "kind": "indexed_image18",
+      "image": {
+        "width": 65,
+        "height": 34,
+        "flags": 0
+      }
+    },
+    {
+      "index": 136,
+      "name": "fРУЖЬЕ",
+      "name_hex": "669093869c85",
+      "size": 28020,
+      "offset": 2618539,
+      "sha256": "d45d87f91ae5465acfd21c8f89c8c544e67d3ad9f96ca0f05a6df0c2be62ebaf",
+      "fnv1a32": "144841ed",
+      "kind": "unparsed"
+    },
+    {
+      "index": 137,
+      "name": "fЛАЗЕР",
+      "name_hex": "668b80878590",
+      "size": 4953,
+      "offset": 2646559,
+      "sha256": "e0fb144dc8d3a9a09636b9637dc3a8b8f0dba01f89fb22eb55a16c5258fd4219",
+      "fnv1a32": "4af1b983",
+      "kind": "unparsed"
+    },
+    {
+      "index": 138,
+      "name": "ПАТРОНЫ",
+      "name_hex": "8f8092908e8d9b",
+      "size": 6978,
+      "offset": 2651512,
+      "sha256": "53c9f407329074b252faaa37f5c6518c0d538d9a03cb77eb7f7ac0f9fff2c193",
+      "fnv1a32": "50c16822",
+      "kind": "indexed_image18",
+      "image": {
+        "width": 120,
+        "height": 58,
+        "flags": 0
+      }
+    },
+    {
+      "index": 139,
+      "name": "ЦЕПЬ",
+      "name_hex": "96858f9c",
+      "size": 698,
+      "offset": 2658490,
+      "sha256": "bac960c6b65766e08dd71a9af9da875ebb2fca92fcdd918f8b5a11a673cddc1f",
+      "fnv1a32": "87aafee9",
+      "kind": "indexed_image18",
+      "image": {
+        "width": 10,
+        "height": 68,
+        "flags": 0
+      }
+    },
+    {
+      "index": 140,
+      "name": "ГОРШОК",
+      "name_hex": "838e90988e8a",
+      "size": 3440,
+      "offset": 2659188,
+      "sha256": "33fbb61d3ae5b477d907659630f4efb3aa36b118ae71048ef893c31b7ac33229",
+      "fnv1a32": "662af04a",
+      "kind": "indexed_image18",
+      "image": {
+        "width": 58,
+        "height": 59,
+        "flags": 0
+      }
+    },
+    {
+      "index": 141,
+      "name": "КОВШ",
+      "name_hex": "8a8e8298",
+      "size": 8450,
+      "offset": 2662628,
+      "sha256": "0c6816f3e39bc1ee5f72edeabdedeaa3060bf0fa00ffd5f7daa10233572177d4",
+      "fnv1a32": "19de3f31",
+      "kind": "indexed_image18",
+      "image": {
+        "width": 124,
+        "height": 68,
+        "flags": 0
+      }
+    },
+    {
+      "index": 142,
+      "name": "КРУШКА",
+      "name_hex": "8a9093988a80",
+      "size": 2168,
+      "offset": 2671078,
+      "sha256": "1e76a6b906306c0782ea80e2d15ddc79a98d9d2c09fb3d72388cd4c69ed043bc",
+      "fnv1a32": "9ab4617a",
+      "kind": "indexed_image18",
+      "image": {
+        "width": 50,
+        "height": 43,
+        "flags": 0
+      }
+    },
+    {
+      "index": 143,
+      "name": "МУХОМОР",
+      "name_hex": "8c93958e8c8e90",
+      "size": 5043,
+      "offset": 2673246,
+      "sha256": "7ab9c34d9329ba121f2862ffa2f232c5d155a0bb32945001aef6863df8dc821f",
+      "fnv1a32": "1093ef2d",
+      "kind": "indexed_image18",
+      "image": {
+        "width": 75,
+        "height": 67,
+        "flags": 0
+      }
+    },
+    {
+      "index": 144,
+      "name": "ПУЛЯ1С",
+      "name_hex": "8f938b9f3191",
+      "size": 118,
+      "offset": 2678289,
+      "sha256": "ea3c6690b2b73e8042f2ad8f28f9fdf886b95a31d447924fea81228d8f87bb1a",
+      "fnv1a32": "5b37c587",
+      "kind": "indexed_image18",
+      "image": {
+        "width": 10,
+        "height": 10,
+        "flags": 0
+      }
+    },
+    {
+      "index": 145,
+      "name": "POPAL",
+      "name_hex": "504f50414c",
+      "size": 39461,
+      "offset": 2678407,
+      "sha256": "216db7a43aa9aa081435714712eecd919883ae97dbe4cced6fe24d3b2113e8bb",
+      "fnv1a32": "d6280bf9",
+      "kind": "unparsed"
+    }
+  ],
+  "levels": {
+    "LEVEL1": {
+      "settings": {
+        "Level Width": 64,
+        "Level Length": 64,
+        "Level Height": 1,
+        "Cell Side": 480,
+        "Cell Height": 960,
+        "Floor Color": 10,
+        "Ceiling Color": 143,
+        "Min Dis": 238,
+        "Step Ver": 4
+      },
+      "maps": {
+        "MMap": {
+          "width": 64,
+          "height": 64,
+          "sha256": "6833a2c0b8dbe4c95c2584e68f365832d012c549e01b5a06855f8b616cb6aa5a"
+        },
+        "TMap": {
+          "width": 64,
+          "height": 64,
+          "sha256": "d1cdc5ea570124f73473e114f2f44f78654fff43f1f97d4a2e88830884eaa1a9"
+        },
+        "FCMap": {
+          "width": 64,
+          "height": 64,
+          "sha256": "26c82ffb7f0b75827e1674ef9dae4e6ace54c47f1b0d413eb73298fff9c6d8b2"
+        }
+      },
+      "object_definitions": 115,
+      "native_type_counts": {
+        "0": 3,
+        "1": 1,
+        "2": 3,
+        "3": 9,
+        "4": 2,
+        "6": 5,
+        "7": 18,
+        "8": 3,
+        "9": 64,
+        "10": 2,
+        "12": 5
+      }
+    },
+    "LEVEL2": {
+      "settings": {
+        "Level Width": 64,
+        "Level Length": 64,
+        "Level Height": 1,
+        "Cell Side": 480,
+        "Cell Height": 960,
+        "Floor Color": 10,
+        "Ceiling Color": 143,
+        "Min Dis": 238,
+        "Step Ver": 4
+      },
+      "maps": {
+        "MMap": {
+          "width": 64,
+          "height": 64,
+          "sha256": "8ff45778e59688cbf18a91c25eac9b6d07f8fe5ff140f4bf9ee891d964aca3b8"
+        },
+        "TMap": {
+          "width": 64,
+          "height": 64,
+          "sha256": "fd133e72ca1ec812ed9e2086feaa4bd6a82e6c7865935907f1c65a2338b6b74b"
+        },
+        "FCMap": {
+          "width": 64,
+          "height": 64,
+          "sha256": "541374fc405e1651ff28ee1e5e6f30784bfa889645ad9abcbac117077a77dc76"
+        }
+      },
+      "object_definitions": 117,
+      "native_type_counts": {
+        "0": 3,
+        "1": 1,
+        "2": 3,
+        "3": 9,
+        "4": 2,
+        "6": 5,
+        "7": 18,
+        "8": 4,
+        "9": 64,
+        "10": 2,
+        "12": 5,
+        "13": 1
+      }
+    },
+    "LEVEL3": {
+      "settings": {
+        "Level Width": 64,
+        "Level Length": 64,
+        "Level Height": 1,
+        "Cell Side": 480,
+        "Cell Height": 960,
+        "Floor Color": 10,
+        "Ceiling Color": 143,
+        "Min Dis": 238,
+        "Step Ver": 4
+      },
+      "maps": {
+        "MMap": {
+          "width": 64,
+          "height": 64,
+          "sha256": "db37d1e08cea59a0b303b6b1a56711a8f29332fff89a988f6205e8fa938ddd63"
+        },
+        "TMap": {
+          "width": 64,
+          "height": 64,
+          "sha256": "5a8821489939f2f241cfab76ae84ee2a7258467ecc2600b2bf4d713047d728c5"
+        },
+        "FCMap": {
+          "width": 64,
+          "height": 64,
+          "sha256": "b2984ed7034402b68069243359a4d8e7c8cea38e61845da3ef3122debb57ba52"
+        }
+      },
+      "object_definitions": 158,
+      "native_type_counts": {
+        "0": 3,
+        "1": 1,
+        "2": 3,
+        "3": 9,
+        "4": 2,
+        "6": 5,
+        "7": 18,
+        "8": 4,
+        "9": 105,
+        "10": 2,
+        "12": 5,
+        "13": 1
+      }
+    }
+  },
+  "c_reader_payload_checks": 146
+}

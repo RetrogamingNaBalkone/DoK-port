@@ -1,0 +1,8 @@
+{
+  "C_Cpp.default.compilerPath": "${env:LOCALAPPDATA}/Programs/Zig/0.13.0/zig.exe",
+  "C_Cpp.default.compilerArgs": ["cc"],
+  "C_Cpp.default.cStandard": "c11",
+  "C_Cpp.default.intelliSenseMode": "windows-clang-x64",
+  "C_Cpp.default.includePath": ["${workspaceFolder}/include"],
+  "C_Cpp.files.exclude": {"**/decompiled/**": true, "**/build/**": true, "**/originals/**": true}
+}

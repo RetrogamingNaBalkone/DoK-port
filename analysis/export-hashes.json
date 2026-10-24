@@ -1,0 +1,20 @@
+{
+  "decompiled/ru/blocks.tsv": "db48aeeb414786c59193e3074859f219c0c23d41b6aa2fe8b54633026ee8b46f",
+  "decompiled/ru/decompiled.c": "5f6a57e2514b419e46516d0904d01a02b06710129807cf069c59efd59baccf2a",
+  "decompiled/ru/functions.tsv": "312f1104f93dd53c231dd97f8b27f011da59c2e21d08faf6f5405a862b984bb7",
+  "decompiled/ru/ghidra.log": "52e316e7a862a58a2b7155649338f735d74d3963c554a9006914ea72a23a6e79",
+  "decompiled/ru/listing.asm": "7c6a8ad87cddb305f500afaa3f8af5420f8ababdd4bf67d6da966b5f7b8f7d57",
+  "decompiled/ru/references.tsv": "785994b04ab23a79e5f56c0eed1d14142814c449f04794cbef811164fd66ceb0",
+  "decompiled/ru/summary.txt": "d04766985a54a7f1dc5348214eda01b8f10892b2b5a8f34128759bf1663560ee",
+  "decompiled/ru/unrecovered.tsv": "bfa2a18bfeac7dd30a2a66aa581229c291299b5b3e1c8885cde8ec00806189f4",
+  "decompiled/ru/with_types.c": "7c99c86f0097b1b9a16699670c06255951d912741f44d80bb14e4ab476bc8991",
+  "decompiled/en/blocks.tsv": "2c023795a9ba4ec530d26cc8387fa4e7482b0fc9def56f3b14b98bdd04647919",
+  "decompiled/en/decompiled.c": "0834bb88dbabfdf44f9d02f3c7154139173e79ad77180bf32d41f1b4acf8cbf9",
+  "decompiled/en/functions.tsv": "00a89a6578be99b54c2344be71983437e20784457e8d4d1ca35d9eca5cca7bff",
+  "decompiled/en/ghidra.log": "7e9e4571aa408cc2704a2c71271d82be19fc195d1265fda725336500271e4e38",
+  "decompiled/en/listing.asm": "33300381889b1546c8948d61e00ad6e27025bfc53daf249242470bcb71dceb36",
+  "decompiled/en/references.tsv": "ce48a34f83eda9bb1aab05110cebe21676bdc55c0b09c8e2e7e558e40b4065e5",
+  "decompiled/en/summary.txt": "f37d3df3888aa18fb8a35b82bd76a94615a588e9dcaf61563ce10f6ecfc946d1",
+  "decompiled/en/unrecovered.tsv": "c60a3c131b9d256ea9405eee8275895ac6a31f89d9db9b44896bcfe4c7a75602",
+  "decompiled/en/with_types.c": "32cc0177adbdf91888e9035fac8aa8204e3a8b163b5ab6360bb9d1c37edff914"
+}

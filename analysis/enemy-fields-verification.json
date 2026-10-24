@@ -1,0 +1,14 @@
+{
+  "ru": {
+    "exe_sha256": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+    "res_sha256": "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816",
+    "exported_functions": 11,
+    "asm_sha256": "f5bf7fd02d5edf0c8cc2bc60d445a183dab8d5f3cad893f9f4ceec7440ad3ce1"
+  },
+  "en": {
+    "exe_sha256": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b",
+    "res_sha256": "865da340621fa6f90548a84e9ae9bf0a85071befb32a40ca1d359e488f74d458",
+    "exported_functions": 7,
+    "asm_sha256": "6909b9bd4697b5ea94d0f53d371e92956f57beeb769f7cc0022d2e603f4dc10e"
+  }
+}

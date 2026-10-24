@@ -1,0 +1,140 @@
+[
+  {
+    "resource_index": 86,
+    "name": "зМЫШЬ_И",
+    "raw_identical": true,
+    "pcm_identical": true
+  },
+  {
+    "resource_index": 87,
+    "name": "зМЫШЬ_А",
+    "raw_identical": true,
+    "pcm_identical": true
+  },
+  {
+    "resource_index": 88,
+    "name": "зМЫШЬ_У",
+    "raw_identical": true,
+    "pcm_identical": true
+  },
+  {
+    "resource_index": 89,
+    "name": "зБОЯР_И",
+    "raw_identical": true,
+    "pcm_identical": true
+  },
+  {
+    "resource_index": 90,
+    "name": "зБОЯР_А",
+    "raw_identical": true,
+    "pcm_identical": true
+  },
+  {
+    "resource_index": 91,
+    "name": "зБОЯР_У",
+    "raw_identical": true,
+    "pcm_identical": true
+  },
+  {
+    "resource_index": 92,
+    "name": "зРУЖЬЕ",
+    "raw_identical": true,
+    "pcm_identical": true
+  },
+  {
+    "resource_index": 93,
+    "name": "зБАБА_И",
+    "raw_identical": true,
+    "pcm_identical": true
+  },
+  {
+    "resource_index": 94,
+    "name": "зБАБА_А",
+    "raw_identical": true,
+    "pcm_identical": true
+  },
+  {
+    "resource_index": 95,
+    "name": "зБАБА_У",
+    "raw_identical": true,
+    "pcm_identical": true
+  },
+  {
+    "resource_index": 96,
+    "name": "ЧЕЛЗ_УБИТ",
+    "raw_identical": true,
+    "pcm_identical": true
+  },
+  {
+    "resource_index": 97,
+    "name": "зРУЖЬЕ_ВЫСТРЕЛ",
+    "raw_identical": true,
+    "pcm_identical": true
+  },
+  {
+    "resource_index": 98,
+    "name": "зЛАЗЕР_ВЫСТРЕЛ",
+    "raw_identical": true,
+    "pcm_identical": true
+  },
+  {
+    "resource_index": 99,
+    "name": "зВЗЯТЬ_КЛЮЧ",
+    "raw_identical": true,
+    "pcm_identical": true
+  },
+  {
+    "resource_index": 100,
+    "name": "зВЗЯТЬ_ПУЛЮ",
+    "raw_identical": true,
+    "pcm_identical": true
+  },
+  {
+    "resource_index": 101,
+    "name": "зВЗЯТЬ_ЖИЗНЬ",
+    "raw_identical": true,
+    "pcm_identical": true
+  },
+  {
+    "resource_index": 102,
+    "name": "зВЗЯТЬ_МУХ",
+    "raw_identical": true,
+    "pcm_identical": true
+  },
+  {
+    "resource_index": 103,
+    "name": "зВЗЯТЬ_РУЖЬЕ",
+    "raw_identical": true,
+    "pcm_identical": true
+  },
+  {
+    "resource_index": 104,
+    "name": "зВЗЯТЬ_КАРТУ",
+    "raw_identical": true,
+    "pcm_identical": true
+  },
+  {
+    "resource_index": 105,
+    "name": "зРАЗРЫВ_ПУЛИ",
+    "raw_identical": true,
+    "pcm_identical": true
+  },
+  {
+    "resource_index": 106,
+    "name": "зДВЕРЬД",
+    "raw_identical": true,
+    "pcm_identical": true
+  },
+  {
+    "resource_index": 107,
+    "name": "зДВЕРЬК",
+    "raw_identical": true,
+    "pcm_identical": true
+  },
+  {
+    "resource_index": 110,
+    "name": "ЗАСТАВКА_ЗВУК",
+    "raw_identical": true,
+    "pcm_identical": true
+  }
+]

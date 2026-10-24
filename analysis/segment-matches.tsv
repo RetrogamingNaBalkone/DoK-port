@@ -1,0 +1,6 @@
+ru_segment	en_segment	kind	length	evidence
+46	22	data	230	unique_fixup_masked_byte_match
+47	23	data	926	unique_fixup_masked_byte_match
+48	24	data	1	unique_fixup_masked_byte_match
+49	25	data	3090	unique_fixup_masked_byte_match
+50	26	data	33536	unique_fixup_masked_byte_match

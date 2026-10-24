@@ -1,0 +1,40 @@
+{
+  "stage": 6,
+  "levels": 6,
+  "objects": 780,
+  "known_bytes": 69623,
+  "placed_actor_cells": 450,
+  "originals": {
+    "ru": {
+      "exe": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+      "res": "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816"
+    },
+    "en": {
+      "exe": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b",
+      "res": "865da340621fa6f90548a84e9ae9bf0a85071befb32a40ca1d359e488f74d458"
+    }
+  },
+  "ghidra_roles": {
+    "ru": 16,
+    "en": 10
+  },
+  "cross_target_execution": "not performed",
+  "artifacts": {
+    "dok-world.exe": {
+      "size": 168960,
+      "sha256": "1e43be212aeaa46a72de4ef57e2f4f308c6439490e99c95e3fb09b036a83bc76"
+    },
+    "dok-world-tests.exe": {
+      "size": 173568,
+      "sha256": "32170e4371a6b4c5298dc8464d84fe93635d62db4cb14f53c16655eb9457375d"
+    },
+    "dok-world-linux": {
+      "size": 436048,
+      "sha256": "e0caaa9eb13652c577e1f022ab39b05562db01f4600c05685b3128bb70274b6f"
+    },
+    "world-arm7tdmi.o": {
+      "size": 40880,
+      "sha256": "3943609d92dc1c1f5a0c3057a810a2262ef5167c0a81bda3ca9ba6bbdd68d8f7"
+    }
+  }
+}

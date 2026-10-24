@@ -1,0 +1,878 @@
+[
+  {
+    "name": "README",
+    "ru_index": 0,
+    "en_index": 0,
+    "identical": false
+  },
+  {
+    "name": "BINTRO1",
+    "ru_index": 1,
+    "en_index": 1,
+    "identical": false
+  },
+  {
+    "name": "EINTRO1",
+    "ru_index": 2,
+    "en_index": 2,
+    "identical": false
+  },
+  {
+    "name": "BSPR1",
+    "ru_index": 3,
+    "en_index": 3,
+    "identical": true
+  },
+  {
+    "name": "ESPR1",
+    "ru_index": 4,
+    "en_index": 4,
+    "identical": true
+  },
+  {
+    "name": "BINTRO2",
+    "ru_index": 5,
+    "en_index": 5,
+    "identical": false
+  },
+  {
+    "name": "EINTRO2",
+    "ru_index": 6,
+    "en_index": 6,
+    "identical": false
+  },
+  {
+    "name": "BSPR2",
+    "ru_index": 7,
+    "en_index": 7,
+    "identical": true
+  },
+  {
+    "name": "ESPR2",
+    "ru_index": 8,
+    "en_index": 8,
+    "identical": true
+  },
+  {
+    "name": "BINTRO3",
+    "ru_index": 9,
+    "en_index": 9,
+    "identical": false
+  },
+  {
+    "name": "EINTRO3",
+    "ru_index": 10,
+    "en_index": 10,
+    "identical": false
+  },
+  {
+    "name": "BSPR3",
+    "ru_index": 11,
+    "en_index": 11,
+    "identical": true
+  },
+  {
+    "name": "ESPR3",
+    "ru_index": 12,
+    "en_index": 12,
+    "identical": true
+  },
+  {
+    "name": "ENDTXT",
+    "ru_index": 13,
+    "en_index": 13,
+    "identical": false
+  },
+  {
+    "name": "INTRO4BSPR",
+    "ru_index": 14,
+    "en_index": 14,
+    "identical": true
+  },
+  {
+    "name": "FON",
+    "ru_index": 15,
+    "en_index": 15,
+    "identical": true
+  },
+  {
+    "name": "FONT8",
+    "ru_index": 16,
+    "en_index": 16,
+    "identical": true
+  },
+  {
+    "name": "FONT16",
+    "ru_index": 17,
+    "en_index": 17,
+    "identical": true
+  },
+  {
+    "name": "LEVEL1",
+    "ru_index": 18,
+    "en_index": 18,
+    "identical": false
+  },
+  {
+    "name": "LEVEL2",
+    "ru_index": 19,
+    "en_index": 19,
+    "identical": false
+  },
+  {
+    "name": "LEVEL3",
+    "ru_index": 20,
+    "en_index": 20,
+    "identical": false
+  },
+  {
+    "name": "МЕНЮ_ПАЛ",
+    "ru_index": 21,
+    "en_index": 21,
+    "identical": true
+  },
+  {
+    "name": "GAMEP1",
+    "ru_index": 22,
+    "en_index": 22,
+    "identical": true
+  },
+  {
+    "name": "LIGHT1",
+    "ru_index": 23,
+    "en_index": 23,
+    "identical": true
+  },
+  {
+    "name": "GAMEP2",
+    "ru_index": 24,
+    "en_index": 24,
+    "identical": true
+  },
+  {
+    "name": "LIGHT2",
+    "ru_index": 25,
+    "en_index": 25,
+    "identical": true
+  },
+  {
+    "name": "GAMEP3",
+    "ru_index": 26,
+    "en_index": 26,
+    "identical": true
+  },
+  {
+    "name": "LIGHT3",
+    "ru_index": 27,
+    "en_index": 27,
+    "identical": true
+  },
+  {
+    "name": "EXIT1",
+    "ru_index": 28,
+    "en_index": 28,
+    "identical": true
+  },
+  {
+    "name": "EXIT2",
+    "ru_index": 29,
+    "en_index": 29,
+    "identical": true
+  },
+  {
+    "name": "ПАНЕЛЬ",
+    "ru_index": 30,
+    "en_index": 30,
+    "identical": true
+  },
+  {
+    "name": "ПЖИЗНЬ",
+    "ru_index": 31,
+    "en_index": 31,
+    "identical": true
+  },
+  {
+    "name": "ПМАГИЯ",
+    "ru_index": 32,
+    "en_index": 32,
+    "identical": true
+  },
+  {
+    "name": "ПОРУЖИЕ1",
+    "ru_index": 33,
+    "en_index": 33,
+    "identical": true
+  },
+  {
+    "name": "ПОРУЖИЕ2",
+    "ru_index": 34,
+    "en_index": 34,
+    "identical": true
+  },
+  {
+    "name": "ПКЛЮЧЖ",
+    "ru_index": 35,
+    "en_index": 35,
+    "identical": true
+  },
+  {
+    "name": "ПКЛЮЧМ",
+    "ru_index": 36,
+    "en_index": 36,
+    "identical": true
+  },
+  {
+    "name": "ПКЛЮЧЗ",
+    "ru_index": 37,
+    "en_index": 37,
+    "identical": true
+  },
+  {
+    "name": "PANEL_DAT",
+    "ru_index": 38,
+    "en_index": 38,
+    "identical": true
+  },
+  {
+    "name": "КПОЛ2",
+    "ru_index": 39,
+    "en_index": 39,
+    "identical": true
+  },
+  {
+    "name": "КПОЛ3",
+    "ru_index": 40,
+    "en_index": 40,
+    "identical": true
+  },
+  {
+    "name": "КПОТОЛОК2",
+    "ru_index": 41,
+    "en_index": 41,
+    "identical": true
+  },
+  {
+    "name": "КПОТОЛОК3",
+    "ru_index": 42,
+    "en_index": 42,
+    "identical": true
+  },
+  {
+    "name": "ДВЕРЬ_Ж",
+    "ru_index": 43,
+    "en_index": 43,
+    "identical": true
+  },
+  {
+    "name": "ДВЕРЬ_М",
+    "ru_index": 44,
+    "en_index": 44,
+    "identical": true
+  },
+  {
+    "name": "ДВЕРЬ_З",
+    "ru_index": 45,
+    "en_index": 45,
+    "identical": true
+  },
+  {
+    "name": "ДСТЕНАК1",
+    "ru_index": 46,
+    "en_index": 46,
+    "identical": true
+  },
+  {
+    "name": "ДСТЕНАКС",
+    "ru_index": 47,
+    "en_index": 47,
+    "identical": true
+  },
+  {
+    "name": "ДДВЕРЬ_С",
+    "ru_index": 48,
+    "en_index": 48,
+    "identical": true
+  },
+  {
+    "name": "ДДВЕРЬ_Д",
+    "ru_index": 49,
+    "en_index": 49,
+    "identical": true
+  },
+  {
+    "name": "ДРЕШ1",
+    "ru_index": 50,
+    "en_index": 50,
+    "identical": true
+  },
+  {
+    "name": "ДПОТОЛОК1",
+    "ru_index": 51,
+    "en_index": 51,
+    "identical": true
+  },
+  {
+    "name": "ДПОЛ1",
+    "ru_index": 52,
+    "en_index": 52,
+    "identical": true
+  },
+  {
+    "name": "ОПОТОЛОК1",
+    "ru_index": 53,
+    "en_index": 53,
+    "identical": true
+  },
+  {
+    "name": "ОСТЕНАК1",
+    "ru_index": 54,
+    "en_index": 54,
+    "identical": true
+  },
+  {
+    "name": "ОСТЕНАКС",
+    "ru_index": 55,
+    "en_index": 55,
+    "identical": true
+  },
+  {
+    "name": "ОДВЕРЬ_Д",
+    "ru_index": 56,
+    "en_index": 56,
+    "identical": true
+  },
+  {
+    "name": "ОДВЕРЬ_С",
+    "ru_index": 57,
+    "en_index": 57,
+    "identical": true
+  },
+  {
+    "name": "ОПОЛ1",
+    "ru_index": 58,
+    "en_index": 58,
+    "identical": true
+  },
+  {
+    "name": "ОРЕШ1",
+    "ru_index": 59,
+    "en_index": 59,
+    "identical": true
+  },
+  {
+    "name": "ОДВЕРЬ_Ж",
+    "ru_index": 60,
+    "en_index": 60,
+    "identical": true
+  },
+  {
+    "name": "ОДВЕРЬ_М",
+    "ru_index": 61,
+    "en_index": 61,
+    "identical": true
+  },
+  {
+    "name": "ОДВЕРЬ_З",
+    "ru_index": 62,
+    "en_index": 62,
+    "identical": true
+  },
+  {
+    "name": "КСТЕНАК1",
+    "ru_index": 63,
+    "en_index": 63,
+    "identical": true
+  },
+  {
+    "name": "КСТЕНАК2",
+    "ru_index": 64,
+    "en_index": 64,
+    "identical": true
+  },
+  {
+    "name": "КСТЕНАК3",
+    "ru_index": 65,
+    "en_index": 65,
+    "identical": true
+  },
+  {
+    "name": "КСТЕНАКП",
+    "ru_index": 66,
+    "en_index": 66,
+    "identical": true
+  },
+  {
+    "name": "КСТЕНАКС",
+    "ru_index": 67,
+    "en_index": 67,
+    "identical": true
+  },
+  {
+    "name": "КПОЛ1",
+    "ru_index": 68,
+    "en_index": 68,
+    "identical": true
+  },
+  {
+    "name": "КРЕШ1",
+    "ru_index": 69,
+    "en_index": 69,
+    "identical": true
+  },
+  {
+    "name": "КПОТОЛОК1",
+    "ru_index": 70,
+    "en_index": 70,
+    "identical": true
+  },
+  {
+    "name": "КДВЕРЬ_Ж",
+    "ru_index": 71,
+    "en_index": 71,
+    "identical": true
+  },
+  {
+    "name": "КДВЕРЬ_М",
+    "ru_index": 72,
+    "en_index": 72,
+    "identical": true
+  },
+  {
+    "name": "КДВЕРЬ_З",
+    "ru_index": 73,
+    "en_index": 73,
+    "identical": true
+  },
+  {
+    "name": "КДВЕРЬ_Д",
+    "ru_index": 74,
+    "en_index": 74,
+    "identical": true
+  },
+  {
+    "name": "КДВЕРЬ_Р",
+    "ru_index": 75,
+    "en_index": 75,
+    "identical": true
+  },
+  {
+    "name": "КДВЕРЬ_С",
+    "ru_index": 76,
+    "en_index": 76,
+    "identical": true
+  },
+  {
+    "name": "КЛЮЧ_М",
+    "ru_index": 77,
+    "en_index": 77,
+    "identical": true
+  },
+  {
+    "name": "КЛЮЧ_Ж",
+    "ru_index": 78,
+    "en_index": 78,
+    "identical": true
+  },
+  {
+    "name": "КЛЮЧ_З",
+    "ru_index": 79,
+    "en_index": 79,
+    "identical": true
+  },
+  {
+    "name": "БОЧКА",
+    "ru_index": 80,
+    "en_index": 80,
+    "identical": true
+  },
+  {
+    "name": "ВОДА1",
+    "ru_index": 81,
+    "en_index": 81,
+    "identical": true
+  },
+  {
+    "name": "ВОДА2",
+    "ru_index": 82,
+    "en_index": 82,
+    "identical": true
+  },
+  {
+    "name": "ВОДА3",
+    "ru_index": 83,
+    "en_index": 83,
+    "identical": true
+  },
+  {
+    "name": "ВОДА4",
+    "ru_index": 84,
+    "en_index": 84,
+    "identical": true
+  },
+  {
+    "name": "ЧИЧА",
+    "ru_index": 85,
+    "en_index": 85,
+    "identical": true
+  },
+  {
+    "name": "зМЫШЬ_И",
+    "ru_index": 86,
+    "en_index": 86,
+    "identical": true
+  },
+  {
+    "name": "зМЫШЬ_А",
+    "ru_index": 87,
+    "en_index": 87,
+    "identical": true
+  },
+  {
+    "name": "зМЫШЬ_У",
+    "ru_index": 88,
+    "en_index": 88,
+    "identical": true
+  },
+  {
+    "name": "зБОЯР_И",
+    "ru_index": 89,
+    "en_index": 89,
+    "identical": true
+  },
+  {
+    "name": "зБОЯР_А",
+    "ru_index": 90,
+    "en_index": 90,
+    "identical": true
+  },
+  {
+    "name": "зБОЯР_У",
+    "ru_index": 91,
+    "en_index": 91,
+    "identical": true
+  },
+  {
+    "name": "зРУЖЬЕ",
+    "ru_index": 92,
+    "en_index": 92,
+    "identical": true
+  },
+  {
+    "name": "зБАБА_И",
+    "ru_index": 93,
+    "en_index": 93,
+    "identical": true
+  },
+  {
+    "name": "зБАБА_А",
+    "ru_index": 94,
+    "en_index": 94,
+    "identical": true
+  },
+  {
+    "name": "зБАБА_У",
+    "ru_index": 95,
+    "en_index": 95,
+    "identical": true
+  },
+  {
+    "name": "ЧЕЛЗ_УБИТ",
+    "ru_index": 96,
+    "en_index": 96,
+    "identical": true
+  },
+  {
+    "name": "зРУЖЬЕ_ВЫСТРЕЛ",
+    "ru_index": 97,
+    "en_index": 97,
+    "identical": true
+  },
+  {
+    "name": "зЛАЗЕР_ВЫСТРЕЛ",
+    "ru_index": 98,
+    "en_index": 98,
+    "identical": true
+  },
+  {
+    "name": "зВЗЯТЬ_КЛЮЧ",
+    "ru_index": 99,
+    "en_index": 99,
+    "identical": true
+  },
+  {
+    "name": "зВЗЯТЬ_ПУЛЮ",
+    "ru_index": 100,
+    "en_index": 100,
+    "identical": true
+  },
+  {
+    "name": "зВЗЯТЬ_ЖИЗНЬ",
+    "ru_index": 101,
+    "en_index": 101,
+    "identical": true
+  },
+  {
+    "name": "зВЗЯТЬ_МУХ",
+    "ru_index": 102,
+    "en_index": 102,
+    "identical": true
+  },
+  {
+    "name": "зВЗЯТЬ_РУЖЬЕ",
+    "ru_index": 103,
+    "en_index": 103,
+    "identical": true
+  },
+  {
+    "name": "зВЗЯТЬ_КАРТУ",
+    "ru_index": 104,
+    "en_index": 104,
+    "identical": true
+  },
+  {
+    "name": "зРАЗРЫВ_ПУЛИ",
+    "ru_index": 105,
+    "en_index": 105,
+    "identical": true
+  },
+  {
+    "name": "зДВЕРЬД",
+    "ru_index": 106,
+    "en_index": 106,
+    "identical": true
+  },
+  {
+    "name": "зДВЕРЬК",
+    "ru_index": 107,
+    "en_index": 107,
+    "identical": true
+  },
+  {
+    "name": "ЗАСТАВКА_СПР",
+    "ru_index": 108,
+    "en_index": 108,
+    "identical": true
+  },
+  {
+    "name": "ЗАСТАВКА_ПАЛ",
+    "ru_index": 109,
+    "en_index": 109,
+    "identical": true
+  },
+  {
+    "name": "ЗАСТАВКА_ЗВУК",
+    "ru_index": 110,
+    "en_index": 110,
+    "identical": true
+  },
+  {
+    "name": "ВЫХОД",
+    "ru_index": 111,
+    "en_index": 111,
+    "identical": true
+  },
+  {
+    "name": "КАРТА",
+    "ru_index": 112,
+    "en_index": 112,
+    "identical": true
+  },
+  {
+    "name": "БАБА_В",
+    "ru_index": 113,
+    "en_index": 113,
+    "identical": true
+  },
+  {
+    "name": "БАБА_А",
+    "ru_index": 114,
+    "en_index": 114,
+    "identical": true
+  },
+  {
+    "name": "БАБА_И",
+    "ru_index": 115,
+    "en_index": 115,
+    "identical": true
+  },
+  {
+    "name": "БАБА_У",
+    "ru_index": 116,
+    "en_index": 116,
+    "identical": true
+  },
+  {
+    "name": "МЫШЬ_Л",
+    "ru_index": 117,
+    "en_index": 117,
+    "identical": true
+  },
+  {
+    "name": "МЫШЬ_А",
+    "ru_index": 118,
+    "en_index": 118,
+    "identical": true
+  },
+  {
+    "name": "МЫШЬ_У",
+    "ru_index": 119,
+    "en_index": 119,
+    "identical": true
+  },
+  {
+    "name": "БОЯР_И",
+    "ru_index": 120,
+    "en_index": 120,
+    "identical": true
+  },
+  {
+    "name": "БОЯР_А",
+    "ru_index": 121,
+    "en_index": 121,
+    "identical": true
+  },
+  {
+    "name": "БОЯР_А2",
+    "ru_index": 122,
+    "en_index": 122,
+    "identical": true
+  },
+  {
+    "name": "БОЯР_У",
+    "ru_index": 123,
+    "en_index": 123,
+    "identical": true
+  },
+  {
+    "name": "БОЯР_В",
+    "ru_index": 124,
+    "en_index": 124,
+    "identical": true
+  },
+  {
+    "name": "ТОПОР_И",
+    "ru_index": 125,
+    "en_index": 125,
+    "identical": true
+  },
+  {
+    "name": "ТОПОР_А",
+    "ru_index": 126,
+    "en_index": 126,
+    "identical": true
+  },
+  {
+    "name": "ТОПОР_У",
+    "ru_index": 127,
+    "en_index": 127,
+    "identical": true
+  },
+  {
+    "name": "MIMO",
+    "ru_index": 128,
+    "en_index": 128,
+    "identical": true
+  },
+  {
+    "name": "PULKA1",
+    "ru_index": 129,
+    "en_index": 129,
+    "identical": true
+  },
+  {
+    "name": "PULKA2",
+    "ru_index": 130,
+    "en_index": 130,
+    "identical": true
+  },
+  {
+    "name": "КРЕСТ1",
+    "ru_index": 131,
+    "en_index": 131,
+    "identical": true
+  },
+  {
+    "name": "КРЕСТ2",
+    "ru_index": 132,
+    "en_index": 132,
+    "identical": true
+  },
+  {
+    "name": "ЧЕРЕП",
+    "ru_index": 133,
+    "en_index": 133,
+    "identical": true
+  },
+  {
+    "name": "sРУЖЬЕ",
+    "ru_index": 134,
+    "en_index": 134,
+    "identical": true
+  },
+  {
+    "name": "sЛАЗЕР",
+    "ru_index": 135,
+    "en_index": 135,
+    "identical": true
+  },
+  {
+    "name": "fРУЖЬЕ",
+    "ru_index": 136,
+    "en_index": 136,
+    "identical": true
+  },
+  {
+    "name": "fЛАЗЕР",
+    "ru_index": 137,
+    "en_index": 137,
+    "identical": true
+  },
+  {
+    "name": "ПАТРОНЫ",
+    "ru_index": 138,
+    "en_index": 138,
+    "identical": true
+  },
+  {
+    "name": "ЦЕПЬ",
+    "ru_index": 139,
+    "en_index": 139,
+    "identical": true
+  },
+  {
+    "name": "ГОРШОК",
+    "ru_index": 140,
+    "en_index": 140,
+    "identical": true
+  },
+  {
+    "name": "КОВШ",
+    "ru_index": 141,
+    "en_index": 141,
+    "identical": true
+  },
+  {
+    "name": "КРУШКА",
+    "ru_index": 142,
+    "en_index": 142,
+    "identical": true
+  },
+  {
+    "name": "МУХОМОР",
+    "ru_index": 143,
+    "en_index": 143,
+    "identical": true
+  },
+  {
+    "name": "ПУЛЯ1С",
+    "ru_index": 144,
+    "en_index": 144,
+    "identical": true
+  },
+  {
+    "name": "POPAL",
+    "ru_index": 145,
+    "en_index": 145,
+    "identical": false
+  }
+]

@@ -1,0 +1,40 @@
+{
+  "stage": 5,
+  "levels": 6,
+  "definitions": 780,
+  "field_values": 7610,
+  "resource_references": 4474,
+  "original_sha256": {
+    "ru": {
+      "exe": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+      "res": "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816"
+    },
+    "en": {
+      "exe": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b",
+      "res": "865da340621fa6f90548a84e9ae9bf0a85071befb32a40ca1d359e488f74d458"
+    }
+  },
+  "ghidra_roles": {
+    "ru": 19,
+    "en": 13
+  },
+  "artifacts": {
+    "dok-level.exe": {
+      "size": 162304,
+      "sha256": "a139fa4261082f8bc5453a76fa03a4db56980608e004010b65090ec9383c293b"
+    },
+    "dok-level-tests.exe": {
+      "size": 164352,
+      "sha256": "1ebeb5e6636fd1794c7f9dbb9a57520e7b87ccc6681911057161fb656b01d056"
+    },
+    "dok-level-linux": {
+      "size": 385840,
+      "sha256": "61fc47aabaea03309bd323806a58b1eebac8949102fe8a305462a0cf899e6f67"
+    },
+    "level-arm7tdmi.o": {
+      "size": 32400,
+      "sha256": "d18a3ed441061df452e47f2f63d31199ec8b48c510ca1b0a133a248fe075b38b"
+    }
+  },
+  "cross_target_execution": "not performed"
+}

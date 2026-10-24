@@ -1,0 +1,44 @@
+{
+  "originals_unchanged": {
+    "originals/pkr/RUS/PKR.EXE": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+    "originals/pkr/RUS/PKR.RES": "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816",
+    "originals/pkr/ENG/PKE.EXE": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b",
+    "originals/pkr/ENG/PKE.RES": "865da340621fa6f90548a84e9ae9bf0a85071befb32a40ca1d359e488f74d458"
+  },
+  "sound_resources_checked": 46,
+  "source_samples_checked": 1923052,
+  "decoded_sample_formats": [
+    "unsigned8",
+    "signed8",
+    "signed16le"
+  ],
+  "wav_checks": "Python wave metadata, every sample, RIFF size and odd padding",
+  "windows_tests": "passed",
+  "ghidra_roles": 20,
+  "ghidra_layouts_per_language": 1,
+  "artifacts": {
+    "dok-sound-linux": {
+      "sha256": "03c92e10bef048ad342b7aec7c688c01f74be2229395db5db5822493b69fda04",
+      "elf_machine": 62,
+      "executed": false
+    },
+    "sound-arm7tdmi.o": {
+      "sha256": "1b56c81138ef1801afdc9687c0a296524064cfea8f27ca930d5a884141dce51e",
+      "elf_machine": 40,
+      "executed": false
+    },
+    "dok-sound.exe": {
+      "sha256": "d25d3ec4ff62648ff503f67ce8c6c19471c565e158718412301852ba81b98811",
+      "executed": true
+    },
+    "dok-sound-tests.exe": {
+      "sha256": "7cd5b587fb1ebaa8b564a78d3cd90bd899ff05dc59730be1b9de421943f88538",
+      "executed": true
+    }
+  },
+  "source_hashes": {
+    "src/sound.c": "c2905e19b49d3e2aed2afd49d5c769c21ec82d846b093b218a1a9d6f5b72eee2",
+    "tools/sound_tool.c": "b7f3d90e1b55034d9ded4edec523bcd713ead88ba9267d57b07db96635a74352",
+    "scripts/analyze_sounds.py": "7577cc8bb172dbbb695ae076c7605410e564a18187639e346ea82a99d4bd4949"
+  }
+}

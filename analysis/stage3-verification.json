@@ -1,0 +1,45 @@
+{
+  "originals_unchanged": {
+    "originals/pkr/RUS/PKR.EXE": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+    "originals/pkr/RUS/PKR.RES": "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816",
+    "originals/pkr/ENG/PKE.EXE": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b",
+    "originals/pkr/ENG/PKE.RES": "865da340621fa6f90548a84e9ae9bf0a85071befb32a40ca1d359e488f74d458"
+  },
+  "animations_checked": 48,
+  "animation_frames_checked": 308,
+  "standalone_images_checked": 154,
+  "exported_frame_pixels": "C-written PGM files byte-for-byte checked against Python",
+  "windows_tests": "passed",
+  "ghidra_roles": 13,
+  "ghidra_layouts_per_language": 2,
+  "artifacts": {
+    "dok-anim-linux": {
+      "sha256": "1acfa044cf41ed8a26e443bf8df79a311602960320794821ae2382e83ea5a996",
+      "machine": 62,
+      "executed": false
+    },
+    "image-arm7tdmi.o": {
+      "sha256": "82517039eb46bce356de858e711005a9210439dc976242af20d3edf37888e4b9",
+      "machine": 40,
+      "executed": false
+    },
+    "animation-arm7tdmi.o": {
+      "sha256": "c776c137ff9f021ff4a9d3d4510355aca5454a7e574ac91b57a6f1529aa20273",
+      "machine": 40,
+      "executed": false
+    },
+    "dok-anim.exe": {
+      "sha256": "d6192b014523f4658a0f148f8e98a9409d458e178677d3c083f11a43fd5c67fd",
+      "executed": true
+    },
+    "dok-animation-tests.exe": {
+      "sha256": "d7d2507ccdb7022291c23ac579c16f072fcf7e9675bace0c4bd92ee8c231ac47",
+      "executed": true
+    }
+  },
+  "source_hashes": {
+    "src/image.c": "88e9445e256cc771f2f243e9ee2940b21a7eeeca5b43175e34c0d06c35de7dc7",
+    "src/animation.c": "39c1ddf934dd3cb48f9ac165e7ead7b6aa00be26505c7c1faadcd584895d085b",
+    "scripts/analyze_animations.py": "5fbe0d6d66c52aa5be51c0eb8bb6477795bd2d6529525ee20a656a37e5019fae"
+  }
+}

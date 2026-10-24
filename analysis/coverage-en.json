@@ -1,0 +1,16 @@
+{
+  "program": "PKE.EXE",
+  "language": "x86:LE:16:Protected Mode",
+  "compiler": "default",
+  "functions": "930",
+  "decompiled": "930",
+  "failed": "0",
+  "prologue_functions_added": "488",
+  "prologue_candidates_rejected": "469",
+  "code_bytes": 207400,
+  "instruction_bytes": 181518,
+  "function_bytes": 181280,
+  "warning_functions": 51,
+  "functions_with_diagnostics": 0,
+  "external_stubs": 23
+}

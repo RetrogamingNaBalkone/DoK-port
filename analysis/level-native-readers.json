@@ -1,0 +1,168 @@
+{
+  "ru": {
+    "exe_sha256": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+    "classes": [
+      {
+        "type": 0,
+        "vtable_data_offset": 1909,
+        "reader": "1068:05a4",
+        "target_ne_segment": 14
+      },
+      {
+        "type": 1,
+        "vtable_data_offset": 1645,
+        "reader": "1068:1789",
+        "target_ne_segment": 14
+      },
+      {
+        "type": 2,
+        "vtable_data_offset": 1885,
+        "reader": "1068:420d",
+        "target_ne_segment": 14
+      },
+      {
+        "type": 3,
+        "vtable_data_offset": 1857,
+        "reader": "1068:2fe9",
+        "target_ne_segment": 14
+      },
+      {
+        "type": 4,
+        "vtable_data_offset": 1833,
+        "reader": "1068:420d",
+        "target_ne_segment": 14
+      },
+      {
+        "type": 5,
+        "vtable_data_offset": 1669,
+        "reader": "1068:15f1",
+        "target_ne_segment": 14
+      },
+      {
+        "type": 6,
+        "vtable_data_offset": 1597,
+        "reader": "1068:420d",
+        "target_ne_segment": 14
+      },
+      {
+        "type": 7,
+        "vtable_data_offset": 1573,
+        "reader": "1068:31a5",
+        "target_ne_segment": 14
+      },
+      {
+        "type": 8,
+        "vtable_data_offset": 1621,
+        "reader": "1068:2547",
+        "target_ne_segment": 14
+      },
+      {
+        "type": 9,
+        "vtable_data_offset": 1549,
+        "reader": "1068:3f80",
+        "target_ne_segment": 14
+      },
+      {
+        "type": 10,
+        "vtable_data_offset": 1805,
+        "reader": "1068:2c7c",
+        "target_ne_segment": 14
+      },
+      {
+        "type": 12,
+        "vtable_data_offset": 1737,
+        "reader": "1068:07ef",
+        "target_ne_segment": 14
+      },
+      {
+        "type": 13,
+        "vtable_data_offset": 1693,
+        "reader": "1068:08bd",
+        "target_ne_segment": 14
+      }
+    ]
+  },
+  "en": {
+    "exe_sha256": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b",
+    "classes": [
+      {
+        "type": 0,
+        "vtable_data_offset": 2022,
+        "reader": "1020:0a8a",
+        "target_ne_segment": 5
+      },
+      {
+        "type": 1,
+        "vtable_data_offset": 1686,
+        "reader": "1020:1d47",
+        "target_ne_segment": 5
+      },
+      {
+        "type": 2,
+        "vtable_data_offset": 1990,
+        "reader": "1020:4dfe",
+        "target_ne_segment": 5
+      },
+      {
+        "type": 3,
+        "vtable_data_offset": 1954,
+        "reader": "1020:368c",
+        "target_ne_segment": 5
+      },
+      {
+        "type": 4,
+        "vtable_data_offset": 1922,
+        "reader": "1020:4dfe",
+        "target_ne_segment": 5
+      },
+      {
+        "type": 5,
+        "vtable_data_offset": 1718,
+        "reader": "1020:1afb",
+        "target_ne_segment": 5
+      },
+      {
+        "type": 6,
+        "vtable_data_offset": 1622,
+        "reader": "1020:4dfe",
+        "target_ne_segment": 5
+      },
+      {
+        "type": 7,
+        "vtable_data_offset": 1590,
+        "reader": "1020:385a",
+        "target_ne_segment": 5
+      },
+      {
+        "type": 8,
+        "vtable_data_offset": 1654,
+        "reader": "1020:2bea",
+        "target_ne_segment": 5
+      },
+      {
+        "type": 9,
+        "vtable_data_offset": 1558,
+        "reader": "1020:46e9",
+        "target_ne_segment": 5
+      },
+      {
+        "type": 10,
+        "vtable_data_offset": 1886,
+        "reader": "1020:331f",
+        "target_ne_segment": 5
+      },
+      {
+        "type": 12,
+        "vtable_data_offset": 1802,
+        "reader": "1020:0ce1",
+        "target_ne_segment": 5
+      },
+      {
+        "type": 13,
+        "vtable_data_offset": 1750,
+        "reader": "1020:0dbb",
+        "target_ne_segment": 5
+      }
+    ]
+  }
+}

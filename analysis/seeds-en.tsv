@@ -1,0 +1,16 @@
+# NE segment index<TAB>offset hex<TAB>provisional role<TAB>evidence in WASDify docs/games/dungeons-of-kremlin/
+17	01c4	video_select_mode	analysis.md file offset 0x2d9c4, segment start 0x2d800
+11	199c	game_poll_input	wasd.md
+8	0139	mouse_poll	wasd.md
+5	0f8f	actor_update_movement	wasd.md
+5	257d	player_select_weapon	weapons.md
+6	026b	keyboard_read	wasd.md
+11	0d99	hud_draw_bar	numeric-hud.md
+4	171e	text_format_draw	numeric-hud.md
+4	153e	font_draw_glyph	font-scaling.md
+7	0000	world_destroy	save-load-levels.md
+7	0079	world_initialize	save-load-levels.md
+7	02aa	world_remove_slot	save-load-levels.md
+5	2960	projectile_clone	save-load-levels.md
+5	1efc	player_check_death	save-load-levels.md
+16	18cf	clock_start	save-load-levels.md

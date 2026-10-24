@@ -1,0 +1,31 @@
+{
+  "originals_unchanged": {
+    "originals/pkr/RUS/PKR.EXE": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+    "originals/pkr/RUS/PKR.RES": "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816",
+    "originals/pkr/ENG/PKE.EXE": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b",
+    "originals/pkr/ENG/PKE.RES": "865da340621fa6f90548a84e9ae9bf0a85071befb32a40ca1d359e488f74d458"
+  },
+  "resource_payloads_checked": 292,
+  "ghidra_roles": 21,
+  "ghidra_layouts_per_language": 7,
+  "windows_synthetic_tests": "passed",
+  "compiler": "shared Zig 0.13.0",
+  "artifacts": {
+    "dok-res-linux": {
+      "sha256": "994b7ff5e844ac502b4e4fda4c2c5b4966292368b5b0cd24e61935a91d55f72e",
+      "elf_machine": 62,
+      "executed": false
+    },
+    "dok-native-tests-linux": {
+      "sha256": "0dbc13a00708ec528760f311bab8a40ea843ca96462b1431a9a28854f9ec20b1",
+      "elf_machine": 62,
+      "executed": false
+    },
+    "native-state-arm7tdmi.o": {
+      "sha256": "d99b6eddac9f507774549babec81c191c9826dcf3dba8a18725e9e6071dca7d6",
+      "elf_machine": 40,
+      "executed": false
+    }
+  },
+  "project_local_toolchain": false
+}

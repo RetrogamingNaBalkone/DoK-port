@@ -1,0 +1,226 @@
+[
+  {
+    "resource_index": 77,
+    "name": "КЛЮЧ_М",
+    "raw_identical": true,
+    "frame_counts_equal": true,
+    "decoded_differences": [],
+    "pixel_differences": []
+  },
+  {
+    "resource_index": 78,
+    "name": "КЛЮЧ_Ж",
+    "raw_identical": true,
+    "frame_counts_equal": true,
+    "decoded_differences": [],
+    "pixel_differences": []
+  },
+  {
+    "resource_index": 79,
+    "name": "КЛЮЧ_З",
+    "raw_identical": true,
+    "frame_counts_equal": true,
+    "decoded_differences": [],
+    "pixel_differences": []
+  },
+  {
+    "resource_index": 113,
+    "name": "БАБА_В",
+    "raw_identical": true,
+    "frame_counts_equal": true,
+    "decoded_differences": [],
+    "pixel_differences": []
+  },
+  {
+    "resource_index": 114,
+    "name": "БАБА_А",
+    "raw_identical": true,
+    "frame_counts_equal": true,
+    "decoded_differences": [],
+    "pixel_differences": []
+  },
+  {
+    "resource_index": 115,
+    "name": "БАБА_И",
+    "raw_identical": true,
+    "frame_counts_equal": true,
+    "decoded_differences": [],
+    "pixel_differences": []
+  },
+  {
+    "resource_index": 116,
+    "name": "БАБА_У",
+    "raw_identical": true,
+    "frame_counts_equal": true,
+    "decoded_differences": [],
+    "pixel_differences": []
+  },
+  {
+    "resource_index": 117,
+    "name": "МЫШЬ_Л",
+    "raw_identical": true,
+    "frame_counts_equal": true,
+    "decoded_differences": [],
+    "pixel_differences": []
+  },
+  {
+    "resource_index": 118,
+    "name": "МЫШЬ_А",
+    "raw_identical": true,
+    "frame_counts_equal": true,
+    "decoded_differences": [],
+    "pixel_differences": []
+  },
+  {
+    "resource_index": 119,
+    "name": "МЫШЬ_У",
+    "raw_identical": true,
+    "frame_counts_equal": true,
+    "decoded_differences": [],
+    "pixel_differences": []
+  },
+  {
+    "resource_index": 120,
+    "name": "БОЯР_И",
+    "raw_identical": true,
+    "frame_counts_equal": true,
+    "decoded_differences": [],
+    "pixel_differences": []
+  },
+  {
+    "resource_index": 121,
+    "name": "БОЯР_А",
+    "raw_identical": true,
+    "frame_counts_equal": true,
+    "decoded_differences": [],
+    "pixel_differences": []
+  },
+  {
+    "resource_index": 122,
+    "name": "БОЯР_А2",
+    "raw_identical": true,
+    "frame_counts_equal": true,
+    "decoded_differences": [],
+    "pixel_differences": []
+  },
+  {
+    "resource_index": 123,
+    "name": "БОЯР_У",
+    "raw_identical": true,
+    "frame_counts_equal": true,
+    "decoded_differences": [],
+    "pixel_differences": []
+  },
+  {
+    "resource_index": 124,
+    "name": "БОЯР_В",
+    "raw_identical": true,
+    "frame_counts_equal": true,
+    "decoded_differences": [],
+    "pixel_differences": []
+  },
+  {
+    "resource_index": 125,
+    "name": "ТОПОР_И",
+    "raw_identical": true,
+    "frame_counts_equal": true,
+    "decoded_differences": [],
+    "pixel_differences": []
+  },
+  {
+    "resource_index": 126,
+    "name": "ТОПОР_А",
+    "raw_identical": true,
+    "frame_counts_equal": true,
+    "decoded_differences": [],
+    "pixel_differences": []
+  },
+  {
+    "resource_index": 127,
+    "name": "ТОПОР_У",
+    "raw_identical": true,
+    "frame_counts_equal": true,
+    "decoded_differences": [],
+    "pixel_differences": []
+  },
+  {
+    "resource_index": 128,
+    "name": "MIMO",
+    "raw_identical": true,
+    "frame_counts_equal": true,
+    "decoded_differences": [],
+    "pixel_differences": []
+  },
+  {
+    "resource_index": 129,
+    "name": "PULKA1",
+    "raw_identical": true,
+    "frame_counts_equal": true,
+    "decoded_differences": [],
+    "pixel_differences": []
+  },
+  {
+    "resource_index": 130,
+    "name": "PULKA2",
+    "raw_identical": true,
+    "frame_counts_equal": true,
+    "decoded_differences": [],
+    "pixel_differences": []
+  },
+  {
+    "resource_index": 136,
+    "name": "fРУЖЬЕ",
+    "raw_identical": true,
+    "frame_counts_equal": true,
+    "decoded_differences": [],
+    "pixel_differences": []
+  },
+  {
+    "resource_index": 137,
+    "name": "fЛАЗЕР",
+    "raw_identical": true,
+    "frame_counts_equal": true,
+    "decoded_differences": [],
+    "pixel_differences": []
+  },
+  {
+    "resource_index": 145,
+    "name": "POPAL",
+    "raw_identical": false,
+    "frame_counts_equal": true,
+    "decoded_differences": [
+      {
+        "frame": 5,
+        "field": "sha256",
+        "ru": "bf8d6be60b8baa81760fb54f6702def93392d43ee008df24a5a20442f943d148",
+        "en": "631c6076739140f78b2d273ab114f35d2a6e2453e84beb925392856bd431c5ae"
+      }
+    ],
+    "pixel_differences": [
+      {
+        "frame": 5,
+        "count": 3,
+        "first_cells": [
+          {
+            "x": 155,
+            "y": 69,
+            "ru": 147,
+            "en": 0
+          },
+          {
+            "x": 156,
+            "y": 69,
+            "ru": 121,
+            "en": 0
+          },
+          {
+            "x": 157,
+            "y": 69,
+            "ru": 41,
+            "en": 0
+          }
+        ]
+      }
+    ]
+  }
+]

@@ -1,0 +1,14 @@
+language	ghidra_address	role
+ru	1050:0000	animation_table_allocate
+ru	1050:0054	animation_next_native
+ru	1050:00df	animation_get_clamped_native
+ru	1050:0142	animation_write_stream
+ru	1050:026b	animation_read_stream
+ru	1068:0421	object_animation_step
+ru	1038:0265	event_set_repeat_interval
+en	1018:0f0e	animation_table_allocate
+en	1018:0f62	animation_next_native
+en	1018:0fed	animation_get_clamped_native
+en	1018:1050	animation_write_stream
+en	1018:11b1	animation_read_stream
+en	1020:0901	object_animation_step

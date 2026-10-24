@@ -1,0 +1,16 @@
+{
+  "program": "PKR.EXE",
+  "language": "x86:LE:16:Protected Mode",
+  "compiler": "default",
+  "functions": "921",
+  "decompiled": "921",
+  "failed": "0",
+  "prologue_functions_added": "481",
+  "prologue_candidates_rejected": "461",
+  "code_bytes": 192182,
+  "instruction_bytes": 173950,
+  "function_bytes": 173712,
+  "warning_functions": 51,
+  "functions_with_diagnostics": 0,
+  "external_stubs": 23
+}

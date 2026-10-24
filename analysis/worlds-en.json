@@ -1,0 +1,2093 @@
+[
+  {
+    "resource_index": 18,
+    "level_sha256": "ff9354074b91d020ab26892c803b984fd6367875efd190202927840afb39c089",
+    "objects": 115,
+    "placed_actor_cells": 63,
+    "unique_placed_actors": 61,
+    "unplaced_actor_glyphs": [
+      143,
+      155,
+      235,
+      236
+    ],
+    "repeated_actor_glyphs": [
+      170,
+      234
+    ],
+    "pickup_99_total": 0,
+    "known_bytes": 9793,
+    "maps": {
+      "MMap": "a2373d2d51e045c447970eee7f13ea3ec72d48b0c4d6b7252b09f78070856c2c",
+      "TMap": "3c5b53c9e6ec900d0126d432afab195fcbd29b3eb7ac6f227a9c1be811a1abb7",
+      "FCMap": "8807907f8f9405fe5bf7b867bb0d483529588ae2ff0323555fdfde4cdad55a77",
+      "visited": "ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7"
+    },
+    "player": {
+      "glyph": 77,
+      "class_id": 1,
+      "placements": 1,
+      "x": 15120,
+      "y": -300,
+      "z": 23280,
+      "heading": 90
+    },
+    "actors": [
+      {
+        "glyph": 77,
+        "class_id": 1,
+        "placements": 1,
+        "x": 15120,
+        "y": -300,
+        "z": 23280,
+        "heading": 90
+      },
+      {
+        "glyph": 128,
+        "class_id": 9,
+        "placements": 1,
+        "x": 8400,
+        "y": 0,
+        "z": 27600,
+        "heading": 0
+      },
+      {
+        "glyph": 129,
+        "class_id": 9,
+        "placements": 1,
+        "x": 3600,
+        "y": 0,
+        "z": 29520,
+        "heading": 0
+      },
+      {
+        "glyph": 130,
+        "class_id": 9,
+        "placements": 1,
+        "x": 12240,
+        "y": 0,
+        "z": 24720,
+        "heading": 0
+      },
+      {
+        "glyph": 131,
+        "class_id": 9,
+        "placements": 1,
+        "x": 18000,
+        "y": 0,
+        "z": 28560,
+        "heading": 0
+      },
+      {
+        "glyph": 132,
+        "class_id": 9,
+        "placements": 1,
+        "x": 24240,
+        "y": 0,
+        "z": 28560,
+        "heading": 0
+      },
+      {
+        "glyph": 133,
+        "class_id": 9,
+        "placements": 1,
+        "x": 28560,
+        "y": 0,
+        "z": 26160,
+        "heading": 0
+      },
+      {
+        "glyph": 165,
+        "class_id": 9,
+        "placements": 1,
+        "x": 21360,
+        "y": 0,
+        "z": 26640,
+        "heading": 0
+      },
+      {
+        "glyph": 134,
+        "class_id": 9,
+        "placements": 1,
+        "x": 1680,
+        "y": 0,
+        "z": 29520,
+        "heading": 0
+      },
+      {
+        "glyph": 135,
+        "class_id": 9,
+        "placements": 1,
+        "x": 29040,
+        "y": 0,
+        "z": 21840,
+        "heading": 0
+      },
+      {
+        "glyph": 136,
+        "class_id": 9,
+        "placements": 1,
+        "x": 23760,
+        "y": 0,
+        "z": 20880,
+        "heading": 0
+      },
+      {
+        "glyph": 137,
+        "class_id": 9,
+        "placements": 1,
+        "x": 9840,
+        "y": 0,
+        "z": 20880,
+        "heading": 0
+      },
+      {
+        "glyph": 138,
+        "class_id": 9,
+        "placements": 1,
+        "x": 18480,
+        "y": 0,
+        "z": 25680,
+        "heading": 0
+      },
+      {
+        "glyph": 139,
+        "class_id": 9,
+        "placements": 1,
+        "x": 7920,
+        "y": 0,
+        "z": 17040,
+        "heading": 0
+      },
+      {
+        "glyph": 140,
+        "class_id": 9,
+        "placements": 1,
+        "x": 15120,
+        "y": 0,
+        "z": 15600,
+        "heading": 0
+      },
+      {
+        "glyph": 141,
+        "class_id": 9,
+        "placements": 1,
+        "x": 17040,
+        "y": 0,
+        "z": 16080,
+        "heading": 0
+      },
+      {
+        "glyph": 142,
+        "class_id": 9,
+        "placements": 1,
+        "x": 16560,
+        "y": 0,
+        "z": 14640,
+        "heading": 0
+      },
+      {
+        "glyph": 144,
+        "class_id": 9,
+        "placements": 1,
+        "x": 22320,
+        "y": 0,
+        "z": 17040,
+        "heading": 0
+      },
+      {
+        "glyph": 145,
+        "class_id": 9,
+        "placements": 1,
+        "x": 23280,
+        "y": 0,
+        "z": 18960,
+        "heading": 0
+      },
+      {
+        "glyph": 146,
+        "class_id": 9,
+        "placements": 1,
+        "x": 27600,
+        "y": 0,
+        "z": 18000,
+        "heading": 0
+      },
+      {
+        "glyph": 147,
+        "class_id": 9,
+        "placements": 1,
+        "x": 2160,
+        "y": 0,
+        "z": 16560,
+        "heading": 0
+      },
+      {
+        "glyph": 148,
+        "class_id": 9,
+        "placements": 1,
+        "x": 4080,
+        "y": 0,
+        "z": 15120,
+        "heading": 0
+      },
+      {
+        "glyph": 149,
+        "class_id": 9,
+        "placements": 1,
+        "x": 8400,
+        "y": 0,
+        "z": 13200,
+        "heading": 0
+      },
+      {
+        "glyph": 150,
+        "class_id": 9,
+        "placements": 1,
+        "x": 27600,
+        "y": 0,
+        "z": 12240,
+        "heading": 0
+      },
+      {
+        "glyph": 151,
+        "class_id": 9,
+        "placements": 1,
+        "x": 8880,
+        "y": 0,
+        "z": 9840,
+        "heading": 0
+      },
+      {
+        "glyph": 152,
+        "class_id": 9,
+        "placements": 1,
+        "x": 14640,
+        "y": 0,
+        "z": 9840,
+        "heading": 0
+      },
+      {
+        "glyph": 153,
+        "class_id": 9,
+        "placements": 1,
+        "x": 19920,
+        "y": 0,
+        "z": 11760,
+        "heading": 0
+      },
+      {
+        "glyph": 154,
+        "class_id": 9,
+        "placements": 1,
+        "x": 24240,
+        "y": 0,
+        "z": 3600,
+        "heading": 0
+      },
+      {
+        "glyph": 156,
+        "class_id": 9,
+        "placements": 1,
+        "x": 21360,
+        "y": 0,
+        "z": 4560,
+        "heading": 0
+      },
+      {
+        "glyph": 157,
+        "class_id": 9,
+        "placements": 1,
+        "x": 21360,
+        "y": 0,
+        "z": 2640,
+        "heading": 0
+      },
+      {
+        "glyph": 158,
+        "class_id": 9,
+        "placements": 1,
+        "x": 3120,
+        "y": 0,
+        "z": 8400,
+        "heading": 0
+      },
+      {
+        "glyph": 159,
+        "class_id": 9,
+        "placements": 1,
+        "x": 1680,
+        "y": 0,
+        "z": 6000,
+        "heading": 0
+      },
+      {
+        "glyph": 160,
+        "class_id": 9,
+        "placements": 1,
+        "x": 14640,
+        "y": -150,
+        "z": 27120,
+        "heading": 0
+      },
+      {
+        "glyph": 161,
+        "class_id": 9,
+        "placements": 1,
+        "x": 22800,
+        "y": -250,
+        "z": 27600,
+        "heading": 0
+      },
+      {
+        "glyph": 162,
+        "class_id": 9,
+        "placements": 1,
+        "x": 9360,
+        "y": -250,
+        "z": 26160,
+        "heading": 0
+      },
+      {
+        "glyph": 163,
+        "class_id": 9,
+        "placements": 1,
+        "x": 6960,
+        "y": -250,
+        "z": 24720,
+        "heading": 0
+      },
+      {
+        "glyph": 164,
+        "class_id": 9,
+        "placements": 1,
+        "x": 23280,
+        "y": -250,
+        "z": 25680,
+        "heading": 0
+      },
+      {
+        "glyph": 166,
+        "class_id": 9,
+        "placements": 1,
+        "x": 7920,
+        "y": -250,
+        "z": 15600,
+        "heading": 0
+      },
+      {
+        "glyph": 167,
+        "class_id": 9,
+        "placements": 1,
+        "x": 7920,
+        "y": -250,
+        "z": 18480,
+        "heading": 0
+      },
+      {
+        "glyph": 168,
+        "class_id": 9,
+        "placements": 1,
+        "x": 9840,
+        "y": -250,
+        "z": 15120,
+        "heading": 0
+      },
+      {
+        "glyph": 169,
+        "class_id": 9,
+        "placements": 1,
+        "x": 22800,
+        "y": -250,
+        "z": 15120,
+        "heading": 0
+      },
+      {
+        "glyph": 170,
+        "class_id": 9,
+        "placements": 2,
+        "x": 23760,
+        "y": -250,
+        "z": 17520,
+        "heading": 0
+      },
+      {
+        "glyph": 171,
+        "class_id": 9,
+        "placements": 1,
+        "x": 28080,
+        "y": -250,
+        "z": 19440,
+        "heading": 0
+      },
+      {
+        "glyph": 172,
+        "class_id": 9,
+        "placements": 1,
+        "x": 25200,
+        "y": -250,
+        "z": 21360,
+        "heading": 0
+      },
+      {
+        "glyph": 173,
+        "class_id": 9,
+        "placements": 1,
+        "x": 27600,
+        "y": -250,
+        "z": 28080,
+        "heading": 0
+      },
+      {
+        "glyph": 174,
+        "class_id": 9,
+        "placements": 1,
+        "x": 28080,
+        "y": -250,
+        "z": 24240,
+        "heading": 0
+      },
+      {
+        "glyph": 175,
+        "class_id": 9,
+        "placements": 1,
+        "x": 26640,
+        "y": -250,
+        "z": 25680,
+        "heading": 0
+      },
+      {
+        "glyph": 224,
+        "class_id": 9,
+        "placements": 1,
+        "x": 18960,
+        "y": -250,
+        "z": 15120,
+        "heading": 0
+      },
+      {
+        "glyph": 225,
+        "class_id": 9,
+        "placements": 1,
+        "x": 12720,
+        "y": -250,
+        "z": 15120,
+        "heading": 0
+      },
+      {
+        "glyph": 226,
+        "class_id": 9,
+        "placements": 1,
+        "x": 2160,
+        "y": -250,
+        "z": 13680,
+        "heading": 0
+      },
+      {
+        "glyph": 227,
+        "class_id": 9,
+        "placements": 1,
+        "x": 15600,
+        "y": -250,
+        "z": 13200,
+        "heading": 0
+      },
+      {
+        "glyph": 228,
+        "class_id": 9,
+        "placements": 1,
+        "x": 27600,
+        "y": -250,
+        "z": 14640,
+        "heading": 0
+      },
+      {
+        "glyph": 229,
+        "class_id": 9,
+        "placements": 1,
+        "x": 20400,
+        "y": -250,
+        "z": 9360,
+        "heading": 0
+      },
+      {
+        "glyph": 230,
+        "class_id": 9,
+        "placements": 1,
+        "x": 14160,
+        "y": -250,
+        "z": 11760,
+        "heading": 0
+      },
+      {
+        "glyph": 231,
+        "class_id": 9,
+        "placements": 1,
+        "x": 7920,
+        "y": -250,
+        "z": 11760,
+        "heading": 0
+      },
+      {
+        "glyph": 232,
+        "class_id": 9,
+        "placements": 1,
+        "x": 21360,
+        "y": -250,
+        "z": 6000,
+        "heading": 0
+      },
+      {
+        "glyph": 233,
+        "class_id": 9,
+        "placements": 1,
+        "x": 28080,
+        "y": -250,
+        "z": 2160,
+        "heading": 0
+      },
+      {
+        "glyph": 234,
+        "class_id": 9,
+        "placements": 2,
+        "x": 15120,
+        "y": -250,
+        "z": 3600,
+        "heading": 0
+      },
+      {
+        "glyph": 237,
+        "class_id": 9,
+        "placements": 1,
+        "x": 14160,
+        "y": -250,
+        "z": 5520,
+        "heading": 0
+      },
+      {
+        "glyph": 238,
+        "class_id": 9,
+        "placements": 1,
+        "x": 2160,
+        "y": -250,
+        "z": 2160,
+        "heading": 0
+      },
+      {
+        "glyph": 239,
+        "class_id": 9,
+        "placements": 1,
+        "x": 4560,
+        "y": -250,
+        "z": 5520,
+        "heading": 0
+      }
+    ]
+  },
+  {
+    "resource_index": 19,
+    "level_sha256": "65869d72be30ccc30cb673a8a66ec1b3ebe12681a7beb5a6aa365b07fc0ced91",
+    "objects": 117,
+    "placed_actor_cells": 60,
+    "unique_placed_actors": 58,
+    "unplaced_actor_glyphs": [
+      153,
+      155,
+      224,
+      225,
+      227,
+      228,
+      235
+    ],
+    "repeated_actor_glyphs": [
+      144,
+      145
+    ],
+    "pickup_99_total": 0,
+    "known_bytes": 9837,
+    "maps": {
+      "MMap": "6506f0887842a8668edf64e6ccc386396b9a3307919a6a9621f9a93ab5fd2dcf",
+      "TMap": "57dc8d4d332aff703279d0cdd685e1da2a2607708f866490806533b866bfc26f",
+      "FCMap": "1644eff692c68ae934332d2a76c634afb89e6fb0fd57cd7fa57aca4cdb7a61af",
+      "visited": "ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7"
+    },
+    "player": {
+      "glyph": 77,
+      "class_id": 1,
+      "placements": 1,
+      "x": 20880,
+      "y": -300,
+      "z": 3120,
+      "heading": 90
+    },
+    "actors": [
+      {
+        "glyph": 77,
+        "class_id": 1,
+        "placements": 1,
+        "x": 20880,
+        "y": -300,
+        "z": 3120,
+        "heading": 90
+      },
+      {
+        "glyph": 128,
+        "class_id": 9,
+        "placements": 1,
+        "x": 12720,
+        "y": 0,
+        "z": 4560,
+        "heading": 0
+      },
+      {
+        "glyph": 129,
+        "class_id": 9,
+        "placements": 1,
+        "x": 11280,
+        "y": 0,
+        "z": 4560,
+        "heading": 0
+      },
+      {
+        "glyph": 130,
+        "class_id": 9,
+        "placements": 1,
+        "x": 11760,
+        "y": 0,
+        "z": 4560,
+        "heading": 0
+      },
+      {
+        "glyph": 131,
+        "class_id": 9,
+        "placements": 1,
+        "x": 11760,
+        "y": 0,
+        "z": 16080,
+        "heading": 0
+      },
+      {
+        "glyph": 132,
+        "class_id": 9,
+        "placements": 1,
+        "x": 12720,
+        "y": 0,
+        "z": 16080,
+        "heading": 0
+      },
+      {
+        "glyph": 133,
+        "class_id": 9,
+        "placements": 1,
+        "x": 12720,
+        "y": 0,
+        "z": 22800,
+        "heading": 0
+      },
+      {
+        "glyph": 165,
+        "class_id": 9,
+        "placements": 1,
+        "x": 13200,
+        "y": 0,
+        "z": 22800,
+        "heading": 0
+      },
+      {
+        "glyph": 134,
+        "class_id": 9,
+        "placements": 1,
+        "x": 11760,
+        "y": 0,
+        "z": 22800,
+        "heading": 0
+      },
+      {
+        "glyph": 135,
+        "class_id": 9,
+        "placements": 1,
+        "x": 13680,
+        "y": 0,
+        "z": 22800,
+        "heading": 0
+      },
+      {
+        "glyph": 136,
+        "class_id": 9,
+        "placements": 1,
+        "x": 14640,
+        "y": 0,
+        "z": 22800,
+        "heading": 0
+      },
+      {
+        "glyph": 137,
+        "class_id": 9,
+        "placements": 1,
+        "x": 15600,
+        "y": 0,
+        "z": 22800,
+        "heading": 0
+      },
+      {
+        "glyph": 138,
+        "class_id": 9,
+        "placements": 1,
+        "x": 16560,
+        "y": 0,
+        "z": 22800,
+        "heading": 0
+      },
+      {
+        "glyph": 139,
+        "class_id": 9,
+        "placements": 1,
+        "x": 17520,
+        "y": 0,
+        "z": 22800,
+        "heading": 0
+      },
+      {
+        "glyph": 140,
+        "class_id": 9,
+        "placements": 1,
+        "x": 18480,
+        "y": 0,
+        "z": 22800,
+        "heading": 0
+      },
+      {
+        "glyph": 141,
+        "class_id": 9,
+        "placements": 1,
+        "x": 27600,
+        "y": 0,
+        "z": 11760,
+        "heading": 0
+      },
+      {
+        "glyph": 142,
+        "class_id": 9,
+        "placements": 1,
+        "x": 27120,
+        "y": 0,
+        "z": 24240,
+        "heading": 0
+      },
+      {
+        "glyph": 143,
+        "class_id": 9,
+        "placements": 1,
+        "x": 15600,
+        "y": 0,
+        "z": 16560,
+        "heading": 0
+      },
+      {
+        "glyph": 144,
+        "class_id": 9,
+        "placements": 2,
+        "x": 19920,
+        "y": 0,
+        "z": 16080,
+        "heading": 0
+      },
+      {
+        "glyph": 145,
+        "class_id": 9,
+        "placements": 2,
+        "x": 11760,
+        "y": 0,
+        "z": 18000,
+        "heading": 0
+      },
+      {
+        "glyph": 146,
+        "class_id": 9,
+        "placements": 1,
+        "x": 9840,
+        "y": 0,
+        "z": 20400,
+        "heading": 0
+      },
+      {
+        "glyph": 147,
+        "class_id": 9,
+        "placements": 1,
+        "x": 11760,
+        "y": 0,
+        "z": 20400,
+        "heading": 0
+      },
+      {
+        "glyph": 148,
+        "class_id": 9,
+        "placements": 1,
+        "x": 13680,
+        "y": 0,
+        "z": 20400,
+        "heading": 0
+      },
+      {
+        "glyph": 149,
+        "class_id": 9,
+        "placements": 1,
+        "x": 15600,
+        "y": 0,
+        "z": 20400,
+        "heading": 0
+      },
+      {
+        "glyph": 150,
+        "class_id": 9,
+        "placements": 1,
+        "x": 21360,
+        "y": 0,
+        "z": 20400,
+        "heading": 0
+      },
+      {
+        "glyph": 151,
+        "class_id": 9,
+        "placements": 1,
+        "x": 16560,
+        "y": 0,
+        "z": 6480,
+        "heading": 0
+      },
+      {
+        "glyph": 152,
+        "class_id": 9,
+        "placements": 1,
+        "x": 8400,
+        "y": 0,
+        "z": 11280,
+        "heading": 0
+      },
+      {
+        "glyph": 154,
+        "class_id": 9,
+        "placements": 1,
+        "x": 22800,
+        "y": 0,
+        "z": 10800,
+        "heading": 0
+      },
+      {
+        "glyph": 156,
+        "class_id": 9,
+        "placements": 1,
+        "x": 26160,
+        "y": 0,
+        "z": 15600,
+        "heading": 0
+      },
+      {
+        "glyph": 157,
+        "class_id": 9,
+        "placements": 1,
+        "x": 12720,
+        "y": 0,
+        "z": 9360,
+        "heading": 0
+      },
+      {
+        "glyph": 158,
+        "class_id": 9,
+        "placements": 1,
+        "x": 17520,
+        "y": 0,
+        "z": 8880,
+        "heading": 0
+      },
+      {
+        "glyph": 159,
+        "class_id": 9,
+        "placements": 1,
+        "x": 11760,
+        "y": 0,
+        "z": 25680,
+        "heading": 0
+      },
+      {
+        "glyph": 161,
+        "class_id": 9,
+        "placements": 1,
+        "x": 24720,
+        "y": -250,
+        "z": 26640,
+        "heading": 0
+      },
+      {
+        "glyph": 162,
+        "class_id": 9,
+        "placements": 1,
+        "x": 5040,
+        "y": -250,
+        "z": 27600,
+        "heading": 0
+      },
+      {
+        "glyph": 160,
+        "class_id": 9,
+        "placements": 1,
+        "x": 13200,
+        "y": -150,
+        "z": 4560,
+        "heading": 0
+      },
+      {
+        "glyph": 163,
+        "class_id": 9,
+        "placements": 1,
+        "x": 12240,
+        "y": -150,
+        "z": 16080,
+        "heading": 0
+      },
+      {
+        "glyph": 164,
+        "class_id": 9,
+        "placements": 1,
+        "x": 13200,
+        "y": -150,
+        "z": 16080,
+        "heading": 0
+      },
+      {
+        "glyph": 166,
+        "class_id": 9,
+        "placements": 1,
+        "x": 12240,
+        "y": -150,
+        "z": 22800,
+        "heading": 0
+      },
+      {
+        "glyph": 167,
+        "class_id": 9,
+        "placements": 1,
+        "x": 14160,
+        "y": -150,
+        "z": 22800,
+        "heading": 0
+      },
+      {
+        "glyph": 168,
+        "class_id": 9,
+        "placements": 1,
+        "x": 15120,
+        "y": -150,
+        "z": 22800,
+        "heading": 0
+      },
+      {
+        "glyph": 169,
+        "class_id": 9,
+        "placements": 1,
+        "x": 16080,
+        "y": -150,
+        "z": 22800,
+        "heading": 0
+      },
+      {
+        "glyph": 170,
+        "class_id": 9,
+        "placements": 1,
+        "x": 17040,
+        "y": -150,
+        "z": 22800,
+        "heading": 0
+      },
+      {
+        "glyph": 171,
+        "class_id": 9,
+        "placements": 1,
+        "x": 18000,
+        "y": -150,
+        "z": 22800,
+        "heading": 0
+      },
+      {
+        "glyph": 172,
+        "class_id": 9,
+        "placements": 1,
+        "x": 18960,
+        "y": -150,
+        "z": 22800,
+        "heading": 0
+      },
+      {
+        "glyph": 173,
+        "class_id": 9,
+        "placements": 1,
+        "x": 27600,
+        "y": -150,
+        "z": 16080,
+        "heading": 0
+      },
+      {
+        "glyph": 174,
+        "class_id": 9,
+        "placements": 1,
+        "x": 28080,
+        "y": -150,
+        "z": 20400,
+        "heading": 0
+      },
+      {
+        "glyph": 175,
+        "class_id": 9,
+        "placements": 1,
+        "x": 16080,
+        "y": -150,
+        "z": 15120,
+        "heading": 0
+      },
+      {
+        "glyph": 226,
+        "class_id": 9,
+        "placements": 1,
+        "x": 7920,
+        "y": -150,
+        "z": 20400,
+        "heading": 0
+      },
+      {
+        "glyph": 229,
+        "class_id": 9,
+        "placements": 1,
+        "x": 17520,
+        "y": -150,
+        "z": 20400,
+        "heading": 0
+      },
+      {
+        "glyph": 230,
+        "class_id": 9,
+        "placements": 1,
+        "x": 19440,
+        "y": -150,
+        "z": 20400,
+        "heading": 0
+      },
+      {
+        "glyph": 231,
+        "class_id": 9,
+        "placements": 1,
+        "x": 9360,
+        "y": -150,
+        "z": 6480,
+        "heading": 0
+      },
+      {
+        "glyph": 232,
+        "class_id": 9,
+        "placements": 1,
+        "x": 22320,
+        "y": -150,
+        "z": 21840,
+        "heading": 0
+      },
+      {
+        "glyph": 233,
+        "class_id": 9,
+        "placements": 1,
+        "x": 16560,
+        "y": -150,
+        "z": 10800,
+        "heading": 0
+      },
+      {
+        "glyph": 234,
+        "class_id": 9,
+        "placements": 1,
+        "x": 26640,
+        "y": -150,
+        "z": 6960,
+        "heading": 0
+      },
+      {
+        "glyph": 236,
+        "class_id": 9,
+        "placements": 1,
+        "x": 25680,
+        "y": -150,
+        "z": 11760,
+        "heading": 0
+      },
+      {
+        "glyph": 237,
+        "class_id": 9,
+        "placements": 1,
+        "x": 17040,
+        "y": -150,
+        "z": 9840,
+        "heading": 0
+      },
+      {
+        "glyph": 238,
+        "class_id": 9,
+        "placements": 1,
+        "x": 18960,
+        "y": -150,
+        "z": 9840,
+        "heading": 0
+      },
+      {
+        "glyph": 239,
+        "class_id": 9,
+        "placements": 1,
+        "x": 7440,
+        "y": -150,
+        "z": 25200,
+        "heading": 0
+      }
+    ]
+  },
+  {
+    "resource_index": 20,
+    "level_sha256": "f70efbcdf0801d59ccad30017b8953af7ecd80df9a87b6ef378a6d7bbfd5e6e7",
+    "objects": 158,
+    "placed_actor_cells": 102,
+    "unique_placed_actors": 101,
+    "unplaced_actor_glyphs": [
+      147,
+      151,
+      156,
+      231,
+      236
+    ],
+    "repeated_actor_glyphs": [
+      227
+    ],
+    "pickup_99_total": 0,
+    "known_bytes": 15002,
+    "maps": {
+      "MMap": "a18039e6c541b053a90b579489f257d4d03b7fc71800efdca78aa377bcffbce3",
+      "TMap": "507127395c4834aeb3704f7c6ffd1866c273cdfbf91c2fbe681126d3d6f1de5c",
+      "FCMap": "c269911f86f3e52841fbfb18554be06cda4a3c02f10821b939b3fa8326ab2c4a",
+      "visited": "ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7"
+    },
+    "player": {
+      "glyph": 77,
+      "class_id": 1,
+      "placements": 1,
+      "x": 17520,
+      "y": -300,
+      "z": 28560,
+      "heading": 90
+    },
+    "actors": [
+      {
+        "glyph": 77,
+        "class_id": 1,
+        "placements": 1,
+        "x": 17520,
+        "y": -300,
+        "z": 28560,
+        "heading": 90
+      },
+      {
+        "glyph": 128,
+        "class_id": 9,
+        "placements": 1,
+        "x": 26160,
+        "y": 0,
+        "z": 25680,
+        "heading": 0
+      },
+      {
+        "glyph": 129,
+        "class_id": 9,
+        "placements": 1,
+        "x": 26160,
+        "y": 0,
+        "z": 24720,
+        "heading": 0
+      },
+      {
+        "glyph": 130,
+        "class_id": 9,
+        "placements": 1,
+        "x": 26160,
+        "y": 0,
+        "z": 23760,
+        "heading": 0
+      },
+      {
+        "glyph": 131,
+        "class_id": 9,
+        "placements": 1,
+        "x": 19440,
+        "y": 0,
+        "z": 24720,
+        "heading": 0
+      },
+      {
+        "glyph": 132,
+        "class_id": 9,
+        "placements": 1,
+        "x": 20400,
+        "y": 0,
+        "z": 21840,
+        "heading": 0
+      },
+      {
+        "glyph": 133,
+        "class_id": 9,
+        "placements": 1,
+        "x": 6000,
+        "y": 0,
+        "z": 21840,
+        "heading": 0
+      },
+      {
+        "glyph": 165,
+        "class_id": 9,
+        "placements": 1,
+        "x": 8400,
+        "y": 0,
+        "z": 25680,
+        "heading": 0
+      },
+      {
+        "glyph": 134,
+        "class_id": 9,
+        "placements": 1,
+        "x": 11760,
+        "y": 0,
+        "z": 18960,
+        "heading": 0
+      },
+      {
+        "glyph": 135,
+        "class_id": 9,
+        "placements": 1,
+        "x": 23280,
+        "y": 0,
+        "z": 16080,
+        "heading": 0
+      },
+      {
+        "glyph": 136,
+        "class_id": 9,
+        "placements": 1,
+        "x": 21840,
+        "y": 0,
+        "z": 12720,
+        "heading": 0
+      },
+      {
+        "glyph": 137,
+        "class_id": 9,
+        "placements": 1,
+        "x": 16080,
+        "y": 0,
+        "z": 8880,
+        "heading": 0
+      },
+      {
+        "glyph": 138,
+        "class_id": 9,
+        "placements": 1,
+        "x": 18000,
+        "y": 0,
+        "z": 8880,
+        "heading": 0
+      },
+      {
+        "glyph": 139,
+        "class_id": 9,
+        "placements": 1,
+        "x": 25200,
+        "y": 0,
+        "z": 7440,
+        "heading": 0
+      },
+      {
+        "glyph": 140,
+        "class_id": 9,
+        "placements": 1,
+        "x": 25200,
+        "y": 0,
+        "z": 2160,
+        "heading": 0
+      },
+      {
+        "glyph": 141,
+        "class_id": 9,
+        "placements": 1,
+        "x": 28560,
+        "y": 0,
+        "z": 2640,
+        "heading": 0
+      },
+      {
+        "glyph": 142,
+        "class_id": 9,
+        "placements": 1,
+        "x": 16560,
+        "y": 0,
+        "z": 1200,
+        "heading": 0
+      },
+      {
+        "glyph": 143,
+        "class_id": 9,
+        "placements": 1,
+        "x": 2640,
+        "y": 0,
+        "z": 2160,
+        "heading": 0
+      },
+      {
+        "glyph": 144,
+        "class_id": 9,
+        "placements": 1,
+        "x": 1680,
+        "y": 0,
+        "z": 6960,
+        "heading": 0
+      },
+      {
+        "glyph": 145,
+        "class_id": 9,
+        "placements": 1,
+        "x": 2160,
+        "y": 0,
+        "z": 12720,
+        "heading": 0
+      },
+      {
+        "glyph": 146,
+        "class_id": 9,
+        "placements": 1,
+        "x": 2160,
+        "y": 0,
+        "z": 17040,
+        "heading": 0
+      },
+      {
+        "glyph": 148,
+        "class_id": 9,
+        "placements": 1,
+        "x": 2640,
+        "y": 0,
+        "z": 19920,
+        "heading": 0
+      },
+      {
+        "glyph": 149,
+        "class_id": 9,
+        "placements": 1,
+        "x": 2160,
+        "y": 0,
+        "z": 25680,
+        "heading": 0
+      },
+      {
+        "glyph": 150,
+        "class_id": 9,
+        "placements": 1,
+        "x": 1680,
+        "y": 0,
+        "z": 27600,
+        "heading": 0
+      },
+      {
+        "glyph": 152,
+        "class_id": 9,
+        "placements": 1,
+        "x": 25680,
+        "y": 0,
+        "z": 27600,
+        "heading": 0
+      },
+      {
+        "glyph": 153,
+        "class_id": 9,
+        "placements": 1,
+        "x": 26160,
+        "y": 0,
+        "z": 29040,
+        "heading": 0
+      },
+      {
+        "glyph": 154,
+        "class_id": 9,
+        "placements": 1,
+        "x": 29520,
+        "y": 0,
+        "z": 15120,
+        "heading": 0
+      },
+      {
+        "glyph": 155,
+        "class_id": 9,
+        "placements": 1,
+        "x": 10320,
+        "y": 0,
+        "z": 18480,
+        "heading": 0
+      },
+      {
+        "glyph": 157,
+        "class_id": 9,
+        "placements": 1,
+        "x": 10800,
+        "y": 0,
+        "z": 24720,
+        "heading": 0
+      },
+      {
+        "glyph": 158,
+        "class_id": 9,
+        "placements": 1,
+        "x": 6000,
+        "y": 0,
+        "z": 20880,
+        "heading": 0
+      },
+      {
+        "glyph": 159,
+        "class_id": 9,
+        "placements": 1,
+        "x": 17520,
+        "y": 0,
+        "z": 8880,
+        "heading": 0
+      },
+      {
+        "glyph": 179,
+        "class_id": 9,
+        "placements": 1,
+        "x": 1680,
+        "y": 0,
+        "z": 23760,
+        "heading": 0
+      },
+      {
+        "glyph": 180,
+        "class_id": 9,
+        "placements": 1,
+        "x": 2160,
+        "y": 0,
+        "z": 23760,
+        "heading": 0
+      },
+      {
+        "glyph": 181,
+        "class_id": 9,
+        "placements": 1,
+        "x": 2640,
+        "y": 0,
+        "z": 23760,
+        "heading": 0
+      },
+      {
+        "glyph": 182,
+        "class_id": 9,
+        "placements": 1,
+        "x": 1200,
+        "y": 0,
+        "z": 18000,
+        "heading": 0
+      },
+      {
+        "glyph": 183,
+        "class_id": 9,
+        "placements": 1,
+        "x": 1680,
+        "y": 0,
+        "z": 18000,
+        "heading": 0
+      },
+      {
+        "glyph": 184,
+        "class_id": 9,
+        "placements": 1,
+        "x": 2160,
+        "y": 0,
+        "z": 18000,
+        "heading": 0
+      },
+      {
+        "glyph": 185,
+        "class_id": 9,
+        "placements": 1,
+        "x": 1680,
+        "y": 0,
+        "z": 10320,
+        "heading": 0
+      },
+      {
+        "glyph": 186,
+        "class_id": 9,
+        "placements": 1,
+        "x": 2160,
+        "y": 0,
+        "z": 10320,
+        "heading": 0
+      },
+      {
+        "glyph": 187,
+        "class_id": 9,
+        "placements": 1,
+        "x": 2640,
+        "y": 0,
+        "z": 10320,
+        "heading": 0
+      },
+      {
+        "glyph": 188,
+        "class_id": 9,
+        "placements": 1,
+        "x": 5520,
+        "y": 0,
+        "z": 2160,
+        "heading": 0
+      },
+      {
+        "glyph": 189,
+        "class_id": 9,
+        "placements": 1,
+        "x": 6000,
+        "y": 0,
+        "z": 2160,
+        "heading": 0
+      },
+      {
+        "glyph": 190,
+        "class_id": 9,
+        "placements": 1,
+        "x": 6480,
+        "y": 0,
+        "z": 2160,
+        "heading": 0
+      },
+      {
+        "glyph": 191,
+        "class_id": 9,
+        "placements": 1,
+        "x": 18000,
+        "y": 0,
+        "z": 23280,
+        "heading": 0
+      },
+      {
+        "glyph": 192,
+        "class_id": 9,
+        "placements": 1,
+        "x": 18960,
+        "y": 0,
+        "z": 23280,
+        "heading": 0
+      },
+      {
+        "glyph": 193,
+        "class_id": 9,
+        "placements": 1,
+        "x": 20880,
+        "y": 0,
+        "z": 23280,
+        "heading": 0
+      },
+      {
+        "glyph": 194,
+        "class_id": 9,
+        "placements": 1,
+        "x": 28080,
+        "y": 0,
+        "z": 21840,
+        "heading": 0
+      },
+      {
+        "glyph": 195,
+        "class_id": 9,
+        "placements": 1,
+        "x": 28560,
+        "y": 0,
+        "z": 21840,
+        "heading": 0
+      },
+      {
+        "glyph": 196,
+        "class_id": 9,
+        "placements": 1,
+        "x": 29040,
+        "y": 0,
+        "z": 21840,
+        "heading": 0
+      },
+      {
+        "glyph": 197,
+        "class_id": 9,
+        "placements": 1,
+        "x": 29520,
+        "y": 0,
+        "z": 21840,
+        "heading": 0
+      },
+      {
+        "glyph": 160,
+        "class_id": 9,
+        "placements": 1,
+        "x": 26160,
+        "y": -150,
+        "z": 26160,
+        "heading": 0
+      },
+      {
+        "glyph": 198,
+        "class_id": 9,
+        "placements": 1,
+        "x": 11760,
+        "y": -150,
+        "z": 17520,
+        "heading": 0
+      },
+      {
+        "glyph": 199,
+        "class_id": 9,
+        "placements": 1,
+        "x": 11760,
+        "y": -150,
+        "z": 17040,
+        "heading": 0
+      },
+      {
+        "glyph": 200,
+        "class_id": 9,
+        "placements": 1,
+        "x": 11760,
+        "y": -150,
+        "z": 16560,
+        "heading": 0
+      },
+      {
+        "glyph": 201,
+        "class_id": 9,
+        "placements": 1,
+        "x": 11760,
+        "y": -150,
+        "z": 16080,
+        "heading": 0
+      },
+      {
+        "glyph": 202,
+        "class_id": 9,
+        "placements": 1,
+        "x": 11760,
+        "y": -150,
+        "z": 15600,
+        "heading": 0
+      },
+      {
+        "glyph": 203,
+        "class_id": 9,
+        "placements": 1,
+        "x": 11760,
+        "y": -150,
+        "z": 15120,
+        "heading": 0
+      },
+      {
+        "glyph": 204,
+        "class_id": 9,
+        "placements": 1,
+        "x": 11760,
+        "y": -150,
+        "z": 14640,
+        "heading": 0
+      },
+      {
+        "glyph": 205,
+        "class_id": 9,
+        "placements": 1,
+        "x": 11760,
+        "y": -150,
+        "z": 14160,
+        "heading": 0
+      },
+      {
+        "glyph": 206,
+        "class_id": 9,
+        "placements": 1,
+        "x": 8880,
+        "y": -150,
+        "z": 17040,
+        "heading": 0
+      },
+      {
+        "glyph": 207,
+        "class_id": 9,
+        "placements": 1,
+        "x": 11760,
+        "y": -150,
+        "z": 13200,
+        "heading": 0
+      },
+      {
+        "glyph": 208,
+        "class_id": 9,
+        "placements": 1,
+        "x": 11760,
+        "y": -150,
+        "z": 12720,
+        "heading": 0
+      },
+      {
+        "glyph": 209,
+        "class_id": 9,
+        "placements": 1,
+        "x": 11760,
+        "y": -150,
+        "z": 12240,
+        "heading": 0
+      },
+      {
+        "glyph": 210,
+        "class_id": 9,
+        "placements": 1,
+        "x": 17040,
+        "y": -150,
+        "z": 8880,
+        "heading": 0
+      },
+      {
+        "glyph": 211,
+        "class_id": 9,
+        "placements": 1,
+        "x": 11760,
+        "y": -150,
+        "z": 11280,
+        "heading": 0
+      },
+      {
+        "glyph": 212,
+        "class_id": 9,
+        "placements": 1,
+        "x": 11760,
+        "y": -150,
+        "z": 10800,
+        "heading": 0
+      },
+      {
+        "glyph": 213,
+        "class_id": 9,
+        "placements": 1,
+        "x": 11760,
+        "y": -150,
+        "z": 10320,
+        "heading": 0
+      },
+      {
+        "glyph": 214,
+        "class_id": 9,
+        "placements": 1,
+        "x": 18480,
+        "y": -150,
+        "z": 8880,
+        "heading": 0
+      },
+      {
+        "glyph": 215,
+        "class_id": 9,
+        "placements": 1,
+        "x": 11760,
+        "y": -150,
+        "z": 9360,
+        "heading": 0
+      },
+      {
+        "glyph": 216,
+        "class_id": 9,
+        "placements": 1,
+        "x": 11760,
+        "y": -150,
+        "z": 8880,
+        "heading": 0
+      },
+      {
+        "glyph": 217,
+        "class_id": 9,
+        "placements": 1,
+        "x": 11760,
+        "y": -150,
+        "z": 8400,
+        "heading": 0
+      },
+      {
+        "glyph": 218,
+        "class_id": 9,
+        "placements": 1,
+        "x": 11760,
+        "y": -150,
+        "z": 7920,
+        "heading": 0
+      },
+      {
+        "glyph": 220,
+        "class_id": 9,
+        "placements": 1,
+        "x": 7920,
+        "y": -150,
+        "z": 7920,
+        "heading": 0
+      },
+      {
+        "glyph": 161,
+        "class_id": 9,
+        "placements": 1,
+        "x": 26160,
+        "y": -250,
+        "z": 25200,
+        "heading": 0
+      },
+      {
+        "glyph": 162,
+        "class_id": 9,
+        "placements": 1,
+        "x": 26160,
+        "y": -250,
+        "z": 24240,
+        "heading": 0
+      },
+      {
+        "glyph": 163,
+        "class_id": 9,
+        "placements": 1,
+        "x": 18000,
+        "y": -250,
+        "z": 24240,
+        "heading": 0
+      },
+      {
+        "glyph": 164,
+        "class_id": 9,
+        "placements": 1,
+        "x": 20880,
+        "y": -250,
+        "z": 19440,
+        "heading": 0
+      },
+      {
+        "glyph": 166,
+        "class_id": 9,
+        "placements": 1,
+        "x": 11280,
+        "y": -250,
+        "z": 19920,
+        "heading": 0
+      },
+      {
+        "glyph": 167,
+        "class_id": 9,
+        "placements": 1,
+        "x": 16080,
+        "y": -250,
+        "z": 14160,
+        "heading": 0
+      },
+      {
+        "glyph": 168,
+        "class_id": 9,
+        "placements": 1,
+        "x": 23760,
+        "y": -250,
+        "z": 14160,
+        "heading": 0
+      },
+      {
+        "glyph": 169,
+        "class_id": 9,
+        "placements": 1,
+        "x": 16560,
+        "y": -250,
+        "z": 8880,
+        "heading": 0
+      },
+      {
+        "glyph": 170,
+        "class_id": 9,
+        "placements": 1,
+        "x": 18960,
+        "y": -250,
+        "z": 8880,
+        "heading": 0
+      },
+      {
+        "glyph": 171,
+        "class_id": 9,
+        "placements": 1,
+        "x": 24720,
+        "y": -250,
+        "z": 9840,
+        "heading": 0
+      },
+      {
+        "glyph": 172,
+        "class_id": 9,
+        "placements": 1,
+        "x": 22800,
+        "y": -250,
+        "z": 2640,
+        "heading": 0
+      },
+      {
+        "glyph": 173,
+        "class_id": 9,
+        "placements": 1,
+        "x": 28080,
+        "y": -250,
+        "z": 5040,
+        "heading": 0
+      },
+      {
+        "glyph": 174,
+        "class_id": 9,
+        "placements": 1,
+        "x": 17520,
+        "y": -250,
+        "z": 2640,
+        "heading": 0
+      },
+      {
+        "glyph": 175,
+        "class_id": 9,
+        "placements": 1,
+        "x": 2160,
+        "y": -250,
+        "z": 3120,
+        "heading": 0
+      },
+      {
+        "glyph": 224,
+        "class_id": 9,
+        "placements": 1,
+        "x": 2160,
+        "y": -250,
+        "z": 7920,
+        "heading": 0
+      },
+      {
+        "glyph": 225,
+        "class_id": 9,
+        "placements": 1,
+        "x": 1200,
+        "y": -250,
+        "z": 11760,
+        "heading": 0
+      },
+      {
+        "glyph": 226,
+        "class_id": 9,
+        "placements": 1,
+        "x": 1680,
+        "y": -250,
+        "z": 16560,
+        "heading": 0
+      },
+      {
+        "glyph": 227,
+        "class_id": 9,
+        "placements": 2,
+        "x": 2160,
+        "y": -250,
+        "z": 21840,
+        "heading": 0
+      },
+      {
+        "glyph": 228,
+        "class_id": 9,
+        "placements": 1,
+        "x": 1680,
+        "y": -250,
+        "z": 20400,
+        "heading": 0
+      },
+      {
+        "glyph": 229,
+        "class_id": 9,
+        "placements": 1,
+        "x": 1680,
+        "y": -250,
+        "z": 24720,
+        "heading": 0
+      },
+      {
+        "glyph": 230,
+        "class_id": 9,
+        "placements": 1,
+        "x": 1680,
+        "y": -250,
+        "z": 28560,
+        "heading": 0
+      },
+      {
+        "glyph": 232,
+        "class_id": 9,
+        "placements": 1,
+        "x": 24240,
+        "y": -250,
+        "z": 28080,
+        "heading": 0
+      },
+      {
+        "glyph": 233,
+        "class_id": 9,
+        "placements": 1,
+        "x": 28080,
+        "y": -250,
+        "z": 19920,
+        "heading": 0
+      },
+      {
+        "glyph": 234,
+        "class_id": 9,
+        "placements": 1,
+        "x": 28560,
+        "y": -250,
+        "z": 16080,
+        "heading": 0
+      },
+      {
+        "glyph": 235,
+        "class_id": 9,
+        "placements": 1,
+        "x": 18000,
+        "y": -250,
+        "z": 18000,
+        "heading": 0
+      },
+      {
+        "glyph": 237,
+        "class_id": 9,
+        "placements": 1,
+        "x": 10320,
+        "y": -250,
+        "z": 25680,
+        "heading": 0
+      },
+      {
+        "glyph": 238,
+        "class_id": 9,
+        "placements": 1,
+        "x": 8880,
+        "y": -250,
+        "z": 22320,
+        "heading": 0
+      },
+      {
+        "glyph": 239,
+        "class_id": 9,
+        "placements": 1,
+        "x": 24720,
+        "y": -250,
+        "z": 6480,
+        "heading": 0
+      }
+    ]
+  }
+]
