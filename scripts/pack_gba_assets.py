@@ -91,8 +91,8 @@ def object_record(o):
     if c == 6:
         put(b, 16, "hhhh", value(0x52), value(0x54), value(0x56), value(0x58))
     elif c == 7:
-        put(b, 16, "ihhhhhHBB2x", value(0x66, 4), value(0x5c), value(0x5e), value(0x5a),
-            value(0x58), value(0x56), value(0x6a, signed=False), value(0x54, 1, False), value(0x55, 1, False))
+        put(b, 16, "ihhhhhHBBh", value(0x66, 4), value(0x5c), value(0x5e), value(0x5a),
+            value(0x58), value(0x56), value(0x6a, signed=False), value(0x54, 1, False), value(0x55, 1, False), value(0x60))
     elif c == 8:
         put(b, 16, "iihhhhB3x", value(0x3c, 4), value(0x2a, 4), value(0x5c), value(0x5e),
             value(0x5a), value(0x58), value(0x68, 1, False))

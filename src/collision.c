@@ -78,9 +78,8 @@ static int inside(const dok_runtime *w,int32_t x,int32_t z,int32_t r)
     return x>=r && z>=r && x<=(int32_t)w->level->settings[DOK_LEVEL_WIDTH]*side-r-1 &&
         z<=(int32_t)w->level->settings[DOK_LEVEL_LENGTH]*side-r-1;
 }
-void dok_collision_move(dok_runtime_actor *a,int16_t distance,int strafe,void *context)
+void dok_collision_displace(dok_runtime *w,dok_runtime_actor *a,int16_t dx,int16_t dz)
 {
-    dok_runtime *w=context;
     if(!w || !w->level) return;
     int32_t r=w->level->settings[DOK_LEVEL_MIN_DISTANCE];
     int32_t side=w->level->settings[DOK_LEVEL_CELL_SIDE];
@@ -92,13 +91,11 @@ void dok_collision_move(dok_runtime_actor *a,int16_t distance,int strafe,void *c
     dok_runtime_object *door=door_at(w,old);
     if(door && door->state.door.state_56) --door->state.door.state_56;
     w->maps[old]=' ';
-    dok_runtime_actor candidate=*a;
-    dok_motion_free(&candidate,distance,strafe,0);
-    int32_t nx=candidate.x,nz=candidate.z;
+    int32_t nx=a->x+dx,nz=a->z+dz;
     int32_t x=a->x,z=a->z;
     /* A normal quarter step is <=180 units. Reject oversized diagnostic or
      * corrupt requests rather than tunnel across cells or overflow resolver. */
-    if(inside(w,nx,nz,r) && distance>-side/2 && distance<side/2) {
+    if(inside(w,nx,nz,r) && dx>-side/2 && dx<side/2 && dz>-side/2 && dz<side/2) {
         dok_collision_resolve(w,&x,&z,nx,nz);
         if(inside(w,x,z,r) && dok_collision_clear(w,x,z,(int16_t)r)) {a->x=x;a->z=z;}
     }
@@ -106,4 +103,13 @@ void dok_collision_move(dok_runtime_actor *a,int16_t distance,int strafe,void *c
     door=door_at(w,next);
     if(door) door->state.door.state_56=(int16_t)((uint16_t)door->state.door.state_56+1u);
     w->maps[next]=a->glyph;
+}
+void dok_collision_move(dok_runtime_actor *a,int16_t distance,int strafe,void *context)
+{
+    dok_runtime *w=context;
+    if(!w || !w->level) return;
+    int32_t side=w->level->settings[DOK_LEVEL_CELL_SIDE];
+    if(distance<=-side/2 || distance>=side/2) return;
+    dok_runtime_actor candidate=*a;dok_motion_free(&candidate,distance,strafe,0);
+    dok_collision_displace(w,a,(int16_t)(candidate.x-a->x),(int16_t)(candidate.z-a->z));
 }

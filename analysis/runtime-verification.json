@@ -454,7 +454,7 @@
   ],
   "tool": {
     "path": "C:\\Source\\DoK-port\\build\\native\\dok-runtime.exe",
-    "sha256": "dbd42e15edc7be93f96ca2277958d07bd0865c166c24055491573cf65fbf6526"
+    "sha256": "81be6af273253cc947af1d7a1fbb9d8fa2c20290331c0a5665de607af7bbfd1b"
   },
   "checker_sha256": "68b78861498ff9d9ead019ed1eee3b1f9255077cf5892b45358f6594a8b5926a",
   "originals": {
@@ -587,7 +587,7 @@
   },
   "synthetic_tests": {
     "path": "C:\\Source\\DoK-port\\build\\native\\dok-runtime-tests.exe",
-    "sha256": "aa35527cd07a653b492df8481970181b31aeafcd3534e2798706cf197591006b",
+    "sha256": "0c1bb9a1d4ce633b933609990317447bdc879a8a0f45a327c924e7e76ca5a537",
     "source": "tests/test_runtime.c",
     "source_sha256": "e9a7b0ea0d549e08025a06927205b90072097372b43526779f1beb4a53af1826",
     "exit_code": 0,

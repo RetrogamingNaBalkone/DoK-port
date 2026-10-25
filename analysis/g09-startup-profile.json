@@ -1,0 +1,24 @@
+{
+  "rom": "defb27a26a0d9aff5a36444d45efb4f90b7342fa0bd0933e30fb91946b3746dc",
+  "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+  "total": 449760,
+  "timestamps": [
+    8052,
+    12242,
+    85825,
+    89184,
+    348151,
+    372826,
+    449729
+  ],
+  "input_time_poll": 8052,
+  "stages": {
+    "clear_resources": 4190,
+    "geometry": 73583,
+    "sort": 3359,
+    "raster": 258967,
+    "hud": 24675,
+    "copy": 76903
+  },
+  "note": "Full timed frame excludes presentation wait; stages include timestamp overhead; one steady observation"
+}

@@ -14,6 +14,14 @@ if ($Compiler -eq 'zig') {
     try {
         $env:ZIG_GLOBAL_CACHE_DIR = Join-Path $taskRoot 'build/zig-cache'
         $taskCommon = @('cc','-std=c11','-Wall','-Wextra','-Werror','-O2','-I','include')
+        & $ZigExe @taskCommon src/interactions.c src/scheduler.c src/movement.c src/collision.c tests/interactions_cases.c tests/test_interactions.c -o build/native/dok-interactions-tests.exe
+        if ($LASTEXITCODE -ne 0) { throw 'Interactions suite build failed' }
+        & ./build/native/dok-interactions-tests.exe
+        if ($LASTEXITCODE -ne 0) { throw 'Interactions suite failed' }
+        & $ZigExe @taskCommon src/interactions.c src/scheduler.c src/movement.c src/collision.c tools/interactions_probe.c -o build/native/dok-interactions-probe.exe
+        if ($LASTEXITCODE -ne 0) { throw 'Interactions probe build failed' }
+        & $ZigExe @taskCommon -DDOK_RUNTIME_ROM_ONLY src/runtime.c src/rom_assets.c src/interactions.c src/scheduler.c src/movement.c src/collision.c tools/interactions_scenarios.c -o build/native/dok-interactions-scenarios.exe
+        if ($LASTEXITCODE -ne 0) { throw 'Interactions scenarios build failed' }
         & $ZigExe @taskCommon src/movement.c src/collision.c tests/collision_cases.c tests/test_collision.c -o build/native/dok-collision-tests.exe
         if ($LASTEXITCODE -ne 0) { throw 'Collision suite build failed' }
         & ./build/native/dok-collision-tests.exe
@@ -91,6 +99,10 @@ if ($Compiler -eq 'zig') {
         & ./build/native/dok-sound-tests.exe
         if ($LASTEXITCODE -ne 0) { throw 'Sound tests failed' }
         if ($CrossChecks) {
+            & $ZigExe cc -target x86_64-linux-musl -static -std=c11 -Wall -Wextra -Werror -O2 -I include src/interactions.c src/scheduler.c src/movement.c src/collision.c tests/interactions_cases.c tests/test_interactions.c -o build/native/dok-interactions-tests-linux
+            if ($LASTEXITCODE -ne 0) { throw 'Linux interactions build failed' }
+            & $ZigExe cc -target thumb-freestanding-eabi -mcpu=arm7tdmi -ffreestanding -std=c11 -Wall -Wextra -Werror -O2 -I include -c src/interactions.c -o build/native/interactions-arm7tdmi.o
+            if ($LASTEXITCODE -ne 0) { throw 'Thumb interactions compile failed' }
             & $ZigExe cc -target x86_64-linux-musl -static -std=c11 -Wall -Wextra -Werror -O2 -I include src/movement.c src/collision.c tests/collision_cases.c tests/test_collision.c -o build/native/dok-collision-tests-linux
             if ($LASTEXITCODE -ne 0) { throw 'Linux collision suite build failed' }
             & $ZigExe cc -target thumb-freestanding-eabi -mcpu=arm7tdmi -ffreestanding -std=c11 -Wall -Wextra -Werror -O2 -I include -c src/collision.c -o build/native/collision-arm7tdmi.o
@@ -150,6 +162,14 @@ $taskBatch = @'
 call "%~1" -arch=x64 -host_arch=x64 >nul
 if errorlevel 1 exit /b 1
 cd /d "%~2"
+cl /nologo /std:c11 /W4 /WX /O2 /D_CRT_SECURE_NO_WARNINGS /I include src/interactions.c src/scheduler.c src/movement.c src/collision.c tests/interactions_cases.c tests/test_interactions.c /Fo:build/native/ /Fe:build/native/dok-interactions-tests.exe
+if errorlevel 1 exit /b 1
+build\native\dok-interactions-tests.exe
+if errorlevel 1 exit /b 1
+cl /nologo /std:c11 /W4 /WX /O2 /D_CRT_SECURE_NO_WARNINGS /I include src/interactions.c src/scheduler.c src/movement.c src/collision.c tools/interactions_probe.c /Fo:build/native/ /Fe:build/native/dok-interactions-probe.exe
+if errorlevel 1 exit /b 1
+cl /nologo /std:c11 /W4 /WX /O2 /D_CRT_SECURE_NO_WARNINGS /DDOK_RUNTIME_ROM_ONLY /I include src/runtime.c src/rom_assets.c src/interactions.c src/scheduler.c src/movement.c src/collision.c tools/interactions_scenarios.c /Fo:build/native/ /Fe:build/native/dok-interactions-scenarios.exe
+if errorlevel 1 exit /b 1
 cl /nologo /std:c11 /W4 /WX /O2 /D_CRT_SECURE_NO_WARNINGS /I include src/movement.c tests/movement_cases.c tests/test_movement.c /Fo:build/native/ /Fe:build/native/dok-movement-tests.exe
 if errorlevel 1 exit /b 1
 build\native\dok-movement-tests.exe

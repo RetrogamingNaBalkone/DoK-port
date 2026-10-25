@@ -1,0 +1,2715 @@
+{
+  "task": "G09",
+  "status": "passed",
+  "address_system": "runtime-oriented map cells; native scalar offsets are evidence tags",
+  "levels": [
+    {
+      "language": "ru",
+      "level": 1,
+      "source": "build/runtime/ru/LEVEL1-runtime.json",
+      "source_sha256": "8d5a485ca5a33ef72bccad1db6140a69157be2ba22eccce874e7532cd27c4ab0",
+      "objects": [
+        {
+          "glyph": 97,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 72,
+          "fields": {
+            "92": 2,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            2,
+            0
+          ]
+        },
+        {
+          "glyph": 98,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 72,
+          "fields": {
+            "92": 1,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            2,
+            0
+          ]
+        },
+        {
+          "glyph": 99,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 72,
+          "fields": {
+            "92": 4,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            4,
+            0
+          ]
+        },
+        {
+          "glyph": 100,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 72,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            2,
+            0
+          ]
+        },
+        {
+          "glyph": 109,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 72,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            2,
+            0
+          ]
+        },
+        {
+          "glyph": 110,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 72,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            2,
+            0
+          ]
+        },
+        {
+          "glyph": 111,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 72,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            2,
+            0
+          ]
+        },
+        {
+          "glyph": 112,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 72,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            2,
+            0
+          ]
+        },
+        {
+          "glyph": 113,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 72,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            2,
+            0
+          ]
+        },
+        {
+          "glyph": 114,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 72,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            2,
+            0
+          ]
+        },
+        {
+          "glyph": 101,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 72,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            2,
+            0
+          ]
+        },
+        {
+          "glyph": 116,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 72,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            2,
+            0
+          ]
+        },
+        {
+          "glyph": 117,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 72,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            2,
+            0
+          ]
+        },
+        {
+          "glyph": 103,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 264,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            6,
+            0
+          ]
+        },
+        {
+          "glyph": 104,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 264,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "glyph": 105,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 264,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "glyph": 106,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 264,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "glyph": 107,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 264,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            10,
+            0
+          ]
+        },
+        {
+          "glyph": 83,
+          "class_id": 6,
+          "flags": 24,
+          "sprite_flags": 24,
+          "fields": {},
+          "map_uses": [
+            0,
+            138,
+            0
+          ]
+        },
+        {
+          "glyph": 70,
+          "class_id": 6,
+          "flags": 24,
+          "sprite_flags": 24,
+          "fields": {},
+          "map_uses": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "glyph": 71,
+          "class_id": 6,
+          "flags": 8,
+          "sprite_flags": 8,
+          "fields": {},
+          "map_uses": [
+            0,
+            62,
+            0
+          ]
+        },
+        {
+          "glyph": 72,
+          "class_id": 6,
+          "flags": 8,
+          "sprite_flags": 8,
+          "fields": {},
+          "map_uses": [
+            0,
+            11,
+            0
+          ]
+        },
+        {
+          "glyph": 73,
+          "class_id": 6,
+          "flags": 8,
+          "sprite_flags": 8,
+          "fields": {},
+          "map_uses": [
+            0,
+            18,
+            0
+          ]
+        },
+        {
+          "glyph": 60,
+          "class_id": 12,
+          "flags": 16,
+          "sprite_flags": 2056,
+          "fields": {
+            "84": 400,
+            "102": 100,
+            "104": -150
+          },
+          "map_uses": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "glyph": 62,
+          "class_id": 12,
+          "flags": 16,
+          "sprite_flags": 1032,
+          "fields": {
+            "84": 400,
+            "102": 100,
+            "104": 150
+          },
+          "map_uses": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "glyph": 123,
+          "class_id": 12,
+          "flags": 16,
+          "sprite_flags": 8200,
+          "fields": {
+            "84": 400,
+            "102": 102,
+            "104": 150
+          },
+          "map_uses": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "glyph": 125,
+          "class_id": 12,
+          "flags": 16,
+          "sprite_flags": 4104,
+          "fields": {
+            "84": 400,
+            "102": 102,
+            "104": -150
+          },
+          "map_uses": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "glyph": 178,
+          "class_id": 12,
+          "flags": 16,
+          "sprite_flags": 16,
+          "fields": {
+            "84": 10,
+            "102": 1000,
+            "104": 1
+          },
+          "map_uses": [
+            0,
+            0,
+            2
+          ]
+        }
+      ]
+    },
+    {
+      "language": "ru",
+      "level": 2,
+      "source": "build/runtime/ru/LEVEL2-runtime.json",
+      "source_sha256": "acf29d78e6befe75a91342bf26d8ac6648ea17597f5b5fedcbb81bf056c97c9c",
+      "objects": [
+        {
+          "glyph": 97,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 72,
+          "fields": {
+            "92": 2,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            2,
+            0
+          ]
+        },
+        {
+          "glyph": 98,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 72,
+          "fields": {
+            "92": 1,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            2,
+            0
+          ]
+        },
+        {
+          "glyph": 99,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 72,
+          "fields": {
+            "92": 4,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            2,
+            0
+          ]
+        },
+        {
+          "glyph": 100,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 72,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            2,
+            0
+          ]
+        },
+        {
+          "glyph": 109,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 72,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            2,
+            0
+          ]
+        },
+        {
+          "glyph": 110,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 72,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            2,
+            0
+          ]
+        },
+        {
+          "glyph": 111,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 72,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            2,
+            0
+          ]
+        },
+        {
+          "glyph": 112,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 72,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            2,
+            0
+          ]
+        },
+        {
+          "glyph": 113,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 72,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            4,
+            0
+          ]
+        },
+        {
+          "glyph": 114,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 72,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            4,
+            0
+          ]
+        },
+        {
+          "glyph": 101,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 72,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            4,
+            0
+          ]
+        },
+        {
+          "glyph": 116,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 72,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            6,
+            0
+          ]
+        },
+        {
+          "glyph": 117,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 72,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            2,
+            0
+          ]
+        },
+        {
+          "glyph": 103,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 264,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "glyph": 104,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 264,
+          "fields": {
+            "92": 8,
+            "94": 0,
+            "102": 0
+          },
+          "map_uses": [
+            0,
+            25,
+            0
+          ]
+        },
+        {
+          "glyph": 105,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 264,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "glyph": 106,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 264,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "glyph": 107,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 264,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "glyph": 83,
+          "class_id": 6,
+          "flags": 24,
+          "sprite_flags": 24,
+          "fields": {},
+          "map_uses": [
+            0,
+            124,
+            0
+          ]
+        },
+        {
+          "glyph": 70,
+          "class_id": 6,
+          "flags": 24,
+          "sprite_flags": 24,
+          "fields": {},
+          "map_uses": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "glyph": 71,
+          "class_id": 6,
+          "flags": 8,
+          "sprite_flags": 8,
+          "fields": {},
+          "map_uses": [
+            0,
+            33,
+            0
+          ]
+        },
+        {
+          "glyph": 72,
+          "class_id": 6,
+          "flags": 8,
+          "sprite_flags": 8,
+          "fields": {},
+          "map_uses": [
+            0,
+            3,
+            0
+          ]
+        },
+        {
+          "glyph": 73,
+          "class_id": 6,
+          "flags": 8,
+          "sprite_flags": 8,
+          "fields": {},
+          "map_uses": [
+            0,
+            2,
+            0
+          ]
+        },
+        {
+          "glyph": 60,
+          "class_id": 12,
+          "flags": 16,
+          "sprite_flags": 2056,
+          "fields": {
+            "84": 400,
+            "102": 100,
+            "104": -1400
+          },
+          "map_uses": [
+            0,
+            0,
+            386
+          ]
+        },
+        {
+          "glyph": 62,
+          "class_id": 12,
+          "flags": 16,
+          "sprite_flags": 1032,
+          "fields": {
+            "84": 400,
+            "102": 100,
+            "104": 1400
+          },
+          "map_uses": [
+            0,
+            0,
+            341
+          ]
+        },
+        {
+          "glyph": 123,
+          "class_id": 12,
+          "flags": 16,
+          "sprite_flags": 8200,
+          "fields": {
+            "84": 400,
+            "102": 102,
+            "104": 1400
+          },
+          "map_uses": [
+            0,
+            0,
+            127
+          ]
+        },
+        {
+          "glyph": 125,
+          "class_id": 12,
+          "flags": 16,
+          "sprite_flags": 4104,
+          "fields": {
+            "84": 400,
+            "102": 102,
+            "104": -1400
+          },
+          "map_uses": [
+            0,
+            0,
+            141
+          ]
+        },
+        {
+          "glyph": 178,
+          "class_id": 12,
+          "flags": 16,
+          "sprite_flags": 16,
+          "fields": {
+            "84": 10,
+            "102": 1000,
+            "104": 1
+          },
+          "map_uses": [
+            0,
+            0,
+            2
+          ]
+        },
+        {
+          "glyph": 102,
+          "class_id": 13,
+          "flags": 16,
+          "sprite_flags": 16,
+          "fields": {
+            "84": 10,
+            "102": 104,
+            "103": 2048
+          },
+          "map_uses": [
+            0,
+            0,
+            4
+          ],
+          "sensor_cells": [
+            3632,
+            3696,
+            3760,
+            3762
+          ]
+        }
+      ]
+    },
+    {
+      "language": "ru",
+      "level": 3,
+      "source": "build/runtime/ru/LEVEL3-runtime.json",
+      "source_sha256": "7b74616754f16fd29234cc18ab1773b6d5dd79d4bc6e16cd716974ccb040d748",
+      "objects": [
+        {
+          "glyph": 97,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 72,
+          "fields": {
+            "92": 2,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            4,
+            0
+          ]
+        },
+        {
+          "glyph": 98,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 72,
+          "fields": {
+            "92": 1,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            2,
+            0
+          ]
+        },
+        {
+          "glyph": 99,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 72,
+          "fields": {
+            "92": 4,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            2,
+            0
+          ]
+        },
+        {
+          "glyph": 100,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 72,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            2,
+            0
+          ]
+        },
+        {
+          "glyph": 109,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 72,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            2,
+            0
+          ]
+        },
+        {
+          "glyph": 110,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 72,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            2,
+            0
+          ]
+        },
+        {
+          "glyph": 111,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 72,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            2,
+            0
+          ]
+        },
+        {
+          "glyph": 112,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 72,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            2,
+            0
+          ]
+        },
+        {
+          "glyph": 113,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 72,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            2,
+            0
+          ]
+        },
+        {
+          "glyph": 114,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 72,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "glyph": 101,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 72,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            2,
+            0
+          ]
+        },
+        {
+          "glyph": 116,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 72,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            2,
+            0
+          ]
+        },
+        {
+          "glyph": 117,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 72,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            2,
+            0
+          ]
+        },
+        {
+          "glyph": 103,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 264,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            4,
+            0
+          ]
+        },
+        {
+          "glyph": 104,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 264,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "glyph": 105,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 264,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            2,
+            0
+          ]
+        },
+        {
+          "glyph": 106,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 264,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            2,
+            0
+          ]
+        },
+        {
+          "glyph": 107,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 264,
+          "fields": {
+            "92": 8,
+            "94": 0,
+            "102": 0
+          },
+          "map_uses": [
+            0,
+            6,
+            0
+          ]
+        },
+        {
+          "glyph": 83,
+          "class_id": 6,
+          "flags": 24,
+          "sprite_flags": 24,
+          "fields": {},
+          "map_uses": [
+            0,
+            256,
+            0
+          ]
+        },
+        {
+          "glyph": 70,
+          "class_id": 6,
+          "flags": 24,
+          "sprite_flags": 24,
+          "fields": {},
+          "map_uses": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "glyph": 71,
+          "class_id": 6,
+          "flags": 8,
+          "sprite_flags": 8,
+          "fields": {},
+          "map_uses": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "glyph": 72,
+          "class_id": 6,
+          "flags": 8,
+          "sprite_flags": 8,
+          "fields": {},
+          "map_uses": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "glyph": 73,
+          "class_id": 6,
+          "flags": 8,
+          "sprite_flags": 8,
+          "fields": {},
+          "map_uses": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "glyph": 60,
+          "class_id": 12,
+          "flags": 16,
+          "sprite_flags": 2056,
+          "fields": {
+            "84": 400,
+            "102": 100,
+            "104": -150
+          },
+          "map_uses": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "glyph": 62,
+          "class_id": 12,
+          "flags": 16,
+          "sprite_flags": 1032,
+          "fields": {
+            "84": 400,
+            "102": 100,
+            "104": 150
+          },
+          "map_uses": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "glyph": 123,
+          "class_id": 12,
+          "flags": 16,
+          "sprite_flags": 8200,
+          "fields": {
+            "84": 400,
+            "102": 102,
+            "104": 150
+          },
+          "map_uses": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "glyph": 125,
+          "class_id": 12,
+          "flags": 16,
+          "sprite_flags": 4104,
+          "fields": {
+            "84": 400,
+            "102": 102,
+            "104": -150
+          },
+          "map_uses": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "glyph": 178,
+          "class_id": 12,
+          "flags": 16,
+          "sprite_flags": 16,
+          "fields": {
+            "84": 10,
+            "102": 1000,
+            "104": 1
+          },
+          "map_uses": [
+            0,
+            0,
+            4
+          ]
+        },
+        {
+          "glyph": 102,
+          "class_id": 13,
+          "flags": 16,
+          "sprite_flags": 16,
+          "fields": {
+            "84": 10,
+            "102": 107,
+            "103": 2048
+          },
+          "map_uses": [
+            0,
+            0,
+            6
+          ],
+          "sensor_cells": [
+            3321,
+            3322,
+            3323,
+            3324,
+            3325,
+            3326
+          ]
+        }
+      ]
+    },
+    {
+      "language": "en",
+      "level": 1,
+      "source": "build/runtime/en/LEVEL1-runtime.json",
+      "source_sha256": "500bdf3c490233e2437b9d52b89bc22917f1720376e5a66768611cf2d345b1b2",
+      "objects": [
+        {
+          "glyph": 97,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 72,
+          "fields": {
+            "92": 2,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            2,
+            0
+          ]
+        },
+        {
+          "glyph": 98,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 72,
+          "fields": {
+            "92": 1,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            2,
+            0
+          ]
+        },
+        {
+          "glyph": 99,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 72,
+          "fields": {
+            "92": 4,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            4,
+            0
+          ]
+        },
+        {
+          "glyph": 100,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 72,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            2,
+            0
+          ]
+        },
+        {
+          "glyph": 109,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 72,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            2,
+            0
+          ]
+        },
+        {
+          "glyph": 110,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 72,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            2,
+            0
+          ]
+        },
+        {
+          "glyph": 111,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 72,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            2,
+            0
+          ]
+        },
+        {
+          "glyph": 112,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 72,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            2,
+            0
+          ]
+        },
+        {
+          "glyph": 113,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 72,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            2,
+            0
+          ]
+        },
+        {
+          "glyph": 114,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 72,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            2,
+            0
+          ]
+        },
+        {
+          "glyph": 101,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 72,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            2,
+            0
+          ]
+        },
+        {
+          "glyph": 116,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 72,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            2,
+            0
+          ]
+        },
+        {
+          "glyph": 117,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 72,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            2,
+            0
+          ]
+        },
+        {
+          "glyph": 103,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 264,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            6,
+            0
+          ]
+        },
+        {
+          "glyph": 104,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 264,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "glyph": 105,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 264,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "glyph": 106,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 264,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "glyph": 107,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 264,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            10,
+            0
+          ]
+        },
+        {
+          "glyph": 83,
+          "class_id": 6,
+          "flags": 24,
+          "sprite_flags": 24,
+          "fields": {},
+          "map_uses": [
+            0,
+            138,
+            0
+          ]
+        },
+        {
+          "glyph": 70,
+          "class_id": 6,
+          "flags": 24,
+          "sprite_flags": 24,
+          "fields": {},
+          "map_uses": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "glyph": 71,
+          "class_id": 6,
+          "flags": 8,
+          "sprite_flags": 8,
+          "fields": {},
+          "map_uses": [
+            0,
+            63,
+            0
+          ]
+        },
+        {
+          "glyph": 72,
+          "class_id": 6,
+          "flags": 8,
+          "sprite_flags": 8,
+          "fields": {},
+          "map_uses": [
+            0,
+            11,
+            0
+          ]
+        },
+        {
+          "glyph": 73,
+          "class_id": 6,
+          "flags": 8,
+          "sprite_flags": 8,
+          "fields": {},
+          "map_uses": [
+            0,
+            18,
+            0
+          ]
+        },
+        {
+          "glyph": 60,
+          "class_id": 12,
+          "flags": 16,
+          "sprite_flags": 2056,
+          "fields": {
+            "84": 400,
+            "102": 100,
+            "104": -150
+          },
+          "map_uses": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "glyph": 62,
+          "class_id": 12,
+          "flags": 16,
+          "sprite_flags": 1032,
+          "fields": {
+            "84": 400,
+            "102": 100,
+            "104": 150
+          },
+          "map_uses": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "glyph": 123,
+          "class_id": 12,
+          "flags": 16,
+          "sprite_flags": 8200,
+          "fields": {
+            "84": 400,
+            "102": 102,
+            "104": 150
+          },
+          "map_uses": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "glyph": 125,
+          "class_id": 12,
+          "flags": 16,
+          "sprite_flags": 4104,
+          "fields": {
+            "84": 400,
+            "102": 102,
+            "104": -150
+          },
+          "map_uses": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "glyph": 178,
+          "class_id": 12,
+          "flags": 16,
+          "sprite_flags": 16,
+          "fields": {
+            "84": 10,
+            "102": 1000,
+            "104": 1
+          },
+          "map_uses": [
+            0,
+            0,
+            2
+          ]
+        }
+      ]
+    },
+    {
+      "language": "en",
+      "level": 2,
+      "source": "build/runtime/en/LEVEL2-runtime.json",
+      "source_sha256": "2c062ae47e05d71646edd88e28033e811f43dd76b111e3862bf4a9252ff5dbb5",
+      "objects": [
+        {
+          "glyph": 97,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 72,
+          "fields": {
+            "92": 2,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            2,
+            0
+          ]
+        },
+        {
+          "glyph": 98,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 72,
+          "fields": {
+            "92": 1,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            2,
+            0
+          ]
+        },
+        {
+          "glyph": 99,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 72,
+          "fields": {
+            "92": 4,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            2,
+            0
+          ]
+        },
+        {
+          "glyph": 100,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 72,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            2,
+            0
+          ]
+        },
+        {
+          "glyph": 109,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 72,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            2,
+            0
+          ]
+        },
+        {
+          "glyph": 110,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 72,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            2,
+            0
+          ]
+        },
+        {
+          "glyph": 111,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 72,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            2,
+            0
+          ]
+        },
+        {
+          "glyph": 112,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 72,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            2,
+            0
+          ]
+        },
+        {
+          "glyph": 113,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 72,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            4,
+            0
+          ]
+        },
+        {
+          "glyph": 114,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 72,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            4,
+            0
+          ]
+        },
+        {
+          "glyph": 101,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 72,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            4,
+            0
+          ]
+        },
+        {
+          "glyph": 116,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 72,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            6,
+            0
+          ]
+        },
+        {
+          "glyph": 117,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 72,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            2,
+            0
+          ]
+        },
+        {
+          "glyph": 103,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 264,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "glyph": 104,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 264,
+          "fields": {
+            "92": 8,
+            "94": 0,
+            "102": 0
+          },
+          "map_uses": [
+            0,
+            25,
+            0
+          ]
+        },
+        {
+          "glyph": 105,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 264,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "glyph": 106,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 264,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "glyph": 107,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 264,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "glyph": 83,
+          "class_id": 6,
+          "flags": 24,
+          "sprite_flags": 24,
+          "fields": {},
+          "map_uses": [
+            0,
+            124,
+            0
+          ]
+        },
+        {
+          "glyph": 70,
+          "class_id": 6,
+          "flags": 24,
+          "sprite_flags": 24,
+          "fields": {},
+          "map_uses": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "glyph": 71,
+          "class_id": 6,
+          "flags": 8,
+          "sprite_flags": 8,
+          "fields": {},
+          "map_uses": [
+            0,
+            33,
+            0
+          ]
+        },
+        {
+          "glyph": 72,
+          "class_id": 6,
+          "flags": 8,
+          "sprite_flags": 8,
+          "fields": {},
+          "map_uses": [
+            0,
+            3,
+            0
+          ]
+        },
+        {
+          "glyph": 73,
+          "class_id": 6,
+          "flags": 8,
+          "sprite_flags": 8,
+          "fields": {},
+          "map_uses": [
+            0,
+            2,
+            0
+          ]
+        },
+        {
+          "glyph": 60,
+          "class_id": 12,
+          "flags": 16,
+          "sprite_flags": 2056,
+          "fields": {
+            "84": 400,
+            "102": 100,
+            "104": -1400
+          },
+          "map_uses": [
+            0,
+            0,
+            386
+          ]
+        },
+        {
+          "glyph": 62,
+          "class_id": 12,
+          "flags": 16,
+          "sprite_flags": 1032,
+          "fields": {
+            "84": 400,
+            "102": 100,
+            "104": 1400
+          },
+          "map_uses": [
+            0,
+            0,
+            341
+          ]
+        },
+        {
+          "glyph": 123,
+          "class_id": 12,
+          "flags": 16,
+          "sprite_flags": 8200,
+          "fields": {
+            "84": 400,
+            "102": 102,
+            "104": 1400
+          },
+          "map_uses": [
+            0,
+            0,
+            127
+          ]
+        },
+        {
+          "glyph": 125,
+          "class_id": 12,
+          "flags": 16,
+          "sprite_flags": 4104,
+          "fields": {
+            "84": 400,
+            "102": 102,
+            "104": -1400
+          },
+          "map_uses": [
+            0,
+            0,
+            141
+          ]
+        },
+        {
+          "glyph": 178,
+          "class_id": 12,
+          "flags": 16,
+          "sprite_flags": 16,
+          "fields": {
+            "84": 10,
+            "102": 1000,
+            "104": 1
+          },
+          "map_uses": [
+            0,
+            0,
+            2
+          ]
+        },
+        {
+          "glyph": 102,
+          "class_id": 13,
+          "flags": 16,
+          "sprite_flags": 16,
+          "fields": {
+            "84": 10,
+            "102": 104,
+            "103": 2048
+          },
+          "map_uses": [
+            0,
+            0,
+            4
+          ],
+          "sensor_cells": [
+            3632,
+            3696,
+            3760,
+            3762
+          ]
+        }
+      ]
+    },
+    {
+      "language": "en",
+      "level": 3,
+      "source": "build/runtime/en/LEVEL3-runtime.json",
+      "source_sha256": "858df2bebb53df1036c13d4c928be949b42f93c244aa04d2abad5261bd52bbf5",
+      "objects": [
+        {
+          "glyph": 97,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 72,
+          "fields": {
+            "92": 2,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            4,
+            0
+          ]
+        },
+        {
+          "glyph": 98,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 72,
+          "fields": {
+            "92": 1,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            2,
+            0
+          ]
+        },
+        {
+          "glyph": 99,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 72,
+          "fields": {
+            "92": 4,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            2,
+            0
+          ]
+        },
+        {
+          "glyph": 100,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 72,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            2,
+            0
+          ]
+        },
+        {
+          "glyph": 109,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 72,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            2,
+            0
+          ]
+        },
+        {
+          "glyph": 110,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 72,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            2,
+            0
+          ]
+        },
+        {
+          "glyph": 111,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 72,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            2,
+            0
+          ]
+        },
+        {
+          "glyph": 112,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 72,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            2,
+            0
+          ]
+        },
+        {
+          "glyph": 113,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 72,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            2,
+            0
+          ]
+        },
+        {
+          "glyph": 114,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 72,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "glyph": 101,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 72,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            2,
+            0
+          ]
+        },
+        {
+          "glyph": 116,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 72,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            2,
+            0
+          ]
+        },
+        {
+          "glyph": 117,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 72,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            2,
+            0
+          ]
+        },
+        {
+          "glyph": 103,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 264,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            4,
+            0
+          ]
+        },
+        {
+          "glyph": 104,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 264,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "glyph": 105,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 264,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            2,
+            0
+          ]
+        },
+        {
+          "glyph": 106,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 264,
+          "fields": {
+            "92": 0,
+            "94": 1,
+            "102": 40000
+          },
+          "map_uses": [
+            0,
+            2,
+            0
+          ]
+        },
+        {
+          "glyph": 107,
+          "class_id": 7,
+          "flags": 64,
+          "sprite_flags": 264,
+          "fields": {
+            "92": 8,
+            "94": 0,
+            "102": 0
+          },
+          "map_uses": [
+            0,
+            6,
+            0
+          ]
+        },
+        {
+          "glyph": 83,
+          "class_id": 6,
+          "flags": 24,
+          "sprite_flags": 24,
+          "fields": {},
+          "map_uses": [
+            0,
+            256,
+            0
+          ]
+        },
+        {
+          "glyph": 70,
+          "class_id": 6,
+          "flags": 24,
+          "sprite_flags": 24,
+          "fields": {},
+          "map_uses": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "glyph": 71,
+          "class_id": 6,
+          "flags": 8,
+          "sprite_flags": 8,
+          "fields": {},
+          "map_uses": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "glyph": 72,
+          "class_id": 6,
+          "flags": 8,
+          "sprite_flags": 8,
+          "fields": {},
+          "map_uses": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "glyph": 73,
+          "class_id": 6,
+          "flags": 8,
+          "sprite_flags": 8,
+          "fields": {},
+          "map_uses": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "glyph": 60,
+          "class_id": 12,
+          "flags": 16,
+          "sprite_flags": 2056,
+          "fields": {
+            "84": 400,
+            "102": 100,
+            "104": -150
+          },
+          "map_uses": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "glyph": 62,
+          "class_id": 12,
+          "flags": 16,
+          "sprite_flags": 1032,
+          "fields": {
+            "84": 400,
+            "102": 100,
+            "104": 150
+          },
+          "map_uses": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "glyph": 123,
+          "class_id": 12,
+          "flags": 16,
+          "sprite_flags": 8200,
+          "fields": {
+            "84": 400,
+            "102": 102,
+            "104": 150
+          },
+          "map_uses": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "glyph": 125,
+          "class_id": 12,
+          "flags": 16,
+          "sprite_flags": 4104,
+          "fields": {
+            "84": 400,
+            "102": 102,
+            "104": -150
+          },
+          "map_uses": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "glyph": 178,
+          "class_id": 12,
+          "flags": 16,
+          "sprite_flags": 16,
+          "fields": {
+            "84": 10,
+            "102": 1000,
+            "104": 1
+          },
+          "map_uses": [
+            0,
+            0,
+            4
+          ]
+        },
+        {
+          "glyph": 102,
+          "class_id": 13,
+          "flags": 16,
+          "sprite_flags": 16,
+          "fields": {
+            "84": 10,
+            "102": 107,
+            "103": 2048
+          },
+          "map_uses": [
+            0,
+            0,
+            6
+          ],
+          "sensor_cells": [
+            3321,
+            3322,
+            3323,
+            3324,
+            3325,
+            3326
+          ]
+        }
+      ]
+    }
+  ]
+}

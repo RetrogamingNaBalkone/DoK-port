@@ -409,7 +409,7 @@ static DOK_NOINLINE unsigned visible_column(dok_renderer_workspace *w,unsigned x
     return written|((available-written)<<16);
 }
 #endif
-static void raster(dok_renderer_workspace *w,const dok_renderer_face *original,const uint8_t *light,dok_renderer_stats *s) {
+static void raster(dok_renderer_workspace *w,const dok_runtime *r,const dok_renderer_face *original,const uint8_t *light,dok_renderer_stats *s) {
 #ifdef DOK_RENDERER_PROBE
     (void)light;
 #endif
@@ -469,10 +469,24 @@ static void raster(dok_renderer_workspace *w,const dok_renderer_face *original,c
         denom=q0*(span-i)+q1*i;
         numerator=f.u0*q0*(span-i)+f.u1*q1*i;u=denom?numerator/denom:0;
         u=clamp(u,0,im->width-1);
+        /* Door owns its crop header, while the original payload stays shared.
+         * LEVEL door sprites shift right (0x48) or down (0x108). Integer
+         * division precedes multiplication, as native crop transform. */
+        int crop_y=0;
+        if(r->level->definitions[f.image_index].class_id==7) {
+            const dok_runtime_object *o=&r->objects[f.image_index];
+            int divisor=o->state.door.extent;
+            if(divisor<1) divisor=1;
+            if(im->flags&0x40) {
+                int shift=(im->width/divisor)*(int16_t)o->frame;
+                if(u<shift) continue;
+                u-=shift;
+            } else if(im->flags&0x100) crop_y=(im->height/divisor)*(int16_t)o->frame;
+        }
         vstart=clamp(f.v0,0,im->height-1);
 #ifdef DOK_RENDERER_PROBE
         const uint8_t *strip=0;
-        if(im->scales && im->scales[vstart] && bottom>top) {
+        if(!crop_y && im->scales && im->scales[vstart] && bottom>top) {
             extern const uint8_t dok_render_bank[];
             const uint32_t *spans=(const uint32_t *)(const void *)(dok_render_bank+im->scales[vstart]);
             if((unsigned)(bottom-top)<=spans[0]) {
@@ -485,6 +499,16 @@ static void raster(dok_renderer_workspace *w,const dok_renderer_face *original,c
         {
         vstep=bottom>top?((im->height-1-vstart)<<16)/(bottom-top):0;
         vstart=(vstart<<16)+(begin-top)*vstep;
+        if(crop_y) {
+            int threshold=crop_y<<16;
+            if(vstart<threshold) {
+                if(!vstep) continue;
+                int skip=(threshold-vstart+vstep-1)/vstep;
+                begin+=skip;vstart+=skip*vstep;
+                if(begin>end) continue;
+            }
+            vstart-=threshold;
+        }
         }
 #ifndef DOK_RENDERER_PROBE
         destination=w->frame+(unsigned)begin*240+(unsigned)x;
@@ -582,10 +606,10 @@ dok_renderer_status dok_renderer_draw(dok_renderer_workspace *w,const dok_runtim
     for(i=0;i<256;++i) w->light_row[i]=light.data[i];
 #ifdef DOK_RENDERER_PROBE
     zero(coverage_count,sizeof(coverage_count));
-    for(i=w->face_count;i>0;--i) raster(w,&w->faces[face_order[i-1]],w->light_row,&s);
+    for(i=w->face_count;i>0;--i) raster(w,r,&w->faces[face_order[i-1]],w->light_row,&s);
     if(deferred) background_gaps(w,r->level);
 #else
-    for(i=0;i<w->face_count;++i) raster(w,&w->faces[i],w->light_row,&s);
+    for(i=0;i<w->face_count;++i) raster(w,r,&w->faces[i],w->light_row,&s);
 #endif
     STAGE(4);status=DOK_RENDER_OK;
 done:

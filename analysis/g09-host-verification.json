@@ -1,0 +1,353 @@
+{
+  "task": "G05",
+  "scope": "bounded static LEVEL1 and native/ARM indexed render verification",
+  "whole_DOS_pixel_equivalence": false,
+  "performance_measured": false,
+  "horizontal_scene_samples": 120,
+  "oracle_transform": "duplicate even columns before full-resolution HUD",
+  "script": {
+    "path": "scripts/verify_renderer_host.py",
+    "size": 18849,
+    "sha256": "4e749beeec1f48368b618a5cacb249d8445bde818383ef7e6f44e6bfc40e2888"
+  },
+  "package": {
+    "path": "build/gba/assets/assets.bin",
+    "size": 2763046,
+    "sha256": "3efa5d3027d63ffd65e0ae8c0b45be23ee8394b3c5151c8e9f10e76fa8674351"
+  },
+  "host_tool": {
+    "path": "build/native/dok-render.exe",
+    "size": 177664,
+    "sha256": "280ca3793fe3b712f3da6b2f8691609d6026f592880c0187d6ac974cf9b3c0df"
+  },
+  "languages": {
+    "ru": {
+      "camera_expected": {
+        "x": 15120,
+        "y": -300,
+        "z": 22800,
+        "sine": 32768,
+        "cosine": 0,
+        "distance": 200,
+        "scale": 8,
+        "focal": 4096,
+        "center_x": 159,
+        "center_y": 79
+      },
+      "door_oracle": [
+        {
+          "source_cell": [
+            24,
+            16
+          ],
+          "resource_id": 55,
+          "dos_bounds": [
+            145,
+            59,
+            172,
+            95
+          ],
+          "gba_bounds": [
+            108,
+            53,
+            129,
+            85
+          ],
+          "depth": 3360,
+          "factor": 1840
+        },
+        {
+          "source_cell": [
+            24,
+            17
+          ],
+          "resource_id": 55,
+          "dos_bounds": [
+            118,
+            59,
+            145,
+            95
+          ],
+          "gba_bounds": [
+            88,
+            53,
+            108,
+            85
+          ],
+          "depth": 3360,
+          "factor": 1840
+        }
+      ],
+      "resource_ids": {
+        "palette": 19,
+        "font8": 18
+      },
+      "frame": {
+        "path": "build/gba/renderer-host-check/ru/frame.idx",
+        "size": 38400,
+        "sha256": "1c952e3c0101703722b8400670033b4935a3e9fca730dbe7d1eaaf748d11042e"
+      },
+      "palette": {
+        "path": "build/gba/renderer-host-check/ru/palette.rgb6",
+        "size": 768,
+        "sha256": "b6d585de4e645ad0c7667bc7b67417e8badb9a83c2b4392ff968a3fe853b02c8"
+      },
+      "palette_gba555_sha256": "563188cc97da73f8b40c595cf61a4d2998a9f69f4177b8edf91b909ebe0594ac",
+      "FONT8_sha256": "b850fc7ed5ce3e9d92e452a8b13e7f874718368fe3423056dd0ce563676f2508",
+      "with_ui_sha256": "818ef11dd5b17587ece40cd37f886b33096e8e64f3526ec3dc8687b81eacf1e6",
+      "tool": {
+        "path": "build/gba/renderer-host-check/ru/tool.json",
+        "size": 9007,
+        "sha256": "e451b32196fd22e8be9452fc95adc0f23d600785c2251ca274738a2471cebcd2"
+      },
+      "geometry_and_bounds": {
+        "faces": 28,
+        "unique_bound_resource_ids": [
+          55,
+          60
+        ],
+        "door_bounds_verified": [
+          [
+            88,
+            53,
+            108,
+            85
+          ],
+          [
+            108,
+            53,
+            129,
+            85
+          ]
+        ],
+        "guarded_frame_bytes": 38400,
+        "native_negative_API_probes": [
+          "unsupported camera",
+          "null workspace"
+        ],
+        "stats": {
+          "cells_considered": 130,
+          "wall_cells": 15,
+          "center_cells": 2,
+          "faces_built": 28,
+          "faces_drawn": 28,
+          "faces_rejected": 4,
+          "near_clipped": 0,
+          "pixels_written": 28699,
+          "transparent_pixels": 76,
+          "skipped_billboards": 15,
+          "face_capacity": 256,
+          "face_count": 28
+        }
+      }
+    },
+    "en": {
+      "camera_expected": {
+        "x": 15120,
+        "y": -300,
+        "z": 22800,
+        "sine": 32768,
+        "cosine": 0,
+        "distance": 200,
+        "scale": 8,
+        "focal": 4096,
+        "center_x": 159,
+        "center_y": 79
+      },
+      "door_oracle": [
+        {
+          "source_cell": [
+            24,
+            16
+          ],
+          "resource_id": 55,
+          "dos_bounds": [
+            145,
+            59,
+            172,
+            95
+          ],
+          "gba_bounds": [
+            108,
+            53,
+            129,
+            85
+          ],
+          "depth": 3360,
+          "factor": 1840
+        },
+        {
+          "source_cell": [
+            24,
+            17
+          ],
+          "resource_id": 55,
+          "dos_bounds": [
+            118,
+            59,
+            145,
+            95
+          ],
+          "gba_bounds": [
+            88,
+            53,
+            108,
+            85
+          ],
+          "depth": 3360,
+          "factor": 1840
+        }
+      ],
+      "resource_ids": {
+        "palette": 19,
+        "font8": 18
+      },
+      "frame": {
+        "path": "build/gba/renderer-host-check/en/frame.idx",
+        "size": 38400,
+        "sha256": "1c952e3c0101703722b8400670033b4935a3e9fca730dbe7d1eaaf748d11042e"
+      },
+      "palette": {
+        "path": "build/gba/renderer-host-check/en/palette.rgb6",
+        "size": 768,
+        "sha256": "b6d585de4e645ad0c7667bc7b67417e8badb9a83c2b4392ff968a3fe853b02c8"
+      },
+      "palette_gba555_sha256": "563188cc97da73f8b40c595cf61a4d2998a9f69f4177b8edf91b909ebe0594ac",
+      "FONT8_sha256": "b850fc7ed5ce3e9d92e452a8b13e7f874718368fe3423056dd0ce563676f2508",
+      "with_ui_sha256": "3ebb7f3a5f13b36459cb4255a3396b9c8c22aacf57d2d31c3ffe0e25c4caec49",
+      "tool": {
+        "path": "build/gba/renderer-host-check/en/tool.json",
+        "size": 9007,
+        "sha256": "e451b32196fd22e8be9452fc95adc0f23d600785c2251ca274738a2471cebcd2"
+      },
+      "geometry_and_bounds": {
+        "faces": 28,
+        "unique_bound_resource_ids": [
+          55,
+          60
+        ],
+        "door_bounds_verified": [
+          [
+            88,
+            53,
+            108,
+            85
+          ],
+          [
+            108,
+            53,
+            129,
+            85
+          ]
+        ],
+        "guarded_frame_bytes": 38400,
+        "native_negative_API_probes": [
+          "unsupported camera",
+          "null workspace"
+        ],
+        "stats": {
+          "cells_considered": 130,
+          "wall_cells": 15,
+          "center_cells": 2,
+          "faces_built": 28,
+          "faces_drawn": 28,
+          "faces_rejected": 4,
+          "near_clipped": 0,
+          "pixels_written": 28699,
+          "transparent_pixels": 76,
+          "skipped_billboards": 15,
+          "face_capacity": 256,
+          "face_count": 28
+        }
+      }
+    }
+  },
+  "ARM_comparison": [
+    {
+      "capture": "ru",
+      "language": "ru",
+      "indices_compared": 38400,
+      "palette_bytes_compared": 512,
+      "status": "identical",
+      "frame": {
+        "path": "build/g09/renderer-ru.idx",
+        "size": 38400,
+        "sha256": "818ef11dd5b17587ece40cd37f886b33096e8e64f3526ec3dc8687b81eacf1e6"
+      },
+      "palette": {
+        "path": "build/g09/renderer-ru.pal",
+        "size": 512,
+        "sha256": "563188cc97da73f8b40c595cf61a4d2998a9f69f4177b8edf91b909ebe0594ac"
+      }
+    },
+    {
+      "capture": "en",
+      "language": "en",
+      "indices_compared": 38400,
+      "palette_bytes_compared": 512,
+      "status": "identical",
+      "frame": {
+        "path": "build/g09/renderer-en.idx",
+        "size": 38400,
+        "sha256": "3ebb7f3a5f13b36459cb4255a3396b9c8c22aacf57d2d31c3ffe0e25c4caec49"
+      },
+      "palette": {
+        "path": "build/g09/renderer-en.pal",
+        "size": 512,
+        "sha256": "563188cc97da73f8b40c595cf61a4d2998a9f69f4177b8edf91b909ebe0594ac"
+      }
+    },
+    {
+      "capture": "ru-return",
+      "language": "ru",
+      "indices_compared": 38400,
+      "palette_bytes_compared": 512,
+      "status": "identical",
+      "frame": {
+        "path": "build/g09/renderer-ru-return.idx",
+        "size": 38400,
+        "sha256": "818ef11dd5b17587ece40cd37f886b33096e8e64f3526ec3dc8687b81eacf1e6"
+      },
+      "palette": {
+        "path": "build/g09/renderer-ru-return.pal",
+        "size": 512,
+        "sha256": "563188cc97da73f8b40c595cf61a4d2998a9f69f4177b8edf91b909ebe0594ac"
+      }
+    }
+  ],
+  "ARM_ROM": {
+    "path": "build/g09/dok-diagnostic.gba",
+    "size": 32838040,
+    "sha256": "defb27a26a0d9aff5a36444d45efb4f90b7342fa0bd0933e30fb91946b3746dc"
+  },
+  "negative_cli": [
+    {
+      "level": "0",
+      "language": "ru",
+      "exit_code": 2
+    },
+    {
+      "level": "4",
+      "language": "ru",
+      "exit_code": 2
+    },
+    {
+      "level": "1",
+      "language": "invalid",
+      "exit_code": 2
+    }
+  ],
+  "capacity_probe": {
+    "tool": {
+      "path": "build/native/dok-render-one-face.exe",
+      "size": 177664,
+      "sha256": "ffa7f6df7cf9578ae2c1237b059fa39b2918998c6abbe5a0fa76508d90697ddf"
+    },
+    "capacity": 1,
+    "renderer_status": 3,
+    "frame_guards": true,
+    "runtime_unchanged": true,
+    "successful_outputs_written": false
+  },
+  "status": "passed"
+}

@@ -40,6 +40,7 @@ typedef struct {
     int16_t parameter_5c, parameter_5e, state_5a, state_58, state_56;
     uint16_t original_flags;
     uint8_t parameter_54, parameter_55;
+    int16_t extent; /* native +60, crop divisor; fits existing union reserve */
 } dok_runtime_door;
 typedef struct { int16_t state, command, progress, target; } dok_runtime_switch;
 typedef struct {

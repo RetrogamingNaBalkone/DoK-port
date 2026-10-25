@@ -122,7 +122,7 @@ static int read_byte(const dok_runtime *r,uint16_t index,size_t off,uint8_t *out
     } else if(d->class_id==7) {
         const dok_runtime_door *v=&o->state.door;
         B(0x54,1,v->parameter_54);B(0x55,1,v->parameter_55);B(0x56,2,v->state_56);B(0x58,2,v->state_58);
-        B(0x5a,2,v->state_5a);B(0x5c,2,v->parameter_5c);B(0x5e,2,v->parameter_5e);B(0x60,2,1);
+        B(0x5a,2,v->state_5a);B(0x5c,2,v->parameter_5c);B(0x5e,2,v->parameter_5e);B(0x60,2,v->extent);
         B(0x66,4,v->parameter_66);B(0x6a,2,v->original_flags);
     } else if(d->class_id==8) {
         const dok_runtime_projectile *v=&o->state.projectile;
@@ -251,7 +251,7 @@ dok_runtime_status dok_runtime_build(dok_runtime_level *out,dok_runtime_storage 
             dok_runtime_door *v=&o->state.door;
             READ(v->parameter_54,0x54,1);READ(v->parameter_55,0x55,1);READ(v->state_56,0x56,2);READ(v->state_58,0x58,2);
             READ(v->state_5a,0x5a,2);READ(v->parameter_5c,0x5c,2);READ(v->parameter_5e,0x5e,2);
-            READ(v->parameter_66,0x66,4);READ(v->original_flags,0x6a,2);
+            READ(v->extent,0x60,2);READ(v->parameter_66,0x66,4);READ(v->original_flags,0x6a,2);
         } else if(d->class_id==8) {
             dok_runtime_projectile *v=&o->state.projectile;
             READ(v->velocity,0x3c,4);READ(v->y,0x2a,4);READ(v->layer,0x5a,2);

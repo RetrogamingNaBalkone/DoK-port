@@ -6,9 +6,9 @@
   "verification_kind": "independent_explicit_little_endian_parser_and_profile_oracle",
   "not_a_game": true,
   "fps_measured": false,
-  "checker_sha256": "d542755f1f16112ee5c9a1be12800830ae2db0ed2e0ebc012d5a6078adb09c62",
-  "packer_sha256": "157d1d28edd9241a5ae7b4b3e979def94d55d16b7eec51ad34f8451d2bc08b57",
-  "tool_sha256": "617ea0a58c37a8f16f008c52fb754f224e6ed113a43c2e5f6993bbacd9e72b40",
+  "checker_sha256": "c01aa2e2c97e98e56a5dcd4b8d7b934bc9e710759b3260de044fe8d2f5554775",
+  "packer_sha256": "1dd0dc55cb09240eeac5af916233c694eaae1c326280bf9db17b470b752256d2",
+  "tool_sha256": "522193e7f180f2c7cd8ebd523da91e9940b2877a9dfda4359be8605506da8ebb",
   "commands": [
     {
       "command": [
@@ -33,12 +33,12 @@
     "assets.bin": {
       "identical": true,
       "size": 2763046,
-      "sha256": "17fb976d2b0d87cc428fe3cb280f4baff21ff2c986b651246f57be4c59a9eff8"
+      "sha256": "3efa5d3027d63ffd65e0ae8c0b45be23ee8394b3c5151c8e9f10e76fa8674351"
     },
     "manifest.json": {
       "identical": true,
       "size": 179074,
-      "sha256": "a18653cdc02705168cc3ca7730d1f3f27ef225ec9f7181916c4387704d109f95"
+      "sha256": "34ae5636fcfc857773753ab146fe09616dd1e404ca1a487e39f9ab12944a06d1"
     }
   },
   "originals": {
@@ -2214,10 +2214,10 @@
       "cells": 4096,
       "bindings_count": 642,
       "maps_sha256": "ed2108e462dd57665b4a0f571ca3804b11689e9200cf8e5dafb658ecad027269",
-      "initial_objects_sha256": "8b706f14cd805962f62301174671c742cf7139c396833694c79bb43aa0de1672",
+      "initial_objects_sha256": "7c313290c86a00183d49c1c01f12bf2802b1a8ebcbdc1692f946afaf38ef30ed",
       "initial_actors_sha256": "eaa024b41e0d2944262fe6aa8d9e60b11f724ea32dfe7f09e9bc662fc872377a",
       "initial_player_sha256": "603be6e0fa56d1e8b036bb5c8d079b372f1e432e3b4461ba54a8e7609c2c70e4",
-      "startup_sha256": "a3b3fce877210b43fe76ddd525c6c3f677a585afd7f1cb114e10b117b0b48736",
+      "startup_sha256": "c20d8b2e8482836493c6559f4553b3ba69a126a5265b259566c7b0b9d4868355",
       "oracle": {
         "path": "build/gba/assets-check/decoded/ru/LEVEL1-oracle.json",
         "sha256": "15068996c8a27570dbdbe06bc1ead34894eb16b2a89e7d880a234d76ba4af7b9",
@@ -2250,10 +2250,10 @@
       "cells": 4096,
       "bindings_count": 642,
       "maps_sha256": "ed2108e462dd57665b4a0f571ca3804b11689e9200cf8e5dafb658ecad027269",
-      "initial_objects_sha256": "8b706f14cd805962f62301174671c742cf7139c396833694c79bb43aa0de1672",
+      "initial_objects_sha256": "7c313290c86a00183d49c1c01f12bf2802b1a8ebcbdc1692f946afaf38ef30ed",
       "initial_actors_sha256": "eaa024b41e0d2944262fe6aa8d9e60b11f724ea32dfe7f09e9bc662fc872377a",
       "initial_player_sha256": "603be6e0fa56d1e8b036bb5c8d079b372f1e432e3b4461ba54a8e7609c2c70e4",
-      "startup_sha256": "a3b3fce877210b43fe76ddd525c6c3f677a585afd7f1cb114e10b117b0b48736",
+      "startup_sha256": "c20d8b2e8482836493c6559f4553b3ba69a126a5265b259566c7b0b9d4868355",
       "oracle": {
         "path": "build/gba/assets-check/decoded/en/LEVEL1-oracle.json",
         "sha256": "6f5d94b14ea5f58b96e0659731135576536ea6e2ed7d42562aac8e06d06d5c7c",
@@ -2286,10 +2286,10 @@
       "cells": 4096,
       "bindings_count": 654,
       "maps_sha256": "477c9561f32240cafcf12fe8e3c3807be6e6fcf885a28a2400f91837d47946bb",
-      "initial_objects_sha256": "7abadf45c715bea74abd75ccd01c25027ef5b7a5ca43bc23e27541ae1536a0ed",
+      "initial_objects_sha256": "5cdd0ac2fd6731d8ddcda9b4b6b2e2f76f9896a09f1df1dab7690f0957b3a095",
       "initial_actors_sha256": "9bfa0f76bd6c1c94e9f40b9b65da6b526ec36a79bb72e43dab4129203592ea3c",
       "initial_player_sha256": "603be6e0fa56d1e8b036bb5c8d079b372f1e432e3b4461ba54a8e7609c2c70e4",
-      "startup_sha256": "6c13b202192252b75cd80d608d2f107a76e3e7de7cd9966e5215b6ac20e82041",
+      "startup_sha256": "d21abb66001ca5a98f108c9e42a939ba8644a66d6e8812b30987393103e948ad",
       "oracle": {
         "path": "build/gba/assets-check/decoded/ru/LEVEL2-oracle.json",
         "sha256": "11c318797f54c47034d765ebae67fe36efcfc1d378702c6e6b1c3e686034d22f",
@@ -2316,10 +2316,10 @@
       "cells": 4096,
       "bindings_count": 654,
       "maps_sha256": "477c9561f32240cafcf12fe8e3c3807be6e6fcf885a28a2400f91837d47946bb",
-      "initial_objects_sha256": "7abadf45c715bea74abd75ccd01c25027ef5b7a5ca43bc23e27541ae1536a0ed",
+      "initial_objects_sha256": "5cdd0ac2fd6731d8ddcda9b4b6b2e2f76f9896a09f1df1dab7690f0957b3a095",
       "initial_actors_sha256": "9bfa0f76bd6c1c94e9f40b9b65da6b526ec36a79bb72e43dab4129203592ea3c",
       "initial_player_sha256": "603be6e0fa56d1e8b036bb5c8d079b372f1e432e3b4461ba54a8e7609c2c70e4",
-      "startup_sha256": "6c13b202192252b75cd80d608d2f107a76e3e7de7cd9966e5215b6ac20e82041",
+      "startup_sha256": "d21abb66001ca5a98f108c9e42a939ba8644a66d6e8812b30987393103e948ad",
       "oracle": {
         "path": "build/gba/assets-check/decoded/en/LEVEL2-oracle.json",
         "sha256": "e82b0f65d00035e1c72ffb6f595c49447935dbb61378b06ee072564dbd18a9f6",
@@ -2346,10 +2346,10 @@
       "cells": 4096,
       "bindings_count": 941,
       "maps_sha256": "95b27dd2ed4f801e986c4be22df9a0a6239047082f59132d971a53b23d99e367",
-      "initial_objects_sha256": "2a7606ddd547b90349d046172c5e3c903248155b33cffd643b26a72b1f9f6bf1",
+      "initial_objects_sha256": "f74a9511d4357257dfe096f9e88a4eeb183d9363778c6185a65b7c7f18c4bd01",
       "initial_actors_sha256": "37acc7459649f403338ef2b03f008759c41eb2ab046a4906ec671afaabada2a3",
       "initial_player_sha256": "603be6e0fa56d1e8b036bb5c8d079b372f1e432e3b4461ba54a8e7609c2c70e4",
-      "startup_sha256": "e81ec941f699b1c4eabfc60b1b819ef3b736e35c22236e47d89a2ea5eca6672a",
+      "startup_sha256": "0fa3430f86da45b5932b8ab08d87059362713d607f7eb04ef7270120feb68376",
       "oracle": {
         "path": "build/gba/assets-check/decoded/ru/LEVEL3-oracle.json",
         "sha256": "e37b0830725c084deca5457a38b3afaf1aabc381a9d904bb821ec387e18b64d7",
@@ -2376,10 +2376,10 @@
       "cells": 4096,
       "bindings_count": 941,
       "maps_sha256": "95b27dd2ed4f801e986c4be22df9a0a6239047082f59132d971a53b23d99e367",
-      "initial_objects_sha256": "2a7606ddd547b90349d046172c5e3c903248155b33cffd643b26a72b1f9f6bf1",
+      "initial_objects_sha256": "f74a9511d4357257dfe096f9e88a4eeb183d9363778c6185a65b7c7f18c4bd01",
       "initial_actors_sha256": "37acc7459649f403338ef2b03f008759c41eb2ab046a4906ec671afaabada2a3",
       "initial_player_sha256": "603be6e0fa56d1e8b036bb5c8d079b372f1e432e3b4461ba54a8e7609c2c70e4",
-      "startup_sha256": "e81ec941f699b1c4eabfc60b1b819ef3b736e35c22236e47d89a2ea5eca6672a",
+      "startup_sha256": "0fa3430f86da45b5932b8ab08d87059362713d607f7eb04ef7270120feb68376",
       "oracle": {
         "path": "build/gba/assets-check/decoded/en/LEVEL3-oracle.json",
         "sha256": "16da3192513511dcbc3a07306ab31aa028cfce7cc8bab6b85793ada7ccfb33db",
@@ -2432,138 +2432,138 @@
       "case": "truncated-payload",
       "exit_code": 1,
       "bytes": 2763045,
-      "sha256": "f1621e29df3801c1a35326cbfef4a35197c0881ddedf69804d98e8b042e79fd7"
+      "sha256": "954dbe8e154337069ff43805c344282e7fa8ea8f21ff116c694cc370683c6108"
     },
     {
       "case": "unsupported-version",
       "exit_code": 1,
       "bytes": 2763046,
-      "sha256": "de7ff1e43ba68841e1175b950ee420a48903029bdef63fb01e2e17e6ad9cde9c"
+      "sha256": "1b87301d8fb7d958ec657939d337bdd62aaa8637daf1fe0b0e70226d064cd06c"
     },
     {
       "case": "overflow-total-size",
       "exit_code": 1,
       "bytes": 2763046,
-      "sha256": "9f4c17e7c5fddc5caa74cbee80c513b32645f4db3b0d5e682b95a0ca4ec53345"
+      "sha256": "1ed577c0346199fe687a7797a7d31aec143b8d0cd699b054920cdb5f3fe6c72a"
     },
     {
       "case": "resource-directory-outside-file",
       "exit_code": 1,
       "bytes": 2763046,
-      "sha256": "0091e0e7567617b1683a82b53f9841e988fbecbc713bae6d3c576467196c3a58"
+      "sha256": "c6854d73ede7d5f5aba7ae9a5a56afe5e300b3bf93784ad202829da4618f3c25"
     },
     {
       "case": "misaligned-view-directory",
       "exit_code": 1,
       "bytes": 2763046,
-      "sha256": "2c3e02ae244b021117842018a219745cccd92903a9a5e112274417510ad45736"
+      "sha256": "ff8086255902dd5106ddaf6faaaf3067a65f11cdbc48e081008d4257b5f18167"
     },
     {
       "case": "wrong-view-stride",
       "exit_code": 1,
       "bytes": 2763046,
-      "sha256": "f53cc078bededd69aac48ad52c330fe78a609be8168d32ac5970f7fda046e565"
+      "sha256": "e1bcb50b4ccbd50b7c9ce1b625557e061184b8164b104b2cf8d4adb8b355742e"
     },
     {
       "case": "resource-payload-outside-file",
       "exit_code": 1,
       "bytes": 2763046,
-      "sha256": "4c3802495881d3e1e4ae09a40a7161d058c69092793cc6c986979b4fbdea4fe0"
+      "sha256": "bc20a6bf36adbf91b53b35ce5b0af7ad7668a1869f1d7b58d2d789dea1c85b14"
     },
     {
       "case": "resource-size-overflow",
       "exit_code": 1,
       "bytes": 2763046,
-      "sha256": "32f296827c01da1a0a5e8ff9f2b16835d0fb52328c6e96b3049b56b88e40063a"
+      "sha256": "5054795f78c059c2b5fd4151812efc6a1dc079d453416feb9ce8e84092a6155f"
     },
     {
       "case": "object-count-over-capacity",
       "exit_code": 1,
       "bytes": 2763046,
-      "sha256": "f853e4b7cdc166821e51c6a97ce86128e574517e90a50862b1e6b43cd602f472"
+      "sha256": "6961cdb07164e6f8d1dc4d23ec6bd4d024c79060062bb67e898d101d8c733b6c"
     },
     {
       "case": "actor-count-over-capacity",
       "exit_code": 1,
       "bytes": 2763046,
-      "sha256": "31d4d9ed21384bea2947a4cb0fa6b5f65422bf1aefc61b1ca2a070673334551d"
+      "sha256": "8f503af3f717f91b7129f5e497a9f9501cf3c7cfa9f787c315ad351f50959f36"
     },
     {
       "case": "field-count-over-capacity",
       "exit_code": 1,
       "bytes": 2763046,
-      "sha256": "aca3adbf06bfbec2e42690e7d9f490dd74106a3fc4b2485207ea7259676af6f3"
+      "sha256": "e8626c68659488e3ccc34911d01853e51ba5a9d3e55432bcd01642f3dd4b8a28"
     },
     {
       "case": "string-pool-over-capacity",
       "exit_code": 1,
       "bytes": 2763046,
-      "sha256": "a841a336b53c9ab8f4fb1e5e03eec56c891cfde640e5000e487e88c20982024c"
+      "sha256": "d0013a5ecf07b43a1d5d702999ae26878ba952e2bcf9063e16d3c1bf8006df94"
     },
     {
       "case": "map-cells-over-capacity",
       "exit_code": 1,
       "bytes": 2763046,
-      "sha256": "9a14ae4918f4b77adb85a6c43563fa5f678925deac3de5ff87bedcc2cb42964e"
+      "sha256": "0e692ee290006e818af2b75d125b6eeffcfde1c8f3f84af4088f6ccd7772e7a8"
     },
     {
       "case": "view-map-range-overflow",
       "exit_code": 1,
       "bytes": 2763046,
-      "sha256": "cbb7828c235794cf174b7e3f5dd0c1c01b5d9580b3fcbbdc6adfff2e8cbcec26"
+      "sha256": "284c2b14e0a0a969745686c2916440b2c8716c21c231039b6d2a08d66ee0e585"
     },
     {
       "case": "misaligned-object-records",
       "exit_code": 1,
       "bytes": 2763046,
-      "sha256": "ed0cd78ddb750a0931f49b7482b13b2736602c0bae170e71625dca8f579c9c10"
+      "sha256": "6fa4c2124901e851f8330909c4e97e72b64cc0c946db3a83d4bfa33272371d66"
     },
     {
       "case": "definition-local-string-outside-pool",
       "exit_code": 1,
       "bytes": 2763046,
-      "sha256": "faf4764677ea87c807eb45b42c1348473219cfe9c5c4e8d9c65377664fbfc6fd"
+      "sha256": "5fc60ea2704ad869397708efcd3172e1eb41ec61396ad05d0c0f44e5283875b8"
     },
     {
       "case": "actor-index-outside-view",
       "exit_code": 1,
       "bytes": 2763046,
-      "sha256": "e8b6ebae3480e54fa4c916324ba705c89f0187ad39dfca3083e4b5af0618781a"
+      "sha256": "05e2c80acee483788e2c2540da4e944f57171b0480fb7d3ddd558e09c97eb015"
     },
     {
       "case": "resource-binding-id-outside-directory",
       "exit_code": 1,
       "bytes": 2763046,
-      "sha256": "288a16ca65f0f4e270ff70614d1798771b77cf3beeeb6e5130f655517e2cf39d"
+      "sha256": "5318ca5b13a3cd0cbb683ef65fc00e6fb6f253e72498ebae1309bc46618c30ab"
     },
     {
       "case": "resource-binding-valid-id-wrong-name",
       "exit_code": 1,
       "bytes": 2763046,
-      "sha256": "d777b879d43362fac63126a441778c3ec350f56e8627c9c81f3b413d2f8224f1"
+      "sha256": "2f76be1a7b3b095b6f1c1ed5390996714394a84c142917e94da922b6f227de22"
     },
     {
       "case": "resource-binding-invalid-kind",
       "exit_code": 1,
       "bytes": 2763046,
-      "sha256": "3534edb1e1818e18a864c590253349a87c1880123fbe29e834a1cb09a55d083d"
+      "sha256": "b51af4a9cf1b31ae91352e1b8b2fdc728f5b0a6882af7508f99406fc68cc6168"
     },
     {
       "case": "english-view-numeric-profile-divergence",
       "exit_code": 1,
       "bytes": 2763046,
-      "sha256": "74cad2103bb05b4f3d780d6a1a7e01bef8746e141fb2bbeeab514e1e627b06a2"
+      "sha256": "a2e953ddc5462ea4f1f38559ba31a53423227a25213efa40d6eae79f9c269340"
     },
     {
       "case": "english-view-shared-state-divergence",
       "exit_code": 1,
       "bytes": 2763046,
-      "sha256": "02511f6eb401236202cb300ff7353205e28fbe895e0882f45420c082401bbd2b"
+      "sha256": "84a1cd755b3277af364b255643ee25610647967f39dd3fa0fb3d28f9dce68f61"
     }
   ],
   "reader_tests": {
     "path": "C:\\Source\\DoK-port\\build\\native\\dok-rom-assets-tests.exe",
-    "sha256": "929742b91f4041969421e15415a3508268652e393123a51d0cee12ba3ea3de0f",
+    "sha256": "cd2f65b8b604d15493074318f044a5889e9cc48d9a7fb28f30c68d3432dfa660",
     "source_sha256": "f0a855dd188cd8b2549c4e85115fb097bc3da6a6cb985f3ff2bb8bf6190ce90c",
     "synthetic": {
       "exit_code": 0,

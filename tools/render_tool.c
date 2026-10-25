@@ -11,7 +11,7 @@ int main(int argc,char **argv) {
     dok_rom_assets assets;dok_runtime_level view;dok_runtime *runtime=0,*saved=0;
     dok_renderer_workspace *work=0;dok_renderer_stats stats,probe_stats;dok_projection_camera camera,probe_camera;
     dok_renderer_status status;int guards,unchanged,profile_probe,argument_probe;
-    if(argc!=6 && argc!=10) {fprintf(stderr,"Usage: dok-render assets.bin level(1..3) ru|en output.idx output.pal [x y z heading]\n");return 2;}
+    if(argc!=6 && argc!=10 && argc!=13) {fprintf(stderr,"Usage: dok-render assets.bin level(1..3) ru|en output.idx output.pal [x y z heading [door-glyph frame extent]]\n");return 2;}
     number=(unsigned)strtoul(argv[2],0,10);language=!strcmp(argv[3],"en");
     if(number<1 || number>3 || (strcmp(argv[3],"ru") && strcmp(argv[3],"en"))) return 2;
     file=fopen(argv[1],"rb");if(!file) {perror(argv[1]);return 1;}
@@ -26,9 +26,15 @@ int main(int argc,char **argv) {
     }
     status=dok_renderer_camera_from_runtime(&camera,runtime);
     if(status) {fprintf(stderr,"Camera status %u\n",(unsigned)status);goto done;}
-    if(argc==10) {
+    if(argc>=10) {
         camera.x=(int32_t)strtol(argv[6],0,10);camera.y=(int32_t)strtol(argv[7],0,10);
         camera.z=(int32_t)strtol(argv[8],0,10);dok_renderer_camera_heading(&camera,(int)strtol(argv[9],0,10));
+    }
+    if(argc==13) {
+        unsigned glyph=(unsigned)strtoul(argv[10],0,10),frame=(unsigned)strtoul(argv[11],0,10),extent=(unsigned)strtoul(argv[12],0,10);
+        if(glyph>255 || !view.glyph_index[glyph] || extent<1 || extent>32767 || frame>=extent) goto done;
+        unsigned object=view.glyph_index[glyph]-1;if(view.definitions[object].class_id!=7) goto done;
+        runtime->objects[object].frame=(uint16_t)frame;runtime->objects[object].state.door.extent=(int16_t)extent;
     }
     *saved=*runtime;work->frame_guard_before=UINT32_C(0xd04fcafe);work->frame_guard_after=UINT32_C(0xd04fcafe);
     probe_camera=camera;probe_camera.sine=32769;

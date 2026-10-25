@@ -1,8 +1,67 @@
 ﻿# Передача контекста между чатами
 
-Обновлено 25 октября 2026 года: G00–G08 готовы по уточнённым критериям.
+Обновлено 25 октября 2026 года: G00–G09 готовы по уточнённым критериям.
 
-## Текущая граница G08
+## Текущая граница G09
+
+**Следующая задача — G10.** G09 завершён: Start/Use открывает двери в общей
+GBA-сцене с коллизиями. Замки проверяют любой совпавший бит ключа; ключи пока
+выдаются только тестовым сценарием, подбор предметов — G12. Door scheduler,
+горизонтальный/вертикальный crop, проходимость, повторные активации, занятость
+и общие объекты по glyph подключены. Инерция G07 не возвращалась.
+
+Спецификация, ABI, исходные адреса и ограничения: [doors-triggers.md](doors-triggers.md).
+Новые `include/dok/interactions.h`, `src/interactions.c`; direct displacement
+в collision для class12. `runtime.door.extent` использует прежний padding,
+Object36/union20/раскладка maps не изменились; пакет ресурсов пересобран.
+Class6 действительно имеет базовый no-op Use, рабочий toggle ему не выдуман.
+Class13: LEVEL2 `f`→`h`, LEVEL3 `f`→`k`, event0x800, sensor обходит замок.
+Повторный glyph в соседней/другой клетке — тот же объект и не новый enter edge.
+Class12: conveyor100/102 двигает X/Z с коллизиями; category1000 отдаёт явный
+FINISH при score==world total. G18 должен потребить событие; health=−1 и
+смена уровня здесь намеренно не эмулируются. Прочие stat events — seam для G12.
+
+Native door берёт число фаз из измеренного FPS (DS:C2), callbacks interval0
+зависят от опроса. Явная политика порта: 30 фаз по сетке333,333,334 ticks,
+независимо от рисования; герой/зоны —416 ticks. Delay авто-двери применяется
+дважды, занятость повторно проверяется через тот же delay. Crop делит размер
+до умножения на phase, поэтому открытая дверь может оставлять тонкую полоску.
+Текущий renderer поддерживает два реально используемых door crop-режима;
+полная анимация/billboards остаются G11, сообщения/звуки — G16/G17.
+
+Ghidra-проекты/журналы/ASM/bytes: `build/interactions/{ru,en}/`,
+`InspectInteractions.java`, `analyze-interactions.ps1`. SHA EXE до/после совпали.
+На язык6000 Door/base-векторов,622 sensor routes,120 crop-векторов Unicorn
+совпали с C/формулой. Sound/UI/scheduler перехвачены; crop без перехвата callees.
+Это не полный DOS-session. Инвентарь всех шести исходных LEVEL —
+`analysis/g09-original-level-inventory.json`; runtime-сценарии обеих локализаций:
+108 door definitions,30 class6,20 sensor-клеток,2006 class12-клеток.
+
+13 Windows suites, Linux static/Thumb compile прошли. Общий suite исполнен
+на ARM. mGBA: RU/EN lock/crop/open, проход и occupancy/отложенное закрытие,
+реальный Start, sensor LEVEL2/3 и повторный вход, conveyor четырёх направлений,
+finish-event, смена языка при активной двери, guards/poisoned reset.
+12 динамических кадров по32736 scene pixels совпали с host; все1455 камер,
+HUD/палитра,443520 strips/linked payloads и time regression прошли.
+Физическая GBA, оригинальный BIOS, Linux execution и CMake/MSVC не проверялись.
+
+ROM/ELF/map/PNG: `build/g09/`; ROM32 838 040 байт, SHA
+`defb27a26a0d9aff5a36444d45efb4f90b7342fa0bd0933e30fb91946b3746dc`.
+EWRAM143 672 (+14 444 к G08), IWRAM code17 292/data1232,
+main stack2352/запас5584. Startup449 760, worst статическая камера624 719 cycles.
+Live/test-batch измерения разделены в `analysis/g09-review.json`.
+Бюджет400 000 остаётся отложенным,30FPS полной игры не подтверждены;
+остаток ROM716 392 байта не резерв всей игры.
+
+Команда воспроизведения:
+`powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-gba-interactions.ps1 -CrossChecks`.
+`-OriginalEvidence` добавляет Ghidra/Unicorn; библиотека read-only из общего
+`C:/Source/wasdify/build/research-deps`. Все части команды выполнены отдельно;
+итог `scripts/report_interactions.py` связал текущие исходники/ROM/evidence.
+Новые тесты/probes/inventory/build/report-скрипты перечислены в паспорте G09.
+G10 в этом проходе не начинался.
+
+## Граница G08 до взаимодействий
 
 **Следующая задача — G09.** G08 выполнен в своих границах; предыдущие разделы
 ниже — история этапов. В общей GBA-сцене LEVEL1 герой ходит с коллизиями.

@@ -11,4 +11,7 @@ void dok_collision_resolve(const dok_runtime *world,int32_t *x,int32_t *z,
  * occupancy is balanced, and out-of-world/corrupt results are rejected.
  * Actor must belong to world; no allocation, no vertical integration. */
 void dok_collision_move(dok_runtime_actor *actor,int16_t distance,int strafe,void *world);
+/* Direct small displacement for class12 conveyor fields; same resolver and
+ * occupancy effects as actor native +10A4. Oversized requests are rejected. */
+void dok_collision_displace(dok_runtime *world,dok_runtime_actor *actor,int16_t dx,int16_t dz);
 #endif

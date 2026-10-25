@@ -1,0 +1,54 @@
+{
+  "task": "G09",
+  "status": "passed",
+  "whole_dos_session": false,
+  "verifier_sha256": "cf0f6eea661c0e6a0c57a0cc0a8acec471f00472f860e4409e5302a0832ef20a",
+  "languages": {
+    "ru": {
+      "vectors": 6000,
+      "sensor_routes": 622,
+      "crop_vectors": 120,
+      "manifest": {
+        "language": "ru",
+        "sample": "originals/pkr/RUS/PKR.EXE",
+        "sha256_before": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+        "sha256_after": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+        "project": "build/ghidra/ru/Kremlin.gpr",
+        "script": "scripts/InspectInteractions.java",
+        "script_sha256": "5f92beb7f9609ee2bd36bd51d859805866588d266bd28f489389531ba52688e3",
+        "driver_sha256": "fd2eaaed44bab1b50c06f22cdff1a21ac80ffbd128f056e610a81218bc5edbad",
+        "address_system": "Ghidra NE loader; not file offset or runtime DPMI selector"
+      }
+    },
+    "en": {
+      "vectors": 6000,
+      "sensor_routes": 622,
+      "crop_vectors": 120,
+      "manifest": {
+        "language": "en",
+        "sample": "originals/pkr/ENG/PKE.EXE",
+        "sha256_before": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b",
+        "sha256_after": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b",
+        "project": "build/ghidra/en/Kremlin.gpr",
+        "script": "scripts/InspectInteractions.java",
+        "script_sha256": "5f92beb7f9609ee2bd36bd51d859805866588d266bd28f489389531ba52688e3",
+        "driver_sha256": "fd2eaaed44bab1b50c06f22cdff1a21ac80ffbd128f056e610a81218bc5edbad",
+        "address_system": "Ghidra NE loader; not file offset or runtime DPMI selector"
+      }
+    }
+  },
+  "artifacts": {
+    "build/interactions/ru/actor.bin": "6a6fc29b1f204efd34a16538b678b7cd04ea6c992893f94283acc06329848b9f",
+    "build/interactions/ru/analysis-manifest.json": "08027bf96a259da4bbf3275c746e8771baa397f6dea1edbe3a5d1a019f059147",
+    "build/interactions/ru/automatic.c": "422985edbdad3b0a64e4ff52770c677273b40e741ed92683670b46d2f4400a42",
+    "build/interactions/ru/data.bin": "9ef47d9d95fef87322161136aa674f2780b271651f284c3faa451da30ed63665",
+    "build/interactions/ru/evidence.asm": "06c5b395b59e6494cb2c2e8fde046d97a265cc013035df99a2748d792ce4038c",
+    "build/interactions/ru/image.bin": "c5483822c3a3bc89405ceab8a0191e843032a13d3cf7e3b60d0d2da20e9373be",
+    "build/interactions/en/actor.bin": "7a20ad9df5a6d759c486034c5465f41d7dab1cbaa433f5c0b77ab1755403e5dd",
+    "build/interactions/en/analysis-manifest.json": "62ba3600d868b4674bdabd988427ce7add49df6ab5d215cd00426476751d83ac",
+    "build/interactions/en/automatic.c": "6411eed265863dd355c8ecc58e14fd8edf3a89b673810550e5d111203154de70",
+    "build/interactions/en/data.bin": "ea54f3aed7c3c23e742aea31d044585890171959fde65945f9456f697ff1b86d",
+    "build/interactions/en/evidence.asm": "cc6f05baa3b9492ec8a2297eedd7d17a4aee6b1765252bf52d1dd6fbee451819",
+    "build/interactions/en/image.bin": "c3cc516923d02a73d717f32c789b29f4e8f8f29f4fc13081756f0e3f68e5b909"
+  }
+}

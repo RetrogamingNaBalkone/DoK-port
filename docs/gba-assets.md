@@ -142,7 +142,7 @@ Union Object определяется `class_id` соответствующег�
 
 | Вариант state | Поля |
 |---|---|
-| Door | `0:i travel_limit`, `4:h progress`, `6:h command`, `8:h extent`, `10:h velocity`, `12:h state`, `14:H original_flags`, `16:B phase`, `17:B enabled` |
+| Door | `0:i close_delay`, `4:h key_mask`, `6:h close_mode`, `8:h native_5a`, `10:h native_58`, `12:h occupancy`, `14:H original_flags`, `16:B phase`, `17:B ready`, `18:h crop_extent` |
 | Switch | `0:h state`, `2:h command`, `4:h progress`, `6:h target` |
 | Projectile | `0:i velocity`, `4:i y`, `8:h damage`, `10:h half_damage`, `12:h layer`, `14:h state`, `16:B previous_glyph`, `17:B reserved[3]` |
 | Monster | `0:h health`, `2:h state`, `4:h course_counter`, `6:B auxiliary_e6`, `7:B course_counter_known` |
