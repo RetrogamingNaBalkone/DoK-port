@@ -2,6 +2,10 @@
 #include <stdint.h>
 extern unsigned gba_time_start(void);
 extern void gba_time_poll(void);
+extern unsigned gba_motion_start(dok_runtime *);
+extern void gba_motion_level(dok_runtime *);
+extern void gba_motion_poll(uint16_t);
+extern void gba_motion_cost(uint32_t);
 #include <stddef.h>
 
 #define R16(a) (*(volatile uint16_t *)(a))
@@ -49,6 +53,7 @@ volatile struct {uint32_t request,ack,level;int32_t x,y,z,heading;} g_camera_pro
 /* Test-only capture aid: hold a committed frame for one extra VBlank.
  * Default zero; excluded from the CPU timer and ordinary cadence tests. */
 volatile uint32_t g_camera_capture_hold;
+static unsigned test_camera;
 static const uint8_t *font;
 static uint8_t palette[768];
 static unsigned white,black;
@@ -86,6 +91,12 @@ static uint32_t timer_stop(void)
 {
     T0C=0;T1C=0;
     return (uint32_t)T0D | ((uint32_t)T1D << 16);
+}
+static uint32_t timer_sample(void)
+{
+    uint16_t hi,lo,next;
+    do {hi=T1D;lo=T0D;next=T1D;} while(hi!=next);
+    return (uint32_t)lo|((uint32_t)hi<<16);
 }
 
 volatile uint32_t g_render_stages[7];
@@ -206,15 +217,18 @@ __attribute__((noreturn)) void gba_main(void)
     *(void (** volatile)(void))0x03007ffc=gba_irq;
     R16(0x03007ff8)=0;IF=0x3fff;IE=1;DISPSTAT=8;IME=1;
     if (gba_time_start()) panic(0x90);
+    if (gba_motion_start(&g_render_world)) panic(0x97);
     unsigned visible=0;
     for (;;) {
         if(g_camera_probe.request!=g_camera_probe.ack) {
+            test_camera=1;
             unsigned level=g_camera_probe.level;
             if(level>=3) panic(0x94);
             if(level!=g_render_diag.level) {
                 prepare_level(level);g_render_view=localized_views[g_render_diag.language];
                 if(dok_runtime_reset(&g_render_world,&g_render_view)!=DOK_RUNTIME_OK) panic(0x95);
                 g_render_diag.level=level;load_ui(g_render_diag.language);
+                gba_motion_level(&g_render_world);
             }
             camera.x=g_camera_probe.x;camera.y=g_camera_probe.y;camera.z=g_camera_probe.z;
             dok_renderer_camera_heading(&camera,g_camera_probe.heading);
@@ -225,6 +239,14 @@ __attribute__((noreturn)) void gba_main(void)
         gba_time_poll();
         unsigned switched=0;
         g_diag.keys=(uint32_t)(~KEYINPUT)&0x3ff;g_diag.seen|=g_diag.keys;
+        uint32_t motion_start=timer_sample();
+        gba_motion_poll((uint16_t)g_diag.keys);
+        if(!test_camera && dok_renderer_camera_from_runtime(&camera,&g_render_world)!=DOK_RENDER_OK) panic(0x98);
+        gba_motion_cost(timer_sample()-motion_start);
+        if(!test_camera) {
+            g_render_diag.player_x=(uint32_t)camera.x;g_render_diag.player_y=(uint32_t)camera.y;
+            g_render_diag.player_z=(uint32_t)camera.z;
+        }
         if ((g_diag.keys&12)==12) panic(0x10);
         if ((g_diag.keys&4) && !(g_render_diag.last_keys&4)) {
             unsigned language=g_render_diag.language^1;

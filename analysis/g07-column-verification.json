@@ -1,0 +1,14 @@
+{
+  "status": "passed",
+  "rom_sha256": "9bb6fd9f83ea4689893e1e166c6ea7168881a2fb39c53c41800af4e223f0baf1",
+  "bank_sha256": "be34856377d014fec83530dbca4a683bcedf7d98746f8827a0cf8f43228d3f91",
+  "bank_bytes": 29762068,
+  "image_bindings": 138,
+  "checked_image_views": 25,
+  "checked_strips": 443520,
+  "unique_records": 339821,
+  "linked_payloads_equal": true,
+  "exact_q16_samples": true,
+  "mapped_opacity_runs": true,
+  "scale_max_span": 140
+}

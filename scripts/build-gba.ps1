@@ -67,6 +67,14 @@ try {
         $taskObjects += @("$OutDir/runtime.o", "$OutDir/memory.o")
     }
     $taskLinkArgs = @()
+    if ($RendererProbe) {
+        foreach ($taskSource in @('src/movement.c','gba/movement_probe.c','tests/movement_cases.c')) {
+            $taskObject="$OutDir/motion-"+[IO.Path]::GetFileNameWithoutExtension($taskSource)+'.o'
+            & $ZigExe @taskArgs $taskSource -o $taskObject
+            if ($LASTEXITCODE -ne 0) { throw "Movement compile failed: $taskSource" }
+            $taskObjects += $taskObject
+        }
+    }
     if ($TimeProbe -or $RendererProbe) {
         foreach ($taskSource in @('src/scheduler.c','src/clock.c','gba/clock.c','gba/time_probe.c','tests/time_cases.c')) {
             $taskObject="$OutDir/time-"+[IO.Path]::GetFileNameWithoutExtension($taskSource)+'.o'

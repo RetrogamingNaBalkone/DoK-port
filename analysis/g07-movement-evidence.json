@@ -1,0 +1,60 @@
+{
+  "task": "G07",
+  "status": "passed",
+  "unicorn_version": "2.1.4",
+  "languages": [
+    {
+      "language": "ru",
+      "sample": "originals/pkr/RUS/PKR.EXE",
+      "sha256_before": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+      "sha256_after": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+      "cases": 2667,
+      "executed_world_substeps": 3639,
+      "actor_export_sha256": "d14d4cd1e775d04a4e90c6dc2f9a7137d61a89ab89a7505b477853c1b60e5814",
+      "world_export_sha256": "a88009ea74662fcca9c8887a22f0b0db4865aeb3a7020eb083c6f117ee29d293",
+      "listing_sha256": "1334f535304cea6fa3965f7cd4b20556bff29382ed33df675ba6c7728c1e100c",
+      "ghidra_manifest": {
+        "language": "ru",
+        "sample": "originals/pkr/RUS/PKR.EXE",
+        "sha256_before": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+        "sha256_after": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+        "project": "build/ghidra/ru/Kremlin.gpr",
+        "script": "scripts/InspectMovement.java",
+        "script_sha256": "198cb0c1d67158f5d0a30f6a6678695ed26c06a4a2ca8e2e7de7366a399cb078",
+        "driver_sha256": "109b9c75c53bd769b62455d186e353572a00028cd64f163bfa6ec47cb2deedd1",
+        "address_system": "Ghidra NE loader; not file offset or runtime DPMI selector"
+      }
+    },
+    {
+      "language": "en",
+      "sample": "originals/pkr/ENG/PKE.EXE",
+      "sha256_before": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b",
+      "sha256_after": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b",
+      "cases": 2667,
+      "executed_world_substeps": 3639,
+      "actor_export_sha256": "33af8eab8aebc22f67b7f0079b25c1d4eed9d389a3942d00482a18aff1734c90",
+      "world_export_sha256": "82ac6457efaa12835aa49134bf910b8f597017ff1c802ce0f4ea61d4642994e6",
+      "listing_sha256": "131340de14247f7a7c55cb429b83d58cc1ebe64c733de8b2a46911bbfc7b13db",
+      "ghidra_manifest": {
+        "language": "en",
+        "sample": "originals/pkr/ENG/PKE.EXE",
+        "sha256_before": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b",
+        "sha256_after": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b",
+        "project": "build/ghidra/en/Kremlin.gpr",
+        "script": "scripts/InspectMovement.java",
+        "script_sha256": "198cb0c1d67158f5d0a30f6a6678695ed26c06a4a2ca8e2e7de7366a399cb078",
+        "driver_sha256": "109b9c75c53bd769b62455d186e353572a00028cd64f163bfa6ec47cb2deedd1",
+        "address_system": "Ghidra NE loader; not file offset or runtime DPMI selector"
+      }
+    }
+  ],
+  "original_vectors": 2367,
+  "corrected_policy_vectors": 300,
+  "controlled_clock": true,
+  "collision": "intercepted: accept x/z destination; no map or door writes",
+  "translate_wrapper": "intercepted: SAR16 distance,2; three world calls; final signed distance",
+  "original_trig": "G04 verified table used as runtime input; no x87 initializer executed here",
+  "trig_sha256": "3fc1acca3c6c7053ce9ce05e6179833e943195a24ce47a780187e3261b6762b1",
+  "dos_game_session": false,
+  "script_sha256": "ed7dab3dd8afbf166ea5305797fefbb022ae4da8c2f4252fa2edd1706f27b097"
+}

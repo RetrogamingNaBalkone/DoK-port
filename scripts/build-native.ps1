@@ -14,6 +14,12 @@ if ($Compiler -eq 'zig') {
     try {
         $env:ZIG_GLOBAL_CACHE_DIR = Join-Path $taskRoot 'build/zig-cache'
         $taskCommon = @('cc','-std=c11','-Wall','-Wextra','-Werror','-O2','-I','include')
+        & $ZigExe @taskCommon src/movement.c tests/movement_cases.c tests/test_movement.c -o build/native/dok-movement-tests.exe
+        if ($LASTEXITCODE -ne 0) { throw 'Movement tests build failed' }
+        & ./build/native/dok-movement-tests.exe
+        if ($LASTEXITCODE -ne 0) { throw 'Movement tests failed' }
+        & $ZigExe @taskCommon src/movement.c tools/movement_probe.c -o build/native/dok-movement-probe.exe
+        if ($LASTEXITCODE -ne 0) { throw 'Movement probe build failed' }
         & $ZigExe @taskCommon src/scheduler.c src/clock.c tests/time_cases.c tests/test_time.c -o build/native/dok-time-tests.exe
         if ($LASTEXITCODE -ne 0) { throw 'Time/scheduler build failed' }
         & ./build/native/dok-time-tests.exe
@@ -77,6 +83,10 @@ if ($Compiler -eq 'zig') {
         & ./build/native/dok-sound-tests.exe
         if ($LASTEXITCODE -ne 0) { throw 'Sound tests failed' }
         if ($CrossChecks) {
+            & $ZigExe cc -target x86_64-linux-musl -static -std=c11 -Wall -Wextra -Werror -O2 -I include src/movement.c tests/movement_cases.c tests/test_movement.c -o build/native/dok-movement-tests-linux
+            if ($LASTEXITCODE -ne 0) { throw 'Linux movement tests build failed' }
+            & $ZigExe cc -target thumb-freestanding-eabi -mcpu=arm7tdmi -ffreestanding -std=c11 -Wall -Wextra -Werror -O2 -I include -c src/movement.c -o build/native/movement-arm7tdmi.o
+            if ($LASTEXITCODE -ne 0) { throw 'ARM movement compile failed' }
             & $ZigExe cc -target x86_64-linux-musl -static -std=c11 -Wall -Wextra -Werror -O2 -I include src/scheduler.c src/clock.c tests/time_cases.c tests/test_time.c -o build/native/dok-time-tests-linux
             if ($LASTEXITCODE -ne 0) { throw 'Linux time tests build failed' }
             & $ZigExe cc -target x86_64-linux-musl -static -std=c11 -Wall -Wextra -Werror -O2 -I include src/res.c tools/res_tool.c -o build/native/dok-res-linux
@@ -128,6 +138,12 @@ $taskBatch = @'
 call "%~1" -arch=x64 -host_arch=x64 >nul
 if errorlevel 1 exit /b 1
 cd /d "%~2"
+cl /nologo /std:c11 /W4 /WX /O2 /D_CRT_SECURE_NO_WARNINGS /I include src/movement.c tests/movement_cases.c tests/test_movement.c /Fo:build/native/ /Fe:build/native/dok-movement-tests.exe
+if errorlevel 1 exit /b 1
+build\native\dok-movement-tests.exe
+if errorlevel 1 exit /b 1
+cl /nologo /std:c11 /W4 /WX /O2 /D_CRT_SECURE_NO_WARNINGS /I include src/movement.c tools/movement_probe.c /Fo:build/native/ /Fe:build/native/dok-movement-probe.exe
+if errorlevel 1 exit /b 1
 cl /nologo /std:c11 /W4 /WX /O2 /D_CRT_SECURE_NO_WARNINGS /DDOK_RUNTIME_ROM_ONLY /I include src/runtime.c src/rom_assets.c src/image.c src/projection.c src/renderer.c tools/render_tool.c /Fo:build/native/ /Fe:build/native/dok-render.exe
 if errorlevel 1 exit /b 1
 cl /nologo /std:c11 /W4 /WX /O2 /D_CRT_SECURE_NO_WARNINGS /DDOK_RUNTIME_ROM_ONLY /DDOK_RENDER_FACE_CAPACITY=1 /I include src/runtime.c src/rom_assets.c src/image.c src/projection.c src/renderer.c tools/render_tool.c /Fo:build/native/ /Fe:build/native/dok-render-one-face.exe

@@ -154,3 +154,11 @@ ARM-векторы, аппаратные таймеры и fixed steps:
 проверки. Функциональный отказ завершает команду ошибкой; превышение раннего
 бюджета 400 000 cycles выдаёт предупреждение по решению пользователя.
 Методика и отдельные команды: [gba-renderer-review.md](gba-renderer-review.md).
+
+## Ввод и движение G07
+
+`powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-gba-movement.ps1 -CrossChecks`
+строит общий ROM `build/g07/dok-diagnostic.gba` и проверяет движение, реальные
+кнопки, графику и время. По указанию пользователя поступательная инерция удалена;
+коллизии ещё не подключены. Отдельные команды Ghidra/Unicorn, управление,
+измерения и ограничения — [movement.md](movement.md).
