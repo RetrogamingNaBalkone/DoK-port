@@ -14,18 +14,18 @@ try {
         & $PythonExe "$PSScriptRoot/$taskScript"
         if ($LASTEXITCODE -ne 0) { throw "Asset preparation failed: $taskScript" }
     }
-    & "$PSScriptRoot/build-gba.ps1" -ZigExe $ZigExe -PythonExe $PythonExe -RendererProbe -OutDir build/g06a-fast
+    & "$PSScriptRoot/build-gba.ps1" -ZigExe $ZigExe -PythonExe $PythonExe -RendererProbe -HalfColumns -OutDir build/g06a-fast
     if ($LASTEXITCODE -ne 0) { throw 'GBA build failed' }
     & $PythonExe "$PSScriptRoot/verify_render_columns.py"
     if ($LASTEXITCODE -ne 0) { throw 'Derived columns/linked payload check failed' }
     & $PythonExe "$PSScriptRoot/verify_renderer_gba.py" --core $CorePath --build-dir build/g06a-fast --report analysis/g06a-regression.json
     if ($LASTEXITCODE -ne 0) { throw 'Language/reset/guards check failed' }
-    & $PythonExe "$PSScriptRoot/verify_renderer_host.py" --arm-dir build/g06a-fast --capacity-tool build/native/dok-render-one-face.exe
+    & $PythonExe "$PSScriptRoot/verify_renderer_host.py" --arm-dir build/g06a-fast --half-columns --capacity-tool build/native/dok-render-one-face.exe
     if ($LASTEXITCODE -ne 0) { throw 'Independent startup oracle failed' }
     Copy-Item -LiteralPath build/gba/renderer-host-check/verification.json -Destination analysis/g06a-host-verification.json
     & $PythonExe "$PSScriptRoot/verify_time_gba.py" --core $CorePath --build-dir build/g06a-fast --report analysis/g06a-time-regression.json
     if ($LASTEXITCODE -ne 0) { throw 'Clock/scheduler regression failed' }
-    & $PythonExe "$PSScriptRoot/verify_renderer_early.py" --core $CorePath
+    & $PythonExe "$PSScriptRoot/verify_renderer_early.py" --core $CorePath --half-columns
     if ($LASTEXITCODE -ne 0) { throw 'Camera regression failed' }
     & $PythonExe "$PSScriptRoot/profile_renderer.py" --core $CorePath --build-dir build/g06a-fast --report analysis/render-early-startup.json
     if ($LASTEXITCODE -ne 0) { throw 'Startup profile failed' }

@@ -1,15 +1,17 @@
 {
   "task": "G06A",
-  "rom_sha256": "3c959f4840d9bafa4b82523fb54dbad9a48086695546b76d6cde45875260da34",
-  "rom_bytes": 28912488,
+  "rom_sha256": "ddda4054a8f16d3fda2e56c5d96783b085f07ce2cea0af3ec1aace69207f2741",
+  "rom_bytes": 32824608,
   "rom_capacity": 33554432,
-  "rom_remaining": 4641944,
-  "ewram_static_bytes": 129052,
-  "ewram_remaining": 133092,
+  "rom_remaining": 729824,
+  "ewram_static_bytes": 129056,
+  "ewram_remaining": 133088,
   "renderer_workspace_bytes": 91132,
-  "iwram_code_bytes": 15332,
+  "iwram_code_bytes": 16852,
+  "iwram_renderer_data_bytes": 1232,
+  "iwram_total_bytes": 18084,
   "iwram_code_limit": 24576,
-  "iwram_code_remaining": 9244,
+  "iwram_code_remaining": 6492,
   "stack_bios_reserve": 8192,
   "stack_observed": {
     "main_stack_low": 50356224,
@@ -21,7 +23,7 @@
     "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
   },
   "coverage_bytes": 34800,
-  "derived_column_bank_bytes": 25852784,
+  "derived_column_bank_bytes": 29762068,
   "reciprocal_table_bytes": 262144,
   "scope": "Current bounded renderer + G06 time probe; free RAM is not a full-game reservation"
 }

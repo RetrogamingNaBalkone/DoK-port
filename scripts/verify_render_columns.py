@@ -40,23 +40,28 @@ for view in range(6):
         rid=links[obj,0xfff0];im=resource(rid);w,h=u16(im,0),u16(im,2)
         entry=(view*(meta['resource_count']+1)+rid)*8
         columns,table=u32(bank,entry),u32(bank,entry+4);bindings+=1
-        key=(columns,table,digest(im),light)
+        masked=bool((u16(data,defs+obj*32+4)|u16(im,4))&8)
+        key=(columns,table,digest(im),light,masked)
         if key in seen:continue
         seen.add(key)
         expected=bytes(light[im[18+y*w+x]] for x in range(w) for y in range(h))
         assert bank[columns:columns+w*h]==expected
+        assert bank[columns-256:columns-256+w]==bytes(int(0 not in expected[x*h:(x+1)*h]) for x in range(w))
+        assert bank[columns-256+w:columns]==bytes(256-w)
         assert columns%4==table%4==0 and table
         for start in range(h):
             spans=u32(bank,table+start*4)
             if not spans:continue
             assert spans%4==0
+            assert u32(bank,spans)==meta['scale_max_span']
             for span in range(1,meta['scale_max_span']+1):
                 cols=u32(bank,spans+span*4);assert cols%4==0
                 step=((h-1-start)*65536)//span
                 for x in range(w):
                     record=u32(bank,cols+x*4);assert record%4==0
                     n,offset,reserved=struct.unpack_from('<BBH',bank,record)
-                    assert reserved==0 and offset%4==0 and offset>=4+n*2
+                    assert reserved in (0,1) and offset%4==0 and offset>=4+n*2
+                    assert not (masked and reserved),('masked binding needs opacity metadata',view,obj)
                     pixels=bank[record+offset:record+offset+span+1]
                     want=bytes(expected[x*h+start+(y*step)//65536] for y in range(span+1))
                     assert pixels==want,('samples',view,obj,start,span,x)
@@ -67,7 +72,10 @@ for view in range(6):
                         for opaque,group in itertools.groupby(enumerate(pixels),lambda item:bool(item[1])):
                             rows=[i for i,_ in group]
                             if opaque:runs.extend((rows[0],rows[-1]))
-                        assert bank[record+4:record+4+n*2]==bytes(runs)
+                        if reserved:
+                            assert n==0 and offset==4
+                        else:
+                            assert bank[record+4:record+4+n*2]==bytes(runs)
                         records.add(record)
                     cases+=1
 result=dict(status='passed',rom_sha256=digest(rom),bank_sha256=digest(bank),

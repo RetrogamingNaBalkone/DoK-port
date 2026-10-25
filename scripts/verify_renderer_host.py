@@ -222,6 +222,8 @@ def main():
     parser.add_argument("--arm-language", choices=("ru", "en"), default="ru")
     parser.add_argument("--arm-dir", type=Path,
                         help="Compare renderer-ru/en/ru-return.idx and .pal captures together")
+    parser.add_argument("--half-columns", action="store_true",
+                        help="Duplicate even scene columns before adding full-resolution HUD")
     parser.add_argument("--capacity-tool", type=Path,
                         help="Same production tool built with DOK_RENDER_FACE_CAPACITY=1")
     args = parser.parse_args()
@@ -230,6 +232,8 @@ def main():
     OUT.mkdir(parents=True, exist_ok=True)
     report = {"task": "G05", "scope": "bounded static LEVEL1 and native/ARM indexed render verification",
               "whole_DOS_pixel_equivalence": False, "performance_measured": False,
+              "horizontal_scene_samples": 120 if args.half_columns else 240,
+              "oracle_transform": "duplicate even columns before full-resolution HUD" if args.half_columns else "none",
               "script": artifact(Path(__file__)), "package": artifact(args.package.resolve()),
               "host_tool": artifact(args.tool.resolve()), "languages": {}, "ARM_comparison": "not supplied"}
     for language in ("ru", "en"):
@@ -250,7 +254,8 @@ def main():
         (directory / "palette.gba555").write_bytes(palette_ram)
         font, font_id = resource_bytes(package, "FONT8", language)
         font_atlas(directory / "FONT8.png", font)
-        hud = with_hud(frame, font, palette, language, states[native["player_index"] - 1])
+        scene = bytes(value for value in frame[::2] for _ in range(2)) if args.half_columns else frame
+        hud = with_hud(scene, font, palette, language, states[native["player_index"] - 1])
         (directory / "with-ui.idx").write_bytes(hud)
         write_frame_png(directory / "native-vga6.png", frame, palette)
         write_frame_png(directory / "native-gba555.png", frame, palette, quantized=True)

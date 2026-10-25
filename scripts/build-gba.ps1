@@ -6,6 +6,7 @@ param(
     [switch]$MemoryProbe,
     [switch]$AssetsProbe,
     [switch]$RendererProbe,
+    [switch]$HalfColumns,
     [switch]$TimeProbe,
     [string]$AssetsBin = 'build/gba/assets/assets.bin',
     [string]$CorePath = "$env:LOCALAPPDATA/Programs/mGBA/libretro-20261024/mgba_libretro.dll"
@@ -31,11 +32,14 @@ try {
     if ($MemoryProbe) { $taskArgs += '-DDOK_RUNTIME_PROBE' }
     if ($AssetsProbe) { $taskArgs += '-DDOK_ASSETS_PROBE' }
     if ($RendererProbe) { $taskArgs += '-DDOK_RENDERER_PROBE' }
+    if ($HalfColumns -and -not $RendererProbe) { throw 'HalfColumns requires RendererProbe' }
+    if ($HalfColumns) { $taskArgs += '-DDOK_RENDER_HALF_COLUMNS' }
     $taskMain = if ($RendererProbe) {'gba/renderer_probe.c'} else {'gba/main.c'}
     & $ZigExe @taskArgs $taskMain -o "$OutDir/main.o"
     if ($LASTEXITCODE -ne 0) { throw 'GBA C compilation failed' }
     $taskStartupArgs = @('cc','-target','arm-freestanding-eabi','-mcpu=arm7tdmi','-c')
     if ($RendererProbe) { $taskStartupArgs += '-DDOK_RENDERER_PROBE' }
+    if ($HalfColumns) { $taskStartupArgs += '-DDOK_RENDER_HALF_COLUMNS' }
     & $ZigExe @taskStartupArgs gba/startup.S -o "$OutDir/startup.o"
     if ($LASTEXITCODE -ne 0) { throw 'GBA startup assembly failed' }
     $taskObjects = @("$OutDir/startup.o", "$OutDir/main.o")
@@ -48,6 +52,9 @@ try {
         & $ZigExe @taskStartupArgs gba/divmod.S -o "$OutDir/divmod.o"
         if ($LASTEXITCODE -ne 0) { throw 'ARM EABI divmod assembly failed' }
         $taskObjects += "$OutDir/divmod.o"
+        & $ZigExe @taskStartupArgs gba/columns.S -o "$OutDir/columns.o"
+        if ($LASTEXITCODE -ne 0) { throw 'ARM column assembly failed' }
+        $taskObjects += "$OutDir/columns.o"
     }
     if ($MemoryProbe) {
         & $ZigExe @taskArgs gba/memory_probe.c -o "$OutDir/memory-probe.o"

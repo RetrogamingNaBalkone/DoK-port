@@ -1,7 +1,8 @@
 """G06A full-turn/multi-level camera harness; actual ARM cycles, no FPS inference.
 
-Uses the production renderer on host as a regression oracle for the lossless
-ARM-specific path; this does not establish whole-DOS pixel equivalence.
+Uses the production renderer on host as a regression oracle, with explicit
+even-column duplication for the accepted 120-sample scene mode.
+This does not establish whole-DOS pixel equivalence.
 """
 import argparse
 import ctypes as ct
@@ -23,6 +24,7 @@ p.add_argument('--assets', type=Path, default=Path('build/gba/assets/assets.bin'
 p.add_argument('--tool', type=Path, default=Path('build/native/dok-render-reference.exe'))
 p.add_argument('--core', type=Path, default=Path(os.environ['LOCALAPPDATA'])/'Programs/mGBA/libretro-20261024/mgba_libretro.dll')
 p.add_argument('--step', type=int, default=1)
+p.add_argument('--half-columns',action='store_true',help='Compare 120-sample scene to duplicated even columns of the 240-sample oracle')
 p.add_argument('--report', type=Path, default=Path('analysis/render-early-benchmark.json'))
 a = p.parse_args()
 assert 1 <= a.step <= 90
@@ -50,6 +52,7 @@ def until(predicate, limit=6000):
     raise AssertionError(('Timeout', d))
 
 until(lambda d: d['draws'] >= 2 and d['phase'] == 2)
+ct.memmove(f.pointer(symbols['g_camera_capture_hold'],4),struct.pack('<I',1),4)
 results, worlds, failures, language_checks = [], {}, [], []
 request = 0
 for level in range(3):
@@ -74,6 +77,8 @@ for level in range(3):
                 continue
             h = json.loads(host.stdout)
             expected = (out/'host.idx').read_bytes()
+            if a.half_columns:
+                expected=bytes(value for value in expected[::2] for _ in range(2))
             request += 1
             ct.memmove(f.pointer(symbols['g_camera_probe']+8,20), struct.pack('<I4i',level,*camera),20)
             ct.memmove(f.pointer(symbols['g_camera_probe'],4),struct.pack('<I',request),4)
@@ -137,13 +142,16 @@ worst = max(results,key=lambda row:row['cycles'])
 report = dict(task='G06A',status='failed' if failures else 'passed',
               budget_met=worst['cycles']<=400000,
               performance_status='met' if worst['cycles']<=400000 else 'deferred',
-              budget_policy='User decision 2026-10-25: preserve detail/resolution; record early excess and decide reductions after full graphics/AI/audio integration; final optimization G20',
+              budget_policy='User decision 2026-10-25: accept 120 horizontal scene samples with full-resolution UI; early excess deferred; full-game optimization G20',
               rom_sha256=sha(build/'dok-diagnostic.gba'),rom_bytes=meta['rom_bytes'],
               ewram_static_bytes=meta['ewram_static_bytes'],sections=sections,
               emulator=f.name,version=f.version,core_sha256=sha(a.core),
               bios='mGBA replacement BIOS',budget=400000,worst=worst,
               max_faces=max(r['faces'] for r in results),rejected=failures,
               checked_cameras=len(results),language_checks=language_checks,host_arm_scene_equal=True,world_unchanged=True,
+              horizontal_scene_samples=120 if a.half_columns else 240,
+              oracle_transform='duplicate even columns before full-resolution HUD' if a.half_columns else 'none',
+              capture_hold='one extra VBlank after presentation, outside CPU timer; camera suite does not measure cadence',
               guards_passed=True,stack=stack,physical_gba_tested=False,
               full_game_performance_verified=False,samples=results)
 a.report.write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')

@@ -1,0 +1,732 @@
+{
+  "date": "2026-10-25",
+  "decision": "User explicitly accepted 120 scene columns; UI remains 240 pixels wide",
+  "baseline": {
+    "rom_sha256": "3c959f4840d9bafa4b82523fb54dbad9a48086695546b76d6cde45875260da34",
+    "startup": 599925,
+    "worst": {
+      "level": 3,
+      "pose": "offset",
+      "camera": [
+        16560,
+        -300,
+        27600,
+        210
+      ],
+      "cycles": 993984,
+      "stages": {
+        "clear_resources": 77615,
+        "geometry": 85361,
+        "sort": 7174,
+        "raster": 705553,
+        "hud": 24931,
+        "copy": 76960
+      },
+      "faces": 24,
+      "near_clipped": 1,
+      "reference_pixel_writes": 69597,
+      "visible_pixel_writes": 34408,
+      "reference_transparent": 0,
+      "framebuffer_sha256": "305a46c246bc6e4a01b0704a17d929a8bb40d91e08cda0df68fbad29735acf14"
+    },
+    "checked_cameras": 1455
+  },
+  "final": {
+    "rom_sha256": "ddda4054a8f16d3fda2e56c5d96783b085f07ce2cea0af3ec1aace69207f2741",
+    "startup": 440812,
+    "worst": {
+      "level": 2,
+      "pose": "offset",
+      "camera": [
+        19920,
+        -300,
+        2160,
+        60
+      ],
+      "cycles": 617307,
+      "stages": {
+        "clear_resources": 4190,
+        "geometry": 142505,
+        "sort": 26093,
+        "raster": 333407,
+        "hud": 24697,
+        "copy": 77045
+      },
+      "faces": 58,
+      "near_clipped": 3,
+      "reference_pixel_writes": 54640,
+      "visible_pixel_writes": 11408,
+      "reference_transparent": 147,
+      "framebuffer_sha256": "8227675b0066caa11b6501070d8bc2b935c226498facef904bf33a06efeb0941"
+    },
+    "checked_cameras": 1455,
+    "oracle_transform": "duplicate even columns before full-resolution HUD"
+  },
+  "experiments": [
+    {
+      "name": "u",
+      "artifact_directory": "build/g06a-review-u",
+      "startup": {
+        "rom": "4de5a967b2b3be11420cb22d256239b2ecd294959fd7b848ec4158dcfc2be7c7",
+        "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+        "total": 601203,
+        "timestamps": [
+          9856,
+          87471,
+          166220,
+          174224,
+          499274,
+          524180,
+          601140
+        ],
+        "input_time_poll": 9856,
+        "stages": {
+          "clear_resources": 77615,
+          "geometry": 78749,
+          "sort": 8004,
+          "raster": 325050,
+          "hud": 24906,
+          "copy": 76960
+        },
+        "note": "Full timed frame excludes presentation wait; stages include timestamp overhead; one steady observation"
+      },
+      "worst": {
+        "rom": "4de5a967b2b3be11420cb22d256239b2ecd294959fd7b848ec4158dcfc2be7c7",
+        "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+        "total": 995019,
+        "timestamps": [
+          14945,
+          92560,
+          177921,
+          185095,
+          893063,
+          917994,
+          994956
+        ],
+        "input_time_poll": 14945,
+        "stages": {
+          "clear_resources": 77615,
+          "geometry": 85361,
+          "sort": 7174,
+          "raster": 707968,
+          "hud": 24931,
+          "copy": 76962
+        },
+        "note": "Full timed frame excludes presentation wait; stages include timestamp overhead; one steady observation"
+      },
+      "rom_sha256": "4de5a967b2b3be11420cb22d256239b2ecd294959fd7b848ec4158dcfc2be7c7",
+      "rom_bytes": 28912580
+    },
+    {
+      "name": "opacity",
+      "artifact_directory": "build/g06a-review-opacity",
+      "startup": {
+        "rom": "153ebfc15070e70ccfd6c4d00a18c72ab45d845d477e040b187ca6ddf0d376ca",
+        "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+        "total": 593949,
+        "timestamps": [
+          9841,
+          87456,
+          166205,
+          174209,
+          491823,
+          516926,
+          593886
+        ],
+        "input_time_poll": 9841,
+        "stages": {
+          "clear_resources": 77615,
+          "geometry": 78749,
+          "sort": 8004,
+          "raster": 317614,
+          "hud": 25103,
+          "copy": 76960
+        },
+        "note": "Full timed frame excludes presentation wait; stages include timestamp overhead; one steady observation"
+      },
+      "worst": {
+        "rom": "153ebfc15070e70ccfd6c4d00a18c72ab45d845d477e040b187ca6ddf0d376ca",
+        "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+        "total": 993941,
+        "timestamps": [
+          14945,
+          92560,
+          177921,
+          185095,
+          891985,
+          916916,
+          993878
+        ],
+        "input_time_poll": 14945,
+        "stages": {
+          "clear_resources": 77615,
+          "geometry": 85361,
+          "sort": 7174,
+          "raster": 706890,
+          "hud": 24931,
+          "copy": 76962
+        },
+        "note": "Full timed frame excludes presentation wait; stages include timestamp overhead; one steady observation"
+      },
+      "rom_sha256": "153ebfc15070e70ccfd6c4d00a18c72ab45d845d477e040b187ca6ddf0d376ca",
+      "rom_bytes": 28919440
+    },
+    {
+      "name": "unroll",
+      "artifact_directory": "build/g06a-review-unroll",
+      "worst": {
+        "rom": "557310956adc91f8daf029b16999aa847b16383065a06935dffb152ae14dc7a4",
+        "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+        "total": 945113,
+        "timestamps": [
+          14945,
+          92560,
+          177921,
+          185095,
+          843157,
+          868088,
+          945050
+        ],
+        "input_time_poll": 14945,
+        "stages": {
+          "clear_resources": 77615,
+          "geometry": 85361,
+          "sort": 7174,
+          "raster": 658062,
+          "hud": 24931,
+          "copy": 76962
+        },
+        "note": "Full timed frame excludes presentation wait; stages include timestamp overhead; one steady observation"
+      },
+      "rom_sha256": "557310956adc91f8daf029b16999aa847b16383065a06935dffb152ae14dc7a4",
+      "rom_bytes": 28919588
+    },
+    {
+      "name": "wait",
+      "artifact_directory": "build/g06a-review-wait",
+      "startup": {
+        "rom": "f6196beb08e7b8378cea44b09ee4c0e974894366a6ef21d766c2a33f2dc98de8",
+        "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+        "total": 571295,
+        "timestamps": [
+          5450,
+          81700,
+          155283,
+          163229,
+          469570,
+          494356,
+          571264
+        ],
+        "input_time_poll": 5450,
+        "stages": {
+          "clear_resources": 76250,
+          "geometry": 73583,
+          "sort": 7946,
+          "raster": 306341,
+          "hud": 24786,
+          "copy": 76908
+        },
+        "note": "Full timed frame excludes presentation wait; stages include timestamp overhead; one steady observation"
+      },
+      "worst": {
+        "rom": "f6196beb08e7b8378cea44b09ee4c0e974894366a6ef21d766c2a33f2dc98de8",
+        "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+        "total": 906129,
+        "timestamps": [
+          9335,
+          85589,
+          167140,
+          174256,
+          804375,
+          829064,
+          906098
+        ],
+        "input_time_poll": 9335,
+        "stages": {
+          "clear_resources": 76254,
+          "geometry": 81551,
+          "sort": 7116,
+          "raster": 630119,
+          "hud": 24689,
+          "copy": 77034
+        },
+        "note": "Full timed frame excludes presentation wait; stages include timestamp overhead; one steady observation"
+      },
+      "rom_sha256": "f6196beb08e7b8378cea44b09ee4c0e974894366a6ef21d766c2a33f2dc98de8",
+      "rom_bytes": 28919608
+    },
+    {
+      "name": "magnify",
+      "artifact_directory": "build/g06a-review-magnify",
+      "startup": {
+        "rom": "f2919f75a1f458232c02cbae876d216f8cc03f5e7d47633ab61af95733215f40",
+        "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+        "total": 590583,
+        "timestamps": [
+          4968,
+          81218,
+          154532,
+          162478,
+          488858,
+          513644,
+          590552
+        ],
+        "input_time_poll": 4968,
+        "stages": {
+          "clear_resources": 76250,
+          "geometry": 73314,
+          "sort": 7946,
+          "raster": 326380,
+          "hud": 24786,
+          "copy": 76908
+        },
+        "note": "Full timed frame excludes presentation wait; stages include timestamp overhead; one steady observation"
+      },
+      "worst": {
+        "rom": "f2919f75a1f458232c02cbae876d216f8cc03f5e7d47633ab61af95733215f40",
+        "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+        "total": 924015,
+        "timestamps": [
+          8681,
+          84935,
+          166116,
+          173232,
+          822263,
+          847074,
+          923984
+        ],
+        "input_time_poll": 8681,
+        "stages": {
+          "clear_resources": 76254,
+          "geometry": 81181,
+          "sort": 7116,
+          "raster": 649031,
+          "hud": 24811,
+          "copy": 76910
+        },
+        "note": "Full timed frame excludes presentation wait; stages include timestamp overhead; one steady observation"
+      },
+      "rom_sha256": "f2919f75a1f458232c02cbae876d216f8cc03f5e7d47633ab61af95733215f40",
+      "rom_bytes": 32896752
+    },
+    {
+      "name": "magnify-fast",
+      "artifact_directory": "build/g06a-review-magnify-fast",
+      "startup": {
+        "rom": "ae6e8a7b79a9873bf6aa6764d841d3cdc8e8d49e2679252ac71c844ca65df585",
+        "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+        "total": 568988,
+        "timestamps": [
+          4796,
+          81046,
+          154360,
+          162306,
+          467263,
+          492049,
+          568957
+        ],
+        "input_time_poll": 4796,
+        "stages": {
+          "clear_resources": 76250,
+          "geometry": 73314,
+          "sort": 7946,
+          "raster": 304957,
+          "hud": 24786,
+          "copy": 76908
+        },
+        "note": "Full timed frame excludes presentation wait; stages include timestamp overhead; one steady observation"
+      },
+      "worst": {
+        "rom": "ae6e8a7b79a9873bf6aa6764d841d3cdc8e8d49e2679252ac71c844ca65df585",
+        "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+        "total": 900363,
+        "timestamps": [
+          9335,
+          85589,
+          166770,
+          173886,
+          798609,
+          823298,
+          900332
+        ],
+        "input_time_poll": 9335,
+        "stages": {
+          "clear_resources": 76254,
+          "geometry": 81181,
+          "sort": 7116,
+          "raster": 624723,
+          "hud": 24689,
+          "copy": 77034
+        },
+        "note": "Full timed frame excludes presentation wait; stages include timestamp overhead; one steady observation"
+      },
+      "rom_sha256": "ae6e8a7b79a9873bf6aa6764d841d3cdc8e8d49e2679252ac71c844ca65df585",
+      "rom_bytes": 32897524
+    },
+    {
+      "name": "background",
+      "artifact_directory": "build/g06a-review-background",
+      "startup": {
+        "rom": "5ae5b73704e624b7b5f93293c651bd7594e83cf06e0bdff8efa00778667fe9e6",
+        "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+        "total": 571830,
+        "timestamps": [
+          4796,
+          8986,
+          82569,
+          90515,
+          470103,
+          494889,
+          571799
+        ],
+        "input_time_poll": 4796,
+        "stages": {
+          "clear_resources": 4190,
+          "geometry": 73583,
+          "sort": 7946,
+          "raster": 379588,
+          "hud": 24786,
+          "copy": 76910
+        },
+        "note": "Full timed frame excludes presentation wait; stages include timestamp overhead; one steady observation"
+      },
+      "worst": {
+        "rom": "5ae5b73704e624b7b5f93293c651bd7594e83cf06e0bdff8efa00778667fe9e6",
+        "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+        "total": 863613,
+        "timestamps": [
+          7843,
+          12037,
+          93588,
+          100704,
+          761859,
+          786548,
+          863582
+        ],
+        "input_time_poll": 7843,
+        "stages": {
+          "clear_resources": 4194,
+          "geometry": 81551,
+          "sort": 7116,
+          "raster": 661155,
+          "hud": 24689,
+          "copy": 77034
+        },
+        "note": "Full timed frame excludes presentation wait; stages include timestamp overhead; one steady observation"
+      },
+      "rom_sha256": "5ae5b73704e624b7b5f93293c651bd7594e83cf06e0bdff8efa00778667fe9e6",
+      "rom_bytes": 28920204
+    },
+    {
+      "name": "span140",
+      "artifact_directory": "build/g06a-review-span140",
+      "startup": {
+        "rom": "d5dfd62fc6a874d3f0f35094c6725e28dcfc8f37f517d5eb6563b1a3fc794849",
+        "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+        "total": 575386,
+        "timestamps": [
+          5450,
+          9640,
+          83223,
+          91169,
+          473661,
+          498447,
+          575355
+        ],
+        "input_time_poll": 5450,
+        "stages": {
+          "clear_resources": 4190,
+          "geometry": 73583,
+          "sort": 7946,
+          "raster": 382492,
+          "hud": 24786,
+          "copy": 76908
+        },
+        "note": "Full timed frame excludes presentation wait; stages include timestamp overhead; one steady observation"
+      },
+      "worst": {
+        "rom": "d5dfd62fc6a874d3f0f35094c6725e28dcfc8f37f517d5eb6563b1a3fc794849",
+        "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+        "total": 833635,
+        "timestamps": [
+          7174,
+          11368,
+          92919,
+          100035,
+          731881,
+          756570,
+          833604
+        ],
+        "input_time_poll": 7174,
+        "stages": {
+          "clear_resources": 4194,
+          "geometry": 81551,
+          "sort": 7116,
+          "raster": 631846,
+          "hud": 24689,
+          "copy": 77034
+        },
+        "note": "Full timed frame excludes presentation wait; stages include timestamp overhead; one steady observation"
+      },
+      "rom_sha256": "d5dfd62fc6a874d3f0f35094c6725e28dcfc8f37f517d5eb6563b1a3fc794849",
+      "rom_bytes": 32823012
+    },
+    {
+      "name": "coverage",
+      "artifact_directory": "build/g06a-review-coverage",
+      "startup": {
+        "rom": "5e849d385639bc29dc9347157ed7fcc559a09dd420ad29cb4e409430ef058525",
+        "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+        "total": 566187,
+        "timestamps": [
+          4796,
+          8986,
+          82569,
+          90515,
+          464462,
+          489248,
+          566156
+        ],
+        "input_time_poll": 4796,
+        "stages": {
+          "clear_resources": 4190,
+          "geometry": 73583,
+          "sort": 7946,
+          "raster": 373947,
+          "hud": 24786,
+          "copy": 76908
+        },
+        "note": "Full timed frame excludes presentation wait; stages include timestamp overhead; one steady observation"
+      },
+      "worst": {
+        "rom": "5e849d385639bc29dc9347157ed7fcc559a09dd420ad29cb4e409430ef058525",
+        "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+        "total": 822844,
+        "timestamps": [
+          7144,
+          11338,
+          92889,
+          100005,
+          721090,
+          745779,
+          822813
+        ],
+        "input_time_poll": 7144,
+        "stages": {
+          "clear_resources": 4194,
+          "geometry": 81551,
+          "sort": 7116,
+          "raster": 621085,
+          "hud": 24689,
+          "copy": 77034
+        },
+        "note": "Full timed frame excludes presentation wait; stages include timestamp overhead; one steady observation"
+      },
+      "rom_sha256": "5e849d385639bc29dc9347157ed7fcc559a09dd420ad29cb4e409430ef058525",
+      "rom_bytes": 32824004
+    },
+    {
+      "name": "indices",
+      "artifact_directory": "build/g06a-review-indices",
+      "startup": {
+        "rom": "f5fa668cea6c8c211c6d36020cca1b2cdb6c85f0b883b907d998c84ebf060c3f",
+        "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+        "total": 562426,
+        "timestamps": [
+          5450,
+          9640,
+          83223,
+          86582,
+          460699,
+          485485,
+          562395
+        ],
+        "input_time_poll": 5450,
+        "stages": {
+          "clear_resources": 4190,
+          "geometry": 73583,
+          "sort": 3359,
+          "raster": 374117,
+          "hud": 24786,
+          "copy": 76910
+        },
+        "note": "Full timed frame excludes presentation wait; stages include timestamp overhead; one steady observation"
+      },
+      "worst": {
+        "rom": "f5fa668cea6c8c211c6d36020cca1b2cdb6c85f0b883b907d998c84ebf060c3f",
+        "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+        "total": 818490,
+        "timestamps": [
+          6987,
+          11181,
+          92732,
+          95689,
+          716738,
+          741427,
+          818459
+        ],
+        "input_time_poll": 6987,
+        "stages": {
+          "clear_resources": 4194,
+          "geometry": 81551,
+          "sort": 2957,
+          "raster": 621049,
+          "hud": 24689,
+          "copy": 77032
+        },
+        "note": "Full timed frame excludes presentation wait; stages include timestamp overhead; one steady observation"
+      },
+      "rom_sha256": "f5fa668cea6c8c211c6d36020cca1b2cdb6c85f0b883b907d998c84ebf060c3f",
+      "rom_bytes": 32824272
+    },
+    {
+      "name": "half",
+      "artifact_directory": "build/g06a-review-half",
+      "startup": {
+        "rom": "d5fcc9e374c680e77a8d7edb2473ee42fd026432b34f7db2642e3de4d0fc3cba",
+        "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+        "total": 440795,
+        "timestamps": [
+          4796,
+          8986,
+          82569,
+          85928,
+          339192,
+          363856,
+          440764
+        ],
+        "input_time_poll": 4796,
+        "stages": {
+          "clear_resources": 4190,
+          "geometry": 73583,
+          "sort": 3359,
+          "raster": 253264,
+          "hud": 24664,
+          "copy": 76908
+        },
+        "note": "Full timed frame excludes presentation wait; stages include timestamp overhead; one steady observation"
+      },
+      "worst": {
+        "rom": "d5fcc9e374c680e77a8d7edb2473ee42fd026432b34f7db2642e3de4d0fc3cba",
+        "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+        "total": 539222,
+        "timestamps": [
+          5450,
+          9644,
+          91195,
+          94152,
+          437470,
+          462159,
+          539191
+        ],
+        "input_time_poll": 5450,
+        "stages": {
+          "clear_resources": 4194,
+          "geometry": 81551,
+          "sort": 2957,
+          "raster": 343318,
+          "hud": 24689,
+          "copy": 77032
+        },
+        "note": "Full timed frame excludes presentation wait; stages include timestamp overhead; one steady observation"
+      },
+      "rom_sha256": "d5fcc9e374c680e77a8d7edb2473ee42fd026432b34f7db2642e3de4d0fc3cba",
+      "rom_bytes": 32824568
+    }
+  ],
+  "experiment_scope": "startup and prior LEVEL3 worst are individual observations, not full-sweep maxima; capture hold added only to final camera suite",
+  "comparison": {
+    "left": 240,
+    "right": 120,
+    "scale": "1:1, target RGB555 palette",
+    "hud": "omitted",
+    "cases": [
+      {
+        "name": "L1-start",
+        "level": 1,
+        "camera": [
+          15120,
+          -300,
+          22800,
+          90
+        ],
+        "changed_rgb_pixels": 5849,
+        "scene_pixels": 34560,
+        "changed_percent": 16.924189814814813,
+        "mean_rgb_absolute_error": 2.249836033950617
+      },
+      {
+        "name": "L1-diagonal",
+        "level": 1,
+        "camera": [
+          15120,
+          -300,
+          22800,
+          45
+        ],
+        "changed_rgb_pixels": 7702,
+        "scene_pixels": 34560,
+        "changed_percent": 22.28587962962963,
+        "mean_rgb_absolute_error": 2.943721064814815
+      },
+      {
+        "name": "L1-side",
+        "level": 1,
+        "camera": [
+          15120,
+          -300,
+          22800,
+          0
+        ],
+        "changed_rgb_pixels": 7110,
+        "scene_pixels": 34560,
+        "changed_percent": 20.572916666666668,
+        "mean_rgb_absolute_error": 1.8727719907407407
+      },
+      {
+        "name": "L1-near",
+        "level": 1,
+        "camera": [
+          15120,
+          -300,
+          22801,
+          90
+        ],
+        "changed_rgb_pixels": 5854,
+        "scene_pixels": 34560,
+        "changed_percent": 16.93865740740741,
+        "mean_rgb_absolute_error": 2.267457561728395
+      },
+      {
+        "name": "L3-heavy",
+        "level": 3,
+        "camera": [
+          16560,
+          -300,
+          27600,
+          210
+        ],
+        "changed_rgb_pixels": 5716,
+        "scene_pixels": 34560,
+        "changed_percent": 16.53935185185185,
+        "mean_rgb_absolute_error": 1.778346836419753
+      },
+      {
+        "name": "L3-diagonal",
+        "level": 3,
+        "camera": [
+          16560,
+          -300,
+          27600,
+          45
+        ],
+        "changed_rgb_pixels": 3663,
+        "scene_pixels": 34560,
+        "changed_percent": 10.598958333333334,
+        "mean_rgb_absolute_error": 1.408622685185185
+      }
+    ]
+  },
+  "quality_preserving_limit_proven": false,
+  "physical_gba_tested": false
+}

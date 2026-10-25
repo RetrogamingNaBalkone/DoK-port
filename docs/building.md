@@ -121,7 +121,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-gba-renderer.p
 ```
 
 ROM, кадры и map — в `build/gba-renderer/`. Условия проверки и измеренная
-частота≈1,64 FPS при цели30 FPS: [gba-renderer.md](gba-renderer.md).
+частота≈1,64 FPS при цели 30 FPS: [gba-renderer.md](gba-renderer.md).
 
 В G01 выяснено, что Zig 0.13.0 с `-target arm-freestanding-eabi -mthumb`
 в этой установке выдавал ARM-код; шесть native compile checks исправлены на
@@ -150,6 +150,7 @@ ARM-векторы, аппаратные таймеры и fixed steps:
 ## Ранний renderer G06A
 
 `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-gba-early.ps1 -CrossChecks`
-собирает текущую пробу и проверки. Команда намеренно завершается ошибкой, если
-функциональные проверки прошли, но бюджет 400 000 cycles превышен.
-Методика и отдельные команды: [gba-performance.md](gba-performance.md).
+собирает текущую пробу с 120 колонками сцены и 240 пикселями UI, затем запускает
+проверки. Функциональный отказ завершает команду ошибкой; превышение раннего
+бюджета 400 000 cycles выдаёт предупреждение по решению пользователя.
+Методика и отдельные команды: [gba-renderer-review.md](gba-renderer-review.md).

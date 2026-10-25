@@ -1,24 +1,24 @@
 {
-  "rom": "3c959f4840d9bafa4b82523fb54dbad9a48086695546b76d6cde45875260da34",
+  "rom": "ddda4054a8f16d3fda2e56c5d96783b085f07ce2cea0af3ec1aace69207f2741",
   "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
-  "total": 599925,
+  "total": 440812,
   "timestamps": [
-    9856,
-    87471,
-    166220,
-    174224,
-    497996,
-    522902,
-    599862
+    4800,
+    8990,
+    82573,
+    85932,
+    339196,
+    363860,
+    440781
   ],
-  "input_time_poll": 9856,
+  "input_time_poll": 4800,
   "stages": {
-    "clear_resources": 77615,
-    "geometry": 78749,
-    "sort": 8004,
-    "raster": 323772,
-    "hud": 24906,
-    "copy": 76960
+    "clear_resources": 4190,
+    "geometry": 73583,
+    "sort": 3359,
+    "raster": 253264,
+    "hud": 24664,
+    "copy": 76921
   },
   "note": "Full timed frame excludes presentation wait; stages include timestamp overhead; one steady observation"
 }

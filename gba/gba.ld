@@ -12,7 +12,12 @@ SECTIONS {
         __iwram_start = .;
         *renderer.o(.text .text.*) *projection.o(.text .text.*)
         *memory.o(.text .text.*) *divmod.o(.text .text.*)
+        *columns.o(.text .text.*)
         *main.o(.iwram .iwram.*)
+        . = ALIGN(4); __iwram_code_end = .;
+        __iwram_data_start = .;
+        *renderer.o(.iwram.data)
+        . = ALIGN(4); __iwram_data_end = .;
         . = ALIGN(4); __iwram_end = .;
     } > IWRAM AT> ROM
     __iwram_load = LOADADDR(.iwram);

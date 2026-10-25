@@ -1,14 +1,14 @@
 {
   "status": "passed",
-  "rom_sha256": "3c959f4840d9bafa4b82523fb54dbad9a48086695546b76d6cde45875260da34",
-  "bank_sha256": "fb7c4621c6bae634ce0d2a7e3a24340de53892ada213d3fa31ae0f727a59251a",
-  "bank_bytes": 25852784,
+  "rom_sha256": "ddda4054a8f16d3fda2e56c5d96783b085f07ce2cea0af3ec1aace69207f2741",
+  "bank_sha256": "be34856377d014fec83530dbca4a683bcedf7d98746f8827a0cf8f43228d3f91",
+  "bank_bytes": 29762068,
   "image_bindings": 138,
-  "checked_image_views": 27,
-  "checked_strips": 405504,
-  "unique_records": 309733,
+  "checked_image_views": 25,
+  "checked_strips": 443520,
+  "unique_records": 339821,
   "linked_payloads_equal": true,
   "exact_q16_samples": true,
   "mapped_opacity_runs": true,
-  "scale_max_span": 128
+  "scale_max_span": 140
 }

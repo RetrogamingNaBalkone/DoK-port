@@ -14,6 +14,9 @@ build=read(a.build_dir/'build-report.json');rom=sha(a.build_dir/'dok-diagnostic.
 assert build['rom_sha256']==rom
 benchmark=read('analysis/render-early-benchmark.json')
 regression=read('analysis/g06a-regression.json')
+host=read('analysis/g06a-host-verification.json')
+assert host['ARM_ROM']['sha256']==rom, 'stale startup oracle'
+assert host['horizontal_scene_samples']==benchmark['horizontal_scene_samples']
 for name in ('render-early-benchmark','g06a-regression','g06a-time-regression','g06a-column-verification'):
     assert read(f'analysis/{name}.json')['rom_sha256']==rom,('stale evidence',name)
 assert read('analysis/render-early-startup.json')['rom']==rom
@@ -26,14 +29,18 @@ memory=dict(task='G06A',rom_sha256=rom,rom_bytes=build['rom_bytes'],rom_capacity
             rom_remaining=32*1024*1024-build['rom_bytes'],ewram_static_bytes=build['ewram_static_bytes'],
             ewram_remaining=256*1024-build['ewram_static_bytes'],
             renderer_workspace_bytes=regression['ru']['diag']['workspace_bytes'],
-            iwram_code_bytes=iwram,iwram_code_limit=24576,iwram_code_remaining=24576-iwram,
+            iwram_code_bytes=s['__iwram_code_end']-s['__iwram_start'],
+            iwram_renderer_data_bytes=s['__iwram_data_end']-s['__iwram_data_start'],
+            iwram_total_bytes=iwram,iwram_code_limit=24576,iwram_code_remaining=24576-iwram,
             stack_bios_reserve=8192,stack_observed=stack,coverage_bytes=34800,
             derived_column_bank_bytes=bank['bytes'],reciprocal_table_bytes=262144,
             scope='Current bounded renderer + G06 time probe; free RAM is not a full-game reservation')
 write('analysis/g06a-memory-budget.json',memory)
 paths=list(read('analysis/g06a-provenance.json')['source_sha256'])
 paths+=['scripts/profile_renderer.py','scripts/verify_render_columns.py',
-        'scripts/report_renderer_early.py','scripts/build-gba-early.ps1']
+        'scripts/report_renderer_early.py','scripts/build-gba-early.ps1','gba/columns.S',
+        'scripts/compare_renderer_columns.py','scripts/verify_renderer_host.py',
+        'scripts/verify_renderer_gba.py','scripts/verify_time_gba.py']
 write('analysis/g06a-provenance.json',dict(rom_sha256=rom,
       compiler='Shared Zig0.13.0 / bundled LLD18.1.6',package_sha256=bank['package_sha256'],
       source_sha256={path:sha(path) for path in dict.fromkeys(paths)},column_bank=bank))

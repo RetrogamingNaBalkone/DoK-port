@@ -46,6 +46,9 @@ static dok_projection_camera camera;
 /* Host harness command mailbox: commit request last, acknowledge after setup.
  * This drives a test camera only; it never moves the runtime player. */
 volatile struct {uint32_t request,ack,level;int32_t x,y,z,heading;} g_camera_probe;
+/* Test-only capture aid: hold a committed frame for one extra VBlank.
+ * Default zero; excluded from the CPU timer and ordinary cadence tests. */
+volatile uint32_t g_camera_capture_hold;
 static const uint8_t *font;
 static uint8_t palette[768];
 static unsigned white,black;
@@ -262,5 +265,9 @@ __attribute__((noreturn)) void gba_main(void)
         g_render_diag.reserved0=visible;
         g_render_diag.present_vblank=g_vblanks;g_render_diag.draws++;
         g_diag.frames++;g_diag.vblanks=g_vblanks;
+        if(g_camera_capture_hold) {
+            uint32_t captured_vblank=g_vblanks;
+            while(g_vblanks==captured_vblank) __asm__ volatile("nop");
+        }
     }
 }

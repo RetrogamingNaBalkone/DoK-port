@@ -8,7 +8,7 @@
   "fps_measured": false,
   "checker_sha256": "d542755f1f16112ee5c9a1be12800830ae2db0ed2e0ebc012d5a6078adb09c62",
   "packer_sha256": "157d1d28edd9241a5ae7b4b3e979def94d55d16b7eec51ad34f8451d2bc08b57",
-  "tool_sha256": "a544cd14fa7c3fce4f90fa42c4e1214e02f3cca24a577c2f4f943ee494fa9978",
+  "tool_sha256": "17320ff238abe98ca2fc46091d99541702865bfbf4d9cf6fb8c0a1158f40cdda",
   "commands": [
     {
       "command": [
@@ -2563,7 +2563,7 @@
   ],
   "reader_tests": {
     "path": "C:\\Source\\DoK-port\\build\\native\\dok-rom-assets-tests.exe",
-    "sha256": "91fd4069193e0723432dcfd06e30253b6c57ca1e16ac99b39daba710803dd584",
+    "sha256": "9c5a941accf27fe4c170d7b5df15636088d481b9206f786b2360d69b1f13f2af",
     "source_sha256": "f0a855dd188cd8b2549c4e85115fb097bc3da6a6cb985f3ff2bb8bf6190ce90c",
     "synthetic": {
       "exit_code": 0,

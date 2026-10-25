@@ -17,6 +17,13 @@
 #ifdef DOK_RENDERER_PROBE
 extern void gba_render_stage(unsigned stage);
 #define STAGE(n) gba_render_stage(n)
+/* The single GBA renderer owns these during a draw. IRQs never render.
+ * Keep the overwhelmingly common first interval on the fast 32-bit bus. */
+static uint8_t coverage_count[240] __attribute__((section(".iwram.data")))={0};
+static uint8_t coverage_first[240][2] __attribute__((section(".iwram.data")))={{0}};
+static uint16_t face_order[DOK_RENDER_FACE_CAPACITY] __attribute__((section(".iwram.data")))={0};
+#define COVER_COUNT(w,x) coverage_count[x]
+#define COVER(w,x,k) ((k)?(w)->covered[x][k]:coverage_first[x])
 #else
 #define STAGE(n) ((void)0)
 #endif
@@ -30,6 +37,15 @@ static int32_t sub(int32_t a,int32_t b) {return bits((uint32_t)a-(uint32_t)b);}
 static int32_t scale_x(int32_t x) {return x>=0?x*3/4:-(((-x)*3+3)/4);}
 static int32_t scale_y(int32_t y) {return y>=0?y*9/10:-(((-y)*9+9)/10);}
 static int clamp(int x,int a,int b) {return x<a?a:(x>b?b:x);}
+#ifdef DOK_RENDERER_PROBE
+static void store_pixel(uint8_t *dst,uint8_t color) {
+#ifdef DOK_RENDER_HALF_COLUMNS
+    *(uint16_t *)(void *)dst=(uint16_t)(color|((unsigned)color<<8));
+#else
+    *dst=color;
+#endif
+}
+#endif
 static int field(const dok_runtime_level *l,uint16_t index,unsigned offset,int32_t *out) {
     const dok_runtime_definition *d;size_t j;
     if(index>=l->object_count) return 0;d=&l->definitions[index];
@@ -221,17 +237,23 @@ static dok_renderer_status build(dok_renderer_workspace *w,const dok_runtime *r,
     return DOK_RENDER_OK;
 }
 static void sort_faces(dok_renderer_workspace *w) {
+#ifdef DOK_RENDERER_PROBE
+    uint16_t *order=face_order;unsigned i;
+#else
     uint16_t order[DOK_RENDER_FACE_CAPACITY];unsigned i;
+#endif
     for(i=0;i<w->face_count;++i) {
         unsigned j=i;while(j && w->faces[order[j-1]].key<w->faces[i].key) {order[j]=order[j-1];--j;}
         order[j]=(uint16_t)i;
     }
     /* Apply stable permutation in cycles: move each 48-byte face once. */
+#ifndef DOK_RENDERER_PROBE
     for(i=0;i<w->face_count;++i) if(order[i]!=i) {
         dok_renderer_face saved=w->faces[i];unsigned j=i;
         while(order[j]!=i) {unsigned next=order[j];w->faces[j]=w->faces[next];order[j]=(uint16_t)j;j=next;}
         w->faces[j]=saved;order[j]=(uint16_t)j;
     }
+#endif
 }
 static void swap32(int32_t *a,int32_t *b) {int32_t n=*a;*a=*b;*b=n;}
 #ifndef DOK_RENDER_REFERENCE
@@ -265,6 +287,11 @@ static DOK_NOINLINE unsigned column(uint8_t *restrict destination,const uint8_t 
 #endif
 static DOK_NOINLINE unsigned mapped_column(uint8_t *restrict destination,const uint8_t *restrict pixels,
     unsigned v,unsigned step,unsigned count,unsigned masked) {
+#ifdef DOK_RENDERER_PROBE
+    extern unsigned dok_gba_mapped_column(uint8_t *,const uint8_t *,unsigned,unsigned,unsigned);
+    (void)masked; /* Probe's masked fallback is handled in visible_column. */
+    return dok_gba_mapped_column(destination,pixels,v,step,count);
+#else
     unsigned written=0;
     if(masked) {
         for(unsigned n=0;n<count;++n,v+=step,destination+=240) {
@@ -284,71 +311,72 @@ static DOK_NOINLINE unsigned mapped_column(uint8_t *restrict destination,const u
         written=count;
     }
     return written;
+#endif
 }
 #ifdef DOK_RENDERER_PROBE
 static DOK_NOINLINE unsigned strip_column(uint8_t *restrict dst,const uint8_t *restrict src,unsigned count) {
     unsigned n=count;
-    while(n && ((uintptr_t)src&3)) {*dst=*src++;dst+=240;--n;}
+    while(n && ((uintptr_t)src&3)) {store_pixel(dst,*src++);dst+=240;--n;}
     while(n>=4) {
         uint32_t four=*(const uint32_t *)(const void *)src;src+=4;
-        dst[0]=(uint8_t)four;dst[240]=(uint8_t)(four>>8);
-        dst[480]=(uint8_t)(four>>16);dst[720]=(uint8_t)(four>>24);
+        store_pixel(dst,(uint8_t)four);store_pixel(dst+240,(uint8_t)(four>>8));
+        store_pixel(dst+480,(uint8_t)(four>>16));store_pixel(dst+720,(uint8_t)(four>>24));
         dst+=960;n-=4;
     }
-    while(n--) {*dst=*src++;dst+=240;}
+    while(n--) {store_pixel(dst,*src++);dst+=240;}
     return count;
 }
 static unsigned draw_run(uint8_t *dst,const uint8_t *pixels,unsigned v,unsigned step,unsigned count,const uint8_t *strip) {
     return strip?strip_column(dst,strip,count):mapped_column(dst,pixels,v,step,count,0);
 }
 static void cover(dok_renderer_workspace *w,unsigned x,unsigned lo,unsigned hi) {
-    unsigned count=w->covered_count[x],a=0,b;
-    while(a<count && (unsigned)w->covered[x][a][1]+1<lo) ++a;
+    unsigned count=COVER_COUNT(w,x),a=0,b;
+    while(a<count && (unsigned)COVER(w,x,a)[1]+1<lo) ++a;
     b=a;
-    while(b<count && w->covered[x][b][0]<=hi+1) {
-        if(w->covered[x][b][0]<lo) lo=w->covered[x][b][0];
-        if(w->covered[x][b][1]>hi) hi=w->covered[x][b][1];++b;
+    while(b<count && COVER(w,x,b)[0]<=hi+1) {
+        if(COVER(w,x,b)[0]<lo) lo=COVER(w,x,b)[0];
+        if(COVER(w,x,b)[1]>hi) hi=COVER(w,x,b)[1];++b;
     }
     if(b==a) {
         /* At most72 non-adjacent runs fit in144 rows. A new disjoint run
          * cannot exist once count72 is reached. */
-        for(unsigned n=count;n>a;--n) {w->covered[x][n][0]=w->covered[x][n-1][0];w->covered[x][n][1]=w->covered[x][n-1][1];}
+        for(unsigned n=count;n>a;--n) {COVER(w,x,n)[0]=COVER(w,x,n-1)[0];COVER(w,x,n)[1]=COVER(w,x,n-1)[1];}
         ++count;
     } else {
-        for(unsigned n=b;n<count;++n) {w->covered[x][a+1+n-b][0]=w->covered[x][n][0];w->covered[x][a+1+n-b][1]=w->covered[x][n][1];}
+        for(unsigned n=b;n<count;++n) {COVER(w,x,a+1+n-b)[0]=COVER(w,x,n)[0];COVER(w,x,a+1+n-b)[1]=COVER(w,x,n)[1];}
         count-=b-a-1;
     }
-    w->covered[x][a][0]=(uint8_t)lo;w->covered[x][a][1]=(uint8_t)hi;w->covered_count[x]=(uint8_t)count;
+    COVER(w,x,a)[0]=(uint8_t)lo;COVER(w,x,a)[1]=(uint8_t)hi;COVER_COUNT(w,x)=(uint8_t)count;
 }
 static DOK_NOINLINE unsigned visible_column(dok_renderer_workspace *w,unsigned x,unsigned begin,unsigned end,
     const uint8_t *pixels,unsigned v,unsigned step,unsigned masked,const uint8_t *record,unsigned strip_first) {
-    uint8_t gaps[73][2];unsigned n=0,start=begin,written=0,available=0,count=w->covered_count[x];
+    uint8_t gaps[73][2];unsigned n=0,start=begin,written=0,available=0,count=COVER_COUNT(w,x);
     const uint8_t *strip=record?record+record[1]+strip_first:0;
     /* The ordinary wall case has one continuous covered interval. Avoid
      * materializing a gap list and calling the general interval merger. */
     if(!masked) {
         if(!count) {
             draw_run(w->frame+begin*240+x,pixels,v,step,end-begin+1,strip);
-            w->covered[x][0][0]=(uint8_t)begin;w->covered[x][0][1]=(uint8_t)end;
-            w->covered_count[x]=1;return end-begin+1;
+            COVER(w,x,0)[0]=(uint8_t)begin;COVER(w,x,0)[1]=(uint8_t)end;
+            COVER_COUNT(w,x)=1;return end-begin+1;
         }
-        unsigned lo=w->covered[x][0][0],hi=w->covered[x][0][1];
+        unsigned lo=COVER(w,x,0)[0],hi=COVER(w,x,0)[1];
         if(count==1 && begin<=hi+1 && end+1>=lo) {
             if(begin<lo) {
                 unsigned last=end<lo?end:lo-1;
                 written+=draw_run(w->frame+begin*240+x,pixels,v,step,last-begin+1,strip);
-                w->covered[x][0][0]=(uint8_t)begin;
+                COVER(w,x,0)[0]=(uint8_t)begin;
             }
             if(end>hi) {
                 unsigned first=begin>hi?begin:hi+1;
                 written+=draw_run(w->frame+first*240+x,pixels,v+(first-begin)*step,step,end-first+1,strip?strip+(first-begin):0);
-                w->covered[x][0][1]=(uint8_t)end;
+                COVER(w,x,0)[1]=(uint8_t)end;
             }
             return written;
         }
     }
     for(unsigned k=0;k<count && start<=end;++k) {
-        unsigned lo=w->covered[x][k][0],hi=w->covered[x][k][1];
+        unsigned lo=COVER(w,x,k)[0],hi=COVER(w,x,k)[1];
         if(hi<start) continue;if(lo>end) break;
         if(lo>start) {gaps[n][0]=(uint8_t)start;gaps[n++][1]=(uint8_t)(lo-1);}
         start=hi+1;
@@ -372,7 +400,7 @@ static DOK_NOINLINE unsigned visible_column(dok_renderer_workspace *w,unsigned x
             unsigned run=144;
             for(unsigned y=lo;y<=hi;++y,pos+=step,dst+=240) {
                 uint8_t color=pixels[pos>>16];
-                if(color) {*dst=color;++written;if(run==144) run=y;}
+                if(color) {store_pixel(dst,color);++written;if(run==144) run=y;}
                 else if(run!=144) {cover(w,x,run,y-1);run=144;}
             }
             if(run!=144) cover(w,x,run,hi);
@@ -393,6 +421,9 @@ static void raster(dok_renderer_workspace *w,const dok_renderer_face *original,c
     }
     span=(int)(f.x1-f.x0);first=clamp((int)f.x0,0,239);last=clamp((int)f.x1,0,239);
     if(span<=0 || f.x1<0 || f.x0>239) return;
+#ifdef DOK_RENDER_HALF_COLUMNS
+    first=(first+1)&~1;
+#endif
     /* Bounded Q7 reciprocal approximation is a G05 raster choice. Projection,
      * face vertices and depth remain G04 exact. Constant-depth doors retain
      * exact affine U; complete original interpolation belongs to G11. */
@@ -404,7 +435,13 @@ static void raster(dok_renderer_workspace *w,const dok_renderer_face *original,c
     edge_walk upper=edge_start(f.top1-f.top0,(unsigned)(first-f.x0),(unsigned)span);
     edge_walk lower=edge_start(f.bottom1-f.bottom0,(unsigned)(first-f.x0),(unsigned)span);
 #endif
-    for(x=first;x<=last;++x) {
+    for(x=first;x<=last;
+#ifdef DOK_RENDER_HALF_COLUMNS
+        x+=2
+#else
+        ++x
+#endif
+    ) {
 #ifdef DOK_RENDER_REFERENCE
         int i=x-(int)f.x0,top=(int)(f.top0+(f.top1-f.top0)*i/span);
         int bottom=(int)(f.bottom0+(f.bottom1-f.bottom0)*i/span);
@@ -412,6 +449,9 @@ static void raster(dok_renderer_workspace *w,const dok_renderer_face *original,c
         int i=x-(int)f.x0,top=f.top0+upper.sign*(int)upper.quotient;
         int bottom=f.bottom0+lower.sign*(int)lower.quotient;
         edge_next(&upper);edge_next(&lower);
+#ifdef DOK_RENDER_HALF_COLUMNS
+        edge_next(&upper);edge_next(&lower);
+#endif
 #endif
         int begin,end,denom,u,vstart,vstep,y;
         int32_t numerator;
@@ -422,8 +462,8 @@ static void raster(dok_renderer_workspace *w,const dok_renderer_face *original,c
         begin=clamp(top,0,DOK_RENDER_SCENE_HEIGHT-1);end=clamp(bottom,0,DOK_RENDER_SCENE_HEIGHT-1);
 #ifdef DOK_RENDERER_PROBE
         unsigned occluded=0;
-        for(unsigned k=0;k<w->covered_count[x];++k)
-            if(w->covered[x][k][0]<=begin && w->covered[x][k][1]>=end) {occluded=1;break;}
+        for(unsigned k=0;k<COVER_COUNT(w,x);++k)
+            if(COVER(w,x,k)[0]<=begin && COVER(w,x,k)[1]>=end) {occluded=1;break;}
         if(occluded) continue;
 #endif
         denom=q0*(span-i)+q1*i;
@@ -432,11 +472,13 @@ static void raster(dok_renderer_workspace *w,const dok_renderer_face *original,c
         vstart=clamp(f.v0,0,im->height-1);
 #ifdef DOK_RENDERER_PROBE
         const uint8_t *strip=0;
-        if(im->scales && im->scales[vstart] && bottom>top && bottom-top<=128) {
+        if(im->scales && im->scales[vstart] && bottom>top) {
             extern const uint8_t dok_render_bank[];
             const uint32_t *spans=(const uint32_t *)(const void *)(dok_render_bank+im->scales[vstart]);
-            const uint32_t *columns=(const uint32_t *)(const void *)(dok_render_bank+spans[bottom-top]);
-            strip=dok_render_bank+columns[u];
+            if((unsigned)(bottom-top)<=spans[0]) {
+                const uint32_t *columns=(const uint32_t *)(const void *)(dok_render_bank+spans[bottom-top]);
+                strip=dok_render_bank+columns[u];
+            }
         }
         if(strip) {vstart=0;vstep=0;} else
 #endif
@@ -451,7 +493,7 @@ static void raster(dok_renderer_workspace *w,const dok_renderer_face *original,c
         unsigned n;
 #ifdef DOK_RENDERER_PROBE
         n=visible_column(w,(unsigned)x,(unsigned)begin,(unsigned)end,im->columns+(unsigned)u*im->height,
-            (unsigned)vstart,(unsigned)vstep,im->flags&8u,strip,(unsigned)(begin-top));
+            (unsigned)vstart,(unsigned)vstep,(im->flags&8u) && !im->columns[(int)u-256],strip,(unsigned)(begin-top));
 #else
         n=im->columns?
             mapped_column(destination,im->columns+(unsigned)u*im->height,(unsigned)vstart,(unsigned)vstep,(unsigned)y,im->flags&8u):
@@ -467,9 +509,55 @@ static void raster(dok_renderer_workspace *w,const dok_renderer_face *original,c
     s->pixels_written+=pixels;s->transparent_pixels+=transparent;
     if(wrote) ++s->faces_drawn;
 }
+static void clear_rows(dok_renderer_workspace *w,const dok_runtime_level *level,unsigned first) {
+    for(unsigned y=first;y<160;++y) {
+        uint32_t color=y>=144?0:(uint8_t)level->settings[y<72?DOK_LEVEL_CEILING_COLOR:DOK_LEVEL_FLOOR_COLOR];
+        uint32_t *row=w->frame_words+y*60;
+        color*=0x01010101u;
+        for(unsigned x=0;x<60;x+=4) {row[x]=color;row[x+1]=color;row[x+2]=color;row[x+3]=color;}
+    }
+}
+#ifdef DOK_RENDERER_PROBE
+static int defer_background(const dok_renderer_workspace *w) {
+    /* A large unmasked plane guarantees substantial coverage. The estimate
+     * only selects a fill strategy; actual uncovered intervals are filled
+     * after raster, so visibility and sampling never depend on this heuristic. */
+    for(unsigned i=0;i<w->face_count;++i) {
+        const dok_renderer_face *f=&w->faces[i];
+        if(w->images[f->image_index].flags&8u) continue;
+        int top=f->top0>f->top1?f->top0:f->top1;
+        int bottom=f->bottom0<f->bottom1?f->bottom0:f->bottom1;
+        int width=clamp(f->x1,0,239)-clamp(f->x0,0,239);if(width<0) width=-width;
+        int height=clamp(bottom,0,143)-clamp(top,0,143);
+        if(height>0 && width*height>=16000) return 1;
+    }
+    return 0;
+}
+static void background_gaps(dok_renderer_workspace *w,const dok_runtime_level *level) {
+    for(unsigned x=0;x<240;
+#ifdef DOK_RENDER_HALF_COLUMNS
+        x+=2
+#else
+        ++x
+#endif
+    ) {
+        unsigned begin=0,count=COVER_COUNT(w,x);
+        for(unsigned k=0;k<=count;++k) {
+            unsigned end=k<count?COVER(w,x,k)[0]:144;
+            uint8_t *dst=w->frame+begin*240+x;
+            unsigned split=end<72?end:72;
+            uint8_t color=(uint8_t)level->settings[DOK_LEVEL_CEILING_COLOR];
+            for(;begin<split;++begin,dst+=240) store_pixel(dst,color);
+            color=(uint8_t)level->settings[DOK_LEVEL_FLOOR_COLOR];
+            for(;begin<end;++begin,dst+=240) store_pixel(dst,color);
+            if(k<count) begin=(unsigned)COVER(w,x,k)[1]+1;
+        }
+    }
+}
+#endif
 dok_renderer_status dok_renderer_draw(dok_renderer_workspace *w,const dok_runtime *r,const dok_rom_assets *a,
     unsigned level,unsigned language,const dok_projection_camera *c,dok_renderer_stats *stats) {
-    dok_renderer_stats s;dok_renderer_status status;uint16_t id;dok_rom_resource light;unsigned i,x,y;
+    dok_renderer_stats s;dok_renderer_status status;uint16_t id;dok_rom_resource light;unsigned i;
     if(!w || !r || !r->level || !a || !c || !stats) return DOK_RENDER_ARGUMENT;
     zero(&s,sizeof(s));s.face_capacity=DOK_RENDER_FACE_CAPACITY;
     if(level>=a->level_count || language>=a->language_count || !r->object_count || r->object_count>DOK_RUNTIME_MAX_OBJECTS ||
@@ -481,20 +569,21 @@ dok_renderer_status dok_renderer_draw(dok_renderer_workspace *w,const dok_runtim
         *stats=s;PROFILE_FAIL();
     }
     STAGE(0);w->face_count=0;zero(w->image_known,sizeof(w->image_known));
-    for(y=0;y<160;++y) {
-        uint32_t color=y>=144?0:(uint8_t)r->level->settings[y<72?DOK_LEVEL_CEILING_COLOR:DOK_LEVEL_FLOOR_COLOR];
-        uint32_t *row=w->frame_words+y*60;
-        color*=0x01010101u;
-        for(x=0;x<60;x+=4) {row[x]=color;row[x+1]=color;row[x+2]=color;row[x+3]=color;}
-    }
     if(dok_rom_binding(&id,a,level,language,DOK_ROM_GLOBAL_OBJECT,DOK_ROM_SLOT_LIGHT)!=DOK_ROM_OK ||
        dok_rom_resource_at(&light,a,id,language)!=DOK_ROM_OK || light.size!=4096) {status=DOK_RENDER_RESOURCE;goto done;}
     STAGE(1);status=build(w,r,a,level,language,c,&s);if(status) goto done;
     STAGE(2);sort_faces(w);STAGE(3);
+#ifdef DOK_RENDERER_PROBE
+    int deferred=defer_background(w);
+    clear_rows(w,r->level,deferred?144:0);
+#else
+    clear_rows(w,r->level,0);
+#endif
     for(i=0;i<256;++i) w->light_row[i]=light.data[i];
 #ifdef DOK_RENDERER_PROBE
-    zero(w->covered_count,sizeof(w->covered_count));
-    for(i=w->face_count;i>0;--i) raster(w,&w->faces[i-1],w->light_row,&s);
+    zero(coverage_count,sizeof(coverage_count));
+    for(i=w->face_count;i>0;--i) raster(w,&w->faces[face_order[i-1]],w->light_row,&s);
+    if(deferred) background_gaps(w,r->level);
 #else
     for(i=0;i<w->face_count;++i) raster(w,&w->faces[i],w->light_row,&s);
 #endif

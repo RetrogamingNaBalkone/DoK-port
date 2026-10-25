@@ -16,6 +16,13 @@ _start:
     ldr r0, =0x04000208
     mov r1, #0
     strh r1, [r0]
+#ifdef DOK_RENDERER_PROBE
+    /* Standard cartridge timing: WS0 3/1, SRAM 8, WS2 8/8, prefetch.
+     * GBATEK WAITCNT; no undocumented EWRAM overclock. */
+    ldr r0, =0x04000204
+    ldr r1, =0x4317
+    strh r1, [r0]
+#endif
     msr cpsr_c, #0xd2
     ldr sp, =0x03007fa0
     msr cpsr_c, #0xdf
