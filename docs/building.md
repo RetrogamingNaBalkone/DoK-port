@@ -1,5 +1,15 @@
 # Сборка первых модулей и VS Code
 
+Актуальный общий GBA-ROM после G10:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-gba-surfaces.ps1 -CrossChecks
+```
+
+Артефакты — `build/g10/`, методика/границы — [surfaces-lighting.md](surfaces-lighting.md),
+проверка и измерения — `analysis/g10-review.json`. Старые описания первых
+статичных проб далее не обозначают текущее отсутствие движения/поверхностей.
+
 Сейчас собираются читалка RES, декодеры изображений/анимаций/звука,
 загрузчик LEVEL, подготовка мира, компактный runtime, адаптер native-состояния и тесты.
 Приоритет — GBA: [позадачный план](gba-plan.md). G01 выполнена:

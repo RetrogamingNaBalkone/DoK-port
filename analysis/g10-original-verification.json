@@ -1,0 +1,373 @@
+{
+  "task": "G10",
+  "whole_DOS_session": false,
+  "languages": {
+    "ru": {
+      "horizontal_vertices": 8260,
+      "quads": 2065,
+      "negative_depth_quads": 6,
+      "insets": [
+        10,
+        400
+      ],
+      "level_inventory": [
+        {
+          "level": 1,
+          "fcmap_cells": 4096,
+          "definitions": [
+            {
+              "glyph": 32,
+              "cells": 3459,
+              "class_id": 0,
+              "height": 0,
+              "ceiling_inset": 10,
+              "sprite_flags": 2,
+              "floor_override": null
+            },
+            {
+              "glyph": 43,
+              "cells": 383,
+              "class_id": 0,
+              "height": 0,
+              "ceiling_inset": 400,
+              "sprite_flags": 2,
+              "floor_override": null
+            },
+            {
+              "glyph": 61,
+              "cells": 252,
+              "class_id": 0,
+              "height": 0,
+              "ceiling_inset": 0,
+              "sprite_flags": 2,
+              "floor_override": null
+            },
+            {
+              "glyph": 178,
+              "cells": 2,
+              "class_id": 12,
+              "height": 0,
+              "ceiling_inset": 10,
+              "sprite_flags": 16,
+              "floor_override": "848f8e8b31"
+            }
+          ],
+          "palette": "47414d455031",
+          "light": "4c4947485431"
+        },
+        {
+          "level": 2,
+          "fcmap_cells": 4096,
+          "definitions": [
+            {
+              "glyph": 32,
+              "cells": 2843,
+              "class_id": 0,
+              "height": 0,
+              "ceiling_inset": 10,
+              "sprite_flags": 2,
+              "floor_override": null
+            },
+            {
+              "glyph": 60,
+              "cells": 386,
+              "class_id": 12,
+              "height": 0,
+              "ceiling_inset": 400,
+              "sprite_flags": 2056,
+              "floor_override": "828e848032"
+            },
+            {
+              "glyph": 61,
+              "cells": 252,
+              "class_id": 0,
+              "height": 0,
+              "ceiling_inset": 0,
+              "sprite_flags": 2,
+              "floor_override": null
+            },
+            {
+              "glyph": 62,
+              "cells": 341,
+              "class_id": 12,
+              "height": 0,
+              "ceiling_inset": 400,
+              "sprite_flags": 1032,
+              "floor_override": "828e848031"
+            },
+            {
+              "glyph": 102,
+              "cells": 4,
+              "class_id": 13,
+              "height": 0,
+              "ceiling_inset": 10,
+              "sprite_flags": 16,
+              "floor_override": "8e8f8e8b31"
+            },
+            {
+              "glyph": 123,
+              "cells": 127,
+              "class_id": 12,
+              "height": 0,
+              "ceiling_inset": 400,
+              "sprite_flags": 8200,
+              "floor_override": "828e848033"
+            },
+            {
+              "glyph": 125,
+              "cells": 141,
+              "class_id": 12,
+              "height": 0,
+              "ceiling_inset": 400,
+              "sprite_flags": 4104,
+              "floor_override": "828e848034"
+            },
+            {
+              "glyph": 178,
+              "cells": 2,
+              "class_id": 12,
+              "height": 0,
+              "ceiling_inset": 10,
+              "sprite_flags": 16,
+              "floor_override": "8e8f8e8b31"
+            }
+          ],
+          "palette": "47414d455032",
+          "light": "4c4947485432"
+        },
+        {
+          "level": 3,
+          "fcmap_cells": 4096,
+          "definitions": [
+            {
+              "glyph": 32,
+              "cells": 3834,
+              "class_id": 0,
+              "height": 0,
+              "ceiling_inset": 10,
+              "sprite_flags": 2,
+              "floor_override": null
+            },
+            {
+              "glyph": 61,
+              "cells": 252,
+              "class_id": 0,
+              "height": 0,
+              "ceiling_inset": 0,
+              "sprite_flags": 2,
+              "floor_override": null
+            },
+            {
+              "glyph": 102,
+              "cells": 6,
+              "class_id": 13,
+              "height": 0,
+              "ceiling_inset": 10,
+              "sprite_flags": 16,
+              "floor_override": "8a8f8e8b31"
+            },
+            {
+              "glyph": 178,
+              "cells": 4,
+              "class_id": 12,
+              "height": 0,
+              "ceiling_inset": 10,
+              "sprite_flags": 16,
+              "floor_override": "8a8f8e8b31"
+            }
+          ],
+          "palette": "47414d455033",
+          "light": "4c4947485433"
+        }
+      ],
+      "synthetic_single_planes": 42,
+      "original_light_vectors": 10610,
+      "crop_vectors": 144,
+      "manifest_sha256": "aae9141ec41b86e7c319672632bbecdf0dc5f0ebc4f203082e92b1ca2b480015"
+    },
+    "en": {
+      "horizontal_vertices": 8260,
+      "quads": 2065,
+      "negative_depth_quads": 6,
+      "insets": [
+        10,
+        400
+      ],
+      "level_inventory": [
+        {
+          "level": 1,
+          "fcmap_cells": 4096,
+          "definitions": [
+            {
+              "glyph": 32,
+              "cells": 3471,
+              "class_id": 0,
+              "height": 0,
+              "ceiling_inset": 10,
+              "sprite_flags": 2,
+              "floor_override": null
+            },
+            {
+              "glyph": 43,
+              "cells": 371,
+              "class_id": 0,
+              "height": 0,
+              "ceiling_inset": 400,
+              "sprite_flags": 2,
+              "floor_override": null
+            },
+            {
+              "glyph": 61,
+              "cells": 252,
+              "class_id": 0,
+              "height": 0,
+              "ceiling_inset": 0,
+              "sprite_flags": 2,
+              "floor_override": null
+            },
+            {
+              "glyph": 178,
+              "cells": 2,
+              "class_id": 12,
+              "height": 0,
+              "ceiling_inset": 10,
+              "sprite_flags": 16,
+              "floor_override": "848f8e8b31"
+            }
+          ],
+          "palette": "47414d455031",
+          "light": "4c4947485431"
+        },
+        {
+          "level": 2,
+          "fcmap_cells": 4096,
+          "definitions": [
+            {
+              "glyph": 32,
+              "cells": 2843,
+              "class_id": 0,
+              "height": 0,
+              "ceiling_inset": 10,
+              "sprite_flags": 2,
+              "floor_override": null
+            },
+            {
+              "glyph": 60,
+              "cells": 386,
+              "class_id": 12,
+              "height": 0,
+              "ceiling_inset": 400,
+              "sprite_flags": 2056,
+              "floor_override": "828e848032"
+            },
+            {
+              "glyph": 61,
+              "cells": 252,
+              "class_id": 0,
+              "height": 0,
+              "ceiling_inset": 0,
+              "sprite_flags": 2,
+              "floor_override": null
+            },
+            {
+              "glyph": 62,
+              "cells": 341,
+              "class_id": 12,
+              "height": 0,
+              "ceiling_inset": 400,
+              "sprite_flags": 1032,
+              "floor_override": "828e848031"
+            },
+            {
+              "glyph": 102,
+              "cells": 4,
+              "class_id": 13,
+              "height": 0,
+              "ceiling_inset": 10,
+              "sprite_flags": 16,
+              "floor_override": "8e8f8e8b31"
+            },
+            {
+              "glyph": 123,
+              "cells": 127,
+              "class_id": 12,
+              "height": 0,
+              "ceiling_inset": 400,
+              "sprite_flags": 8200,
+              "floor_override": "828e848033"
+            },
+            {
+              "glyph": 125,
+              "cells": 141,
+              "class_id": 12,
+              "height": 0,
+              "ceiling_inset": 400,
+              "sprite_flags": 4104,
+              "floor_override": "828e848034"
+            },
+            {
+              "glyph": 178,
+              "cells": 2,
+              "class_id": 12,
+              "height": 0,
+              "ceiling_inset": 10,
+              "sprite_flags": 16,
+              "floor_override": "8e8f8e8b31"
+            }
+          ],
+          "palette": "47414d455032",
+          "light": "4c4947485432"
+        },
+        {
+          "level": 3,
+          "fcmap_cells": 4096,
+          "definitions": [
+            {
+              "glyph": 32,
+              "cells": 3834,
+              "class_id": 0,
+              "height": 0,
+              "ceiling_inset": 10,
+              "sprite_flags": 2,
+              "floor_override": null
+            },
+            {
+              "glyph": 61,
+              "cells": 252,
+              "class_id": 0,
+              "height": 0,
+              "ceiling_inset": 0,
+              "sprite_flags": 2,
+              "floor_override": null
+            },
+            {
+              "glyph": 102,
+              "cells": 6,
+              "class_id": 13,
+              "height": 0,
+              "ceiling_inset": 10,
+              "sprite_flags": 16,
+              "floor_override": "8a8f8e8b31"
+            },
+            {
+              "glyph": 178,
+              "cells": 4,
+              "class_id": 12,
+              "height": 0,
+              "ceiling_inset": 10,
+              "sprite_flags": 16,
+              "floor_override": "8a8f8e8b31"
+            }
+          ],
+          "palette": "47414d455033",
+          "light": "4c4947485433"
+        }
+      ],
+      "synthetic_single_planes": 42,
+      "original_light_vectors": 10610,
+      "crop_vectors": 144,
+      "manifest_sha256": "df52c75da1b713261f4e13b472be784b96b047ab381d250002b2ed2ac527118b"
+    }
+  },
+  "status": "passed"
+}

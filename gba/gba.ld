@@ -23,6 +23,7 @@ SECTIONS {
     __iwram_load = LOADADDR(.iwram);
     .text : ALIGN(4) {
         *(.text.startup) *(.text .text.*)
+        *(.rom.text .rom.text.*)
         KEEP(*(.rodata.memory_probe))
         *(.rodata .rodata.*)
         . = ALIGN(4);

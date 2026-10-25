@@ -29,7 +29,7 @@ p.add_argument('--report', type=Path, default=Path('analysis/render-early-benchm
 a = p.parse_args()
 assert 1 <= a.step <= 90
 build = a.build_dir
-out = build/'camera-check'
+out = build/('camera-check' if a.step==1 else f'camera-check-step{a.step}')
 out.mkdir(exist_ok=True)
 _, symbols, sections = elf_info(build/'dok-diagnostic.elf')
 meta = json.loads((build/'build-report.json').read_text())

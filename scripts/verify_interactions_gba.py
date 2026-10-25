@@ -8,6 +8,7 @@ from verify_renderer_gba import NAMES,stack_usage
 def main():
  p=argparse.ArgumentParser(description=__doc__)
  p.add_argument('--build-dir',type=Path,default=Path('build/g09'))
+ p.add_argument('--report',type=Path,default=Path('analysis/g09-gba-verification.json'))
  p.add_argument('--core',type=Path,default=Path(os.environ['LOCALAPPDATA'])/'Programs/mGBA/libretro-20261024/mgba_libretro.dll')
  a=p.parse_args();build=a.build_dir;_,syms,_=elf_info(build/'dok-diagnostic.elf')
  f=Frontend(a.core.resolve(),build);f.load(build/'dok-diagnostic.gba');request=0;camera_request=0;captures=[];cycles=[];camera_pose=[0,0,0]
@@ -118,5 +119,5 @@ def main():
  stack=stack_usage(f);meta=json.loads((build/'build-report.json').read_text());f.core.retro_reset();ct.memset(f.pointer(0x02000000,meta['ewram_static_bytes']),0xa5,meta['ewram_static_bytes']);ready()
  assert f.read(motion,20)==bytes(20) and interaction()[1]==0
  report=dict(task='G09',status='passed',rom_sha256=sha(build/'dok-diagnostic.gba'),scenarios=scenarios,live_start=live,sensors=sensor_results,conveyors=conveyors,active_door_language_preserved=True,finish_event=True,shared_arm_cases=True,poisoned_reset=True,stack=stack,captures=captures,live_frame_min_cycles=min(c for c,mode in cycles if not mode),live_frame_max_cycles=max(c for c,mode in cycles if not mode),test_frame_max_cycles=max(c for c,mode in cycles if mode),physical_gba_tested=False,original_bios_tested=False)
- Path('analysis/g09-gba-verification.json').write_text(json.dumps(report,indent=2)+'\n');f.core.retro_unload_game();f.core.retro_deinit();print('G09 mGBA door/collision, RU/EN, Start, sensors, finish and reset passed')
+ a.report.write_text(json.dumps(report,indent=2)+'\n');f.core.retro_unload_game();f.core.retro_deinit();print('G09 mGBA door/collision, RU/EN, Start, sensors, finish and reset passed')
 if __name__=='__main__':main()

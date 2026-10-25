@@ -1,6 +1,61 @@
 ﻿# Передача контекста между чатами
 
-Обновлено 25 октября 2026 года: G00–G09 готовы по уточнённым критериям.
+Обновлено 25 октября 2026 года: G00–G10 готовы по уточнённым критериям.
+
+## Текущая граница G10
+
+**Следующая задача — G11.** G10 подключил текстурные пол/потолок, перепады
+потолка, LIGHT16 и три GAMEP к общей сцене G09. Движение без поступательной
+инерции, коллизии, двери, сенсоры, conveyor и FINISH сохранены. Визуальный
+sampler поверхности не запускает игровое событие.
+
+Спецификация/ABI/адреса/границы: [surfaces-lighting.md](surfaces-lighting.md).
+Новые hand-written `src/renderer_{surfaces,surface_raster,surface_sides}.inc`
+включены в `src/renderer.c`; обновлены renderer header, ROM linker,
+GBA startup light-cases, `tools/render_tool.c`, пакер/проверка row0-bank.
+FCMap+54 — отступ потолка, floorY=−H/ceilingY=I−961. Отрицательный I
+даёт один текстурированный пол: имя solid из G04 было предварительным.
+Near=1920 подтверждён в G00 RAM обоих языков; RUS DS:0DFA/ENG DS:0EA2,
+не универсальный +B0. Незакрытый фон теперь0, цветная диагностика G05 удалена.
+
+Оригинальные инструкции: `InspectSurfaces.java`, `analyze-surfaces.ps1`,
+`build/surfaces/{ru,en}/`, прежние Ghidra-проекты сохранены; SHA EXE до/после
+совпали. На язык2065 quads/8260 вершин,6 quads с negative depth,42 synthetic
+single-plane,10610 light-векторов C/native,144 crop-вектора прошли.
+Constructor array-helper перехвачен; проекция и crop — нет. Не полный DOS-session.
+Инвентарь всех шести FCMap и bindings — `analysis/g10-original-verification.json`.
+
+Все1455 камер LEVEL1–3, HUD/палитра,443520 strips/linked payloads, time,
+door/sensor/conveyor/finish регрессия прошли.32 ARM-вида воды в RU/EN,
+четыре направления и фазы0/1/9/17: по32736 scene pixels совпали с host;
+512 байт palette RAM сверены с каждым из шести исходных GAMEP.
+13 Windows suites, Linux static/Thumb compile и общие ARM cases прошли.
+Guards/poisoned reset и сохранность mutable world при языке проверены.
+
+**Автоматический scheduler анимаций ещё G11.** В G10 sampler принимает
+`object.frame`0…17, при обычном запуске вода остаётся в начальной фазе;
+тест подаёт фазы вручную. Сдвиги делят размер на18 до умножения. Не привязывать
+скорость анимаций к рисованию. Dynamic light near/боевые палитровые эффекты
+не выдаются за готовую игровую механику. Полная попиксельная эквивалентность
+DOS raster не заявлена: GBA clip/общие рёбра/front-to-back — политика порта.
+
+ROM/ELF/map/PNG — `build/g10/`; ROM32 846 628 байт, SHA
+`e9598753692371226d68213e135a31f7fb74f42a21ebd7a52d3587797fb23992`.
+EWRAM202 556 (+58 884); IWRAM code22 888/data1232 — **456 байт до stack
+reserve**, новые холодные функции размещать осознанно. Main stack2352,
+нетронутый запас5584. ROM slack707 804 байта не резерв всей игры.
+Startup4 486 080, worst6 104 796 cycles (LEVEL1 near-x, heading240).
+Стоимость существенно выше G09: ранний бюджет400000 остаётся отложенным,
+30FPS полной игры не подтверждены; новые визуальные упрощения не вводились.
+Физическая GBA/оригинальный BIOS, новый полный DOS-session, Linux execution
+и CMake/MSVC не проверялись.
+
+Команда: `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-gba-surfaces.ps1 -CrossChecks`.
+`-OriginalEvidence` добавляет Ghidra/Unicorn; общая библиотека Unicorn read-only
+из `C:/Source/wasdify/build/research-deps`. Части команды выполнены отдельно,
+итоговый полный sweep —1455 камер. `report_surfaces.py` связал ROM/исходники/
+evidence в `analysis/g10-review.json`; остальные отчёты — `analysis/g10-*.json`.
+G11 в этом проходе не начинался. Далее ниже — исторические границы G09 и ранее.
 
 ## Текущая граница G09
 

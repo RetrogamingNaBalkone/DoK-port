@@ -35,6 +35,7 @@ for view in range(6):
         r=ro+(rid-1)*32+16+(view%2)*8;off,size=u32(data,r),u32(data,r+4)
         return data[off:off+size]
     light=resource(links[0xffff,0xfff4])[:256]
+    assert light==bytes(range(256)), 'G10 source-index columns require identity LIGHT row0'
     for obj in range(u16(data,v+16)):
         if u16(data,defs+obj*32) not in (2,4,7):continue
         rid=links[obj,0xfff0];im=resource(rid);w,h=u16(im,0),u16(im,2)

@@ -1,0 +1,588 @@
+{
+  "task": "G10",
+  "status": "passed",
+  "rom_sha256": "e9598753692371226d68213e135a31f7fb74f42a21ebd7a52d3587797fb23992",
+  "selections": [
+    {
+      "glyph": 60,
+      "object": 111,
+      "camera": [
+        27120,
+        -300,
+        26160,
+        270
+      ],
+      "phase9_changed_pixels": 7300
+    },
+    {
+      "glyph": 62,
+      "object": 112,
+      "camera": [
+        8400,
+        -300,
+        1680,
+        90
+      ],
+      "phase9_changed_pixels": 5247
+    },
+    {
+      "glyph": 123,
+      "object": 113,
+      "camera": [
+        29520,
+        -300,
+        18960,
+        0
+      ],
+      "phase9_changed_pixels": 5002
+    },
+    {
+      "glyph": 125,
+      "object": 114,
+      "camera": [
+        1200,
+        -300,
+        1680,
+        0
+      ],
+      "phase9_changed_pixels": 5932
+    }
+  ],
+  "captures": [
+    {
+      "glyph": 60,
+      "language": "ru",
+      "phase": 0,
+      "camera": [
+        27120,
+        -300,
+        26160,
+        270
+      ],
+      "scene_pixels": 32736,
+      "cycles": 5649912,
+      "frame_sha256": "9dabeacce303552c23e2d6b035f21e744780c734121ab7ad7cb99c1e81bf26e3",
+      "path": "build/g10/surface-check/ru-60-0.png"
+    },
+    {
+      "glyph": 60,
+      "language": "ru",
+      "phase": 1,
+      "camera": [
+        27120,
+        -300,
+        26160,
+        270
+      ],
+      "scene_pixels": 32736,
+      "cycles": 5648546,
+      "frame_sha256": "36866cafd147c580d293c109f5cf2fd88743defd5c09bc2acbfcaf365e969d3b",
+      "path": "build/g10/surface-check/ru-60-1.png"
+    },
+    {
+      "glyph": 60,
+      "language": "ru",
+      "phase": 9,
+      "camera": [
+        27120,
+        -300,
+        26160,
+        270
+      ],
+      "scene_pixels": 32736,
+      "cycles": 5647877,
+      "frame_sha256": "ea560a61602642efa2704ba37c1e30e9fa7e0639e3ddbb51289542a264f4331b",
+      "path": "build/g10/surface-check/ru-60-9.png"
+    },
+    {
+      "glyph": 60,
+      "language": "ru",
+      "phase": 17,
+      "camera": [
+        27120,
+        -300,
+        26160,
+        270
+      ],
+      "scene_pixels": 32736,
+      "cycles": 5648531,
+      "frame_sha256": "664b7a5508431253528d577f28f5595fee78d8e60a9acd1341826a9b4323a622",
+      "path": "build/g10/surface-check/ru-60-17.png"
+    },
+    {
+      "glyph": 60,
+      "language": "en",
+      "phase": 0,
+      "camera": [
+        27120,
+        -300,
+        26160,
+        270
+      ],
+      "scene_pixels": 32736,
+      "cycles": 5647280,
+      "frame_sha256": "0028fe2a93936bac3c9dabc1be7c63d8726930867f001b2d0c759b9bf4db57e9",
+      "path": "build/g10/surface-check/en-60-0.png"
+    },
+    {
+      "glyph": 60,
+      "language": "en",
+      "phase": 1,
+      "camera": [
+        27120,
+        -300,
+        26160,
+        270
+      ],
+      "scene_pixels": 32736,
+      "cycles": 5646611,
+      "frame_sha256": "1e75ef953d64b0d1dea5d941d84d1faf17ef43f95c146a922f667e2f90186c52",
+      "path": "build/g10/surface-check/en-60-1.png"
+    },
+    {
+      "glyph": 60,
+      "language": "en",
+      "phase": 9,
+      "camera": [
+        27120,
+        -300,
+        26160,
+        270
+      ],
+      "scene_pixels": 32736,
+      "cycles": 5647265,
+      "frame_sha256": "1cc60e0bf97fb183b9ce413f09f7c2a9193b4ce956970a382b57fa76d9dab977",
+      "path": "build/g10/surface-check/en-60-9.png"
+    },
+    {
+      "glyph": 60,
+      "language": "en",
+      "phase": 17,
+      "camera": [
+        27120,
+        -300,
+        26160,
+        270
+      ],
+      "scene_pixels": 32736,
+      "cycles": 5646626,
+      "frame_sha256": "1b9deac26ba51da4d6399ddf6432eeebff69b2c52e065be4ef4b36ccc37c200e",
+      "path": "build/g10/surface-check/en-60-17.png"
+    },
+    {
+      "glyph": 62,
+      "language": "ru",
+      "phase": 0,
+      "camera": [
+        8400,
+        -300,
+        1680,
+        90
+      ],
+      "scene_pixels": 32736,
+      "cycles": 3422678,
+      "frame_sha256": "068591427403a6e60d4c03c9b74cba4566f4b27f1b66b0fc454399bc8efcb71c",
+      "path": "build/g10/surface-check/ru-62-0.png"
+    },
+    {
+      "glyph": 62,
+      "language": "ru",
+      "phase": 1,
+      "camera": [
+        8400,
+        -300,
+        1680,
+        90
+      ],
+      "scene_pixels": 32736,
+      "cycles": 3422678,
+      "frame_sha256": "fecf608a69a6b728b430c3f2cf3ba1d30be1f79dcd7af9c3ea092656b8f3406d",
+      "path": "build/g10/surface-check/ru-62-1.png"
+    },
+    {
+      "glyph": 62,
+      "language": "ru",
+      "phase": 9,
+      "camera": [
+        8400,
+        -300,
+        1680,
+        90
+      ],
+      "scene_pixels": 32736,
+      "cycles": 3422678,
+      "frame_sha256": "0e700a3f433cdffe7098b90322577b120617c216e00a612908f006e721d7e810",
+      "path": "build/g10/surface-check/ru-62-9.png"
+    },
+    {
+      "glyph": 62,
+      "language": "ru",
+      "phase": 17,
+      "camera": [
+        8400,
+        -300,
+        1680,
+        90
+      ],
+      "scene_pixels": 32736,
+      "cycles": 3422678,
+      "frame_sha256": "8b9760c8b256967ec8fbf939c416fb59d4d1ef36f79b8a59a231d6ec39b991c5",
+      "path": "build/g10/surface-check/ru-62-17.png"
+    },
+    {
+      "glyph": 62,
+      "language": "en",
+      "phase": 0,
+      "camera": [
+        8400,
+        -300,
+        1680,
+        90
+      ],
+      "scene_pixels": 32736,
+      "cycles": 3421412,
+      "frame_sha256": "774de6879c7108a41521c7a9eef3652ebde363212c44b2c96b3fdfad5c705079",
+      "path": "build/g10/surface-check/en-62-0.png"
+    },
+    {
+      "glyph": 62,
+      "language": "en",
+      "phase": 1,
+      "camera": [
+        8400,
+        -300,
+        1680,
+        90
+      ],
+      "scene_pixels": 32736,
+      "cycles": 3421412,
+      "frame_sha256": "f9df3769805f95bd0f8906a050fd97fe6d7be35596b80592c86bbf06681edf56",
+      "path": "build/g10/surface-check/en-62-1.png"
+    },
+    {
+      "glyph": 62,
+      "language": "en",
+      "phase": 9,
+      "camera": [
+        8400,
+        -300,
+        1680,
+        90
+      ],
+      "scene_pixels": 32736,
+      "cycles": 3421412,
+      "frame_sha256": "96a3fedb7b69bdec10d013df7474e3762696d57abfa2743db083558a756c6e71",
+      "path": "build/g10/surface-check/en-62-9.png"
+    },
+    {
+      "glyph": 62,
+      "language": "en",
+      "phase": 17,
+      "camera": [
+        8400,
+        -300,
+        1680,
+        90
+      ],
+      "scene_pixels": 32736,
+      "cycles": 3421412,
+      "frame_sha256": "92e6fcf2de036c2fdff187bc16157e0402e14e7ca13b7b5bcb09b76933b2df22",
+      "path": "build/g10/surface-check/en-62-17.png"
+    },
+    {
+      "glyph": 123,
+      "language": "ru",
+      "phase": 0,
+      "camera": [
+        29520,
+        -300,
+        18960,
+        0
+      ],
+      "scene_pixels": 32736,
+      "cycles": 3911908,
+      "frame_sha256": "ee255cbc2fcc1a488795cabcf9339dacb54b4cf158e3f38d50054fab629c0b14",
+      "path": "build/g10/surface-check/ru-123-0.png"
+    },
+    {
+      "glyph": 123,
+      "language": "ru",
+      "phase": 1,
+      "camera": [
+        29520,
+        -300,
+        18960,
+        0
+      ],
+      "scene_pixels": 32736,
+      "cycles": 3911908,
+      "frame_sha256": "13c1450eea77605b7341171273be81f668be78283884987ada19877aa7057ab4",
+      "path": "build/g10/surface-check/ru-123-1.png"
+    },
+    {
+      "glyph": 123,
+      "language": "ru",
+      "phase": 9,
+      "camera": [
+        29520,
+        -300,
+        18960,
+        0
+      ],
+      "scene_pixels": 32736,
+      "cycles": 3911908,
+      "frame_sha256": "10e87650c8c605b44dfb073c1bf4e937d7809b9886851f3ac6950da64fe2b3b1",
+      "path": "build/g10/surface-check/ru-123-9.png"
+    },
+    {
+      "glyph": 123,
+      "language": "ru",
+      "phase": 17,
+      "camera": [
+        29520,
+        -300,
+        18960,
+        0
+      ],
+      "scene_pixels": 32736,
+      "cycles": 3911908,
+      "frame_sha256": "817afd6787381928a9df5fec0719f8a2f8efab7497fd3e72b2df1ba2217bd875",
+      "path": "build/g10/surface-check/ru-123-17.png"
+    },
+    {
+      "glyph": 123,
+      "language": "en",
+      "phase": 0,
+      "camera": [
+        29520,
+        -300,
+        18960,
+        0
+      ],
+      "scene_pixels": 32736,
+      "cycles": 3910642,
+      "frame_sha256": "e6ca5700135258b91733deb9de340cc50ec41519f3d24943ea13422878c67058",
+      "path": "build/g10/surface-check/en-123-0.png"
+    },
+    {
+      "glyph": 123,
+      "language": "en",
+      "phase": 1,
+      "camera": [
+        29520,
+        -300,
+        18960,
+        0
+      ],
+      "scene_pixels": 32736,
+      "cycles": 3911296,
+      "frame_sha256": "773d57f5821208c00d956195c14eba543e118970de676db512bc8393f3602286",
+      "path": "build/g10/surface-check/en-123-1.png"
+    },
+    {
+      "glyph": 123,
+      "language": "en",
+      "phase": 9,
+      "camera": [
+        29520,
+        -300,
+        18960,
+        0
+      ],
+      "scene_pixels": 32736,
+      "cycles": 3910642,
+      "frame_sha256": "2216aa0a41fffb667f252ffc7efbdb963d8ba1c31950bc6f45b6ebef2a25452c",
+      "path": "build/g10/surface-check/en-123-9.png"
+    },
+    {
+      "glyph": 123,
+      "language": "en",
+      "phase": 17,
+      "camera": [
+        29520,
+        -300,
+        18960,
+        0
+      ],
+      "scene_pixels": 32736,
+      "cycles": 3910642,
+      "frame_sha256": "71b0e85260ed3548cb3dc2c9239290fa087428822303b633d077cbc5e5dc350a",
+      "path": "build/g10/surface-check/en-123-17.png"
+    },
+    {
+      "glyph": 125,
+      "language": "ru",
+      "phase": 0,
+      "camera": [
+        1200,
+        -300,
+        1680,
+        0
+      ],
+      "scene_pixels": 32736,
+      "cycles": 4289572,
+      "frame_sha256": "a60182b0ff2c0cb7370c5fcfd49e573dbdd4d3a35a92d2484708da6bac322157",
+      "path": "build/g10/surface-check/ru-125-0.png"
+    },
+    {
+      "glyph": 125,
+      "language": "ru",
+      "phase": 1,
+      "camera": [
+        1200,
+        -300,
+        1680,
+        0
+      ],
+      "scene_pixels": 32736,
+      "cycles": 4288312,
+      "frame_sha256": "4610c2435c88f9e71ebe8ac4d67bed5aa301c528299c23132c24431e0ac4d25e",
+      "path": "build/g10/surface-check/ru-125-1.png"
+    },
+    {
+      "glyph": 125,
+      "language": "ru",
+      "phase": 9,
+      "camera": [
+        1200,
+        -300,
+        1680,
+        0
+      ],
+      "scene_pixels": 32736,
+      "cycles": 4284456,
+      "frame_sha256": "a967c67a9c3104fe3b732415fdaadc3219e6e7279d51f0704a3e766700ef3fe3",
+      "path": "build/g10/surface-check/ru-125-9.png"
+    },
+    {
+      "glyph": 125,
+      "language": "ru",
+      "phase": 17,
+      "camera": [
+        1200,
+        -300,
+        1680,
+        0
+      ],
+      "scene_pixels": 32736,
+      "cycles": 4282040,
+      "frame_sha256": "c9614112df0144d03799d5fc9d156e003013837dec7a08f0b0324c7160e7e019",
+      "path": "build/g10/surface-check/ru-125-17.png"
+    },
+    {
+      "glyph": 125,
+      "language": "en",
+      "phase": 0,
+      "camera": [
+        1200,
+        -300,
+        1680,
+        0
+      ],
+      "scene_pixels": 32736,
+      "cycles": 4288954,
+      "frame_sha256": "21f923d81ff58f352854a7afa80d1d2022649b8507ed319b3016bd8214c3e7ef",
+      "path": "build/g10/surface-check/en-125-0.png"
+    },
+    {
+      "glyph": 125,
+      "language": "en",
+      "phase": 1,
+      "camera": [
+        1200,
+        -300,
+        1680,
+        0
+      ],
+      "scene_pixels": 32736,
+      "cycles": 4287694,
+      "frame_sha256": "6d054436bd63d8d32068666da24509acba54115793bdff9db58772b99d8dec37",
+      "path": "build/g10/surface-check/en-125-1.png"
+    },
+    {
+      "glyph": 125,
+      "language": "en",
+      "phase": 9,
+      "camera": [
+        1200,
+        -300,
+        1680,
+        0
+      ],
+      "scene_pixels": 32736,
+      "cycles": 4283192,
+      "frame_sha256": "7cd79cbbc80b12da57072249c4ebfe5bb37a22d865e5c6bbb724fc2e16b48190",
+      "path": "build/g10/surface-check/en-125-9.png"
+    },
+    {
+      "glyph": 125,
+      "language": "en",
+      "phase": 17,
+      "camera": [
+        1200,
+        -300,
+        1680,
+        0
+      ],
+      "scene_pixels": 32736,
+      "cycles": 4280776,
+      "frame_sha256": "e1ec37bdee04df48e33bde4b115a7c869f1fd91789399125da30e9855f084ddf",
+      "path": "build/g10/surface-check/en-125-17.png"
+    }
+  ],
+  "palettes": [
+    {
+      "level": 1,
+      "language": "ru",
+      "palette555_sha256": "563188cc97da73f8b40c595cf61a4d2998a9f69f4177b8edf91b909ebe0594ac",
+      "light_sha256": "2bbbeaec641c5d4dc98b26b6751c2f22fc5206d7e96b2d25689a5b0be6983aa6",
+      "light_row15_nonzero_to_zero": 39
+    },
+    {
+      "level": 1,
+      "language": "en",
+      "palette555_sha256": "563188cc97da73f8b40c595cf61a4d2998a9f69f4177b8edf91b909ebe0594ac",
+      "light_sha256": "2bbbeaec641c5d4dc98b26b6751c2f22fc5206d7e96b2d25689a5b0be6983aa6",
+      "light_row15_nonzero_to_zero": 39
+    },
+    {
+      "level": 2,
+      "language": "ru",
+      "palette555_sha256": "ad16023d21d972fd086fee7ed27faba8f7de9ca41f981cce6c6bbc20c361bb54",
+      "light_sha256": "018750971533c4e40475c13bba5e902fd1a5eca757de1e885b5ff420c9dc8c89",
+      "light_row15_nonzero_to_zero": 26
+    },
+    {
+      "level": 2,
+      "language": "en",
+      "palette555_sha256": "ad16023d21d972fd086fee7ed27faba8f7de9ca41f981cce6c6bbc20c361bb54",
+      "light_sha256": "018750971533c4e40475c13bba5e902fd1a5eca757de1e885b5ff420c9dc8c89",
+      "light_row15_nonzero_to_zero": 26
+    },
+    {
+      "level": 3,
+      "language": "ru",
+      "palette555_sha256": "a9c8ec49242d699a3f06f014374e69de969fe935f0a79d304dea1d1598c21399",
+      "light_sha256": "2f605b090423811ced8830b2d1adb788bbed463ba7390e79936878f18ba734d2",
+      "light_row15_nonzero_to_zero": 36
+    },
+    {
+      "level": 3,
+      "language": "en",
+      "palette555_sha256": "a9c8ec49242d699a3f06f014374e69de969fe935f0a79d304dea1d1598c21399",
+      "light_sha256": "2f605b090423811ced8830b2d1adb788bbed463ba7390e79936878f18ba734d2",
+      "light_row15_nonzero_to_zero": 36
+    }
+  ],
+  "stack": {
+    "main_stack_low": 50356224,
+    "main_stack_top": 50364160,
+    "sentinel_word": 219540062,
+    "untouched_margin_bytes": 5584,
+    "high_water_bytes": 2352,
+    "irq_and_bios_excluded": true,
+    "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+  },
+  "automatic_surface_animation": false,
+  "light_row_startup_cases": true
+}

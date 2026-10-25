@@ -197,6 +197,12 @@ __attribute__((noreturn)) void gba_main(void)
     g_diag.magic=0x444f4b31;g_diag.bss_ok=bss_ok;g_diag.data_ok=data_probe==0x1234abcd;
     if (!g_diag.bss_ok || !g_diag.data_ok) panic(1);
     if (gba_divmod_selftest()) panic(0x84);
+    for(unsigned row=0;row<16;++row) {
+        if(dok_renderer_light_row(1920+(int)row*120,1920)!=row ||
+           (row && dok_renderer_light_row(1919+(int)row*120,1920)!=row-1)) panic(0x85);
+    }
+    if(dok_renderer_light_row(-1,1920)!=0 || dok_renderer_light_row(65535,1920)!=0 ||
+       dok_renderer_light_row(32767,-1000)!=15 || dok_renderer_light_row(10000,1920)!=15) panic(0x85);
     g_render_diag.magic=0x524e4435;
     g_render_diag.min_cycles=UINT32_MAX;
     g_render_diag.scene_height=144;g_render_diag.message_height=16;

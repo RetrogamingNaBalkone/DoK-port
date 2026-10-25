@@ -1,0 +1,603 @@
+{
+  "task": "G10",
+  "status": "passed",
+  "rom_sha256": "e9598753692371226d68213e135a31f7fb74f42a21ebd7a52d3587797fb23992",
+  "memory": {
+    "rom_bytes": 32846628,
+    "rom_remaining": 707804,
+    "ewram_static_bytes": 202556,
+    "ewram_delta_from_g09": 58884,
+    "iwram_code_bytes": 22888,
+    "iwram_data_bytes": 1232,
+    "main_stack": {
+      "main_stack_low": 50356224,
+      "main_stack_top": 50364160,
+      "sentinel_word": 219540062,
+      "untouched_margin_bytes": 5584,
+      "high_water_bytes": 2352,
+      "irq_and_bios_excluded": true,
+      "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+    }
+  },
+  "performance": {
+    "startup_cycles": 4486080,
+    "worst_static_camera": {
+      "level": 1,
+      "pose": "near-x",
+      "camera": [
+        14881,
+        -300,
+        22800,
+        240
+      ],
+      "cycles": 6104796,
+      "stages": {
+        "clear_resources": 11110,
+        "geometry": 965417,
+        "sort": 5129,
+        "raster": 4953015,
+        "hud": 24664,
+        "copy": 76903
+      },
+      "faces": 34,
+      "near_clipped": 0,
+      "reference_pixel_writes": 34477,
+      "visible_pixel_writes": 17262,
+      "reference_transparent": 96,
+      "framebuffer_sha256": "92b03c4af29547b00f699e6ac0b44787a5154f28a9d8ad1a330c07c17fd451e5"
+    },
+    "startup_vs_g09": 9.974386339381002,
+    "live_frame_cycles": [
+      2286639,
+      4503086
+    ],
+    "test_batch_frame_max_cycles": 4488988,
+    "target_full_game_fps": 30,
+    "full_game_performance_verified": false,
+    "early_budget_status": "400000 cycles deferred by user; G10 surface/light integration is substantially slower than G09"
+  },
+  "verification": {
+    "cameras": 1455,
+    "dynamic_surface_views": 32,
+    "surface_pixels_per_view": 32736,
+    "palette_variants": 6,
+    "original_languages": {
+      "ru": {
+        "horizontal_vertices": 8260,
+        "quads": 2065,
+        "negative_depth_quads": 6,
+        "insets": [
+          10,
+          400
+        ],
+        "level_inventory": [
+          {
+            "level": 1,
+            "fcmap_cells": 4096,
+            "definitions": [
+              {
+                "glyph": 32,
+                "cells": 3459,
+                "class_id": 0,
+                "height": 0,
+                "ceiling_inset": 10,
+                "sprite_flags": 2,
+                "floor_override": null
+              },
+              {
+                "glyph": 43,
+                "cells": 383,
+                "class_id": 0,
+                "height": 0,
+                "ceiling_inset": 400,
+                "sprite_flags": 2,
+                "floor_override": null
+              },
+              {
+                "glyph": 61,
+                "cells": 252,
+                "class_id": 0,
+                "height": 0,
+                "ceiling_inset": 0,
+                "sprite_flags": 2,
+                "floor_override": null
+              },
+              {
+                "glyph": 178,
+                "cells": 2,
+                "class_id": 12,
+                "height": 0,
+                "ceiling_inset": 10,
+                "sprite_flags": 16,
+                "floor_override": "848f8e8b31"
+              }
+            ],
+            "palette": "47414d455031",
+            "light": "4c4947485431"
+          },
+          {
+            "level": 2,
+            "fcmap_cells": 4096,
+            "definitions": [
+              {
+                "glyph": 32,
+                "cells": 2843,
+                "class_id": 0,
+                "height": 0,
+                "ceiling_inset": 10,
+                "sprite_flags": 2,
+                "floor_override": null
+              },
+              {
+                "glyph": 60,
+                "cells": 386,
+                "class_id": 12,
+                "height": 0,
+                "ceiling_inset": 400,
+                "sprite_flags": 2056,
+                "floor_override": "828e848032"
+              },
+              {
+                "glyph": 61,
+                "cells": 252,
+                "class_id": 0,
+                "height": 0,
+                "ceiling_inset": 0,
+                "sprite_flags": 2,
+                "floor_override": null
+              },
+              {
+                "glyph": 62,
+                "cells": 341,
+                "class_id": 12,
+                "height": 0,
+                "ceiling_inset": 400,
+                "sprite_flags": 1032,
+                "floor_override": "828e848031"
+              },
+              {
+                "glyph": 102,
+                "cells": 4,
+                "class_id": 13,
+                "height": 0,
+                "ceiling_inset": 10,
+                "sprite_flags": 16,
+                "floor_override": "8e8f8e8b31"
+              },
+              {
+                "glyph": 123,
+                "cells": 127,
+                "class_id": 12,
+                "height": 0,
+                "ceiling_inset": 400,
+                "sprite_flags": 8200,
+                "floor_override": "828e848033"
+              },
+              {
+                "glyph": 125,
+                "cells": 141,
+                "class_id": 12,
+                "height": 0,
+                "ceiling_inset": 400,
+                "sprite_flags": 4104,
+                "floor_override": "828e848034"
+              },
+              {
+                "glyph": 178,
+                "cells": 2,
+                "class_id": 12,
+                "height": 0,
+                "ceiling_inset": 10,
+                "sprite_flags": 16,
+                "floor_override": "8e8f8e8b31"
+              }
+            ],
+            "palette": "47414d455032",
+            "light": "4c4947485432"
+          },
+          {
+            "level": 3,
+            "fcmap_cells": 4096,
+            "definitions": [
+              {
+                "glyph": 32,
+                "cells": 3834,
+                "class_id": 0,
+                "height": 0,
+                "ceiling_inset": 10,
+                "sprite_flags": 2,
+                "floor_override": null
+              },
+              {
+                "glyph": 61,
+                "cells": 252,
+                "class_id": 0,
+                "height": 0,
+                "ceiling_inset": 0,
+                "sprite_flags": 2,
+                "floor_override": null
+              },
+              {
+                "glyph": 102,
+                "cells": 6,
+                "class_id": 13,
+                "height": 0,
+                "ceiling_inset": 10,
+                "sprite_flags": 16,
+                "floor_override": "8a8f8e8b31"
+              },
+              {
+                "glyph": 178,
+                "cells": 4,
+                "class_id": 12,
+                "height": 0,
+                "ceiling_inset": 10,
+                "sprite_flags": 16,
+                "floor_override": "8a8f8e8b31"
+              }
+            ],
+            "palette": "47414d455033",
+            "light": "4c4947485433"
+          }
+        ],
+        "synthetic_single_planes": 42,
+        "original_light_vectors": 10610,
+        "crop_vectors": 144,
+        "manifest_sha256": "aae9141ec41b86e7c319672632bbecdf0dc5f0ebc4f203082e92b1ca2b480015"
+      },
+      "en": {
+        "horizontal_vertices": 8260,
+        "quads": 2065,
+        "negative_depth_quads": 6,
+        "insets": [
+          10,
+          400
+        ],
+        "level_inventory": [
+          {
+            "level": 1,
+            "fcmap_cells": 4096,
+            "definitions": [
+              {
+                "glyph": 32,
+                "cells": 3471,
+                "class_id": 0,
+                "height": 0,
+                "ceiling_inset": 10,
+                "sprite_flags": 2,
+                "floor_override": null
+              },
+              {
+                "glyph": 43,
+                "cells": 371,
+                "class_id": 0,
+                "height": 0,
+                "ceiling_inset": 400,
+                "sprite_flags": 2,
+                "floor_override": null
+              },
+              {
+                "glyph": 61,
+                "cells": 252,
+                "class_id": 0,
+                "height": 0,
+                "ceiling_inset": 0,
+                "sprite_flags": 2,
+                "floor_override": null
+              },
+              {
+                "glyph": 178,
+                "cells": 2,
+                "class_id": 12,
+                "height": 0,
+                "ceiling_inset": 10,
+                "sprite_flags": 16,
+                "floor_override": "848f8e8b31"
+              }
+            ],
+            "palette": "47414d455031",
+            "light": "4c4947485431"
+          },
+          {
+            "level": 2,
+            "fcmap_cells": 4096,
+            "definitions": [
+              {
+                "glyph": 32,
+                "cells": 2843,
+                "class_id": 0,
+                "height": 0,
+                "ceiling_inset": 10,
+                "sprite_flags": 2,
+                "floor_override": null
+              },
+              {
+                "glyph": 60,
+                "cells": 386,
+                "class_id": 12,
+                "height": 0,
+                "ceiling_inset": 400,
+                "sprite_flags": 2056,
+                "floor_override": "828e848032"
+              },
+              {
+                "glyph": 61,
+                "cells": 252,
+                "class_id": 0,
+                "height": 0,
+                "ceiling_inset": 0,
+                "sprite_flags": 2,
+                "floor_override": null
+              },
+              {
+                "glyph": 62,
+                "cells": 341,
+                "class_id": 12,
+                "height": 0,
+                "ceiling_inset": 400,
+                "sprite_flags": 1032,
+                "floor_override": "828e848031"
+              },
+              {
+                "glyph": 102,
+                "cells": 4,
+                "class_id": 13,
+                "height": 0,
+                "ceiling_inset": 10,
+                "sprite_flags": 16,
+                "floor_override": "8e8f8e8b31"
+              },
+              {
+                "glyph": 123,
+                "cells": 127,
+                "class_id": 12,
+                "height": 0,
+                "ceiling_inset": 400,
+                "sprite_flags": 8200,
+                "floor_override": "828e848033"
+              },
+              {
+                "glyph": 125,
+                "cells": 141,
+                "class_id": 12,
+                "height": 0,
+                "ceiling_inset": 400,
+                "sprite_flags": 4104,
+                "floor_override": "828e848034"
+              },
+              {
+                "glyph": 178,
+                "cells": 2,
+                "class_id": 12,
+                "height": 0,
+                "ceiling_inset": 10,
+                "sprite_flags": 16,
+                "floor_override": "8e8f8e8b31"
+              }
+            ],
+            "palette": "47414d455032",
+            "light": "4c4947485432"
+          },
+          {
+            "level": 3,
+            "fcmap_cells": 4096,
+            "definitions": [
+              {
+                "glyph": 32,
+                "cells": 3834,
+                "class_id": 0,
+                "height": 0,
+                "ceiling_inset": 10,
+                "sprite_flags": 2,
+                "floor_override": null
+              },
+              {
+                "glyph": 61,
+                "cells": 252,
+                "class_id": 0,
+                "height": 0,
+                "ceiling_inset": 0,
+                "sprite_flags": 2,
+                "floor_override": null
+              },
+              {
+                "glyph": 102,
+                "cells": 6,
+                "class_id": 13,
+                "height": 0,
+                "ceiling_inset": 10,
+                "sprite_flags": 16,
+                "floor_override": "8a8f8e8b31"
+              },
+              {
+                "glyph": 178,
+                "cells": 4,
+                "class_id": 12,
+                "height": 0,
+                "ceiling_inset": 10,
+                "sprite_flags": 16,
+                "floor_override": "8a8f8e8b31"
+              }
+            ],
+            "palette": "47414d455033",
+            "light": "4c4947485433"
+          }
+        ],
+        "synthetic_single_planes": 42,
+        "original_light_vectors": 10610,
+        "crop_vectors": 144,
+        "manifest_sha256": "df52c75da1b713261f4e13b472be784b96b047ab381d250002b2ed2ac527118b"
+      }
+    },
+    "door_views": 12,
+    "checked_strips": 443520,
+    "native_windows_suites": 13,
+    "linux_and_thumb_compile": true,
+    "arm_light_cases": true,
+    "arm_time_and_interaction_cases": true
+  },
+  "limitations": [
+    "bounded affine GBA raster, not whole-DOS pixel equivalence",
+    "automatic surface animation scheduling is G11",
+    "fixed initial light near1920; dynamic combat/palette effects remain outside this stage",
+    "physical GBA and original BIOS not tested",
+    "Linux execution and CMake/MSVC not tested",
+    "full game 30FPS unconfirmed; ROM slack is not a full-game reserve"
+  ],
+  "sources": [
+    {
+      "path": "include/dok/renderer.h",
+      "bytes": 3603,
+      "sha256": "eeb770849ae5047562f41301c1194fd0a475efb93f90235e8aaf8ca69e48f268"
+    },
+    {
+      "path": "src/renderer.c",
+      "bytes": 32898,
+      "sha256": "632a695f5cec021599a74b87999c3901258a841a7fe4f582242e636892a661fc"
+    },
+    {
+      "path": "src/renderer_surfaces.inc",
+      "bytes": 3981,
+      "sha256": "f5bd7002cb4a14d5da062d75fe92a549c2213f2f8ba257faa8fa1dbd6f5af6df"
+    },
+    {
+      "path": "src/renderer_surface_raster.inc",
+      "bytes": 5701,
+      "sha256": "92da8cbeb652c09ddde7db381cf3bd37496a842e970fab5f3c5ebd452e1d32d5"
+    },
+    {
+      "path": "src/renderer_surface_sides.inc",
+      "bytes": 2709,
+      "sha256": "7afa6db6513b9d9a3b771b2d9a146eabefb67343350f85c4b755366bbbd8be47"
+    },
+    {
+      "path": "gba/renderer_probe.c",
+      "bytes": 14895,
+      "sha256": "7662b8fdc8b66056ef131abb1cc9e35a52783fa6f4c62557103b986580c5b9bb"
+    },
+    {
+      "path": "gba/gba.ld",
+      "bytes": 1835,
+      "sha256": "653de1ab2403b9fb234e2e97fa68c5c2e54ee081e8c9d6e8661694675ce2c661"
+    },
+    {
+      "path": "tools/render_tool.c",
+      "bytes": 6845,
+      "sha256": "c386e263801efd7570bfda63da11c335a5e5a585cd27c734f28e5f4bebc74f82"
+    },
+    {
+      "path": "scripts/pack_render_columns.py",
+      "bytes": 7030,
+      "sha256": "520d70fe705e211f14da82f698453c99f6bdf1adee27e5570965aed15a7ed2c3"
+    },
+    {
+      "path": "scripts/verify_render_columns.py",
+      "bytes": 4735,
+      "sha256": "2e0907ccd629bc7c347787b1b523a4abb4fefde1360f67281a4db564f4bb2ceb"
+    },
+    {
+      "path": "scripts/InspectSurfaces.java",
+      "bytes": 3089,
+      "sha256": "71457e457697ca46875be73692d6a110cc7746c030e4a7f05f59a30f88d77070"
+    },
+    {
+      "path": "scripts/analyze-surfaces.ps1",
+      "bytes": 3007,
+      "sha256": "ec88f3864ddaf9165d829a0eaa79ffc5b1e2756871ed27daf69c49a2c48ecf3c"
+    },
+    {
+      "path": "scripts/build-gba-surfaces.ps1",
+      "bytes": 3250,
+      "sha256": "dd4f55cdbf2c9ab936db27aeb44090a660115d7b6548034a2189c3e416173b5b"
+    },
+    {
+      "path": "scripts/verify_surfaces.py",
+      "bytes": 9443,
+      "sha256": "b7bda7691aa55a03ce459ab3ae7d38f222c03a8b11c54b4dae3b9cd2f1f82bf8"
+    },
+    {
+      "path": "scripts/verify_surfaces_gba.py",
+      "bytes": 6265,
+      "sha256": "7f337e622787ada8d1569aa44780c3a3b6ff25df58cce04aab1260322d79276e"
+    },
+    {
+      "path": "scripts/verify_interactions_gba.py",
+      "bytes": 9812,
+      "sha256": "505a8b6a797dd0ddcd314cd7553b522737e97a88b0dbb14284deeb925d5c8a11"
+    },
+    {
+      "path": "scripts/verify_renderer_early.py",
+      "bytes": 9164,
+      "sha256": "2330f030acffa9134fb0626f95f7031ad420aaa5c569ccfb0caef009ac2ffa8c"
+    },
+    {
+      "path": "scripts/report_surfaces.py",
+      "bytes": 5239,
+      "sha256": "175a30ff9f63b2712c7a17becca3c33e1cf795cb1672650cbe7e9b6fcd23bf7a"
+    }
+  ],
+  "evidence": [
+    {
+      "path": "analysis/g10-camera-regression.json",
+      "bytes": 903276,
+      "sha256": "fbbe90e5103c316d5b09db334ce526740a713c9b7cd46bdbb5c5472c3531d2d8"
+    },
+    {
+      "path": "analysis/g10-surface-gba.json",
+      "bytes": 14778,
+      "sha256": "449517ff830393f73398d6fd8ffab4c0bd079ab1c33e736f539f2581cd7f0af0"
+    },
+    {
+      "path": "analysis/g10-renderer-regression.json",
+      "bytes": 23599,
+      "sha256": "d3e6919a2222aa39f337d850ff7b258483da2faa3fee1a0d24aef277a2b41c65"
+    },
+    {
+      "path": "analysis/g10-interactions-regression.json",
+      "bytes": 9107,
+      "sha256": "274b11639915374acd1a59d6f14bb9517d8ec544e8879b61cf9e269d022e8aab"
+    },
+    {
+      "path": "analysis/g10-time-regression.json",
+      "bytes": 1384,
+      "sha256": "054ddad745587c001b67ce1fc6cc09e3d4b8267f893723d2f81e6478dfe7f0b9"
+    },
+    {
+      "path": "analysis/g10-column-verification.json",
+      "bytes": 462,
+      "sha256": "3c0c4439051194a82e83d8e2ef7c13754848ef01a6ad4b880f9474052e29c74a"
+    },
+    {
+      "path": "analysis/g10-host-verification.json",
+      "bytes": 9393,
+      "sha256": "9dac83fec1cfaf0c60aa2ea82d391f4c7336173000275666efb2ed28942c3ba4"
+    },
+    {
+      "path": "analysis/g10-original-verification.json",
+      "bytes": 10388,
+      "sha256": "6851c6d3761b4d645f8c185b37a6967bf158b3ef5f21ab5ec11b7bcfcd7cc534"
+    },
+    {
+      "path": "analysis/g10-startup-profile.json",
+      "bytes": 610,
+      "sha256": "ef7ccc399c5e710de3660645bed031c5b39ecf2010676c60ff97b7401b801b3a"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "build/g10/dok-diagnostic.gba",
+      "bytes": 32846628,
+      "sha256": "e9598753692371226d68213e135a31f7fb74f42a21ebd7a52d3587797fb23992"
+    },
+    {
+      "path": "build/g10/dok-diagnostic.elf",
+      "bytes": 33248464,
+      "sha256": "908bfc3aedbbd10b2dfe14b2a0435785018aae95110ae199f0486d3a76676d0a"
+    },
+    {
+      "path": "build/g10/dok-diagnostic.map",
+      "bytes": 36391,
+      "sha256": "c7da0ae4e5c58bf9c05a20bd7c690cb8654d8aaa91263d362cb5ef2eab64eb1e"
+    }
+  ]
+}

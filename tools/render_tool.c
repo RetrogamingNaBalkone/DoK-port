@@ -11,6 +11,11 @@ int main(int argc,char **argv) {
     dok_rom_assets assets;dok_runtime_level view;dok_runtime *runtime=0,*saved=0;
     dok_renderer_workspace *work=0;dok_renderer_stats stats,probe_stats;dok_projection_camera camera,probe_camera;
     dok_renderer_status status;int guards,unchanged,profile_probe,argument_probe;
+    if(argc==2 && !strcmp(argv[1],"--light-probe")) {
+        long depth;int near;
+        while(scanf("%ld %d",&depth,&near)==2) printf("%u\n",dok_renderer_light_row((int32_t)depth,(int16_t)near));
+        return ferror(stdin) || ferror(stdout);
+    }
     if(argc!=6 && argc!=10 && argc!=13) {fprintf(stderr,"Usage: dok-render assets.bin level(1..3) ru|en output.idx output.pal [x y z heading [door-glyph frame extent]]\n");return 2;}
     number=(unsigned)strtoul(argv[2],0,10);language=!strcmp(argv[3],"en");
     if(number<1 || number>3 || (strcmp(argv[3],"ru") && strcmp(argv[3],"en"))) return 2;
@@ -33,7 +38,8 @@ int main(int argc,char **argv) {
     if(argc==13) {
         unsigned glyph=(unsigned)strtoul(argv[10],0,10),frame=(unsigned)strtoul(argv[11],0,10),extent=(unsigned)strtoul(argv[12],0,10);
         if(glyph>255 || !view.glyph_index[glyph] || extent<1 || extent>32767 || frame>=extent) goto done;
-        unsigned object=view.glyph_index[glyph]-1;if(view.definitions[object].class_id!=7) goto done;
+        unsigned object=view.glyph_index[glyph]-1;
+        if(view.definitions[object].class_id!=7 && view.definitions[object].class_id!=12 && view.definitions[object].class_id!=13) goto done;
         runtime->objects[object].frame=(uint16_t)frame;runtime->objects[object].state.door.extent=(int16_t)extent;
     }
     *saved=*runtime;work->frame_guard_before=UINT32_C(0xd04fcafe);work->frame_guard_after=UINT32_C(0xd04fcafe);
@@ -59,6 +65,15 @@ int main(int argc,char **argv) {
         printf("%s{\"x0\":%ld,\"x1\":%ld,\"top0\":%ld,\"top1\":%ld,\"bottom0\":%ld,\"bottom1\":%ld,\"depth0\":%ld,\"depth1\":%ld,\"u0\":%ld,\"u1\":%ld,\"key\":%ld,\"image_index\":%u,\"glyph\":%u,\"v0\":%d}",i?",":"",
             (long)f->x0,(long)f->x1,(long)f->top0,(long)f->top1,(long)f->bottom0,(long)f->bottom1,(long)f->depth0,(long)f->depth1,
             (long)f->u0,(long)f->u1,(long)f->key,f->image_index,view.definitions[f->image_index].glyph,f->v0);
+    }
+    printf("],\"surfaces\":[");
+    for(i=0;i<work->surface_count;++i) {
+        const dok_renderer_surface *f=&work->surfaces[i];
+        printf("%s{\"object\":%u,\"glyph\":%u,\"plane\":%u,\"key\":%ld,\"cell\":[%u,%u],\"vertices\":[",i?",":"",f->object,
+            view.definitions[f->object].glyph,f->plane,(long)f->key,f->cell_x,f->cell_z);
+        for(unsigned k=0;k<4;++k) printf("%s[%ld,%ld,%ld]",k?",":"",(long)f->x[k],(long)f->y[k],(long)f->depth[k]);
+        const dok_image_view *texture=&work->surface_images[f->object][f->plane];
+        printf("],\"texture_offset\":%lu,\"texture_size\":[%u,%u]}",(unsigned long)(texture->pixels-assets.data),texture->width,texture->height);
     }
     printf("]}\n");result=ferror(stdout)?1:0;
 done:

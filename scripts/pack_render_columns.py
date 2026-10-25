@@ -43,6 +43,7 @@ for view in range(6):
         return data[at:at+size]
 
     light = resource(links[0xffff, 0xfff4])[:256]
+    assert light==bytes(range(256)), 'G10 late LIGHT lookup requires the verified identity row0'
     masked_resources=set()
     for obj in range(u16(record+16)):
         if u16(defs+obj*32) in (2,4,7):
