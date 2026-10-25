@@ -8,6 +8,14 @@ MEMORY {
 }
 SECTIONS {
     .header : { KEEP(*(.header)) } > ROM
+    .iwram : ALIGN(4) {
+        __iwram_start = .;
+        *renderer.o(.text .text.*) *projection.o(.text .text.*)
+        *memory.o(.text .text.*) *divmod.o(.text .text.*)
+        *main.o(.iwram .iwram.*)
+        . = ALIGN(4); __iwram_end = .;
+    } > IWRAM AT> ROM
+    __iwram_load = LOADADDR(.iwram);
     .text : ALIGN(4) {
         *(.text.startup) *(.text .text.*)
         KEEP(*(.rodata.memory_probe))

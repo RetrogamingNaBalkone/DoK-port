@@ -8,10 +8,11 @@
 #ifndef DOK_RENDER_FACE_CAPACITY
 #define DOK_RENDER_FACE_CAPACITY 256
 #endif
-/* G05 static subset. No heap, original image payloads remain borrowed in ROM.
+/* G06A bounded static subset. No heap, original image payloads remain borrowed in ROM.
  * Frame is indexed240x160; rows144..159 are cleared for caller's message UI. */
 typedef struct {
-    const uint8_t *pixels;
+    const uint8_t *pixels,*columns; /* optional lossless prelit column bank */
+    const uint32_t *scales; /* optional ROM v0/span/column tables, exact Q16 */
     uint16_t width,height,flags,resource_id;
 } dok_renderer_image;
 typedef struct {
@@ -21,13 +22,18 @@ typedef struct {
 } dok_renderer_face;
 typedef struct {
     uint32_t frame_guard_before; /* caller-owned; renderer never writes guards */
-    uint8_t frame[DOK_RENDER_WIDTH*DOK_RENDER_HEIGHT];
+    union {
+        uint8_t frame[DOK_RENDER_WIDTH*DOK_RENDER_HEIGHT];
+        uint32_t frame_words[DOK_RENDER_WIDTH*DOK_RENDER_HEIGHT/4];
+    };
     uint32_t frame_guard_after;
     dok_renderer_face faces[DOK_RENDER_FACE_CAPACITY];
     dok_renderer_image images[DOK_RUNTIME_MAX_OBJECTS];
     uint8_t image_known[DOK_RUNTIME_MAX_OBJECTS];
     uint8_t light_row[256]; /* selected row0 copied once per frame */
     uint16_t face_count;
+    uint8_t covered_count[240];
+    uint8_t covered[240][72][2]; /* normalized disjoint inclusive y intervals */
 } dok_renderer_workspace;
 typedef struct {
     uint32_t cells_considered,wall_cells,center_cells,faces_built,faces_drawn;
@@ -39,10 +45,12 @@ typedef enum {
     DOK_RENDER_OK,DOK_RENDER_ARGUMENT,DOK_RENDER_PROFILE,DOK_RENDER_CAPACITY,
     DOK_RENDER_RESOURCE,DOK_RENDER_PROJECTION
 } dok_renderer_status;
-/* Initial cardinal90 camera only in G05. Output untouched on failure. */
+/* Integer degrees normalized modulo360, G04 truncation table. */
+void dok_renderer_camera_heading(dok_projection_camera *camera,int heading);
+/* Camera from current runtime pose. Output untouched on failure. */
 dok_renderer_status dok_renderer_camera_from_runtime(dok_projection_camera *out,const dok_runtime *runtime);
-/* Camera coordinates may be supplied for controlled probes. Sine32768/cosine0
- * and native lens/centres are the currently supported profile. On failure frame
+/* Camera coordinates and Q15 rotation may be supplied for controlled probes.
+ * Native lens/centres remain fixed. On failure frame
  * is diagnostic/partial; caller must not present it as a successful scene. */
 dok_renderer_status dok_renderer_draw(dok_renderer_workspace *workspace,
     const dok_runtime *runtime,const dok_rom_assets *assets,unsigned level,unsigned language,

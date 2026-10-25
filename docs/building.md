@@ -46,7 +46,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-native.ps1 -Cr
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-native.ps1 -ZigExe C:/Tools/Zig/zig.exe
 ```
 
-Скрипт собирает C11 с `-Wall -Wextra -Werror` и запускает девять тестовых EXE.
+Скрипт собирает C11 с `-Wall -Wextra -Werror` и запускает десять тестовых EXE.
 `build/native/dok-res.exe --list originals/pkr/RUS/PKR.RES` выводит каталог.
 Проверка двух реальных архивов и выгрузка всех блоков:
 
@@ -128,6 +128,16 @@ ROM, кадры и map — в `build/gba-renderer/`. Условия провер
 `-target thumb-freestanding-eabi -mcpu=arm7tdmi` и проверены повторно.
 Прежние отчёты о compile checks не являются доказательством Thumb-кодировки.
 
+G06: проба времени и scheduler, отдельно и внутри общего LEVEL1-ROM:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-gba.ps1 -TimeProbe -OutDir build/gba-time -Verify
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-gba.ps1 -RendererProbe -OutDir build/gba-renderer -Verify
+```
+
+ARM-векторы, аппаратные таймеры и fixed steps:
+[time-events.md](time-events.md). Renderer build также запускает проверку G06.
+
 Итоговые контрольные суммы оригиналов и артефактов, число сверенных ресурсов
 и аннотаций сохранены в [stage2-verification.json](../analysis/stage2-verification.json).
 
@@ -136,3 +146,10 @@ ROM, кадры и map — в `build/gba-renderer/`. Условия провер
 
 Подготовка мира: [world.md](world.md), [stage6-verification.json](../analysis/stage6-verification.json).
 Добавлены `dok-world-linux` и `world-arm7tdmi.o`; они только скомпилированы.
+
+## Ранний renderer G06A
+
+`powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-gba-early.ps1 -CrossChecks`
+собирает текущую пробу и проверки. Команда намеренно завершается ошибкой, если
+функциональные проверки прошли, но бюджет 400 000 cycles превышен.
+Методика и отдельные команды: [gba-performance.md](gba-performance.md).

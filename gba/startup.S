@@ -32,6 +32,14 @@ _start:
     blo 4b
 #endif
 
+    ldr r0, =__iwram_load
+    ldr r1, =__iwram_start
+    ldr r2, =__iwram_end
+5:  cmp r1, r2
+    ldrlo r3, [r0], #4
+    strlo r3, [r1], #4
+    blo 5b
+
     ldr r0, =__data_load
     ldr r1, =__data_start
     ldr r2, =__data_end

@@ -131,7 +131,7 @@ def find_player(memory, language):
     return matches[0] if len(matches) == 1 else None
 
 
-def trial(language, directory, dosbox, port, steps, actions):
+def trial(language, directory, dosbox, port, steps, actions, time_probe=False):
     directory = directory.resolve()
     directory.mkdir(parents=True, exist_ok=False)
     source = ROOT / 'originals/pkr' / ('RUS' if language == 'ru' else 'ENG')
@@ -212,6 +212,21 @@ c:
             report['frames'].append(capture(api, directory, 'level1-start'))
             if not report['frames'][-1]['stable_three_samples']:
                 raise RuntimeError('LEVEL1 initial framebuffer did not stabilize')
+            if time_probe:
+                samples = []
+                for _ in range(21):
+                    started = time.monotonic()
+                    data = api.read(base, 0x2200)
+                    samples.append(dict(wall_seconds=started,
+                        irq_count=struct.unpack_from('<I', data, 0xe70+delta)[0],
+                        pit_period=struct.unpack_from('<I', data, 0xe78+delta)[0],
+                        scheduler_elapsed=struct.unpack_from('<I', data, 0x20cc+delta)[0],
+                        owner_count=struct.unpack_from('<H', data, 0x3e8+(0 if language=='ru' else 8))[0]))
+                    time.sleep(.1)
+                origin = samples[0]['wall_seconds']
+                for sample in samples:
+                    sample['wall_seconds'] -= origin
+                report['time_probe'] = samples
             if actions:
                 for name, scan, duration in [('turn-right', 0x4d, .35), ('forward', 0x48, .6),
                                               ('use-attempt', 0x39, .12), ('fire-attempt', 0x1d, .4)]:
@@ -263,8 +278,9 @@ def main():
     parser.add_argument('--port', type=int, default=8137)
     parser.add_argument('--enters', type=int, default=6)
     parser.add_argument('--actions', action='store_true')
+    parser.add_argument('--time-probe', action='store_true')
     args = parser.parse_args()
-    report = trial(args.language, args.output, args.dosbox, args.port, args.enters, args.actions)
+    report = trial(args.language, args.output, args.dosbox, args.port, args.enters, args.actions, args.time_probe)
     print(json.dumps({'output': str(args.output), 'player_start': report.get('player_start'),
                       'frames': report['frames'], 'originals_unchanged': report['originals_unchanged']}, indent=2))
 

@@ -11,7 +11,7 @@ int main(int argc,char **argv) {
     dok_rom_assets assets;dok_runtime_level view;dok_runtime *runtime=0,*saved=0;
     dok_renderer_workspace *work=0;dok_renderer_stats stats,probe_stats;dok_projection_camera camera,probe_camera;
     dok_renderer_status status;int guards,unchanged,profile_probe,argument_probe;
-    if(argc!=6) {fprintf(stderr,"Usage: dok-render assets.bin level(1..3) ru|en output.idx output.pal\n");return 2;}
+    if(argc!=6 && argc!=10) {fprintf(stderr,"Usage: dok-render assets.bin level(1..3) ru|en output.idx output.pal [x y z heading]\n");return 2;}
     number=(unsigned)strtoul(argv[2],0,10);language=!strcmp(argv[3],"en");
     if(number<1 || number>3 || (strcmp(argv[3],"ru") && strcmp(argv[3],"en"))) return 2;
     file=fopen(argv[1],"rb");if(!file) {perror(argv[1]);return 1;}
@@ -26,15 +26,19 @@ int main(int argc,char **argv) {
     }
     status=dok_renderer_camera_from_runtime(&camera,runtime);
     if(status) {fprintf(stderr,"Camera status %u\n",(unsigned)status);goto done;}
+    if(argc==10) {
+        camera.x=(int32_t)strtol(argv[6],0,10);camera.y=(int32_t)strtol(argv[7],0,10);
+        camera.z=(int32_t)strtol(argv[8],0,10);dok_renderer_camera_heading(&camera,(int)strtol(argv[9],0,10));
+    }
     *saved=*runtime;work->frame_guard_before=UINT32_C(0xd04fcafe);work->frame_guard_after=UINT32_C(0xd04fcafe);
+    probe_camera=camera;probe_camera.sine=32769;
+    profile_probe=dok_renderer_draw(work,runtime,&assets,number-1,language,&probe_camera,&probe_stats)==DOK_RENDER_PROFILE;
+    argument_probe=dok_renderer_draw(0,runtime,&assets,number-1,language,&camera,&probe_stats)==DOK_RENDER_ARGUMENT;
+    if(!profile_probe || !argument_probe) {fprintf(stderr,"Renderer negative probes failed\n");goto done;}
     status=dok_renderer_draw(work,runtime,&assets,number-1,language,&camera,&stats);
     guards=work->frame_guard_before==UINT32_C(0xd04fcafe) && work->frame_guard_after==UINT32_C(0xd04fcafe);
     unchanged=!memcmp(saved,runtime,sizeof(*saved));
     if(status || !guards || !unchanged) {fprintf(stderr,"Render status %u guards %d runtime_unchanged %d\n",(unsigned)status,guards,unchanged);goto done;}
-    probe_camera=camera;probe_camera.sine=0;probe_camera.cosine=32768;
-    profile_probe=dok_renderer_draw(work,runtime,&assets,number-1,language,&probe_camera,&probe_stats)==DOK_RENDER_PROFILE;
-    argument_probe=dok_renderer_draw(0,runtime,&assets,number-1,language,&camera,&probe_stats)==DOK_RENDER_ARGUMENT;
-    if(!profile_probe || !argument_probe) {fprintf(stderr,"Renderer negative probes failed\n");goto done;}
     if(dok_renderer_palette(palette,&assets,number-1,language)!=DOK_RENDER_OK ||
        !write_file(argv[4],work->frame,sizeof(work->frame)) || !write_file(argv[5],palette,sizeof(palette))) goto done;
     printf("{\"width\":240,\"height\":160,\"scene_height\":144,\"workspace_size\":%lu,\"camera\":{\"x\":%ld,\"y\":%ld,\"z\":%ld,\"sine\":%ld,\"cosine\":%ld,\"distance\":%ld,\"scale\":%d,\"focal\":%d,\"center_x\":%d,\"center_y\":%d},",

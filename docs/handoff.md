@@ -1,6 +1,64 @@
 ﻿# Передача контекста между чатами
 
-Обновлено 25 октября 2026 года: G00–G05 готовы; следующий этап G06.
+Обновлено 25 октября 2026 года: G00–G06A готовы по уточнённым критериям.
+Ранний бюджет renderer не достигнут и отложен по решению пользователя.
+Следующий этап — G07, ввод и перемещение героя.
+
+## Текущая граница G06A
+
+Последнее решение пользователя: «выжимаем пока выжимается», а сокращения
+детализации/внутреннего разрешения решать после появления графики, ИИ и других
+подсистем, когда будет известен реальный дефицит. Ориентир 400 000 cycles
+сохранён в отчётах, но больше не блокирует последующие этапы. Цель полной игры
+30 FPS не отменена; стабильные 20 FPS пока тоже не подтверждены. Портировать
+именно эту игру, без универсального движка. ROM по-прежнему до 32 MiB.
+
+`docs/gba-performance.md` — методика и ограничения. Отчёты:
+`analysis/render-early-{baseline,startup,benchmark}.json`,
+`analysis/g06a-{regression,host-verification,time-regression,memory-budget,provenance}.json`.
+Новый ROM/ELF/map/банк/PNG — `build/g06a-fast/`.
+ROM 28 912 508 байт, SHA `1f89dd61bbe1eea0e0614735d9170473c41cfa78b07d7d5c27c63464cd164926`.
+Startup599 882 cycles (было819 737); worst992 842 (было1 179 334),
+LEVEL3 offset `(16560,−300,27600)`,210°. RU/EN/reset вместе со сменой языка:
+591 689…607 084 (прежний максимум7 941 335). Начальная измеренная частота
+показа25,92 FPS; худший CPU-кадр59,2 мс, это не стабильные20 FPS полной игры.
+Статическая EWRAM129 052, workspace91 132, IWRAM-код15 352;
+main stack2344 байта/нетронутый запас5592. Сохранены G06-ROM в
+`build/gba-renderer/` и инструментированный baseline в `build/g06a-baseline/`.
+
+Камера modulo360, таблица G04, повёрнутая область обхода. Реализованы
+IWRAM ARM-код, DMA3 вывод, exact reciprocal division, сортировка индексов,
+пропуск закрытых участков и консервативное отсечение клеток/frustum до проекции.
+Обычные class2 стены непрозрачны; flags&8 учитывается после LIGHT.
+Backface culling отвергнуто: изменило видимые пиксели LEVEL1/45°.
+Банк LIGHT row0 теперь25 852 784 байта: исходные колонки и точные Q16 strips
+для span1…128, V-start из реальных FCMap, непрозрачные участки после LIGHT.
+Четыре подготовленных цвета читаются одним aligned LDR. Для крупных span
+и отсутствующих V-start сохранён прежний fallback. Детализация и размеры
+геометрии исходные. Для G10/G11 банк пересмотреть под свет/анимации.
+Edge quotient/remainder убрал два деления на колонку с прежним trunc0;
+HUD целиком ARM/IWRAM, оба immutable view/UI валидируются при загрузке уровня,
+switch только применяет проверенные данные внутри таймера, мир не сбрасывает.
+
+1455 камер: 360° с шагом 1° на каждом уровне, wrap углов, ещё 5 позиций по 15°.
+На каждом уровне RU→EN→RU сохраняет мир и сцену. Reference executable
+рисует far-to-near, без новых ранних culls и банка: это regression oracle,
+не доказательство полной эквивалентности DOS. Сохранены guards/reset/стек,
+независимый oracle начального HUD/палитры и ARM clock/scheduler проверки.
+
+`build-gba-early.ps1 -CrossChecks` проверяет функциональность, публикует
+`budget_met=false`, `performance_status=deferred` и предупреждает о превышении
+400000 по новому решению пользователя. `verify_render_columns.py` сверил
+405 504 strips и реальные слинкованные байты с G03. SHA payload теперь
+включены в `.S`/ROM: кеш Zig не отслеживал изменение `.incbin` при том же `.S`.
+`report_renderer_early.py` сверяет SHA всех ARM-отчётов и обновляет память/provenance.
+Накопление рационального U и IWRAM-кеш исходных колонок замедляли рендер и удалены.
+Исходники/замеры кеша — `build/g06a-cache/`, промежуточных проходов —
+`build/g06a-oct25-{stage1,scales}/`. Дальнейшие кандидаты: готовая геометрия в
+ROM, обход индексов без перестановки faces, пакетная запись пикселей. G07 готов к началу.
+Поле уже 240×144, сообщения 240×16; DOS 320×160 — только scalar setup вершин,
+скрытого полноразмерного framebuffer нет. Движение/коллизии ещё впереди.
+Физическая GBA не проверялась.
 
 ## Цель и порядок
 
@@ -11,25 +69,23 @@
 принят как руководство, неподтверждённые ветви геометрии остаются гипотезами.
 База карт пока RUS, переключение языка не меняет мир/баланс.
 
-Последнее поручение 25 октября — продолжать до конца текущей задачи G05.
-G05 завершён; G06 не начинался. Это актуальная граница данного продолжения.
+Последнее уточнение 25 октября — сохранить качество до оценки полной игры.
+G06A завершён по обновлённым критериям; недостигнутый бюджет явно записан выше.
 
 Уточнение UI: [gba-ui.md](gba-ui.md). Сохраняем пропорции исходного игрового
 поля; нижний остаток экрана (~15 px) целиком под строку сообщений. Жизнь и
 заряд числами, ключи — в углах поля поверх сцены. Учесть viewport уже в G05.
 
 Реестр и зависимости — `docs/gba-plan.md`, паспорта — `docs/tasks/`.
-**G05 завершён**: первое изображение настоящего LEVEL1 на GBA проверено.
-Root ведёт общие build/CMake/GBA файлы, план и этот handoff.
-Следующий этап — G06: время, события и фиксируемое исполнение.
-После него обязателен G06A: подвижная камера и ранний бюджет renderer;
-затем строго G07–G21 по порядку. Оценка после G05:
+**G06 завершён**: модель времени и scheduler проверены на host/ARM,
+подключены к общему статическому LEVEL1-ROM. **G06A завершён**: камеры и
+ранние оптимизации проверены. Следующий этап — G07;
+затем строго G08–G21 по порядку. Оценка после G05:
 `docs/plan-review-g05.md`. Пользователь потребовал линейный план без развилок.
 План и паспорта последующих задач приведены к последовательным зависимостям.
-G06A ещё не начат; потолок 400 000 cycles — плановый критерий статической
-сцены, не измеренный результат. Новые сборки в рамках оценки не запускались.
-Владение подзадачами G05 назначается сообщениями; общие Ghidra-проекты
-нельзя одновременно изменять двумя агентами одного языка.
+Ориентир400 000 cycles не достигнут и отложен до оценки полной игры. Новые результаты
+и ROM перечислены выше; данные G05/G06 ниже — исторические.
+Общие Ghidra-проекты нельзя одновременно изменять двумя агентами одного языка.
 
 Текущие артефакты G04: `docs/rendering.md` и тематические geometry/assets/reference;
 `scripts/InspectRendering.java`, `scripts/analyze-rendering.ps1` (34 роли на язык),
@@ -43,6 +99,45 @@ records. `analysis/rendering-verification.json`. UI — **240×144 + 240×16**:
 это сохранение DOS VGA pixel aspect5:6, raw clip оригинала320×160.
 
 ## Выполненные результаты
+
+- **G06:** `docs/time-events.md`, `src/{scheduler,clock}.c`, соответствующие
+  headers, `gba/{clock,time_probe}.c`, `tests/{time_cases,test_time}.c`.
+  `scripts/InspectTime.java`, `analyze-time.ps1`, `verify_time_evidence.py`;
+  Ghidra exports/logs/manifests — `build/time/{ru,en}/`, проекты сохранены.
+  SHA обоих оригинальных EXE до/после совпали. Новые DOS-запуски
+  `build/time/dos-{ru,en}/` дали по21 HTTP time samples, PIT period65536,
+  около10тыс. ticks/с. `analysis/g06-time-evidence.json` хранит инструкции,
+  provenance/hashes и сами samples. Точные динамические deadlines DOS,
+  rollover и callback mutation в DOS не проверены; модель этих краёв —по ASM.
+- Native time —PIT IRQ count +16-bit latched phase, unsigned DIV119,
+  номинально1193182/119≈10026,74 ticks/с, uint32. Сохранены literal unsigned
+  deadlines (включая ошибку rollover), negative interval bits, ring order,
+  first-slot interval helper, source-slot reschedule после compaction,
+  shrinking owner loop bound. Не «исправлять» эти свойства без отдельного решения.
+  Destroy current/deferred new owner/reentrancy исправлены явно в time-events.
+- GBA timers2/3 —постоянный clock /64+cascade, timers0/1 —cycles renderer.
+  Rational remainder исключает зависимость времени от render FPS;
+  probe fixed quantum100 ticks, максимум128 шагов/poll, debt не отбрасывается.
+  Это сетка порта, не найденная частота native loop. Движение и полноценные
+  игровые callbacks ещё не реализованы. Bind/лимит owners предстоит интеграции:
+  owner56 байт,384 owners=21504 байта, прежний резерв16384 не доказан достаточным.
+- `build-native.ps1 -CrossChecks`: все10 Windows-тестов, Linux static builds
+  и Thumb compile прошли. Linux binary не запускался. ARM исполнил тот же suite
+  в standalone и общей ROM. `verify_time_gba.py` проверил exact rational
+  snapshots, fixed-step callbacks/debt, timer low-word rollover за600 VBlank,
+  poisoned-RAM reset. `analysis/g06-gba-verification.json`,
+  `analysis/g06-renderer-time.json`; физическая GBA/оригинальный BIOS не проверены.
+- Текущий standalone `build/gba-time/dok-diagnostic.gba`:6988 байт, EWRAM204,
+  SHA `72eea5c229c7d396b64b597409d89c936b14a28420523463343f39480fd2b550`.
+  Текущий общий `build/gba-renderer/dok-diagnostic.gba`:2787036 байт, EWRAM89940,
+  SHA `ffb2d8b6c6018c1a7759ed61f23b00d59c7050dc294e9b85eb3bc4e804d9697d`.
+  G05 guards/RU→EN→RU/reset и независимый host oracle прошли повторно.
+  Полный CPU-кадр теперь включает time-poll/input/language switch; свежие
+  `analysis/render-benchmark.json` и `render-host-verification.json` относятся
+  к этой ROM. Исторические G05-хэши/цифры ниже —предыдущая сборка.
+  Новый полный CPU-замер10189214…17568022 cycles (max со сменой языка),
+  steady37 VBlank≈1,614FPS. Main stack high-water2392, untouched5544 байта;
+  IRQ/BIOS исключены. Оптимизация ещё не выполнена —это задача G06A.
 
 - **G05:** `docs/gba-renderer.md`, тематические geometry/assets/verification;
   `include/dok/renderer.h`, `src/renderer.c`, `tools/render_tool.c`,
@@ -168,7 +263,7 @@ Java/headless настройки — `scripts/annotate-stage6.ps1`.
 Материалы `C:/Source/wasdify` только для чтения, происхождение/ограничения
 `docs/wasdify-findings.md`. LEVEL и world имеют разный порядок плоскостей.
 
-Физическая GBA, оригинальный BIOS, GUI/GDB-сессия, stack high-water и
-производительность полной игры пока не проверены. Достигнутые~20 обновлений
+Физическая GBA, оригинальный BIOS, GUI/GDB-сессия и
+производительность полной игры пока не проверены. Исторические~20 обновлений
 текста диагностики не являются оценкой рендера игры или достижением30FPS.
-G05 закрыт; продолжение начинается с G06 по обновлённой линейной очереди.
+G06/G06A закрыты; продолжать с G07 по линейной очереди. Снижение качества отложено.

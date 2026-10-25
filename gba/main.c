@@ -21,6 +21,11 @@ volatile struct diagnostics g_diag __attribute__((section(".bss.diag")));
 volatile uint32_t g_vblanks;
 static volatile uint32_t data_probe = 0x1234abcd;
 extern void gba_irq(void);
+#ifdef DOK_TIME_PROBE
+extern unsigned gba_time_start(void);
+extern void gba_time_poll(void);
+extern uint32_t gba_time_ticks(void);
+#endif
 #ifdef DOK_RUNTIME_PROBE
 extern unsigned gba_runtime_selftest(void);
 #endif
@@ -86,7 +91,9 @@ static void screen(volatile uint16_t *page)
     static const char *const names[] = {"A","B","SEL","START","RIGHT","LEFT","UP","DOWN","R","L"};
     rect(page, 0, 0, 240, 160, 0);
     rect(page, 0, 0, 240, 24, 2);
-#ifdef DOK_ASSETS_PROBE
+#if defined(DOK_TIME_PROBE)
+    text(page, 10, 8, "DOK  G06 TIME PROBE", 1);
+#elif defined(DOK_ASSETS_PROBE)
     text(page, 10, 8, "DOK  BILINGUAL ASSETS", 1);
 #else
     text(page, 10, 8, "DOK  GBA DIAGNOSTIC", 1);
@@ -99,7 +106,10 @@ static void screen(volatile uint16_t *page)
         rect(page, x, y, 40, 18, (g_diag.keys & (1u << i)) ? 3 : 2);
         text(page, x + 2, y + 5, names[i], 1);
     }
-#ifdef DOK_ASSETS_PROBE
+#if defined(DOK_TIME_PROBE)
+    text(page, 10, 126, "TICKS", 1);hex(page, 70, 126, gba_time_ticks());
+    text(page, 10, 144, "G06 SCHEDULER CHECK", 1);
+#elif defined(DOK_ASSETS_PROBE)
     text(page, 10, 126, "LANG", 1); text(page, 40, 126, gba_assets_language(), 1);
     text(page, 70, 126, "SELECT TO SWITCH", 1);
     text(page, 10, 144, "G03 ROM ASSET CHECK", 1);
@@ -138,6 +148,9 @@ __attribute__((noreturn)) void gba_main(void)
     g_diag.bss_ok = bss_ok;
     g_diag.data_ok = data_probe == 0x1234abcd;
     if (!g_diag.bss_ok || !g_diag.data_ok) panic(1);
+#ifdef DOK_TIME_PROBE
+    if (gba_time_start()) panic(0x90);
+#endif
 #ifdef DOK_RUNTIME_PROBE
     {
         unsigned result = gba_runtime_selftest();
@@ -165,6 +178,9 @@ __attribute__((noreturn)) void gba_main(void)
         previous = g_vblanks;
         g_diag.vblanks = previous;
         g_diag.frames++;
+#ifdef DOK_TIME_PROBE
+        gba_time_poll();
+#endif
         g_diag.keys = (uint32_t)(~KEYINPUT) & 0x3ff;
         g_diag.seen |= g_diag.keys;
         if ((g_diag.keys & 12) == 12) panic(0x10);

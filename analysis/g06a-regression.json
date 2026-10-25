@@ -1,0 +1,1012 @@
+{
+  "task": "G05",
+  "status": "passed",
+  "emulator": "mGBA",
+  "emulator_version": "0.11-212-7a12d6d",
+  "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+  "bios": "mGBA replacement BIOS (no external BIOS)",
+  "rom_sha256": "3c959f4840d9bafa4b82523fb54dbad9a48086695546b76d6cde45875260da34",
+  "rom_bytes": 28912488,
+  "package_sha256": "17fb976d2b0d87cc428fe3cb280f4baff21ff2c986b651246f57be4c59a9eff8",
+  "embedded_package_byte_identical": true,
+  "ewram_static_bytes": 129052,
+  "iwram_stack_bios_reserve": 8192,
+  "ru": {
+    "diag": {
+      "magic": 1380860981,
+      "status": 0,
+      "language": 0,
+      "level": 0,
+      "draws": 33,
+      "last_cycles": 599922,
+      "min_cycles": 591732,
+      "max_cycles": 601925,
+      "faces": 14,
+      "columns": 0,
+      "pixels": 16153,
+      "switches": 0,
+      "last_keys": 0,
+      "player_x": 15120,
+      "player_y": -300,
+      "player_z": 22800,
+      "scene_height": 144,
+      "message_height": 16,
+      "cycle_budget": 561792,
+      "over_budget": 34,
+      "present_vblank": 429,
+      "frame_bytes": 38400,
+      "world_bytes": 33864,
+      "workspace_bytes": 91132,
+      "guard_ok": 1,
+      "palette_ready": 1,
+      "font_ready": 1,
+      "visible_page": 1,
+      "face_count": 28,
+      "geometry_fnv1a": 3851251082,
+      "phase": 2,
+      "reserved4": 0
+    },
+    "framebuffer_sha256": "f4f87de9b15ca23fc70b5589c1e5846c7f4cd1595445db9f2e4c99b98d65f7eb",
+    "scene_sha256": "3ca6e1f4c65977be1dc24d47a7facf9a2590018d362450845b58526f72ccf287",
+    "message_sha256": "2d82a5f389fe1031c490100c2a182d3c5861ae6ef420b552e117ca000a19ec4b",
+    "palette_sha256": "563188cc97da73f8b40c595cf61a4d2998a9f69f4177b8edf91b909ebe0594ac",
+    "geometry_fnv1a": 3851251082,
+    "geometry_sha256": "ecb51c79478eb009499d1012900d1a925f30f8fb3e9431b6545f24af64f3f9a3",
+    "geometry_faces": 28,
+    "dispcnt": 1044
+  },
+  "en": {
+    "diag": {
+      "magic": 1380860981,
+      "status": 0,
+      "language": 1,
+      "level": 0,
+      "draws": 67,
+      "last_cycles": 598638,
+      "min_cycles": 591732,
+      "max_cycles": 605843,
+      "faces": 14,
+      "columns": 0,
+      "pixels": 16153,
+      "switches": 1,
+      "last_keys": 0,
+      "player_x": 15120,
+      "player_y": -300,
+      "player_z": 22800,
+      "scene_height": 144,
+      "message_height": 16,
+      "cycle_budget": 561792,
+      "over_budget": 68,
+      "present_vblank": 509,
+      "frame_bytes": 38400,
+      "world_bytes": 33864,
+      "workspace_bytes": 91132,
+      "guard_ok": 1,
+      "palette_ready": 1,
+      "font_ready": 1,
+      "visible_page": 1,
+      "face_count": 28,
+      "geometry_fnv1a": 3851251082,
+      "phase": 2,
+      "reserved4": 0
+    },
+    "framebuffer_sha256": "eb9d086070340428666302d50bb8553796ffb3425a7a7948069f8b20b5c3026b",
+    "scene_sha256": "3ca6e1f4c65977be1dc24d47a7facf9a2590018d362450845b58526f72ccf287",
+    "message_sha256": "689b21a8f9d27969d7e397dbcc8fb2875dbd7e02dfb342484e1f78c37bdc44a2",
+    "palette_sha256": "563188cc97da73f8b40c595cf61a4d2998a9f69f4177b8edf91b909ebe0594ac",
+    "geometry_fnv1a": 3851251082,
+    "geometry_sha256": "ecb51c79478eb009499d1012900d1a925f30f8fb3e9431b6545f24af64f3f9a3",
+    "geometry_faces": 28,
+    "dispcnt": 1044
+  },
+  "ru_return": {
+    "diag": {
+      "magic": 1380860981,
+      "status": 0,
+      "language": 0,
+      "level": 0,
+      "draws": 101,
+      "last_cycles": 598540,
+      "min_cycles": 591732,
+      "max_cycles": 607127,
+      "faces": 14,
+      "columns": 0,
+      "pixels": 16153,
+      "switches": 2,
+      "last_keys": 0,
+      "player_x": 15120,
+      "player_y": -300,
+      "player_z": 22800,
+      "scene_height": 144,
+      "message_height": 16,
+      "cycle_budget": 561792,
+      "over_budget": 102,
+      "present_vblank": 589,
+      "frame_bytes": 38400,
+      "world_bytes": 33864,
+      "workspace_bytes": 91132,
+      "guard_ok": 1,
+      "palette_ready": 1,
+      "font_ready": 1,
+      "visible_page": 1,
+      "face_count": 28,
+      "geometry_fnv1a": 3851251082,
+      "phase": 2,
+      "reserved4": 0
+    },
+    "framebuffer_sha256": "f4f87de9b15ca23fc70b5589c1e5846c7f4cd1595445db9f2e4c99b98d65f7eb",
+    "scene_sha256": "3ca6e1f4c65977be1dc24d47a7facf9a2590018d362450845b58526f72ccf287",
+    "message_sha256": "2d82a5f389fe1031c490100c2a182d3c5861ae6ef420b552e117ca000a19ec4b",
+    "palette_sha256": "563188cc97da73f8b40c595cf61a4d2998a9f69f4177b8edf91b909ebe0594ac",
+    "geometry_fnv1a": 3851251082,
+    "geometry_sha256": "ecb51c79478eb009499d1012900d1a925f30f8fb3e9431b6545f24af64f3f9a3",
+    "geometry_faces": 28,
+    "dispcnt": 1044
+  },
+  "restart_after_poison": {
+    "magic": 1380860981,
+    "status": 0,
+    "language": 0,
+    "level": 0,
+    "draws": 2,
+    "last_cycles": 600511,
+    "min_cycles": 591732,
+    "max_cycles": 600511,
+    "faces": 14,
+    "columns": 0,
+    "pixels": 16153,
+    "switches": 0,
+    "last_keys": 0,
+    "player_x": 15120,
+    "player_y": -300,
+    "player_z": 22800,
+    "scene_height": 144,
+    "message_height": 16,
+    "cycle_budget": 561792,
+    "over_budget": 2,
+    "present_vblank": 357,
+    "frame_bytes": 38400,
+    "world_bytes": 33864,
+    "workspace_bytes": 91132,
+    "guard_ok": 1,
+    "palette_ready": 1,
+    "font_ready": 1,
+    "visible_page": 0,
+    "face_count": 28,
+    "geometry_fnv1a": 3851251082,
+    "phase": 1,
+    "reserved4": 0
+  },
+  "world_bytes": 33864,
+  "mutable_world_sha256": "39ac92bb0d0765ebdd57e2ad8b32c80ce160d28a21209e2550fdd096e40a028b",
+  "mutable_world_preserved_byte_for_byte": true,
+  "scene_geometry_signature_preserved": true,
+  "scene_geometry_preserved_byte_for_byte": true,
+  "scene_pixels_preserved_byte_for_byte": true,
+  "localized_message_changed": true,
+  "framebuffer_guards_passed": true,
+  "poisoned_ewram_reset_passed": true,
+  "stack_before_reset": {
+    "main_stack_low": 50356224,
+    "main_stack_top": 50364160,
+    "sentinel_word": 219540062,
+    "untouched_margin_bytes": 5592,
+    "high_water_bytes": 2344,
+    "irq_and_bios_excluded": true,
+    "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+  },
+  "stack_after_reset": {
+    "main_stack_low": 50356224,
+    "main_stack_top": 50364160,
+    "sentinel_word": 219540062,
+    "untouched_margin_bytes": 5592,
+    "high_water_bytes": 2344,
+    "irq_and_bios_excluded": true,
+    "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+  },
+  "timing": {
+    "cpu_hz": 16777216,
+    "hardware_frame_cycles": 280896,
+    "target_cycles": 561792,
+    "target_hardware_frames": 2,
+    "scope": "Timer0/1 cascade: time-poll + input/language switch + renderer + HUD + halfword VRAM back-page copy; excludes presentation wait",
+    "min_cycles": 591732,
+    "max_cycles": 607127,
+    "worst_render_budget_ratio": 1.0806971263385736,
+    "nominal_target_fps": 29.863750284802915,
+    "over_budget_draws": 102,
+    "all_observed_draws_fit_target": false,
+    "min_present_interval_vblanks": 2,
+    "max_present_interval_vblanks": 3,
+    "cadence_intervals_vblanks": [
+      2,
+      2,
+      3,
+      2,
+      2,
+      3,
+      2,
+      2,
+      3,
+      2,
+      2,
+      3,
+      2,
+      2,
+      3,
+      2,
+      2,
+      3,
+      2,
+      2,
+      3,
+      2,
+      2,
+      2,
+      2,
+      3,
+      2,
+      2,
+      3,
+      2,
+      2,
+      3,
+      2,
+      2,
+      3,
+      2,
+      2,
+      3,
+      2,
+      2,
+      3,
+      2,
+      2,
+      3,
+      2,
+      2,
+      2,
+      2,
+      3,
+      2,
+      2,
+      3,
+      2,
+      2,
+      3,
+      2,
+      2,
+      3,
+      2,
+      2,
+      3,
+      2,
+      2,
+      3,
+      2,
+      2,
+      3,
+      2,
+      2
+    ],
+    "cadence_warmup_excluded_draws": 8,
+    "observed_steady_presentation_fps": 25.91948137926291,
+    "sampled_draws": 101,
+    "samples": [
+      {
+        "draws": 1,
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 591732,
+        "present_vblank": 355
+      },
+      {
+        "draws": 2,
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 600511,
+        "present_vblank": 357
+      },
+      {
+        "draws": 3,
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 598546,
+        "present_vblank": 359
+      },
+      {
+        "draws": 4,
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 599925,
+        "present_vblank": 362
+      },
+      {
+        "draws": 5,
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 601925,
+        "present_vblank": 364
+      },
+      {
+        "draws": 6,
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 598555,
+        "present_vblank": 366
+      },
+      {
+        "draws": 7,
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 599924,
+        "present_vblank": 369
+      },
+      {
+        "draws": 8,
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 600538,
+        "present_vblank": 371
+      },
+      {
+        "draws": 9,
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 599924,
+        "present_vblank": 373
+      },
+      {
+        "draws": 10,
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 599922,
+        "present_vblank": 376
+      },
+      {
+        "draws": 11,
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 600540,
+        "present_vblank": 378
+      },
+      {
+        "draws": 12,
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 599922,
+        "present_vblank": 380
+      },
+      {
+        "draws": 13,
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 598542,
+        "present_vblank": 383
+      },
+      {
+        "draws": 14,
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 601923,
+        "present_vblank": 385
+      },
+      {
+        "draws": 15,
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 598557,
+        "present_vblank": 387
+      },
+      {
+        "draws": 16,
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 599922,
+        "present_vblank": 390
+      },
+      {
+        "draws": 17,
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 601922,
+        "present_vblank": 392
+      },
+      {
+        "draws": 18,
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 598555,
+        "present_vblank": 394
+      },
+      {
+        "draws": 19,
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 599924,
+        "present_vblank": 397
+      },
+      {
+        "draws": 20,
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 600538,
+        "present_vblank": 399
+      },
+      {
+        "draws": 21,
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 599924,
+        "present_vblank": 401
+      },
+      {
+        "draws": 22,
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 599922,
+        "present_vblank": 404
+      },
+      {
+        "draws": 23,
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 600540,
+        "present_vblank": 406
+      },
+      {
+        "draws": 24,
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 599922,
+        "present_vblank": 408
+      },
+      {
+        "draws": 25,
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 598542,
+        "present_vblank": 411
+      },
+      {
+        "draws": 26,
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 601923,
+        "present_vblank": 413
+      },
+      {
+        "draws": 27,
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 598557,
+        "present_vblank": 415
+      },
+      {
+        "draws": 28,
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 599922,
+        "present_vblank": 418
+      },
+      {
+        "draws": 29,
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 601922,
+        "present_vblank": 420
+      },
+      {
+        "draws": 30,
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 598555,
+        "present_vblank": 422
+      },
+      {
+        "draws": 31,
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 599924,
+        "present_vblank": 425
+      },
+      {
+        "draws": 32,
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 600538,
+        "present_vblank": 427
+      },
+      {
+        "draws": 33,
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 599924,
+        "present_vblank": 429
+      },
+      {
+        "draws": 34,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 599922,
+        "present_vblank": 432
+      },
+      {
+        "draws": 35,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 605843,
+        "present_vblank": 435
+      },
+      {
+        "draws": 36,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 600945,
+        "present_vblank": 437
+      },
+      {
+        "draws": 37,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 598640,
+        "present_vblank": 439
+      },
+      {
+        "draws": 38,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 597256,
+        "present_vblank": 442
+      },
+      {
+        "draws": 39,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 600638,
+        "present_vblank": 444
+      },
+      {
+        "draws": 40,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 598642,
+        "present_vblank": 446
+      },
+      {
+        "draws": 41,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 597258,
+        "present_vblank": 449
+      },
+      {
+        "draws": 42,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 600636,
+        "present_vblank": 451
+      },
+      {
+        "draws": 43,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 597262,
+        "present_vblank": 453
+      },
+      {
+        "draws": 44,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 598638,
+        "present_vblank": 456
+      },
+      {
+        "draws": 45,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 599256,
+        "present_vblank": 458
+      },
+      {
+        "draws": 46,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 598642,
+        "present_vblank": 460
+      },
+      {
+        "draws": 47,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 598640,
+        "present_vblank": 463
+      },
+      {
+        "draws": 48,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 599254,
+        "present_vblank": 465
+      },
+      {
+        "draws": 49,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 598644,
+        "present_vblank": 467
+      },
+      {
+        "draws": 50,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 597256,
+        "present_vblank": 470
+      },
+      {
+        "draws": 51,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 600638,
+        "present_vblank": 472
+      },
+      {
+        "draws": 52,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 598642,
+        "present_vblank": 474
+      },
+      {
+        "draws": 53,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 597258,
+        "present_vblank": 477
+      },
+      {
+        "draws": 54,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 600636,
+        "present_vblank": 479
+      },
+      {
+        "draws": 55,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 597262,
+        "present_vblank": 481
+      },
+      {
+        "draws": 56,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 598638,
+        "present_vblank": 484
+      },
+      {
+        "draws": 57,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 599256,
+        "present_vblank": 486
+      },
+      {
+        "draws": 58,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 598642,
+        "present_vblank": 488
+      },
+      {
+        "draws": 59,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 598640,
+        "present_vblank": 491
+      },
+      {
+        "draws": 60,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 599254,
+        "present_vblank": 493
+      },
+      {
+        "draws": 61,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 598644,
+        "present_vblank": 495
+      },
+      {
+        "draws": 62,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 597256,
+        "present_vblank": 498
+      },
+      {
+        "draws": 63,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 600638,
+        "present_vblank": 500
+      },
+      {
+        "draws": 64,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 598642,
+        "present_vblank": 502
+      },
+      {
+        "draws": 65,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 597258,
+        "present_vblank": 505
+      },
+      {
+        "draws": 66,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 600636,
+        "present_vblank": 507
+      },
+      {
+        "draws": 67,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 597262,
+        "present_vblank": 509
+      },
+      {
+        "draws": 68,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 598638,
+        "present_vblank": 512
+      },
+      {
+        "draws": 69,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 607127,
+        "present_vblank": 515
+      },
+      {
+        "draws": 70,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 602229,
+        "present_vblank": 517
+      },
+      {
+        "draws": 71,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 599939,
+        "present_vblank": 519
+      },
+      {
+        "draws": 72,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 599922,
+        "present_vblank": 522
+      },
+      {
+        "draws": 73,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 600540,
+        "present_vblank": 524
+      },
+      {
+        "draws": 74,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 599922,
+        "present_vblank": 526
+      },
+      {
+        "draws": 75,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 598542,
+        "present_vblank": 529
+      },
+      {
+        "draws": 76,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 601920,
+        "present_vblank": 531
+      },
+      {
+        "draws": 77,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 599924,
+        "present_vblank": 533
+      },
+      {
+        "draws": 78,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 598540,
+        "present_vblank": 536
+      },
+      {
+        "draws": 79,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 601922,
+        "present_vblank": 538
+      },
+      {
+        "draws": 80,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 598540,
+        "present_vblank": 540
+      },
+      {
+        "draws": 81,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 599924,
+        "present_vblank": 543
+      },
+      {
+        "draws": 82,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 600538,
+        "present_vblank": 545
+      },
+      {
+        "draws": 83,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 599924,
+        "present_vblank": 547
+      },
+      {
+        "draws": 84,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 599922,
+        "present_vblank": 550
+      },
+      {
+        "draws": 85,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 600540,
+        "present_vblank": 552
+      },
+      {
+        "draws": 86,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 599922,
+        "present_vblank": 554
+      },
+      {
+        "draws": 87,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 598542,
+        "present_vblank": 557
+      },
+      {
+        "draws": 88,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 601920,
+        "present_vblank": 559
+      },
+      {
+        "draws": 89,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 599939,
+        "present_vblank": 561
+      },
+      {
+        "draws": 90,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 598540,
+        "present_vblank": 564
+      },
+      {
+        "draws": 91,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 601922,
+        "present_vblank": 566
+      },
+      {
+        "draws": 92,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 598555,
+        "present_vblank": 568
+      },
+      {
+        "draws": 93,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 599924,
+        "present_vblank": 571
+      },
+      {
+        "draws": 94,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 600538,
+        "present_vblank": 573
+      },
+      {
+        "draws": 95,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 599924,
+        "present_vblank": 575
+      },
+      {
+        "draws": 96,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 599922,
+        "present_vblank": 578
+      },
+      {
+        "draws": 97,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 600540,
+        "present_vblank": 580
+      },
+      {
+        "draws": 98,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 599922,
+        "present_vblank": 582
+      },
+      {
+        "draws": 99,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 598542,
+        "present_vblank": 585
+      },
+      {
+        "draws": 100,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 601920,
+        "present_vblank": 587
+      },
+      {
+        "draws": 101,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 599924,
+        "present_vblank": 589
+      }
+    ]
+  },
+  "physical_gba_tested": false,
+  "full_game_performance_verified": false,
+  "screenshots": {
+    "renderer-ru.png": "73a33f19436e384b34a69381546d4d06a5b8fe8e338dcc970cdb51d9d10ff8b0",
+    "renderer-en.png": "6e355c81c96a33d27eec8f77dcc05dad25582dedc14bd6fef3bb2df96ffd748f",
+    "renderer-ru-return.png": "73a33f19436e384b34a69381546d4d06a5b8fe8e338dcc970cdb51d9d10ff8b0"
+  }
+}

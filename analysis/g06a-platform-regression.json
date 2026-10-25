@@ -1,0 +1,142 @@
+{
+  "task": "G01",
+  "emulator": "mGBA",
+  "emulator_version": "0.11-212-7a12d6d",
+  "core_path": "C:\\Users\\dspev\\AppData\\Local\\Programs\\mGBA\\libretro-20261024\\mgba_libretro.dll",
+  "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+  "rom_sha256": "58c0412c337832e46de32922e215743eda887f7199dc105a2e6e5ffcf1a7a551",
+  "rom_bytes": 2600,
+  "ewram_static_bytes": 40,
+  "bios": "mGBA replacement BIOS (no external BIOS)",
+  "pixel_format": 2,
+  "registers_idle": {
+    "DISPCNT": 1044,
+    "DISPSTAT": 9,
+    "IE": 1,
+    "WAITCNT": 0,
+    "IME": 1
+  },
+  "arm_runtime_selftest": "not linked",
+  "idle": {
+    "magic": 1146047281,
+    "frames": 18,
+    "vblanks": 52,
+    "keys": 0,
+    "seen": 0,
+    "fault": 0,
+    "data_ok": 1,
+    "bss_ok": 1
+  },
+  "after_120_frames": {
+    "magic": 1146047281,
+    "frames": 58,
+    "vblanks": 172,
+    "keys": 0,
+    "seen": 0,
+    "fault": 0,
+    "data_ok": 1,
+    "bss_ok": 1
+  },
+  "irq_delta": 120,
+  "button_checks": [
+    {
+      "button": "A",
+      "gba_mask": 1,
+      "pressed_keys": 1,
+      "indicator_pressed": "20c27b",
+      "indicator_released": "31506a"
+    },
+    {
+      "button": "B",
+      "gba_mask": 2,
+      "pressed_keys": 2,
+      "indicator_pressed": "20c27b",
+      "indicator_released": "31506a"
+    },
+    {
+      "button": "SELECT",
+      "gba_mask": 4,
+      "pressed_keys": 4,
+      "indicator_pressed": "20c27b",
+      "indicator_released": "31506a"
+    },
+    {
+      "button": "START",
+      "gba_mask": 8,
+      "pressed_keys": 8,
+      "indicator_pressed": "20c27b",
+      "indicator_released": "31506a"
+    },
+    {
+      "button": "RIGHT",
+      "gba_mask": 16,
+      "pressed_keys": 16,
+      "indicator_pressed": "20c27b",
+      "indicator_released": "31506a"
+    },
+    {
+      "button": "LEFT",
+      "gba_mask": 32,
+      "pressed_keys": 32,
+      "indicator_pressed": "20c27b",
+      "indicator_released": "31506a"
+    },
+    {
+      "button": "UP",
+      "gba_mask": 64,
+      "pressed_keys": 64,
+      "indicator_pressed": "20c27b",
+      "indicator_released": "31506a"
+    },
+    {
+      "button": "DOWN",
+      "gba_mask": 128,
+      "pressed_keys": 128,
+      "indicator_pressed": "20c27b",
+      "indicator_released": "31506a"
+    },
+    {
+      "button": "R",
+      "gba_mask": 256,
+      "pressed_keys": 256,
+      "indicator_pressed": "20c27b",
+      "indicator_released": "31506a"
+    },
+    {
+      "button": "L",
+      "gba_mask": 512,
+      "pressed_keys": 512,
+      "indicator_pressed": "20c27b",
+      "indicator_released": "31506a"
+    }
+  ],
+  "simultaneous_keys": 771,
+  "panic": {
+    "magic": 1146047281,
+    "frames": 118,
+    "vblanks": 352,
+    "keys": 12,
+    "seen": 1023,
+    "fault": 16,
+    "data_ok": 1,
+    "bss_ok": 1
+  },
+  "restart_after_poison": {
+    "magic": 1146047281,
+    "frames": 18,
+    "vblanks": 52,
+    "keys": 0,
+    "seen": 0,
+    "fault": 0,
+    "data_ok": 1,
+    "bss_ok": 1
+  },
+  "video_callbacks": 432,
+  "physical_gba_tested": false,
+  "screenshots": {
+    "idle.png": "4374468c182cf0ac8dabe36492b38e18990417d133cb5f1e2fc9335d7cde5e6a",
+    "button-a.png": "a1cf11862847e6d49196853a9f3b0ab8a0b4a634a274b88d7283a7cf39242319",
+    "panic.png": "6d6e7ed12bbafb78d4ee19e79ad6a8b9d2ae11e4da1d8851c4a04a258320484c",
+    "restart.png": "4374468c182cf0ac8dabe36492b38e18990417d133cb5f1e2fc9335d7cde5e6a"
+  }
+}

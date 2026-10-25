@@ -30,7 +30,7 @@ def stack_usage(frontend):
     return dict(main_stack_low=STACK_LOW, main_stack_top=STACK_TOP,
                 sentinel_word=0x0d15ea5e, untouched_margin_bytes=untouched,
                 high_water_bytes=STACK_TOP-STACK_LOW-untouched,
-                irq_and_bios_excluded=True, scope='observed G05 startup/render/switch/reset paths')
+                irq_and_bios_excluded=True, scope='observed G05/G06 startup/time-vectors/render/switch/reset paths')
 
 
 def main():
@@ -180,7 +180,7 @@ def main():
                   stack_before_reset=before_reset_stack, stack_after_reset=reset_stack,
                   timing=dict(cpu_hz=16777216, hardware_frame_cycles=280896,
                               target_cycles=BUDGET, target_hardware_frames=2,
-                              scope='Timer0/1 cascade: renderer + HUD + halfword VRAM back-page copy; excludes presentation wait and language reader',
+                              scope='Timer0/1 cascade: time-poll + input/language switch + renderer + HUD + halfword VRAM back-page copy; excludes presentation wait',
                               min_cycles=final_before_reset['min_cycles'], max_cycles=final_before_reset['max_cycles'],
                               worst_render_budget_ratio=final_before_reset['max_cycles']/BUDGET,
                               nominal_target_fps=16777216/BUDGET,

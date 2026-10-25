@@ -16,7 +16,7 @@
   "host_tool": {
     "path": "build/native/dok-render.exe",
     "size": 168448,
-    "sha256": "462e1d7c1022f6b42a5c27c52d0d49ce734a0794b40df839ec146c80d7b43732"
+    "sha256": "5e5ccfc6858ccfbfeb9eaa5ab831206a16dab89b27ece9b40fae13e86f822295"
   },
   "languages": {
     "ru": {
@@ -315,8 +315,8 @@
   ],
   "ARM_ROM": {
     "path": "build/gba-renderer/dok-diagnostic.gba",
-    "size": 2782924,
-    "sha256": "d41d04f79a380dd3fae8b9f9691a8acd1344634b597b5c5c572dce554db53177"
+    "size": 2787036,
+    "sha256": "ffb2d8b6c6018c1a7759ed61f23b00d59c7050dc294e9b85eb3bc4e804d9697d"
   },
   "negative_cli": [
     {
@@ -339,7 +339,7 @@
     "tool": {
       "path": "build/native/dok-render-one-face.exe",
       "size": 168448,
-      "sha256": "8d160987bb1a51353134a4960d8e3ab14590a10a9cca02507060cb9b0511716e"
+      "sha256": "4422c256c3f8c8871e8a35d379f781ca507c7e7bb42d6739a26a4b81a8b7ccb0"
     },
     "capacity": 1,
     "renderer_status": 3,

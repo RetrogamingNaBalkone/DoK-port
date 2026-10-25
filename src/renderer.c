@@ -1,6 +1,12 @@
 #include "dok/renderer.h"
 #include "dok/image.h"
 #include <limits.h>
+#include "renderer_trig.inc"
+#if defined(_MSC_VER)
+#define DOK_NOINLINE __declspec(noinline)
+#else
+#define DOK_NOINLINE __attribute__((noinline))
+#endif
 #ifdef DOK_RENDER_TRACE
 #include <stdio.h>
 #define PROFILE_FAIL() do {fprintf(stderr,"renderer profile line %d\n",__LINE__);return DOK_RENDER_PROFILE;} while(0)
@@ -8,6 +14,12 @@
 #define PROFILE_FAIL() return DOK_RENDER_PROFILE
 #endif
 
+#ifdef DOK_RENDERER_PROBE
+extern void gba_render_stage(unsigned stage);
+#define STAGE(n) gba_render_stage(n)
+#else
+#define STAGE(n) ((void)0)
+#endif
 static void zero(void *p,size_t n) {uint8_t *b=p;while(n--) *b++=0;}
 static int32_t bits(uint32_t v) {return v<=INT32_MAX?(int32_t)v:-1-(int32_t)~v;}
 static int16_t word(int32_t v) {uint16_t n=(uint16_t)v;return n<=32767?(int16_t)n:(int16_t)(-1-(int16_t)(65535u-n));}
@@ -49,14 +61,34 @@ static dok_renderer_status image(dok_renderer_workspace *w,const dok_runtime *r,
     if(v.width>256 || v.height>512 || !v.width || !v.height) PROFILE_FAIL();
     w->images[object].pixels=v.pixels;w->images[object].width=v.width;w->images[object].height=v.height;
     w->images[object].flags=(uint16_t)(v.stored_flags|d->sprite_flags);w->images[object].resource_id=id;
+    w->images[object].columns=0;w->images[object].scales=0;
+#ifdef DOK_RENDERER_PROBE
+    extern const uint8_t dok_render_bank[],dok_render_bank_end[];
+    unsigned entry=((level*2+language)*(a->resource_count+1)+id)*8;
+    const uint8_t *bp=dok_render_bank+entry;
+    uint32_t off=(uint32_t)bp[0]|((uint32_t)bp[1]<<8)|((uint32_t)bp[2]<<16)|((uint32_t)bp[3]<<24);
+    if(!off || off>(size_t)(dok_render_bank_end-dok_render_bank) ||
+       (size_t)v.width*v.height>(size_t)(dok_render_bank_end-dok_render_bank)-off) return DOK_RENDER_RESOURCE;
+    w->images[object].columns=dok_render_bank+off;
+    uint32_t table=(uint32_t)bp[4]|((uint32_t)bp[5]<<8)|((uint32_t)bp[6]<<16)|((uint32_t)bp[7]<<24);
+    if(table) {
+        if((table&3) || table>(size_t)(dok_render_bank_end-dok_render_bank) ||
+           v.height*4u>(size_t)(dok_render_bank_end-dok_render_bank)-table) return DOK_RENDER_RESOURCE;
+        w->images[object].scales=(const uint32_t *)(const void *)(dok_render_bank+table);
+    }
+#endif
     w->image_known[object]=1;return DOK_RENDER_OK;
+}
+void dok_renderer_camera_heading(dok_projection_camera *c,int heading) {
+    int n=heading%360;if(n<0) n+=360;
+    c->sine=trig[n];c->cosine=trig[361+n];
 }
 dok_renderer_status dok_renderer_camera_from_runtime(dok_projection_camera *out,const dok_runtime *r) {
     dok_projection_camera c;const dok_runtime_actor *a;uint16_t index;
     if(!out || !r || !r->level || !r->player_index || r->player_index>r->object_count) return DOK_RENDER_ARGUMENT;
     index=(uint16_t)(r->player_index-1);a=dok_runtime_actor_at(r,index);
-    if(!a || a->heading!=90 || !dok_runtime_position(r,index,&c.x,&c.y,&c.z)) PROFILE_FAIL();
-    c.sine=32768;c.cosine=0;c.distance=200;c.scale=8;c.focal=4096;c.center_x=159;c.center_y=79;
+    if(!a || !dok_runtime_position(r,index,&c.x,&c.y,&c.z)) PROFILE_FAIL();
+    dok_renderer_camera_heading(&c,a->heading);c.distance=200;c.scale=8;c.focal=4096;c.center_x=159;c.center_y=79;
     *out=c;return DOK_RENDER_OK;
 }
 dok_renderer_status dok_renderer_palette(uint8_t out[768],const dok_rom_assets *a,unsigned level,unsigned language) {
@@ -82,9 +114,24 @@ static dok_renderer_status plane(dok_renderer_workspace *w,const dok_projection_
     if(a.depth<=0 && b.depth<=0) {++s->faces_rejected;return DOK_RENDER_OK;}
     if(a.depth<0) {if(!clip_endpoint(&a,&b,&u0,u1)) return DOK_RENDER_PROJECTION;++s->near_clipped;}
     else if(b.depth<0) {if(!clip_endpoint(&b,&a,&u1,u0)) return DOK_RENDER_PROJECTION;++s->near_clipped;}
+#ifndef DOK_RENDER_REFERENCE
+    /* Conservative horizontal frustum test, before division. With the fixed
+     * native lens screenX=159+200*lateral/(depth+200). Two pixels of
+     * margin cover the integer-factor/SAR rounding over this local envelope. */
+    if((a.lateral*200 < -163*(a.depth+200) && b.lateral*200 < -163*(b.depth+200)) ||
+       (a.lateral*200 > 163*(a.depth+200) && b.lateral*200 > 163*(b.depth+200))) {
+        ++s->faces_rejected;return DOK_RENDER_OK;
+    }
+#endif
     if(!dok_projection_project(c,&a,&at) || !dok_projection_project(c,&b,&bt)) return DOK_RENDER_PROJECTION;
     a.vertical=add(a.vertical,height);b.vertical=add(b.vertical,height);
+#ifdef DOK_RENDER_REFERENCE
     if(!dok_projection_project(c,&a,&ab) || !dok_projection_project(c,&b,&bb)) return DOK_RENDER_PROJECTION;
+#else
+    /* Bottom shares exactly the top's denominator and quotient. */
+    ab.y=add(sar(mul(a.vertical,at.factor),15),c->center_y);
+    bb.y=add(sar(mul(b.vertical,bt.factor),15),c->center_y);
+#endif
     /* The G05 profile bounds scalar projections before multiplies in mapping
      * and affine scan setup. Extreme probes fail rather than overflow C. */
     if(at.x< -8192 || at.x>8192 || bt.x< -8192 || bt.x>8192 || at.y< -8192 || at.y>8192 ||
@@ -103,8 +150,17 @@ static dok_renderer_status plane(dok_renderer_workspace *w,const dok_projection_
 static dok_renderer_status build(dok_renderer_workspace *w,const dok_runtime *r,const dok_rom_assets *a,
     unsigned level,unsigned language,const dok_projection_camera *c,dok_renderer_stats *s) {
     const dok_runtime_level *l=r->level;int side=l->settings[DOK_LEVEL_WIDTH],cell=l->settings[DOK_LEVEL_CELL_SIDE];
-    int xmin=clamp((c->x-7*cell)/cell,0,side-1),xmax=clamp((c->x+2*cell)/cell,0,side-1);
-    int zmin=clamp((c->z-6*cell)/cell,0,side-1),zmax=clamp((c->z+6*cell)/cell,0,side-1),x,z;
+    /* Rotated four-corner G05 visibility envelope. Port policy, not yet
+     * a reconstruction of every mixed-width original AABB instruction. */
+    int xmin=side-1,xmax=0,zmin=side-1,zmax=0,x,z;
+    const int lateral[4]={-1,1,-6,6},depth[4]={-2,-2,7,7};
+    for(unsigned k=0;k<4;++k) {
+        int dx=sar((lateral[k]*c->cosine-depth[k]*c->sine)*cell,15);
+        int dz=sar((lateral[k]*c->sine+depth[k]*c->cosine)*cell,15);
+        int cx=clamp((c->x+dx)/cell,0,side-1),cz=clamp((c->z+dz)/cell,0,side-1);
+        if(cx<xmin) xmin=cx;if(cx>xmax) xmax=cx;
+        if(cz<zmin) zmin=cz;if(cz>zmax) zmax=cz;
+    }
     for(z=zmin;z<=zmax;++z) for(x=xmin;x<=xmax;++x) {
         uint16_t object,fc;const dok_runtime_definition *d;dok_renderer_status status;int32_t width,height,y;
         unsigned north,south,west,east;int32_t x0=x*cell,z0=z*cell;
@@ -122,6 +178,16 @@ static dok_renderer_status build(dok_renderer_workspace *w,const dok_runtime *r,
         height=word((int32_t)w->images[object].height*d->width_parameter);
         y=word(-(int32_t)l->definitions[fc].height_parameter);
         if(width<=0 || height<=0 || width>4096 || height>4096) PROFILE_FAIL();
+#ifndef DOK_RENDER_REFERENCE
+        {
+            dok_camera_point mid;int32_t sa=c->sine<0?-c->sine:c->sine,ca=c->cosine<0?-c->cosine:c->cosine;
+            int32_t radius=(width*(sa+ca)+65535)/65536+2;
+            dok_projection_transform(c,x0+width/2,y,z0+width/2,&mid);
+            int32_t far=mid.depth+radius;
+            if(far<=0 || (mid.lateral-radius)*200>163*(far+200) ||
+               (mid.lateral+radius)*200< -163*(far+200)) continue;
+        }
+#endif
         if(!neighbor_class(r,x,z-1,&north) || !neighbor_class(r,x,z+1,&south) ||
            !neighbor_class(r,x-1,z,&west) || !neighbor_class(r,x+1,z,&east)) PROFILE_FAIL();
         if(d->class_id==2) {
@@ -155,17 +221,172 @@ static dok_renderer_status build(dok_renderer_workspace *w,const dok_runtime *r,
     return DOK_RENDER_OK;
 }
 static void sort_faces(dok_renderer_workspace *w) {
-    unsigned i;
-    for(i=1;i<w->face_count;++i) {
-        dok_renderer_face value=w->faces[i];unsigned j=i;
-        while(j && w->faces[j-1].key<value.key) {w->faces[j]=w->faces[j-1];--j;}
-        w->faces[j]=value;
+    uint16_t order[DOK_RENDER_FACE_CAPACITY];unsigned i;
+    for(i=0;i<w->face_count;++i) {
+        unsigned j=i;while(j && w->faces[order[j-1]].key<w->faces[i].key) {order[j]=order[j-1];--j;}
+        order[j]=(uint16_t)i;
+    }
+    /* Apply stable permutation in cycles: move each 48-byte face once. */
+    for(i=0;i<w->face_count;++i) if(order[i]!=i) {
+        dok_renderer_face saved=w->faces[i];unsigned j=i;
+        while(order[j]!=i) {unsigned next=order[j];w->faces[j]=w->faces[next];order[j]=(uint16_t)j;j=next;}
+        w->faces[j]=saved;order[j]=(uint16_t)j;
     }
 }
 static void swap32(int32_t *a,int32_t *b) {int32_t n=*a;*a=*b;*b=n;}
+#ifndef DOK_RENDER_REFERENCE
+typedef struct {unsigned quotient,remainder,step,carry,divisor;int sign;} edge_walk;
+static edge_walk edge_start(int delta,unsigned offset,unsigned span) {
+    edge_walk e;unsigned magnitude=(unsigned)(delta<0?-delta:delta),n=magnitude*offset;
+    e.quotient=n/span;e.remainder=n%span;e.step=magnitude/span;e.carry=magnitude%span;
+    e.divisor=span;e.sign=delta<0?-1:1;return e;
+}
+static void edge_next(edge_walk *e) {
+    e->quotient+=e->step;e->remainder+=e->carry;
+    if(e->remainder>=e->divisor) {e->remainder-=e->divisor;++e->quotient;}
+}
+#endif
+#ifndef DOK_RENDERER_PROBE
+static DOK_NOINLINE unsigned column(uint8_t *restrict destination,const uint8_t *restrict pixels,
+    const uint8_t *restrict light,unsigned width,unsigned v,unsigned step,unsigned count,unsigned masked) {
+    unsigned written=0;
+    if(masked) {
+        for(unsigned n=0;n<count;++n,v+=step,destination+=240) {
+            uint8_t color=light[pixels[(v>>16)*width]];
+            if(color) {*destination=color;++written;}
+        }
+    } else {
+        for(unsigned n=0;n<count;++n,v+=step,destination+=240)
+            *destination=light[pixels[(v>>16)*width]];
+        written=count;
+    }
+    return written;
+}
+#endif
+static DOK_NOINLINE unsigned mapped_column(uint8_t *restrict destination,const uint8_t *restrict pixels,
+    unsigned v,unsigned step,unsigned count,unsigned masked) {
+    unsigned written=0;
+    if(masked) {
+        for(unsigned n=0;n<count;++n,v+=step,destination+=240) {
+            uint8_t color=pixels[v>>16];if(color) {*destination=color;++written;}
+        }
+    } else {
+        unsigned n=0;
+        /* Four independent stores amortize the loop branch without changing
+         * any Q16 sample, including repeated texels and clipped starts. */
+        for(;n+4<=count;n+=4,destination+=960) {
+            destination[0]=pixels[v>>16];v+=step;
+            destination[240]=pixels[v>>16];v+=step;
+            destination[480]=pixels[v>>16];v+=step;
+            destination[720]=pixels[v>>16];v+=step;
+        }
+        for(;n<count;++n,v+=step,destination+=240) *destination=pixels[v>>16];
+        written=count;
+    }
+    return written;
+}
+#ifdef DOK_RENDERER_PROBE
+static DOK_NOINLINE unsigned strip_column(uint8_t *restrict dst,const uint8_t *restrict src,unsigned count) {
+    unsigned n=count;
+    while(n && ((uintptr_t)src&3)) {*dst=*src++;dst+=240;--n;}
+    while(n>=4) {
+        uint32_t four=*(const uint32_t *)(const void *)src;src+=4;
+        dst[0]=(uint8_t)four;dst[240]=(uint8_t)(four>>8);
+        dst[480]=(uint8_t)(four>>16);dst[720]=(uint8_t)(four>>24);
+        dst+=960;n-=4;
+    }
+    while(n--) {*dst=*src++;dst+=240;}
+    return count;
+}
+static unsigned draw_run(uint8_t *dst,const uint8_t *pixels,unsigned v,unsigned step,unsigned count,const uint8_t *strip) {
+    return strip?strip_column(dst,strip,count):mapped_column(dst,pixels,v,step,count,0);
+}
+static void cover(dok_renderer_workspace *w,unsigned x,unsigned lo,unsigned hi) {
+    unsigned count=w->covered_count[x],a=0,b;
+    while(a<count && (unsigned)w->covered[x][a][1]+1<lo) ++a;
+    b=a;
+    while(b<count && w->covered[x][b][0]<=hi+1) {
+        if(w->covered[x][b][0]<lo) lo=w->covered[x][b][0];
+        if(w->covered[x][b][1]>hi) hi=w->covered[x][b][1];++b;
+    }
+    if(b==a) {
+        /* At most72 non-adjacent runs fit in144 rows. A new disjoint run
+         * cannot exist once count72 is reached. */
+        for(unsigned n=count;n>a;--n) {w->covered[x][n][0]=w->covered[x][n-1][0];w->covered[x][n][1]=w->covered[x][n-1][1];}
+        ++count;
+    } else {
+        for(unsigned n=b;n<count;++n) {w->covered[x][a+1+n-b][0]=w->covered[x][n][0];w->covered[x][a+1+n-b][1]=w->covered[x][n][1];}
+        count-=b-a-1;
+    }
+    w->covered[x][a][0]=(uint8_t)lo;w->covered[x][a][1]=(uint8_t)hi;w->covered_count[x]=(uint8_t)count;
+}
+static DOK_NOINLINE unsigned visible_column(dok_renderer_workspace *w,unsigned x,unsigned begin,unsigned end,
+    const uint8_t *pixels,unsigned v,unsigned step,unsigned masked,const uint8_t *record,unsigned strip_first) {
+    uint8_t gaps[73][2];unsigned n=0,start=begin,written=0,available=0,count=w->covered_count[x];
+    const uint8_t *strip=record?record+record[1]+strip_first:0;
+    /* The ordinary wall case has one continuous covered interval. Avoid
+     * materializing a gap list and calling the general interval merger. */
+    if(!masked) {
+        if(!count) {
+            draw_run(w->frame+begin*240+x,pixels,v,step,end-begin+1,strip);
+            w->covered[x][0][0]=(uint8_t)begin;w->covered[x][0][1]=(uint8_t)end;
+            w->covered_count[x]=1;return end-begin+1;
+        }
+        unsigned lo=w->covered[x][0][0],hi=w->covered[x][0][1];
+        if(count==1 && begin<=hi+1 && end+1>=lo) {
+            if(begin<lo) {
+                unsigned last=end<lo?end:lo-1;
+                written+=draw_run(w->frame+begin*240+x,pixels,v,step,last-begin+1,strip);
+                w->covered[x][0][0]=(uint8_t)begin;
+            }
+            if(end>hi) {
+                unsigned first=begin>hi?begin:hi+1;
+                written+=draw_run(w->frame+first*240+x,pixels,v+(first-begin)*step,step,end-first+1,strip?strip+(first-begin):0);
+                w->covered[x][0][1]=(uint8_t)end;
+            }
+            return written;
+        }
+    }
+    for(unsigned k=0;k<count && start<=end;++k) {
+        unsigned lo=w->covered[x][k][0],hi=w->covered[x][k][1];
+        if(hi<start) continue;if(lo>end) break;
+        if(lo>start) {gaps[n][0]=(uint8_t)start;gaps[n++][1]=(uint8_t)(lo-1);}
+        start=hi+1;
+    }
+    if(start<=end) {gaps[n][0]=(uint8_t)start;gaps[n++][1]=(uint8_t)end;}
+    for(unsigned k=0;k<n;++k) {
+        unsigned lo=gaps[k][0],hi=gaps[k][1],pos=v+(lo-begin)*step;available+=hi-lo+1;
+        uint8_t *dst=w->frame+lo*240+x;
+        if(!masked) {
+            written+=draw_run(dst,pixels,pos,step,hi-lo+1,strip?strip+(lo-begin):0);cover(w,x,lo,hi);
+        } else if(record) {
+            for(unsigned j=0;j<record[0];++j) {
+                int first=(int)begin+(int)record[4+j*2]-(int)strip_first;
+                int last=(int)begin+(int)record[5+j*2]-(int)strip_first;
+                if(last<(int)lo) continue;if(first>(int)hi) break;
+                if(first<(int)lo) first=(int)lo;if(last>(int)hi) last=(int)hi;
+                written+=strip_column(w->frame+(unsigned)first*240+x,strip+((unsigned)first-begin),(unsigned)(last-first+1));
+                cover(w,x,(unsigned)first,(unsigned)last);
+            }
+        } else {
+            unsigned run=144;
+            for(unsigned y=lo;y<=hi;++y,pos+=step,dst+=240) {
+                uint8_t color=pixels[pos>>16];
+                if(color) {*dst=color;++written;if(run==144) run=y;}
+                else if(run!=144) {cover(w,x,run,y-1);run=144;}
+            }
+            if(run!=144) cover(w,x,run,hi);
+        }
+    }
+    return written|((available-written)<<16);
+}
+#endif
 static void raster(dok_renderer_workspace *w,const dok_renderer_face *original,const uint8_t *light,dok_renderer_stats *s) {
+#ifdef DOK_RENDERER_PROBE
+    (void)light;
+#endif
     dok_renderer_face f=*original;const dok_renderer_image *im=&w->images[f.image_index];
-    int x,first,last,span,q0,q1;int wrote=0;
+    int x,first,last,span,q0,q1;int wrote=0;unsigned pixels=0,transparent=0;
     if(f.x0>f.x1) {
         swap32(&f.x0,&f.x1);swap32(&f.top0,&f.top1);swap32(&f.bottom0,&f.bottom1);
         swap32(&f.depth0,&f.depth1);swap32(&f.u0,&f.u1);
@@ -177,26 +398,73 @@ static void raster(dok_renderer_workspace *w,const dok_renderer_face *original,c
      * exact affine U; complete original interpolation belongs to G11. */
     q0=(6553600/(f.depth0+200))>>8;q1=(6553600/(f.depth1+200))>>8;
     if(q0<1) q0=1;if(q1<1) q1=1;
+#ifndef DOK_RENDER_REFERENCE
+    /* i is nonnegative after clipping X. Accumulate abs(delta)*i/span
+     * with quotient/remainder, then restore the sign for exact trunc0. */
+    edge_walk upper=edge_start(f.top1-f.top0,(unsigned)(first-f.x0),(unsigned)span);
+    edge_walk lower=edge_start(f.bottom1-f.bottom0,(unsigned)(first-f.x0),(unsigned)span);
+#endif
     for(x=first;x<=last;++x) {
+#ifdef DOK_RENDER_REFERENCE
         int i=x-(int)f.x0,top=(int)(f.top0+(f.top1-f.top0)*i/span);
-        int bottom=(int)(f.bottom0+(f.bottom1-f.bottom0)*i/span),begin,end,denom,u,vstart,vstep,y;
+        int bottom=(int)(f.bottom0+(f.bottom1-f.bottom0)*i/span);
+#else
+        int i=x-(int)f.x0,top=f.top0+upper.sign*(int)upper.quotient;
+        int bottom=f.bottom0+lower.sign*(int)lower.quotient;
+        edge_next(&upper);edge_next(&lower);
+#endif
+        int begin,end,denom,u,vstart,vstep,y;
         int32_t numerator;
+#ifndef DOK_RENDERER_PROBE
         uint8_t *destination;
+#endif
         if(bottom<top || bottom<0 || top>=DOK_RENDER_SCENE_HEIGHT) continue;
         begin=clamp(top,0,DOK_RENDER_SCENE_HEIGHT-1);end=clamp(bottom,0,DOK_RENDER_SCENE_HEIGHT-1);
+#ifdef DOK_RENDERER_PROBE
+        unsigned occluded=0;
+        for(unsigned k=0;k<w->covered_count[x];++k)
+            if(w->covered[x][k][0]<=begin && w->covered[x][k][1]>=end) {occluded=1;break;}
+        if(occluded) continue;
+#endif
         denom=q0*(span-i)+q1*i;
         numerator=f.u0*q0*(span-i)+f.u1*q1*i;u=denom?numerator/denom:0;
         u=clamp(u,0,im->width-1);
         vstart=clamp(f.v0,0,im->height-1);
+#ifdef DOK_RENDERER_PROBE
+        const uint8_t *strip=0;
+        if(im->scales && im->scales[vstart] && bottom>top && bottom-top<=128) {
+            extern const uint8_t dok_render_bank[];
+            const uint32_t *spans=(const uint32_t *)(const void *)(dok_render_bank+im->scales[vstart]);
+            const uint32_t *columns=(const uint32_t *)(const void *)(dok_render_bank+spans[bottom-top]);
+            strip=dok_render_bank+columns[u];
+        }
+        if(strip) {vstart=0;vstep=0;} else
+#endif
+        {
         vstep=bottom>top?((im->height-1-vstart)<<16)/(bottom-top):0;
         vstart=(vstart<<16)+(begin-top)*vstep;
-        destination=w->frame+(unsigned)begin*240+(unsigned)x;
-        for(y=begin;y<=end;++y,vstart+=vstep,destination+=240) {
-            unsigned v=(unsigned)vstart>>16;uint8_t color=light[im->pixels[v*im->width+(unsigned)u]];
-            if((im->flags&8u) && !color) {++s->transparent_pixels;continue;}
-            *destination=color;++s->pixels_written;wrote=1;
         }
+#ifndef DOK_RENDERER_PROBE
+        destination=w->frame+(unsigned)begin*240+(unsigned)x;
+#endif
+        y=end-begin+1;(void)y;
+        unsigned n;
+#ifdef DOK_RENDERER_PROBE
+        n=visible_column(w,(unsigned)x,(unsigned)begin,(unsigned)end,im->columns+(unsigned)u*im->height,
+            (unsigned)vstart,(unsigned)vstep,im->flags&8u,strip,(unsigned)(begin-top));
+#else
+        n=im->columns?
+            mapped_column(destination,im->columns+(unsigned)u*im->height,(unsigned)vstart,(unsigned)vstep,(unsigned)y,im->flags&8u):
+            column(destination,im->pixels+u,light,im->width,(unsigned)vstart,(unsigned)vstep,(unsigned)y,im->flags&8u);
+#endif
+#ifdef DOK_RENDERER_PROBE
+        transparent+=n>>16;n&=65535u;
+#else
+        transparent+=(unsigned)y-n;
+#endif
+        pixels+=n;if(n) wrote=1;
     }
+    s->pixels_written+=pixels;s->transparent_pixels+=transparent;
     if(wrote) ++s->faces_drawn;
 }
 dok_renderer_status dok_renderer_draw(dok_renderer_workspace *w,const dok_runtime *r,const dok_rom_assets *a,
@@ -208,21 +476,29 @@ dok_renderer_status dok_renderer_draw(dok_renderer_workspace *w,const dok_runtim
        r->object_count!=r->level->object_count || !r->level->definitions || !r->level->fields ||
        r->level->settings[DOK_LEVEL_WIDTH]!=64 || r->level->settings[DOK_LEVEL_LENGTH]!=64 || r->level->cells!=4096 ||
        r->level->settings[DOK_LEVEL_CELL_SIDE]!=480 || r->level->settings[DOK_LEVEL_CELL_HEIGHT]!=960 ||
-       c->sine!=32768 || c->cosine || c->distance!=200 || c->scale!=8 || c->focal!=4096 || c->center_x!=159 || c->center_y!=79 ||
+       c->sine< -32768 || c->sine>32768 || c->cosine< -32768 || c->cosine>32768 || c->distance!=200 || c->scale!=8 || c->focal!=4096 || c->center_x!=159 || c->center_y!=79 ||
        c->x<0 || c->x>30720 || c->z<0 || c->z>30720 || c->y< -4096 || c->y>4096) {
         *stats=s;PROFILE_FAIL();
     }
-    w->face_count=0;zero(w->image_known,sizeof(w->image_known));
-    for(y=0;y<160;++y) for(x=0;x<240;++x) {
-        w->frame[y*240+x]=y>=144?0:(uint8_t)r->level->settings[y<72?DOK_LEVEL_CEILING_COLOR:DOK_LEVEL_FLOOR_COLOR];
+    STAGE(0);w->face_count=0;zero(w->image_known,sizeof(w->image_known));
+    for(y=0;y<160;++y) {
+        uint32_t color=y>=144?0:(uint8_t)r->level->settings[y<72?DOK_LEVEL_CEILING_COLOR:DOK_LEVEL_FLOOR_COLOR];
+        uint32_t *row=w->frame_words+y*60;
+        color*=0x01010101u;
+        for(x=0;x<60;x+=4) {row[x]=color;row[x+1]=color;row[x+2]=color;row[x+3]=color;}
     }
     if(dok_rom_binding(&id,a,level,language,DOK_ROM_GLOBAL_OBJECT,DOK_ROM_SLOT_LIGHT)!=DOK_ROM_OK ||
        dok_rom_resource_at(&light,a,id,language)!=DOK_ROM_OK || light.size!=4096) {status=DOK_RENDER_RESOURCE;goto done;}
-    status=build(w,r,a,level,language,c,&s);if(status) goto done;
-    sort_faces(w);
+    STAGE(1);status=build(w,r,a,level,language,c,&s);if(status) goto done;
+    STAGE(2);sort_faces(w);STAGE(3);
     for(i=0;i<256;++i) w->light_row[i]=light.data[i];
+#ifdef DOK_RENDERER_PROBE
+    zero(w->covered_count,sizeof(w->covered_count));
+    for(i=w->face_count;i>0;--i) raster(w,&w->faces[i-1],w->light_row,&s);
+#else
     for(i=0;i<w->face_count;++i) raster(w,&w->faces[i],w->light_row,&s);
-    status=DOK_RENDER_OK;
+#endif
+    STAGE(4);status=DOK_RENDER_OK;
 done:
     s.face_count=w->face_count;*stats=s;return status;
 }

@@ -6,6 +6,12 @@ void __aeabi_memcpy(void *destination, const void *source, size_t count)
 {
     volatile unsigned char *d = destination;
     const volatile unsigned char *s = source;
+    if (!(((size_t)d | (size_t)s) & 3u)) {
+        volatile unsigned *dw=(volatile unsigned *)d;
+        const volatile unsigned *sw=(const volatile unsigned *)s;
+        while(count>=4) {*dw++=*sw++;count-=4;}
+        d=(volatile unsigned char *)dw;s=(const volatile unsigned char *)sw;
+    }
     while (count--) *d++ = *s++;
 }
 void __aeabi_memcpy4(void *destination, const void *source, size_t count)
@@ -27,6 +33,15 @@ void __aeabi_memclr4(void *destination, size_t count)
 }
 unsigned __aeabi_uidiv(unsigned numerator, unsigned denominator)
 {
+#ifdef DOK_RENDERER_PROBE
+    extern const unsigned dok_reciprocal[];
+    if (denominator && denominator<65536u) {
+        unsigned reciprocal=dok_reciprocal[denominator];
+        unsigned q=(unsigned)(((unsigned long long)numerator*reciprocal)>>32);
+        if (numerator-q*denominator>=denominator) ++q;
+        return q;
+    }
+#endif
     unsigned quotient = 0, bit = 1;
     /* Reader divisors are validated positive. Match the usual EABI zero default. */
     if (!denominator) return 0;

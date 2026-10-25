@@ -5,11 +5,11 @@
   "emulator_version": "0.11-212-7a12d6d",
   "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
   "bios": "mGBA replacement BIOS (no external BIOS)",
-  "rom_sha256": "d41d04f79a380dd3fae8b9f9691a8acd1344634b597b5c5c572dce554db53177",
-  "rom_bytes": 2782924,
+  "rom_sha256": "ffb2d8b6c6018c1a7759ed61f23b00d59c7050dc294e9b85eb3bc4e804d9697d",
+  "rom_bytes": 2787036,
   "package_sha256": "17fb976d2b0d87cc428fe3cb280f4baff21ff2c986b651246f57be4c59a9eff8",
   "embedded_package_byte_identical": true,
-  "ewram_static_bytes": 89776,
+  "ewram_static_bytes": 89940,
   "iwram_stack_bios_reserve": 8192,
   "ru": {
     "diag": {
@@ -17,10 +17,10 @@
       "status": 0,
       "language": 0,
       "level": 0,
-      "draws": 33,
-      "last_cycles": 10187754,
-      "min_cycles": 10187752,
-      "max_cycles": 10187755,
+      "draws": 88,
+      "last_cycles": 10393099,
+      "min_cycles": 10189214,
+      "max_cycles": 10394485,
       "faces": 28,
       "columns": 0,
       "pixels": 28699,
@@ -32,15 +32,15 @@
       "scene_height": 144,
       "message_height": 16,
       "cycle_budget": 561792,
-      "over_budget": 34,
-      "present_vblank": 1205,
+      "over_budget": 88,
+      "present_vblank": 3686,
       "frame_bytes": 38400,
       "world_bytes": 33864,
       "workspace_bytes": 54284,
       "guard_ok": 1,
       "palette_ready": 1,
       "font_ready": 1,
-      "visible_page": 1,
+      "visible_page": 0,
       "face_count": 28,
       "geometry_fnv1a": 3851251082,
       "phase": 2,
@@ -53,7 +53,7 @@
     "geometry_fnv1a": 3851251082,
     "geometry_sha256": "ecb51c79478eb009499d1012900d1a925f30f8fb3e9431b6545f24af64f3f9a3",
     "geometry_faces": 28,
-    "dispcnt": 1044
+    "dispcnt": 1028
   },
   "en": {
     "diag": {
@@ -61,10 +61,10 @@
       "status": 0,
       "language": 1,
       "level": 0,
-      "draws": 67,
-      "last_cycles": 10175200,
-      "min_cycles": 10175200,
-      "max_cycles": 10187755,
+      "draws": 121,
+      "last_cycles": 10380344,
+      "min_cycles": 10189214,
+      "max_cycles": 17555464,
       "faces": 28,
       "columns": 0,
       "pixels": 28699,
@@ -76,8 +76,8 @@
       "scene_height": 144,
       "message_height": 16,
       "cycle_budget": 561792,
-      "over_budget": 68,
-      "present_vblank": 2472,
+      "over_budget": 122,
+      "present_vblank": 4934,
       "frame_bytes": 38400,
       "world_bytes": 33864,
       "workspace_bytes": 54284,
@@ -105,10 +105,10 @@
       "status": 0,
       "language": 0,
       "level": 0,
-      "draws": 101,
-      "last_cycles": 10187754,
-      "min_cycles": 10175200,
-      "max_cycles": 10187755,
+      "draws": 206,
+      "last_cycles": 10393099,
+      "min_cycles": 10189214,
+      "max_cycles": 17568022,
       "faces": 28,
       "columns": 0,
       "pixels": 28699,
@@ -120,15 +120,15 @@
       "scene_height": 144,
       "message_height": 16,
       "cycle_budget": 561792,
-      "over_budget": 102,
-      "present_vblank": 3739,
+      "over_budget": 206,
+      "present_vblank": 8106,
       "frame_bytes": 38400,
       "world_bytes": 33864,
       "workspace_bytes": 54284,
       "guard_ok": 1,
       "palette_ready": 1,
       "font_ready": 1,
-      "visible_page": 1,
+      "visible_page": 0,
       "face_count": 28,
       "geometry_fnv1a": 3851251082,
       "phase": 2,
@@ -141,7 +141,7 @@
     "geometry_fnv1a": 3851251082,
     "geometry_sha256": "ecb51c79478eb009499d1012900d1a925f30f8fb3e9431b6545f24af64f3f9a3",
     "geometry_faces": 28,
-    "dispcnt": 1044
+    "dispcnt": 1028
   },
   "restart_after_poison": {
     "magic": 1380860981,
@@ -149,9 +149,9 @@
     "language": 0,
     "level": 0,
     "draws": 2,
-    "last_cycles": 10187754,
-    "min_cycles": 10187752,
-    "max_cycles": 10187754,
+    "last_cycles": 10393847,
+    "min_cycles": 10189214,
+    "max_cycles": 10393847,
     "faces": 28,
     "columns": 0,
     "pixels": 28699,
@@ -164,7 +164,7 @@
     "message_height": 16,
     "cycle_budget": 561792,
     "over_budget": 2,
-    "present_vblank": 74,
+    "present_vblank": 504,
     "frame_bytes": 38400,
     "world_bytes": 33864,
     "workspace_bytes": 54284,
@@ -190,8 +190,8 @@
     "main_stack_low": 50356224,
     "main_stack_top": 50364160,
     "sentinel_word": 219540062,
-    "untouched_margin_bytes": 5536,
-    "high_water_bytes": 2400,
+    "untouched_margin_bytes": 5544,
+    "high_water_bytes": 2392,
     "irq_and_bios_excluded": true,
     "scope": "observed G05 startup/render/switch/reset paths"
   },
@@ -199,8 +199,8 @@
     "main_stack_low": 50356224,
     "main_stack_top": 50364160,
     "sentinel_word": 219540062,
-    "untouched_margin_bytes": 5536,
-    "high_water_bytes": 2400,
+    "untouched_margin_bytes": 5544,
+    "high_water_bytes": 2392,
     "irq_and_bios_excluded": true,
     "scope": "observed G05 startup/render/switch/reset paths"
   },
@@ -210,811 +210,1651 @@
     "target_cycles": 561792,
     "target_hardware_frames": 2,
     "scope": "Timer0/1 cascade: renderer + HUD + halfword VRAM back-page copy; excludes presentation wait and language reader",
-    "min_cycles": 10175200,
-    "max_cycles": 10187755,
-    "worst_render_budget_ratio": 18.134389596149465,
+    "min_cycles": 10189214,
+    "max_cycles": 17568022,
+    "worst_render_budget_ratio": 31.271399379129644,
     "nominal_target_fps": 29.863750284802915,
-    "over_budget_draws": 102,
+    "over_budget_draws": 206,
     "all_observed_draws_fit_target": false,
-    "min_present_interval_vblanks": 36,
+    "min_present_interval_vblanks": 37,
     "max_present_interval_vblanks": 37,
     "cadence_intervals_vblanks": [
-      36,
       37,
-      36,
       37,
-      36,
       37,
-      36,
       37,
-      36,
       37,
-      36,
       37,
-      36,
       37,
-      36,
       37,
-      36,
       37,
-      36,
       37,
-      36,
       37,
-      36,
       37,
-      36,
       37,
-      36,
       37,
-      36,
       37,
-      36,
       37,
-      36,
       37,
-      36,
       37,
-      36,
       37,
-      36,
       37,
-      36,
       37,
-      36,
       37,
-      36,
       37,
-      36,
       37,
-      36,
       37,
-      36,
       37,
-      36,
       37,
-      36,
       37,
-      36,
       37,
-      36,
       37,
-      36,
       37,
-      36,
       37,
-      36,
       37,
-      36,
       37,
-      36,
       37,
-      36
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37
     ],
     "cadence_warmup_excluded_draws": 8,
-    "observed_steady_presentation_fps": 1.6366856582176819,
-    "sampled_draws": 103,
+    "observed_steady_presentation_fps": 1.614256772151509,
+    "sampled_draws": 208,
     "samples": [
       {
         "draws": 1,
         "language": 0,
         "switches": 0,
-        "last_cycles": 10187752,
-        "present_vblank": 37
+        "last_cycles": 10189214,
+        "present_vblank": 467
       },
       {
         "draws": 2,
         "language": 0,
         "switches": 0,
-        "last_cycles": 10187754,
-        "present_vblank": 74
+        "last_cycles": 10393847,
+        "present_vblank": 504
       },
       {
         "draws": 3,
         "language": 0,
         "switches": 0,
-        "last_cycles": 10187755,
-        "present_vblank": 110
+        "last_cycles": 10393102,
+        "present_vblank": 541
       },
       {
         "draws": 4,
         "language": 0,
         "switches": 0,
-        "last_cycles": 10187753,
-        "present_vblank": 147
+        "last_cycles": 10393101,
+        "present_vblank": 578
       },
       {
         "draws": 5,
         "language": 0,
         "switches": 0,
-        "last_cycles": 10187755,
-        "present_vblank": 183
+        "last_cycles": 10393105,
+        "present_vblank": 615
       },
       {
         "draws": 6,
         "language": 0,
         "switches": 0,
-        "last_cycles": 10187754,
-        "present_vblank": 220
+        "last_cycles": 10394483,
+        "present_vblank": 652
       },
       {
         "draws": 7,
         "language": 0,
         "switches": 0,
-        "last_cycles": 10187755,
-        "present_vblank": 256
+        "last_cycles": 10393102,
+        "present_vblank": 689
       },
       {
         "draws": 8,
         "language": 0,
         "switches": 0,
-        "last_cycles": 10187754,
-        "present_vblank": 293
+        "last_cycles": 10393101,
+        "present_vblank": 726
       },
       {
         "draws": 9,
         "language": 0,
         "switches": 0,
-        "last_cycles": 10187754,
-        "present_vblank": 329
+        "last_cycles": 10393101,
+        "present_vblank": 763
       },
       {
         "draws": 10,
         "language": 0,
         "switches": 0,
-        "last_cycles": 10187754,
-        "present_vblank": 366
+        "last_cycles": 10393099,
+        "present_vblank": 800
       },
       {
         "draws": 11,
         "language": 0,
         "switches": 0,
-        "last_cycles": 10187755,
-        "present_vblank": 402
+        "last_cycles": 10393101,
+        "present_vblank": 837
       },
       {
         "draws": 12,
         "language": 0,
         "switches": 0,
-        "last_cycles": 10187754,
-        "present_vblank": 439
+        "last_cycles": 10393099,
+        "present_vblank": 874
       },
       {
         "draws": 13,
         "language": 0,
         "switches": 0,
-        "last_cycles": 10187755,
-        "present_vblank": 475
+        "last_cycles": 10393103,
+        "present_vblank": 911
       },
       {
         "draws": 14,
         "language": 0,
         "switches": 0,
-        "last_cycles": 10187754,
-        "present_vblank": 512
+        "last_cycles": 10393099,
+        "present_vblank": 948
       },
       {
         "draws": 15,
         "language": 0,
         "switches": 0,
-        "last_cycles": 10187755,
-        "present_vblank": 548
+        "last_cycles": 10394485,
+        "present_vblank": 985
       },
       {
         "draws": 16,
         "language": 0,
         "switches": 0,
-        "last_cycles": 10187754,
-        "present_vblank": 585
+        "last_cycles": 10393100,
+        "present_vblank": 1022
       },
       {
         "draws": 17,
         "language": 0,
         "switches": 0,
-        "last_cycles": 10187755,
-        "present_vblank": 621
+        "last_cycles": 10393103,
+        "present_vblank": 1059
       },
       {
         "draws": 18,
         "language": 0,
         "switches": 0,
-        "last_cycles": 10187754,
-        "present_vblank": 658
+        "last_cycles": 10393099,
+        "present_vblank": 1096
       },
       {
         "draws": 19,
         "language": 0,
         "switches": 0,
-        "last_cycles": 10187754,
-        "present_vblank": 694
+        "last_cycles": 10393101,
+        "present_vblank": 1133
       },
       {
         "draws": 20,
         "language": 0,
         "switches": 0,
-        "last_cycles": 10187754,
-        "present_vblank": 731
+        "last_cycles": 10393099,
+        "present_vblank": 1170
       },
       {
         "draws": 21,
         "language": 0,
         "switches": 0,
-        "last_cycles": 10187755,
-        "present_vblank": 767
+        "last_cycles": 10393103,
+        "present_vblank": 1207
       },
       {
         "draws": 22,
         "language": 0,
         "switches": 0,
-        "last_cycles": 10187754,
-        "present_vblank": 804
+        "last_cycles": 10393099,
+        "present_vblank": 1244
       },
       {
         "draws": 23,
         "language": 0,
         "switches": 0,
-        "last_cycles": 10187755,
-        "present_vblank": 840
+        "last_cycles": 10394483,
+        "present_vblank": 1281
       },
       {
         "draws": 24,
         "language": 0,
         "switches": 0,
-        "last_cycles": 10187754,
-        "present_vblank": 877
+        "last_cycles": 10393099,
+        "present_vblank": 1318
       },
       {
         "draws": 25,
         "language": 0,
         "switches": 0,
-        "last_cycles": 10187755,
-        "present_vblank": 913
+        "last_cycles": 10393103,
+        "present_vblank": 1355
       },
       {
         "draws": 26,
         "language": 0,
         "switches": 0,
-        "last_cycles": 10187754,
-        "present_vblank": 950
+        "last_cycles": 10393099,
+        "present_vblank": 1392
       },
       {
         "draws": 27,
         "language": 0,
         "switches": 0,
-        "last_cycles": 10187755,
-        "present_vblank": 986
+        "last_cycles": 10393101,
+        "present_vblank": 1429
       },
       {
         "draws": 28,
         "language": 0,
         "switches": 0,
-        "last_cycles": 10187754,
-        "present_vblank": 1023
+        "last_cycles": 10393099,
+        "present_vblank": 1466
       },
       {
         "draws": 29,
         "language": 0,
         "switches": 0,
-        "last_cycles": 10187754,
-        "present_vblank": 1059
+        "last_cycles": 10393101,
+        "present_vblank": 1503
       },
       {
         "draws": 30,
         "language": 0,
         "switches": 0,
-        "last_cycles": 10187754,
-        "present_vblank": 1096
+        "last_cycles": 10393101,
+        "present_vblank": 1540
       },
       {
         "draws": 31,
         "language": 0,
         "switches": 0,
-        "last_cycles": 10187755,
-        "present_vblank": 1132
+        "last_cycles": 10393101,
+        "present_vblank": 1577
       },
       {
         "draws": 32,
         "language": 0,
         "switches": 0,
-        "last_cycles": 10187754,
-        "present_vblank": 1169
+        "last_cycles": 10394483,
+        "present_vblank": 1614
       },
       {
         "draws": 33,
         "language": 0,
         "switches": 0,
-        "last_cycles": 10187755,
-        "present_vblank": 1205
+        "last_cycles": 10393101,
+        "present_vblank": 1651
       },
       {
         "draws": 34,
         "language": 0,
         "switches": 0,
-        "last_cycles": 10187754,
-        "present_vblank": 1242
-      },
-      {
-        "draws": 34,
-        "language": 1,
-        "switches": 1,
-        "last_cycles": 10187754,
-        "present_vblank": 1242
+        "last_cycles": 10393101,
+        "present_vblank": 1688
       },
       {
         "draws": 35,
-        "language": 1,
-        "switches": 1,
-        "last_cycles": 10175201,
-        "present_vblank": 1304
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 10393101,
+        "present_vblank": 1725
       },
       {
         "draws": 36,
-        "language": 1,
-        "switches": 1,
-        "last_cycles": 10175200,
-        "present_vblank": 1341
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 10393099,
+        "present_vblank": 1762
       },
       {
         "draws": 37,
-        "language": 1,
-        "switches": 1,
-        "last_cycles": 10175202,
-        "present_vblank": 1377
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 10393101,
+        "present_vblank": 1799
       },
       {
         "draws": 38,
-        "language": 1,
-        "switches": 1,
-        "last_cycles": 10175200,
-        "present_vblank": 1414
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 10393101,
+        "present_vblank": 1836
       },
       {
         "draws": 39,
-        "language": 1,
-        "switches": 1,
-        "last_cycles": 10175201,
-        "present_vblank": 1450
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 10393101,
+        "present_vblank": 1873
       },
       {
         "draws": 40,
-        "language": 1,
-        "switches": 1,
-        "last_cycles": 10175200,
-        "present_vblank": 1487
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 10394481,
+        "present_vblank": 1910
       },
       {
         "draws": 41,
-        "language": 1,
-        "switches": 1,
-        "last_cycles": 10175201,
-        "present_vblank": 1523
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 10393101,
+        "present_vblank": 1947
       },
       {
         "draws": 42,
-        "language": 1,
-        "switches": 1,
-        "last_cycles": 10175200,
-        "present_vblank": 1560
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 10393101,
+        "present_vblank": 1984
       },
       {
         "draws": 43,
-        "language": 1,
-        "switches": 1,
-        "last_cycles": 10175202,
-        "present_vblank": 1596
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 10393101,
+        "present_vblank": 2021
       },
       {
         "draws": 44,
-        "language": 1,
-        "switches": 1,
-        "last_cycles": 10175200,
-        "present_vblank": 1633
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 10393099,
+        "present_vblank": 2058
       },
       {
         "draws": 45,
-        "language": 1,
-        "switches": 1,
-        "last_cycles": 10175201,
-        "present_vblank": 1669
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 10393101,
+        "present_vblank": 2095
       },
       {
         "draws": 46,
-        "language": 1,
-        "switches": 1,
-        "last_cycles": 10175200,
-        "present_vblank": 1706
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 10393099,
+        "present_vblank": 2132
       },
       {
         "draws": 47,
-        "language": 1,
-        "switches": 1,
-        "last_cycles": 10175201,
-        "present_vblank": 1742
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 10393103,
+        "present_vblank": 2169
       },
       {
         "draws": 48,
-        "language": 1,
-        "switches": 1,
-        "last_cycles": 10175200,
-        "present_vblank": 1779
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 10394481,
+        "present_vblank": 2206
       },
       {
         "draws": 49,
-        "language": 1,
-        "switches": 1,
-        "last_cycles": 10175201,
-        "present_vblank": 1815
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 10393099,
+        "present_vblank": 2243
       },
       {
         "draws": 50,
-        "language": 1,
-        "switches": 1,
-        "last_cycles": 10175200,
-        "present_vblank": 1852
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 10393099,
+        "present_vblank": 2280
       },
       {
         "draws": 51,
-        "language": 1,
-        "switches": 1,
-        "last_cycles": 10175201,
-        "present_vblank": 1888
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 10393103,
+        "present_vblank": 2317
       },
       {
         "draws": 52,
-        "language": 1,
-        "switches": 1,
-        "last_cycles": 10175200,
-        "present_vblank": 1925
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 10393099,
+        "present_vblank": 2354
       },
       {
         "draws": 53,
-        "language": 1,
-        "switches": 1,
-        "last_cycles": 10175202,
-        "present_vblank": 1961
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 10393101,
+        "present_vblank": 2391
       },
       {
         "draws": 54,
-        "language": 1,
-        "switches": 1,
-        "last_cycles": 10175200,
-        "present_vblank": 1998
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 10393099,
+        "present_vblank": 2428
       },
       {
         "draws": 55,
-        "language": 1,
-        "switches": 1,
-        "last_cycles": 10175201,
-        "present_vblank": 2034
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 10393103,
+        "present_vblank": 2465
       },
       {
         "draws": 56,
-        "language": 1,
-        "switches": 1,
-        "last_cycles": 10175200,
-        "present_vblank": 2071
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 10393099,
+        "present_vblank": 2502
       },
       {
         "draws": 57,
-        "language": 1,
-        "switches": 1,
-        "last_cycles": 10175201,
-        "present_vblank": 2107
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 10394483,
+        "present_vblank": 2539
       },
       {
         "draws": 58,
-        "language": 1,
-        "switches": 1,
-        "last_cycles": 10175200,
-        "present_vblank": 2144
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 10393099,
+        "present_vblank": 2576
       },
       {
         "draws": 59,
-        "language": 1,
-        "switches": 1,
-        "last_cycles": 10175201,
-        "present_vblank": 2180
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 10393103,
+        "present_vblank": 2613
       },
       {
         "draws": 60,
-        "language": 1,
-        "switches": 1,
-        "last_cycles": 10175200,
-        "present_vblank": 2217
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 10393099,
+        "present_vblank": 2650
       },
       {
         "draws": 61,
-        "language": 1,
-        "switches": 1,
-        "last_cycles": 10175201,
-        "present_vblank": 2253
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 10393101,
+        "present_vblank": 2687
       },
       {
         "draws": 62,
-        "language": 1,
-        "switches": 1,
-        "last_cycles": 10175200,
-        "present_vblank": 2290
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 10393099,
+        "present_vblank": 2724
       },
       {
         "draws": 63,
-        "language": 1,
-        "switches": 1,
-        "last_cycles": 10175202,
-        "present_vblank": 2326
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 10393101,
+        "present_vblank": 2761
       },
       {
         "draws": 64,
-        "language": 1,
-        "switches": 1,
-        "last_cycles": 10175200,
-        "present_vblank": 2363
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 10393101,
+        "present_vblank": 2798
       },
       {
         "draws": 65,
-        "language": 1,
-        "switches": 1,
-        "last_cycles": 10175201,
-        "present_vblank": 2399
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 10394483,
+        "present_vblank": 2835
       },
       {
         "draws": 66,
-        "language": 1,
-        "switches": 1,
-        "last_cycles": 10175200,
-        "present_vblank": 2436
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 10393099,
+        "present_vblank": 2872
       },
       {
         "draws": 67,
-        "language": 1,
-        "switches": 1,
-        "last_cycles": 10175201,
-        "present_vblank": 2472
-      },
-      {
-        "draws": 68,
-        "language": 1,
-        "switches": 1,
-        "last_cycles": 10175200,
-        "present_vblank": 2509
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 10393103,
+        "present_vblank": 2909
       },
       {
         "draws": 68,
         "language": 0,
-        "switches": 2,
-        "last_cycles": 10175200,
-        "present_vblank": 2509
+        "switches": 0,
+        "last_cycles": 10393099,
+        "present_vblank": 2946
       },
       {
         "draws": 69,
         "language": 0,
-        "switches": 2,
-        "last_cycles": 10187755,
-        "present_vblank": 2571
+        "switches": 0,
+        "last_cycles": 10393101,
+        "present_vblank": 2983
       },
       {
         "draws": 70,
         "language": 0,
-        "switches": 2,
-        "last_cycles": 10187753,
-        "present_vblank": 2608
+        "switches": 0,
+        "last_cycles": 10393099,
+        "present_vblank": 3020
       },
       {
         "draws": 71,
         "language": 0,
-        "switches": 2,
-        "last_cycles": 10187755,
-        "present_vblank": 2644
+        "switches": 0,
+        "last_cycles": 10393101,
+        "present_vblank": 3057
       },
       {
         "draws": 72,
         "language": 0,
-        "switches": 2,
-        "last_cycles": 10187754,
-        "present_vblank": 2681
+        "switches": 0,
+        "last_cycles": 10393101,
+        "present_vblank": 3094
       },
       {
         "draws": 73,
         "language": 0,
-        "switches": 2,
-        "last_cycles": 10187755,
-        "present_vblank": 2717
+        "switches": 0,
+        "last_cycles": 10393101,
+        "present_vblank": 3131
       },
       {
         "draws": 74,
         "language": 0,
-        "switches": 2,
-        "last_cycles": 10187754,
-        "present_vblank": 2754
+        "switches": 0,
+        "last_cycles": 10394481,
+        "present_vblank": 3168
       },
       {
         "draws": 75,
         "language": 0,
-        "switches": 2,
-        "last_cycles": 10187754,
-        "present_vblank": 2790
+        "switches": 0,
+        "last_cycles": 10393101,
+        "present_vblank": 3205
       },
       {
         "draws": 76,
         "language": 0,
-        "switches": 2,
-        "last_cycles": 10187754,
-        "present_vblank": 2827
+        "switches": 0,
+        "last_cycles": 10393101,
+        "present_vblank": 3242
       },
       {
         "draws": 77,
         "language": 0,
-        "switches": 2,
-        "last_cycles": 10187755,
-        "present_vblank": 2863
+        "switches": 0,
+        "last_cycles": 10393101,
+        "present_vblank": 3279
       },
       {
         "draws": 78,
         "language": 0,
-        "switches": 2,
-        "last_cycles": 10187754,
-        "present_vblank": 2900
+        "switches": 0,
+        "last_cycles": 10393099,
+        "present_vblank": 3316
       },
       {
         "draws": 79,
         "language": 0,
-        "switches": 2,
-        "last_cycles": 10187755,
-        "present_vblank": 2936
+        "switches": 0,
+        "last_cycles": 10393101,
+        "present_vblank": 3353
       },
       {
         "draws": 80,
         "language": 0,
-        "switches": 2,
-        "last_cycles": 10187754,
-        "present_vblank": 2973
+        "switches": 0,
+        "last_cycles": 10393099,
+        "present_vblank": 3390
       },
       {
         "draws": 81,
         "language": 0,
-        "switches": 2,
-        "last_cycles": 10187755,
-        "present_vblank": 3009
+        "switches": 0,
+        "last_cycles": 10393103,
+        "present_vblank": 3427
       },
       {
         "draws": 82,
         "language": 0,
-        "switches": 2,
-        "last_cycles": 10187754,
-        "present_vblank": 3046
+        "switches": 0,
+        "last_cycles": 10394481,
+        "present_vblank": 3464
       },
       {
         "draws": 83,
         "language": 0,
-        "switches": 2,
-        "last_cycles": 10187755,
-        "present_vblank": 3082
+        "switches": 0,
+        "last_cycles": 10393101,
+        "present_vblank": 3501
       },
       {
         "draws": 84,
         "language": 0,
-        "switches": 2,
-        "last_cycles": 10187754,
-        "present_vblank": 3119
+        "switches": 0,
+        "last_cycles": 10393101,
+        "present_vblank": 3538
       },
       {
         "draws": 85,
         "language": 0,
-        "switches": 2,
-        "last_cycles": 10187754,
-        "present_vblank": 3155
+        "switches": 0,
+        "last_cycles": 10393101,
+        "present_vblank": 3575
       },
       {
         "draws": 86,
         "language": 0,
-        "switches": 2,
-        "last_cycles": 10187754,
-        "present_vblank": 3192
+        "switches": 0,
+        "last_cycles": 10393099,
+        "present_vblank": 3612
       },
       {
         "draws": 87,
         "language": 0,
-        "switches": 2,
-        "last_cycles": 10187755,
-        "present_vblank": 3228
+        "switches": 0,
+        "last_cycles": 10393101,
+        "present_vblank": 3649
       },
       {
         "draws": 88,
         "language": 0,
-        "switches": 2,
-        "last_cycles": 10187754,
-        "present_vblank": 3265
+        "switches": 0,
+        "last_cycles": 10393099,
+        "present_vblank": 3686
       },
       {
         "draws": 89,
         "language": 0,
-        "switches": 2,
-        "last_cycles": 10187755,
-        "present_vblank": 3301
+        "switches": 0,
+        "last_cycles": 10393103,
+        "present_vblank": 3723
+      },
+      {
+        "draws": 89,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 10393103,
+        "present_vblank": 3723
       },
       {
         "draws": 90,
-        "language": 0,
-        "switches": 2,
-        "last_cycles": 10187754,
-        "present_vblank": 3338
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 17555464,
+        "present_vblank": 3786
       },
       {
         "draws": 91,
-        "language": 0,
-        "switches": 2,
-        "last_cycles": 10187755,
-        "present_vblank": 3374
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 10524049,
+        "present_vblank": 3824
       },
       {
         "draws": 92,
-        "language": 0,
-        "switches": 2,
-        "last_cycles": 10187754,
-        "present_vblank": 3411
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 10386087,
+        "present_vblank": 3861
       },
       {
         "draws": 93,
-        "language": 0,
-        "switches": 2,
-        "last_cycles": 10187755,
-        "present_vblank": 3447
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 10380347,
+        "present_vblank": 3898
       },
       {
         "draws": 94,
-        "language": 0,
-        "switches": 2,
-        "last_cycles": 10187754,
-        "present_vblank": 3484
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 10380343,
+        "present_vblank": 3935
       },
       {
         "draws": 95,
-        "language": 0,
-        "switches": 2,
-        "last_cycles": 10187754,
-        "present_vblank": 3520
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 10380346,
+        "present_vblank": 3972
       },
       {
         "draws": 96,
-        "language": 0,
-        "switches": 2,
-        "last_cycles": 10187754,
-        "present_vblank": 3557
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 10380341,
+        "present_vblank": 4009
       },
       {
         "draws": 97,
-        "language": 0,
-        "switches": 2,
-        "last_cycles": 10187755,
-        "present_vblank": 3593
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 10380344,
+        "present_vblank": 4046
       },
       {
         "draws": 98,
-        "language": 0,
-        "switches": 2,
-        "last_cycles": 10187754,
-        "present_vblank": 3630
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 10380345,
+        "present_vblank": 4083
       },
       {
         "draws": 99,
-        "language": 0,
-        "switches": 2,
-        "last_cycles": 10187755,
-        "present_vblank": 3666
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 10380344,
+        "present_vblank": 4120
       },
       {
         "draws": 100,
-        "language": 0,
-        "switches": 2,
-        "last_cycles": 10187754,
-        "present_vblank": 3703
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 10381727,
+        "present_vblank": 4157
       },
       {
         "draws": 101,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 10380346,
+        "present_vblank": 4194
+      },
+      {
+        "draws": 102,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 10380343,
+        "present_vblank": 4231
+      },
+      {
+        "draws": 103,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 10380346,
+        "present_vblank": 4268
+      },
+      {
+        "draws": 104,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 10380345,
+        "present_vblank": 4305
+      },
+      {
+        "draws": 105,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 10380344,
+        "present_vblank": 4342
+      },
+      {
+        "draws": 106,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 10380345,
+        "present_vblank": 4379
+      },
+      {
+        "draws": 107,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 10380344,
+        "present_vblank": 4416
+      },
+      {
+        "draws": 108,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 10380344,
+        "present_vblank": 4453
+      },
+      {
+        "draws": 109,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 10381729,
+        "present_vblank": 4490
+      },
+      {
+        "draws": 110,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 10380342,
+        "present_vblank": 4527
+      },
+      {
+        "draws": 111,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 10380347,
+        "present_vblank": 4564
+      },
+      {
+        "draws": 112,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 10380344,
+        "present_vblank": 4601
+      },
+      {
+        "draws": 113,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 10380345,
+        "present_vblank": 4638
+      },
+      {
+        "draws": 114,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 10380344,
+        "present_vblank": 4675
+      },
+      {
+        "draws": 115,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 10380347,
+        "present_vblank": 4712
+      },
+      {
+        "draws": 116,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 10380342,
+        "present_vblank": 4749
+      },
+      {
+        "draws": 117,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 10380347,
+        "present_vblank": 4786
+      },
+      {
+        "draws": 118,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 10381724,
+        "present_vblank": 4823
+      },
+      {
+        "draws": 119,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 10380347,
+        "present_vblank": 4860
+      },
+      {
+        "draws": 120,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 10380344,
+        "present_vblank": 4897
+      },
+      {
+        "draws": 121,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 10380345,
+        "present_vblank": 4934
+      },
+      {
+        "draws": 122,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 10380344,
+        "present_vblank": 4971
+      },
+      {
+        "draws": 122,
         "language": 0,
         "switches": 2,
-        "last_cycles": 10187755,
-        "present_vblank": 3739
+        "last_cycles": 10380344,
+        "present_vblank": 4971
+      },
+      {
+        "draws": 123,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 17568022,
+        "present_vblank": 5034
+      },
+      {
+        "draws": 124,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10537105,
+        "present_vblank": 5072
+      },
+      {
+        "draws": 125,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10398923,
+        "present_vblank": 5109
+      },
+      {
+        "draws": 126,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10393101,
+        "present_vblank": 5146
+      },
+      {
+        "draws": 127,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10393101,
+        "present_vblank": 5183
+      },
+      {
+        "draws": 128,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10393099,
+        "present_vblank": 5220
+      },
+      {
+        "draws": 129,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10393103,
+        "present_vblank": 5257
+      },
+      {
+        "draws": 130,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10393099,
+        "present_vblank": 5294
+      },
+      {
+        "draws": 131,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10393101,
+        "present_vblank": 5331
+      },
+      {
+        "draws": 132,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10394481,
+        "present_vblank": 5368
+      },
+      {
+        "draws": 133,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10393101,
+        "present_vblank": 5405
+      },
+      {
+        "draws": 134,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10393099,
+        "present_vblank": 5442
+      },
+      {
+        "draws": 135,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10393101,
+        "present_vblank": 5479
+      },
+      {
+        "draws": 136,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10393099,
+        "present_vblank": 5516
+      },
+      {
+        "draws": 137,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10393103,
+        "present_vblank": 5553
+      },
+      {
+        "draws": 138,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10393099,
+        "present_vblank": 5590
+      },
+      {
+        "draws": 139,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10393101,
+        "present_vblank": 5627
+      },
+      {
+        "draws": 140,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10393099,
+        "present_vblank": 5664
+      },
+      {
+        "draws": 141,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10394483,
+        "present_vblank": 5701
+      },
+      {
+        "draws": 142,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10393099,
+        "present_vblank": 5738
+      },
+      {
+        "draws": 143,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10393101,
+        "present_vblank": 5775
+      },
+      {
+        "draws": 144,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10393099,
+        "present_vblank": 5812
+      },
+      {
+        "draws": 145,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10393101,
+        "present_vblank": 5849
+      },
+      {
+        "draws": 146,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10393101,
+        "present_vblank": 5886
+      },
+      {
+        "draws": 147,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10393101,
+        "present_vblank": 5923
+      },
+      {
+        "draws": 148,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10393099,
+        "present_vblank": 5960
+      },
+      {
+        "draws": 149,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10394483,
+        "present_vblank": 5997
+      },
+      {
+        "draws": 150,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10393099,
+        "present_vblank": 6034
+      },
+      {
+        "draws": 151,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10393101,
+        "present_vblank": 6071
+      },
+      {
+        "draws": 152,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10393099,
+        "present_vblank": 6108
+      },
+      {
+        "draws": 153,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10393101,
+        "present_vblank": 6145
+      },
+      {
+        "draws": 154,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10393101,
+        "present_vblank": 6182
+      },
+      {
+        "draws": 155,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10393101,
+        "present_vblank": 6219
+      },
+      {
+        "draws": 156,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10393099,
+        "present_vblank": 6256
+      },
+      {
+        "draws": 157,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10394483,
+        "present_vblank": 6293
+      },
+      {
+        "draws": 158,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10393099,
+        "present_vblank": 6330
+      },
+      {
+        "draws": 159,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10393101,
+        "present_vblank": 6367
+      },
+      {
+        "draws": 160,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10393099,
+        "present_vblank": 6404
+      },
+      {
+        "draws": 161,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10393101,
+        "present_vblank": 6441
+      },
+      {
+        "draws": 162,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10393099,
+        "present_vblank": 6478
+      },
+      {
+        "draws": 163,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10393103,
+        "present_vblank": 6515
+      },
+      {
+        "draws": 164,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10393099,
+        "present_vblank": 6552
+      },
+      {
+        "draws": 165,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10393101,
+        "present_vblank": 6589
+      },
+      {
+        "draws": 166,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10394481,
+        "present_vblank": 6626
+      },
+      {
+        "draws": 167,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10393101,
+        "present_vblank": 6663
+      },
+      {
+        "draws": 168,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10393099,
+        "present_vblank": 6700
+      },
+      {
+        "draws": 169,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10393101,
+        "present_vblank": 6737
+      },
+      {
+        "draws": 170,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10393099,
+        "present_vblank": 6774
+      },
+      {
+        "draws": 171,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10393103,
+        "present_vblank": 6811
+      },
+      {
+        "draws": 172,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10393099,
+        "present_vblank": 6848
+      },
+      {
+        "draws": 173,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10393101,
+        "present_vblank": 6885
+      },
+      {
+        "draws": 174,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10394481,
+        "present_vblank": 6922
+      },
+      {
+        "draws": 175,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10393101,
+        "present_vblank": 6959
+      },
+      {
+        "draws": 176,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10393099,
+        "present_vblank": 6996
+      },
+      {
+        "draws": 177,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10393101,
+        "present_vblank": 7033
+      },
+      {
+        "draws": 178,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10393099,
+        "present_vblank": 7070
+      },
+      {
+        "draws": 179,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10393103,
+        "present_vblank": 7107
+      },
+      {
+        "draws": 180,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10393099,
+        "present_vblank": 7144
+      },
+      {
+        "draws": 181,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10393101,
+        "present_vblank": 7181
+      },
+      {
+        "draws": 182,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10393099,
+        "present_vblank": 7218
+      },
+      {
+        "draws": 183,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10394483,
+        "present_vblank": 7255
+      },
+      {
+        "draws": 184,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10393099,
+        "present_vblank": 7292
+      },
+      {
+        "draws": 185,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10393101,
+        "present_vblank": 7329
+      },
+      {
+        "draws": 186,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10393099,
+        "present_vblank": 7366
+      },
+      {
+        "draws": 187,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10393101,
+        "present_vblank": 7403
+      },
+      {
+        "draws": 188,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10393101,
+        "present_vblank": 7440
+      },
+      {
+        "draws": 189,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10393101,
+        "present_vblank": 7477
+      },
+      {
+        "draws": 190,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10393099,
+        "present_vblank": 7514
+      },
+      {
+        "draws": 191,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10394483,
+        "present_vblank": 7551
+      },
+      {
+        "draws": 192,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10393099,
+        "present_vblank": 7588
+      },
+      {
+        "draws": 193,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10393101,
+        "present_vblank": 7625
+      },
+      {
+        "draws": 194,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10393099,
+        "present_vblank": 7662
+      },
+      {
+        "draws": 195,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10393101,
+        "present_vblank": 7699
+      },
+      {
+        "draws": 196,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10393101,
+        "present_vblank": 7736
+      },
+      {
+        "draws": 197,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10393101,
+        "present_vblank": 7773
+      },
+      {
+        "draws": 198,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10393099,
+        "present_vblank": 7810
+      },
+      {
+        "draws": 199,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10393101,
+        "present_vblank": 7847
+      },
+      {
+        "draws": 200,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10394481,
+        "present_vblank": 7884
+      },
+      {
+        "draws": 201,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10393101,
+        "present_vblank": 7921
+      },
+      {
+        "draws": 202,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10393099,
+        "present_vblank": 7958
+      },
+      {
+        "draws": 203,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10393101,
+        "present_vblank": 7995
+      },
+      {
+        "draws": 204,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10393099,
+        "present_vblank": 8032
+      },
+      {
+        "draws": 205,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10393103,
+        "present_vblank": 8069
+      },
+      {
+        "draws": 206,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 10393099,
+        "present_vblank": 8106
       }
     ]
   },

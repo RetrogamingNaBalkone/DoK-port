@@ -14,10 +14,16 @@ if ($Compiler -eq 'zig') {
     try {
         $env:ZIG_GLOBAL_CACHE_DIR = Join-Path $taskRoot 'build/zig-cache'
         $taskCommon = @('cc','-std=c11','-Wall','-Wextra','-Werror','-O2','-I','include')
+        & $ZigExe @taskCommon src/scheduler.c src/clock.c tests/time_cases.c tests/test_time.c -o build/native/dok-time-tests.exe
+        if ($LASTEXITCODE -ne 0) { throw 'Time/scheduler build failed' }
+        & ./build/native/dok-time-tests.exe
+        if ($LASTEXITCODE -ne 0) { throw 'Time/scheduler tests failed' }
         & $ZigExe @taskCommon src/projection.c tools/projection_probe.c -o build/native/dok-projection-probe.exe
         if ($LASTEXITCODE -ne 0) { throw 'Projection probe build failed' }
         & $ZigExe @taskCommon -DDOK_RUNTIME_ROM_ONLY src/runtime.c src/rom_assets.c src/image.c src/projection.c src/renderer.c tools/render_tool.c -o build/native/dok-render.exe
         if ($LASTEXITCODE -ne 0) { throw 'Static renderer tool build failed' }
+        & $ZigExe @taskCommon -DDOK_RUNTIME_ROM_ONLY -DDOK_RENDER_REFERENCE src/runtime.c src/rom_assets.c src/image.c src/projection.c src/renderer.c tools/render_tool.c -o build/native/dok-render-reference.exe
+        if ($LASTEXITCODE -ne 0) { throw 'Reference renderer build failed' }
         & $ZigExe @taskCommon -DDOK_RUNTIME_ROM_ONLY -DDOK_RENDER_FACE_CAPACITY=1 src/runtime.c src/rom_assets.c src/image.c src/projection.c src/renderer.c tools/render_tool.c -o build/native/dok-render-one-face.exe
         if ($LASTEXITCODE -ne 0) { throw 'Renderer capacity probe build failed' }
         & $ZigExe @taskCommon src/res.c tools/res_tool.c -o build/native/dok-res.exe
@@ -71,6 +77,8 @@ if ($Compiler -eq 'zig') {
         & ./build/native/dok-sound-tests.exe
         if ($LASTEXITCODE -ne 0) { throw 'Sound tests failed' }
         if ($CrossChecks) {
+            & $ZigExe cc -target x86_64-linux-musl -static -std=c11 -Wall -Wextra -Werror -O2 -I include src/scheduler.c src/clock.c tests/time_cases.c tests/test_time.c -o build/native/dok-time-tests-linux
+            if ($LASTEXITCODE -ne 0) { throw 'Linux time tests build failed' }
             & $ZigExe cc -target x86_64-linux-musl -static -std=c11 -Wall -Wextra -Werror -O2 -I include src/res.c tools/res_tool.c -o build/native/dok-res-linux
             if ($LASTEXITCODE -ne 0) { throw 'Linux resource tool build failed' }
             & $ZigExe cc -target x86_64-linux-musl -static -std=c11 -Wall -Wextra -Werror -O2 -I include src/native_state.c tests/test_native_state.c -o build/native/dok-native-tests-linux

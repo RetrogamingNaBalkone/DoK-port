@@ -1,0 +1,376 @@
+{
+  "task": "G06",
+  "address_system": "Ghidra NE loader addresses; not file offsets or runtime selectors",
+  "samples": {
+    "ru": {
+      "ghidra": {
+        "language": "ru",
+        "sample": "originals/pkr/RUS/PKR.EXE",
+        "sha256_before": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+        "sha256_after": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+        "project": "build/ghidra/ru/Kremlin.gpr",
+        "script": "scripts/InspectTime.java",
+        "script_sha256": "ebb13e92d596c364b2259472b3d229fad9cc75f59ee3e31f80bf600e2eec8f6b",
+        "driver_sha256": "f9b4c14bc9ab93a4f91ac845caff63074df94d882b40d5c90de668ce8acf0643",
+        "address_system": "Ghidra NE loader; not file offset or runtime DPMI selector"
+      },
+      "asm_sha256": "7af8cafa69637ad07b693602b6709928f4dfe13ad26a5b2fb4458e4137709112",
+      "instruction_checks": {
+        "1130:0014": "INC dword ptr [0xe70]",
+        "1130:0199": "MOV EBX,0x77",
+        "1130:018d": "NEG CX",
+        "1130:01a7": "MOVZX EAX,CX",
+        "1130:01c3": "CMP dword ptr [0xe70],0x2710",
+        "1038:011f": "JLE 0x1038:020e",
+        "1038:032b": "JC 0x1038:0361",
+        "1038:0321": "ADD BX,word ptr [BP + -0xa]",
+        "1038:0352": "ADD BX,word ptr [BP + -0xa]",
+        "1038:0279": "MOV dword ptr ES:[BX + 0x4],EAX",
+        "1000:5cb9": "LDS SI,[BP + 0x6]",
+        "1000:5cbc": "LES DI,[BP + 0xa]",
+        "1000:5ccc": "RETF 0x8",
+        "1068:0482": "MOVSX EAX,word ptr ES:[BX + 0x52]"
+      },
+      "dos_report": "build/time/dos-ru/report.json",
+      "dos_report_sha256": "8ea2fc203206fd58cedb67bfcbba62aea54a81d9d6c293ac1ea906291e8244f8",
+      "runtime_linear_data_base": "0x1d38e0",
+      "samples": [
+        {
+          "wall_seconds": 0.0,
+          "irq_count": 228,
+          "pit_period": 65536,
+          "scheduler_elapsed": 125420,
+          "owner_count": 2
+        },
+        {
+          "wall_seconds": 0.1008478999719955,
+          "irq_count": 230,
+          "pit_period": 65536,
+          "scheduler_elapsed": 126425,
+          "owner_count": 2
+        },
+        {
+          "wall_seconds": 0.20229619997553527,
+          "irq_count": 232,
+          "pit_period": 65536,
+          "scheduler_elapsed": 127682,
+          "owner_count": 2
+        },
+        {
+          "wall_seconds": 0.32268139999359846,
+          "irq_count": 234,
+          "pit_period": 65536,
+          "scheduler_elapsed": 128940,
+          "owner_count": 2
+        },
+        {
+          "wall_seconds": 0.4453946999856271,
+          "irq_count": 236,
+          "pit_period": 65536,
+          "scheduler_elapsed": 130198,
+          "owner_count": 2
+        },
+        {
+          "wall_seconds": 0.5704829000169411,
+          "irq_count": 239,
+          "pit_period": 65536,
+          "scheduler_elapsed": 131455,
+          "owner_count": 2
+        },
+        {
+          "wall_seconds": 0.6953212000080384,
+          "irq_count": 241,
+          "pit_period": 65536,
+          "scheduler_elapsed": 132713,
+          "owner_count": 2
+        },
+        {
+          "wall_seconds": 0.819297700014431,
+          "irq_count": 243,
+          "pit_period": 65536,
+          "scheduler_elapsed": 133718,
+          "owner_count": 2
+        },
+        {
+          "wall_seconds": 0.9202965999720618,
+          "irq_count": 245,
+          "pit_period": 65536,
+          "scheduler_elapsed": 134977,
+          "owner_count": 2
+        },
+        {
+          "wall_seconds": 1.039824099978432,
+          "irq_count": 247,
+          "pit_period": 65536,
+          "scheduler_elapsed": 135982,
+          "owner_count": 2
+        },
+        {
+          "wall_seconds": 1.1411667999927886,
+          "irq_count": 249,
+          "pit_period": 65536,
+          "scheduler_elapsed": 136988,
+          "owner_count": 2
+        },
+        {
+          "wall_seconds": 1.2437567000160925,
+          "irq_count": 251,
+          "pit_period": 65536,
+          "scheduler_elapsed": 138245,
+          "owner_count": 2
+        },
+        {
+          "wall_seconds": 1.369140500028152,
+          "irq_count": 253,
+          "pit_period": 65536,
+          "scheduler_elapsed": 139503,
+          "owner_count": 2
+        },
+        {
+          "wall_seconds": 1.494802900007926,
+          "irq_count": 255,
+          "pit_period": 65536,
+          "scheduler_elapsed": 140760,
+          "owner_count": 2
+        },
+        {
+          "wall_seconds": 1.619380199990701,
+          "irq_count": 258,
+          "pit_period": 65536,
+          "scheduler_elapsed": 142017,
+          "owner_count": 2
+        },
+        {
+          "wall_seconds": 1.7438650000258349,
+          "irq_count": 260,
+          "pit_period": 65536,
+          "scheduler_elapsed": 143023,
+          "owner_count": 2
+        },
+        {
+          "wall_seconds": 1.8554319000104442,
+          "irq_count": 262,
+          "pit_period": 65536,
+          "scheduler_elapsed": 144280,
+          "owner_count": 2
+        },
+        {
+          "wall_seconds": 1.98145459999796,
+          "irq_count": 264,
+          "pit_period": 65536,
+          "scheduler_elapsed": 145286,
+          "owner_count": 2
+        },
+        {
+          "wall_seconds": 2.0834084000089206,
+          "irq_count": 266,
+          "pit_period": 65536,
+          "scheduler_elapsed": 146291,
+          "owner_count": 2
+        },
+        {
+          "wall_seconds": 2.184751899971161,
+          "irq_count": 268,
+          "pit_period": 65536,
+          "scheduler_elapsed": 147297,
+          "owner_count": 2
+        },
+        {
+          "wall_seconds": 2.2865786000038497,
+          "irq_count": 270,
+          "pit_period": 65536,
+          "scheduler_elapsed": 148554,
+          "owner_count": 2
+        }
+      ],
+      "ticks_delta": 23134,
+      "irq_delta": 42,
+      "wall_seconds": 2.2865786000038497,
+      "observed_ticks_per_wall_second": 10117.299269730353,
+      "observed_irq_per_wall_second": 18.36805434981736,
+      "limitations": "HTTP requests are asynchronous, not atomic; wall time is not a native execution oracle; no forced rollover or callback mutation in DOS"
+    },
+    "en": {
+      "ghidra": {
+        "language": "en",
+        "sample": "originals/pkr/ENG/PKE.EXE",
+        "sha256_before": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b",
+        "sha256_after": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b",
+        "project": "build/ghidra/en/Kremlin.gpr",
+        "script": "scripts/InspectTime.java",
+        "script_sha256": "ebb13e92d596c364b2259472b3d229fad9cc75f59ee3e31f80bf600e2eec8f6b",
+        "driver_sha256": "f9b4c14bc9ab93a4f91ac845caff63074df94d882b40d5c90de668ce8acf0643",
+        "address_system": "Ghidra NE loader; not file offset or runtime DPMI selector"
+      },
+      "asm_sha256": "8ac4ffe7a9b7663b73c348dba710d9e03856506cc3ad48977bb829b640dc657b",
+      "instruction_checks": {
+        "1078:169e": "INC dword ptr [0xf20]",
+        "1078:182f": "MOV EBX,0x77",
+        "1010:16e1": "JC 0x1010:1717",
+        "1010:16d7": "ADD BX,word ptr [BP + -0xa]",
+        "1010:1708": "ADD BX,word ptr [BP + -0xa]",
+        "1010:1738": "JG 0x1010:169b",
+        "1000:5ccc": "RETF 0x8",
+        "1020:0962": "MOVSX EAX,word ptr ES:[BX + 0x52]"
+      },
+      "dos_report": "build/time/dos-en/report.json",
+      "dos_report_sha256": "d1fb0430344a0fe86c74db31e49d30a5ea362fff1e129e04094d02df88dcc342",
+      "runtime_linear_data_base": "0x1d7090",
+      "samples": [
+        {
+          "wall_seconds": 0.0,
+          "irq_count": 230,
+          "pit_period": 65536,
+          "scheduler_elapsed": 126781,
+          "owner_count": 2
+        },
+        {
+          "wall_seconds": 0.12445040000602603,
+          "irq_count": 232,
+          "pit_period": 65536,
+          "scheduler_elapsed": 128022,
+          "owner_count": 2
+        },
+        {
+          "wall_seconds": 0.24866240000119433,
+          "irq_count": 235,
+          "pit_period": 65536,
+          "scheduler_elapsed": 129263,
+          "owner_count": 2
+        },
+        {
+          "wall_seconds": 0.37342630000784993,
+          "irq_count": 237,
+          "pit_period": 65536,
+          "scheduler_elapsed": 130505,
+          "owner_count": 2
+        },
+        {
+          "wall_seconds": 0.48452500003622845,
+          "irq_count": 239,
+          "pit_period": 65536,
+          "scheduler_elapsed": 131746,
+          "owner_count": 2
+        },
+        {
+          "wall_seconds": 0.6109314000350423,
+          "irq_count": 241,
+          "pit_period": 65536,
+          "scheduler_elapsed": 132740,
+          "owner_count": 2
+        },
+        {
+          "wall_seconds": 0.7131329000112601,
+          "irq_count": 243,
+          "pit_period": 65536,
+          "scheduler_elapsed": 133981,
+          "owner_count": 2
+        },
+        {
+          "wall_seconds": 0.8301268000504933,
+          "irq_count": 245,
+          "pit_period": 65536,
+          "scheduler_elapsed": 135223,
+          "owner_count": 2
+        },
+        {
+          "wall_seconds": 0.9559007000061683,
+          "irq_count": 247,
+          "pit_period": 65536,
+          "scheduler_elapsed": 136215,
+          "owner_count": 2
+        },
+        {
+          "wall_seconds": 1.0571973000187427,
+          "irq_count": 249,
+          "pit_period": 65536,
+          "scheduler_elapsed": 137456,
+          "owner_count": 2
+        },
+        {
+          "wall_seconds": 1.1762026000069454,
+          "irq_count": 251,
+          "pit_period": 65536,
+          "scheduler_elapsed": 138699,
+          "owner_count": 2
+        },
+        {
+          "wall_seconds": 1.3011368000297807,
+          "irq_count": 254,
+          "pit_period": 65536,
+          "scheduler_elapsed": 139940,
+          "owner_count": 2
+        },
+        {
+          "wall_seconds": 1.4281318000284955,
+          "irq_count": 256,
+          "pit_period": 65536,
+          "scheduler_elapsed": 140934,
+          "owner_count": 2
+        },
+        {
+          "wall_seconds": 1.5309218000038527,
+          "irq_count": 258,
+          "pit_period": 65536,
+          "scheduler_elapsed": 142174,
+          "owner_count": 2
+        },
+        {
+          "wall_seconds": 1.6483452000538819,
+          "irq_count": 260,
+          "pit_period": 65536,
+          "scheduler_elapsed": 143416,
+          "owner_count": 2
+        },
+        {
+          "wall_seconds": 1.7739469000371173,
+          "irq_count": 262,
+          "pit_period": 65536,
+          "scheduler_elapsed": 144658,
+          "owner_count": 2
+        },
+        {
+          "wall_seconds": 1.89830310002435,
+          "irq_count": 265,
+          "pit_period": 65536,
+          "scheduler_elapsed": 145899,
+          "owner_count": 2
+        },
+        {
+          "wall_seconds": 2.0237534000189044,
+          "irq_count": 267,
+          "pit_period": 65536,
+          "scheduler_elapsed": 147140,
+          "owner_count": 2
+        },
+        {
+          "wall_seconds": 2.148732000030577,
+          "irq_count": 269,
+          "pit_period": 65536,
+          "scheduler_elapsed": 148382,
+          "owner_count": 2
+        },
+        {
+          "wall_seconds": 2.273798300011549,
+          "irq_count": 271,
+          "pit_period": 65536,
+          "scheduler_elapsed": 149623,
+          "owner_count": 2
+        },
+        {
+          "wall_seconds": 2.3984912000014447,
+          "irq_count": 274,
+          "pit_period": 65536,
+          "scheduler_elapsed": 150865,
+          "owner_count": 2
+        }
+      ],
+      "ticks_delta": 24084,
+      "irq_delta": 44,
+      "wall_seconds": 2.3984912000014447,
+      "observed_ticks_per_wall_second": 10041.312638539384,
+      "observed_irq_per_wall_second": 18.34486613916845,
+      "limitations": "HTTP requests are asynchronous, not atomic; wall time is not a native execution oracle; no forced rollover or callback mutation in DOS"
+    }
+  }
+}
