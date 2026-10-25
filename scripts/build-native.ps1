@@ -14,6 +14,14 @@ if ($Compiler -eq 'zig') {
     try {
         $env:ZIG_GLOBAL_CACHE_DIR = Join-Path $taskRoot 'build/zig-cache'
         $taskCommon = @('cc','-std=c11','-Wall','-Wextra','-Werror','-O2','-I','include')
+        & $ZigExe @taskCommon src/movement.c src/collision.c tests/collision_cases.c tests/test_collision.c -o build/native/dok-collision-tests.exe
+        if ($LASTEXITCODE -ne 0) { throw 'Collision suite build failed' }
+        & ./build/native/dok-collision-tests.exe
+        if ($LASTEXITCODE -ne 0) { throw 'Collision suite failed' }
+        & $ZigExe @taskCommon src/movement.c src/collision.c tools/collision_probe.c -o build/native/dok-collision-probe.exe
+        if ($LASTEXITCODE -ne 0) { throw 'Collision probe build failed' }
+        & $ZigExe @taskCommon -DDOK_RUNTIME_ROM_ONLY src/runtime.c src/rom_assets.c src/movement.c src/collision.c tools/collision_replay.c -o build/native/dok-collision-replay.exe
+        if ($LASTEXITCODE -ne 0) { throw 'Collision replay build failed' }
         & $ZigExe @taskCommon src/movement.c tests/movement_cases.c tests/test_movement.c -o build/native/dok-movement-tests.exe
         if ($LASTEXITCODE -ne 0) { throw 'Movement tests build failed' }
         & ./build/native/dok-movement-tests.exe
@@ -83,6 +91,10 @@ if ($Compiler -eq 'zig') {
         & ./build/native/dok-sound-tests.exe
         if ($LASTEXITCODE -ne 0) { throw 'Sound tests failed' }
         if ($CrossChecks) {
+            & $ZigExe cc -target x86_64-linux-musl -static -std=c11 -Wall -Wextra -Werror -O2 -I include src/movement.c src/collision.c tests/collision_cases.c tests/test_collision.c -o build/native/dok-collision-tests-linux
+            if ($LASTEXITCODE -ne 0) { throw 'Linux collision suite build failed' }
+            & $ZigExe cc -target thumb-freestanding-eabi -mcpu=arm7tdmi -ffreestanding -std=c11 -Wall -Wextra -Werror -O2 -I include -c src/collision.c -o build/native/collision-arm7tdmi.o
+            if ($LASTEXITCODE -ne 0) { throw 'Thumb collision compile failed' }
             & $ZigExe cc -target x86_64-linux-musl -static -std=c11 -Wall -Wextra -Werror -O2 -I include src/movement.c tests/movement_cases.c tests/test_movement.c -o build/native/dok-movement-tests-linux
             if ($LASTEXITCODE -ne 0) { throw 'Linux movement tests build failed' }
             & $ZigExe cc -target thumb-freestanding-eabi -mcpu=arm7tdmi -ffreestanding -std=c11 -Wall -Wextra -Werror -O2 -I include -c src/movement.c -o build/native/movement-arm7tdmi.o

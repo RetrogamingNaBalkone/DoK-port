@@ -1,0 +1,121 @@
+{
+  "task": "G08",
+  "status": "passed",
+  "cases": [
+    {
+      "language": "ru",
+      "level": "LEVEL1",
+      "vectors": 9192,
+      "wrapper_steps": 200,
+      "manifest": {
+        "language": "ru",
+        "sample": "originals/pkr/RUS/PKR.EXE",
+        "sha256_before": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+        "sha256_after": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+        "project": "build/ghidra/ru/Kremlin.gpr",
+        "script": "scripts/InspectCollision.java",
+        "script_sha256": "de00cdfae92c8f1c1026928829ad550c9b4527de4641292766665026fb9368eb",
+        "driver_sha256": "3289ae5bc05a7333db1f4cfebb987438e53faf136f8763edd8330f9bed8da410",
+        "address_system": "Ghidra NE loader; not file offset or runtime DPMI selector"
+      }
+    },
+    {
+      "language": "ru",
+      "level": "LEVEL2",
+      "vectors": 9192,
+      "wrapper_steps": 200,
+      "manifest": {
+        "language": "ru",
+        "sample": "originals/pkr/RUS/PKR.EXE",
+        "sha256_before": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+        "sha256_after": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+        "project": "build/ghidra/ru/Kremlin.gpr",
+        "script": "scripts/InspectCollision.java",
+        "script_sha256": "de00cdfae92c8f1c1026928829ad550c9b4527de4641292766665026fb9368eb",
+        "driver_sha256": "3289ae5bc05a7333db1f4cfebb987438e53faf136f8763edd8330f9bed8da410",
+        "address_system": "Ghidra NE loader; not file offset or runtime DPMI selector"
+      }
+    },
+    {
+      "language": "ru",
+      "level": "LEVEL3",
+      "vectors": 9192,
+      "wrapper_steps": 200,
+      "manifest": {
+        "language": "ru",
+        "sample": "originals/pkr/RUS/PKR.EXE",
+        "sha256_before": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+        "sha256_after": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+        "project": "build/ghidra/ru/Kremlin.gpr",
+        "script": "scripts/InspectCollision.java",
+        "script_sha256": "de00cdfae92c8f1c1026928829ad550c9b4527de4641292766665026fb9368eb",
+        "driver_sha256": "3289ae5bc05a7333db1f4cfebb987438e53faf136f8763edd8330f9bed8da410",
+        "address_system": "Ghidra NE loader; not file offset or runtime DPMI selector"
+      }
+    },
+    {
+      "language": "en",
+      "level": "LEVEL1",
+      "vectors": 9192,
+      "wrapper_steps": 200,
+      "manifest": {
+        "language": "en",
+        "sample": "originals/pkr/ENG/PKE.EXE",
+        "sha256_before": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b",
+        "sha256_after": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b",
+        "project": "build/ghidra/en/Kremlin.gpr",
+        "script": "scripts/InspectCollision.java",
+        "script_sha256": "de00cdfae92c8f1c1026928829ad550c9b4527de4641292766665026fb9368eb",
+        "driver_sha256": "3289ae5bc05a7333db1f4cfebb987438e53faf136f8763edd8330f9bed8da410",
+        "address_system": "Ghidra NE loader; not file offset or runtime DPMI selector"
+      }
+    },
+    {
+      "language": "en",
+      "level": "LEVEL2",
+      "vectors": 9192,
+      "wrapper_steps": 200,
+      "manifest": {
+        "language": "en",
+        "sample": "originals/pkr/ENG/PKE.EXE",
+        "sha256_before": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b",
+        "sha256_after": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b",
+        "project": "build/ghidra/en/Kremlin.gpr",
+        "script": "scripts/InspectCollision.java",
+        "script_sha256": "de00cdfae92c8f1c1026928829ad550c9b4527de4641292766665026fb9368eb",
+        "driver_sha256": "3289ae5bc05a7333db1f4cfebb987438e53faf136f8763edd8330f9bed8da410",
+        "address_system": "Ghidra NE loader; not file offset or runtime DPMI selector"
+      }
+    },
+    {
+      "language": "en",
+      "level": "LEVEL3",
+      "vectors": 9192,
+      "wrapper_steps": 200,
+      "manifest": {
+        "language": "en",
+        "sample": "originals/pkr/ENG/PKE.EXE",
+        "sha256_before": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b",
+        "sha256_after": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b",
+        "project": "build/ghidra/en/Kremlin.gpr",
+        "script": "scripts/InspectCollision.java",
+        "script_sha256": "de00cdfae92c8f1c1026928829ad550c9b4527de4641292766665026fb9368eb",
+        "driver_sha256": "3289ae5bc05a7333db1f4cfebb987438e53faf136f8763edd8330f9bed8da410",
+        "address_system": "Ghidra NE loader; not file offset or runtime DPMI selector"
+      }
+    }
+  ],
+  "script_sha256": "1cbe56dd4ce39007aacf0a5f49d2393818bb6914991e965207dd1432c681f201",
+  "artifacts": {
+    "build\\collision\\ru\\evidence.asm": "86c88c582c0e3ed84805a6b32d18305ba47656828e62401fc342ab3cdba07c60",
+    "build\\collision\\ru\\automatic.c": "dc4fddead4046c6c1332ae68b2418f53ef16be5fd0e6ed3b45ad7a59845976fc",
+    "build\\collision\\ru\\actor-segment.bin": "d14d4cd1e775d04a4e90c6dc2f9a7137d61a89ab89a7505b477853c1b60e5814",
+    "build\\collision\\ru\\world-segment.bin": "a88009ea74662fcca9c8887a22f0b0db4865aeb3a7020eb083c6f117ee29d293",
+    "build\\collision\\en\\evidence.asm": "f0fb698c57e9e574df8e4f9a432d5488c7a67004106d324e01fb6ee7e24fe738",
+    "build\\collision\\en\\automatic.c": "5ae5aaba76abb27a385ac47aa4eeb7729c5f50b773d9e08ce4081fdbb85e5898",
+    "build\\collision\\en\\actor-segment.bin": "33af8eab8aebc22f67b7f0079b25c1d4eed9d389a3942d00482a18aff1734c90",
+    "build\\collision\\en\\world-segment.bin": "82ac6457efaa12835aa49134bf910b8f597017ff1c802ce0f4ea61d4642994e6"
+  },
+  "scope": "Ghidra x86 footprint/resolver without intercepted callees; wrapper bridges original far world-move call to second CPU; valid real-mode substitute for DPMI pointers",
+  "whole_dos_session": false
+}

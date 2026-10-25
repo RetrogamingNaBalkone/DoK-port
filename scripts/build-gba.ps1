@@ -68,7 +68,7 @@ try {
     }
     $taskLinkArgs = @()
     if ($RendererProbe) {
-        foreach ($taskSource in @('src/movement.c','gba/movement_probe.c','tests/movement_cases.c')) {
+        foreach ($taskSource in @('src/movement.c','src/collision.c','gba/movement_probe.c','tests/movement_cases.c','tests/collision_cases.c')) {
             $taskObject="$OutDir/motion-"+[IO.Path]::GetFileNameWithoutExtension($taskSource)+'.o'
             & $ZigExe @taskArgs $taskSource -o $taskObject
             if ($LASTEXITCODE -ne 0) { throw "Movement compile failed: $taskSource" }

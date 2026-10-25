@@ -1,7 +1,8 @@
-#include "dok/movement.h"
+#include "dok/collision.h"
 #include "dok/clock.h"
 extern uint32_t gba_time_ticks(void);
 extern unsigned dok_movement_cases(void);
+extern unsigned dok_collision_cases(dok_runtime *);
 /* Commit request last. test_mode freezes live movement; count advances exact
  * 416-tick updates. Mailbox is test-only, not an alternative game control. */
 volatile struct {uint32_t test_mode,request,ack,commands,count;} g_motion_probe;
@@ -17,6 +18,7 @@ static dok_input input;
 static dok_steps steps;
 static uint32_t pending_pressed;
 static dok_runtime_actor *player;
+static dok_runtime *collision_world;
 
 static dok_runtime_actor *player_actor(dok_runtime *world)
 {
@@ -38,14 +40,18 @@ unsigned gba_motion_start(dok_runtime *world)
 {
     g_motion_diag.error=dok_movement_cases();
     if(g_motion_diag.error) return g_motion_diag.error;
-    player=player_actor(world);if(!player) return 1;
+    const dok_runtime_level *level=world->level;
+    g_motion_diag.error=dok_collision_cases(world);
+    if(dok_runtime_reset(world,level)!=DOK_RUNTIME_OK) return 3;
+    if(g_motion_diag.error) return g_motion_diag.error;
+    collision_world=world;player=player_actor(world);if(!player) return 1;
     motion.remembered_flags=0;input=(dok_input){0};pending_pressed=0;
     dok_steps_init(&steps,gba_time_ticks(),416);
     g_motion_diag.magic=0x4d4f5437;g_motion_diag.quantum=416;snapshot();return 0;
 }
 void gba_motion_level(dok_runtime *world)
 {
-    player=player_actor(world);motion.remembered_flags=0;
+    collision_world=world;player=player_actor(world);motion.remembered_flags=0;
     dok_steps_init(&steps,gba_time_ticks(),416);pending_pressed=0;
     if(player) snapshot();
 }
@@ -60,7 +66,7 @@ void gba_motion_poll(uint16_t keys)
             unsigned count=g_motion_probe.count;
             if(count>128) {g_motion_diag.error=2;return;}
             for(unsigned i=0;i<count;++i) {
-                dok_motion_update(player,&motion,g_motion_probe.commands,416,0,0);
+                dok_motion_update(player,&motion,g_motion_probe.commands,416,dok_collision_move,collision_world);
                 g_motion_diag.steps++;
             }
             g_motion_diag.commands=g_motion_probe.commands;snapshot();
@@ -71,7 +77,7 @@ void gba_motion_poll(uint16_t keys)
         for(unsigned i=0;i<128 && dok_steps_next(&steps);++i) {
             dok_input sample=input;sample.pressed=pending_pressed;
             uint32_t commands=dok_input_commands(&sample);pending_pressed=0;
-            dok_motion_update(player,&motion,commands,416,0,0);
+            dok_motion_update(player,&motion,commands,416,dok_collision_move,collision_world);
             g_motion_diag.commands=commands;++g_motion_diag.steps;
         }
         snapshot();

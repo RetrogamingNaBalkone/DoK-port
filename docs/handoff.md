@@ -1,8 +1,64 @@
 ﻿# Передача контекста между чатами
 
-Обновлено 25 октября 2026 года: G00–G07 готовы по уточнённым критериям.
+Обновлено 25 октября 2026 года: G00–G08 готовы по уточнённым критериям.
 
-## Текущая граница G07
+## Текущая граница G08
+
+**Следующая задача — G09.** G08 выполнен в своих границах; предыдущие разделы
+ниже — история этапов. В общей GBA-сцене LEVEL1 герой ходит с коллизиями.
+Исправление G07 без поступательной инерции сохранено, разгон поворота сохранён.
+Модуль `include/dok/collision.h`, `src/collision.c`; подключён callback
+`dok_collision_move` вместо free-flight в `gba/movement_probe.c`.
+
+Правила, native ABI и защитные отличия: [collision.md](collision.md).
+В обоих EXE квадратный footprint Min Dis238, Cell Side480; четыре угла
+MMap, затем TMap; разрешает flags bit0x10 по object+0x15. FCMap/y/bounds
+в этом пути не участвуют. Сохранены скольжение и необычная перезапись Z-center
+в RUS0A90…0AD7, три SAR2-подшага, удаление/запись glyph MMap и door+0x56.
+Адреса Ghidra: RUS1098:0448/0901/0E13,1068:0EB1;
+ENG1030:052C/09E5/0EF7,1020:13BB; это не DPMI-селекторы/файловые offsets.
+Подмена far pointers и границы арифметики явно описаны в collision.md.
+
+Двери пока закрыты и блокируют клетку; события/ключи/открывание — G09.
+Невидимые пока монстры блокируют по исходным flags (billboards — G11).
+Неизвестный glyph закрыт; безопасный adapter отклоняет выход footprint за
+мир, слишком большой подшаг, стирание чужого glyph и занятый итог resolver.
+Это намеренная защита порта, не утверждение о точных инструкциях оригинала.
+Кнопки и416-tick fixed steps из G07 сохранены, Select меняет только язык.
+
+Ghidra-проекты/журналы/ASM/байты: `build/collision/{ru,en}/`, скрипты
+`InspectCollision.java`, `analyze-collision.ps1`, `verify_collision.py`.
+SHA оригинальных EXE до/после совпали. 55 152 x86-проверки на исходных
+LEVEL1–3 каждой версии,1200 native-обёрток с тремя подшагами: позы/MMap/door
+counters совпали. Wrapper far world-move соединяет два контролируемых CPU;
+footprint/resolver исполняются без перехвата callees. Это не полный DOS-session.
+
+12 Windows suites, Linux static/Thumb compile прошли; Linux execution и
+CMake/MSVC не запускались. Общий collision suite исполнен на ARM: углы,
+узкие проходы, границы, MMap/TMap/FCMap, дверь, safety. mGBA:972 fixed steps
+в RU и EN на общей G03-карте с одинаковыми полями/картами, реальные кнопки,
+удержание у стен, остановка без дрейфа, сохранение mutable world при языке,
+guards/poisoned reset. Все1455 камер, HUD/палитра,443 520 strips/linked payloads
+и G06 time regression прошли. Физическая GBA/оригинальный BIOS не проверялись.
+
+ROM/ELF/map/контрольные кадры — `build/g08/`; ROM32 833 692 байта, SHA
+`7e643146b765003bc90778f00fe78b7a1cf88ee5972075462f7a997cd1a64a64`.
+EWRAM129 228 (+4 к G07), IWRAM code16 852/data1232, main stack2352/запас5584.
+Startup443 062, worst статическая камера619 952 cycles (LEVEL2 offset60°);
+живой motion/input/camera до37 959, CPU-кадр286 336…659 455 в пробах.
+Test-only batch128 updates измеряется отдельно. Цель30FPS полной игры пока
+не подтверждена; бюджет400 000 остаётся отложенным. Остаток ROM720 740 байт
+не считается резервом всей игры. Качество120 колонок сцены/UI240 сохранено.
+
+Воспроизведение: `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-gba-collision.ps1 -CrossChecks`.
+`-OriginalEvidence` добавляет Ghidra/Unicorn; общий Unicorn читается из
+`C:/Source/wasdify/build/research-deps` без изменений. Итог
+`analysis/g08-review.json`, остальные отчёты `analysis/g08-*.json`.
+Новые пути: collision header/source, shared cases/test, `tools/collision_{probe,replay}.c`,
+скрипты analysis/build/verify/report collision; обновлены GBA integration,
+native/GBA/CMake сборка, паспорт G08 и план. G09 в этом проходе не начинался.
+
+## Граница G07 до подключения коллизий
 
 Герой управляется GBA-кнопками в общей сцене LEVEL1. **По указанию пользователя
 удалена поступательная инерция**: сразу рабочая скорость, сразу остановка,

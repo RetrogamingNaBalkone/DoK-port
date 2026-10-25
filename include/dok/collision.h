@@ -1,0 +1,14 @@
+#ifndef DOK_COLLISION_H
+#define DOK_COLLISION_H
+#include "dok/movement.h"
+/* Ghidra RUS 1098:0448/0901, ENG 1030:052c/09e5. Native edge lookup
+ * clamps cell indices; these two functions retain that behavior for evidence.
+ * Coordinates must be in the supported world range (no int32 overflow). */
+int dok_collision_clear(const dok_runtime *world,int32_t x,int32_t z,int16_t radius);
+void dok_collision_resolve(const dok_runtime *world,int32_t *x,int32_t *z,
+    int32_t desired_x,int32_t desired_z);
+/* Per-quarter-step movement adapter. Own glyph is temporarily removed, door
+ * occupancy is balanced, and out-of-world/corrupt results are rejected.
+ * Actor must belong to world; no allocation, no vertical integration. */
+void dok_collision_move(dok_runtime_actor *actor,int16_t distance,int strafe,void *world);
+#endif
