@@ -1,9 +1,9 @@
 {
-  "rom_sha256": "1f89dd61bbe1eea0e0614735d9170473c41cfa78b07d7d5c27c63464cd164926",
+  "rom_sha256": "3c959f4840d9bafa4b82523fb54dbad9a48086695546b76d6cde45875260da34",
   "compiler": "Shared Zig0.13.0 / bundled LLD18.1.6",
   "package_sha256": "17fb976d2b0d87cc428fe3cb280f4baff21ff2c986b651246f57be4c59a9eff8",
   "source_sha256": {
-    "src/renderer.c": "021cce5e5a393c39c8fed2cd3ed7ef280b3269767500b6a0b8f645af534fddbc",
+    "src/renderer.c": "5479de6566365fb5853c3e87afe5f6457e7403b36b84d32d20971a840dec4dd9",
     "src/renderer_trig.inc": "3fc1acca3c6c7053ce9ce05e6179833e943195a24ce47a780187e3261b6762b1",
     "src/projection.c": "300cedf7fe914a90e7be0f55faf476922f54366122a61f767ec20f69c87b707a",
     "gba/memory.c": "893a7f22e4427b3c298ee7d4b606f739d32fb6a1dcb4a90f1550db194db75e88",
@@ -13,7 +13,7 @@
     "include/dok/renderer.h": "584c97c837bda83602b2c9face0b9f897cc830b8340a447dfe83c970bc28932c",
     "scripts/build-gba.ps1": "d0c09f10637613fabe35662eb7ebed79b0566dae28dad5e38d5503a24f0639b0",
     "scripts/render_tables.py": "dfa466a0dcf5e219411b08853b8b8281a769d80b2f468d0e00f1207d73b6b3a1",
-    "scripts/pack_render_columns.py": "4f65378c576bcbc01d73a971ceea35953395ebbca68cb470a0734e729eb58301",
+    "scripts/pack_render_columns.py": "81aff9d9b5ff70de0be42fad418a715201dc0f939b3049cf508442a59ac1f03d",
     "scripts/verify_renderer_early.py": "7ef946091624d78eadbbd6cd32333b509eea234e23994982cca1bcb05cb19b39",
     "scripts/profile_renderer.py": "39102a686952078d0055faa4fd32579a17ebe6dd0b8375f2040ff14f2c4cf3bc",
     "scripts/verify_render_columns.py": "83ed0965500a458ae2783662f1316e791573eb12399cde56055e89b5882d8d64",
@@ -31,7 +31,7 @@
     "layout": "6 views, resource_count+1 pairs of LE32 column/v0-table offsets; columns x*height+y; v0 table height LE32 bank offsets to span tables129 LE32 bank offsets to width LE32 record offsets; record u8 run_count,payload_offset,0,0 then inclusive u8 run pairs, align4, span+1 colors, align4; LIGHT row0",
     "unique_strips": 309733,
     "scale_max_span": 128,
-    "scale_v0": "class2 reachable FCMap top offsets",
+    "scale_v0": "class2 reachable FCMap top offsets; class4/7 zero",
     "scale_rounding": "exact Q16 floor step, inclusive span+1 samples"
   }
 }

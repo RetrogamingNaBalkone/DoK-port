@@ -17,12 +17,12 @@
 `analysis/render-early-{baseline,startup,benchmark}.json`,
 `analysis/g06a-{regression,host-verification,time-regression,memory-budget,provenance}.json`.
 Новый ROM/ELF/map/банк/PNG — `build/g06a-fast/`.
-ROM 28 912 508 байт, SHA `1f89dd61bbe1eea0e0614735d9170473c41cfa78b07d7d5c27c63464cd164926`.
-Startup599 882 cycles (было819 737); worst992 842 (было1 179 334),
+ROM 28 912 488 байт, SHA `3c959f4840d9bafa4b82523fb54dbad9a48086695546b76d6cde45875260da34`.
+Startup599 925 cycles (было819 737); worst993 984 (было1 179 334),
 LEVEL3 offset `(16560,−300,27600)`,210°. RU/EN/reset вместе со сменой языка:
-591 689…607 084 (прежний максимум7 941 335). Начальная измеренная частота
+591 732…607 127 (прежний максимум7 941 335). Начальная измеренная частота
 показа25,92 FPS; худший CPU-кадр59,2 мс, это не стабильные20 FPS полной игры.
-Статическая EWRAM129 052, workspace91 132, IWRAM-код15 352;
+Статическая EWRAM129 052, workspace91 132, IWRAM-код15 332;
 main stack2344 байта/нетронутый запас5592. Сохранены G06-ROM в
 `build/gba-renderer/` и инструментированный baseline в `build/g06a-baseline/`.
 
