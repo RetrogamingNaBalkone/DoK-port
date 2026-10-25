@@ -1,0 +1,1815 @@
+{
+  "schema_version": 1,
+  "task": "G00",
+  "date": "2026-10-24",
+  "status": "completed_initial_references_with_late_scenarios_pending",
+  "documentation": "docs/reference-runs.md",
+  "artifact_root": "build/reference",
+  "gba_target": {
+    "rom": "single",
+    "languages": [
+      "ru",
+      "en"
+    ],
+    "language_switch": true,
+    "target_fps": 30,
+    "data_profile_source": "docs/gba-balance-proposal.md"
+  },
+  "status_definitions": {
+    "planned": "Scenario route or exact procedure remains to be established; no observation claimed.",
+    "pending": "Scenario required but not yet evidenced by a verified run.",
+    "observed": "Verified dynamic observation with artifact links; repeatability is recorded separately."
+  },
+  "samples": [
+    {
+      "id": "rus-pkr",
+      "language": "ru",
+      "version_number": null,
+      "path": "originals/pkr/RUS/PKR.EXE",
+      "size": 324824,
+      "inventory_sha256": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+      "resource": "originals/pkr/RUS/PKR.RES",
+      "resource_inventory_sha256": "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816",
+      "dynamic_run_hash_verification": "passed_three_fresh_process_runs"
+    },
+    {
+      "id": "eng-pke",
+      "language": "en",
+      "version_number": null,
+      "path": "originals/pkr/ENG/PKE.EXE",
+      "size": 340616,
+      "inventory_sha256": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b",
+      "resource": "originals/pkr/ENG/PKE.RES",
+      "resource_inventory_sha256": "865da340621fa6f90548a84e9ae9bf0a85071befb32a40ca1d359e488f74d458",
+      "dynamic_run_hash_verification": "passed_two_fresh_process_runs"
+    }
+  ],
+  "emulator": {
+    "name": "DOSBox Staging",
+    "reported_installation": "%LOCALAPPDATA%/Programs/DOSBox-Staging/wasdify-webserver-20261024",
+    "reported_exe_sha256": "67a907289bad3e25a9be7dd4dc38d882c1c7e74949f8daa103a52476d99f24f5",
+    "version": "0.83.0 (7b400)",
+    "configuration_status": "recorded_in_each_run",
+    "cpu": {
+      "core": "normal",
+      "cputype": "pentium",
+      "cpu_cycles": 60000,
+      "cpu_cycles_protected": 60000,
+      "memory_mib": 32
+    },
+    "video": {
+      "machine": "svga_s3",
+      "sdl_videodriver": "dummy",
+      "game_arguments": [],
+      "mode": "VGA 13h",
+      "width": 320,
+      "height": 200,
+      "capture": "physical 0xa0000, 64000 palette indices, grayscale visualization only"
+    },
+    "audio": {
+      "sdl_audiodriver": "dummy",
+      "nosound": true,
+      "sbtype": "sb16",
+      "sbbase": "0x220",
+      "irq": 7,
+      "dma": 1,
+      "hdma": 5,
+      "captured": false
+    },
+    "input_method": "linear writes into game keyboard state; unique C-runtime anchor and 320x200 data-field validation; no LDT-descriptor, IRQ1 or host keyboard validation"
+  },
+  "static_baseline": {
+    "source": "docs/world.md",
+    "evidence_kind": "static_code_and_resource_analysis_not_runtime_measurement",
+    "coordinate_system": "native actor x,y,z; y vertical; source rows reversed for runtime z",
+    "cell_side": 480,
+    "level1": {
+      "ru": {
+        "x": 15120,
+        "y": -300,
+        "z": 22800,
+        "heading": 90,
+        "source_mmap_column_row": [
+          31,
+          16
+        ]
+      },
+      "en": {
+        "x": 15120,
+        "y": -300,
+        "z": 23280,
+        "heading": 90,
+        "source_mmap_column_row": [
+          31,
+          15
+        ]
+      }
+    }
+  },
+  "scenarios": [
+    {
+      "id": "level1-start",
+      "ru": "observed",
+      "en": "observed",
+      "requires_fresh_process_repeat": true,
+      "repeatability": "identical initial index framebuffer and player pose"
+    },
+    {
+      "id": "turn-in-place",
+      "ru": "observed",
+      "en": "observed",
+      "input": "Right make/hold/release from recorded LEVEL1 start",
+      "repeatability": "turn observed; final heading differs across timed repetitions"
+    },
+    {
+      "id": "wall-follow",
+      "ru": "planned",
+      "en": "planned",
+      "route": null
+    },
+    {
+      "id": "door",
+      "ru": "pending",
+      "en": "pending",
+      "input": "Space; selected door and route pending",
+      "attempt_only": "Space/Ctrl were injected from the unarmed initial route; no successful door interaction or shot evidenced."
+    },
+    {
+      "id": "pickup",
+      "ru": "planned",
+      "en": "planned",
+      "item_and_route": null
+    },
+    {
+      "id": "shot",
+      "ru": "pending",
+      "en": "pending",
+      "precondition": "picked up weapon and available charge",
+      "input": "Ctrl",
+      "attempt_only": "Space/Ctrl were injected from the unarmed initial route; no successful door interaction or shot evidenced."
+    },
+    {
+      "id": "enemy-wake",
+      "ru": "planned",
+      "en": "planned",
+      "enemy_and_route": null
+    },
+    {
+      "id": "death",
+      "ru": "pending",
+      "en": "pending",
+      "route": null
+    },
+    {
+      "id": "level-transition",
+      "ru": "pending",
+      "en": "pending",
+      "route": null
+    }
+  ],
+  "runs": [
+    {
+      "id": "ru-01",
+      "language": "ru",
+      "report": "build/reference/ru-01/report.json",
+      "report_sha256": "beb1af39a5c2c44390e25a5cb682f2ab8f29d01582ba86c91f5fba0b3137a1b3",
+      "configuration": "build/reference/ru-01/dosbox.conf",
+      "stdout_log": "build/reference/ru-01/stdout.log",
+      "stderr_log": "build/reference/ru-01/stderr.log",
+      "initial_memory": "build/reference/ru-01/level1-memory.bin",
+      "originals_unchanged": true,
+      "exe_before": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+      "exe_after": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+      "copy_exe_after": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+      "runtime_linear_data_base": "0x1d38e0",
+      "player_start": {
+        "linear_address": "0x1fe7fe",
+        "native_type": 1,
+        "xyz": [
+          15120,
+          -300,
+          22800
+        ],
+        "heading": 90,
+        "health_energy": [
+          100,
+          0
+        ],
+        "lives_score": [
+          3,
+          0
+        ]
+      },
+      "events": [
+        {
+          "event": "enter",
+          "scan": "0x1c",
+          "held_wall_seconds": 0.12,
+          "following_wait_wall_seconds": 1.5
+        },
+        {
+          "event": "enter",
+          "scan": "0x1c",
+          "held_wall_seconds": 0.12,
+          "following_wait_wall_seconds": 1.5
+        },
+        {
+          "event": "enter",
+          "scan": "0x1c",
+          "held_wall_seconds": 0.12,
+          "following_wait_wall_seconds": 1.5
+        },
+        {
+          "event": "enter",
+          "scan": "0x1c",
+          "held_wall_seconds": 0.12,
+          "following_wait_wall_seconds": 1.5
+        },
+        {
+          "event": "enter",
+          "scan": "0x1c",
+          "held_wall_seconds": 0.12,
+          "following_wait_wall_seconds": 1.5
+        },
+        {
+          "event": "enter",
+          "scan": "0x1c",
+          "held_wall_seconds": 0.12,
+          "following_wait_wall_seconds": 1.5
+        },
+        {
+          "event": "turn-right",
+          "scan": "0x4d",
+          "held_wall_seconds": 0.35,
+          "following_wait_wall_seconds": 0.5,
+          "player_before": {
+            "linear_address": "0x1fe7fe",
+            "native_type": 1,
+            "xyz": [
+              15120,
+              -300,
+              22800
+            ],
+            "heading": 90,
+            "health_energy": [
+              100,
+              0
+            ],
+            "lives_score": [
+              3,
+              0
+            ]
+          },
+          "player_after": {
+            "linear_address": "0x1fe7fe",
+            "native_type": 1,
+            "xyz": [
+              15120,
+              -300,
+              22800
+            ],
+            "heading": 80,
+            "health_energy": [
+              100,
+              0
+            ],
+            "lives_score": [
+              3,
+              0
+            ]
+          }
+        },
+        {
+          "event": "forward",
+          "scan": "0x48",
+          "held_wall_seconds": 0.6,
+          "following_wait_wall_seconds": 0.5,
+          "player_before": {
+            "linear_address": "0x1fe7fe",
+            "native_type": 1,
+            "xyz": [
+              15120,
+              -300,
+              22800
+            ],
+            "heading": 80,
+            "health_energy": [
+              100,
+              0
+            ],
+            "lives_score": [
+              3,
+              0
+            ]
+          },
+          "player_after": {
+            "linear_address": "0x1fe7fe",
+            "native_type": 1,
+            "xyz": [
+              14130,
+              -300,
+              23007
+            ],
+            "heading": 80,
+            "health_energy": [
+              100,
+              0
+            ],
+            "lives_score": [
+              3,
+              0
+            ]
+          }
+        },
+        {
+          "event": "use-attempt",
+          "scan": "0x39",
+          "held_wall_seconds": 0.12,
+          "following_wait_wall_seconds": 0.5,
+          "player_before": {
+            "linear_address": "0x1fe7fe",
+            "native_type": 1,
+            "xyz": [
+              14091,
+              -300,
+              23019
+            ],
+            "heading": 80,
+            "health_energy": [
+              100,
+              0
+            ],
+            "lives_score": [
+              3,
+              0
+            ]
+          },
+          "player_after": {
+            "linear_address": "0x1fe7fe",
+            "native_type": 1,
+            "xyz": [
+              14091,
+              -300,
+              23019
+            ],
+            "heading": 80,
+            "health_energy": [
+              100,
+              0
+            ],
+            "lives_score": [
+              3,
+              0
+            ]
+          }
+        },
+        {
+          "event": "fire-attempt",
+          "scan": "0x1d",
+          "held_wall_seconds": 0.4,
+          "following_wait_wall_seconds": 0.5,
+          "player_before": {
+            "linear_address": "0x1fe7fe",
+            "native_type": 1,
+            "xyz": [
+              14091,
+              -300,
+              23019
+            ],
+            "heading": 80,
+            "health_energy": [
+              100,
+              0
+            ],
+            "lives_score": [
+              3,
+              0
+            ]
+          },
+          "player_after": {
+            "linear_address": "0x1fe7fe",
+            "native_type": 1,
+            "xyz": [
+              14091,
+              -300,
+              23019
+            ],
+            "heading": 80,
+            "health_energy": [
+              100,
+              0
+            ],
+            "lives_score": [
+              3,
+              0
+            ]
+          }
+        }
+      ],
+      "frames": [
+        {
+          "name": "level1-start",
+          "sha256": "2998ed9d6f592e16ddd662b467e6635d15272e3181d5baec09f09d4c88ae2a1c",
+          "stable_three_samples": true,
+          "palette": "grayscale index visualization",
+          "physical_address": "0xa0000",
+          "width": 320,
+          "height": 200,
+          "index_file": "build/reference/ru-01/level1-start.idx",
+          "preview": "build/reference/ru-01/level1-start.png"
+        },
+        {
+          "name": "turn-right",
+          "sha256": "106f508e29aa292aef39cd1a663438fb7c4bc5a1a10ca26c9a734ddc2631ccda",
+          "stable_three_samples": true,
+          "palette": "grayscale index visualization",
+          "physical_address": "0xa0000",
+          "width": 320,
+          "height": 200,
+          "index_file": "build/reference/ru-01/turn-right.idx",
+          "preview": "build/reference/ru-01/turn-right.png"
+        },
+        {
+          "name": "forward",
+          "sha256": "0d0b1c86a7484bbddf31095e66d1001e546e8862d3d3df475590186c3e0db91c",
+          "stable_three_samples": true,
+          "palette": "grayscale index visualization",
+          "physical_address": "0xa0000",
+          "width": 320,
+          "height": 200,
+          "index_file": "build/reference/ru-01/forward.idx",
+          "preview": "build/reference/ru-01/forward.png"
+        },
+        {
+          "name": "use-attempt",
+          "sha256": "0d0b1c86a7484bbddf31095e66d1001e546e8862d3d3df475590186c3e0db91c",
+          "stable_three_samples": true,
+          "palette": "grayscale index visualization",
+          "physical_address": "0xa0000",
+          "width": 320,
+          "height": 200,
+          "index_file": "build/reference/ru-01/use-attempt.idx",
+          "preview": "build/reference/ru-01/use-attempt.png"
+        },
+        {
+          "name": "fire-attempt",
+          "sha256": "0d0b1c86a7484bbddf31095e66d1001e546e8862d3d3df475590186c3e0db91c",
+          "stable_three_samples": true,
+          "palette": "grayscale index visualization",
+          "physical_address": "0xa0000",
+          "width": 320,
+          "height": 200,
+          "index_file": "build/reference/ru-01/fire-attempt.idx",
+          "preview": "build/reference/ru-01/fire-attempt.png"
+        }
+      ],
+      "command": [
+        "C:\\Users\\dspev\\AppData\\Local\\Programs\\DOSBox-Staging\\wasdify-webserver-20261024\\dosbox.exe",
+        "-conf",
+        "C:\\Source\\DoK-port\\build\\reference\\ru-01\\dosbox.conf",
+        "-noconsole"
+      ],
+      "keyboard_data_offsets": {
+        "states": "0x2155",
+        "pending_count": "0x2152",
+        "last_scancode": "0x2154"
+      },
+      "keyboard_data_offsets_source": "script equivalent; RU01 predates explicit report offsets"
+    },
+    {
+      "id": "ru-02",
+      "language": "ru",
+      "report": "build/reference/ru-02/report.json",
+      "report_sha256": "9ae0d05cf87f356a38e0b59a5d721d08cf1f21ac507e493edc08c319ada2b943",
+      "configuration": "build/reference/ru-02/dosbox.conf",
+      "stdout_log": "build/reference/ru-02/stdout.log",
+      "stderr_log": "build/reference/ru-02/stderr.log",
+      "initial_memory": "build/reference/ru-02/level1-memory.bin",
+      "originals_unchanged": true,
+      "exe_before": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+      "exe_after": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+      "copy_exe_after": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+      "runtime_linear_data_base": "0x1d38e0",
+      "player_start": {
+        "linear_address": "0x1fe7fe",
+        "native_type": 1,
+        "xyz": [
+          15120,
+          -300,
+          22800
+        ],
+        "heading": 90,
+        "health_energy": [
+          100,
+          0
+        ],
+        "lives_score": [
+          3,
+          0
+        ]
+      },
+      "events": [
+        {
+          "event": "enter",
+          "scan": "0x1c",
+          "held_wall_seconds": 0.12,
+          "following_wait_wall_seconds": 1.5
+        },
+        {
+          "event": "enter",
+          "scan": "0x1c",
+          "held_wall_seconds": 0.12,
+          "following_wait_wall_seconds": 1.5
+        },
+        {
+          "event": "enter",
+          "scan": "0x1c",
+          "held_wall_seconds": 0.12,
+          "following_wait_wall_seconds": 1.5
+        },
+        {
+          "event": "enter",
+          "scan": "0x1c",
+          "held_wall_seconds": 0.12,
+          "following_wait_wall_seconds": 1.5
+        },
+        {
+          "event": "enter",
+          "scan": "0x1c",
+          "held_wall_seconds": 0.12,
+          "following_wait_wall_seconds": 1.5
+        },
+        {
+          "event": "enter",
+          "scan": "0x1c",
+          "held_wall_seconds": 0.12,
+          "following_wait_wall_seconds": 1.5
+        },
+        {
+          "event": "turn-right",
+          "scan": "0x4d",
+          "held_wall_seconds": 0.35,
+          "following_wait_wall_seconds": 0.5,
+          "player_before": {
+            "linear_address": "0x1fe7fe",
+            "native_type": 1,
+            "xyz": [
+              15120,
+              -300,
+              22800
+            ],
+            "heading": 90,
+            "health_energy": [
+              100,
+              0
+            ],
+            "lives_score": [
+              3,
+              0
+            ]
+          },
+          "player_after": {
+            "linear_address": "0x1fe7fe",
+            "native_type": 1,
+            "xyz": [
+              15120,
+              -300,
+              22800
+            ],
+            "heading": 82,
+            "health_energy": [
+              100,
+              0
+            ],
+            "lives_score": [
+              3,
+              0
+            ]
+          }
+        },
+        {
+          "event": "forward",
+          "scan": "0x48",
+          "held_wall_seconds": 0.6,
+          "following_wait_wall_seconds": 0.5,
+          "player_before": {
+            "linear_address": "0x1fe7fe",
+            "native_type": 1,
+            "xyz": [
+              15120,
+              -300,
+              22800
+            ],
+            "heading": 82,
+            "health_energy": [
+              100,
+              0
+            ],
+            "lives_score": [
+              3,
+              0
+            ]
+          },
+          "player_after": {
+            "linear_address": "0x1fe7fe",
+            "native_type": 1,
+            "xyz": [
+              14127,
+              -300,
+              22971
+            ],
+            "heading": 82,
+            "health_energy": [
+              100,
+              0
+            ],
+            "lives_score": [
+              3,
+              0
+            ]
+          }
+        },
+        {
+          "event": "use-attempt",
+          "scan": "0x39",
+          "held_wall_seconds": 0.12,
+          "following_wait_wall_seconds": 0.5,
+          "player_before": {
+            "linear_address": "0x1fe7fe",
+            "native_type": 1,
+            "xyz": [
+              14109,
+              -300,
+              22977
+            ],
+            "heading": 82,
+            "health_energy": [
+              100,
+              0
+            ],
+            "lives_score": [
+              3,
+              0
+            ]
+          },
+          "player_after": {
+            "linear_address": "0x1fe7fe",
+            "native_type": 1,
+            "xyz": [
+              14109,
+              -300,
+              22977
+            ],
+            "heading": 82,
+            "health_energy": [
+              100,
+              0
+            ],
+            "lives_score": [
+              3,
+              0
+            ]
+          }
+        },
+        {
+          "event": "fire-attempt",
+          "scan": "0x1d",
+          "held_wall_seconds": 0.4,
+          "following_wait_wall_seconds": 0.5,
+          "player_before": {
+            "linear_address": "0x1fe7fe",
+            "native_type": 1,
+            "xyz": [
+              14109,
+              -300,
+              22977
+            ],
+            "heading": 82,
+            "health_energy": [
+              100,
+              0
+            ],
+            "lives_score": [
+              3,
+              0
+            ]
+          },
+          "player_after": {
+            "linear_address": "0x1fe7fe",
+            "native_type": 1,
+            "xyz": [
+              14109,
+              -300,
+              22977
+            ],
+            "heading": 82,
+            "health_energy": [
+              100,
+              0
+            ],
+            "lives_score": [
+              3,
+              0
+            ]
+          }
+        }
+      ],
+      "frames": [
+        {
+          "name": "level1-start",
+          "sha256": "2998ed9d6f592e16ddd662b467e6635d15272e3181d5baec09f09d4c88ae2a1c",
+          "stable_three_samples": true,
+          "palette": "grayscale index visualization",
+          "physical_address": "0xa0000",
+          "width": 320,
+          "height": 200,
+          "index_file": "build/reference/ru-02/level1-start.idx",
+          "preview": "build/reference/ru-02/level1-start.png"
+        },
+        {
+          "name": "turn-right",
+          "sha256": "062593f555830e32aaaad526e18b2328b503b0d2ab701cfe508372a6ad91e40f",
+          "stable_three_samples": true,
+          "palette": "grayscale index visualization",
+          "physical_address": "0xa0000",
+          "width": 320,
+          "height": 200,
+          "index_file": "build/reference/ru-02/turn-right.idx",
+          "preview": "build/reference/ru-02/turn-right.png"
+        },
+        {
+          "name": "forward",
+          "sha256": "9dc459a7407fc4fa6aaf69b0cf56a443066d67d10ea6618017a1501fbc33d94c",
+          "stable_three_samples": true,
+          "palette": "grayscale index visualization",
+          "physical_address": "0xa0000",
+          "width": 320,
+          "height": 200,
+          "index_file": "build/reference/ru-02/forward.idx",
+          "preview": "build/reference/ru-02/forward.png"
+        },
+        {
+          "name": "use-attempt",
+          "sha256": "9dc459a7407fc4fa6aaf69b0cf56a443066d67d10ea6618017a1501fbc33d94c",
+          "stable_three_samples": true,
+          "palette": "grayscale index visualization",
+          "physical_address": "0xa0000",
+          "width": 320,
+          "height": 200,
+          "index_file": "build/reference/ru-02/use-attempt.idx",
+          "preview": "build/reference/ru-02/use-attempt.png"
+        },
+        {
+          "name": "fire-attempt",
+          "sha256": "9dc459a7407fc4fa6aaf69b0cf56a443066d67d10ea6618017a1501fbc33d94c",
+          "stable_three_samples": true,
+          "palette": "grayscale index visualization",
+          "physical_address": "0xa0000",
+          "width": 320,
+          "height": 200,
+          "index_file": "build/reference/ru-02/fire-attempt.idx",
+          "preview": "build/reference/ru-02/fire-attempt.png"
+        }
+      ],
+      "command": [
+        "C:\\Users\\dspev\\AppData\\Local\\Programs\\DOSBox-Staging\\wasdify-webserver-20261024\\dosbox.exe",
+        "-conf",
+        "C:\\Source\\DoK-port\\build\\reference\\ru-02\\dosbox.conf",
+        "-noconsole"
+      ],
+      "keyboard_data_offsets": {
+        "states": "0x2155",
+        "pending_count": "0x2152",
+        "last_scancode": "0x2154"
+      },
+      "keyboard_data_offsets_source": "report"
+    },
+    {
+      "id": "en-01",
+      "language": "en",
+      "report": "build/reference/en-01/report.json",
+      "report_sha256": "120ebda6057338a29425de0578bbe89b03782418d3fa9c20021d71d4213360a7",
+      "configuration": "build/reference/en-01/dosbox.conf",
+      "stdout_log": "build/reference/en-01/stdout.log",
+      "stderr_log": "build/reference/en-01/stderr.log",
+      "initial_memory": "build/reference/en-01/level1-memory.bin",
+      "originals_unchanged": true,
+      "exe_before": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b",
+      "exe_after": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b",
+      "copy_exe_after": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b",
+      "runtime_linear_data_base": "0x1d7090",
+      "player_start": {
+        "linear_address": "0x20d38a",
+        "native_type": 1,
+        "xyz": [
+          15120,
+          -300,
+          23280
+        ],
+        "heading": 90,
+        "health_energy": [
+          100,
+          0
+        ],
+        "lives_score": [
+          3,
+          0
+        ]
+      },
+      "events": [
+        {
+          "event": "enter",
+          "scan": "0x1c",
+          "held_wall_seconds": 0.12,
+          "following_wait_wall_seconds": 1.5
+        },
+        {
+          "event": "enter",
+          "scan": "0x1c",
+          "held_wall_seconds": 0.12,
+          "following_wait_wall_seconds": 1.5
+        },
+        {
+          "event": "enter",
+          "scan": "0x1c",
+          "held_wall_seconds": 0.12,
+          "following_wait_wall_seconds": 1.5
+        },
+        {
+          "event": "enter",
+          "scan": "0x1c",
+          "held_wall_seconds": 0.12,
+          "following_wait_wall_seconds": 1.5
+        },
+        {
+          "event": "enter",
+          "scan": "0x1c",
+          "held_wall_seconds": 0.12,
+          "following_wait_wall_seconds": 1.5
+        },
+        {
+          "event": "enter",
+          "scan": "0x1c",
+          "held_wall_seconds": 0.12,
+          "following_wait_wall_seconds": 1.5
+        },
+        {
+          "event": "turn-right",
+          "scan": "0x4d",
+          "held_wall_seconds": 0.35,
+          "following_wait_wall_seconds": 0.5,
+          "player_before": {
+            "linear_address": "0x20d38a",
+            "native_type": 1,
+            "xyz": [
+              15120,
+              -300,
+              23280
+            ],
+            "heading": 90,
+            "health_energy": [
+              100,
+              0
+            ],
+            "lives_score": [
+              3,
+              0
+            ]
+          },
+          "player_after": {
+            "linear_address": "0x20d38a",
+            "native_type": 1,
+            "xyz": [
+              15120,
+              -300,
+              23280
+            ],
+            "heading": 83,
+            "health_energy": [
+              100,
+              0
+            ],
+            "lives_score": [
+              3,
+              0
+            ]
+          }
+        },
+        {
+          "event": "forward",
+          "scan": "0x48",
+          "held_wall_seconds": 0.6,
+          "following_wait_wall_seconds": 0.5,
+          "player_before": {
+            "linear_address": "0x20d38a",
+            "native_type": 1,
+            "xyz": [
+              15120,
+              -300,
+              23280
+            ],
+            "heading": 83,
+            "health_energy": [
+              100,
+              0
+            ],
+            "lives_score": [
+              3,
+              0
+            ]
+          },
+          "player_after": {
+            "linear_address": "0x20d38a",
+            "native_type": 1,
+            "xyz": [
+              14268,
+              -300,
+              23412
+            ],
+            "heading": 83,
+            "health_energy": [
+              100,
+              0
+            ],
+            "lives_score": [
+              3,
+              0
+            ]
+          }
+        },
+        {
+          "event": "use-attempt",
+          "scan": "0x39",
+          "held_wall_seconds": 0.12,
+          "following_wait_wall_seconds": 0.5,
+          "player_before": {
+            "linear_address": "0x20d38a",
+            "native_type": 1,
+            "xyz": [
+              14259,
+              -300,
+              23418
+            ],
+            "heading": 83,
+            "health_energy": [
+              100,
+              0
+            ],
+            "lives_score": [
+              3,
+              0
+            ]
+          },
+          "player_after": {
+            "linear_address": "0x20d38a",
+            "native_type": 1,
+            "xyz": [
+              14259,
+              -300,
+              23418
+            ],
+            "heading": 83,
+            "health_energy": [
+              100,
+              0
+            ],
+            "lives_score": [
+              3,
+              0
+            ]
+          }
+        },
+        {
+          "event": "fire-attempt",
+          "scan": "0x1d",
+          "held_wall_seconds": 0.4,
+          "following_wait_wall_seconds": 0.5,
+          "player_before": {
+            "linear_address": "0x20d38a",
+            "native_type": 1,
+            "xyz": [
+              14259,
+              -300,
+              23418
+            ],
+            "heading": 83,
+            "health_energy": [
+              100,
+              0
+            ],
+            "lives_score": [
+              3,
+              0
+            ]
+          },
+          "player_after": {
+            "linear_address": "0x20d38a",
+            "native_type": 1,
+            "xyz": [
+              14259,
+              -300,
+              23418
+            ],
+            "heading": 83,
+            "health_energy": [
+              100,
+              0
+            ],
+            "lives_score": [
+              3,
+              0
+            ]
+          }
+        }
+      ],
+      "frames": [
+        {
+          "name": "level1-start",
+          "sha256": "72993890dfcf84a6e63f7be16f5beb881b868090c6d39bcb00d7da09b18c22a9",
+          "stable_three_samples": true,
+          "palette": "grayscale index visualization",
+          "physical_address": "0xa0000",
+          "width": 320,
+          "height": 200,
+          "index_file": "build/reference/en-01/level1-start.idx",
+          "preview": "build/reference/en-01/level1-start.png"
+        },
+        {
+          "name": "turn-right",
+          "sha256": "74607f38427e37a67f58c8a661b7911c82b3f58762cf4dd08bdf1f4b3f7afc5d",
+          "stable_three_samples": true,
+          "palette": "grayscale index visualization",
+          "physical_address": "0xa0000",
+          "width": 320,
+          "height": 200,
+          "index_file": "build/reference/en-01/turn-right.idx",
+          "preview": "build/reference/en-01/turn-right.png"
+        },
+        {
+          "name": "forward",
+          "sha256": "9483a44f191ade4ddd3abe025c5ce98a30813225eca8453de5343b51488c5ff1",
+          "stable_three_samples": true,
+          "palette": "grayscale index visualization",
+          "physical_address": "0xa0000",
+          "width": 320,
+          "height": 200,
+          "index_file": "build/reference/en-01/forward.idx",
+          "preview": "build/reference/en-01/forward.png"
+        },
+        {
+          "name": "use-attempt",
+          "sha256": "9483a44f191ade4ddd3abe025c5ce98a30813225eca8453de5343b51488c5ff1",
+          "stable_three_samples": true,
+          "palette": "grayscale index visualization",
+          "physical_address": "0xa0000",
+          "width": 320,
+          "height": 200,
+          "index_file": "build/reference/en-01/use-attempt.idx",
+          "preview": "build/reference/en-01/use-attempt.png"
+        },
+        {
+          "name": "fire-attempt",
+          "sha256": "9483a44f191ade4ddd3abe025c5ce98a30813225eca8453de5343b51488c5ff1",
+          "stable_three_samples": true,
+          "palette": "grayscale index visualization",
+          "physical_address": "0xa0000",
+          "width": 320,
+          "height": 200,
+          "index_file": "build/reference/en-01/fire-attempt.idx",
+          "preview": "build/reference/en-01/fire-attempt.png"
+        }
+      ],
+      "command": [
+        "C:\\Users\\dspev\\AppData\\Local\\Programs\\DOSBox-Staging\\wasdify-webserver-20261024\\dosbox.exe",
+        "-conf",
+        "C:\\Source\\DoK-port\\build\\reference\\en-01\\dosbox.conf",
+        "-noconsole"
+      ],
+      "keyboard_data_offsets": {
+        "states": "0x2205",
+        "pending_count": "0x2202",
+        "last_scancode": "0x2204"
+      },
+      "keyboard_data_offsets_source": "report"
+    },
+    {
+      "id": "en-02",
+      "language": "en",
+      "report": "build/reference/en-02/report.json",
+      "report_sha256": "be20dcd7d215bca08564469667ae1ed3c2a5fafdb198bc20db9fa8a5a314ae6a",
+      "configuration": "build/reference/en-02/dosbox.conf",
+      "stdout_log": "build/reference/en-02/stdout.log",
+      "stderr_log": "build/reference/en-02/stderr.log",
+      "initial_memory": "build/reference/en-02/level1-memory.bin",
+      "originals_unchanged": true,
+      "exe_before": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b",
+      "exe_after": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b",
+      "copy_exe_after": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b",
+      "runtime_linear_data_base": "0x1d7090",
+      "player_start": {
+        "linear_address": "0x20d38a",
+        "native_type": 1,
+        "xyz": [
+          15120,
+          -300,
+          23280
+        ],
+        "heading": 90,
+        "health_energy": [
+          100,
+          0
+        ],
+        "lives_score": [
+          3,
+          0
+        ]
+      },
+      "events": [
+        {
+          "event": "enter",
+          "scan": "0x1c",
+          "held_wall_seconds": 0.12,
+          "following_wait_wall_seconds": 1.5
+        },
+        {
+          "event": "enter",
+          "scan": "0x1c",
+          "held_wall_seconds": 0.12,
+          "following_wait_wall_seconds": 1.5
+        },
+        {
+          "event": "enter",
+          "scan": "0x1c",
+          "held_wall_seconds": 0.12,
+          "following_wait_wall_seconds": 1.5
+        },
+        {
+          "event": "enter",
+          "scan": "0x1c",
+          "held_wall_seconds": 0.12,
+          "following_wait_wall_seconds": 1.5
+        },
+        {
+          "event": "enter",
+          "scan": "0x1c",
+          "held_wall_seconds": 0.12,
+          "following_wait_wall_seconds": 1.5
+        },
+        {
+          "event": "enter",
+          "scan": "0x1c",
+          "held_wall_seconds": 0.12,
+          "following_wait_wall_seconds": 1.5
+        },
+        {
+          "event": "turn-right",
+          "scan": "0x4d",
+          "held_wall_seconds": 0.35,
+          "following_wait_wall_seconds": 0.5,
+          "player_before": {
+            "linear_address": "0x20d38a",
+            "native_type": 1,
+            "xyz": [
+              15120,
+              -300,
+              23280
+            ],
+            "heading": 90,
+            "health_energy": [
+              100,
+              0
+            ],
+            "lives_score": [
+              3,
+              0
+            ]
+          },
+          "player_after": {
+            "linear_address": "0x20d38a",
+            "native_type": 1,
+            "xyz": [
+              15120,
+              -300,
+              23280
+            ],
+            "heading": 81,
+            "health_energy": [
+              100,
+              0
+            ],
+            "lives_score": [
+              3,
+              0
+            ]
+          }
+        },
+        {
+          "event": "forward",
+          "scan": "0x48",
+          "held_wall_seconds": 0.6,
+          "following_wait_wall_seconds": 0.5,
+          "player_before": {
+            "linear_address": "0x20d38a",
+            "native_type": 1,
+            "xyz": [
+              15120,
+              -300,
+              23280
+            ],
+            "heading": 81,
+            "health_energy": [
+              100,
+              0
+            ],
+            "lives_score": [
+              3,
+              0
+            ]
+          },
+          "player_after": {
+            "linear_address": "0x20d38a",
+            "native_type": 1,
+            "xyz": [
+              14139,
+              -300,
+              23466
+            ],
+            "heading": 81,
+            "health_energy": [
+              100,
+              0
+            ],
+            "lives_score": [
+              3,
+              0
+            ]
+          }
+        },
+        {
+          "event": "use-attempt",
+          "scan": "0x39",
+          "held_wall_seconds": 0.12,
+          "following_wait_wall_seconds": 0.5,
+          "player_before": {
+            "linear_address": "0x20d38a",
+            "native_type": 1,
+            "xyz": [
+              14094,
+              -300,
+              23478
+            ],
+            "heading": 81,
+            "health_energy": [
+              100,
+              0
+            ],
+            "lives_score": [
+              3,
+              0
+            ]
+          },
+          "player_after": {
+            "linear_address": "0x20d38a",
+            "native_type": 1,
+            "xyz": [
+              14094,
+              -300,
+              23478
+            ],
+            "heading": 81,
+            "health_energy": [
+              100,
+              0
+            ],
+            "lives_score": [
+              3,
+              0
+            ]
+          }
+        },
+        {
+          "event": "fire-attempt",
+          "scan": "0x1d",
+          "held_wall_seconds": 0.4,
+          "following_wait_wall_seconds": 0.5,
+          "player_before": {
+            "linear_address": "0x20d38a",
+            "native_type": 1,
+            "xyz": [
+              14094,
+              -300,
+              23478
+            ],
+            "heading": 81,
+            "health_energy": [
+              100,
+              0
+            ],
+            "lives_score": [
+              3,
+              0
+            ]
+          },
+          "player_after": {
+            "linear_address": "0x20d38a",
+            "native_type": 1,
+            "xyz": [
+              14094,
+              -300,
+              23478
+            ],
+            "heading": 81,
+            "health_energy": [
+              100,
+              0
+            ],
+            "lives_score": [
+              3,
+              0
+            ]
+          }
+        }
+      ],
+      "frames": [
+        {
+          "name": "level1-start",
+          "sha256": "72993890dfcf84a6e63f7be16f5beb881b868090c6d39bcb00d7da09b18c22a9",
+          "stable_three_samples": true,
+          "palette": "grayscale index visualization",
+          "physical_address": "0xa0000",
+          "width": 320,
+          "height": 200,
+          "index_file": "build/reference/en-02/level1-start.idx",
+          "preview": "build/reference/en-02/level1-start.png"
+        },
+        {
+          "name": "turn-right",
+          "sha256": "6797b7d89a2979627107bfca42b3e60bf5ff222691e468ab964ae135a2e22cdd",
+          "stable_three_samples": true,
+          "palette": "grayscale index visualization",
+          "physical_address": "0xa0000",
+          "width": 320,
+          "height": 200,
+          "index_file": "build/reference/en-02/turn-right.idx",
+          "preview": "build/reference/en-02/turn-right.png"
+        },
+        {
+          "name": "forward",
+          "sha256": "1f288594cf5a846b7d65a7926f95ca4b3ba98440391f4bb63a923a78c0cdf77c",
+          "stable_three_samples": true,
+          "palette": "grayscale index visualization",
+          "physical_address": "0xa0000",
+          "width": 320,
+          "height": 200,
+          "index_file": "build/reference/en-02/forward.idx",
+          "preview": "build/reference/en-02/forward.png"
+        },
+        {
+          "name": "use-attempt",
+          "sha256": "1f288594cf5a846b7d65a7926f95ca4b3ba98440391f4bb63a923a78c0cdf77c",
+          "stable_three_samples": true,
+          "palette": "grayscale index visualization",
+          "physical_address": "0xa0000",
+          "width": 320,
+          "height": 200,
+          "index_file": "build/reference/en-02/use-attempt.idx",
+          "preview": "build/reference/en-02/use-attempt.png"
+        },
+        {
+          "name": "fire-attempt",
+          "sha256": "1f288594cf5a846b7d65a7926f95ca4b3ba98440391f4bb63a923a78c0cdf77c",
+          "stable_three_samples": true,
+          "palette": "grayscale index visualization",
+          "physical_address": "0xa0000",
+          "width": 320,
+          "height": 200,
+          "index_file": "build/reference/en-02/fire-attempt.idx",
+          "preview": "build/reference/en-02/fire-attempt.png"
+        }
+      ],
+      "command": [
+        "C:\\Users\\dspev\\AppData\\Local\\Programs\\DOSBox-Staging\\wasdify-webserver-20261024\\dosbox.exe",
+        "--noprimaryconf",
+        "--nolocalconf",
+        "-conf",
+        "C:\\Source\\DoK-port\\build\\reference\\en-02\\dosbox.conf",
+        "-noconsole"
+      ],
+      "keyboard_data_offsets": {
+        "states": "0x2205",
+        "pending_count": "0x2202",
+        "last_scancode": "0x2204"
+      },
+      "keyboard_data_offsets_source": "report"
+    },
+    {
+      "id": "ru-03",
+      "language": "ru",
+      "role": "additional_isolated_config_reproducibility_check",
+      "report": "build/reference/ru-03/report.json",
+      "report_sha256": "bba0ed05955c8025b06ab8a494130b2556e29687c8d493f802e14c0fddb8a626",
+      "configuration": "build/reference/ru-03/dosbox.conf",
+      "command": [
+        "C:\\Users\\dspev\\AppData\\Local\\Programs\\DOSBox-Staging\\wasdify-webserver-20261024\\dosbox.exe",
+        "--noprimaryconf",
+        "--nolocalconf",
+        "-conf",
+        "C:\\Source\\DoK-port\\build\\reference\\ru-03\\dosbox.conf",
+        "-noconsole"
+      ],
+      "stdout_log": "build/reference/ru-03/stdout.log",
+      "stderr_log": "build/reference/ru-03/stderr.log",
+      "initial_memory": "build/reference/ru-03/level1-memory.bin",
+      "originals_unchanged": true,
+      "exe_before": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+      "exe_after": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+      "copy_exe_after": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+      "runtime_linear_data_base": "0x1d38e0",
+      "player_start": {
+        "linear_address": "0x1fe7fe",
+        "native_type": 1,
+        "xyz": [
+          15120,
+          -300,
+          22800
+        ],
+        "heading": 90,
+        "health_energy": [
+          100,
+          0
+        ],
+        "lives_score": [
+          3,
+          0
+        ]
+      },
+      "events": [
+        {
+          "event": "enter",
+          "scan": "0x1c",
+          "held_wall_seconds": 0.12,
+          "following_wait_wall_seconds": 1.5
+        },
+        {
+          "event": "enter",
+          "scan": "0x1c",
+          "held_wall_seconds": 0.12,
+          "following_wait_wall_seconds": 1.5
+        },
+        {
+          "event": "enter",
+          "scan": "0x1c",
+          "held_wall_seconds": 0.12,
+          "following_wait_wall_seconds": 1.5
+        },
+        {
+          "event": "enter",
+          "scan": "0x1c",
+          "held_wall_seconds": 0.12,
+          "following_wait_wall_seconds": 1.5
+        },
+        {
+          "event": "enter",
+          "scan": "0x1c",
+          "held_wall_seconds": 0.12,
+          "following_wait_wall_seconds": 1.5
+        },
+        {
+          "event": "enter",
+          "scan": "0x1c",
+          "held_wall_seconds": 0.12,
+          "following_wait_wall_seconds": 1.5
+        },
+        {
+          "event": "turn-right",
+          "scan": "0x4d",
+          "held_wall_seconds": 0.35,
+          "following_wait_wall_seconds": 0.5,
+          "player_before": {
+            "linear_address": "0x1fe7fe",
+            "native_type": 1,
+            "xyz": [
+              15120,
+              -300,
+              22800
+            ],
+            "heading": 90,
+            "health_energy": [
+              100,
+              0
+            ],
+            "lives_score": [
+              3,
+              0
+            ]
+          },
+          "player_after": {
+            "linear_address": "0x1fe7fe",
+            "native_type": 1,
+            "xyz": [
+              15120,
+              -300,
+              22800
+            ],
+            "heading": 80,
+            "health_energy": [
+              100,
+              0
+            ],
+            "lives_score": [
+              3,
+              0
+            ]
+          }
+        },
+        {
+          "event": "forward",
+          "scan": "0x48",
+          "held_wall_seconds": 0.6,
+          "following_wait_wall_seconds": 0.5,
+          "player_before": {
+            "linear_address": "0x1fe7fe",
+            "native_type": 1,
+            "xyz": [
+              15120,
+              -300,
+              22800
+            ],
+            "heading": 80,
+            "health_energy": [
+              100,
+              0
+            ],
+            "lives_score": [
+              3,
+              0
+            ]
+          },
+          "player_after": {
+            "linear_address": "0x1fe7fe",
+            "native_type": 1,
+            "xyz": [
+              14250,
+              -300,
+              22986
+            ],
+            "heading": 80,
+            "health_energy": [
+              100,
+              0
+            ],
+            "lives_score": [
+              3,
+              0
+            ]
+          }
+        },
+        {
+          "event": "use-attempt",
+          "scan": "0x39",
+          "held_wall_seconds": 0.12,
+          "following_wait_wall_seconds": 0.5,
+          "player_before": {
+            "linear_address": "0x1fe7fe",
+            "native_type": 1,
+            "xyz": [
+              14238,
+              -300,
+              22992
+            ],
+            "heading": 80,
+            "health_energy": [
+              100,
+              0
+            ],
+            "lives_score": [
+              3,
+              0
+            ]
+          },
+          "player_after": {
+            "linear_address": "0x1fe7fe",
+            "native_type": 1,
+            "xyz": [
+              14238,
+              -300,
+              22992
+            ],
+            "heading": 80,
+            "health_energy": [
+              100,
+              0
+            ],
+            "lives_score": [
+              3,
+              0
+            ]
+          }
+        },
+        {
+          "event": "fire-attempt",
+          "scan": "0x1d",
+          "held_wall_seconds": 0.4,
+          "following_wait_wall_seconds": 0.5,
+          "player_before": {
+            "linear_address": "0x1fe7fe",
+            "native_type": 1,
+            "xyz": [
+              14238,
+              -300,
+              22992
+            ],
+            "heading": 80,
+            "health_energy": [
+              100,
+              0
+            ],
+            "lives_score": [
+              3,
+              0
+            ]
+          },
+          "player_after": {
+            "linear_address": "0x1fe7fe",
+            "native_type": 1,
+            "xyz": [
+              14238,
+              -300,
+              22992
+            ],
+            "heading": 80,
+            "health_energy": [
+              100,
+              0
+            ],
+            "lives_score": [
+              3,
+              0
+            ]
+          }
+        }
+      ],
+      "frames": [
+        {
+          "name": "level1-start",
+          "sha256": "2998ed9d6f592e16ddd662b467e6635d15272e3181d5baec09f09d4c88ae2a1c",
+          "stable_three_samples": true,
+          "palette": "grayscale index visualization",
+          "physical_address": "0xa0000",
+          "width": 320,
+          "height": 200,
+          "index_file": "build/reference/ru-03/level1-start.idx",
+          "preview": "build/reference/ru-03/level1-start.png"
+        },
+        {
+          "name": "turn-right",
+          "sha256": "106f508e29aa292aef39cd1a663438fb7c4bc5a1a10ca26c9a734ddc2631ccda",
+          "stable_three_samples": true,
+          "palette": "grayscale index visualization",
+          "physical_address": "0xa0000",
+          "width": 320,
+          "height": 200,
+          "index_file": "build/reference/ru-03/turn-right.idx",
+          "preview": "build/reference/ru-03/turn-right.png"
+        },
+        {
+          "name": "forward",
+          "sha256": "935317706024c91cd112c3ec4ca9c8cdee544200a4df46b62e5697375b2d6576",
+          "stable_three_samples": true,
+          "palette": "grayscale index visualization",
+          "physical_address": "0xa0000",
+          "width": 320,
+          "height": 200,
+          "index_file": "build/reference/ru-03/forward.idx",
+          "preview": "build/reference/ru-03/forward.png"
+        },
+        {
+          "name": "use-attempt",
+          "sha256": "935317706024c91cd112c3ec4ca9c8cdee544200a4df46b62e5697375b2d6576",
+          "stable_three_samples": true,
+          "palette": "grayscale index visualization",
+          "physical_address": "0xa0000",
+          "width": 320,
+          "height": 200,
+          "index_file": "build/reference/ru-03/use-attempt.idx",
+          "preview": "build/reference/ru-03/use-attempt.png"
+        },
+        {
+          "name": "fire-attempt",
+          "sha256": "935317706024c91cd112c3ec4ca9c8cdee544200a4df46b62e5697375b2d6576",
+          "stable_three_samples": true,
+          "palette": "grayscale index visualization",
+          "physical_address": "0xa0000",
+          "width": 320,
+          "height": 200,
+          "index_file": "build/reference/ru-03/fire-attempt.idx",
+          "preview": "build/reference/ru-03/fire-attempt.png"
+        }
+      ],
+      "keyboard_data_offsets": {
+        "states": "0x2155",
+        "pending_count": "0x2152",
+        "last_scancode": "0x2154"
+      },
+      "keyboard_data_offsets_source": "report"
+    }
+  ],
+  "limitations": [
+    "Only initial LEVEL1, in-place turning and short forward movement are evidenced. Late scenarios remain planned or pending.",
+    "Earlier WASDify profiler used modified diagnostic RUS EXEs; its FPS is not a G00 measurement.",
+    "Keyboard-state injection does not validate host keyboard events or guest IRQ1 handling.",
+    "DPMI selectors must be resolved through descriptors; numeric memory API segments use real-mode segment*16.",
+    "Private game copies, frames and memory dumps under build/reference are excluded from Git and distribution.",
+    "Framebuffer PNG files visualize palette indices as grayscale; actual VGA palette and audio are not captured.",
+    "Timed input is not frame-synchronized; final headings and movement distances differ across repeats and are not proof of language-specific speed differences."
+  ],
+  "input_protocol": {
+    "script": "scripts/dos_reference.py",
+    "data_anchor": "OVERFLOW\\0UNDERFLOW\\0TLOSS\\0PLOSS",
+    "memory_search_length": 16777216,
+    "data_anchor_offsets": {
+      "ru": "0x1082",
+      "en": "0x1132"
+    },
+    "keyboard_data_offsets": {
+      "ru": {
+        "states": "0x2155",
+        "pending_count": "0x2152",
+        "last_scancode": "0x2154"
+      },
+      "en": {
+        "states": "0x2205",
+        "pending_count": "0x2202",
+        "last_scancode": "0x2204"
+      }
+    },
+    "make": "state[scan]=3; increment uint16 pending count; set last scancode",
+    "release": "clear state[scan] bit 0",
+    "timebase": "host wall clock; not deterministic game ticks"
+  },
+  "supplementary_observations": [
+    {
+      "id": "forward-movement",
+      "ru": "observed",
+      "en": "observed",
+      "limitation": "short forward movement is not wall-following scenario acceptance"
+    },
+    {
+      "id": "use-attempt",
+      "ru": "attempt_only",
+      "en": "attempt_only"
+    },
+    {
+      "id": "fire-attempt",
+      "ru": "attempt_only",
+      "en": "attempt_only"
+    }
+  ],
+  "reproducibility": {
+    "ru": {
+      "runs": [
+        "ru-01",
+        "ru-02",
+        "ru-03"
+      ],
+      "initial_frame_sha256": "2998ed9d6f592e16ddd662b467e6635d15272e3181d5baec09f09d4c88ae2a1c",
+      "initial_frame_and_player_state_identical": true,
+      "timed_actions_frame_deterministic": false
+    },
+    "en": {
+      "runs": [
+        "en-01",
+        "en-02"
+      ],
+      "initial_frame_sha256": "72993890dfcf84a6e63f7be16f5beb881b868090c6d39bcb00d7da09b18c22a9",
+      "initial_frame_and_player_state_identical": true,
+      "timed_actions_frame_deterministic": false
+    }
+  },
+  "script": {
+    "path": "scripts/dos_reference.py",
+    "sha256": "62d40213e4c2cf4bcba8ae3ddf1de920d8cbe7a4bfdb255a223a5c873a4d4b5d",
+    "state": "final_script_after_report_series; earlier reports retain their actual commands"
+  },
+  "configuration_isolation": {
+    "final_script_flags": [
+      "--noprimaryconf",
+      "--nolocalconf"
+    ],
+    "runs_with_flags": [
+      "en-02",
+      "ru-03"
+    ],
+    "earlier_runs": [
+      "ru-01",
+      "ru-02",
+      "en-01"
+    ],
+    "earlier_log_note": "primary configuration absent; own config recorded per report"
+  },
+  "post_run_source_verification": {
+    "path": "build/reference/source-verification.json",
+    "sha256": "c4e05da36c891821df583c4edda8611d7e73ed6567ca9421c2dbb21c29f02064",
+    "timing": "after successful replays; not substituted for historical per-run records"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "recorded_on": "2026-10-24",
+  "platform": "Windows x86_64",
+  "zig": {
+    "version": "0.13.0",
+    "path": "%LOCALAPPDATA%/Programs/Zig/0.13.0/zig.exe",
+    "lld_version": "18.1.6",
+    "installation": "existing shared installation; no compiler installed by G01"
+  },
+  "mgba_standalone": {
+    "version": "0.10.5",
+    "revision": "26b7884bc25a5933960f3cdcd98bac1ae14d42e2",
+    "path": "%LOCALAPPDATA%/Programs/mGBA/mGBA-0.10.5-win64",
+    "source": "https://github.com/mgba-emu/mgba/releases/download/0.10.5/mGBA-0.10.5-win64.7z",
+    "archive_sha256": "b497a57c7d9093834dadc64f33a90f7c411439c21fdb8a0143255a45ea37563a",
+    "qt_exe_sha256": "5a3c98c2984dd04bd0d7c9378cdfae937ae0d73a196c880bb2eecf3b254af247",
+    "sdl_exe_sha256": "e08d9771033acd9a518175ef528ad3a54b6d2a2e532c7aaf3af54b7ed5af420f",
+    "checked": "CLI version/help; interactive GUI/debugging session not tested"
+  },
+  "mgba_libretro": {
+    "version": "0.11-212-7a12d6d",
+    "path": "%LOCALAPPDATA%/Programs/mGBA/libretro-20261024/mgba_libretro.dll",
+    "source": "https://buildbot.libretro.com/nightly/windows/x86_64/latest/mgba_libretro.dll.zip",
+    "archive_sha256": "16b6f0b2ec365070a50747393eef5f63784dcf4abdbdb73e752cd39d1cb35e70",
+    "dll_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+    "checked": "cartridge execution, framebuffer, keypad, IRQ, panic, reset",
+    "note": "Nightly URL changes. Reproduction requires this DLL hash or an explicitly recorded new emulator version. Hashes were measured locally; no independent publisher digest was available in release metadata."
+  }
+}

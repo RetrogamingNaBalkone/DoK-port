@@ -1,0 +1,79 @@
+{
+  "task": "G04",
+  "status": "passed",
+  "vectors": 31216,
+  "random_seed": "0xd04",
+  "invalid_signed_divisions": 2,
+  "scenes": {
+    "ru": {
+      "camera": [
+        15120,
+        -300,
+        22800,
+        32768,
+        0,
+        200,
+        8,
+        4096,
+        159,
+        79
+      ],
+      "vector_count": 9604,
+      "source": {
+        "path": "build/reference/ru-03/level1-memory.bin",
+        "sha256": "c8ff1347518aae86af31b8ed2c6f6443c4c63c9157b4a52bf76d53c7f5c95629"
+      }
+    },
+    "en": {
+      "camera": [
+        15120,
+        -300,
+        23280,
+        32768,
+        0,
+        200,
+        8,
+        4096,
+        159,
+        79
+      ],
+      "vector_count": 9604,
+      "source": {
+        "path": "build/reference/en-02/level1-memory.bin",
+        "sha256": "b667dda83c8504ec4a8c4716aef01d26696ba0daa6433055b3ca1ab9ff827baa"
+      }
+    }
+  },
+  "inputs": [
+    {
+      "path": "include/dok/projection.h",
+      "sha256": "bb6c518d58cbb2cf2a7f40f596b20525decdfd05e99ed27cd3f164c972a3d15f"
+    },
+    {
+      "path": "src/projection.c",
+      "sha256": "300cedf7fe914a90e7be0f55faf476922f54366122a61f767ec20f69c87b707a"
+    },
+    {
+      "path": "tools/projection_probe.c",
+      "sha256": "a3d7861d23380e854d36eed3cbb75b04fb9c5230f680fe776b5360ddcc468c9e"
+    },
+    {
+      "path": "scripts/probe_projection.py",
+      "sha256": "9a28e6c9e6e3e04f8c5ff9d34856e55fcf3500480993a20b106cdb14eeb9cd5d"
+    }
+  ],
+  "output_hashes": [
+    {
+      "path": "build/render-projection/vectors.txt",
+      "sha256": "1b247dbddfbdd9cee30bad34385dfff18574988df5e475a788c40ef04bfd2afe"
+    },
+    {
+      "path": "build/render-projection/results.txt",
+      "sha256": "7f91b60a386de8d288e0c5fb9b58f25b624577ca517226622bb2c0e3d0ed28f1"
+    }
+  ],
+  "native_execution": true,
+  "thumb_compilation": true,
+  "thumb_execution": false,
+  "limit": "Scalar low32 transform/project oracle; not DOS raster/image equivalence or GBA performance."
+}

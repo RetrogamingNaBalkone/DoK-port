@@ -1,0 +1,614 @@
+{
+  "task": "G02",
+  "verification_kind": "independent_static_reconstruction",
+  "dos_equivalence": "not established; G00 independently confirms only initial hero LEVEL1",
+  "levels": [
+    {
+      "definitions": 115,
+      "actors": 65,
+      "placed_actor_cells": 63,
+      "unique_placed_actors": 61,
+      "unplaced_actors": 4,
+      "repeated_actor_definitions": 2,
+      "native_known_bytes": 9935,
+      "runtime_known_bytes": 9935,
+      "missing_known_bytes": 0,
+      "numeric_fields": 698,
+      "resource_fields": 296,
+      "text_fields": 75,
+      "classes": {
+        "0": 3,
+        "1": 1,
+        "2": 3,
+        "3": 9,
+        "4": 2,
+        "6": 5,
+        "7": 18,
+        "8": 3,
+        "9": 64,
+        "10": 2,
+        "12": 5
+      },
+      "unique_resource_names": 70,
+      "missing_known_offsets": {},
+      "maps": {
+        "MMap": {
+          "cells": 4096,
+          "sha256": "3226d9a1aa29f31a03ef24ad722a40c64b74e7a91e30fb3d7e5877a9a8717e2c"
+        },
+        "TMap": {
+          "cells": 4096,
+          "sha256": "3ab7c68f2fe491adf23c7f20452a38e7e5cfe024fffbcc690c768178856d48ad"
+        },
+        "FCMap": {
+          "cells": 4096,
+          "sha256": "f77e36ca3e7f4bbd55880e0a297ef0b3f66a6faff033e8b9c2c9aa2f5c0ad122"
+        },
+        "visited": {
+          "cells": 4096,
+          "sha256": "ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7"
+        }
+      },
+      "memory": {
+        "object_count": 115,
+        "actor_count": 65,
+        "field_count": 1069,
+        "text_size": 5980,
+        "cells": 4096,
+        "mutable_used": 24744,
+        "rom_records_used": 38860
+      },
+      "language": "ru",
+      "resource_index": 18,
+      "level_sha256": "21872af6fa49bf8c0c8fe89dfe2ca5dd040912b3f141c306258c9a4f6cb9e856",
+      "source_model": {
+        "path": "build/runtime/ru/LEVEL1-definitions.json",
+        "sha256": "d96c445fd51469dedbeacab5b25bca21855efe9695b96ed1c89cae53b04f2f63",
+        "size": 137034
+      },
+      "native_oracle": {
+        "path": "build/runtime/ru/LEVEL1-native.json",
+        "sha256": "d904e4cabf31295dbf4b439b64a5504448352686cd06785abf5f4b91a604a0a8",
+        "size": 112901
+      },
+      "runtime_model": {
+        "path": "build/runtime/ru/LEVEL1-runtime.json",
+        "sha256": "8d5a485ca5a33ef72bccad1db6140a69157be2ba22eccce874e7532cd27c4ab0",
+        "size": 268094
+      }
+    },
+    {
+      "definitions": 117,
+      "actors": 65,
+      "placed_actor_cells": 60,
+      "unique_placed_actors": 58,
+      "unplaced_actors": 7,
+      "repeated_actor_definitions": 2,
+      "native_known_bytes": 9963,
+      "runtime_known_bytes": 9963,
+      "missing_known_bytes": 0,
+      "numeric_fields": 704,
+      "resource_fields": 302,
+      "text_fields": 75,
+      "classes": {
+        "0": 3,
+        "1": 1,
+        "2": 3,
+        "3": 9,
+        "4": 2,
+        "6": 5,
+        "7": 18,
+        "8": 4,
+        "9": 64,
+        "10": 2,
+        "12": 5,
+        "13": 1
+      },
+      "unique_resource_names": 70,
+      "missing_known_offsets": {},
+      "maps": {
+        "MMap": {
+          "cells": 4096,
+          "sha256": "6506f0887842a8668edf64e6ccc386396b9a3307919a6a9621f9a93ab5fd2dcf"
+        },
+        "TMap": {
+          "cells": 4096,
+          "sha256": "3a99ba8e83ea25d440074d2380971c3bb045f2beb611cdf870b6810d2424b0a3"
+        },
+        "FCMap": {
+          "cells": 4096,
+          "sha256": "1644eff692c68ae934332d2a76c634afb89e6fb0fd57cd7fa57aca4cdb7a61af"
+        },
+        "visited": {
+          "cells": 4096,
+          "sha256": "ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7"
+        }
+      },
+      "memory": {
+        "object_count": 117,
+        "actor_count": 65,
+        "field_count": 1081,
+        "text_size": 6105,
+        "cells": 4096,
+        "mutable_used": 24816,
+        "rom_records_used": 39217
+      },
+      "language": "ru",
+      "resource_index": 19,
+      "level_sha256": "f8bb9c934f2cf96e3164fbce6f0c2e3f0c666f9527642584d646899b6084fc99",
+      "source_model": {
+        "path": "build/runtime/ru/LEVEL2-definitions.json",
+        "sha256": "11c318797f54c47034d765ebae67fe36efcfc1d378702c6e6b1c3e686034d22f",
+        "size": 138590
+      },
+      "native_oracle": {
+        "path": "build/runtime/ru/LEVEL2-native.json",
+        "sha256": "648a883684ddb9586607dc1eebc98126b3fbd33905a3dada9b69cda52f772688",
+        "size": 114293
+      },
+      "runtime_model": {
+        "path": "build/runtime/ru/LEVEL2-runtime.json",
+        "sha256": "acf29d78e6befe75a91342bf26d8ac6648ea17597f5b5fedcbb81bf056c97c9c",
+        "size": 271320
+      }
+    },
+    {
+      "definitions": 158,
+      "actors": 106,
+      "placed_actor_cells": 102,
+      "unique_placed_actors": 101,
+      "unplaced_actors": 5,
+      "repeated_actor_definitions": 1,
+      "native_known_bytes": 15093,
+      "runtime_known_bytes": 15093,
+      "missing_known_bytes": 0,
+      "numeric_fields": 1073,
+      "resource_fields": 466,
+      "text_fields": 116,
+      "classes": {
+        "0": 3,
+        "1": 1,
+        "2": 3,
+        "3": 9,
+        "4": 2,
+        "6": 5,
+        "7": 18,
+        "8": 4,
+        "9": 105,
+        "10": 2,
+        "12": 5,
+        "13": 1
+      },
+      "unique_resource_names": 73,
+      "missing_known_offsets": {},
+      "maps": {
+        "MMap": {
+          "cells": 4096,
+          "sha256": "a18039e6c541b053a90b579489f257d4d03b7fc71800efdca78aa377bcffbce3"
+        },
+        "TMap": {
+          "cells": 4096,
+          "sha256": "f60a6566b5739eaf34b3e4ee8cbdc45afcfdc076c932be6c0b3e05b70939e7f2"
+        },
+        "FCMap": {
+          "cells": 4096,
+          "sha256": "c269911f86f3e52841fbfb18554be06cda4a3c02f10821b939b3fa8326ab2c4a"
+        },
+        "visited": {
+          "cells": 4096,
+          "sha256": "ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7"
+        }
+      },
+      "memory": {
+        "object_count": 158,
+        "actor_count": 106,
+        "field_count": 1655,
+        "text_size": 8849,
+        "cells": 4096,
+        "mutable_used": 28916,
+        "rom_records_used": 51965
+      },
+      "language": "ru",
+      "resource_index": 20,
+      "level_sha256": "15e99cb968333c6998c7e9fc56e7de57de56c7013b98e5d7ea8f52f25478a66a",
+      "source_model": {
+        "path": "build/runtime/ru/LEVEL3-definitions.json",
+        "sha256": "e37b0830725c084deca5457a38b3afaf1aabc381a9d904bb821ec387e18b64d7",
+        "size": 192702
+      },
+      "native_oracle": {
+        "path": "build/runtime/ru/LEVEL3-native.json",
+        "sha256": "836f293337f5a81b5eea235aeaf52d97e4a4a720b653692edccdb70055c8a486",
+        "size": 142829
+      },
+      "runtime_model": {
+        "path": "build/runtime/ru/LEVEL3-runtime.json",
+        "sha256": "7b74616754f16fd29234cc18ab1773b6d5dd79d4bc6e16cd716974ccb040d748",
+        "size": 377012
+      }
+    },
+    {
+      "definitions": 115,
+      "actors": 65,
+      "placed_actor_cells": 63,
+      "unique_placed_actors": 61,
+      "unplaced_actors": 4,
+      "repeated_actor_definitions": 2,
+      "native_known_bytes": 9793,
+      "runtime_known_bytes": 9793,
+      "missing_known_bytes": 0,
+      "numeric_fields": 698,
+      "resource_fields": 296,
+      "text_fields": 75,
+      "classes": {
+        "0": 3,
+        "1": 1,
+        "2": 3,
+        "3": 9,
+        "4": 2,
+        "6": 5,
+        "7": 18,
+        "8": 3,
+        "9": 64,
+        "10": 2,
+        "12": 5
+      },
+      "unique_resource_names": 70,
+      "missing_known_offsets": {},
+      "maps": {
+        "MMap": {
+          "cells": 4096,
+          "sha256": "a2373d2d51e045c447970eee7f13ea3ec72d48b0c4d6b7252b09f78070856c2c"
+        },
+        "TMap": {
+          "cells": 4096,
+          "sha256": "3c5b53c9e6ec900d0126d432afab195fcbd29b3eb7ac6f227a9c1be811a1abb7"
+        },
+        "FCMap": {
+          "cells": 4096,
+          "sha256": "8807907f8f9405fe5bf7b867bb0d483529588ae2ff0323555fdfde4cdad55a77"
+        },
+        "visited": {
+          "cells": 4096,
+          "sha256": "ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7"
+        }
+      },
+      "memory": {
+        "object_count": 115,
+        "actor_count": 65,
+        "field_count": 1069,
+        "text_size": 5838,
+        "cells": 4096,
+        "mutable_used": 24744,
+        "rom_records_used": 38718
+      },
+      "language": "en",
+      "resource_index": 18,
+      "level_sha256": "ff9354074b91d020ab26892c803b984fd6367875efd190202927840afb39c089",
+      "source_model": {
+        "path": "build/runtime/en/LEVEL1-definitions.json",
+        "sha256": "198ed96b5cfbf60954f62600081cde0f2d275b3c2b1d906a62c5c581b6783434",
+        "size": 136747
+      },
+      "native_oracle": {
+        "path": "build/runtime/en/LEVEL1-native.json",
+        "sha256": "ad90ac5dee70fa4ba4b8e5ccef42ad5c5008c41de1ee30b3b9e5432e7116b348",
+        "size": 112901
+      },
+      "runtime_model": {
+        "path": "build/runtime/en/LEVEL1-runtime.json",
+        "sha256": "500bdf3c490233e2437b9d52b89bc22917f1720376e5a66768611cf2d345b1b2",
+        "size": 267807
+      }
+    },
+    {
+      "definitions": 117,
+      "actors": 65,
+      "placed_actor_cells": 60,
+      "unique_placed_actors": 58,
+      "unplaced_actors": 7,
+      "repeated_actor_definitions": 2,
+      "native_known_bytes": 9837,
+      "runtime_known_bytes": 9837,
+      "missing_known_bytes": 0,
+      "numeric_fields": 704,
+      "resource_fields": 302,
+      "text_fields": 75,
+      "classes": {
+        "0": 3,
+        "1": 1,
+        "2": 3,
+        "3": 9,
+        "4": 2,
+        "6": 5,
+        "7": 18,
+        "8": 4,
+        "9": 64,
+        "10": 2,
+        "12": 5,
+        "13": 1
+      },
+      "unique_resource_names": 70,
+      "missing_known_offsets": {},
+      "maps": {
+        "MMap": {
+          "cells": 4096,
+          "sha256": "6506f0887842a8668edf64e6ccc386396b9a3307919a6a9621f9a93ab5fd2dcf"
+        },
+        "TMap": {
+          "cells": 4096,
+          "sha256": "57dc8d4d332aff703279d0cdd685e1da2a2607708f866490806533b866bfc26f"
+        },
+        "FCMap": {
+          "cells": 4096,
+          "sha256": "1644eff692c68ae934332d2a76c634afb89e6fb0fd57cd7fa57aca4cdb7a61af"
+        },
+        "visited": {
+          "cells": 4096,
+          "sha256": "ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7"
+        }
+      },
+      "memory": {
+        "object_count": 117,
+        "actor_count": 65,
+        "field_count": 1081,
+        "text_size": 5979,
+        "cells": 4096,
+        "mutable_used": 24816,
+        "rom_records_used": 39091
+      },
+      "language": "en",
+      "resource_index": 19,
+      "level_sha256": "65869d72be30ccc30cb673a8a66ec1b3ebe12681a7beb5a6aa365b07fc0ced91",
+      "source_model": {
+        "path": "build/runtime/en/LEVEL2-definitions.json",
+        "sha256": "b64f35fee25ff6e34cf69aafb0e7fd3201ced18bc4ce16187993127474cdb503",
+        "size": 138337
+      },
+      "native_oracle": {
+        "path": "build/runtime/en/LEVEL2-native.json",
+        "sha256": "b019e298c9af5c86aa4a142b40155e248ededa3f78d4b173c2fcade3c69529a7",
+        "size": 114293
+      },
+      "runtime_model": {
+        "path": "build/runtime/en/LEVEL2-runtime.json",
+        "sha256": "2c062ae47e05d71646edd88e28033e811f43dd76b111e3862bf4a9252ff5dbb5",
+        "size": 271067
+      }
+    },
+    {
+      "definitions": 158,
+      "actors": 106,
+      "placed_actor_cells": 102,
+      "unique_placed_actors": 101,
+      "unplaced_actors": 5,
+      "repeated_actor_definitions": 1,
+      "native_known_bytes": 15002,
+      "runtime_known_bytes": 15002,
+      "missing_known_bytes": 0,
+      "numeric_fields": 1073,
+      "resource_fields": 466,
+      "text_fields": 116,
+      "classes": {
+        "0": 3,
+        "1": 1,
+        "2": 3,
+        "3": 9,
+        "4": 2,
+        "6": 5,
+        "7": 18,
+        "8": 4,
+        "9": 105,
+        "10": 2,
+        "12": 5,
+        "13": 1
+      },
+      "unique_resource_names": 73,
+      "missing_known_offsets": {},
+      "maps": {
+        "MMap": {
+          "cells": 4096,
+          "sha256": "a18039e6c541b053a90b579489f257d4d03b7fc71800efdca78aa377bcffbce3"
+        },
+        "TMap": {
+          "cells": 4096,
+          "sha256": "507127395c4834aeb3704f7c6ffd1866c273cdfbf91c2fbe681126d3d6f1de5c"
+        },
+        "FCMap": {
+          "cells": 4096,
+          "sha256": "c269911f86f3e52841fbfb18554be06cda4a3c02f10821b939b3fa8326ab2c4a"
+        },
+        "visited": {
+          "cells": 4096,
+          "sha256": "ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7"
+        }
+      },
+      "memory": {
+        "object_count": 158,
+        "actor_count": 106,
+        "field_count": 1655,
+        "text_size": 8758,
+        "cells": 4096,
+        "mutable_used": 28916,
+        "rom_records_used": 51874
+      },
+      "language": "en",
+      "resource_index": 20,
+      "level_sha256": "f70efbcdf0801d59ccad30017b8953af7ecd80df9a87b6ef378a6d7bbfd5e6e7",
+      "source_model": {
+        "path": "build/runtime/en/LEVEL3-definitions.json",
+        "sha256": "8bd23f5c3051c590ea0752b85cc87247a194b98c084829bb01126d0a91162def",
+        "size": 192520
+      },
+      "native_oracle": {
+        "path": "build/runtime/en/LEVEL3-native.json",
+        "sha256": "403b96b8979edcce8de8b20f6f3d5a87e79798a783e5a862c3a872b9616f0ee5",
+        "size": 142829
+      },
+      "runtime_model": {
+        "path": "build/runtime/en/LEVEL3-runtime.json",
+        "sha256": "858df2bebb53df1036c13d4c928be949b42f93c244aa04d2abad5261bd52bbf5",
+        "size": 376830
+      }
+    }
+  ],
+  "tool": {
+    "path": "C:\\Source\\DoK-port\\build\\native\\dok-runtime.exe",
+    "sha256": "c4b83e2c6d11dcc6bff14f8c3c9c9bde52b0fd8f9d676541354064fb1b72d6d8"
+  },
+  "checker_sha256": "68b78861498ff9d9ead019ed1eee3b1f9255077cf5892b45358f6594a8b5926a",
+  "originals": {
+    "ru": {
+      "exe": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+      "res": "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816"
+    },
+    "en": {
+      "exe": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b",
+      "res": "865da340621fa6f90548a84e9ae9bf0a85071befb32a40ca1d359e488f74d458"
+    }
+  },
+  "totals": {
+    "definitions": 780,
+    "actors": 472,
+    "placed_actor_cells": 450,
+    "unique_placed_actors": 440,
+    "unplaced_actors": 32,
+    "repeated_actor_definitions": 10,
+    "numeric_fields": 4950,
+    "resource_fields": 2128,
+    "text_fields": 532,
+    "native_known_bytes": 69623,
+    "runtime_known_bytes": 69623,
+    "missing_known_bytes": 0
+  },
+  "host_layout": {
+    "runtime": {
+      "size": 33872,
+      "align": 8
+    },
+    "object": {
+      "size": 36,
+      "align": 4
+    },
+    "actor": {
+      "size": 64,
+      "align": 4
+    },
+    "player": {
+      "size": 60,
+      "align": 4
+    },
+    "definition": {
+      "size": 32,
+      "align": 2
+    },
+    "field": {
+      "size": 8,
+      "align": 4
+    },
+    "level": {
+      "size": 608,
+      "align": 8
+    },
+    "storage": {
+      "size": 70716,
+      "align": 4
+    },
+    "offsets": {
+      "runtime.objects": 8,
+      "runtime.actors": 9224,
+      "runtime.player": 17416,
+      "runtime.maps": 17476,
+      "actor.x": 4,
+      "actor.heading": 36,
+      "object.state": 16,
+      "definition.actor_index": 12,
+      "field.value": 4
+    },
+    "capacities": {
+      "objects": 256,
+      "actors": 128,
+      "fields": 2048,
+      "text": 16384,
+      "cells": 4096
+    }
+  },
+  "maxima": {
+    "definitions": 158,
+    "actors": 106,
+    "placed_actor_cells": 102,
+    "unique_placed_actors": 101,
+    "unplaced_actors": 7,
+    "numeric_fields": 1073,
+    "resource_fields": 466,
+    "text_fields": 116,
+    "unique_resource_names": 73
+  },
+  "class_maxima": {
+    "0": 3,
+    "1": 1,
+    "2": 3,
+    "3": 9,
+    "4": 2,
+    "6": 5,
+    "7": 18,
+    "8": 4,
+    "9": 105,
+    "10": 2,
+    "12": 5,
+    "13": 1
+  },
+  "capacity_headroom": {
+    "objects": {
+      "observed_maximum": 158,
+      "capacity": 256,
+      "spare": 98
+    },
+    "actors": {
+      "observed_maximum": 106,
+      "capacity": 128,
+      "spare": 22
+    },
+    "fields": {
+      "observed_maximum": 1655,
+      "capacity": 2048,
+      "spare": 393
+    },
+    "text": {
+      "observed_maximum": 8849,
+      "capacity": 16384,
+      "spare": 7535
+    },
+    "cells": {
+      "observed_maximum": 4096,
+      "capacity": 4096,
+      "spare": 0
+    }
+  },
+  "synthetic_tests": {
+    "path": "C:\\Source\\DoK-port\\build\\native\\dok-runtime-tests.exe",
+    "sha256": "86fe14f3183b1acf8fefefb664408902a5ce7c73f566891b284fe3a479ab91c8",
+    "source": "tests/test_runtime.c",
+    "source_sha256": "e9a7b0ea0d549e08025a06927205b90072097372b43526779f1beb4a53af1826",
+    "exit_code": 0,
+    "stdout": "runtime: shared glyph/last placement, unknowns, scalar coverage, ROM ownership, reset/release and all capacity bounds passed",
+    "stderr": "",
+    "coverage": [
+      "shared glyph references one actor; last row-major placement wins",
+      "unplaced class5 has unknown position and preserves failed-read outputs",
+      "unknown course counter/pointers and invalid scalar widths remain unknown",
+      "pickup category99 signed-word wrap; projectile negative velocity and SAR half-damage",
+      "every fixture native-known byte and mask matches runtime diagnostics",
+      "mutable player/monster/position reads reflect current state",
+      "reset restores complete state, visited and all reserved object/actor/map slots",
+      "non-null weapon object IDs are not fabricated native pointers",
+      "reset rejects object/actor/field/text/cell overcapacity and malformed metadata",
+      "object-overcapacity reset leaves prior runtime byte-for-byte unchanged",
+      "runtime reset survives destroyed stage6 source arrays",
+      "release drops borrowed view and clears mutable state",
+      "conversion of 129 actual actor definitions rejects actor capacity",
+      "conversion rejects object-count overflow and null arguments"
+    ]
+  },
+  "status": "passed"
+}

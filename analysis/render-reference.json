@@ -1,0 +1,854 @@
+{
+  "task": "G04",
+  "kind": "read-only saved DOS snapshots and VGA index frames",
+  "scenes": [
+    {
+      "language": "ru",
+      "source_run": "ru-03",
+      "inputs": [
+        {
+          "path": "build/reference/ru-03/report.json",
+          "size": 10005,
+          "sha256": "bba0ed05955c8025b06ab8a494130b2556e29687c8d493f802e14c0fddb8a626"
+        },
+        {
+          "path": "build/reference/ru-03/level1-memory.bin",
+          "size": 16777216,
+          "sha256": "c8ff1347518aae86af31b8ed2c6f6443c4c63c9157b4a52bf76d53c7f5c95629"
+        },
+        {
+          "path": "build/reference/ru-03/level1-start.idx",
+          "size": 64000,
+          "sha256": "2998ed9d6f592e16ddd662b467e6635d15272e3181d5baec09f09d4c88ae2a1c"
+        }
+      ],
+      "runtime_data_base": "0x1d38e0",
+      "anchor_unique": true,
+      "player_linear_address": "0x1fe7fe",
+      "player_xyz_heading": [
+        15120,
+        -300,
+        22800,
+        90
+      ],
+      "globals": {
+        "c_runtime_anchor": {
+          "data_segment_offset": "0x1082",
+          "linear_address": "0x1d4962",
+          "kind": "C runtime string",
+          "evidence": "docs/reference-runs.md"
+        },
+        "surface_pitch": {
+          "data_segment_offset": "0xb52c",
+          "linear_address": "0x1dee0c",
+          "kind": "u16",
+          "evidence": "WASDify performance.md; Ghidra NE3:0155",
+          "value": 320
+        },
+        "surface_buffer": {
+          "data_segment_offset": "0xb53a",
+          "linear_address": "0x1dee1a",
+          "kind": "far16",
+          "evidence": "WASDify profile_kremlin.py; surface global",
+          "offset": "0xfe",
+          "selector": "0x63f",
+          "linear_pointer": null
+        },
+        "screen_geometry": {
+          "data_segment_offset": "0xc1fc",
+          "linear_address": "0x1dfadc",
+          "kind": "u16[2]",
+          "evidence": "G00 scripts/dos_reference.py",
+          "value": [
+            320,
+            200
+          ]
+        }
+      },
+      "camera_globals": {
+        "D": {
+          "data_segment_offset": "0xaa16",
+          "linear_address": "0x1de2f6",
+          "format": "i",
+          "value": 200
+        },
+        "width": {
+          "data_segment_offset": "0xaa1a",
+          "linear_address": "0x1de2fa",
+          "format": "h",
+          "value": 320
+        },
+        "height_initialization": {
+          "data_segment_offset": "0xaa1c",
+          "linear_address": "0x1de2fc",
+          "format": "h",
+          "value": 161
+        },
+        "center_x": {
+          "data_segment_offset": "0xaa1e",
+          "linear_address": "0x1de2fe",
+          "format": "h",
+          "value": 159
+        },
+        "center_y": {
+          "data_segment_offset": "0xaa20",
+          "linear_address": "0x1de300",
+          "format": "h",
+          "value": 79
+        },
+        "clip_left": {
+          "data_segment_offset": "0xaa22",
+          "linear_address": "0x1de302",
+          "format": "i",
+          "value": 0
+        },
+        "clip_top": {
+          "data_segment_offset": "0xaa26",
+          "linear_address": "0x1de306",
+          "format": "i",
+          "value": 0
+        },
+        "clip_right": {
+          "data_segment_offset": "0xaa2a",
+          "linear_address": "0x1de30a",
+          "format": "i",
+          "value": 319
+        },
+        "clip_bottom": {
+          "data_segment_offset": "0xaa2e",
+          "linear_address": "0x1de30e",
+          "format": "i",
+          "value": 159
+        },
+        "viewport_scale": {
+          "data_segment_offset": "0xaa32",
+          "linear_address": "0x1de312",
+          "format": "h",
+          "value": 8
+        },
+        "sin_q15": {
+          "data_segment_offset": "0xaa3e",
+          "linear_address": "0x1de31e",
+          "format": "i",
+          "value": 32768
+        },
+        "cos_q15": {
+          "data_segment_offset": "0xaa42",
+          "linear_address": "0x1de322",
+          "format": "i",
+          "value": 0
+        },
+        "camera_x": {
+          "data_segment_offset": "0xaa46",
+          "linear_address": "0x1de326",
+          "format": "i",
+          "value": 15120
+        },
+        "camera_y": {
+          "data_segment_offset": "0xaa4a",
+          "linear_address": "0x1de32a",
+          "format": "i",
+          "value": -300
+        },
+        "camera_z": {
+          "data_segment_offset": "0xaa4e",
+          "linear_address": "0x1de32e",
+          "format": "i",
+          "value": 22800
+        },
+        "camera_buffer": {
+          "data_segment_offset": "0xaa56",
+          "linear_address": "0x1de336",
+          "format": "HH",
+          "value": [
+            594,
+            1279
+          ]
+        },
+        "focal_q12": {
+          "data_segment_offset": "0x934",
+          "linear_address": "0x1d4214",
+          "format": "h",
+          "value": 4096
+        },
+        "surface_width_scale": {
+          "data_segment_offset": "0xb52e",
+          "value": 1.0
+        },
+        "surface_height_scale": {
+          "data_segment_offset": "0xb532",
+          "value": 1.0
+        }
+      },
+      "runtime_trig_table": {
+        "linear_address": "0x1ca9b0",
+        "cosine_offset_from_sine": "0x5a4",
+        "entries_per_function": 361,
+        "integer_values_checked": 722,
+        "formula": "trunc0(sin/cos(n*3.14159265359/180)*32768), n=0..360",
+        "mismatches": 0,
+        "sha256": "21e6801484f26274c7d366af9230a0e5af0dda6d5fd5298ad0b81481bf59ac49",
+        "search_candidates": [
+          {
+            "linear_address": "0x1ca9b0",
+            "mismatches": 0
+          },
+          {
+            "linear_address": "0x1cb38c",
+            "mismatches": 630
+          }
+        ],
+        "ghidra_table_space": "1180:0000",
+        "ghidra_initializer": "10c8:003b..00d3",
+        "method": "Unique complete-table match in saved linear RAM, not selector*16"
+      },
+      "door_geometry": {
+        "glyph_hex": "64",
+        "class": 7,
+        "sprite_name_hex": "84848285909c5f84",
+        "image_resource_index": 49,
+        "image_payload_sha256": "1903b4ed1641de470de12d281d9f9edf636bf7a0f6ec32ebc24929f97f6c636b",
+        "image_size": [
+          96,
+          128
+        ],
+        "source_scale": 5,
+        "low16_scaled_size": [
+          480,
+          640
+        ],
+        "quads": [
+          {
+            "source_cell_xy": [
+              24,
+              16
+            ],
+            "runtime_cell_xz": [
+              24,
+              47
+            ],
+            "origin_xyz": [
+              11520,
+              0,
+              22560
+            ],
+            "world_plane_x": 11760,
+            "world_width_height": [
+              480,
+              640
+            ],
+            "depth": 3360,
+            "q": 1840,
+            "projected_bounds_inclusive": [
+              145,
+              59,
+              172,
+              95
+            ],
+            "memory_match": {
+              "record_linear_address": "0x281522",
+              "vertex_linear_address": "0x281535",
+              "vtable_offset": "0x966",
+              "vertex_order": "forward",
+              "vertices_xy_depth": [
+                [
+                  145,
+                  59,
+                  3360
+                ],
+                [
+                  172,
+                  59,
+                  3360
+                ],
+                [
+                  172,
+                  95,
+                  3360
+                ],
+                [
+                  145,
+                  95,
+                  3360
+                ]
+              ],
+              "texture_u_range": [
+                0,
+                95
+              ],
+              "record_sha256": "773a8aca066a160751109d50df82ee8742f4d0c29c16b51c8a8f47c06dddaf93"
+            }
+          },
+          {
+            "source_cell_xy": [
+              24,
+              17
+            ],
+            "runtime_cell_xz": [
+              24,
+              46
+            ],
+            "origin_xyz": [
+              11520,
+              0,
+              22080
+            ],
+            "world_plane_x": 11760,
+            "world_width_height": [
+              480,
+              640
+            ],
+            "depth": 3360,
+            "q": 1840,
+            "projected_bounds_inclusive": [
+              118,
+              59,
+              145,
+              95
+            ],
+            "memory_match": {
+              "record_linear_address": "0x2c6722",
+              "vertex_linear_address": "0x2c6735",
+              "vtable_offset": "0x966",
+              "vertex_order": "reverse",
+              "vertices_xy_depth": [
+                [
+                  145,
+                  59,
+                  3360
+                ],
+                [
+                  118,
+                  59,
+                  3360
+                ],
+                [
+                  118,
+                  95,
+                  3360
+                ],
+                [
+                  145,
+                  95,
+                  3360
+                ]
+              ],
+              "texture_u_range": [
+                0,
+                95
+              ],
+              "record_sha256": "46379d18c0a43e4da8ceca357b0b3934fe36f2e92d3858811a8ee14f913126b0"
+            }
+          }
+        ],
+        "combined_bounds_inclusive": [
+          118,
+          59,
+          172,
+          95
+        ],
+        "frame_crop_indices_sha256": "8935aadbab7525aa18362e542b75cb97f4e0eb9fbc3dcac18e68e4f0f26ab8f9",
+        "projected_records_match": true,
+        "evidence": {
+          "scaled_size": "RU1098:3583..35ac / EN1030:3b29..3b57",
+          "constructor_theta90": "RU10b0:00aa..00f9 / EN1040 corresponding constructor",
+          "projection": "RU10b0:01a3..0501 / EN1040 corresponding constructor"
+        },
+        "scope": "Exact geometric vertices in actual saved RAM; opaque texture edges and full framebuffer equivalence not asserted"
+      },
+      "camera_evidence": "Fresh G04 Ghidra camera initialization/projection listing; final address pairs in docs/rendering.md",
+      "vga": {
+        "linear_address": "0xa0000",
+        "width": 320,
+        "height": 200,
+        "sha256": "2998ed9d6f592e16ddd662b467e6635d15272e3181d5baec09f09d4c88ae2a1c",
+        "snapshot_equals_saved_start_frame": true,
+        "palette": "grayscale index visualization; original DAC not captured"
+      },
+      "selectors_from_later_cpu_report": {
+        "ds": "0x4df",
+        "ss": "0x4df",
+        "simultaneous_with_memory_snapshot": false
+      },
+      "ldt_resolution": {
+        "candidates": [],
+        "resolved": false,
+        "status": "No validated descriptor table in the saved partial memory"
+      },
+      "configured_guest_ram_bytes": 33554432,
+      "captured_memory_bytes": 16777216,
+      "viewport_aspect": {
+        "raw_clip_pixels": [
+          320,
+          160
+        ],
+        "source_ui_starts_at_row": 160,
+        "dosbox_mode13_log": [
+          "2026-10-24 16:08:07.054 | DISPLAY: VGA 320x200 256-colour graphics mode 13h at 70.086 Hz, scaled to 758x569 pixels with 1:1.2 (5:6) pixel aspect ratio"
+        ],
+        "dosbox_pixel_aspect_width_height": [
+          5,
+          6
+        ],
+        "aspect_corrected_source_extent": [
+          320,
+          192
+        ],
+        "gba_width": 240,
+        "raw_isotropic_height": 120,
+        "aspect_preserving_height": 144,
+        "remaining_gba_rows": 16,
+        "preview_status": "Nearest-neighbor resampled DOS reference; not a GBA renderer"
+      },
+      "projection_status": "Camera/trig and two projected door records agree exactly with source map/image and Ghidra arithmetic"
+    },
+    {
+      "language": "en",
+      "source_run": "en-02",
+      "inputs": [
+        {
+          "path": "build/reference/en-02/report.json",
+          "size": 10006,
+          "sha256": "be20dcd7d215bca08564469667ae1ed3c2a5fafdb198bc20db9fa8a5a314ae6a"
+        },
+        {
+          "path": "build/reference/en-02/level1-memory.bin",
+          "size": 16777216,
+          "sha256": "b667dda83c8504ec4a8c4716aef01d26696ba0daa6433055b3ca1ab9ff827baa"
+        },
+        {
+          "path": "build/reference/en-02/level1-start.idx",
+          "size": 64000,
+          "sha256": "72993890dfcf84a6e63f7be16f5beb881b868090c6d39bcb00d7da09b18c22a9"
+        }
+      ],
+      "runtime_data_base": "0x1d7090",
+      "anchor_unique": true,
+      "player_linear_address": "0x20d38a",
+      "player_xyz_heading": [
+        15120,
+        -300,
+        23280,
+        90
+      ],
+      "globals": {
+        "c_runtime_anchor": {
+          "data_segment_offset": "0x1132",
+          "linear_address": "0x1d81c2",
+          "kind": "C runtime string",
+          "evidence": "docs/reference-runs.md"
+        },
+        "surface_pitch": {
+          "data_segment_offset": "0xb5dc",
+          "linear_address": "0x1e266c",
+          "kind": "u16",
+          "evidence": "WASDify performance.md; Ghidra NE3:0155",
+          "value": 320
+        },
+        "surface_buffer": {
+          "data_segment_offset": "0xb5ea",
+          "linear_address": "0x1e267a",
+          "kind": "far16",
+          "evidence": "WASDify profile_kremlin.py; surface global",
+          "offset": "0xfe",
+          "selector": "0x4af",
+          "linear_pointer": null
+        },
+        "screen_geometry": {
+          "data_segment_offset": "0xc2ac",
+          "linear_address": "0x1e333c",
+          "kind": "u16[2]",
+          "evidence": "G00 scripts/dos_reference.py",
+          "value": [
+            320,
+            200
+          ]
+        }
+      },
+      "camera_globals": {
+        "D": {
+          "data_segment_offset": "0xaac6",
+          "linear_address": "0x1e1b56",
+          "format": "i",
+          "value": 200
+        },
+        "width": {
+          "data_segment_offset": "0xaaca",
+          "linear_address": "0x1e1b5a",
+          "format": "h",
+          "value": 320
+        },
+        "height_initialization": {
+          "data_segment_offset": "0xaacc",
+          "linear_address": "0x1e1b5c",
+          "format": "h",
+          "value": 161
+        },
+        "center_x": {
+          "data_segment_offset": "0xaace",
+          "linear_address": "0x1e1b5e",
+          "format": "h",
+          "value": 159
+        },
+        "center_y": {
+          "data_segment_offset": "0xaad0",
+          "linear_address": "0x1e1b60",
+          "format": "h",
+          "value": 79
+        },
+        "clip_left": {
+          "data_segment_offset": "0xaad2",
+          "linear_address": "0x1e1b62",
+          "format": "i",
+          "value": 0
+        },
+        "clip_top": {
+          "data_segment_offset": "0xaad6",
+          "linear_address": "0x1e1b66",
+          "format": "i",
+          "value": 0
+        },
+        "clip_right": {
+          "data_segment_offset": "0xaada",
+          "linear_address": "0x1e1b6a",
+          "format": "i",
+          "value": 319
+        },
+        "clip_bottom": {
+          "data_segment_offset": "0xaade",
+          "linear_address": "0x1e1b6e",
+          "format": "i",
+          "value": 159
+        },
+        "viewport_scale": {
+          "data_segment_offset": "0xaae2",
+          "linear_address": "0x1e1b72",
+          "format": "h",
+          "value": 8
+        },
+        "sin_q15": {
+          "data_segment_offset": "0xaaee",
+          "linear_address": "0x1e1b7e",
+          "format": "i",
+          "value": 32768
+        },
+        "cos_q15": {
+          "data_segment_offset": "0xaaf2",
+          "linear_address": "0x1e1b82",
+          "format": "i",
+          "value": 0
+        },
+        "camera_x": {
+          "data_segment_offset": "0xaaf6",
+          "linear_address": "0x1e1b86",
+          "format": "i",
+          "value": 15120
+        },
+        "camera_y": {
+          "data_segment_offset": "0xaafa",
+          "linear_address": "0x1e1b8a",
+          "format": "i",
+          "value": -300
+        },
+        "camera_z": {
+          "data_segment_offset": "0xaafe",
+          "linear_address": "0x1e1b8e",
+          "format": "i",
+          "value": 23280
+        },
+        "camera_buffer": {
+          "data_segment_offset": "0xab06",
+          "linear_address": "0x1e1b96",
+          "format": "HH",
+          "value": [
+            594,
+            895
+          ]
+        },
+        "focal_q12": {
+          "data_segment_offset": "0xa44",
+          "linear_address": "0x1d7ad4",
+          "format": "h",
+          "value": 4096
+        },
+        "surface_width_scale": {
+          "data_segment_offset": "0xb5de",
+          "value": 1.0
+        },
+        "surface_height_scale": {
+          "data_segment_offset": "0xb5e2",
+          "value": 1.0
+        }
+      },
+      "runtime_trig_table": {
+        "linear_address": "0x1ce160",
+        "cosine_offset_from_sine": "0x5a4",
+        "entries_per_function": 361,
+        "integer_values_checked": 722,
+        "formula": "trunc0(sin/cos(n*3.14159265359/180)*32768), n=0..360",
+        "mismatches": 0,
+        "sha256": "21e6801484f26274c7d366af9230a0e5af0dda6d5fd5298ad0b81481bf59ac49",
+        "search_candidates": [
+          {
+            "linear_address": "0x1ce160",
+            "mismatches": 0
+          },
+          {
+            "linear_address": "0x1ceb3c",
+            "mismatches": 630
+          }
+        ],
+        "ghidra_table_space": "10c0:0000",
+        "ghidra_initializer": "1058:003b..00d3",
+        "method": "Unique complete-table match in saved linear RAM, not selector*16"
+      },
+      "door_geometry": {
+        "glyph_hex": "64",
+        "class": 7,
+        "sprite_name_hex": "84848285909c5f84",
+        "image_resource_index": 49,
+        "image_payload_sha256": "1903b4ed1641de470de12d281d9f9edf636bf7a0f6ec32ebc24929f97f6c636b",
+        "image_size": [
+          96,
+          128
+        ],
+        "source_scale": 5,
+        "low16_scaled_size": [
+          480,
+          640
+        ],
+        "quads": [
+          {
+            "source_cell_xy": [
+              24,
+              16
+            ],
+            "runtime_cell_xz": [
+              24,
+              47
+            ],
+            "origin_xyz": [
+              11520,
+              0,
+              22560
+            ],
+            "world_plane_x": 11760,
+            "world_width_height": [
+              480,
+              640
+            ],
+            "depth": 3360,
+            "q": 1840,
+            "projected_bounds_inclusive": [
+              118,
+              59,
+              145,
+              95
+            ],
+            "memory_match": {
+              "record_linear_address": "0x2ca28a",
+              "vertex_linear_address": "0x2ca29d",
+              "vtable_offset": "0x937",
+              "vertex_order": "forward",
+              "vertices_xy_depth": [
+                [
+                  118,
+                  59,
+                  3360
+                ],
+                [
+                  145,
+                  59,
+                  3360
+                ],
+                [
+                  145,
+                  95,
+                  3360
+                ],
+                [
+                  118,
+                  95,
+                  3360
+                ]
+              ],
+              "texture_u_range": [
+                0,
+                95
+              ],
+              "record_sha256": "fa9331c74c7b371db5b2d209196b287dec6d677e373d336f7c314a099ae45f2d"
+            }
+          },
+          {
+            "source_cell_xy": [
+              24,
+              17
+            ],
+            "runtime_cell_xz": [
+              24,
+              46
+            ],
+            "origin_xyz": [
+              11520,
+              0,
+              22080
+            ],
+            "world_plane_x": 11760,
+            "world_width_height": [
+              480,
+              640
+            ],
+            "depth": 3360,
+            "q": 1840,
+            "projected_bounds_inclusive": [
+              91,
+              59,
+              118,
+              95
+            ],
+            "memory_match": {
+              "record_linear_address": "0x2c9bd2",
+              "vertex_linear_address": "0x2c9be5",
+              "vtable_offset": "0x937",
+              "vertex_order": "reverse",
+              "vertices_xy_depth": [
+                [
+                  118,
+                  59,
+                  3360
+                ],
+                [
+                  91,
+                  59,
+                  3360
+                ],
+                [
+                  91,
+                  95,
+                  3360
+                ],
+                [
+                  118,
+                  95,
+                  3360
+                ]
+              ],
+              "texture_u_range": [
+                0,
+                95
+              ],
+              "record_sha256": "89fc6c6640dda1b178386839a89d0ff5117155871ebbdc644fcd665d8b0bbe75"
+            }
+          }
+        ],
+        "combined_bounds_inclusive": [
+          91,
+          59,
+          145,
+          95
+        ],
+        "frame_crop_indices_sha256": "e59b327bbb70256b5b9ac3b87a5f47bfb6d0732ba159d4b0693727b86a132a73",
+        "projected_records_match": true,
+        "evidence": {
+          "scaled_size": "RU1098:3583..35ac / EN1030:3b29..3b57",
+          "constructor_theta90": "RU10b0:00aa..00f9 / EN1040 corresponding constructor",
+          "projection": "RU10b0:01a3..0501 / EN1040 corresponding constructor"
+        },
+        "scope": "Exact geometric vertices in actual saved RAM; opaque texture edges and full framebuffer equivalence not asserted"
+      },
+      "camera_evidence": "Fresh G04 Ghidra camera initialization/projection listing; final address pairs in docs/rendering.md",
+      "vga": {
+        "linear_address": "0xa0000",
+        "width": 320,
+        "height": 200,
+        "sha256": "72993890dfcf84a6e63f7be16f5beb881b868090c6d39bcb00d7da09b18c22a9",
+        "snapshot_equals_saved_start_frame": true,
+        "palette": "grayscale index visualization; original DAC not captured"
+      },
+      "selectors_from_later_cpu_report": {
+        "ds": "0x35f",
+        "ss": "0x35f",
+        "simultaneous_with_memory_snapshot": false
+      },
+      "ldt_resolution": {
+        "candidates": [],
+        "resolved": false,
+        "status": "No validated descriptor table in the saved partial memory"
+      },
+      "configured_guest_ram_bytes": 33554432,
+      "captured_memory_bytes": 16777216,
+      "viewport_aspect": {
+        "raw_clip_pixels": [
+          320,
+          160
+        ],
+        "source_ui_starts_at_row": 160,
+        "dosbox_mode13_log": [
+          "2026-10-24 16:07:44.352 | DISPLAY: VGA 320x200 256-colour graphics mode 13h at 70.086 Hz, scaled to 758x569 pixels with 1:1.2 (5:6) pixel aspect ratio"
+        ],
+        "dosbox_pixel_aspect_width_height": [
+          5,
+          6
+        ],
+        "aspect_corrected_source_extent": [
+          320,
+          192
+        ],
+        "gba_width": 240,
+        "raw_isotropic_height": 120,
+        "aspect_preserving_height": 144,
+        "remaining_gba_rows": 16,
+        "preview_status": "Nearest-neighbor resampled DOS reference; not a GBA renderer"
+      },
+      "projection_status": "Camera/trig and two projected door records agree exactly with source map/image and Ghidra arithmetic"
+    }
+  ],
+  "originals": {
+    "ru": {
+      "exe": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+      "resource": "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816"
+    },
+    "en": {
+      "exe": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b",
+      "resource": "865da340621fa6f90548a84e9ae9bf0a85071befb32a40ca1d359e488f74d458"
+    }
+  },
+  "ghidra_evidence": [
+    {
+      "path": "build/rendering/ru/evidence.asm",
+      "size": 257154,
+      "sha256": "0bd594ca690ae400f34f839832c86879ea2d44d4dfc32bfdc7f8cbe8928c3ea2"
+    },
+    {
+      "path": "build/rendering/ru/analysis-manifest.json",
+      "size": 623,
+      "sha256": "e04fe3b23c3abdc9d9c5bed2d0044836c3c8ff72afb562eeb156a8ab10d87150"
+    },
+    {
+      "path": "build/rendering/en/evidence.asm",
+      "size": 276527,
+      "sha256": "484c456619194d40611ef9778bf63c9421b41d4dcb8fd8c2bc62ec9a12fac6b5"
+    },
+    {
+      "path": "build/rendering/en/analysis-manifest.json",
+      "size": 623,
+      "sha256": "428b013359d3244dbac4bb2c43433d7cf3654f85a888a9b4aba30031ea8e2d69"
+    }
+  ],
+  "exe_analysis": "No original EXE decoding/disassembly; only hashes and prior Ghidra-derived offset tags",
+  "status": "passed_saved_scene_probe",
+  "status_scope": "Saved camera/pose, complete trig tables, VGA identity and exact projected door records; not full renderer pixel equivalence",
+  "cross_scene_door_comparison": {
+    "predicted_eng_minus_rus_translation_pixels": [
+      -27,
+      0
+    ],
+    "predicted_depth_and_q_equal": true,
+    "projected_records_checked": 4,
+    "crop_pixels": 2035,
+    "equal_indices_after_predicted_translation": 1524,
+    "scope": "Index comparison inside projected quads includes background visible through the texture; not a full pixel-renderer oracle"
+  },
+  "runtime_trig_integer_values_checked": 1444,
+  "originals_unchanged": true
+}

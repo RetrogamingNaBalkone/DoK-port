@@ -1,0 +1,899 @@
+{
+  "task": "G02",
+  "date": "2026-10-24",
+  "status": "complete",
+  "sources": {
+    "analysis/levels-ru.json": "683d82a9cf100b02618ffa6efb03a6f2fe70b69aa00a8abc77e17642fb2819d9",
+    "analysis/levels-en.json": "c419ded1b1ad5f028f97d79fb234b10bb595b89038405cc9c6ce417275e77838",
+    "analysis/worlds-ru.json": "40884c644539e3f15d0072e8893294db8684afb5605b5c994be671d8ef52ad90",
+    "analysis/worlds-en.json": "b92845180c9a679e5403ac2dadedd3d0f1dd1b73d3a6cfbea0cb04a77983fac9",
+    "build/gba-memory/memory-layout.json": "6a493b710577c233ffdfb4d7e6554cd7d4edabd26979451509dcf62727bcef5c",
+    "include/dok/runtime.h": "89b719ba6c66d4d7493f646180527934e6c28d71ec7f678cd2f1222c6ae658d6",
+    "gba/memory_probe.c": "a6298954e7d948a16b78ac9657d6073923b393823e06228284904be8d54dcf40",
+    "analysis/g02-memory-run.json": "d1959cb82b6c4b4fb4df3a9afcbc1abcff4e0fc00baf469e1eb485e5decc76c3",
+    "build/gba-memory/build-report.json": "470baef95e430a3cd9f3a1b70b0a33f7faf1cd479256b93fa0347216d143550c",
+    "analysis/runtime-verification.json": "5d49635e8ab3ad80e2ed6ab5ab0536450dbc8ab00ec9f5c643effb5e9ffa8c9d"
+  },
+  "levels": [
+    {
+      "language": "ru",
+      "level": 1,
+      "resource_index": 18,
+      "level_sha256": "21872af6fa49bf8c0c8fe89dfe2ca5dd040912b3f141c306258c9a4f6cb9e856",
+      "map_cells": 4096,
+      "objects": 115,
+      "actor_definitions": 65,
+      "placed_actor_cells": 63,
+      "unique_placed_actors": 61,
+      "unplaced_actor_glyphs": [
+        143,
+        155,
+        235,
+        236
+      ],
+      "repeated_actor_glyphs": [
+        170,
+        234
+      ],
+      "known_native_bytes": 9935,
+      "field_values": 1069,
+      "referenced_resources": 70,
+      "classes": {
+        "0": 3,
+        "1": 1,
+        "2": 3,
+        "3": 9,
+        "4": 2,
+        "6": 5,
+        "7": 18,
+        "8": 3,
+        "9": 64,
+        "10": 2,
+        "12": 5
+      },
+      "player": {
+        "glyph": 77,
+        "class_id": 1,
+        "placements": 1,
+        "x": 15120,
+        "y": -300,
+        "z": 22800,
+        "heading": 90
+      },
+      "field_kind_counts": {
+        "0": 484,
+        "1": 150,
+        "2": 64,
+        "3": 32,
+        "4": 134,
+        "5": 130,
+        "6": 75
+      },
+      "text_bytes_with_nul_without_dedup": 1646,
+      "longest_text_bytes": 36,
+      "startup_map_bytes": 12288,
+      "world_map_bytes": 16384,
+      "runtime_conversion": {
+        "object_count": 115,
+        "actor_count": 65,
+        "field_count": 1069,
+        "text_size": 5980,
+        "cells": 4096,
+        "mutable_used": 24744,
+        "rom_records_used": 38860
+      },
+      "typed_rom_records_plus_arm_view_bytes": 39440,
+      "runtime_known_bytes": 9935,
+      "missing_known_bytes": 0
+    },
+    {
+      "language": "ru",
+      "level": 2,
+      "resource_index": 19,
+      "level_sha256": "f8bb9c934f2cf96e3164fbce6f0c2e3f0c666f9527642584d646899b6084fc99",
+      "map_cells": 4096,
+      "objects": 117,
+      "actor_definitions": 65,
+      "placed_actor_cells": 60,
+      "unique_placed_actors": 58,
+      "unplaced_actor_glyphs": [
+        153,
+        155,
+        224,
+        225,
+        227,
+        228,
+        235
+      ],
+      "repeated_actor_glyphs": [
+        144,
+        145
+      ],
+      "known_native_bytes": 9963,
+      "field_values": 1081,
+      "referenced_resources": 70,
+      "classes": {
+        "0": 3,
+        "1": 1,
+        "2": 3,
+        "3": 9,
+        "4": 2,
+        "6": 5,
+        "7": 18,
+        "8": 4,
+        "9": 64,
+        "10": 2,
+        "12": 5,
+        "13": 1
+      },
+      "player": {
+        "glyph": 77,
+        "class_id": 1,
+        "placements": 1,
+        "x": 20880,
+        "y": -300,
+        "z": 3120,
+        "heading": 90
+      },
+      "field_kind_counts": {
+        "0": 487,
+        "1": 152,
+        "2": 65,
+        "3": 36,
+        "4": 136,
+        "5": 130,
+        "6": 75
+      },
+      "text_bytes_with_nul_without_dedup": 1650,
+      "longest_text_bytes": 36,
+      "startup_map_bytes": 12288,
+      "world_map_bytes": 16384,
+      "runtime_conversion": {
+        "object_count": 117,
+        "actor_count": 65,
+        "field_count": 1081,
+        "text_size": 6105,
+        "cells": 4096,
+        "mutable_used": 24816,
+        "rom_records_used": 39217
+      },
+      "typed_rom_records_plus_arm_view_bytes": 39797,
+      "runtime_known_bytes": 9963,
+      "missing_known_bytes": 0
+    },
+    {
+      "language": "ru",
+      "level": 3,
+      "resource_index": 20,
+      "level_sha256": "15e99cb968333c6998c7e9fc56e7de57de56c7013b98e5d7ea8f52f25478a66a",
+      "map_cells": 4096,
+      "objects": 158,
+      "actor_definitions": 106,
+      "placed_actor_cells": 102,
+      "unique_placed_actors": 101,
+      "unplaced_actor_glyphs": [
+        147,
+        151,
+        156,
+        231,
+        236
+      ],
+      "repeated_actor_glyphs": [
+        227
+      ],
+      "known_native_bytes": 15093,
+      "field_values": 1655,
+      "referenced_resources": 73,
+      "classes": {
+        "0": 3,
+        "1": 1,
+        "2": 3,
+        "3": 9,
+        "4": 2,
+        "6": 5,
+        "7": 18,
+        "8": 4,
+        "9": 105,
+        "10": 2,
+        "12": 5,
+        "13": 1
+      },
+      "player": {
+        "glyph": 77,
+        "class_id": 1,
+        "placements": 1,
+        "x": 17520,
+        "y": -300,
+        "z": 28560,
+        "heading": 90
+      },
+      "field_kind_counts": {
+        "0": 733,
+        "1": 234,
+        "2": 106,
+        "3": 36,
+        "4": 218,
+        "5": 212,
+        "6": 116
+      },
+      "text_bytes_with_nul_without_dedup": 2484,
+      "longest_text_bytes": 36,
+      "startup_map_bytes": 12288,
+      "world_map_bytes": 16384,
+      "runtime_conversion": {
+        "object_count": 158,
+        "actor_count": 106,
+        "field_count": 1655,
+        "text_size": 8849,
+        "cells": 4096,
+        "mutable_used": 28916,
+        "rom_records_used": 51965
+      },
+      "typed_rom_records_plus_arm_view_bytes": 52545,
+      "runtime_known_bytes": 15093,
+      "missing_known_bytes": 0
+    },
+    {
+      "language": "en",
+      "level": 1,
+      "resource_index": 18,
+      "level_sha256": "ff9354074b91d020ab26892c803b984fd6367875efd190202927840afb39c089",
+      "map_cells": 4096,
+      "objects": 115,
+      "actor_definitions": 65,
+      "placed_actor_cells": 63,
+      "unique_placed_actors": 61,
+      "unplaced_actor_glyphs": [
+        143,
+        155,
+        235,
+        236
+      ],
+      "repeated_actor_glyphs": [
+        170,
+        234
+      ],
+      "known_native_bytes": 9793,
+      "field_values": 1069,
+      "referenced_resources": 70,
+      "classes": {
+        "0": 3,
+        "1": 1,
+        "2": 3,
+        "3": 9,
+        "4": 2,
+        "6": 5,
+        "7": 18,
+        "8": 3,
+        "9": 64,
+        "10": 2,
+        "12": 5
+      },
+      "player": {
+        "glyph": 77,
+        "class_id": 1,
+        "placements": 1,
+        "x": 15120,
+        "y": -300,
+        "z": 23280,
+        "heading": 90
+      },
+      "field_kind_counts": {
+        "0": 484,
+        "1": 150,
+        "2": 64,
+        "3": 32,
+        "4": 134,
+        "5": 130,
+        "6": 75
+      },
+      "text_bytes_with_nul_without_dedup": 1504,
+      "longest_text_bytes": 33,
+      "startup_map_bytes": 12288,
+      "world_map_bytes": 16384,
+      "runtime_conversion": {
+        "object_count": 115,
+        "actor_count": 65,
+        "field_count": 1069,
+        "text_size": 5838,
+        "cells": 4096,
+        "mutable_used": 24744,
+        "rom_records_used": 38718
+      },
+      "typed_rom_records_plus_arm_view_bytes": 39298,
+      "runtime_known_bytes": 9793,
+      "missing_known_bytes": 0
+    },
+    {
+      "language": "en",
+      "level": 2,
+      "resource_index": 19,
+      "level_sha256": "65869d72be30ccc30cb673a8a66ec1b3ebe12681a7beb5a6aa365b07fc0ced91",
+      "map_cells": 4096,
+      "objects": 117,
+      "actor_definitions": 65,
+      "placed_actor_cells": 60,
+      "unique_placed_actors": 58,
+      "unplaced_actor_glyphs": [
+        153,
+        155,
+        224,
+        225,
+        227,
+        228,
+        235
+      ],
+      "repeated_actor_glyphs": [
+        144,
+        145
+      ],
+      "known_native_bytes": 9837,
+      "field_values": 1081,
+      "referenced_resources": 70,
+      "classes": {
+        "0": 3,
+        "1": 1,
+        "2": 3,
+        "3": 9,
+        "4": 2,
+        "6": 5,
+        "7": 18,
+        "8": 4,
+        "9": 64,
+        "10": 2,
+        "12": 5,
+        "13": 1
+      },
+      "player": {
+        "glyph": 77,
+        "class_id": 1,
+        "placements": 1,
+        "x": 20880,
+        "y": -300,
+        "z": 3120,
+        "heading": 90
+      },
+      "field_kind_counts": {
+        "0": 487,
+        "1": 152,
+        "2": 65,
+        "3": 36,
+        "4": 136,
+        "5": 130,
+        "6": 75
+      },
+      "text_bytes_with_nul_without_dedup": 1524,
+      "longest_text_bytes": 33,
+      "startup_map_bytes": 12288,
+      "world_map_bytes": 16384,
+      "runtime_conversion": {
+        "object_count": 117,
+        "actor_count": 65,
+        "field_count": 1081,
+        "text_size": 5979,
+        "cells": 4096,
+        "mutable_used": 24816,
+        "rom_records_used": 39091
+      },
+      "typed_rom_records_plus_arm_view_bytes": 39671,
+      "runtime_known_bytes": 9837,
+      "missing_known_bytes": 0
+    },
+    {
+      "language": "en",
+      "level": 3,
+      "resource_index": 20,
+      "level_sha256": "f70efbcdf0801d59ccad30017b8953af7ecd80df9a87b6ef378a6d7bbfd5e6e7",
+      "map_cells": 4096,
+      "objects": 158,
+      "actor_definitions": 106,
+      "placed_actor_cells": 102,
+      "unique_placed_actors": 101,
+      "unplaced_actor_glyphs": [
+        147,
+        151,
+        156,
+        231,
+        236
+      ],
+      "repeated_actor_glyphs": [
+        227
+      ],
+      "known_native_bytes": 15002,
+      "field_values": 1655,
+      "referenced_resources": 73,
+      "classes": {
+        "0": 3,
+        "1": 1,
+        "2": 3,
+        "3": 9,
+        "4": 2,
+        "6": 5,
+        "7": 18,
+        "8": 4,
+        "9": 105,
+        "10": 2,
+        "12": 5,
+        "13": 1
+      },
+      "player": {
+        "glyph": 77,
+        "class_id": 1,
+        "placements": 1,
+        "x": 17520,
+        "y": -300,
+        "z": 28560,
+        "heading": 90
+      },
+      "field_kind_counts": {
+        "0": 733,
+        "1": 234,
+        "2": 106,
+        "3": 36,
+        "4": 218,
+        "5": 212,
+        "6": 116
+      },
+      "text_bytes_with_nul_without_dedup": 2393,
+      "longest_text_bytes": 33,
+      "startup_map_bytes": 12288,
+      "world_map_bytes": 16384,
+      "runtime_conversion": {
+        "object_count": 158,
+        "actor_count": 106,
+        "field_count": 1655,
+        "text_size": 8758,
+        "cells": 4096,
+        "mutable_used": 28916,
+        "rom_records_used": 51874
+      },
+      "typed_rom_records_plus_arm_view_bytes": 52454,
+      "runtime_known_bytes": 15002,
+      "missing_known_bytes": 0
+    }
+  ],
+  "source_maxima": {
+    "map_cells": 4096,
+    "objects": 158,
+    "actor_definitions": 106,
+    "placed_actor_cells": 102,
+    "unique_placed_actors": 101,
+    "field_values": 1655,
+    "referenced_resources": 73,
+    "known_native_bytes": 15093,
+    "text_bytes_with_nul_without_dedup": 2484,
+    "longest_text_bytes": 36,
+    "field_kind_counts": {
+      "0": 733,
+      "1": 234,
+      "2": 106,
+      "3": 36,
+      "4": 218,
+      "5": 212,
+      "6": 116
+    },
+    "converter_text_pool_bytes": 8849,
+    "mutable_occupied_payload_bytes": 28916,
+    "typed_rom_records_plus_arm_view_bytes": 52545
+  },
+  "class_definition_maxima": {
+    "0": 3,
+    "1": 1,
+    "2": 3,
+    "3": 9,
+    "4": 2,
+    "5": 0,
+    "6": 5,
+    "7": 18,
+    "8": 4,
+    "9": 105,
+    "10": 2,
+    "11": 0,
+    "12": 5,
+    "13": 1
+  },
+  "totals": {
+    "objects": 780,
+    "placed_actor_cells": 450,
+    "known_native_bytes": 69623
+  },
+  "target": {
+    "single_rom": true,
+    "languages": [
+      "ru",
+      "en"
+    ],
+    "simultaneous_runtime_worlds": 1,
+    "common_profile": "docs/gba-balance-proposal.md",
+    "profile_application_task": "G03",
+    "target_fps": 30,
+    "fps_achievement": "not measured",
+    "hardware_refresh_cycles": 280896,
+    "target_two_refresh_cycles": 561792,
+    "cpu_hz": 16777216,
+    "two_refresh_fps": 29.863750284802915
+  },
+  "hardware": {
+    "ewram_bytes": 262144,
+    "iwram_bytes": 32768,
+    "vram_bytes": 98304,
+    "rom_window_bytes": 33554432,
+    "mode4_page_stride_bytes": 40960,
+    "mode4_page_visible_bytes": 38400,
+    "mode4_pages": 2,
+    "palette_ram_bytes": 1024,
+    "oam_bytes": 1024,
+    "mode4_obj_tiles_available_bytes": 16384
+  },
+  "arm_sizeof": {
+    "magic": 843924813,
+    "version": 1,
+    "pointer_size": 4,
+    "object_size": 36,
+    "object_align": 4,
+    "actor_size": 64,
+    "actor_align": 4,
+    "player_size": 60,
+    "player_align": 4,
+    "definition_size": 32,
+    "definition_align": 2,
+    "field_size": 8,
+    "field_align": 4,
+    "level_size": 580,
+    "level_align": 4,
+    "storage_size": 70716,
+    "storage_align": 4,
+    "runtime_size": 33864,
+    "runtime_align": 4,
+    "native_snapshot_size": 284,
+    "host_level_object_size": 280,
+    "objects_offset": 4,
+    "actors_offset": 9220,
+    "player_offset": 17412,
+    "maps_offset": 17472,
+    "counts_offset": 33856,
+    "object_capacity": 256,
+    "actor_capacity": 128,
+    "field_capacity": 2048,
+    "text_capacity": 16384,
+    "cell_capacity": 4096
+  },
+  "linker_measurements": {
+    "task": "G02",
+    "source_elf": "build\\gba-memory\\dok-diagnostic.elf",
+    "entry": 134217728,
+    "elf_sha256": "8dc5242e7f12a1e71319b5e8394f6e88330abcb49d52a80cd752181726ba9572",
+    "arm_layout": {
+      "magic": 843924813,
+      "version": 1,
+      "pointer_size": 4,
+      "object_size": 36,
+      "object_align": 4,
+      "actor_size": 64,
+      "actor_align": 4,
+      "player_size": 60,
+      "player_align": 4,
+      "definition_size": 32,
+      "definition_align": 2,
+      "field_size": 8,
+      "field_align": 4,
+      "level_size": 580,
+      "level_align": 4,
+      "storage_size": 70716,
+      "storage_align": 4,
+      "runtime_size": 33864,
+      "runtime_align": 4,
+      "native_snapshot_size": 284,
+      "host_level_object_size": 280,
+      "objects_offset": 4,
+      "actors_offset": 9220,
+      "player_offset": 17412,
+      "maps_offset": 17472,
+      "counts_offset": 33856,
+      "object_capacity": 256,
+      "actor_capacity": 128,
+      "field_capacity": 2048,
+      "text_capacity": 16384,
+      "cell_capacity": 4096
+    },
+    "sections": [
+      {
+        "name": ".header",
+        "address": 134217728,
+        "size": 192,
+        "type": 1
+      },
+      {
+        "name": ".text",
+        "address": 134217920,
+        "size": 7428,
+        "type": 1
+      },
+      {
+        "name": ".ARM.exidx",
+        "address": 134225348,
+        "size": 16,
+        "type": 1879048193
+      },
+      {
+        "name": ".data",
+        "address": 33554432,
+        "size": 4,
+        "type": 1
+      },
+      {
+        "name": ".bss",
+        "address": 33554436,
+        "size": 178796,
+        "type": 8
+      }
+    ],
+    "ewram": {
+      "hardware_bytes": 262144,
+      "probe_static_bytes": 178800,
+      "diagnostic_bytes": 40,
+      "runtime_bytes": 33864,
+      "future_reserves": {
+        "g_frame_reserve": 38400,
+        "g_renderer_reserve": 4096,
+        "g_texture_reserve": 65536,
+        "g_audio_reserve": 8192,
+        "g_event_reserve": 16384,
+        "g_save_reserve": 4096,
+        "g_scratch_reserve": 8192
+      },
+      "unallocated_bytes": 83344
+    },
+    "iwram": {
+      "hardware_bytes": 32768,
+      "current_stack_bios_reserve": 1024,
+      "runtime_probe_static_bytes": 0,
+      "stack_high_water_measured": false
+    },
+    "symbols": {
+      "g_runtime_memory_probe": 33554468,
+      "g_frame_reserve": 33588332,
+      "g_renderer_reserve": 33626732,
+      "g_texture_reserve": 33630828,
+      "g_audio_reserve": 33696364,
+      "g_event_reserve": 33704556,
+      "g_save_reserve": 33720940,
+      "g_scratch_reserve": 33725036
+    }
+  },
+  "future_reservations_status": "EWRAM envelopes are allocated in the dedicated ARM probe ELF; corresponding subsystems are not implemented, sizes remain engineering proposals",
+  "field_kind_legend": {
+    "0": "i16",
+    "1": "i32",
+    "2": "character",
+    "3": "image",
+    "4": "animation",
+    "5": "sound",
+    "6": "text"
+  },
+  "capacities": {
+    "objects": {
+      "capacity": 256,
+      "source_maximum": 158,
+      "spare": 98
+    },
+    "actors": {
+      "capacity": 128,
+      "source_maximum": 106,
+      "spare": 22
+    },
+    "fields": {
+      "capacity": 2048,
+      "source_maximum": 1655,
+      "spare": 393
+    },
+    "text_pool": {
+      "capacity": 16384,
+      "source_maximum": 8849,
+      "note": "Measured converter pool: resource names + field text, without deduplication",
+      "spare": 7535
+    },
+    "map_cells": {
+      "capacity": 4096,
+      "source_maximum": 4096,
+      "spare": 0
+    }
+  },
+  "ewram_future_reservations": [
+    {
+      "name": "software_framebuffer",
+      "bytes": 38400,
+      "status": "link-allocated-only-in-memory-probe; subsystem-reserve-proposal"
+    },
+    {
+      "name": "renderer_depth_sort_scratch",
+      "bytes": 4096,
+      "status": "link-allocated-only-in-memory-probe; subsystem-reserve-proposal"
+    },
+    {
+      "name": "texture_decode_cache",
+      "bytes": 65536,
+      "status": "link-allocated-only-in-memory-probe; subsystem-reserve-proposal"
+    },
+    {
+      "name": "audio_buffers",
+      "bytes": 8192,
+      "status": "link-allocated-only-in-memory-probe; subsystem-reserve-proposal"
+    },
+    {
+      "name": "event_scheduler",
+      "bytes": 16384,
+      "status": "link-allocated-only-in-memory-probe; subsystem-reserve-proposal"
+    },
+    {
+      "name": "save_transition_staging",
+      "bytes": 4096,
+      "status": "link-allocated-only-in-memory-probe; subsystem-reserve-proposal"
+    },
+    {
+      "name": "general_scratch",
+      "bytes": 8192,
+      "status": "link-allocated-only-in-memory-probe; subsystem-reserve-proposal"
+    }
+  ],
+  "iwram_future_envelope": [
+    {
+      "name": "stack_and_bios_including_existing_top_1k",
+      "bytes": 8192,
+      "status": "proposal-not-current-allocation"
+    },
+    {
+      "name": "hot_code",
+      "bytes": 16384,
+      "status": "proposal-not-current-allocation"
+    },
+    {
+      "name": "irq_audio_scratch",
+      "bytes": 4096,
+      "status": "proposal-not-current-allocation"
+    },
+    {
+      "name": "headroom",
+      "bytes": 4096,
+      "status": "proposal-not-current-allocation"
+    }
+  ],
+  "hardware_sources": [
+    "https://gbadev.net/tonc/hardware.html",
+    "https://gbadev.net/tonc/video.html",
+    "https://gbadev.net/tonc/bitmaps.html"
+  ],
+  "runtime_arm_components": {
+    "borrowed_level_pointer": 4,
+    "objects_256x36": 9216,
+    "actors_128x64": 8192,
+    "player": 60,
+    "maps_4x4096": 16384,
+    "counts": 8
+  },
+  "probe_rom": {
+    "rom": "build/gba-memory/dok-diagnostic.gba",
+    "rom_bytes": 7640,
+    "rom_sha256": "579dca373962152767ff3d2c317dc16280af862f3f26df12ed28e3a5c6e6f485"
+  },
+  "probe_execution": {
+    "report": "analysis/g02-memory-run.json",
+    "emulator": "mGBA",
+    "emulator_version": "0.11-212-7a12d6d",
+    "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+    "ewram_static_bytes": 178800,
+    "scope": "startup, BSS clearing, input, VBlank, panic/reset and synthetic ARM dok_runtime_reset/position/release fixture; six original worlds checked on host",
+    "arm_runtime_selftest": "passed"
+  },
+  "native_layout": {
+    "runtime": {
+      "size": 33872,
+      "align": 8
+    },
+    "object": {
+      "size": 36,
+      "align": 4
+    },
+    "actor": {
+      "size": 64,
+      "align": 4
+    },
+    "player": {
+      "size": 60,
+      "align": 4
+    },
+    "definition": {
+      "size": 32,
+      "align": 2
+    },
+    "field": {
+      "size": 8,
+      "align": 4
+    },
+    "level": {
+      "size": 608,
+      "align": 8
+    },
+    "storage": {
+      "size": 70716,
+      "align": 4
+    },
+    "offsets": {
+      "runtime.objects": 8,
+      "runtime.actors": 9224,
+      "runtime.player": 17416,
+      "runtime.maps": 17476,
+      "actor.x": 4,
+      "actor.heading": 36,
+      "object.state": 16,
+      "definition.actor_index": 12,
+      "field.value": 4
+    },
+    "capacities": {
+      "objects": 256,
+      "actors": 128,
+      "fields": 2048,
+      "text": 16384,
+      "cells": 4096
+    }
+  },
+  "verification": {
+    "report": "analysis/runtime-verification.json",
+    "kind": "independent_static_reconstruction",
+    "status": "passed",
+    "totals": {
+      "definitions": 780,
+      "actors": 472,
+      "placed_actor_cells": 450,
+      "unique_placed_actors": 440,
+      "unplaced_actors": 32,
+      "repeated_actor_definitions": 10,
+      "numeric_fields": 4950,
+      "resource_fields": 2128,
+      "text_fields": 532,
+      "native_known_bytes": 69623,
+      "runtime_known_bytes": 69623,
+      "missing_known_bytes": 0
+    },
+    "dos_equivalence": "not established; G00 independently confirms only initial hero LEVEL1",
+    "native_known_mask_equivalence": "all six levels checked; unknown bytes remain unknown",
+    "arm_runtime_execution": "Synthetic 1x1 ROM fixture passed reset/position/release in mGBA; six original worlds not executed on GBA",
+    "synthetic_tests": {
+      "path": "C:\\Source\\DoK-port\\build\\native\\dok-runtime-tests.exe",
+      "sha256": "25713a93c73126b6b859d105f4aa85c6697c7923c2e38e722ae0a699d99605f9",
+      "source": "tests/test_runtime.c",
+      "source_sha256": "e9a7b0ea0d549e08025a06927205b90072097372b43526779f1beb4a53af1826",
+      "exit_code": 0,
+      "stdout": "runtime: shared glyph/last placement, unknowns, scalar coverage, ROM ownership, reset/release and all capacity bounds passed",
+      "stderr": "",
+      "coverage": [
+        "shared glyph references one actor; last row-major placement wins",
+        "unplaced class5 has unknown position and preserves failed-read outputs",
+        "unknown course counter/pointers and invalid scalar widths remain unknown",
+        "pickup category99 signed-word wrap; projectile negative velocity and SAR half-damage",
+        "every fixture native-known byte and mask matches runtime diagnostics",
+        "mutable player/monster/position reads reflect current state",
+        "reset restores complete state, visited and all reserved object/actor/map slots",
+        "non-null weapon object IDs are not fabricated native pointers",
+        "reset rejects object/actor/field/text/cell overcapacity and malformed metadata",
+        "object-overcapacity reset leaves prior runtime byte-for-byte unchanged",
+        "runtime reset survives destroyed stage6 source arrays",
+        "release drops borrowed view and clears mutable state",
+        "conversion of 129 actual actor definitions rejects actor capacity",
+        "conversion rejects object-count overflow and null arguments"
+      ]
+    },
+    "windows_tests": 7,
+    "linux_thumb_compiled": true,
+    "linux_execution": false,
+    "physical_gba_tested": false
+  },
+  "localization_pool_constraint": {
+    "per_view_capacity": 16384,
+    "level3_ru_pool": 8849,
+    "level3_en_pool": 8758,
+    "naive_combined_bytes": 17607,
+    "fits_naive_combined_pool": false,
+    "required_g03_choice": "Separate language tables/views or deduplicate common resource names/data; one mutable gameplay world"
+  }
+}

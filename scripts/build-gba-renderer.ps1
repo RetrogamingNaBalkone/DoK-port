@@ -1,0 +1,20 @@
+param(
+    [string]$ZigExe = "$env:LOCALAPPDATA/Programs/Zig/0.13.0/zig.exe",
+    [string]$PythonExe = 'C:/Source/wasdify/.venv/Scripts/python.exe',
+    [string]$CorePath = "$env:LOCALAPPDATA/Programs/mGBA/libretro-20261024/mgba_libretro.dll",
+    [switch]$CrossChecks
+)
+$ErrorActionPreference = 'Stop'
+$taskRoot = Split-Path $PSScriptRoot -Parent
+Push-Location $taskRoot
+try {
+    & "$PSScriptRoot/build-native.ps1" -ZigExe $ZigExe -CrossChecks:$CrossChecks
+    foreach ($taskScript in @('analyze_runtime.py','pack_gba_assets.py','verify_packing.py')) {
+        & $PythonExe "$PSScriptRoot/$taskScript"
+        if ($LASTEXITCODE -ne 0) { throw "Asset preparation/check failed: $taskScript" }
+    }
+    & "$PSScriptRoot/build-gba.ps1" -ZigExe $ZigExe -PythonExe $PythonExe -CorePath $CorePath -RendererProbe -OutDir build/gba-renderer -Verify
+    & $PythonExe "$PSScriptRoot/verify_renderer_host.py" --arm-dir build/gba-renderer --capacity-tool build/native/dok-render-one-face.exe
+    if ($LASTEXITCODE -ne 0) { throw 'Independent host/ARM renderer check failed' }
+    Copy-Item -LiteralPath build/gba/renderer-host-check/verification.json -Destination analysis/render-host-verification.json
+} finally { Pop-Location }

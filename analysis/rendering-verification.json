@@ -1,0 +1,500 @@
+{
+  "task": "G04",
+  "status": "passed",
+  "originals_unchanged": true,
+  "samples": {
+    "ru": {
+      "exe": {
+        "path": "originals/pkr/RUS/PKR.EXE",
+        "size": 324824,
+        "sha256": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28"
+      },
+      "res": {
+        "path": "originals/pkr/RUS/PKR.RES",
+        "size": 2718099,
+        "sha256": "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816"
+      }
+    },
+    "en": {
+      "exe": {
+        "path": "originals/pkr/ENG/PKE.EXE",
+        "size": 340616,
+        "sha256": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b"
+      },
+      "res": {
+        "path": "originals/pkr/ENG/PKE.RES",
+        "size": 2717872,
+        "sha256": "865da340621fa6f90548a84e9ae9bf0a85071befb32a40ca1d359e488f74d458"
+      }
+    }
+  },
+  "ghidra": {
+    "ru": {
+      "roles": [
+        {
+          "address": "1100:00f5",
+          "role": "render_camera_initialize",
+          "bytes": "391"
+        },
+        {
+          "address": "1100:0000",
+          "role": "render_sort_descending_depth",
+          "bytes": "245"
+        },
+        {
+          "address": "1100:0301",
+          "role": "render_column_visibility",
+          "bytes": "544"
+        },
+        {
+          "address": "1100:0521",
+          "role": "render_draw_sorted_list",
+          "bytes": "139"
+        },
+        {
+          "address": "1098:30c1",
+          "role": "world_build_render_geometry",
+          "bytes": "9076"
+        },
+        {
+          "address": "1098:5435",
+          "role": "world_draw_render_list",
+          "bytes": "196"
+        },
+        {
+          "address": "10b0:0000",
+          "role": "render_center_vertical_plane",
+          "bytes": "1370"
+        },
+        {
+          "address": "10b0:05b2",
+          "role": "render_center_vertical_draw",
+          "bytes": "248"
+        },
+        {
+          "address": "10b0:06aa",
+          "role": "render_edge_vertical_plane",
+          "bytes": "1267"
+        },
+        {
+          "address": "10b0:0bf5",
+          "role": "render_edge_vertical_draw",
+          "bytes": "214"
+        },
+        {
+          "address": "10b0:0ccb",
+          "role": "render_billboard_project",
+          "bytes": "660"
+        },
+        {
+          "address": "10b0:0fb7",
+          "role": "render_billboard_draw",
+          "bytes": "80"
+        },
+        {
+          "address": "10b0:1007",
+          "role": "render_textured_horizontal_quad",
+          "bytes": "1355"
+        },
+        {
+          "address": "10b0:157e",
+          "role": "render_textured_horizontal_draw",
+          "bytes": "118"
+        },
+        {
+          "address": "10b0:15f4",
+          "role": "render_solid_horizontal_quad",
+          "bytes": "1174"
+        },
+        {
+          "address": "10b0:1ab6",
+          "role": "render_solid_horizontal_draw",
+          "bytes": "80"
+        },
+        {
+          "address": "1120:0b12",
+          "role": "rasterize_horizontal",
+          "bytes": "1378"
+        },
+        {
+          "address": "1120:1074",
+          "role": "rasterize_vertical",
+          "bytes": "1314"
+        },
+        {
+          "address": "1010:0000",
+          "role": "render_horizontal_span_asm",
+          "bytes": "210"
+        },
+        {
+          "address": "1010:00d2",
+          "role": "render_vertical_span_asm",
+          "bytes": "248"
+        },
+        {
+          "address": "1088:0544",
+          "role": "render_light_row_select",
+          "bytes": "58"
+        },
+        {
+          "address": "1088:0498",
+          "role": "render_light_table_read",
+          "bytes": "86"
+        },
+        {
+          "address": "1088:0168",
+          "role": "render_light_table_initialize",
+          "bytes": "231"
+        },
+        {
+          "address": "10f8:0000",
+          "role": "image_allocate",
+          "bytes": "128"
+        },
+        {
+          "address": "10f8:02d9",
+          "role": "image_read_stream",
+          "bytes": "112"
+        },
+        {
+          "address": "10f8:0592",
+          "role": "image_flags_crop_configure",
+          "bytes": "55"
+        },
+        {
+          "address": "10f8:05c9",
+          "role": "image_crop_transform",
+          "bytes": "1053"
+        },
+        {
+          "address": "1050:026b",
+          "role": "animation_read_stream",
+          "bytes": "261"
+        },
+        {
+          "address": "1008:0719",
+          "role": "startup_render_configuration",
+          "bytes": "3243"
+        },
+        {
+          "address": "10c8:0000",
+          "role": "render_trig_initialize",
+          "bytes": "453"
+        },
+        {
+          "address": "1000:1cc7",
+          "role": "runtime_fpu_to_i32",
+          "bytes": "44"
+        },
+        {
+          "address": "10b0:055a",
+          "role": "render_center_horizontal_bounds",
+          "bytes": "88"
+        },
+        {
+          "address": "10b0:0b9d",
+          "role": "render_edge_horizontal_bounds",
+          "bytes": "88"
+        },
+        {
+          "address": "10b0:0f5f",
+          "role": "render_billboard_horizontal_bounds",
+          "bytes": "88"
+        }
+      ],
+      "artifacts": [
+        {
+          "path": "build/rendering/ru/analysis-manifest.json",
+          "size": 623,
+          "sha256": "e04fe3b23c3abdc9d9c5bed2d0044836c3c8ff72afb562eeb156a8ab10d87150"
+        },
+        {
+          "path": "build/rendering/ru/roles.tsv",
+          "size": 1404,
+          "sha256": "00d30c4865b2a86ef8e8f2068bdc967bf4596637152048bad82b58e92ceed958"
+        },
+        {
+          "path": "build/rendering/ru/evidence.asm",
+          "size": 257154,
+          "sha256": "0bd594ca690ae400f34f839832c86879ea2d44d4dfc32bfdc7f8cbe8928c3ea2"
+        },
+        {
+          "path": "build/rendering/ru/annotated.c",
+          "size": 147391,
+          "sha256": "e8741e7127e1a722784c68b4af94b554d0341ef429710d84a5532eae32d365b8"
+        },
+        {
+          "path": "build/rendering/ru/ghidra.log",
+          "size": 9040,
+          "sha256": "9ed1818e830aa41ab98fd08e8fc37139fe41f02e2efa2b88920e7c635f5c78ae"
+        }
+      ]
+    },
+    "en": {
+      "roles": [
+        {
+          "address": "1060:1025",
+          "role": "render_camera_initialize",
+          "bytes": "391"
+        },
+        {
+          "address": "1060:0f30",
+          "role": "render_sort_descending_depth",
+          "bytes": "245"
+        },
+        {
+          "address": "1060:128f",
+          "role": "render_column_visibility",
+          "bytes": "544"
+        },
+        {
+          "address": "1060:14af",
+          "role": "render_draw_sorted_list",
+          "bytes": "139"
+        },
+        {
+          "address": "1030:3571",
+          "role": "world_build_render_geometry",
+          "bytes": "11205"
+        },
+        {
+          "address": "1030:6136",
+          "role": "world_draw_render_list",
+          "bytes": "202"
+        },
+        {
+          "address": "1040:0000",
+          "role": "render_center_vertical_plane",
+          "bytes": "1382"
+        },
+        {
+          "address": "1040:05be",
+          "role": "render_center_vertical_draw",
+          "bytes": "248"
+        },
+        {
+          "address": "1040:06b6",
+          "role": "render_edge_vertical_plane",
+          "bytes": "1279"
+        },
+        {
+          "address": "1040:0c0d",
+          "role": "render_edge_vertical_draw",
+          "bytes": "214"
+        },
+        {
+          "address": "1040:0ce3",
+          "role": "render_billboard_project",
+          "bytes": "672"
+        },
+        {
+          "address": "1040:0fdb",
+          "role": "render_billboard_draw",
+          "bytes": "80"
+        },
+        {
+          "address": "1040:102b",
+          "role": "render_textured_horizontal_quad",
+          "bytes": "1367"
+        },
+        {
+          "address": "1040:15ae",
+          "role": "render_textured_horizontal_draw",
+          "bytes": "118"
+        },
+        {
+          "address": "1040:1624",
+          "role": "render_solid_horizontal_quad",
+          "bytes": "1186"
+        },
+        {
+          "address": "1040:1af2",
+          "role": "render_solid_horizontal_draw",
+          "bytes": "80"
+        },
+        {
+          "address": "1078:0b18",
+          "role": "rasterize_horizontal",
+          "bytes": "1378"
+        },
+        {
+          "address": "1078:107a",
+          "role": "rasterize_vertical",
+          "bytes": "1314"
+        },
+        {
+          "address": "1010:0000",
+          "role": "render_horizontal_span_asm",
+          "bytes": "210"
+        },
+        {
+          "address": "1010:00d2",
+          "role": "render_vertical_span_asm",
+          "bytes": "248"
+        },
+        {
+          "address": "1028:196e",
+          "role": "render_light_row_select",
+          "bytes": "58"
+        },
+        {
+          "address": "1028:18c2",
+          "role": "render_light_table_read",
+          "bytes": "86"
+        },
+        {
+          "address": "1028:14ea",
+          "role": "render_light_table_initialize",
+          "bytes": "237"
+        },
+        {
+          "address": "1060:0000",
+          "role": "image_allocate",
+          "bytes": "128"
+        },
+        {
+          "address": "1060:034d",
+          "role": "image_read_stream",
+          "bytes": "112"
+        },
+        {
+          "address": "1060:06a2",
+          "role": "image_flags_crop_configure",
+          "bytes": "55"
+        },
+        {
+          "address": "1060:06d9",
+          "role": "image_crop_transform",
+          "bytes": "1053"
+        },
+        {
+          "address": "1018:11b1",
+          "role": "animation_read_stream",
+          "bytes": "261"
+        },
+        {
+          "address": "1008:0aa9",
+          "role": "startup_render_configuration",
+          "bytes": "3596"
+        },
+        {
+          "address": "1058:0000",
+          "role": "render_trig_initialize",
+          "bytes": "453"
+        },
+        {
+          "address": "1000:1cc7",
+          "role": "runtime_fpu_to_i32",
+          "bytes": "44"
+        },
+        {
+          "address": "1040:0566",
+          "role": "render_center_horizontal_bounds",
+          "bytes": "88"
+        },
+        {
+          "address": "1040:0bb5",
+          "role": "render_edge_horizontal_bounds",
+          "bytes": "88"
+        },
+        {
+          "address": "1040:0f83",
+          "role": "render_billboard_horizontal_bounds",
+          "bytes": "88"
+        }
+      ],
+      "artifacts": [
+        {
+          "path": "build/rendering/en/analysis-manifest.json",
+          "size": 623,
+          "sha256": "428b013359d3244dbac4bb2c43433d7cf3654f85a888a9b4aba30031ea8e2d69"
+        },
+        {
+          "path": "build/rendering/en/roles.tsv",
+          "size": 1405,
+          "sha256": "621a62676083c5ae0db0e52f7ecd432bfc813e2bea4d9f1c6d1996d936843cb7"
+        },
+        {
+          "path": "build/rendering/en/evidence.asm",
+          "size": 276527,
+          "sha256": "484c456619194d40611ef9778bf63c9421b41d4dcb8fd8c2bc62ec9a12fac6b5"
+        },
+        {
+          "path": "build/rendering/en/annotated.c",
+          "size": 156245,
+          "sha256": "20c350efe42b8462d0e5fc8d5051b2eeae67c46e40eb8c0cc2c856afd77a19d5"
+        },
+        {
+          "path": "build/rendering/en/ghidra.log",
+          "size": 9040,
+          "sha256": "2fbd2d4022c909d3c8facdc2fe7bd839e3d6df1509f3c4ace57552bdf5d5053d"
+        }
+      ]
+    }
+  },
+  "verifier": {
+    "path": "scripts/verify_rendering.py",
+    "size": 4845,
+    "sha256": "d096a33541dc0d5b9a9cf25dfdbe4a22928a921b280ed7b7a92303ca82c17310"
+  },
+  "host_probes": [
+    {
+      "path": "analysis/projection-probe.json",
+      "size": 2049,
+      "sha256": "f3b8bdceab39128fe8b60fed66b7dc97a3a033599fcee8aa97d14c5b9f8df1aa"
+    },
+    {
+      "path": "analysis/render-layout-probe.json",
+      "size": 110833,
+      "sha256": "a22360df38987d7cfe48a792955d973b092652eb29ce4c76b300a86ece51db2f"
+    },
+    {
+      "path": "analysis/render-reference.json",
+      "size": 26080,
+      "sha256": "d9455c5c1509d1fa4cba8da8989f556ea9f07bb800e9b63598e8631d55a86ae5"
+    }
+  ],
+  "documents": [
+    {
+      "path": "docs/rendering.md",
+      "size": 8842,
+      "sha256": "eb9c9e9003f336212d0ad70d70545c4c2c80edd138ed8dc3872d11205ab5c6fb"
+    },
+    {
+      "path": "docs/rendering-geometry.md",
+      "size": 25357,
+      "sha256": "96dec3f88e9606e1fc9d704a99fde3f1196f2e702ffc5895b99b6ae0fb9c6290"
+    },
+    {
+      "path": "docs/rendering-assets.md",
+      "size": 19254,
+      "sha256": "9cfb9820e3b6d36ac5008918035e15601a6bc3a6bdc7db8aa46997b85d761643"
+    },
+    {
+      "path": "docs/rendering-reference.md",
+      "size": 13793,
+      "sha256": "f035b61fbd86131e09cf524a5344f5445aa463585fe7e2e2c0bd6d9a31d751ec"
+    },
+    {
+      "path": "docs/gba-ui.md",
+      "size": 3060,
+      "sha256": "33b9604aa219098b53d528a33da76139d244394a59ffb682e804c9a32c584561"
+    }
+  ],
+  "scalar_vectors": 31216,
+  "gba_viewport": [
+    240,
+    144
+  ],
+  "message_strip": [
+    0,
+    144,
+    240,
+    16
+  ],
+  "limits": [
+    "No full DOS renderer pixel equivalence claimed.",
+    "No GBA renderer execution/performance measured by G04.",
+    "Unverified geometry/lighting branches remain listed in rendering.md."
+  ]
+}
