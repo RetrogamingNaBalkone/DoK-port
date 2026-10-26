@@ -1,0 +1,2400 @@
+{
+  "task": "G14",
+  "status": "passed",
+  "rom_sha256": "9b4a9a28634fa5dbcb6ce15e74acf681c8bae7c91349c7da86f705d3b7e62926",
+  "script_sha256": "de7995711133536da958bf85e74bb60248fd95c42ee3da6033724a31e0dd2808",
+  "perception": [
+    {
+      "language": 0,
+      "glyph": 129,
+      "distance": 9000,
+      "period": 24,
+      "original_distance": 20000,
+      "original_period": 10,
+      "delta": [
+        9000,
+        0
+      ],
+      "awake": false,
+      "hidden_poll_did_not_activate": true
+    },
+    {
+      "language": 0,
+      "glyph": 129,
+      "distance": 9000,
+      "period": 24,
+      "original_distance": 20000,
+      "original_period": 10,
+      "delta": [
+        8999,
+        0
+      ],
+      "awake": true,
+      "hidden_poll_did_not_activate": true
+    },
+    {
+      "language": 0,
+      "glyph": 129,
+      "distance": 9000,
+      "period": 24,
+      "original_distance": 20000,
+      "original_period": 10,
+      "delta": [
+        0,
+        9000
+      ],
+      "awake": false,
+      "hidden_poll_did_not_activate": true
+    },
+    {
+      "language": 0,
+      "glyph": 129,
+      "distance": 9000,
+      "period": 24,
+      "original_distance": 20000,
+      "original_period": 10,
+      "delta": [
+        0,
+        8999
+      ],
+      "awake": true,
+      "hidden_poll_did_not_activate": true
+    },
+    {
+      "language": 0,
+      "glyph": 129,
+      "distance": 9000,
+      "period": 24,
+      "original_distance": 20000,
+      "original_period": 10,
+      "delta": [
+        8999,
+        8999
+      ],
+      "awake": true,
+      "hidden_poll_did_not_activate": true
+    },
+    {
+      "language": 0,
+      "glyph": 140,
+      "distance": 4000,
+      "period": 24,
+      "original_distance": 4000,
+      "original_period": 10,
+      "delta": [
+        4000,
+        0
+      ],
+      "awake": false,
+      "hidden_poll_did_not_activate": true
+    },
+    {
+      "language": 0,
+      "glyph": 140,
+      "distance": 4000,
+      "period": 24,
+      "original_distance": 4000,
+      "original_period": 10,
+      "delta": [
+        3999,
+        0
+      ],
+      "awake": true,
+      "hidden_poll_did_not_activate": true
+    },
+    {
+      "language": 0,
+      "glyph": 140,
+      "distance": 4000,
+      "period": 24,
+      "original_distance": 4000,
+      "original_period": 10,
+      "delta": [
+        0,
+        4000
+      ],
+      "awake": false,
+      "hidden_poll_did_not_activate": true
+    },
+    {
+      "language": 0,
+      "glyph": 140,
+      "distance": 4000,
+      "period": 24,
+      "original_distance": 4000,
+      "original_period": 10,
+      "delta": [
+        0,
+        3999
+      ],
+      "awake": true,
+      "hidden_poll_did_not_activate": true
+    },
+    {
+      "language": 0,
+      "glyph": 140,
+      "distance": 4000,
+      "period": 24,
+      "original_distance": 4000,
+      "original_period": 10,
+      "delta": [
+        3999,
+        3999
+      ],
+      "awake": true,
+      "hidden_poll_did_not_activate": true
+    },
+    {
+      "language": 0,
+      "glyph": 160,
+      "distance": 3400,
+      "period": 4,
+      "original_distance": 3400,
+      "original_period": 4,
+      "delta": [
+        3400,
+        0
+      ],
+      "awake": false,
+      "hidden_poll_did_not_activate": true
+    },
+    {
+      "language": 0,
+      "glyph": 160,
+      "distance": 3400,
+      "period": 4,
+      "original_distance": 3400,
+      "original_period": 4,
+      "delta": [
+        3399,
+        0
+      ],
+      "awake": true,
+      "hidden_poll_did_not_activate": true
+    },
+    {
+      "language": 0,
+      "glyph": 160,
+      "distance": 3400,
+      "period": 4,
+      "original_distance": 3400,
+      "original_period": 4,
+      "delta": [
+        0,
+        3400
+      ],
+      "awake": false,
+      "hidden_poll_did_not_activate": true
+    },
+    {
+      "language": 0,
+      "glyph": 160,
+      "distance": 3400,
+      "period": 4,
+      "original_distance": 3400,
+      "original_period": 4,
+      "delta": [
+        0,
+        3399
+      ],
+      "awake": true,
+      "hidden_poll_did_not_activate": true
+    },
+    {
+      "language": 0,
+      "glyph": 160,
+      "distance": 3400,
+      "period": 4,
+      "original_distance": 3400,
+      "original_period": 4,
+      "delta": [
+        3399,
+        3399
+      ],
+      "awake": true,
+      "hidden_poll_did_not_activate": true
+    },
+    {
+      "language": 0,
+      "glyph": 161,
+      "distance": 4000,
+      "period": 8,
+      "original_distance": 4000,
+      "original_period": 8,
+      "delta": [
+        4000,
+        0
+      ],
+      "awake": false,
+      "hidden_poll_did_not_activate": true
+    },
+    {
+      "language": 0,
+      "glyph": 161,
+      "distance": 4000,
+      "period": 8,
+      "original_distance": 4000,
+      "original_period": 8,
+      "delta": [
+        3999,
+        0
+      ],
+      "awake": true,
+      "hidden_poll_did_not_activate": true
+    },
+    {
+      "language": 0,
+      "glyph": 161,
+      "distance": 4000,
+      "period": 8,
+      "original_distance": 4000,
+      "original_period": 8,
+      "delta": [
+        0,
+        4000
+      ],
+      "awake": false,
+      "hidden_poll_did_not_activate": true
+    },
+    {
+      "language": 0,
+      "glyph": 161,
+      "distance": 4000,
+      "period": 8,
+      "original_distance": 4000,
+      "original_period": 8,
+      "delta": [
+        0,
+        3999
+      ],
+      "awake": true,
+      "hidden_poll_did_not_activate": true
+    },
+    {
+      "language": 0,
+      "glyph": 161,
+      "distance": 4000,
+      "period": 8,
+      "original_distance": 4000,
+      "original_period": 8,
+      "delta": [
+        3999,
+        3999
+      ],
+      "awake": true,
+      "hidden_poll_did_not_activate": true
+    },
+    {
+      "language": 1,
+      "glyph": 129,
+      "distance": 9000,
+      "period": 24,
+      "original_distance": 9000,
+      "original_period": 24,
+      "delta": [
+        9000,
+        0
+      ],
+      "awake": false,
+      "hidden_poll_did_not_activate": true
+    },
+    {
+      "language": 1,
+      "glyph": 129,
+      "distance": 9000,
+      "period": 24,
+      "original_distance": 9000,
+      "original_period": 24,
+      "delta": [
+        8999,
+        0
+      ],
+      "awake": true,
+      "hidden_poll_did_not_activate": true
+    },
+    {
+      "language": 1,
+      "glyph": 129,
+      "distance": 9000,
+      "period": 24,
+      "original_distance": 9000,
+      "original_period": 24,
+      "delta": [
+        0,
+        9000
+      ],
+      "awake": false,
+      "hidden_poll_did_not_activate": true
+    },
+    {
+      "language": 1,
+      "glyph": 129,
+      "distance": 9000,
+      "period": 24,
+      "original_distance": 9000,
+      "original_period": 24,
+      "delta": [
+        0,
+        8999
+      ],
+      "awake": true,
+      "hidden_poll_did_not_activate": true
+    },
+    {
+      "language": 1,
+      "glyph": 129,
+      "distance": 9000,
+      "period": 24,
+      "original_distance": 9000,
+      "original_period": 24,
+      "delta": [
+        8999,
+        8999
+      ],
+      "awake": true,
+      "hidden_poll_did_not_activate": true
+    },
+    {
+      "language": 1,
+      "glyph": 140,
+      "distance": 4000,
+      "period": 24,
+      "original_distance": 4000,
+      "original_period": 24,
+      "delta": [
+        4000,
+        0
+      ],
+      "awake": false,
+      "hidden_poll_did_not_activate": true
+    },
+    {
+      "language": 1,
+      "glyph": 140,
+      "distance": 4000,
+      "period": 24,
+      "original_distance": 4000,
+      "original_period": 24,
+      "delta": [
+        3999,
+        0
+      ],
+      "awake": true,
+      "hidden_poll_did_not_activate": true
+    },
+    {
+      "language": 1,
+      "glyph": 140,
+      "distance": 4000,
+      "period": 24,
+      "original_distance": 4000,
+      "original_period": 24,
+      "delta": [
+        0,
+        4000
+      ],
+      "awake": false,
+      "hidden_poll_did_not_activate": true
+    },
+    {
+      "language": 1,
+      "glyph": 140,
+      "distance": 4000,
+      "period": 24,
+      "original_distance": 4000,
+      "original_period": 24,
+      "delta": [
+        0,
+        3999
+      ],
+      "awake": true,
+      "hidden_poll_did_not_activate": true
+    },
+    {
+      "language": 1,
+      "glyph": 140,
+      "distance": 4000,
+      "period": 24,
+      "original_distance": 4000,
+      "original_period": 24,
+      "delta": [
+        3999,
+        3999
+      ],
+      "awake": true,
+      "hidden_poll_did_not_activate": true
+    },
+    {
+      "language": 1,
+      "glyph": 160,
+      "distance": 3400,
+      "period": 4,
+      "original_distance": 4000,
+      "original_period": 4,
+      "delta": [
+        3400,
+        0
+      ],
+      "awake": false,
+      "hidden_poll_did_not_activate": true
+    },
+    {
+      "language": 1,
+      "glyph": 160,
+      "distance": 3400,
+      "period": 4,
+      "original_distance": 4000,
+      "original_period": 4,
+      "delta": [
+        3399,
+        0
+      ],
+      "awake": true,
+      "hidden_poll_did_not_activate": true
+    },
+    {
+      "language": 1,
+      "glyph": 160,
+      "distance": 3400,
+      "period": 4,
+      "original_distance": 4000,
+      "original_period": 4,
+      "delta": [
+        0,
+        3400
+      ],
+      "awake": false,
+      "hidden_poll_did_not_activate": true
+    },
+    {
+      "language": 1,
+      "glyph": 160,
+      "distance": 3400,
+      "period": 4,
+      "original_distance": 4000,
+      "original_period": 4,
+      "delta": [
+        0,
+        3399
+      ],
+      "awake": true,
+      "hidden_poll_did_not_activate": true
+    },
+    {
+      "language": 1,
+      "glyph": 160,
+      "distance": 3400,
+      "period": 4,
+      "original_distance": 4000,
+      "original_period": 4,
+      "delta": [
+        3399,
+        3399
+      ],
+      "awake": true,
+      "hidden_poll_did_not_activate": true
+    },
+    {
+      "language": 1,
+      "glyph": 161,
+      "distance": 4000,
+      "period": 8,
+      "original_distance": 4000,
+      "original_period": 4,
+      "delta": [
+        4000,
+        0
+      ],
+      "awake": false,
+      "hidden_poll_did_not_activate": true
+    },
+    {
+      "language": 1,
+      "glyph": 161,
+      "distance": 4000,
+      "period": 8,
+      "original_distance": 4000,
+      "original_period": 4,
+      "delta": [
+        3999,
+        0
+      ],
+      "awake": true,
+      "hidden_poll_did_not_activate": true
+    },
+    {
+      "language": 1,
+      "glyph": 161,
+      "distance": 4000,
+      "period": 8,
+      "original_distance": 4000,
+      "original_period": 4,
+      "delta": [
+        0,
+        4000
+      ],
+      "awake": false,
+      "hidden_poll_did_not_activate": true
+    },
+    {
+      "language": 1,
+      "glyph": 161,
+      "distance": 4000,
+      "period": 8,
+      "original_distance": 4000,
+      "original_period": 4,
+      "delta": [
+        0,
+        3999
+      ],
+      "awake": true,
+      "hidden_poll_did_not_activate": true
+    },
+    {
+      "language": 1,
+      "glyph": 161,
+      "distance": 4000,
+      "period": 8,
+      "original_distance": 4000,
+      "original_period": 4,
+      "delta": [
+        3999,
+        3999
+      ],
+      "awake": true,
+      "hidden_poll_did_not_activate": true
+    }
+  ],
+  "traces": [
+    {
+      "language": 0,
+      "repeat_equal": true,
+      "duplicate_glyph_preserved": true,
+      "open": [
+        {
+          "x": 15120,
+          "z": 15120,
+          "heading": 270,
+          "counter": 0,
+          "frame": 0,
+          "deadline": 12916,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 0
+        },
+        {
+          "x": 15132,
+          "z": 15120,
+          "heading": 270,
+          "counter": 1,
+          "frame": 1,
+          "deadline": 15416,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 2500
+        },
+        {
+          "x": 15156,
+          "z": 15120,
+          "heading": 270,
+          "counter": 2,
+          "frame": 2,
+          "deadline": 17916,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 5000
+        },
+        {
+          "x": 15192,
+          "z": 15120,
+          "heading": 270,
+          "counter": 3,
+          "frame": 3,
+          "deadline": 20416,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 7500
+        },
+        {
+          "x": 15237,
+          "z": 15120,
+          "heading": 270,
+          "counter": 4,
+          "frame": 0,
+          "deadline": 22916,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15282,
+          "z": 15120,
+          "heading": 270,
+          "counter": 5,
+          "frame": 1,
+          "deadline": 25416,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15327,
+          "z": 15120,
+          "heading": 270,
+          "counter": 6,
+          "frame": 2,
+          "deadline": 27916,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15372,
+          "z": 15120,
+          "heading": 270,
+          "counter": 7,
+          "frame": 3,
+          "deadline": 30416,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15417,
+          "z": 15120,
+          "heading": 270,
+          "counter": 8,
+          "frame": 0,
+          "deadline": 32916,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15462,
+          "z": 15120,
+          "heading": 270,
+          "counter": 9,
+          "frame": 1,
+          "deadline": 35416,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15507,
+          "z": 15120,
+          "heading": 270,
+          "counter": 10,
+          "frame": 2,
+          "deadline": 37916,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15552,
+          "z": 15120,
+          "heading": 270,
+          "counter": 11,
+          "frame": 3,
+          "deadline": 40416,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15597,
+          "z": 15120,
+          "heading": 270,
+          "counter": 12,
+          "frame": 0,
+          "deadline": 42916,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15642,
+          "z": 15120,
+          "heading": 270,
+          "counter": 13,
+          "frame": 1,
+          "deadline": 45416,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15687,
+          "z": 15120,
+          "heading": 270,
+          "counter": 14,
+          "frame": 2,
+          "deadline": 47916,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15732,
+          "z": 15120,
+          "heading": 270,
+          "counter": 15,
+          "frame": 3,
+          "deadline": 50416,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15777,
+          "z": 15120,
+          "heading": 270,
+          "counter": 16,
+          "frame": 0,
+          "deadline": 52916,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15822,
+          "z": 15120,
+          "heading": 270,
+          "counter": 17,
+          "frame": 1,
+          "deadline": 55416,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15867,
+          "z": 15120,
+          "heading": 270,
+          "counter": 18,
+          "frame": 2,
+          "deadline": 57916,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15912,
+          "z": 15120,
+          "heading": 270,
+          "counter": 19,
+          "frame": 3,
+          "deadline": 60416,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15957,
+          "z": 15120,
+          "heading": 270,
+          "counter": 20,
+          "frame": 0,
+          "deadline": 62916,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 16002,
+          "z": 15120,
+          "heading": 270,
+          "counter": 21,
+          "frame": 1,
+          "deadline": 65416,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 16047,
+          "z": 15120,
+          "heading": 270,
+          "counter": 22,
+          "frame": 2,
+          "deadline": 67916,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 16092,
+          "z": 15120,
+          "heading": 270,
+          "counter": 23,
+          "frame": 3,
+          "deadline": 70416,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 16137,
+          "z": 15120,
+          "heading": 270,
+          "counter": 24,
+          "frame": 0,
+          "deadline": 72916,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 16182,
+          "z": 15120,
+          "heading": 270,
+          "counter": 0,
+          "frame": 1,
+          "deadline": 75416,
+          "courses": 2,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 16227,
+          "z": 15120,
+          "heading": 270,
+          "counter": 1,
+          "frame": 2,
+          "deadline": 77916,
+          "courses": 2,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 16272,
+          "z": 15120,
+          "heading": 270,
+          "counter": 2,
+          "frame": 3,
+          "deadline": 80416,
+          "courses": 2,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 16317,
+          "z": 15120,
+          "heading": 270,
+          "counter": 3,
+          "frame": 0,
+          "deadline": 82916,
+          "courses": 2,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 16362,
+          "z": 15120,
+          "heading": 270,
+          "counter": 4,
+          "frame": 1,
+          "deadline": 85416,
+          "courses": 2,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 16407,
+          "z": 15120,
+          "heading": 270,
+          "counter": 5,
+          "frame": 2,
+          "deadline": 87916,
+          "courses": 2,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 16452,
+          "z": 15120,
+          "heading": 270,
+          "counter": 6,
+          "frame": 3,
+          "deadline": 90416,
+          "courses": 2,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 16497,
+          "z": 15120,
+          "heading": 270,
+          "counter": 7,
+          "frame": 0,
+          "deadline": 92916,
+          "courses": 2,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 16542,
+          "z": 15120,
+          "heading": 270,
+          "counter": 8,
+          "frame": 1,
+          "deadline": 95416,
+          "courses": 2,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 16587,
+          "z": 15120,
+          "heading": 270,
+          "counter": 9,
+          "frame": 2,
+          "deadline": 97916,
+          "courses": 2,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 16632,
+          "z": 15120,
+          "heading": 270,
+          "counter": 10,
+          "frame": 3,
+          "deadline": 100416,
+          "courses": 2,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 16677,
+          "z": 15120,
+          "heading": 270,
+          "counter": 11,
+          "frame": 0,
+          "deadline": 102916,
+          "courses": 2,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 16722,
+          "z": 15120,
+          "heading": 270,
+          "counter": 12,
+          "frame": 1,
+          "deadline": 105416,
+          "courses": 2,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 16767,
+          "z": 15120,
+          "heading": 270,
+          "counter": 13,
+          "frame": 2,
+          "deadline": 107916,
+          "courses": 2,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 16812,
+          "z": 15120,
+          "heading": 270,
+          "counter": 14,
+          "frame": 3,
+          "deadline": 110416,
+          "courses": 2,
+          "contacts": 0,
+          "acceleration": 10000
+        }
+      ],
+      "blocked": [
+        {
+          "x": 15120,
+          "z": 15120,
+          "heading": 270,
+          "counter": 0,
+          "frame": 0,
+          "deadline": 12916,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 0
+        },
+        {
+          "x": 15121,
+          "z": 15120,
+          "heading": 270,
+          "counter": 1,
+          "frame": 1,
+          "deadline": 15416,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 2500
+        },
+        {
+          "x": 15121,
+          "z": 15120,
+          "heading": 270,
+          "counter": 2,
+          "frame": 2,
+          "deadline": 17916,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 5000
+        },
+        {
+          "x": 15121,
+          "z": 15120,
+          "heading": 270,
+          "counter": 3,
+          "frame": 3,
+          "deadline": 20416,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 7500
+        },
+        {
+          "x": 15121,
+          "z": 15120,
+          "heading": 270,
+          "counter": 4,
+          "frame": 0,
+          "deadline": 22916,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15121,
+          "z": 15120,
+          "heading": 270,
+          "counter": 5,
+          "frame": 1,
+          "deadline": 25416,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15121,
+          "z": 15120,
+          "heading": 270,
+          "counter": 6,
+          "frame": 2,
+          "deadline": 27916,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15121,
+          "z": 15120,
+          "heading": 270,
+          "counter": 7,
+          "frame": 3,
+          "deadline": 30416,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15121,
+          "z": 15120,
+          "heading": 270,
+          "counter": 8,
+          "frame": 0,
+          "deadline": 32916,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15121,
+          "z": 15120,
+          "heading": 270,
+          "counter": 9,
+          "frame": 1,
+          "deadline": 35416,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15121,
+          "z": 15120,
+          "heading": 270,
+          "counter": 10,
+          "frame": 2,
+          "deadline": 37916,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15121,
+          "z": 15120,
+          "heading": 270,
+          "counter": 11,
+          "frame": 3,
+          "deadline": 40416,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15121,
+          "z": 15120,
+          "heading": 270,
+          "counter": 12,
+          "frame": 0,
+          "deadline": 42916,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15121,
+          "z": 15120,
+          "heading": 270,
+          "counter": 13,
+          "frame": 1,
+          "deadline": 45416,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15121,
+          "z": 15120,
+          "heading": 270,
+          "counter": 14,
+          "frame": 2,
+          "deadline": 47916,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15121,
+          "z": 15120,
+          "heading": 270,
+          "counter": 15,
+          "frame": 3,
+          "deadline": 50416,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15121,
+          "z": 15120,
+          "heading": 270,
+          "counter": 16,
+          "frame": 0,
+          "deadline": 52916,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15121,
+          "z": 15120,
+          "heading": 270,
+          "counter": 17,
+          "frame": 1,
+          "deadline": 55416,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15121,
+          "z": 15120,
+          "heading": 270,
+          "counter": 18,
+          "frame": 2,
+          "deadline": 57916,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15121,
+          "z": 15120,
+          "heading": 270,
+          "counter": 19,
+          "frame": 3,
+          "deadline": 60416,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15121,
+          "z": 15120,
+          "heading": 270,
+          "counter": 20,
+          "frame": 0,
+          "deadline": 62916,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15121,
+          "z": 15120,
+          "heading": 270,
+          "counter": 21,
+          "frame": 1,
+          "deadline": 65416,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15121,
+          "z": 15120,
+          "heading": 270,
+          "counter": 22,
+          "frame": 2,
+          "deadline": 67916,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15121,
+          "z": 15120,
+          "heading": 270,
+          "counter": 23,
+          "frame": 3,
+          "deadline": 70416,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15121,
+          "z": 15120,
+          "heading": 270,
+          "counter": 24,
+          "frame": 0,
+          "deadline": 72916,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15121,
+          "z": 15121,
+          "heading": 0,
+          "counter": 0,
+          "frame": 1,
+          "deadline": 75416,
+          "courses": 2,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15121,
+          "z": 15121,
+          "heading": 0,
+          "counter": 1,
+          "frame": 2,
+          "deadline": 77916,
+          "courses": 2,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15121,
+          "z": 15121,
+          "heading": 0,
+          "counter": 2,
+          "frame": 3,
+          "deadline": 80416,
+          "courses": 2,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15121,
+          "z": 15121,
+          "heading": 0,
+          "counter": 3,
+          "frame": 0,
+          "deadline": 82916,
+          "courses": 2,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15121,
+          "z": 15121,
+          "heading": 0,
+          "counter": 4,
+          "frame": 1,
+          "deadline": 85416,
+          "courses": 2,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15121,
+          "z": 15121,
+          "heading": 0,
+          "counter": 5,
+          "frame": 2,
+          "deadline": 87916,
+          "courses": 2,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15121,
+          "z": 15121,
+          "heading": 0,
+          "counter": 6,
+          "frame": 3,
+          "deadline": 90416,
+          "courses": 2,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15121,
+          "z": 15121,
+          "heading": 0,
+          "counter": 7,
+          "frame": 0,
+          "deadline": 92916,
+          "courses": 2,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15121,
+          "z": 15121,
+          "heading": 0,
+          "counter": 8,
+          "frame": 1,
+          "deadline": 95416,
+          "courses": 2,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15121,
+          "z": 15121,
+          "heading": 0,
+          "counter": 9,
+          "frame": 2,
+          "deadline": 97916,
+          "courses": 2,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15121,
+          "z": 15121,
+          "heading": 0,
+          "counter": 10,
+          "frame": 3,
+          "deadline": 100416,
+          "courses": 2,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15121,
+          "z": 15121,
+          "heading": 0,
+          "counter": 11,
+          "frame": 0,
+          "deadline": 102916,
+          "courses": 2,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15121,
+          "z": 15121,
+          "heading": 0,
+          "counter": 12,
+          "frame": 1,
+          "deadline": 105416,
+          "courses": 2,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15121,
+          "z": 15121,
+          "heading": 0,
+          "counter": 13,
+          "frame": 2,
+          "deadline": 107916,
+          "courses": 2,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15121,
+          "z": 15121,
+          "heading": 0,
+          "counter": 14,
+          "frame": 3,
+          "deadline": 110416,
+          "courses": 2,
+          "contacts": 0,
+          "acceleration": 10000
+        }
+      ]
+    },
+    {
+      "language": 1,
+      "repeat_equal": true,
+      "duplicate_glyph_preserved": true,
+      "open": [
+        {
+          "x": 15120,
+          "z": 15120,
+          "heading": 270,
+          "counter": 0,
+          "frame": 0,
+          "deadline": 12916,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 0
+        },
+        {
+          "x": 15132,
+          "z": 15120,
+          "heading": 270,
+          "counter": 1,
+          "frame": 1,
+          "deadline": 15416,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 2500
+        },
+        {
+          "x": 15156,
+          "z": 15120,
+          "heading": 270,
+          "counter": 2,
+          "frame": 2,
+          "deadline": 17916,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 5000
+        },
+        {
+          "x": 15192,
+          "z": 15120,
+          "heading": 270,
+          "counter": 3,
+          "frame": 3,
+          "deadline": 20416,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 7500
+        },
+        {
+          "x": 15237,
+          "z": 15120,
+          "heading": 270,
+          "counter": 4,
+          "frame": 0,
+          "deadline": 22916,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15282,
+          "z": 15120,
+          "heading": 270,
+          "counter": 5,
+          "frame": 1,
+          "deadline": 25416,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15327,
+          "z": 15120,
+          "heading": 270,
+          "counter": 6,
+          "frame": 2,
+          "deadline": 27916,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15372,
+          "z": 15120,
+          "heading": 270,
+          "counter": 7,
+          "frame": 3,
+          "deadline": 30416,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15417,
+          "z": 15120,
+          "heading": 270,
+          "counter": 8,
+          "frame": 0,
+          "deadline": 32916,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15462,
+          "z": 15120,
+          "heading": 270,
+          "counter": 9,
+          "frame": 1,
+          "deadline": 35416,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15507,
+          "z": 15120,
+          "heading": 270,
+          "counter": 10,
+          "frame": 2,
+          "deadline": 37916,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15552,
+          "z": 15120,
+          "heading": 270,
+          "counter": 11,
+          "frame": 3,
+          "deadline": 40416,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15597,
+          "z": 15120,
+          "heading": 270,
+          "counter": 12,
+          "frame": 0,
+          "deadline": 42916,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15642,
+          "z": 15120,
+          "heading": 270,
+          "counter": 13,
+          "frame": 1,
+          "deadline": 45416,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15687,
+          "z": 15120,
+          "heading": 270,
+          "counter": 14,
+          "frame": 2,
+          "deadline": 47916,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15732,
+          "z": 15120,
+          "heading": 270,
+          "counter": 15,
+          "frame": 3,
+          "deadline": 50416,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15777,
+          "z": 15120,
+          "heading": 270,
+          "counter": 16,
+          "frame": 0,
+          "deadline": 52916,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15822,
+          "z": 15120,
+          "heading": 270,
+          "counter": 17,
+          "frame": 1,
+          "deadline": 55416,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15867,
+          "z": 15120,
+          "heading": 270,
+          "counter": 18,
+          "frame": 2,
+          "deadline": 57916,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15912,
+          "z": 15120,
+          "heading": 270,
+          "counter": 19,
+          "frame": 3,
+          "deadline": 60416,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15957,
+          "z": 15120,
+          "heading": 270,
+          "counter": 20,
+          "frame": 0,
+          "deadline": 62916,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 16002,
+          "z": 15120,
+          "heading": 270,
+          "counter": 21,
+          "frame": 1,
+          "deadline": 65416,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 16047,
+          "z": 15120,
+          "heading": 270,
+          "counter": 22,
+          "frame": 2,
+          "deadline": 67916,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 16092,
+          "z": 15120,
+          "heading": 270,
+          "counter": 23,
+          "frame": 3,
+          "deadline": 70416,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 16137,
+          "z": 15120,
+          "heading": 270,
+          "counter": 24,
+          "frame": 0,
+          "deadline": 72916,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 16182,
+          "z": 15120,
+          "heading": 270,
+          "counter": 0,
+          "frame": 1,
+          "deadline": 75416,
+          "courses": 2,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 16227,
+          "z": 15120,
+          "heading": 270,
+          "counter": 1,
+          "frame": 2,
+          "deadline": 77916,
+          "courses": 2,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 16272,
+          "z": 15120,
+          "heading": 270,
+          "counter": 2,
+          "frame": 3,
+          "deadline": 80416,
+          "courses": 2,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 16317,
+          "z": 15120,
+          "heading": 270,
+          "counter": 3,
+          "frame": 0,
+          "deadline": 82916,
+          "courses": 2,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 16362,
+          "z": 15120,
+          "heading": 270,
+          "counter": 4,
+          "frame": 1,
+          "deadline": 85416,
+          "courses": 2,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 16407,
+          "z": 15120,
+          "heading": 270,
+          "counter": 5,
+          "frame": 2,
+          "deadline": 87916,
+          "courses": 2,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 16452,
+          "z": 15120,
+          "heading": 270,
+          "counter": 6,
+          "frame": 3,
+          "deadline": 90416,
+          "courses": 2,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 16497,
+          "z": 15120,
+          "heading": 270,
+          "counter": 7,
+          "frame": 0,
+          "deadline": 92916,
+          "courses": 2,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 16542,
+          "z": 15120,
+          "heading": 270,
+          "counter": 8,
+          "frame": 1,
+          "deadline": 95416,
+          "courses": 2,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 16587,
+          "z": 15120,
+          "heading": 270,
+          "counter": 9,
+          "frame": 2,
+          "deadline": 97916,
+          "courses": 2,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 16632,
+          "z": 15120,
+          "heading": 270,
+          "counter": 10,
+          "frame": 3,
+          "deadline": 100416,
+          "courses": 2,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 16677,
+          "z": 15120,
+          "heading": 270,
+          "counter": 11,
+          "frame": 0,
+          "deadline": 102916,
+          "courses": 2,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 16722,
+          "z": 15120,
+          "heading": 270,
+          "counter": 12,
+          "frame": 1,
+          "deadline": 105416,
+          "courses": 2,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 16767,
+          "z": 15120,
+          "heading": 270,
+          "counter": 13,
+          "frame": 2,
+          "deadline": 107916,
+          "courses": 2,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 16812,
+          "z": 15120,
+          "heading": 270,
+          "counter": 14,
+          "frame": 3,
+          "deadline": 110416,
+          "courses": 2,
+          "contacts": 0,
+          "acceleration": 10000
+        }
+      ],
+      "blocked": [
+        {
+          "x": 15120,
+          "z": 15120,
+          "heading": 270,
+          "counter": 0,
+          "frame": 0,
+          "deadline": 12916,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 0
+        },
+        {
+          "x": 15121,
+          "z": 15120,
+          "heading": 270,
+          "counter": 1,
+          "frame": 1,
+          "deadline": 15416,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 2500
+        },
+        {
+          "x": 15121,
+          "z": 15120,
+          "heading": 270,
+          "counter": 2,
+          "frame": 2,
+          "deadline": 17916,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 5000
+        },
+        {
+          "x": 15121,
+          "z": 15120,
+          "heading": 270,
+          "counter": 3,
+          "frame": 3,
+          "deadline": 20416,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 7500
+        },
+        {
+          "x": 15121,
+          "z": 15120,
+          "heading": 270,
+          "counter": 4,
+          "frame": 0,
+          "deadline": 22916,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15121,
+          "z": 15120,
+          "heading": 270,
+          "counter": 5,
+          "frame": 1,
+          "deadline": 25416,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15121,
+          "z": 15120,
+          "heading": 270,
+          "counter": 6,
+          "frame": 2,
+          "deadline": 27916,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15121,
+          "z": 15120,
+          "heading": 270,
+          "counter": 7,
+          "frame": 3,
+          "deadline": 30416,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15121,
+          "z": 15120,
+          "heading": 270,
+          "counter": 8,
+          "frame": 0,
+          "deadline": 32916,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15121,
+          "z": 15120,
+          "heading": 270,
+          "counter": 9,
+          "frame": 1,
+          "deadline": 35416,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15121,
+          "z": 15120,
+          "heading": 270,
+          "counter": 10,
+          "frame": 2,
+          "deadline": 37916,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15121,
+          "z": 15120,
+          "heading": 270,
+          "counter": 11,
+          "frame": 3,
+          "deadline": 40416,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15121,
+          "z": 15120,
+          "heading": 270,
+          "counter": 12,
+          "frame": 0,
+          "deadline": 42916,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15121,
+          "z": 15120,
+          "heading": 270,
+          "counter": 13,
+          "frame": 1,
+          "deadline": 45416,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15121,
+          "z": 15120,
+          "heading": 270,
+          "counter": 14,
+          "frame": 2,
+          "deadline": 47916,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15121,
+          "z": 15120,
+          "heading": 270,
+          "counter": 15,
+          "frame": 3,
+          "deadline": 50416,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15121,
+          "z": 15120,
+          "heading": 270,
+          "counter": 16,
+          "frame": 0,
+          "deadline": 52916,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15121,
+          "z": 15120,
+          "heading": 270,
+          "counter": 17,
+          "frame": 1,
+          "deadline": 55416,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15121,
+          "z": 15120,
+          "heading": 270,
+          "counter": 18,
+          "frame": 2,
+          "deadline": 57916,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15121,
+          "z": 15120,
+          "heading": 270,
+          "counter": 19,
+          "frame": 3,
+          "deadline": 60416,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15121,
+          "z": 15120,
+          "heading": 270,
+          "counter": 20,
+          "frame": 0,
+          "deadline": 62916,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15121,
+          "z": 15120,
+          "heading": 270,
+          "counter": 21,
+          "frame": 1,
+          "deadline": 65416,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15121,
+          "z": 15120,
+          "heading": 270,
+          "counter": 22,
+          "frame": 2,
+          "deadline": 67916,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15121,
+          "z": 15120,
+          "heading": 270,
+          "counter": 23,
+          "frame": 3,
+          "deadline": 70416,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15121,
+          "z": 15120,
+          "heading": 270,
+          "counter": 24,
+          "frame": 0,
+          "deadline": 72916,
+          "courses": 1,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15121,
+          "z": 15121,
+          "heading": 0,
+          "counter": 0,
+          "frame": 1,
+          "deadline": 75416,
+          "courses": 2,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15121,
+          "z": 15121,
+          "heading": 0,
+          "counter": 1,
+          "frame": 2,
+          "deadline": 77916,
+          "courses": 2,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15121,
+          "z": 15121,
+          "heading": 0,
+          "counter": 2,
+          "frame": 3,
+          "deadline": 80416,
+          "courses": 2,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15121,
+          "z": 15121,
+          "heading": 0,
+          "counter": 3,
+          "frame": 0,
+          "deadline": 82916,
+          "courses": 2,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15121,
+          "z": 15121,
+          "heading": 0,
+          "counter": 4,
+          "frame": 1,
+          "deadline": 85416,
+          "courses": 2,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15121,
+          "z": 15121,
+          "heading": 0,
+          "counter": 5,
+          "frame": 2,
+          "deadline": 87916,
+          "courses": 2,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15121,
+          "z": 15121,
+          "heading": 0,
+          "counter": 6,
+          "frame": 3,
+          "deadline": 90416,
+          "courses": 2,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15121,
+          "z": 15121,
+          "heading": 0,
+          "counter": 7,
+          "frame": 0,
+          "deadline": 92916,
+          "courses": 2,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15121,
+          "z": 15121,
+          "heading": 0,
+          "counter": 8,
+          "frame": 1,
+          "deadline": 95416,
+          "courses": 2,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15121,
+          "z": 15121,
+          "heading": 0,
+          "counter": 9,
+          "frame": 2,
+          "deadline": 97916,
+          "courses": 2,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15121,
+          "z": 15121,
+          "heading": 0,
+          "counter": 10,
+          "frame": 3,
+          "deadline": 100416,
+          "courses": 2,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15121,
+          "z": 15121,
+          "heading": 0,
+          "counter": 11,
+          "frame": 0,
+          "deadline": 102916,
+          "courses": 2,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15121,
+          "z": 15121,
+          "heading": 0,
+          "counter": 12,
+          "frame": 1,
+          "deadline": 105416,
+          "courses": 2,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15121,
+          "z": 15121,
+          "heading": 0,
+          "counter": 13,
+          "frame": 2,
+          "deadline": 107916,
+          "courses": 2,
+          "contacts": 0,
+          "acceleration": 10000
+        },
+        {
+          "x": 15121,
+          "z": 15121,
+          "heading": 0,
+          "counter": 14,
+          "frame": 3,
+          "deadline": 110416,
+          "courses": 2,
+          "contacts": 0,
+          "acceleration": 10000
+        }
+      ]
+    }
+  ],
+  "viewed_wake": [
+    {
+      "language": 0,
+      "live_consideration_path": true,
+      "valid_display_before_first_callback": true,
+      "before": {
+        "path": "build/g14/sprite-check/ai-sleeping-0.png",
+        "framebuffer_sha256": "f70071aaeed363fecfd21e97c03bba3504ad159608628a6d1ab038f0c6e606e7",
+        "cycles": 5585340,
+        "faces": 1
+      },
+      "after": {
+        "path": "build/g14/sprite-check/ai-awake-0.png",
+        "framebuffer_sha256": "f70071aaeed363fecfd21e97c03bba3504ad159608628a6d1ab038f0c6e606e7",
+        "cycles": 5584671,
+        "faces": 1
+      }
+    },
+    {
+      "language": 1,
+      "live_consideration_path": true,
+      "valid_display_before_first_callback": true,
+      "before": {
+        "path": "build/g14/sprite-check/ai-sleeping-1.png",
+        "framebuffer_sha256": "4b0fad3b5a7b7091dd4fa8d10cff7a6667888c934c27b4143d6a3d7f2a50b95b",
+        "cycles": 5583403,
+        "faces": 1
+      },
+      "after": {
+        "path": "build/g14/sprite-check/ai-awake-1.png",
+        "framebuffer_sha256": "4b0fad3b5a7b7091dd4fa8d10cff7a6667888c934c27b4143d6a3d7f2a50b95b",
+        "cycles": 5583418,
+        "faces": 1
+      }
+    }
+  ],
+  "combat_owners": {
+    "sleeping_hit_woke_without_damage": true,
+    "reclaimed_monster_owner_removed_before_projectile_reuse": true,
+    "reused_glyph": 129
+  },
+  "stack": {
+    "main_stack_low": 50356224,
+    "main_stack_top": 50364160,
+    "sentinel_word": 219540062,
+    "untouched_margin_bytes": 5576,
+    "high_water_bytes": 2360,
+    "irq_and_bios_excluded": true,
+    "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+  },
+  "physical_gba_tested": false,
+  "whole_dos_session_equivalence": false
+}

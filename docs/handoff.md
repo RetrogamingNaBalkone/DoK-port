@@ -1,5 +1,57 @@
 # Передача контекста между чатами
 
+## Текущая граница G14
+
+Обновлено 26 октября 2026 года: **G00–G14 готовы, следующий ID — G15**.
+AI perception/motion подключён к общему GBA-ROM: `src/ai.c`,
+`include/dok/ai.h`, `gba/ai_probe.c`. Getter class9 рассматриваемого renderer
+объекта использует строгий Chebyshev-порог; глобальной проверки всех sleeping
+монстров нет. GBA берёт consideration lease предыдущего draw в simulation
+time. Точное DOS render/event interleaving не заявляется. RNG в ветвях нет:
+повтор определяется runtime/ticks/input/lease. Курс использует native coarse
+angle table (ctor scale1000), до10 collision-resolved проб полуклетки и
+счётчик N+1. AI использует original acceleration, герой сохраняет исправление G07.
+
+Спецификация/адреса/ABI/политики — [ai-movement.md](ai-movement.md).
+Ghidra exports/manifests — `build/ai/{ru,en}/`, SHA EXE до/после совпали.
+Оригинальные x86 probes исполнили на язык1049 углов,200 perception и25 course
+cases. Полный active callback, FPU table ctor и scheduler closure целиком не
+эмулировались; abs/wake boundaries перехватывались. Host original RES трассы
+разные: RU `d5b9deed`, EN `97ed0ec7`; общий согласованный release profile
+даёт `a20c2856` в обоих языках. Переключение языка не меняет механику.
+
+Combat WAKE подключён: первый контакт sleeping сохраняет HP и создаёт AI
+owner. RECLAIM снимает AI и visual owners до slot reuse. CONTACT с героем
+останавливает обычную ветвь движения и передаёт seam G15; пока его interval416.
+G15 должен восстановить attack/hurt/death, таймер серии, анимационный цикл и
+completion; visual completion не заменяет игровые переходы. При health<=0
+G14 прекращает motion event. Displayed frame остаётся валидным после wake;
+native nextcounter хранится в scheduler event.parameter как следующий кадр.
+
+Scheduler AI имеет128 owners по actor_index, object ID получается через
+actor.glyph→ROM glyph_index. Повторный glyph не дублирует owner. Runtime33864,
+Object36/player60 сохранены. Dynamic collision borrowed overlay по-прежнему
+принадлежит combat одного активного world; перед уничтожением context нужен
+`dok_collision_overlay(0,0,0)`. Host явно снимает overlay; production статичен.
+
+Windows suites, Linux static/Thumb compilation прошли. Host проверил repeated
+traces,4 world corners, CONTACT, owner removal/reuse и actual combat RECLAIM.
+ARM проверил40 perception edges, deterministic/blocked/repeated-glyph motion,
+живой consideration wake, valid displayed image до первого callback и actual
+combat WAKE/RECLAIM. Renderer/язык/reset/guards/stack, interactions и rational
+clock regressions прошли.1455-camera sweep не повторялся.
+
+ROM/ELF/map/PNG — `build/g14/`; ROM32861724 байта, SHA-256
+`9b4a9a28634fa5dbcb6ce15e74acf681c8bae7c91349c7da86f705d3b7e62926`.
+EWRAM247800/free14344; IWRAM23980, до8KiB stack reserve596 байт.
+Main stack2360/margin5576. Новые функции AI — ROM. Static renderer regression
+4668231…4690291 cycles;30FPS не достигнуты, оптимизация G20.
+
+Команда: `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-gba-ai.ps1 -CrossChecks -OriginalEvidence`.
+Части выполнены отдельно; `analysis/g14-review.json` связывает source/ROM,
+Ghidra evidence и проверки. Физическая GBA/оригинальный BIOS, полный DOS,
+Linux/CMake/MSVC execution не проверялись. G15 не начиналась.
+
 ## Текущая граница G13
 
 Обновлено 26 октября 2026 года: **G00–G13 готовы, следующий ID — G14**.

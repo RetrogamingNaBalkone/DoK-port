@@ -1,13 +1,13 @@
 # Сборка первых модулей и VS Code
 
-Актуальный общий GBA-ROM после G13:
+Актуальный общий GBA-ROM после G14:
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-gba-combat.ps1 -CrossChecks -OriginalEvidence
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-gba-ai.ps1 -CrossChecks -OriginalEvidence
 ```
 
-Артефакты — `build/g13/`, методика/границы — [combat.md](combat.md),
-проверка и измерения — `analysis/g13-review.json`. Части pipeline выполнены отдельно,
+Артефакты — `build/g14/`, методика/границы — [ai-movement.md](ai-movement.md),
+проверка и измерения — `analysis/g14-review.json`. Части pipeline выполнены отдельно,
 aggregate проверен; полный вызов воспроизводит тот же порядок. Старые описания первых
 статичных проб далее не обозначают текущее отсутствие движения/поверхностей/спрайтов.
 
@@ -15,8 +15,9 @@ aggregate проверен; полный вызов воспроизводит �
 загрузчик LEVEL, подготовка мира, компактный runtime, адаптер native-состояния и тесты.
 Приоритет — GBA: [позадачный план](gba-plan.md). G01 выполнена:
 диагностический GBA-ROM собирается и запускается в mGBA;
-[команды и платформа](gba-platform.md). Игрового GBA-ROM
-и исполняемого SDL2-движка пока нет.
+[команды и платформа](gba-platform.md). Общий GBA-ROM уже содержит движение,
+коллизии, предметы, оружие и перемещение AI. Полный игровой цикл планируется
+в G18; исполняемого SDL2-движка пока нет. Команды первых проб ниже исторические.
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-gba.ps1 -Verify

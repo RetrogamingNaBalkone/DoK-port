@@ -1,0 +1,33 @@
+#include "dok/ai.h"
+#include "dok/combat.h"
+extern uint32_t gba_time_ticks(void);
+dok_ai g_ai;
+/* Commit request last. op1 consider(object),2 wake(object),3 poll tick/count/stride,
+ * 4 remove(object),5 restart. freeze gates only live polling/consideration. */
+volatile struct {uint32_t freeze,request,ack,op,object,tick,count,stride;} g_ai_probe;
+volatile struct {uint32_t magic,error,steps,wakes,courses,blocked,contacts,now,owners,object,state,counter,x,z,heading,frame,deadline,active,result;} g_ai_diag;
+void gba_ai_start(dok_runtime *w,const dok_rom_assets *a,unsigned level,unsigned language){dok_ai_init(&g_ai,w,a,level,language,gba_time_ticks(),0,0);g_ai_diag.magic=0x41493134;}
+void gba_ai_notice(unsigned kind,uint16_t id){if(kind==DOK_COMBAT_WAKE)dok_ai_wake(&g_ai,id);else if(kind==DOK_COMBAT_RECLAIM)dok_ai_remove(&g_ai,id);}
+void gba_ai_poll(uint32_t tick,const uint8_t *considered){
+ if(g_ai_probe.freeze || !g_ai.world)return;
+ g_ai.now=tick;
+ if(considered)for(unsigned id=0;id<g_ai.world->object_count;id++)if(considered[id])dok_ai_consider(&g_ai,(uint16_t)id);
+ dok_ai_poll(&g_ai,tick);
+}
+void gba_ai_update(unsigned language){
+ dok_ai *a=&g_ai;a->language=language;
+ if(g_ai_probe.request!=g_ai_probe.ack){unsigned id=g_ai_probe.object;int result=1;
+  switch(g_ai_probe.op){
+   case 1:dok_ai_consider(a,(uint16_t)id);break;
+   case 2:result=dok_ai_wake(a,(uint16_t)id);break;
+   case 3:for(unsigned i=0;i<g_ai_probe.count && i<4096;i++)dok_ai_poll(a,g_ai_probe.tick+i*g_ai_probe.stride);break;
+   case 4:dok_ai_remove(a,(uint16_t)id);break;
+   case 5:dok_ai_init(a,a->world,a->assets,a->level,a->language,g_ai_probe.tick,0,0);break;
+   default:result=0;break;
+  }g_ai_diag.result=(uint32_t)result;g_ai_probe.ack=g_ai_probe.request;
+ }
+ unsigned id=g_ai_probe.object;if(id>=a->world->object_count)id=0;dok_runtime_object *o=&a->world->objects[id];const dok_runtime_actor *p=dok_runtime_actor_at(a->world,(uint16_t)id);
+ g_ai_diag.error=a->errors;g_ai_diag.steps=a->steps;g_ai_diag.wakes=a->wakes;g_ai_diag.courses=a->courses;g_ai_diag.blocked=a->blocked;g_ai_diag.contacts=a->contacts;g_ai_diag.now=a->now;g_ai_diag.owners=a->scheduler.owner_count;
+ unsigned index=a->world->level->definitions[id].actor_index;
+ g_ai_diag.object=id;g_ai_diag.state=o->state.monster.state;g_ai_diag.counter=o->state.monster.course_counter;g_ai_diag.x=p?p->x:0;g_ai_diag.z=p?p->z:0;g_ai_diag.heading=p?p->heading:0;g_ai_diag.frame=o->frame;g_ai_diag.deadline=index<128?a->owners[index].events[0].deadline:0;g_ai_diag.active=index<128?a->owners[index].count:0;
+}

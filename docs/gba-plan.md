@@ -93,7 +93,7 @@ docs/handoff.md: изменения, проверки, ограничения и
 | [G11](tasks/G11.md) | Объекты сцены, перекрытия и анимации | G10 | готово |
 | [G12](tasks/G12.md) | Предметы, характеристики и инвентарь | G11 | готово |
 | [G13](tasks/G13.md) | Оружие, снаряды, попадания и урон | G12 | готово |
-| [G14](tasks/G14.md) | Обнаружение героя и перемещение монстров | G13 | ожидает |
+| [G14](tasks/G14.md) | Обнаружение героя и перемещение монстров | G13 | готово; perception/wake, курс N+1, исходный разгон/collision, ARM и original x86 vectors |
 | [G15](tasks/G15.md) | Полный бой AI, смерть и состояния врагов | G14 | ожидает |
 | [G16](tasks/G16.md) | Звук и воспроизведение на GBA | G15 | ожидает |
 | [G17](tasks/G17.md) | HUD, меню и русская/английская локализация | G16 | ожидает |
@@ -168,7 +168,14 @@ images по source RES pixels, production occupancy/clear, 20 естествен
 reserve 596 байт; main stack 2376/margin 5560. Static regression
 4668074…4689700 cycles; synthetic combat capture до 11891103 cycles.
 30 FPS не достигнуты. Acceptance — `analysis/g13-review.json`.
-Следующий шаг — G14.
+G14 завершён: [обнаружение и движение AI](ai-movement.md), общий ROM `build/g14/`.
+Getter consideration/proximity, wake, course N+1, coarse heading и исходный
+AI-разгон/collision работают; CONTACT передаёт боевую ветвь G15. Пройдены
+2098 native heading,400 proximity и50 counter cases, host original RES traces,
+4 world corners, actual combat owner cleanup, ARM perception/motion/visible wake
+и regressions. EWRAM247800/free14344, IWRAM23980, до stack reserve596 байт;
+main stack2360/margin5576. Static4668231…4690291 cycles;30FPS остаётся G20.
+Acceptance — `analysis/g14-review.json`. Следующий шаг — G15.
 Оценка приоритета после дополнительного прохода поддерживает этот порядок:
 [основания и контрольные точки](gba-renderer-review.md#оценка-приоритета-после-дополнительного-прохода).
 Сама прежняя оценка приоритета не меняла статусы; G07/G08 завершены позднее.

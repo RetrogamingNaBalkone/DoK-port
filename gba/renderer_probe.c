@@ -52,6 +52,9 @@ static dok_rom_assets package;
 extern void gba_combat_start(dok_runtime *,const dok_rom_assets *,unsigned,unsigned);
 extern void gba_combat_update(dok_renderer_workspace *,unsigned);
 extern void gba_combat_overlay(dok_renderer_workspace *);
+extern void gba_ai_start(dok_runtime *,const dok_rom_assets *,unsigned,unsigned);
+extern void gba_ai_poll(uint32_t,const uint8_t *);
+extern void gba_ai_update(unsigned);
 static dok_visual visual;
 void gba_visual_remove(uint16_t id) {if(id<DOK_RUNTIME_MAX_OBJECTS)dok_scheduler_destroy(&visual.scheduler,id);}
 static uint8_t visual_visible[DOK_RUNTIME_MAX_OBJECTS];
@@ -60,6 +63,7 @@ volatile struct {uint32_t freeze,request,ack,tick,object,slot,loop;} g_visual_pr
 volatile struct {uint32_t magic,error,steps,completed,now,object,frame,active,deadline,resource,budget;} g_visual_diag;
 static void visual_start(void) {
     gba_combat_start(&g_render_world,&package,g_render_diag.level,g_render_diag.language);
+    gba_ai_start(&g_render_world,&package,g_render_diag.level,g_render_diag.language);
     dok_visual_init(&visual,&g_render_world,&package,g_render_diag.level,g_render_diag.language,gba_time_ticks(),0,0);
     for(unsigned id=0;id<DOK_RUNTIME_MAX_OBJECTS;++id) {
         g_render_frame.image_known[id]=0;
@@ -75,6 +79,7 @@ void gba_visual_poll(uint32_t tick) {
     for(unsigned id=0;id<g_render_world.object_count;++id)
         visual_visible[id]=(uint8_t)(g_render_frame.image_known[id] || g_render_frame.surface_known[id][0]);
     dok_visual_advance(&visual,tick,visual_visible);
+    gba_ai_poll(tick,visual_visible);
 }
 static void visual_update(void) {
     visual.language=g_render_diag.language;
@@ -318,6 +323,7 @@ __attribute__((noreturn)) void gba_main(void)
         g_render_diag.last_keys=g_diag.keys;
         items_update();
         visual_update();
+        gba_ai_update(g_render_diag.language);
         g_render_diag.reserved3=1;
         gba_combat_update(&g_render_frame,g_render_diag.language);
         if(g_sprite_probe.enable && g_render_frame.sprite_count<DOK_RENDER_SPRITE_CAPACITY) {

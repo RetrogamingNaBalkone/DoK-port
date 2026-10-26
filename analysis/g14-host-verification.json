@@ -1,0 +1,34 @@
+{
+  "task": "G14",
+  "status": "passed",
+  "stdout": "trace 0 a20c2856\ntrace 1 a20c2856\noriginal LEVEL1 trace RU d5b9deed EN 97ed0ec7\nG14 host: deterministic RU/EN traces, threshold, wake, owner removal/reuse passed",
+  "sources": {
+    "src/ai.c": "936a13f827506ba1e1f9657163159ad505825df9674699814bda66a2261e2e45",
+    "src/ai_atan.inc": "b97121ae473a9a9921acb76e596ba2696315371528c734d377d1a35cfddf405d",
+    "include/dok/ai.h": "de9e4a7a40a40536f0c5c8715afa43e10fdab79a38e1d66a7315ed8dee3a60c3",
+    "tests/test_ai.c": "ef6cf2d6842b9677feeedc26b529a85a6989287a45f69e3ecd67aa52860a0b47",
+    "gba/ai_probe.c": "1b37e706b01015943601564faf8e79ddf9ae25b2fd9946032f95996daec7e5fc",
+    "gba/combat_probe.c": "5f719917fb1088b72f998cd2bed16e0bbeaf2dc78f1c5e4fb6aafc0cfc778a4c",
+    "gba/renderer_probe.c": "d06bebe94ccde419073aa5211599f8dbdc9113feacbd6f00a5e186cc8666a542",
+    "scripts/build-native.ps1": "7c19e478687e0d798ddba33b88d1d0fc7a12a2b6420c799b86394150fce63624"
+  },
+  "original_sha256_before": {
+    "originals/pkr/RUS/PKR.EXE": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+    "originals/pkr/ENG/PKE.EXE": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b",
+    "originals/pkr/RUS/PKR.RES": "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816",
+    "originals/pkr/ENG/PKE.RES": "865da340621fa6f90548a84e9ae9bf0a85071befb32a40ca1d359e488f74d458"
+  },
+  "original_sha256_after": {
+    "originals/pkr/RUS/PKR.EXE": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+    "originals/pkr/ENG/PKE.EXE": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b",
+    "originals/pkr/RUS/PKR.RES": "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816",
+    "originals/pkr/ENG/PKE.RES": "865da340621fa6f90548a84e9ae9bf0a85071befb32a40ca1d359e488f74d458"
+  },
+  "package_sha256": "3efa5d3027d63ffd65e0ae8c0b45be23ee8394b3c5151c8e9f10e76fa8674351",
+  "artifacts": {
+    "build/native/dok-ai-tests.exe": "d72453f8fab70b325115344759b0517bf9682f07c60a975387065af48d6c72e6",
+    "build/native/dok-ai-tests-linux": "5b8b6100285d6d970980335b0082b90efca76818ff0ac25203272b11521bb224",
+    "build/native/ai-arm7tdmi.o": "d6a8c510432872a2f65c4c28ff43d7db4026f30d084da0511c53a6fe74f91e85"
+  },
+  "limits": "Windows host executed; Linux musl static and Thumb cross compiled, not executed. Original RU/EN RES rebuilt separately; release language balance deliberately shared."
+}
