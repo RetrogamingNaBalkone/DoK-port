@@ -1,0 +1,120 @@
+{
+  "samples": [
+    {
+      "version": "Old_Gold_Old_Version",
+      "size": 157442,
+      "sha256": "673563eccad4d23c3cebe56f16ce9a1f631b6d45ffb73559d5c53c1bf252da90",
+      "mz_declared_size": 157442,
+      "mz_header_size": 9728,
+      "relocation_count": 1589,
+      "trailing_hex": "",
+      "files": {
+        "OG.EXE": {
+          "size": 157442,
+          "sha256": "673563eccad4d23c3cebe56f16ce9a1f631b6d45ffb73559d5c53c1bf252da90"
+        },
+        "old-games.nfo": {
+          "size": 1620,
+          "sha256": "cc2283945241a42a54020c30fa83aa3c17a91a59c034ae5f444db62e303b1602"
+        },
+        "OLD_GOLD.RES": {
+          "size": 528314,
+          "sha256": "e376855167b64a7190ec2da0ba9bd1da129ba178c4033aebadebca3f08b2be25"
+        },
+        "README.TXT": {
+          "size": 3057,
+          "sha256": "142858dd6f21135ac29d9dccfa29f6b08277513a67498adeb6d793327294ef5f"
+        }
+      },
+      "ghidra": {
+        "sample": "originals/Old_Gold_Old_Version/OG.EXE",
+        "sha256_before": "673563eccad4d23c3cebe56f16ce9a1f631b6d45ffb73559d5c53c1bf252da90",
+        "sha256_after": "673563eccad4d23c3cebe56f16ce9a1f631b6d45ffb73559d5c53c1bf252da90",
+        "project": "build/old-gold/Old_Gold_Old_Version/OldGold.gpr",
+        "script": "scripts/InspectOldGold.java",
+        "script_sha256": "cf579d468cd449fef0c73ab49f0b6d488ee6a40d11141954f89c295c05b1635f",
+        "driver_sha256": "d0895c37b7daf01ebdb22e285c8885fafd8560a4a91432f8697917d092ff207e"
+      }
+    },
+    {
+      "version": "Old_Gold_3D",
+      "size": 157456,
+      "sha256": "7965e1d67128f196fbcf2bc449d97197f355c6b81cf043608fc9e01103ea043f",
+      "mz_declared_size": 157442,
+      "mz_header_size": 9728,
+      "relocation_count": 1589,
+      "trailing_hex": "83c40450e8f41703008d84241402",
+      "files": {
+        "OG.EXE": {
+          "size": 157456,
+          "sha256": "7965e1d67128f196fbcf2bc449d97197f355c6b81cf043608fc9e01103ea043f"
+        },
+        "old-games.nfo": {
+          "size": 1620,
+          "sha256": "cc2283945241a42a54020c30fa83aa3c17a91a59c034ae5f444db62e303b1602"
+        },
+        "OLD_GOLD.RES": {
+          "size": 528314,
+          "sha256": "e376855167b64a7190ec2da0ba9bd1da129ba178c4033aebadebca3f08b2be25"
+        },
+        "README.TXT": {
+          "size": 3045,
+          "sha256": "456d39010efe5e41f17445eeb5c0851b06472cbb84a0a4a5c854948b97f00a29"
+        }
+      },
+      "ghidra": {
+        "sample": "originals/Old_Gold_3D/OG.EXE",
+        "sha256_before": "7965e1d67128f196fbcf2bc449d97197f355c6b81cf043608fc9e01103ea043f",
+        "sha256_after": "7965e1d67128f196fbcf2bc449d97197f355c6b81cf043608fc9e01103ea043f",
+        "project": "build/old-gold/Old_Gold_3D/OldGold.gpr",
+        "script": "scripts/InspectOldGold.java",
+        "script_sha256": "cf579d468cd449fef0c73ab49f0b6d488ee6a40d11141954f89c295c05b1635f",
+        "driver_sha256": "d0895c37b7daf01ebdb22e285c8885fafd8560a4a91432f8697917d092ff207e"
+      }
+    }
+  ],
+  "old_is_exact_prefix": true,
+  "added_bytes": 14,
+  "ghidra_memory_tables_equal": true,
+  "ghidra_instruction_listings_equal": true,
+  "res_equal": true,
+  "readme_diff": [
+    "--- Old_Gold_Old_Version\n",
+    "+++ Old_Gold_3D\n",
+    "@@ -1,8 +1,4 @@\n",
+    "           OLD GOLD 3D Game.",
+    "-",
+    "-Эта игра предназначена для демонстрации Наших возможностей",
+    "-по созданию трехмерных игр типа DOOM и привлечения всех",
+    "-желающих к сотрудничеству.",
+    " ",
+    " Управление.",
+    " ",
+    "@@ -80,12 +76,19 @@\n",
+    " по умолчанию звук будет на встроенном динамике.",
+    " ",
+    " ",
+    "-Если у Вас есть желание и возможности",
+    "-финансировать, тиражировать, и продавать Наши",
+    "-игры, то мы готовы к сотрудничеству.",
+    "-",
+    "-Телефон для связи (095) 534-35-34 с 10 до 18 часов",
+    "-",
+    " Андрей и Александр Разбаковы",
+    " ",
+    "    апрель 1995 года",
+    "+",
+    "+Если будете запускать в WINDOWS 95 то лучше",
+    "+перезапуститься в режиме DOS. Программа mem",
+    "+позволяет определить сколько памяти доступно",
+    "+программе, нужно не менее 600к.",
+    "+",
+    "+Разработчики группа \"Gelios\"",
+    "+   Разбаков Александр",
+    "+   Разбаков Андрей",
+    "+   FIDO 2:5020/636.22",
+    "+   E-Mail gelios@orc.ru",
+    "+",
+    "+   март 1997 года"
+  ]
+}
