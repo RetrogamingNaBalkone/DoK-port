@@ -1,6 +1,66 @@
 # Передача контекста между чатами
 
-## Текущая граница G12
+## Текущая граница G13
+
+Обновлено 26 октября 2026 года: **G00–G13 готовы, следующий ID — G14**.
+G14 не начиналась. Оружие и снаряды подключены к общему GBA-ROM:
+`src/combat.c`, `include/dok/combat.h`, `gba/combat_probe.c`; A стреляет,
+новое одновременное L+R запрашивает следующее имеющееся оружие. Первое
+появление и pending hide/show идут по simulation ticks. Ненулевого заряда
+достаточно даже ниже стоимости, расход 14/4 происходит только после spawn.
+Полёт, same-class immunity, стена/дверь/цель, урон, decay, POPAL/MIMO и
+удаление событий реализованы. Полёт начинает с остатка, затем проходит
+четверти клетки; контакт ещё держит flight image, эффект начинает с frame 1.
+
+Спецификация/адреса/ABI/политики — [combat.md](combat.md). Native slots
+просматриваются 0…255, первый NULL или flags 0x400 побеждает. LEVEL1 имеет
+141 свободный номер. Кольцо с одним событием на projectile сохраняет native
+cursor/removal skip и отложенную публикацию owner, не позволяет повторно
+занять текущий удаляемый слот внутри callback. Slot record 40 байт.
+Dynamic occupancy — отдельные 512 байт, без записи dynamic slot glyph в
+static MMap dictionary. Borrowed collision overlay учитывает четыре угла;
+он блокирует actor movement и снимается при cleanup. Перед уничтожением
+его context нужен `dok_collision_overlay(0,0,0)`, production context статический.
+Reclaim уже снимает старый visual owner; будущий AI consumer должен снять
+свои события. Два экземпляра одного шаблона используют разные texture slots
+256…511, а не общий template frame. Native Object 36/player 60/ARM runtime
+33864 не выросли; прежние compact резервные поля не переиспользовались.
+
+Для G14/G15 доступны `dok_combat_spawn(owner, template_glyph)` и notifications
+WAKE/DAMAGE/DEATH/RECLAIM. Sleeping monster state 0 будится без вычитания
+health; consumer обязан выполнить AI transition. Active damage применяет
+SUB16/clamp, но combat не меняет hurt/attack/death state и не подменяет AI
+visual completion. Hero death — G18, звук/HUD consumers — G16/G17.
+
+Свежие Ghidra C/ASM/actor.bin/world.bin и manifests:
+`build/combat/{ru,en}/`. EXE SHA до/после совпали. Прошли 20 исходных x86
+readiness-векторов, 72 slots cases, 2 position-copy slices, 2012 damage-decay
+векторов, 336 monster arithmetic cases; полный native scheduler closure ABI
+в spawn не эмулирован и не объявляется проверенным целиком. Windows suites
+и Linux/Thumb compilation прошли. ARM проверил оба оружия RU/EN, empty/low
+charge, full/refusal/reuse, closed/open door/wall/monster, wake/damage/death,
+effect frame 1/end, отдельные кадры двух эффектов по source RES pixel oracle,
+production occupancy/clear, первое pickup→show, hide/show, реальные A/L+R и
+20 естественно завершающихся выстрелов без объектов/событий/occupancy leaks.
+Renderer/reset/язык/guards/stack, interactions и rational clock прошли.
+1455-camera sweep не повторялся; проверены targeted static и instance paths.
+
+ROM/ELF/map/PNG — `build/g13/`; ROM 32858612 байт, SHA-256
+`5039eb8c4189474259127390b26742b305f9e9ce7f354fa584ea6fe668a466be`.
+EWRAM 239416/free 22728; IWRAM 23980, до 8 KiB stack reserve 596 байт.
+Новые холодные функции оставлять в ROM. Main stack 2376/margin 5560.
+Startup/static regression 4668074…4689700 cycles, synthetic combat capture
+до 11891103 cycles. Цель 30 FPS остаётся недостигнутой; оптимизация G20.
+
+Команда:
+`powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-gba-combat.ps1 -CrossChecks -OriginalEvidence`.
+Части выполнены отдельно, aggregate `analysis/g13-review.json` прошёл и
+связывает финальные source/ROM/evidence hashes. Физическая GBA/оригинальный
+BIOS, полная DOS-сессия, Linux/CMake/MSVC execution не проверялись.
+Следующие входы — паспорт G14, combat notifications, collision, scheduler,
+enemy parameters и свежие exports. Ниже — история предыдущих границ.
+
+## Предыдущая граница G12
 
 Обновлено26 октября2026 года: **G00–G12 готовы, следующий ID — G13**.
 G13 не начиналась. Предметы/stats/inventory подключены к общему GBA-ROM:

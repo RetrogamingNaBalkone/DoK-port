@@ -1,0 +1,34 @@
+{
+  "task": "G13",
+  "status": "passed",
+  "whole_DOS_session": false,
+  "languages": {
+    "ru": {
+      "readiness": 10,
+      "slot_cases": 36,
+      "spawn_xyz_heading": 1,
+      "decay_vectors": 1006,
+      "active_monster_damage": 168,
+      "sample": "originals/pkr/RUS/PKR.EXE",
+      "sha256_before": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+      "sha256_after": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+      "manifest_sha256": "ec6d473fca5ff1a365ea01dc2c7caef30500662bd44bab55cef121386c62ce7c",
+      "actor_sha256": "6a6fc29b1f204efd34a16538b678b7cd04ea6c992893f94283acc06329848b9f",
+      "world_sha256": "44937d68d6e03f426afd77c6e0427af1f7cfcc42e6946d23d0e00618701f91f9"
+    },
+    "en": {
+      "readiness": 10,
+      "slot_cases": 36,
+      "spawn_xyz_heading": 1,
+      "decay_vectors": 1006,
+      "active_monster_damage": 168,
+      "sample": "originals/pkr/ENG/PKE.EXE",
+      "sha256_before": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b",
+      "sha256_after": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b",
+      "manifest_sha256": "787843485a5ad709211b9d0ef46b5c7e3f3895d3ca4fbd9003acf4be20cc5e62",
+      "actor_sha256": "7a20ad9df5a6d759c486034c5465f41d7dab1cbaa433f5c0b77ab1755403e5dd",
+      "world_sha256": "6565a5b49788f7f5d3e7613e9e6609f858b8935b89d88beecd2e7ea4ed5b6ac1"
+    }
+  },
+  "intercepted": "Slot destructor and external scheduler/clock calls; readiness, scan, copy and ADD/SAR/SUB execute original instructions. Sleeping AI wake is source-reviewed, not executed here."
+}

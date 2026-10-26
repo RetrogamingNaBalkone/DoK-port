@@ -28,7 +28,7 @@ typedef struct {
     uint16_t object,plane,cell_x,cell_z;
     int16_t u0,u1,v0,reserved;
 } dok_renderer_surface;
-#define DOK_RENDER_SPRITE_CAPACITY 16
+#define DOK_RENDER_SPRITE_CAPACITY 256
 typedef struct {int32_t x,y,z;uint16_t object,reserved;} dok_renderer_sprite;
 typedef struct {
     uint32_t frame_guard_before; /* caller-owned; renderer never writes guards */
@@ -52,6 +52,10 @@ typedef struct {
      * descriptors and ROM resources; no allocation and no gameplay mutation. */
     dok_renderer_sprite sprites[DOK_RENDER_SPRITE_CAPACITY];
     uint16_t sprite_count;
+    /* G13 independent images: faces retain their own texture when two copies
+     * of one projectile template have different flight/impact phases. */
+    dok_renderer_image instance_images[DOK_RENDER_SPRITE_CAPACITY];
+    uint16_t sprite_resource[DOK_RENDER_SPRITE_CAPACITY],sprite_frame[DOK_RENDER_SPRITE_CAPACITY];
 } dok_renderer_workspace;
 typedef struct {
     uint32_t cells_considered,wall_cells,center_cells,faces_built,faces_drawn;

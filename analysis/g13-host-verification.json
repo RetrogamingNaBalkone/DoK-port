@@ -1,0 +1,48 @@
+{
+  "task": "G13",
+  "status": "passed",
+  "stdout": "G13 host: readiness, charge/refusal, hide/show, full/reuse, lifecycle, wake/damage/death passed",
+  "returncode": 0,
+  "readiness": [
+    "0 0 0",
+    "1 0 1",
+    "2 0 2",
+    "3 1 2",
+    "4 0 4",
+    "5 0 5",
+    "6 0 6",
+    "7 1 2",
+    "8 0 8",
+    "9 0 9"
+  ],
+  "package_sha256": "3efa5d3027d63ffd65e0ae8c0b45be23ee8394b3c5151c8e9f10e76fa8674351",
+  "artifacts": {
+    "build/native/dok-combat-tests.exe": "940c99e4dbfc9b669f3e029ab66e8320fc6e682b67d42ec7275fa3b9cd3b8e8f",
+    "build/native/dok-combat-tests-linux": "4bf4d2a96e6b804056484523e6a4d552b78b26b3a851f9343f145e0dde2fd5ea",
+    "build/native/combat-arm7tdmi.o": "31517c1b02a73c4768a18a42cd5921d6f9a5d1ce0702af254d12469382bf99b2"
+  },
+  "script_sha256": "1654cbeeb2b501cf37b6d0d011a0b8f1c19e61da627ea08fc058e8de7bebc09a",
+  "sources": {
+    "tests/test_combat.c": "184c218b3275931e66ce3be00794d4dfd16897d68c62fece8383022ac20179af",
+    "src/combat.c": "f27747a205769befdc20f5dc6f596c90f882381a1ed896636b57b8116d65403a",
+    "include/dok/combat.h": "43f80609757ebdacc601e5cea4e568bb4798150a4582070f09e7a38357322260",
+    "src/collision.c": "0a978c5a10a4fa642b45130c3b8dcc3b5950f0963a020b90106534ca46f02129",
+    "include/dok/collision.h": "f8eafb9cff3a478c1d494c7a32d953c6f21cb5c2ec34faa611b46924ddcf5874",
+    "scripts/build-native.ps1": "a61691edb8d07c807b704f03487a91599ed74c8613e7932a4d1261a186bb3247"
+  },
+  "executed": "Windows x86_64 host suite with real balanced RU LEVEL1 ROM descriptors",
+  "cross_compilation": "Linux musl static and ARM7TDMI Thumb; cross binaries not executed",
+  "cases": [
+    "empty and below-cost charge for both weapons",
+    "readiness states0..9",
+    "first weapon show and pending hide/show",
+    "full refusal preserves charge",
+    "first NULL/reclaim scan and reuse",
+    "flight/impact cleanup",
+    "sleep wake and active health/damage/death",
+    "same-class immunity",
+    "ring newest-first and removal skip",
+    "deferred owner creation forbids current-slot reuse",
+    "dynamic occupancy blocks collision and clears on remove"
+  ]
+}

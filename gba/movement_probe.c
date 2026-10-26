@@ -9,6 +9,9 @@ extern unsigned dok_collision_cases(dok_runtime *);
 extern unsigned dok_interactions_cases(dok_runtime *,dok_interactions *);
 static dok_interactions interactions;
 static dok_items items;
+extern void gba_combat_poll(uint32_t tick,uint32_t commands);
+extern void gba_combat_cycle(void);
+dok_items *gba_items_context(void) {return &items;}
 volatile struct {uint32_t magic,error,events,kind,object,category,value,pickups;} g_items_diag;
 static void item_notice(void *p,dok_item_kind kind,uint16_t id,int16_t category,int16_t value)
 {
@@ -101,6 +104,7 @@ void gba_motion_level(dok_runtime *world)
 void gba_motion_poll(uint16_t keys)
 {
     dok_input_sample(&input,keys);pending_pressed|=input.pressed;
+    if((keys&0x300)==0x300 && (input.pressed&0x300))gba_combat_cycle();
     g_motion_diag.held=input.held;g_motion_diag.pressed=input.pressed;
     g_motion_diag.released=input.released;g_motion_diag.seen|=keys;
     if(g_motion_probe.test_mode) {
@@ -111,7 +115,7 @@ void gba_motion_poll(uint16_t keys)
             for(unsigned i=0;i<count;++i) {
                 simulation_now+=416;interaction_advance(simulation_now);
                 if(g_motion_probe.commands&DOK_INPUT_USE) dok_interactions_use(&interactions,player);
-                dok_items_pickup(&items);dok_interactions_zone(&interactions,player);
+                dok_items_pickup(&items);gba_combat_poll(simulation_now,g_motion_probe.commands);dok_interactions_zone(&interactions,player);
                 dok_motion_update(player,&motion,g_motion_probe.commands,416,dok_collision_move,collision_world);
                 g_motion_diag.steps++;
             }
@@ -125,7 +129,7 @@ void gba_motion_poll(uint16_t keys)
             uint32_t commands=dok_input_commands(&sample);pending_pressed=0;
             simulation_now+=416;interaction_advance(simulation_now);
             if(commands&DOK_INPUT_USE) dok_interactions_use(&interactions,player);
-            dok_items_pickup(&items);dok_interactions_zone(&interactions,player);
+            dok_items_pickup(&items);gba_combat_poll(simulation_now,commands);dok_interactions_zone(&interactions,player);
             dok_motion_update(player,&motion,commands,416,dok_collision_move,collision_world);
             g_motion_diag.commands=commands;++g_motion_diag.steps;
         }

@@ -92,7 +92,7 @@ docs/handoff.md: изменения, проверки, ограничения и
 | [G10](tasks/G10.md) | Пол, потолок, свет и палитры | G09 | готово; FCMap-текстуры/высоты/перепады, LIGHT16, GAMEP1–3,32 фазовых ARM-вида; стоимость существенно выросла |
 | [G11](tasks/G11.md) | Объекты сцены, перекрытия и анимации | G10 | готово |
 | [G12](tasks/G12.md) | Предметы, характеристики и инвентарь | G11 | готово |
-| [G13](tasks/G13.md) | Оружие, снаряды, попадания и урон | G12 | ожидает |
+| [G13](tasks/G13.md) | Оружие, снаряды, попадания и урон | G12 | готово |
 | [G14](tasks/G14.md) | Обнаружение героя и перемещение монстров | G13 | ожидает |
 | [G15](tasks/G15.md) | Полный бой AI, смерть и состояния врагов | G14 | ожидает |
 | [G16](tasks/G16.md) | Звук и воспроизведение на GBA | G15 | ожидает |
@@ -157,7 +157,18 @@ G12 завершён: [предметы и stats](items-stats.md), общий RO
 Shared glyph/repeat/duplicate weapon/full refusal и targeted regressions прошли.
 EWRAM218416/IWRAM23684; до stack reserve892 байта. Startup4653188…4673215
 cycles,30FPS не достигнуты. Acceptance — `analysis/g12-review.json`.
-Следующий шаг — G13.
+G13 завершён: [оружие и снаряды](combat.md), общий ROM `build/g13/`,
+первый show/pending hide/show, оба оружия, native slots, flight/impact/cleanup,
+damage и интерфейс для AI. Прошли 20 native readiness, 72 slot scan cases,
+2012 ADD/SAR и 336 monster SUB/clamp vectors, 2 position-copy slices,
+Windows suites и Linux/Thumb compilation. ARM проверил RU/EN, empty/low
+charge/full/refusal/reuse, closed/open door/wall/monster, independent instance
+images по source RES pixels, production occupancy/clear, 20 естественных
+выстрелов без leaks и настоящие A/L+R. EWRAM 239416/IWRAM 23980, до stack
+reserve 596 байт; main stack 2376/margin 5560. Static regression
+4668074…4689700 cycles; synthetic combat capture до 11891103 cycles.
+30 FPS не достигнуты. Acceptance — `analysis/g13-review.json`.
+Следующий шаг — G14.
 Оценка приоритета после дополнительного прохода поддерживает этот порядок:
 [основания и контрольные точки](gba-renderer-review.md#оценка-приоритета-после-дополнительного-прохода).
 Сама прежняя оценка приоритета не меняла статусы; G07/G08 завершены позднее.

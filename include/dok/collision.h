@@ -1,6 +1,10 @@
 #ifndef DOK_COLLISION_H
 #define DOK_COLLISION_H
 #include "dok/movement.h"
+/* Borrowed dynamic MMap occupancy, separate from immutable glyph definitions.
+ * The single production world installs this at level initialization. */
+typedef int (*dok_collision_overlay_fn)(void *,int32_t x,int32_t z);
+void dok_collision_overlay(const dok_runtime *,dok_collision_overlay_fn,void *);
 /* Ghidra RUS 1098:0448/0901, ENG 1030:052c/09e5. Native edge lookup
  * clamps cell indices; these two functions retain that behavior for evidence.
  * Coordinates must be in the supported world range (no int32 overflow). */

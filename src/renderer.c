@@ -39,6 +39,9 @@ static int32_t sar(int32_t v,unsigned n) {uint32_t b=(uint32_t)v;return bits((b>
 static int32_t mul(int32_t a,int32_t b) {return bits((uint32_t)a*(uint32_t)b);}
 static int32_t add(int32_t a,int32_t b) {return bits((uint32_t)a+(uint32_t)b);}
 static int32_t sub(int32_t a,int32_t b) {return bits((uint32_t)a-(uint32_t)b);}
+static const dok_renderer_image *face_image(const dok_renderer_workspace *w,unsigned id) {
+ return id<256?&w->images[id]:&w->instance_images[id-256];
+}
 static int32_t scale_x(int32_t x) {return x>=0?x*3/4:-(((-x)*3+3)/4);}
 static int32_t scale_y(int32_t y) {return y>=0?y*9/10:-(((-y)*9+9)/10);}
 static int clamp(int x,int a,int b) {return x<a?a:(x>b?b:x);}
@@ -414,7 +417,7 @@ static void raster(dok_renderer_workspace *,const dok_runtime *,const dok_render
 #include "renderer_surface_raster.inc"
 static void raster(dok_renderer_workspace *w,const dok_runtime *r,const dok_renderer_face *original,const uint8_t *light,dok_renderer_stats *s) {
     (void)light;
-    dok_renderer_face f=*original;const dok_renderer_image *im=&w->images[f.image_index];
+    dok_renderer_face f=*original;const dok_renderer_image *im=face_image(w,f.image_index);
     int x,first,last,span,q0,q1;int wrote=0;unsigned pixels=0,transparent=0;
     if(f.x0>f.x1) {
         swap32(&f.x0,&f.x1);swap32(&f.top0,&f.top1);swap32(&f.bottom0,&f.bottom1);
@@ -550,7 +553,7 @@ static int defer_background(const dok_renderer_workspace *w) {
      * after raster, so visibility and sampling never depend on this heuristic. */
     for(unsigned i=0;i<w->face_count;++i) {
         const dok_renderer_face *f=&w->faces[i];
-        if(w->images[f->image_index].flags&8u) continue;
+        if(face_image(w,f->image_index)->flags&8u) continue;
         int top=f->top0>f->top1?f->top0:f->top1;
         int bottom=f->bottom0<f->bottom1?f->bottom0:f->bottom1;
         int width=clamp(f->x1,0,239)-clamp(f->x0,0,239);if(width<0) width=-width;
@@ -600,7 +603,18 @@ dok_renderer_status dok_renderer_draw(dok_renderer_workspace *w,const dok_runtim
     for(i=0;i<w->sprite_count;++i) {
         const dok_renderer_sprite *sp=&w->sprites[i];
         if(sp->object>=r->object_count) {status=DOK_RENDER_ARGUMENT;goto done;}
-        status=billboard(w,r,a,level,language,c,&s,sp->object,sp->x,sp->y,sp->z);if(status) goto done;
+        unsigned before=w->face_count;
+        if(w->sprite_resource[i]) {
+            dok_rom_resource res;dok_animation_view av;dok_animation_frame af;
+            if(dok_rom_resource_at(&res,a,w->sprite_resource[i],language)!=DOK_ROM_OK ||
+               dok_animation_open(res.data,res.size,&av)!=DOK_ASSET_OK ||
+               dok_animation_frame_at(&av,w->sprite_frame[i],&af)!=DOK_ASSET_OK) {status=DOK_RENDER_RESOURCE;goto done;}
+            dok_renderer_image *im=&w->instance_images[i];
+            *im=(dok_renderer_image){af.image.pixels,0,0,af.image.width,af.image.height,8,w->sprite_resource[i]};
+            status=billboard_image(w,r,c,&s,sp->object,(uint16_t)(256+i),im,sp->x,sp->y,sp->z);
+        } else status=billboard(w,r,a,level,language,c,&s,sp->object,sp->x,sp->y,sp->z);
+        if(status) goto done;
+        (void)before;
     }
     STAGE(2);sort_faces(w);STAGE(3);
 #ifdef DOK_RENDERER_PROBE

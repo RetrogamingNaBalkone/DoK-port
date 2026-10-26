@@ -1,13 +1,13 @@
 # Сборка первых модулей и VS Code
 
-Актуальный общий GBA-ROM после G12:
+Актуальный общий GBA-ROM после G13:
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-gba-items.ps1 -CrossChecks -OriginalEvidence
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-gba-combat.ps1 -CrossChecks -OriginalEvidence
 ```
 
-Артефакты — `build/g12/`, методика/границы — [items-stats.md](items-stats.md),
-проверка и измерения — `analysis/g12-review.json`. Части pipeline выполнены отдельно,
+Артефакты — `build/g13/`, методика/границы — [combat.md](combat.md),
+проверка и измерения — `analysis/g13-review.json`. Части pipeline выполнены отдельно,
 aggregate проверен; полный вызов воспроизводит тот же порядок. Старые описания первых
 статичных проб далее не обозначают текущее отсутствие движения/поверхностей/спрайтов.
 

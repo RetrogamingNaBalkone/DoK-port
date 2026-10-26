@@ -1,4 +1,9 @@
 #include "dok/collision.h"
+static const dok_runtime *overlay_world;
+static dok_collision_overlay_fn overlay_blocked;
+static void *overlay_context;
+void dok_collision_overlay(const dok_runtime *w,dok_collision_overlay_fn f,void *context)
+{overlay_world=w;overlay_blocked=f;overlay_context=context;}
 
 static unsigned cell(const dok_runtime *w,int32_t x,int32_t z)
 {
@@ -19,6 +24,9 @@ static int pass(const dok_runtime *w,unsigned plane,int32_t x,int32_t z)
 }
 int dok_collision_clear(const dok_runtime *w,int32_t x,int32_t z,int16_t r)
 {
+    if(overlay_world==w && overlay_blocked &&
+       (overlay_blocked(overlay_context,x-r,z-r) || overlay_blocked(overlay_context,x-r,z+r) ||
+        overlay_blocked(overlay_context,x+r,z-r) || overlay_blocked(overlay_context,x+r,z+r)))return 0;
     /* Native order: MMap --,+-,-+,++; then the same four TMap corners.
      * The footprint is an axis-aligned square, not a circle. */
     for(unsigned p=0;p<2;++p) {

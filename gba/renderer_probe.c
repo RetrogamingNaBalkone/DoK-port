@@ -49,12 +49,17 @@ dok_runtime_level g_render_view;
 dok_renderer_workspace g_render_frame;
 dok_renderer_stats g_render_stats;
 static dok_rom_assets package;
+extern void gba_combat_start(dok_runtime *,const dok_rom_assets *,unsigned,unsigned);
+extern void gba_combat_update(dok_renderer_workspace *,unsigned);
+extern void gba_combat_overlay(dok_renderer_workspace *);
 static dok_visual visual;
+void gba_visual_remove(uint16_t id) {if(id<DOK_RUNTIME_MAX_OBJECTS)dok_scheduler_destroy(&visual.scheduler,id);}
 static uint8_t visual_visible[DOK_RUNTIME_MAX_OBJECTS];
 extern uint32_t gba_time_ticks(void);
 volatile struct {uint32_t freeze,request,ack,tick,object,slot,loop;} g_visual_probe;
 volatile struct {uint32_t magic,error,steps,completed,now,object,frame,active,deadline,resource,budget;} g_visual_diag;
 static void visual_start(void) {
+    gba_combat_start(&g_render_world,&package,g_render_diag.level,g_render_diag.language);
     dok_visual_init(&visual,&g_render_world,&package,g_render_diag.level,g_render_diag.language,gba_time_ticks(),0,0);
     for(unsigned id=0;id<DOK_RUNTIME_MAX_OBJECTS;++id) {
         g_render_frame.image_known[id]=0;
@@ -314,13 +319,17 @@ __attribute__((noreturn)) void gba_main(void)
         items_update();
         visual_update();
         g_render_diag.reserved3=1;
-        g_render_frame.sprite_count=g_sprite_probe.enable?1:0;
-        g_render_frame.sprites[0]=(dok_renderer_sprite){g_sprite_probe.x,g_sprite_probe.y,g_sprite_probe.z,(uint16_t)g_sprite_probe.object,0};
+        gba_combat_update(&g_render_frame,g_render_diag.language);
+        if(g_sprite_probe.enable && g_render_frame.sprite_count<DOK_RENDER_SPRITE_CAPACITY) {
+            unsigned n=g_render_frame.sprite_count++;
+            g_render_frame.sprites[n]=(dok_renderer_sprite){g_sprite_probe.x,g_sprite_probe.y,g_sprite_probe.z,(uint16_t)g_sprite_probe.object,0};
+            g_render_frame.sprite_resource[n]=0;g_render_frame.sprite_frame[n]=0;
+        }
         dok_renderer_status status=dok_renderer_draw(&g_render_frame,&g_render_world,&package,g_render_diag.level,
             g_render_diag.language,&camera,&g_render_stats);
         g_render_diag.status=status;
         if (status!=DOK_RENDER_OK) panic(0xa0+(unsigned)status);
-        hud();gba_render_stage(5);
+        gba_combat_overlay(&g_render_frame);hud();gba_render_stage(5);
         volatile uint16_t *page=visible ? PAGE0 : PAGE1;
         *(volatile uint32_t *)0x040000d4=(uintptr_t)g_render_frame.frame;
         *(volatile uint32_t *)0x040000d8=(uintptr_t)page;
