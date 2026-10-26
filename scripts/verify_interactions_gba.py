@@ -54,7 +54,7 @@ def main():
   reference=idx.read_bytes();actual=f.read(syms['g_render_frame']+4,38400);compared=0
   for y in range(144):
    for x in range(240):
-    if y<12 and (x<80 or x>=160) or y>=132 and (x<128 or x>=184):continue
+    if y<14 and (x<80 or x>=160) or y>=128 and x>=192:continue
     assert actual[y*240+x]==reference[y*240+(x&~1)],(name,x,y,actual[y*240+x],reference[y*240+(x&~1)])
     compared+=1
   f.screenshot(build/f'interaction-{name}.png');captures.append(dict(name=name,rgb_sha256=hashlib.sha256(f.rgb).hexdigest(),cycles=render()['last_cycles'],dynamic_scene_pixels_compared=compared))

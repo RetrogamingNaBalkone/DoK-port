@@ -1,0 +1,1026 @@
+{
+  "task": "G17",
+  "status": "passed",
+  "rom_sha256": "d5bdcd171cfbca8c95d3965757a3c586c07622ce74243f5edfdce3b84e27957e",
+  "script_sha256": "0aae2e6e23f41fcf2910206abe9c374a9e4b804afa101547fbbce16011a09a45",
+  "source": {
+    "path": "originals/pkr/RUS/PKR.RES",
+    "sha256": "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816"
+  },
+  "screens": {
+    "title_ru": {
+      "path": "build/level1-fixes/ui-check/title-ru.png",
+      "sha256": "0ac9c7fd8238c705bc7c2c0d1412d90f74ee881a8d20f46790cf8fbc82bc3ebe",
+      "framebuffer_sha256": "14e17b0edf6d662c451e4f4ebacb9531c12ea1703c82d5abd3ea107f5c2fcb8b"
+    },
+    "title_en": {
+      "path": "build/level1-fixes/ui-check/title-en.png",
+      "sha256": "4ea3115023f4662c508fb0c9ca1668e3ad7e85a4ea222fdcd83a2db8f65cba9c",
+      "framebuffer_sha256": "4a2e4b9bb2dcad404555e98342ba9b0b45e691c4b2aaf7c2d16e920501e5db6b"
+    },
+    "help_en": {
+      "path": "build/level1-fixes/ui-check/help-en.png",
+      "sha256": "5e207ef0b2f24d78914296bc0fba1badbd0d6f500f6400e2a7ae2d647984ab0e",
+      "framebuffer_sha256": "f8c555a2e6522b333351921e611d6eefd1b30ca07b2e6e11f41ce14b99ff7bff"
+    },
+    "statistics_en": {
+      "path": "build/level1-fixes/ui-check/statistics-en.png",
+      "sha256": "2f7dab8318df63436b953189d850b1d354537eb88c27bc3de36ff9c4c948fc50",
+      "framebuffer_sha256": "fe8b12692cea99dd15af9f2b3f6ab55dcae3044921517c7192275d825c798d90"
+    },
+    "pause_en": {
+      "path": "build/level1-fixes/ui-check/pause-en.png",
+      "sha256": "0ed755ae5a602b26f39cd096d3459ec01da0697d28b24a4631b25f956fa80936",
+      "framebuffer_sha256": "739091c7a370416ba3b84e49128a785b64a966322d67d96b1dfd6532adeab42d"
+    },
+    "game_0": {
+      "path": "build/level1-fixes/ui-check/game-0.png",
+      "sha256": "e77f206cfe807bb25c286da02f8bae48b970bf3b39ab01cb9e886edc20557596",
+      "framebuffer_sha256": "1dfaba681b6e0aab4a30e74895f7c2556c30297c5b7736d2e454f3293b3a212b"
+    },
+    "keys_0": {
+      "path": "build/level1-fixes/ui-check/keys-0.png",
+      "sha256": "0349b878d7f9bc7a34c48c4c2aac2f4e4964ae7506e41c9f5a2c1757633b3f34",
+      "framebuffer_sha256": "983abe220dee46a54f09db93ceecf46dcc142cfc5f4338e43fbdc8fb0bf482c8"
+    },
+    "game_1": {
+      "path": "build/level1-fixes/ui-check/game-1.png",
+      "sha256": "e77f206cfe807bb25c286da02f8bae48b970bf3b39ab01cb9e886edc20557596",
+      "framebuffer_sha256": "1dfaba681b6e0aab4a30e74895f7c2556c30297c5b7736d2e454f3293b3a212b"
+    },
+    "keys_1": {
+      "path": "build/level1-fixes/ui-check/keys-1.png",
+      "sha256": "0349b878d7f9bc7a34c48c4c2aac2f4e4964ae7506e41c9f5a2c1757633b3f34",
+      "framebuffer_sha256": "983abe220dee46a54f09db93ceecf46dcc142cfc5f4338e43fbdc8fb0bf482c8"
+    },
+    "hud_ru": {
+      "path": "build/level1-fixes/ui-check/hud-ru.png",
+      "sha256": "3b4e543786905d91cc3e58c647347a76248aae9f533e489e5ec0f29eba228c24",
+      "framebuffer_sha256": "9c6b605b3e499abf21ef544c26226da9b39784220d9685ae07e76ba947bed3ad"
+    },
+    "message_0": {
+      "path": "build/level1-fixes/ui-check/message-0.png",
+      "sha256": "44e405dfa35b32d220e96942cca437fc3f24fec3c796074f14e12a05cec46e34",
+      "framebuffer_sha256": "2e8c86ca8aa5941304e79945dbc01866c8aed4976d0d6d2b1b1a4af8ef7c274f"
+    },
+    "message_1": {
+      "path": "build/level1-fixes/ui-check/message-1.png",
+      "sha256": "ed9b3fae1b55487d4e0698b673489f875660e59e71cf7636022bd9ec13073088",
+      "framebuffer_sha256": "316dcb4ab6eb169f086ffdd0b060faaf46841e06d560d68f3a862a848c9508d3"
+    },
+    "stress": {
+      "path": "build/level1-fixes/ui-check/stress.png",
+      "sha256": "035a324b8e9918d69f6778e90ecf4835020afcecb8d3a2a0f42ce65bec7b8e06",
+      "framebuffer_sha256": "2508f889f9903fda02dabd4a8fe64b5d18eef41543eb2eea057038985c508c6a"
+    },
+    "pickup_0": {
+      "path": "build/level1-fixes/ui-check/pickup-0.png",
+      "sha256": "c6ef6f2c0d1aab8da9f7c0e6127ae8b34c320cb17bc72617cb54bc62a70ec7a4",
+      "framebuffer_sha256": "aeec66e85e742ea0a3e6d581fc7f90b2ad675400c9579e405b0db41799d95d42"
+    },
+    "death_0": {
+      "path": "build/level1-fixes/ui-check/death-0.png",
+      "sha256": "1032fa58827c1a869bea000fa4d1cc4aa829a5e44f4005c6480406b095bff96a",
+      "framebuffer_sha256": "84ee9935781268e3625461b60a06ad149abbc8134d8e1a41a1904fc10d1a19fe"
+    },
+    "pickup_1": {
+      "path": "build/level1-fixes/ui-check/pickup-1.png",
+      "sha256": "fe3321a5c9ea58c049b5070a4d3b337c771f1a8e2be6deb91d031154bdd5272d",
+      "framebuffer_sha256": "ff3ce3d8fe2057cf22f20aed521b3c07f107f507876c96f970c88c7f36937863"
+    },
+    "death_1": {
+      "path": "build/level1-fixes/ui-check/death-1.png",
+      "sha256": "393aabcea89e647af78dd5c275775a1123fb2ddfa2ef54849732bcab260f3623",
+      "framebuffer_sha256": "1a4225e3dde0d1780bed82df48a71c9da0b347c5ba6f515f1af77e6a75cc1176"
+    }
+  },
+  "checks": {
+    "real_keypad_menu": true,
+    "title_help_statistics": true,
+    "chord_suppressed_use_and_language": true,
+    "paused_world_and_clock": true,
+    "pause_preserved_fraction_and_raw_timer_continued": true,
+    "resume_excluded_paused_time": true,
+    "no_resume_fire_leak": true,
+    "language_preserved_world": true,
+    "exact_original_font8_pixels": true,
+    "exact_original_font16_pixels": true,
+    "offline_rom_icons_no_runtime_resize": true,
+    "signed16_hud_extremes": true,
+    "bounded_240byte_stress": true,
+    "viewport_240x144_messages_240x16": true
+  },
+  "messages": [
+    {
+      "language": 0,
+      "bytes": 36,
+      "object": 103,
+      "slot": 88,
+      "layout": {
+        "characters": 35,
+        "glyph_width": 6,
+        "x": 15,
+        "y": 148
+      }
+    },
+    {
+      "language": 1,
+      "bytes": 31,
+      "object": 103,
+      "slot": 88,
+      "layout": {
+        "characters": 30,
+        "glyph_width": 7,
+        "x": 15,
+        "y": 148
+      }
+    }
+  ],
+  "pages": [
+    {
+      "page": 1,
+      "exact_font_pixels": true
+    },
+    {
+      "page": 2,
+      "exact_font_pixels": true
+    },
+    {
+      "page": 3,
+      "exact_font_pixels": true
+    }
+  ],
+  "notifications": [
+    {
+      "language": 0,
+      "actual_pickup_item": 103,
+      "actual_completed_monster_death": 1,
+      "exact_death_text_pixels": true
+    },
+    {
+      "language": 1,
+      "actual_pickup_item": 103,
+      "actual_completed_monster_death": 1,
+      "exact_death_text_pixels": true
+    }
+  ],
+  "keys": [
+    {
+      "language": 0,
+      "mask": 0,
+      "original_pixels": true
+    },
+    {
+      "language": 0,
+      "mask": 1,
+      "original_pixels": true
+    },
+    {
+      "language": 0,
+      "mask": 2,
+      "original_pixels": true
+    },
+    {
+      "language": 0,
+      "mask": 3,
+      "original_pixels": true
+    },
+    {
+      "language": 0,
+      "mask": 4,
+      "original_pixels": true
+    },
+    {
+      "language": 0,
+      "mask": 5,
+      "original_pixels": true
+    },
+    {
+      "language": 0,
+      "mask": 6,
+      "original_pixels": true
+    },
+    {
+      "language": 0,
+      "mask": 7,
+      "original_pixels": true
+    },
+    {
+      "language": 1,
+      "mask": 0,
+      "original_pixels": true
+    },
+    {
+      "language": 1,
+      "mask": 1,
+      "original_pixels": true
+    },
+    {
+      "language": 1,
+      "mask": 2,
+      "original_pixels": true
+    },
+    {
+      "language": 1,
+      "mask": 3,
+      "original_pixels": true
+    },
+    {
+      "language": 1,
+      "mask": 4,
+      "original_pixels": true
+    },
+    {
+      "language": 1,
+      "mask": 5,
+      "original_pixels": true
+    },
+    {
+      "language": 1,
+      "mask": 6,
+      "original_pixels": true
+    },
+    {
+      "language": 1,
+      "mask": 7,
+      "original_pixels": true
+    }
+  ],
+  "all_original_messages_single_line": [
+    {
+      "language": 0,
+      "level": 1,
+      "source_references": 75,
+      "layouts": [
+        {
+          "object": 1,
+          "slot": 190,
+          "characters": 23,
+          "glyph_width": 8,
+          "x": 28,
+          "y": 148
+        },
+        {
+          "object": 2,
+          "slot": 190,
+          "characters": 12,
+          "glyph_width": 8,
+          "x": 72,
+          "y": 148
+        },
+        {
+          "object": 3,
+          "slot": 190,
+          "characters": 14,
+          "glyph_width": 8,
+          "x": 64,
+          "y": 148
+        },
+        {
+          "object": 4,
+          "slot": 190,
+          "characters": 20,
+          "glyph_width": 8,
+          "x": 40,
+          "y": 148
+        },
+        {
+          "object": 5,
+          "slot": 190,
+          "characters": 21,
+          "glyph_width": 8,
+          "x": 36,
+          "y": 148
+        },
+        {
+          "object": 6,
+          "slot": 190,
+          "characters": 21,
+          "glyph_width": 8,
+          "x": 36,
+          "y": 148
+        },
+        {
+          "object": 7,
+          "slot": 190,
+          "characters": 8,
+          "glyph_width": 8,
+          "x": 88,
+          "y": 148
+        },
+        {
+          "object": 8,
+          "slot": 190,
+          "characters": 27,
+          "glyph_width": 8,
+          "x": 12,
+          "y": 148
+        },
+        {
+          "object": 9,
+          "slot": 190,
+          "characters": 23,
+          "glyph_width": 8,
+          "x": 28,
+          "y": 148
+        },
+        {
+          "object": 10,
+          "slot": 190,
+          "characters": 12,
+          "glyph_width": 8,
+          "x": 72,
+          "y": 148
+        },
+        {
+          "object": 11,
+          "slot": 190,
+          "characters": 14,
+          "glyph_width": 8,
+          "x": 64,
+          "y": 148
+        },
+        {
+          "object": 12,
+          "slot": 190,
+          "characters": 20,
+          "glyph_width": 8,
+          "x": 40,
+          "y": 148
+        },
+        {
+          "object": 13,
+          "slot": 190,
+          "characters": 21,
+          "glyph_width": 8,
+          "x": 36,
+          "y": 148
+        },
+        {
+          "object": 14,
+          "slot": 190,
+          "characters": 21,
+          "glyph_width": 8,
+          "x": 36,
+          "y": 148
+        },
+        {
+          "object": 15,
+          "slot": 190,
+          "characters": 8,
+          "glyph_width": 8,
+          "x": 88,
+          "y": 148
+        },
+        {
+          "object": 16,
+          "slot": 190,
+          "characters": 27,
+          "glyph_width": 8,
+          "x": 12,
+          "y": 148
+        },
+        {
+          "object": 34,
+          "slot": 190,
+          "characters": 14,
+          "glyph_width": 8,
+          "x": 64,
+          "y": 148
+        },
+        {
+          "object": 35,
+          "slot": 190,
+          "characters": 27,
+          "glyph_width": 8,
+          "x": 12,
+          "y": 148
+        },
+        {
+          "object": 36,
+          "slot": 190,
+          "characters": 20,
+          "glyph_width": 8,
+          "x": 40,
+          "y": 148
+        },
+        {
+          "object": 37,
+          "slot": 190,
+          "characters": 18,
+          "glyph_width": 8,
+          "x": 48,
+          "y": 148
+        },
+        {
+          "object": 38,
+          "slot": 190,
+          "characters": 17,
+          "glyph_width": 8,
+          "x": 52,
+          "y": 148
+        },
+        {
+          "object": 39,
+          "slot": 190,
+          "characters": 15,
+          "glyph_width": 8,
+          "x": 60,
+          "y": 148
+        },
+        {
+          "object": 40,
+          "slot": 190,
+          "characters": 29,
+          "glyph_width": 8,
+          "x": 4,
+          "y": 148
+        },
+        {
+          "object": 41,
+          "slot": 190,
+          "characters": 15,
+          "glyph_width": 8,
+          "x": 60,
+          "y": 148
+        },
+        {
+          "object": 99,
+          "slot": 88,
+          "characters": 16,
+          "glyph_width": 8,
+          "x": 56,
+          "y": 148
+        },
+        {
+          "object": 100,
+          "slot": 88,
+          "characters": 18,
+          "glyph_width": 8,
+          "x": 48,
+          "y": 148
+        },
+        {
+          "object": 101,
+          "slot": 88,
+          "characters": 17,
+          "glyph_width": 8,
+          "x": 52,
+          "y": 148
+        },
+        {
+          "object": 102,
+          "slot": 88,
+          "characters": 32,
+          "glyph_width": 7,
+          "x": 8,
+          "y": 148
+        },
+        {
+          "object": 103,
+          "slot": 88,
+          "characters": 35,
+          "glyph_width": 6,
+          "x": 15,
+          "y": 148
+        },
+        {
+          "object": 104,
+          "slot": 88,
+          "characters": 22,
+          "glyph_width": 8,
+          "x": 32,
+          "y": 148
+        },
+        {
+          "object": 105,
+          "slot": 88,
+          "characters": 28,
+          "glyph_width": 8,
+          "x": 8,
+          "y": 148
+        },
+        {
+          "object": 106,
+          "slot": 88,
+          "characters": 25,
+          "glyph_width": 8,
+          "x": 20,
+          "y": 148
+        },
+        {
+          "object": 107,
+          "slot": 88,
+          "characters": 10,
+          "glyph_width": 8,
+          "x": 80,
+          "y": 148
+        },
+        {
+          "object": 108,
+          "slot": 88,
+          "characters": 10,
+          "glyph_width": 8,
+          "x": 80,
+          "y": 148
+        },
+        {
+          "object": 109,
+          "slot": 88,
+          "characters": 22,
+          "glyph_width": 8,
+          "x": 32,
+          "y": 148
+        }
+      ]
+    },
+    {
+      "language": 0,
+      "level": 2,
+      "source_references": 75,
+      "layouts": [
+        {
+          "object": 36,
+          "slot": 190,
+          "characters": 12,
+          "glyph_width": 8,
+          "x": 72,
+          "y": 148
+        },
+        {
+          "object": 37,
+          "slot": 190,
+          "characters": 26,
+          "glyph_width": 8,
+          "x": 16,
+          "y": 148
+        },
+        {
+          "object": 38,
+          "slot": 190,
+          "characters": 25,
+          "glyph_width": 8,
+          "x": 20,
+          "y": 148
+        },
+        {
+          "object": 39,
+          "slot": 190,
+          "characters": 24,
+          "glyph_width": 8,
+          "x": 24,
+          "y": 148
+        },
+        {
+          "object": 40,
+          "slot": 190,
+          "characters": 20,
+          "glyph_width": 8,
+          "x": 40,
+          "y": 148
+        },
+        {
+          "object": 41,
+          "slot": 190,
+          "characters": 27,
+          "glyph_width": 8,
+          "x": 12,
+          "y": 148
+        }
+      ]
+    },
+    {
+      "language": 0,
+      "level": 3,
+      "source_references": 116,
+      "layouts": [
+        {
+          "object": 34,
+          "slot": 190,
+          "characters": 12,
+          "glyph_width": 8,
+          "x": 72,
+          "y": 148
+        },
+        {
+          "object": 35,
+          "slot": 190,
+          "characters": 13,
+          "glyph_width": 8,
+          "x": 68,
+          "y": 148
+        },
+        {
+          "object": 36,
+          "slot": 190,
+          "characters": 27,
+          "glyph_width": 8,
+          "x": 12,
+          "y": 148
+        },
+        {
+          "object": 37,
+          "slot": 190,
+          "characters": 12,
+          "glyph_width": 8,
+          "x": 72,
+          "y": 148
+        },
+        {
+          "object": 38,
+          "slot": 190,
+          "characters": 16,
+          "glyph_width": 8,
+          "x": 56,
+          "y": 148
+        },
+        {
+          "object": 39,
+          "slot": 190,
+          "characters": 22,
+          "glyph_width": 8,
+          "x": 32,
+          "y": 148
+        },
+        {
+          "object": 40,
+          "slot": 190,
+          "characters": 14,
+          "glyph_width": 8,
+          "x": 64,
+          "y": 148
+        }
+      ]
+    },
+    {
+      "language": 1,
+      "level": 1,
+      "source_references": 75,
+      "layouts": [
+        {
+          "object": 1,
+          "slot": 190,
+          "characters": 21,
+          "glyph_width": 8,
+          "x": 36,
+          "y": 148
+        },
+        {
+          "object": 2,
+          "slot": 190,
+          "characters": 13,
+          "glyph_width": 8,
+          "x": 68,
+          "y": 148
+        },
+        {
+          "object": 3,
+          "slot": 190,
+          "characters": 16,
+          "glyph_width": 8,
+          "x": 56,
+          "y": 148
+        },
+        {
+          "object": 4,
+          "slot": 190,
+          "characters": 19,
+          "glyph_width": 8,
+          "x": 44,
+          "y": 148
+        },
+        {
+          "object": 5,
+          "slot": 190,
+          "characters": 18,
+          "glyph_width": 8,
+          "x": 48,
+          "y": 148
+        },
+        {
+          "object": 6,
+          "slot": 190,
+          "characters": 24,
+          "glyph_width": 8,
+          "x": 24,
+          "y": 148
+        },
+        {
+          "object": 7,
+          "slot": 190,
+          "characters": 4,
+          "glyph_width": 8,
+          "x": 104,
+          "y": 148
+        },
+        {
+          "object": 8,
+          "slot": 190,
+          "characters": 22,
+          "glyph_width": 8,
+          "x": 32,
+          "y": 148
+        },
+        {
+          "object": 34,
+          "slot": 190,
+          "characters": 16,
+          "glyph_width": 8,
+          "x": 56,
+          "y": 148
+        },
+        {
+          "object": 35,
+          "slot": 190,
+          "characters": 19,
+          "glyph_width": 8,
+          "x": 44,
+          "y": 148
+        },
+        {
+          "object": 36,
+          "slot": 190,
+          "characters": 15,
+          "glyph_width": 8,
+          "x": 60,
+          "y": 148
+        },
+        {
+          "object": 37,
+          "slot": 190,
+          "characters": 18,
+          "glyph_width": 8,
+          "x": 48,
+          "y": 148
+        },
+        {
+          "object": 38,
+          "slot": 190,
+          "characters": 22,
+          "glyph_width": 8,
+          "x": 32,
+          "y": 148
+        },
+        {
+          "object": 39,
+          "slot": 190,
+          "characters": 8,
+          "glyph_width": 8,
+          "x": 88,
+          "y": 148
+        },
+        {
+          "object": 40,
+          "slot": 190,
+          "characters": 27,
+          "glyph_width": 8,
+          "x": 12,
+          "y": 148
+        },
+        {
+          "object": 41,
+          "slot": 190,
+          "characters": 16,
+          "glyph_width": 8,
+          "x": 56,
+          "y": 148
+        },
+        {
+          "object": 99,
+          "slot": 88,
+          "characters": 19,
+          "glyph_width": 8,
+          "x": 44,
+          "y": 148
+        },
+        {
+          "object": 100,
+          "slot": 88,
+          "characters": 17,
+          "glyph_width": 8,
+          "x": 52,
+          "y": 148
+        },
+        {
+          "object": 101,
+          "slot": 88,
+          "characters": 19,
+          "glyph_width": 8,
+          "x": 44,
+          "y": 148
+        },
+        {
+          "object": 102,
+          "slot": 88,
+          "characters": 29,
+          "glyph_width": 8,
+          "x": 4,
+          "y": 148
+        },
+        {
+          "object": 103,
+          "slot": 88,
+          "characters": 30,
+          "glyph_width": 7,
+          "x": 15,
+          "y": 148
+        },
+        {
+          "object": 104,
+          "slot": 88,
+          "characters": 15,
+          "glyph_width": 8,
+          "x": 60,
+          "y": 148
+        },
+        {
+          "object": 105,
+          "slot": 88,
+          "characters": 32,
+          "glyph_width": 7,
+          "x": 8,
+          "y": 148
+        },
+        {
+          "object": 106,
+          "slot": 88,
+          "characters": 27,
+          "glyph_width": 8,
+          "x": 12,
+          "y": 148
+        },
+        {
+          "object": 107,
+          "slot": 88,
+          "characters": 12,
+          "glyph_width": 8,
+          "x": 72,
+          "y": 148
+        },
+        {
+          "object": 108,
+          "slot": 88,
+          "characters": 14,
+          "glyph_width": 8,
+          "x": 64,
+          "y": 148
+        },
+        {
+          "object": 109,
+          "slot": 88,
+          "characters": 18,
+          "glyph_width": 8,
+          "x": 48,
+          "y": 148
+        }
+      ]
+    },
+    {
+      "language": 1,
+      "level": 2,
+      "source_references": 75,
+      "layouts": [
+        {
+          "object": 36,
+          "slot": 190,
+          "characters": 14,
+          "glyph_width": 8,
+          "x": 64,
+          "y": 148
+        },
+        {
+          "object": 37,
+          "slot": 190,
+          "characters": 18,
+          "glyph_width": 8,
+          "x": 48,
+          "y": 148
+        },
+        {
+          "object": 38,
+          "slot": 190,
+          "characters": 15,
+          "glyph_width": 8,
+          "x": 60,
+          "y": 148
+        },
+        {
+          "object": 39,
+          "slot": 190,
+          "characters": 21,
+          "glyph_width": 8,
+          "x": 36,
+          "y": 148
+        },
+        {
+          "object": 40,
+          "slot": 190,
+          "characters": 19,
+          "glyph_width": 8,
+          "x": 44,
+          "y": 148
+        },
+        {
+          "object": 41,
+          "slot": 190,
+          "characters": 28,
+          "glyph_width": 8,
+          "x": 8,
+          "y": 148
+        }
+      ]
+    },
+    {
+      "language": 1,
+      "level": 3,
+      "source_references": 116,
+      "layouts": [
+        {
+          "object": 34,
+          "slot": 190,
+          "characters": 19,
+          "glyph_width": 8,
+          "x": 44,
+          "y": 148
+        },
+        {
+          "object": 35,
+          "slot": 190,
+          "characters": 12,
+          "glyph_width": 8,
+          "x": 72,
+          "y": 148
+        },
+        {
+          "object": 36,
+          "slot": 190,
+          "characters": 29,
+          "glyph_width": 8,
+          "x": 4,
+          "y": 148
+        },
+        {
+          "object": 37,
+          "slot": 190,
+          "characters": 15,
+          "glyph_width": 8,
+          "x": 60,
+          "y": 148
+        },
+        {
+          "object": 38,
+          "slot": 190,
+          "characters": 17,
+          "glyph_width": 8,
+          "x": 52,
+          "y": 148
+        },
+        {
+          "object": 39,
+          "slot": 190,
+          "characters": 27,
+          "glyph_width": 8,
+          "x": 12,
+          "y": 148
+        },
+        {
+          "object": 40,
+          "slot": 190,
+          "characters": 27,
+          "glyph_width": 8,
+          "x": 12,
+          "y": 148
+        }
+      ]
+    }
+  ],
+  "final": {
+    "magic": 1430860087,
+    "state": 2,
+    "focus": 0,
+    "language": 1,
+    "messages": 28,
+    "object": 65534,
+    "slot": 6,
+    "length": 12,
+    "page": 0,
+    "pages": 1,
+    "remaining": 30000,
+    "draws": 1722,
+    "font8": 1,
+    "font16": 1,
+    "last_keys": 0,
+    "errors": 0
+  },
+  "stack": {
+    "main_stack_low": 50356224,
+    "main_stack_top": 50364160,
+    "sentinel_word": 219540062,
+    "untouched_margin_bytes": 5568,
+    "high_water_bytes": 2368,
+    "irq_and_bios_excluded": true,
+    "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+  },
+  "physical_gba_tested": false,
+  "full_dos_session_tested": false
+}

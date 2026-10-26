@@ -286,6 +286,12 @@ static dok_renderer_status build(dok_renderer_workspace *w,const dok_runtime *r,
             continue;
         }
         if(d->class_id==7 && r->objects[object].state.door.parameter_5c!=l->initial_objects[object].state.door.parameter_5c) PROFILE_FAIL();
+        /* GBA presentation correction: native dimension/extent rounding leaves
+         * a strip at the terminal open phase. Keep intermediate native crop,
+         * but remove the panel completely once that phase is reached. Extent1
+         * is the initial closed header, not a fully opened door. */
+        if(d->class_id==7 && r->objects[object].state.door.extent>1 &&
+           (int16_t)r->objects[object].frame>=r->objects[object].state.door.extent-1) continue;
         status=image(w,r,a,level,language,object);if(status) return status;
         width=word((int32_t)w->images[object].width*d->width_parameter);
         height=word((int32_t)w->images[object].height*d->width_parameter);

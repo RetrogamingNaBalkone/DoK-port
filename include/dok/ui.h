@@ -2,11 +2,13 @@
 #define DOK_UI_H
 #include "dok/runtime.h"
 #include "dok/image.h"
-/* Borrowed original RES images, validated once at level load. */
+/* Borrowed ROM images, validated once at level load. Panel is original;
+ * icons are reduced offline to12x8/8x8/10x12, never resized while drawing. */
 typedef struct {dok_image_view panel,health,energy,keys[3];} dok_ui_art;
 void dok_ui_set_art(const dok_ui_art *);
 /* Presentation only. No mutable world pointer, allocator, native far pointer,
- * or dependency on GBA video. CP866 glyphs always occupy 8 columns. */
+ * or dependency on GBA video. CP866 glyphs use8 columns; the message row
+ * condenses them horizontally when needed to fit the panel. */
 #define DOK_UI_TEXT_LIMIT 240u
 enum {DOK_UI_PLAY,DOK_UI_TITLE,DOK_UI_PAUSE,DOK_UI_HELP,DOK_UI_STATUS};
 typedef struct {uint16_t object,slot;} dok_ui_message;

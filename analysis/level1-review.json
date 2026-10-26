@@ -1,0 +1,145 @@
+{
+  "status": "passed",
+  "date": "2026-10-26",
+  "rom_sha256": "d5bdcd171cfbca8c95d3965757a3c586c07622ce74243f5edfdce3b84e27957e",
+  "rom_bytes": 32891196,
+  "ready_rom": "artifacts/gba/DoK-port.gba",
+  "ewram_static_bytes": 253668,
+  "iwram_static_bytes": 24392,
+  "sources": {
+    "src/ui.c": "02dab351762861fc448e51fe898df374ac8ef9a2883c9d1d0bc512d9eb55c5fa",
+    "include/dok/ui.h": "fb9b459e890af86122f283a48cc22f1541a362da912e832d2735e3446fb05470",
+    "src/renderer.c": "3014e10c91899e222e952fb8511d1c4dd4b4900db5452b6b08d9a3de6ff7b593",
+    "gba/renderer_probe.c": "80f972312c7446359172e25bb1c876d41becf7f1f853ebea588335e08faeb8b8",
+    "scripts/build-gba.ps1": "e97bb593eee74f43ee8c236c9abc46f208f78e2a4042e36af3733718224c464c",
+    "scripts/pack_ui_icons.py": "e8c84d95e6021e93a870590c312d61dfb9150a8193bc5046dd7bb33e729c0560",
+    "scripts/verify_ui_gba.py": "0aae2e6e23f41fcf2910206abe9c374a9e4b804afa101547fbbce16011a09a45",
+    "scripts/verify_flow_gba.py": "905739442c519dc633dba5684dd9250243df40cabf474de28feefb114633ce95",
+    "scripts/verify_interactions_gba.py": "419ed2e061a848802278f08c0d431092373f71bb8dcd8183b53a08f5f7e79a08",
+    "scripts/verify_open_door_gba.py": "bf7095b31c737c220eaaa5a44dbc2636cf0db4a66b03504ce44e7e5bb2808a7d"
+  },
+  "reports": {
+    "analysis/level1-ui-fixes.json": "103879e0db50c164896b7ec80712af55aecd424c7aa8c03405f3fb52d237862b",
+    "analysis/level1-door-fixes.json": "12c9322ec83a40eb549580dea68d08d62580a7928f4c75a18791058c0b783c2c",
+    "analysis/level1-interactions-regression.json": "3440099de9b8a1ac10b1199c5a1bac46442030cca262cdeafd1440318921dd2d",
+    "analysis/level1-flow-regression.json": "b60200b72997b309dad3bdee2faf18e88ff1961aa7a7b41a166552fa972bff33",
+    "analysis/level1-renderer-regression.json": "2d1debfe71e75f7e9d487242100e69b70c5c98e7fc3bd20dc6e0a0f11b4dbaf1",
+    "analysis/level1-time-regression.json": "c887680e1dc62357ca21ef620039c9a8a27a047282edcf6419dfb6b42a027e7f",
+    "analysis/level1-visual-review.json": "227c8baadc149a0c304281966edaf868c506cd4f1941a912d87621d09932d41e"
+  },
+  "offline_icons": {
+    "package_sha256": "3efa5d3027d63ffd65e0ae8c0b45be23ee8394b3c5151c8e9f10e76fa8674351",
+    "bytes": 1220,
+    "icons": [
+      {
+        "language": 0,
+        "name": "\u041f\u0416\u0418\u0417\u041d\u042c",
+        "offset": 0,
+        "source_sha256": "1d17af443259a237ccf57ca61aa0858b0c853f97a35a8a67e72401e341428bcc",
+        "width": 12,
+        "height": 8,
+        "pixels_sha256": "5b73b98237009109c4cc9bafb2b965fd2577e62fbda9ff73ed9e6f5594e7bae1"
+      },
+      {
+        "language": 0,
+        "name": "\u041f\u041c\u0410\u0413\u0418\u042f",
+        "offset": 114,
+        "source_sha256": "e864aacf0cfd3895cd9b2765806f868aad86f79e29ea79ef633d5219b4f2b4cf",
+        "width": 8,
+        "height": 8,
+        "pixels_sha256": "601e45cf5853ea8afc80bd9fe7958fff38849b1364214ec544060bc87614ef45"
+      },
+      {
+        "language": 0,
+        "name": "\u041f\u041a\u041b\u042e\u0427\u041c",
+        "offset": 196,
+        "source_sha256": "065cb6e7653e48486e9007e6c24262d16b3e2aff79b930806499437f03655b47",
+        "width": 10,
+        "height": 12,
+        "pixels_sha256": "88d38a094c7d9f4fe93729e57bbef90b261cfcbfa1dadef3ad0cec856a3a88b0"
+      },
+      {
+        "language": 0,
+        "name": "\u041f\u041a\u041b\u042e\u0427\u0416",
+        "offset": 334,
+        "source_sha256": "7c618e620e6cb77e8d3d7438d36f791527a1cd06cf3f7fd2bdd71ca0c7ee39b8",
+        "width": 10,
+        "height": 12,
+        "pixels_sha256": "549a720220604a7219707e68da697a697dbffaf356eebf394793f0379a1acd8b"
+      },
+      {
+        "language": 0,
+        "name": "\u041f\u041a\u041b\u042e\u0427\u0417",
+        "offset": 472,
+        "source_sha256": "e44f28669c07712723d4b8d2a02affb8a07f1057d76f640fa284179cd01e86ba",
+        "width": 10,
+        "height": 12,
+        "pixels_sha256": "68c0b20f357375e4bb1adabc95eb1085d5910d8cc1afa2d18c3160c15491f8a5"
+      },
+      {
+        "language": 1,
+        "name": "\u041f\u0416\u0418\u0417\u041d\u042c",
+        "offset": 610,
+        "source_sha256": "1d17af443259a237ccf57ca61aa0858b0c853f97a35a8a67e72401e341428bcc",
+        "width": 12,
+        "height": 8,
+        "pixels_sha256": "5b73b98237009109c4cc9bafb2b965fd2577e62fbda9ff73ed9e6f5594e7bae1"
+      },
+      {
+        "language": 1,
+        "name": "\u041f\u041c\u0410\u0413\u0418\u042f",
+        "offset": 724,
+        "source_sha256": "e864aacf0cfd3895cd9b2765806f868aad86f79e29ea79ef633d5219b4f2b4cf",
+        "width": 8,
+        "height": 8,
+        "pixels_sha256": "601e45cf5853ea8afc80bd9fe7958fff38849b1364214ec544060bc87614ef45"
+      },
+      {
+        "language": 1,
+        "name": "\u041f\u041a\u041b\u042e\u0427\u041c",
+        "offset": 806,
+        "source_sha256": "065cb6e7653e48486e9007e6c24262d16b3e2aff79b930806499437f03655b47",
+        "width": 10,
+        "height": 12,
+        "pixels_sha256": "88d38a094c7d9f4fe93729e57bbef90b261cfcbfa1dadef3ad0cec856a3a88b0"
+      },
+      {
+        "language": 1,
+        "name": "\u041f\u041a\u041b\u042e\u0427\u0416",
+        "offset": 944,
+        "source_sha256": "7c618e620e6cb77e8d3d7438d36f791527a1cd06cf3f7fd2bdd71ca0c7ee39b8",
+        "width": 10,
+        "height": 12,
+        "pixels_sha256": "549a720220604a7219707e68da697a697dbffaf356eebf394793f0379a1acd8b"
+      },
+      {
+        "language": 1,
+        "name": "\u041f\u041a\u041b\u042e\u0427\u0417",
+        "offset": 1082,
+        "source_sha256": "e44f28669c07712723d4b8d2a02affb8a07f1057d76f640fa284179cd01e86ba",
+        "width": 10,
+        "height": 12,
+        "pixels_sha256": "68c0b20f357375e4bb1adabc95eb1085d5910d8cc1afa2d18c3160c15491f8a5"
+      }
+    ],
+    "script_sha256": "e8c84d95e6021e93a870590c312d61dfb9150a8193bc5046dd7bb33e729c0560",
+    "source_sha256": "1bb61746cc1139772da958e5a93f8780a0faece95aae66b02ebd5446da92abc5",
+    "filter": "nearest neighbour, index0 transparent",
+    "runtime_resize": false
+  },
+  "host_ui": "Windows executable built with shared Zig and executed successfully; Linux static compile passed, not executed",
+  "host_artifacts": {
+    "build/native/dok-ui-tests.exe": "10f78b4057413daa7eae15d4d4cc5b30d37b5cf5a5dbe776c2fb9adfb98ffeae",
+    "build/native/dok-ui-tests-linux": "fc0a208a6535a3c3781b2c9576920987ec25d68da9b795f744e541cd796827e9",
+    "build/native/dok-render-reference.exe": "5555011fba4ce68d49911913b496790ac314edcf08be1d9b6b531a739199b21a"
+  },
+  "limitations": {
+    "physical_gba_tested": false,
+    "new_full_performance_ai_audio_pass": false,
+    "new_exe_analysis": false,
+    "original_crop_vectors_rerun": false,
+    "original_crop_rerun_note": "Unicorn import denied access to existing shared research-deps; prior G09 Ghidra/x86 evidence retained",
+    "full_dos_session_tested": false,
+    "30fps_claimed": false
+  }
+}

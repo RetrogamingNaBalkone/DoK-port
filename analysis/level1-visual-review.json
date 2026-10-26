@@ -1,0 +1,20 @@
+{
+  "date": "2026-10-26",
+  "rom_sha256": "d5bdcd171cfbca8c95d3965757a3c586c07622ce74243f5edfdce3b84e27957e",
+  "reviewer": "Codex root, actual PNG inspection",
+  "status": "passed",
+  "checks": [
+    "smaller icons and panel padding",
+    "centered condensed Russian message within the bevel",
+    "open doorway front and oblique, residual strip absent",
+    "one-line source screen footer and page number"
+  ],
+  "screens": {
+    "build/level1-fixes/ui-check/game-0.png": "e77f206cfe807bb25c286da02f8bae48b970bf3b39ab01cb9e886edc20557596",
+    "build/level1-fixes/ui-check/message-0.png": "44e405dfa35b32d220e96942cca437fc3f24fec3c796074f14e12a05cec46e34",
+    "build/level1-fixes/ui-check/door-0-20-open.png": "d845950b75187ea6aa6f068772ace28d860f3c48fe02a570bb1ed5cb3907937b",
+    "build/level1-fixes/ui-check/bintro1-0-page0.png": "5aebb4e081741891e7d93f6500e04702c13bbe6b89d106d7765045fa3be89fb1",
+    "build/g17-ui/ui-check/door-0-0-open.png": "1d49db87491e02b489229afe6ce8f3bdbd9a229d4f46572cb56c258ca6ac4a89"
+  },
+  "physical_gba_tested": false
+}

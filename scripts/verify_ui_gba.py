@@ -62,6 +62,26 @@ def source_icon(frame, payload, x, y, width, height):
                 assert frame[(y+row)*240+x+col] == expected, ('original icon', x, y, row, col)
 
 
+def message_mask(frame, font, text, foreground):
+    """Check the whole panel: one centered row, no clipped source strokes."""
+    text = text.strip(b' ')
+    width = min(8, 234 // len(text)) if text else 8
+    x = (240-len(text)*width)//2
+    expected = set()
+    for index, glyph in enumerate(text):
+        for row in range(8):
+            bits = font[glyph*8+row]
+            for source in range(8):
+                if bits & (128 >> source):
+                    col = ((source+1)*width-1)//8
+                    expected.add((x+index*width+col, 148+row))
+    for row in range(144, 160):
+        for col in range(240):
+            assert (frame[row*240+col] == foreground) == ((col, row) in expected), (
+                'centered single-line message', col, row, len(text), width)
+    return dict(characters=len(text), glyph_width=width, x=x, y=148)
+
+
 class UIProbe(AICombatProbe):
     preserve_title = True
 
@@ -244,15 +264,34 @@ def main():
         for language in (0, 1):
             p.command(2, language)
             resources, _ = original_animations(language)
+            # Inspect the actual ROM payload and the borrowed live views:
+            # small dimensions already exist before any HUD drawing occurs.
+            offset = 0
+            for icon_index, (name, width, height) in enumerate((
+                    ('8f8688878d9c', 12, 8), ('8f8c8083889f', 8, 8),
+                    ('8f8a8b9e978c', 10, 12), ('8f8a8b9e9786', 10, 12),
+                    ('8f8a8b9e9787', 10, 12))):
+                source = resources[name]
+                sw, sh = struct.unpack_from('<HH', source)
+                expected = bytes(source[18+(y*sh//height)*sw+x*sw//width]
+                                 for y in range(height) for x in range(width))
+                address = p.symbols['dok_ui_icons']+language*610+offset
+                assert 0x08000000 <= address < 0x0a000000
+                assert struct.unpack('<HH', p.frontend.read(address, 4)) == (width, height)
+                assert p.frontend.read(address+18, width*height) == expected
+                view = p.frontend.read(p.symbols['localized_art']+language*144+(icon_index+1)*24, 8)
+                assert struct.unpack('<IHH', view) == (address+18, width, height)
+                offset += 18+width*height
+            assert offset == 610
             for mask in range(8):
                 p.write(player+20, struct.pack('<H', mask))
                 p.command(1, 0)
                 raw, palette = p.frame()
                 ui_colors(palette)
-                source_icon(raw, resources['8f8688878d9c'], 3, 2, 15, 10)
+                source_icon(raw, resources['8f8688878d9c'], 3, 3, 12, 8)
                 energy = struct.unpack('<h', p.frontend.read(player+2, 2))[0]
-                ew = 18+8*len(str(energy))
-                source_icon(raw, resources['8f8c8083889f'], 240-ew+3, 2, 10, 11)
+                ew = 16+8*len(str(energy))
+                source_icon(raw, resources['8f8c8083889f'], 240-ew+3, 3, 8, 8)
                 # Inspect all key slots, including transparent pixels and absent
                 # slots, against the already rendered scene in the work buffer.
                 if mask == 0:
@@ -270,8 +309,8 @@ def main():
                             sx = col if col < 3 else 320-(16-col) if col >= 13 else 10
                             sy = row if row < 3 else 39-(16-row) if row >= 13 else 5
                             expected = panel[sy*320+sx]
-                            if 2 <= col < 14 and 1 <= row < 15:
-                                pixel = payload[18+((row-1)*sh//14)*sw+(col-2)*sw//12]
+                            if 3 <= col < 13 and 2 <= row < 14:
+                                pixel = payload[18+((row-2)*sh//12)*sw+(col-3)*sw//10]
                                 if pixel:
                                     expected = pixel
                             assert raw[(128+row)*240+x+col] == expected
@@ -293,7 +332,7 @@ def main():
         raw, palette = p.frame()
         _, white = ui_colors(palette)
         font, origin = font8(0)
-        glyph_mask(raw, font, 20, 3, b'32767', white)
+        glyph_mask(raw, font, 17, 3, b'32767', white)
         glyph_mask(raw, font, 189, 3, b'-32768', white)
         screens['hud_ru'] = p.screen('hud-ru')
         p.command(1, 2)
@@ -318,10 +357,8 @@ def main():
             raw, palette = p.frame()
             _, white = ui_colors(palette)
             bitmap, _ = font8(language)
-            glyph_mask(raw, bitmap, 0, 144, text[:30], white)
-            if len(text) > 30:
-                glyph_mask(raw, bitmap, 0, 152, text[30:60], white)
-            message_checks.append(dict(language=language, bytes=len(text), object=index, slot=slot))
+            layout = message_mask(raw, bitmap, text, white)
+            message_checks.append(dict(language=language, bytes=len(text), object=index, slot=slot, layout=layout))
             screens[f'message_{language}'] = p.screen(f'message-{language}')
         p.command(4, 0xffffffff)
         assert p.ui()['length'] == 240 and p.ui()['pages'] == 4 and p.ui()['errors'] == 0, p.ui()
@@ -329,8 +366,7 @@ def main():
         _, white = ui_colors(palette)
         bitmap, _ = font8(1)
         pattern = bytes(65+i % 26 for i in range(60))
-        glyph_mask(raw, bitmap, 0, 144, pattern[:30], white)
-        glyph_mask(raw, bitmap, 0, 152, pattern[30:], white)
+        message_mask(raw, bitmap, pattern, white)
         screens['stress'] = p.screen('stress')
         page_checks = []
         for page in (1, 2, 3):
@@ -339,8 +375,7 @@ def main():
             assert p.ui()['page'] == page and p.ui()['length'] == 240, p.ui()
             raw, palette = p.frame()
             pattern = bytes(65+i % 26 for i in range(page*60, (page+1)*60))
-            glyph_mask(raw, bitmap, 0, 144, pattern[:30], white)
-            glyph_mask(raw, bitmap, 0, 152, pattern[30:], white)
+            message_mask(raw, bitmap, pattern, white)
             page_checks.append(dict(page=page, exact_font_pixels=True))
         # Real production notification sinks, rather than only UI mailboxes.
         notifications = []
@@ -370,12 +405,51 @@ def main():
             _, white = ui_colors(palette)
             bitmap, _ = font8(language)
             text = bytes.fromhex(fields[0xbe])
-            glyph_mask(raw, bitmap, 0, 144, text[:30], white)
-            if len(text)>30:
-                glyph_mask(raw, bitmap, 0, 152, text[30:60], white)
+            message_mask(raw, bitmap, text, white)
             screens[f'death_{language}'] = p.screen(f'death-{language}')
             notifications.append(dict(language=language, actual_pickup_item=item,
                                       actual_completed_monster_death=index, exact_death_text_pixels=True))
+        # Every distinct real message across all six source LEVEL views, plus
+        # all seven system messages per language. Originals fit in one page;
+        # the60-byte paging stress above is only the synthetic safety limit.
+        all_message_checks = []
+        native = load_json('analysis/g17-original-verification.json')['languages']
+        for language in (0, 1):
+            p.command(2, language)
+            resources, _ = original_animations(language)
+            bitmap = resources[b'FONT8'.hex()]
+            checked = set()
+            for level in range(3):
+                p.camera(level, 15120, -300, 22800, 90)
+                p.command(1, 2)
+                model = reference(resources[f'LEVEL{level+1}'.encode().hex()])
+                references = 0
+                layouts = []
+                for index, obj in enumerate(model['objects']):
+                    for kind, slot, value in obj['fields']:
+                        if kind != T or slot not in (0x58, 0xbe):
+                            continue
+                        text = bytes.fromhex(value)
+                        assert len(text) <= 60, 'A real message would require paging'
+                        references += 1
+                        if text in checked:
+                            continue
+                        checked.add(text)
+                        p.command(4, 0)
+                        p.command(3, object_id=index, slot=slot)
+                        assert p.ui()['length'] == len(text)
+                        raw, palette = p.frame()
+                        _, foreground = ui_colors(palette)
+                        layout = message_mask(raw, bitmap, text, foreground)
+                        layouts.append(dict(object=index, slot=slot, **layout))
+                all_message_checks.append(dict(language=language, level=level+1,
+                                               source_references=references, layouts=layouts))
+            for slot, value in enumerate(native['en' if language else 'ru']['native_text_cp866_hex']):
+                p.command(4, 0)
+                p.command(3, object_id=65534, slot=slot)
+                raw, palette = p.frame()
+                _, foreground = ui_colors(palette)
+                message_mask(raw, bitmap, bytes.fromhex(value), foreground)
         assert p.diag()['scene_height'] == 144 and p.diag()['message_height'] == 16
         stack = stack_usage(p.frontend)
         assert stack['untouched_margin_bytes'] >= 512, stack
@@ -388,9 +462,11 @@ def main():
                                   resume_excluded_paused_time=True,
                                   no_resume_fire_leak=True, language_preserved_world=True,
                                   exact_original_font8_pixels=True, exact_original_font16_pixels=True,
+                                  offline_rom_icons_no_runtime_resize=True,
                                   signed16_hud_extremes=True,
                                   bounded_240byte_stress=True, viewport_240x144_messages_240x16=True),
                       messages=message_checks, pages=page_checks, notifications=notifications, keys=key_checks,
+                      all_original_messages_single_line=all_message_checks,
                       final=p.ui(), stack=stack,
                       physical_gba_tested=False, full_dos_session_tested=False)
         args.report.write_text(json.dumps(report, indent=2)+'\n', encoding='utf-8')

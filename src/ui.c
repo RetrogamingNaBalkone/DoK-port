@@ -99,6 +99,23 @@ static void text(canvas *c,unsigned x,unsigned y,const uint8_t *s,size_t n,unsig
   unsigned bits=font[(unsigned)s[i]*height+r];for(unsigned col=0;col<8;col++)if(bits&(128u>>col))c->f[(y+r)*240+x+col]=(uint8_t)c->fg;
  }
 }
+/* One centered line inside the three-pixel panel bevel. Condense FONT8
+ * horizontally only when needed; OR source columns so thin strokes survive. */
+static void message_line(canvas *c,const uint8_t *s,size_t n){
+ while(n && *s==' '){++s;--n;}while(n && s[n-1]==' ')--n;
+ if(!n)return;
+ unsigned width=n*8<=234?8:234/(unsigned)n;
+ if(!width)width=1;
+ unsigned x=(240-(unsigned)n*width)/2;
+ uint8_t masks[8]={0};
+ for(unsigned col=0;col<width;col++)for(unsigned k=col*8/width;k<(col+1)*8/width;k++)masks[col]|=(uint8_t)(128u>>k);
+ for(size_t i=0;i<n;i++)for(unsigned r=0;r<8;r++){
+  unsigned bits=c->f8[(unsigned)s[i]*8+r];
+  for(unsigned col=0;col<width;col++){
+   if(bits&masks[col])c->f[(148+r)*240+x+(unsigned)i*width+col]=(uint8_t)c->fg;
+  }
+ }
+}
 /* Keep the original panel's three-pixel bevel; repeat its plain interior.
  * No additional palette, framebuffer or decoded asset copy is needed. */
 static void panel(canvas *c,unsigned x,unsigned y,unsigned w,unsigned h){
@@ -116,10 +133,10 @@ static void panel(canvas *c,unsigned x,unsigned y,unsigned w,unsigned h){
   }
  }
 }
-static void icon(canvas *c,const dok_image_view *p,unsigned x,unsigned y,unsigned w,unsigned h){
+static void icon(canvas *c,const dok_image_view *p,unsigned x,unsigned y){
  if(!p || !p->pixels)return;
- for(unsigned r=0;r<h && y+r<160;r++)for(unsigned col=0;col<w && x+col<240;col++){
-  unsigned pixel=p->pixels[(r*p->height/h)*p->width+col*p->width/w];
+ for(unsigned r=0;r<p->height && y+r<160;r++)for(unsigned col=0;col<p->width && x+col<240;col++){
+  unsigned pixel=p->pixels[r*p->width+col];
   if(pixel)c->f[(y+r)*240+x+col]=(uint8_t)pixel;
  }
 }
@@ -137,15 +154,15 @@ static const char *const ui_new[2]={"\215\216\202\200\237 \210\203\220\200", "NE
 void dok_ui_draw(dok_ui *u,uint8_t *frame,const dok_runtime *w,const uint8_t *f8,const uint8_t *f16,unsigned fg,unsigned bg){
  if(!u || !frame || !w || !f8 || !f16)return;
  canvas c={frame,f8,f16,fg,bg};unsigned en=u->language;
- unsigned hpw=23+digits(w->player.health)*8,epw=18+digits(w->player.energy)*8,ex=240-epw;
+ unsigned hpw=20+digits(w->player.health)*8,epw=16+digits(w->player.energy)*8,ex=240-epw;
  panel(&c,0,0,hpw,14);panel(&c,ex,0,epw,14);
- if(art){icon(&c,&art->health,3,2,15,10);icon(&c,&art->energy,ex+3,2,10,11);}
- number(&c,20,3,w->player.health);number(&c,ex+15,3,w->player.energy);
+ if(art){icon(&c,&art->health,3,3);icon(&c,&art->energy,ex+3,3);}
+ number(&c,17,3,w->player.health);number(&c,ex+13,3,w->player.energy);
  if(art){unsigned x=240;for(unsigned i=0;i<3;i++)if(w->player.keys&(1u<<i)){
-  x-=16;panel(&c,x,128,16,16);icon(&c,&art->keys[i],x+2,129,12,14);
+  x-=16;panel(&c,x,128,16,16);icon(&c,&art->keys[i],x+3,130);
  }}
  panel(&c,0,144,240,16);uint8_t message[60];size_t n=dok_ui_text(u,w->level,message);
- if(n){text(&c,0,144,message,n>30?30:n,8);if(n>30)text(&c,0,152,message+30,n-30,8);}
+ message_line(&c,message,n);
  if(!u->state)return;
  panel(&c,8,14,224,116);
  if(u->state==DOK_UI_HELP){
@@ -177,5 +194,13 @@ unsigned dok_ui_screen_pages(const uint8_t *s,size_t n){unsigned row=0,col=0;for
 void dok_ui_screen(uint8_t *f,const uint8_t *f8,const uint8_t *f16,unsigned fg,unsigned bg,const uint8_t *s,size_t n,unsigned page,const char *heading,unsigned language){
  canvas c={f,f8,f16,fg,bg};panel(&c,0,0,240,160);label(&c,0,0,heading,16);
  unsigned row=0,col=0;for(size_t i=0;i<n && s[i] && s[i]!='$';i++){unsigned ch=s[i];if(ch=='\r')continue;if(ch=='\n'){++row;col=0;continue;}if(col==30){++row;col=0;}if(row/14==page){uint8_t b=(uint8_t)(ch<32?' ':ch);text(&c,col*8,20+(row%14)*8,&b,1,8);}++col;}
- label(&c,0,144,language?"A/START: OK B: BACK":"A/START: OK B: \215\200\207\200\204",8);number(&c,200,152,(int)page+1);label(&c,216,152,"/",8);number(&c,224,152,(int)dok_ui_screen_pages(s,n));
+ uint8_t footer[60];const char *hint=language?"A/START: OK B: BACK":"A/START: OK B: \215\200\207\200\204";
+ size_t count=length(hint);for(size_t i=0;i<count;i++)footer[i]=(uint8_t)hint[i];
+ footer[count++]=' ';
+ unsigned values[2]={page+1,dok_ui_screen_pages(s,n)};
+ for(unsigned i=0;i<2;i++){
+  uint8_t digits[10];unsigned used=0,v=values[i];do{digits[used++]=(uint8_t)('0'+v%10);v/=10;}while(v);
+  while(used)footer[count++]=digits[--used];if(!i)footer[count++]='/';
+ }
+ message_line(&c,footer,count);
 }

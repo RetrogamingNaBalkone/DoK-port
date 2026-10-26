@@ -10,7 +10,7 @@ import os
 from pathlib import Path
 import struct
 
-from verify_ui_gba import UIProbe, glyph_mask, ui_colors
+from verify_ui_gba import UIProbe, glyph_mask, message_mask, ui_colors
 from verify_sprites_gba import Probe, original_animations, load_json
 from verify_gba import sha
 from verify_renderer_gba import stack_usage
@@ -156,6 +156,9 @@ class FlowProbe(UIProbe):
                 index = page*14+row
                 line = rows[index] if index < len(rows) else b''
                 glyph_mask(raw, font, 0, 20+row*8, line.ljust(30, b' '), white)
+            hint = 'A/START: OK B: BACK' if language else 'A/START: OK B: НАЗАД'
+            footer = f'{hint} {page+1}/{expected_pages}'.encode('cp866')
+            message_mask(raw, font, footer, white)
             assert self.flow()['page'] == page
             pages.append(self.screen(f'{name.lower()}-{language}-page{page}'))
             if name=='EINTRO3' and language==1 and page==expected_pages-1:

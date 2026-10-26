@@ -1,0 +1,186 @@
+{
+  "status": "passed",
+  "rom_sha256": "d5bdcd171cfbca8c95d3965757a3c586c07622ce74243f5edfdce3b84e27957e",
+  "baseline_rom_sha256": "e9895ed2037fc970529111ff7a22897b94451a5543bcba7193312e3631bda573",
+  "script_sha256": "bf7095b31c737c220eaaa5a44dbc2636cf0db4a66b03504ce44e7e5bb2808a7d",
+  "cases": [
+    {
+      "language": 0,
+      "glyph": 97,
+      "angle": 0,
+      "removed_strip_pixels": 1038,
+      "closed_and_middle_pixel_exact": true,
+      "open_matches_old_zero_crop": true,
+      "open_scene_sha256": "4c674edc2820b5e9c5cd688b2743c65a1b578a3e0ad7d1255640bb84296f4f74"
+    },
+    {
+      "language": 0,
+      "glyph": 97,
+      "angle": 20,
+      "removed_strip_pixels": 1368,
+      "closed_and_middle_pixel_exact": true,
+      "open_matches_old_zero_crop": true,
+      "open_scene_sha256": "89c42d3fde15788514b13d2d08b6b6c41348dcc153ea716474d928306eb0ca4f"
+    },
+    {
+      "language": 0,
+      "glyph": 100,
+      "angle": 0,
+      "removed_strip_pixels": 1290,
+      "closed_and_middle_pixel_exact": true,
+      "open_matches_old_zero_crop": true,
+      "open_scene_sha256": "a0215a594953e279e62bbe97d4d7cb79bd84d6d5b07a75648b4d26e92db3b0f4"
+    },
+    {
+      "language": 0,
+      "glyph": 100,
+      "angle": 20,
+      "removed_strip_pixels": 1820,
+      "closed_and_middle_pixel_exact": true,
+      "open_matches_old_zero_crop": true,
+      "open_scene_sha256": "7bf2faa0918b2ca598ea0d59f7fe4b2e3c3417d07551161682e415e863035246"
+    },
+    {
+      "language": 0,
+      "glyph": 103,
+      "angle": 0,
+      "removed_strip_pixels": 1694,
+      "closed_and_middle_pixel_exact": true,
+      "open_matches_old_zero_crop": true,
+      "open_scene_sha256": "249e1ee3fc69df9f2c5c7fb8670ed1ab0ad2e646331d4e7d4b80d6031083f27b"
+    },
+    {
+      "language": 0,
+      "glyph": 103,
+      "angle": 20,
+      "removed_strip_pixels": 1332,
+      "closed_and_middle_pixel_exact": true,
+      "open_matches_old_zero_crop": true,
+      "open_scene_sha256": "57a3889b124dd7c4949c7857ddb88ecd5469cd50508d36cbf68d95b1de9e7c06"
+    },
+    {
+      "language": 1,
+      "glyph": 97,
+      "angle": 0,
+      "removed_strip_pixels": 1038,
+      "closed_and_middle_pixel_exact": true,
+      "open_matches_old_zero_crop": true,
+      "open_scene_sha256": "4c674edc2820b5e9c5cd688b2743c65a1b578a3e0ad7d1255640bb84296f4f74"
+    },
+    {
+      "language": 1,
+      "glyph": 97,
+      "angle": 20,
+      "removed_strip_pixels": 1368,
+      "closed_and_middle_pixel_exact": true,
+      "open_matches_old_zero_crop": true,
+      "open_scene_sha256": "89c42d3fde15788514b13d2d08b6b6c41348dcc153ea716474d928306eb0ca4f"
+    },
+    {
+      "language": 1,
+      "glyph": 100,
+      "angle": 0,
+      "removed_strip_pixels": 1290,
+      "closed_and_middle_pixel_exact": true,
+      "open_matches_old_zero_crop": true,
+      "open_scene_sha256": "a0215a594953e279e62bbe97d4d7cb79bd84d6d5b07a75648b4d26e92db3b0f4"
+    },
+    {
+      "language": 1,
+      "glyph": 100,
+      "angle": 20,
+      "removed_strip_pixels": 1820,
+      "closed_and_middle_pixel_exact": true,
+      "open_matches_old_zero_crop": true,
+      "open_scene_sha256": "7bf2faa0918b2ca598ea0d59f7fe4b2e3c3417d07551161682e415e863035246"
+    },
+    {
+      "language": 1,
+      "glyph": 103,
+      "angle": 0,
+      "removed_strip_pixels": 1694,
+      "closed_and_middle_pixel_exact": true,
+      "open_matches_old_zero_crop": true,
+      "open_scene_sha256": "249e1ee3fc69df9f2c5c7fb8670ed1ab0ad2e646331d4e7d4b80d6031083f27b"
+    },
+    {
+      "language": 1,
+      "glyph": 103,
+      "angle": 20,
+      "removed_strip_pixels": 1332,
+      "closed_and_middle_pixel_exact": true,
+      "open_matches_old_zero_crop": true,
+      "open_scene_sha256": "57a3889b124dd7c4949c7857ddb88ecd5469cd50508d36cbf68d95b1de9e7c06"
+    }
+  ],
+  "originals_unchanged": {
+    "originals/Old_Gold_3D/OG.EXE": "7965e1d67128f196fbcf2bc449d97197f355c6b81cf043608fc9e01103ea043f",
+    "originals/Old_Gold_3D/old-games.nfo": "cc2283945241a42a54020c30fa83aa3c17a91a59c034ae5f444db62e303b1602",
+    "originals/Old_Gold_3D/OLD_GOLD.RES": "e376855167b64a7190ec2da0ba9bd1da129ba178c4033aebadebca3f08b2be25",
+    "originals/Old_Gold_3D/README.TXT": "456d39010efe5e41f17445eeb5c0851b06472cbb84a0a4a5c854948b97f00a29",
+    "originals/Old_Gold_Old_Version/OG.EXE": "673563eccad4d23c3cebe56f16ce9a1f631b6d45ffb73559d5c53c1bf252da90",
+    "originals/Old_Gold_Old_Version/old-games.nfo": "cc2283945241a42a54020c30fa83aa3c17a91a59c034ae5f444db62e303b1602",
+    "originals/Old_Gold_Old_Version/OLD_GOLD.RES": "e376855167b64a7190ec2da0ba9bd1da129ba178c4033aebadebca3f08b2be25",
+    "originals/Old_Gold_Old_Version/README.TXT": "142858dd6f21135ac29d9dccfa29f6b08277513a67498adeb6d793327294ef5f",
+    "originals/pkr/ENG/DPMI16BI.OVL": "d7b0fe7a20b535f983767d472a520da3bf03018932a1f65625916d0cd6e96110",
+    "originals/pkr/ENG/PK.ICO": "b187a8c37e4ba21f11efa3030fc0e97925a68f45efcc885cc16c3f209231121c",
+    "originals/pkr/ENG/PKE.EXE": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b",
+    "originals/pkr/ENG/PKE.PIF": "bf0cce218c19dc0f1385faf922e9d7091f0f74ea4e90549c03f5d513fbcbbf80",
+    "originals/pkr/ENG/PKE.RES": "865da340621fa6f90548a84e9ae9bf0a85071befb32a40ca1d359e488f74d458",
+    "originals/pkr/ENG/RTM.EXE": "10acd85af3767634450a793f2af1e057de888621cbfc578d35d3fa91abc09661",
+    "originals/pkr/RUS/DPMI16BI.OVL": "d7b0fe7a20b535f983767d472a520da3bf03018932a1f65625916d0cd6e96110",
+    "originals/pkr/RUS/old-games.nfo": "cc2283945241a42a54020c30fa83aa3c17a91a59c034ae5f444db62e303b1602",
+    "originals/pkr/RUS/PK.ICO": "b187a8c37e4ba21f11efa3030fc0e97925a68f45efcc885cc16c3f209231121c",
+    "originals/pkr/RUS/PKR.EXE": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+    "originals/pkr/RUS/PKR.PIF": "84bf9acfb5c021d4aedbe081ebc1b5d3af9eef432ff16fc7fc5c47deaca4689a",
+    "originals/pkr/RUS/PKR.RES": "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816",
+    "originals/pkr/RUS/README.TXT": "0312e896c3d99300169f14e06cb7f78895799643094e2280f5d010706fb55dc5",
+    "originals/pkr/RUS/RTM.EXE": "10acd85af3767634450a793f2af1e057de888621cbfc578d35d3fa91abc09661"
+  },
+  "before_screens": [
+    {
+      "path": "build/g17-ui/ui-check/door-0-0-open.png",
+      "sha256": "1d49db87491e02b489229afe6ce8f3bdbd9a229d4f46572cb56c258ca6ac4a89",
+      "framebuffer_sha256": "23bb8a57c0cdfe3d67dffae6d0994affa253718b194b0b6498186aeac686f489"
+    },
+    {
+      "path": "build/g17-ui/ui-check/door-0-20-open.png",
+      "sha256": "8c504e79a70c21646d595b431a686dff6dc5353bf89ebcc7a3c385ee7c6d7cd1",
+      "framebuffer_sha256": "d8c1fc1b1328eef038d4d76c222b0bf479288917f85d1966e674d583b5db2fd5"
+    },
+    {
+      "path": "build/g17-ui/ui-check/door-1-0-open.png",
+      "sha256": "1d49db87491e02b489229afe6ce8f3bdbd9a229d4f46572cb56c258ca6ac4a89",
+      "framebuffer_sha256": "23bb8a57c0cdfe3d67dffae6d0994affa253718b194b0b6498186aeac686f489"
+    },
+    {
+      "path": "build/g17-ui/ui-check/door-1-20-open.png",
+      "sha256": "8c504e79a70c21646d595b431a686dff6dc5353bf89ebcc7a3c385ee7c6d7cd1",
+      "framebuffer_sha256": "d8c1fc1b1328eef038d4d76c222b0bf479288917f85d1966e674d583b5db2fd5"
+    }
+  ],
+  "after_screens": [
+    {
+      "path": "build/level1-fixes/ui-check/door-0-0-open.png",
+      "sha256": "99e5ab80a4047dd5ff84c4a58b83178dd36dcaca2ec052781d691bf1c30f8fa8",
+      "framebuffer_sha256": "60c115c577890eda61a19f20efaade03f239a0dd50088229522055cd1a7c96ed"
+    },
+    {
+      "path": "build/level1-fixes/ui-check/door-0-20-open.png",
+      "sha256": "d845950b75187ea6aa6f068772ace28d860f3c48fe02a570bb1ed5cb3907937b",
+      "framebuffer_sha256": "d7f268efee8c97e950e8cc78915dca28a8188c2d20b319e9dea0a385b1812284"
+    },
+    {
+      "path": "build/level1-fixes/ui-check/door-1-0-open.png",
+      "sha256": "99e5ab80a4047dd5ff84c4a58b83178dd36dcaca2ec052781d691bf1c30f8fa8",
+      "framebuffer_sha256": "60c115c577890eda61a19f20efaade03f239a0dd50088229522055cd1a7c96ed"
+    },
+    {
+      "path": "build/level1-fixes/ui-check/door-1-20-open.png",
+      "sha256": "d845950b75187ea6aa6f068772ace28d860f3c48fe02a570bb1ed5cb3907937b",
+      "framebuffer_sha256": "d7f268efee8c97e950e8cc78915dca28a8188c2d20b319e9dea0a385b1812284"
+    }
+  ],
+  "physical_gba_tested": false,
+  "full_dos_session_tested": false
+}

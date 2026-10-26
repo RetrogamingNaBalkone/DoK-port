@@ -205,6 +205,18 @@ static void prepare_level(unsigned level)
                dok_image_open(resource.data,resource.size,images[i])!=DOK_ASSET_OK ||
                images[i]->width!=widths[i] || images[i]->height!=heights[i])panic(0x91);
         }
+        /* The build packs already reduced images; drawing only blits ROM
+         * pixels. Original RES and the generic image decoder stay unchanged. */
+        extern const uint8_t dok_ui_icons[2][610];
+        static const unsigned icon_widths[5]={12,8,10,10,10},icon_heights[5]={8,8,12,12,12};
+        unsigned icon_offset=0;
+        for(unsigned i=0;i<5;i++){
+            unsigned size=18+icon_widths[i]*icon_heights[i];
+            if(icon_offset+size>610 || dok_image_open(dok_ui_icons[language]+icon_offset,size,images[i+1])!=DOK_ASSET_OK ||
+               images[i+1]->width!=icon_widths[i] || images[i+1]->height!=icon_heights[i])panic(0x91);
+            icon_offset+=size;
+        }
+        if(icon_offset!=610)panic(0x91);
         if (dok_renderer_palette(palette,&package,level,language)!=DOK_RENDER_OK) panic(0x92);
         for (unsigned i=0;i<256;++i) {
             unsigned r=palette[3*i],g=palette[3*i+1],b=palette[3*i+2];
