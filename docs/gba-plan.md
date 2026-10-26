@@ -91,7 +91,7 @@ docs/handoff.md: изменения, проверки, ограничения и
 | [G09](tasks/G09.md) | Двери, переключатели и триггеры | G08 | готово; Use/замки, door events/crop, class6 no-op, сенсоры и conveyor, FINISH для G18 |
 | [G10](tasks/G10.md) | Пол, потолок, свет и палитры | G09 | готово; FCMap-текстуры/высоты/перепады, LIGHT16, GAMEP1–3,32 фазовых ARM-вида; стоимость существенно выросла |
 | [G11](tasks/G11.md) | Объекты сцены, перекрытия и анимации | G10 | готово |
-| [G12](tasks/G12.md) | Предметы, характеристики и инвентарь | G11 | готова к началу |
+| [G12](tasks/G12.md) | Предметы, характеристики и инвентарь | G11 | готово |
 | [G13](tasks/G13.md) | Оружие, снаряды, попадания и урон | G12 | ожидает |
 | [G14](tasks/G14.md) | Обнаружение героя и перемещение монстров | G13 | ожидает |
 | [G15](tasks/G15.md) | Полный бой AI, смерть и состояния врагов | G14 | ожидает |
@@ -151,7 +151,13 @@ signed intervals/end/completion, simulation clock независимо от draw
 1750 host-последовательностей,8 ARM-последовательностей,24 projectile views
 и1455 камер прошли. EWRAM218348/IWRAM23684; до stack reserve892 байта.
 Worst6 251 069 cycles, цель30FPS полной игры не достигнута.
-Следующий шаг — G12.
+G12 завершён: [предметы и stats](items-stats.md), общий ROM `build/g12/`,
+626 размещений на язык,5274 исходных x86 stats vectors и16 item callbacks,
+58 ARM item cases/109 boundary vectors/2 видимых production pickup scenes.
+Shared glyph/repeat/duplicate weapon/full refusal и targeted regressions прошли.
+EWRAM218416/IWRAM23684; до stack reserve892 байта. Startup4653188…4673215
+cycles,30FPS не достигнуты. Acceptance — `analysis/g12-review.json`.
+Следующий шаг — G13.
 Оценка приоритета после дополнительного прохода поддерживает этот порядок:
 [основания и контрольные точки](gba-renderer-review.md#оценка-приоритета-после-дополнительного-прохода).
 Сама прежняя оценка приоритета не меняла статусы; G07/G08 завершены позднее.

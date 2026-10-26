@@ -1,5 +1,51 @@
 # Передача контекста между чатами
 
+## Текущая граница G12
+
+Обновлено26 октября2026 года: **G00–G12 готовы, следующий ID — G13**.
+G13 не начиналась. Предметы/stats/inventory подключены к общему GBA-ROM:
+`src/items.c`, `include/dok/items.h`, production callback перед zone/movement
+в `gba/movement_probe.c`. Все626 оригинальных размещений на язык (TMap),
+11 определений на уровень,29 реально размещённых видов/уровней. Положительное
+пополнение при полном ресурсе оставляет предмет; отрицательные эффекты, ADD16
+overflow перед clamp, max-charge increase+refill, ключи, карта и оружие работают.
+Consume меняет только одну клетку, shared object/остальные glyph сохраняются.
+Notifications готовы для G16/G17; gameplay не выводит текст и не играет звук.
+
+Спецификация/адреса/ABI/policies — [items-stats.md](items-stats.md).
+Реальные числовые эффекты/позиции RU/EN совпали, переводы и масштабы сохранены
+раздельно. Balance manifest не менялся. Map flag занимает прежний player
+reserved word+54; native это world+0C. Object36/player60/ARM world33864 не выросли.
+Первое оружие выбирается сразу; duplicate refill/pending сохраняет текущий
+выбор, а transition hide/show должен реализовать G13 вместе с оружием/снарядами.
+Исходный код этой цепочки — свежий `build/items/{ru,en}/` C/ASM/actor.bin.
+
+Ghidra read-only exports и EXE SHA-256 до/после совпали.5274 actual x86 stat
+vectors и16 native item callbacks (перехват только HUD/sound) прошли.
+Windows suites и Linux static/ARM Thumb compilation прошли. mGBA109 stat
+boundaries,58 real item cases RU/EN всех3уровней,12 duplicate weapon cases,
+shared glyph/repeat/notifications/full refusal прошли. Два visible production
+pickup по416-tick motion hook удаляют один billboard и меняют978 pixels каждый.
+Renderer/язык/reset/guards/stack, doors/sensors/conveyor/FINISH и rational clock
+regression прошли. FCMap class12 используется только для100/102/1000:
+неиспользуемый DOK_INTERACTION_STAT остаётся диагностическим seam.
+
+ROM/ELF/map/PNG — `build/g12/`; ROM32851924 байта, SHA-256
+`1a49c7694cc3ca1fbf7fa1439c7597f173c4c74224f4611c71489fd1a4884850`.
+EWRAM218416/free43728; IWRAM23684, до8KiB stack reserve892 байта.
+Новые cold functions в ROM. Main stack2376/margin5560 в renderer/reset;
+startup4653188…4673215 cycles. Цель30FPS не достигнута, оптимизация G20.
+Renderer не менялся;1455-camera sweep G11 не повторялся, targeted regression
+достаточна для pickup integration. Visual clock/crop/scheduler G11 сохранены.
+
+Команда: `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-gba-items.ps1 -CrossChecks -OriginalEvidence`.
+Части реально выполнены отдельно, финальный `scripts/report_items.py` прошёл.
+`analysis/g12-review.json` связывает source/ROM/evidence hashes.
+Физическая GBA/original BIOS, полная DOS-сессия, Linux execution и CMake/MSVC
+execution не проверялись. Следующие входы — паспортG13, inventory API,
+weapon-parameters, positioned instances и visual playback G11.
+Ниже — история предыдущих границ; она не отменяет текущий результат G12.
+
 Уточнение плана 26 октября 2026 года: по указанию пользователя удалена G19
 и её паспорт — сохранение/загрузка игры не входят в объём порта. Пользователь
 указал, что оригинал их не поддерживал; прежнее требование не было обосновано

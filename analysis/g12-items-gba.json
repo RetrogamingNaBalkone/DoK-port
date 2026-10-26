@@ -1,0 +1,1388 @@
+{
+  "task": "G12",
+  "status": "passed",
+  "rom_sha256": "1a49c7694cc3ca1fbf7fa1439c7597f173c4c74224f4611c71489fd1a4884850",
+  "script_sha256": "6b29411aaac470c15cc81832c720535f22cf67bbd25f76c6d55cf61b00f6c6d5",
+  "stats": [
+    {
+      "category": 0,
+      "value": -32768,
+      "accepted": 1
+    },
+    {
+      "category": 0,
+      "value": -1,
+      "accepted": 1
+    },
+    {
+      "category": 0,
+      "value": 0,
+      "accepted": 1
+    },
+    {
+      "category": 0,
+      "value": 1,
+      "accepted": 1
+    },
+    {
+      "category": 0,
+      "value": 32767,
+      "accepted": 1
+    },
+    {
+      "category": 1,
+      "value": -32768,
+      "accepted": 1
+    },
+    {
+      "category": 1,
+      "value": -1,
+      "accepted": 1
+    },
+    {
+      "category": 1,
+      "value": 0,
+      "accepted": 1
+    },
+    {
+      "category": 1,
+      "value": 1,
+      "accepted": 1
+    },
+    {
+      "category": 1,
+      "value": 32767,
+      "accepted": 1
+    },
+    {
+      "category": 2,
+      "value": -32768,
+      "accepted": 1
+    },
+    {
+      "category": 2,
+      "value": -1,
+      "accepted": 1
+    },
+    {
+      "category": 2,
+      "value": 0,
+      "accepted": 1
+    },
+    {
+      "category": 2,
+      "value": 1,
+      "accepted": 1
+    },
+    {
+      "category": 2,
+      "value": 32767,
+      "accepted": 1
+    },
+    {
+      "category": 3,
+      "value": -32768,
+      "accepted": 1
+    },
+    {
+      "category": 3,
+      "value": -1,
+      "accepted": 1
+    },
+    {
+      "category": 3,
+      "value": 0,
+      "accepted": 1
+    },
+    {
+      "category": 3,
+      "value": 1,
+      "accepted": 1
+    },
+    {
+      "category": 3,
+      "value": 32767,
+      "accepted": 1
+    },
+    {
+      "category": 4,
+      "value": -32768,
+      "accepted": 1
+    },
+    {
+      "category": 4,
+      "value": -1,
+      "accepted": 1
+    },
+    {
+      "category": 4,
+      "value": 0,
+      "accepted": 1
+    },
+    {
+      "category": 4,
+      "value": 1,
+      "accepted": 1
+    },
+    {
+      "category": 4,
+      "value": 32767,
+      "accepted": 1
+    },
+    {
+      "category": 5,
+      "value": -32768,
+      "accepted": 1
+    },
+    {
+      "category": 5,
+      "value": -1,
+      "accepted": 1
+    },
+    {
+      "category": 5,
+      "value": 0,
+      "accepted": 1
+    },
+    {
+      "category": 5,
+      "value": 1,
+      "accepted": 1
+    },
+    {
+      "category": 5,
+      "value": 32767,
+      "accepted": 1
+    },
+    {
+      "category": 6,
+      "value": -32768,
+      "accepted": 1
+    },
+    {
+      "category": 6,
+      "value": -1,
+      "accepted": 1
+    },
+    {
+      "category": 6,
+      "value": 0,
+      "accepted": 1
+    },
+    {
+      "category": 6,
+      "value": 1,
+      "accepted": 1
+    },
+    {
+      "category": 6,
+      "value": 32767,
+      "accepted": 1
+    },
+    {
+      "category": 7,
+      "value": -32768,
+      "accepted": 1
+    },
+    {
+      "category": 7,
+      "value": -1,
+      "accepted": 1
+    },
+    {
+      "category": 7,
+      "value": 0,
+      "accepted": 1
+    },
+    {
+      "category": 7,
+      "value": 1,
+      "accepted": 1
+    },
+    {
+      "category": 7,
+      "value": 32767,
+      "accepted": 1
+    },
+    {
+      "category": 8,
+      "value": -32768,
+      "accepted": 1
+    },
+    {
+      "category": 8,
+      "value": -1,
+      "accepted": 1
+    },
+    {
+      "category": 8,
+      "value": 0,
+      "accepted": 1
+    },
+    {
+      "category": 8,
+      "value": 1,
+      "accepted": 1
+    },
+    {
+      "category": 8,
+      "value": 32767,
+      "accepted": 1
+    },
+    {
+      "category": 9,
+      "value": -32768,
+      "accepted": 1
+    },
+    {
+      "category": 9,
+      "value": -1,
+      "accepted": 1
+    },
+    {
+      "category": 9,
+      "value": 0,
+      "accepted": 1
+    },
+    {
+      "category": 9,
+      "value": 1,
+      "accepted": 1
+    },
+    {
+      "category": 9,
+      "value": 32767,
+      "accepted": 1
+    },
+    {
+      "category": 10,
+      "value": -32768,
+      "accepted": 1
+    },
+    {
+      "category": 10,
+      "value": -1,
+      "accepted": 1
+    },
+    {
+      "category": 10,
+      "value": 0,
+      "accepted": 1
+    },
+    {
+      "category": 10,
+      "value": 1,
+      "accepted": 1
+    },
+    {
+      "category": 10,
+      "value": 32767,
+      "accepted": 1
+    },
+    {
+      "category": 12,
+      "value": -32768,
+      "accepted": 1
+    },
+    {
+      "category": 12,
+      "value": -1,
+      "accepted": 1
+    },
+    {
+      "category": 12,
+      "value": 0,
+      "accepted": 1
+    },
+    {
+      "category": 12,
+      "value": 1,
+      "accepted": 1
+    },
+    {
+      "category": 12,
+      "value": 32767,
+      "accepted": 1
+    },
+    {
+      "category": 13,
+      "value": -32768,
+      "accepted": 1
+    },
+    {
+      "category": 13,
+      "value": -1,
+      "accepted": 1
+    },
+    {
+      "category": 13,
+      "value": 0,
+      "accepted": 1
+    },
+    {
+      "category": 13,
+      "value": 1,
+      "accepted": 1
+    },
+    {
+      "category": 13,
+      "value": 32767,
+      "accepted": 1
+    },
+    {
+      "category": 14,
+      "value": -32768,
+      "accepted": 1
+    },
+    {
+      "category": 14,
+      "value": -1,
+      "accepted": 1
+    },
+    {
+      "category": 14,
+      "value": 0,
+      "accepted": 1
+    },
+    {
+      "category": 14,
+      "value": 1,
+      "accepted": 1
+    },
+    {
+      "category": 14,
+      "value": 32767,
+      "accepted": 1
+    },
+    {
+      "category": 99,
+      "value": -32768,
+      "accepted": 1
+    },
+    {
+      "category": 99,
+      "value": -1,
+      "accepted": 1
+    },
+    {
+      "category": 99,
+      "value": 0,
+      "accepted": 1
+    },
+    {
+      "category": 99,
+      "value": 1,
+      "accepted": 1
+    },
+    {
+      "category": 99,
+      "value": 32767,
+      "accepted": 1
+    },
+    {
+      "category": 200,
+      "value": -32768,
+      "accepted": 1
+    },
+    {
+      "category": 200,
+      "value": -1,
+      "accepted": 1
+    },
+    {
+      "category": 200,
+      "value": 0,
+      "accepted": 1
+    },
+    {
+      "category": 200,
+      "value": 1,
+      "accepted": 1
+    },
+    {
+      "category": 200,
+      "value": 32767,
+      "accepted": 1
+    },
+    {
+      "category": 11,
+      "value": -32768,
+      "accepted": 0
+    },
+    {
+      "category": 11,
+      "value": -1,
+      "accepted": 0
+    },
+    {
+      "category": 11,
+      "value": 0,
+      "accepted": 0
+    },
+    {
+      "category": 11,
+      "value": 1,
+      "accepted": 0
+    },
+    {
+      "category": 11,
+      "value": 32767,
+      "accepted": 0
+    },
+    {
+      "category": -1,
+      "value": -32768,
+      "accepted": 0
+    },
+    {
+      "category": -1,
+      "value": -1,
+      "accepted": 0
+    },
+    {
+      "category": -1,
+      "value": 0,
+      "accepted": 0
+    },
+    {
+      "category": -1,
+      "value": 1,
+      "accepted": 0
+    },
+    {
+      "category": -1,
+      "value": 32767,
+      "accepted": 0
+    },
+    {
+      "category": 32767,
+      "value": -32768,
+      "accepted": 0
+    },
+    {
+      "category": 32767,
+      "value": -1,
+      "accepted": 0
+    },
+    {
+      "category": 32767,
+      "value": 0,
+      "accepted": 0
+    },
+    {
+      "category": 32767,
+      "value": 1,
+      "accepted": 0
+    },
+    {
+      "category": 32767,
+      "value": 32767,
+      "accepted": 0
+    },
+    {
+      "category": 0,
+      "value": 1,
+      "accepted": 0
+    },
+    {
+      "category": 0,
+      "value": -1,
+      "accepted": 1
+    },
+    {
+      "category": 0,
+      "value": -15,
+      "accepted": 1
+    },
+    {
+      "category": 0,
+      "value": 10,
+      "accepted": 1
+    },
+    {
+      "category": 0,
+      "value": -100,
+      "accepted": 1
+    },
+    {
+      "category": 0,
+      "value": 0,
+      "accepted": 1
+    },
+    {
+      "category": 1,
+      "value": 1,
+      "accepted": 0
+    },
+    {
+      "category": 1,
+      "value": -1,
+      "accepted": 1
+    },
+    {
+      "category": 1,
+      "value": -15,
+      "accepted": 1
+    },
+    {
+      "category": 1,
+      "value": 10,
+      "accepted": 1
+    },
+    {
+      "category": 1,
+      "value": -100,
+      "accepted": 1
+    },
+    {
+      "category": 1,
+      "value": 0,
+      "accepted": 1
+    },
+    {
+      "category": 2,
+      "value": 20,
+      "accepted": 1
+    },
+    {
+      "category": 3,
+      "value": 20,
+      "accepted": 1
+    }
+  ],
+  "pickups": [
+    {
+      "level": 1,
+      "language": 0,
+      "object": 99,
+      "glyph": 88,
+      "category": 10,
+      "value": 1,
+      "placements": 1,
+      "accepted": 1,
+      "repeat_rejected": true,
+      "other_cells_preserved": true,
+      "duplicate_weapon_verified": false
+    },
+    {
+      "level": 1,
+      "language": 0,
+      "object": 100,
+      "glyph": 89,
+      "category": 10,
+      "value": 2,
+      "placements": 1,
+      "accepted": 1,
+      "repeat_rejected": true,
+      "other_cells_preserved": true,
+      "duplicate_weapon_verified": false
+    },
+    {
+      "level": 1,
+      "language": 0,
+      "object": 101,
+      "glyph": 90,
+      "category": 10,
+      "value": 4,
+      "placements": 1,
+      "accepted": 1,
+      "repeat_rejected": true,
+      "other_cells_preserved": true,
+      "duplicate_weapon_verified": false
+    },
+    {
+      "level": 1,
+      "language": 0,
+      "object": 102,
+      "glyph": 64,
+      "category": 0,
+      "value": 10,
+      "placements": 22,
+      "accepted": 1,
+      "repeat_rejected": true,
+      "other_cells_preserved": true,
+      "duplicate_weapon_verified": false
+    },
+    {
+      "level": 1,
+      "language": 0,
+      "object": 103,
+      "glyph": 56,
+      "category": 0,
+      "value": 15,
+      "placements": 4,
+      "accepted": 1,
+      "repeat_rejected": true,
+      "other_cells_preserved": true,
+      "duplicate_weapon_verified": false
+    },
+    {
+      "level": 1,
+      "language": 0,
+      "object": 104,
+      "glyph": 41,
+      "category": 1,
+      "value": 50,
+      "placements": 65,
+      "accepted": 1,
+      "repeat_rejected": true,
+      "other_cells_preserved": true,
+      "duplicate_weapon_verified": false
+    },
+    {
+      "level": 1,
+      "language": 0,
+      "object": 105,
+      "glyph": 42,
+      "category": 0,
+      "value": -10,
+      "placements": 80,
+      "accepted": 1,
+      "repeat_rejected": true,
+      "other_cells_preserved": true,
+      "duplicate_weapon_verified": false
+    },
+    {
+      "level": 1,
+      "language": 0,
+      "object": 106,
+      "glyph": 33,
+      "category": 0,
+      "value": -15,
+      "placements": 14,
+      "accepted": 1,
+      "repeat_rejected": true,
+      "other_cells_preserved": true,
+      "duplicate_weapon_verified": false
+    },
+    {
+      "level": 1,
+      "language": 0,
+      "object": 107,
+      "glyph": 57,
+      "category": 200,
+      "value": 1,
+      "placements": 1,
+      "accepted": 1,
+      "repeat_rejected": true,
+      "other_cells_preserved": true,
+      "duplicate_weapon_verified": false
+    },
+    {
+      "level": 1,
+      "language": 0,
+      "object": 108,
+      "glyph": 87,
+      "category": 3,
+      "value": 50,
+      "placements": 1,
+      "accepted": 1,
+      "repeat_rejected": true,
+      "other_cells_preserved": true,
+      "duplicate_weapon_verified": true
+    },
+    {
+      "level": 1,
+      "language": 0,
+      "object": 109,
+      "glyph": 86,
+      "category": 3,
+      "value": 50,
+      "placements": 1,
+      "accepted": 1,
+      "repeat_rejected": true,
+      "other_cells_preserved": true,
+      "duplicate_weapon_verified": true
+    },
+    {
+      "level": 1,
+      "language": 1,
+      "object": 99,
+      "glyph": 88,
+      "category": 10,
+      "value": 1,
+      "placements": 1,
+      "accepted": 1,
+      "repeat_rejected": true,
+      "other_cells_preserved": true,
+      "duplicate_weapon_verified": false
+    },
+    {
+      "level": 1,
+      "language": 1,
+      "object": 100,
+      "glyph": 89,
+      "category": 10,
+      "value": 2,
+      "placements": 1,
+      "accepted": 1,
+      "repeat_rejected": true,
+      "other_cells_preserved": true,
+      "duplicate_weapon_verified": false
+    },
+    {
+      "level": 1,
+      "language": 1,
+      "object": 101,
+      "glyph": 90,
+      "category": 10,
+      "value": 4,
+      "placements": 1,
+      "accepted": 1,
+      "repeat_rejected": true,
+      "other_cells_preserved": true,
+      "duplicate_weapon_verified": false
+    },
+    {
+      "level": 1,
+      "language": 1,
+      "object": 102,
+      "glyph": 64,
+      "category": 0,
+      "value": 10,
+      "placements": 22,
+      "accepted": 1,
+      "repeat_rejected": true,
+      "other_cells_preserved": true,
+      "duplicate_weapon_verified": false
+    },
+    {
+      "level": 1,
+      "language": 1,
+      "object": 103,
+      "glyph": 56,
+      "category": 0,
+      "value": 15,
+      "placements": 4,
+      "accepted": 1,
+      "repeat_rejected": true,
+      "other_cells_preserved": true,
+      "duplicate_weapon_verified": false
+    },
+    {
+      "level": 1,
+      "language": 1,
+      "object": 104,
+      "glyph": 41,
+      "category": 1,
+      "value": 50,
+      "placements": 65,
+      "accepted": 1,
+      "repeat_rejected": true,
+      "other_cells_preserved": true,
+      "duplicate_weapon_verified": false
+    },
+    {
+      "level": 1,
+      "language": 1,
+      "object": 105,
+      "glyph": 42,
+      "category": 0,
+      "value": -10,
+      "placements": 80,
+      "accepted": 1,
+      "repeat_rejected": true,
+      "other_cells_preserved": true,
+      "duplicate_weapon_verified": false
+    },
+    {
+      "level": 1,
+      "language": 1,
+      "object": 106,
+      "glyph": 33,
+      "category": 0,
+      "value": -15,
+      "placements": 14,
+      "accepted": 1,
+      "repeat_rejected": true,
+      "other_cells_preserved": true,
+      "duplicate_weapon_verified": false
+    },
+    {
+      "level": 1,
+      "language": 1,
+      "object": 107,
+      "glyph": 57,
+      "category": 200,
+      "value": 1,
+      "placements": 1,
+      "accepted": 1,
+      "repeat_rejected": true,
+      "other_cells_preserved": true,
+      "duplicate_weapon_verified": false
+    },
+    {
+      "level": 1,
+      "language": 1,
+      "object": 108,
+      "glyph": 87,
+      "category": 3,
+      "value": 50,
+      "placements": 1,
+      "accepted": 1,
+      "repeat_rejected": true,
+      "other_cells_preserved": true,
+      "duplicate_weapon_verified": true
+    },
+    {
+      "level": 1,
+      "language": 1,
+      "object": 109,
+      "glyph": 86,
+      "category": 3,
+      "value": 50,
+      "placements": 1,
+      "accepted": 1,
+      "repeat_rejected": true,
+      "other_cells_preserved": true,
+      "duplicate_weapon_verified": true
+    },
+    {
+      "level": 2,
+      "language": 0,
+      "object": 100,
+      "glyph": 88,
+      "category": 10,
+      "value": 1,
+      "placements": 1,
+      "accepted": 1,
+      "repeat_rejected": true,
+      "other_cells_preserved": true,
+      "duplicate_weapon_verified": false
+    },
+    {
+      "level": 2,
+      "language": 0,
+      "object": 101,
+      "glyph": 89,
+      "category": 10,
+      "value": 2,
+      "placements": 1,
+      "accepted": 1,
+      "repeat_rejected": true,
+      "other_cells_preserved": true,
+      "duplicate_weapon_verified": false
+    },
+    {
+      "level": 2,
+      "language": 0,
+      "object": 102,
+      "glyph": 90,
+      "category": 10,
+      "value": 4,
+      "placements": 1,
+      "accepted": 1,
+      "repeat_rejected": true,
+      "other_cells_preserved": true,
+      "duplicate_weapon_verified": false
+    },
+    {
+      "level": 2,
+      "language": 0,
+      "object": 103,
+      "glyph": 64,
+      "category": 0,
+      "value": 10,
+      "placements": 27,
+      "accepted": 1,
+      "repeat_rejected": true,
+      "other_cells_preserved": true,
+      "duplicate_weapon_verified": false
+    },
+    {
+      "level": 2,
+      "language": 0,
+      "object": 104,
+      "glyph": 56,
+      "category": 0,
+      "value": 15,
+      "placements": 10,
+      "accepted": 1,
+      "repeat_rejected": true,
+      "other_cells_preserved": true,
+      "duplicate_weapon_verified": false
+    },
+    {
+      "level": 2,
+      "language": 0,
+      "object": 105,
+      "glyph": 41,
+      "category": 1,
+      "value": 50,
+      "placements": 62,
+      "accepted": 1,
+      "repeat_rejected": true,
+      "other_cells_preserved": true,
+      "duplicate_weapon_verified": false
+    },
+    {
+      "level": 2,
+      "language": 0,
+      "object": 106,
+      "glyph": 42,
+      "category": 0,
+      "value": -10,
+      "placements": 55,
+      "accepted": 1,
+      "repeat_rejected": true,
+      "other_cells_preserved": true,
+      "duplicate_weapon_verified": false
+    },
+    {
+      "level": 2,
+      "language": 0,
+      "object": 108,
+      "glyph": 57,
+      "category": 200,
+      "value": 1,
+      "placements": 1,
+      "accepted": 1,
+      "repeat_rejected": true,
+      "other_cells_preserved": true,
+      "duplicate_weapon_verified": false
+    },
+    {
+      "level": 2,
+      "language": 0,
+      "object": 109,
+      "glyph": 87,
+      "category": 3,
+      "value": 50,
+      "placements": 1,
+      "accepted": 1,
+      "repeat_rejected": true,
+      "other_cells_preserved": true,
+      "duplicate_weapon_verified": true
+    },
+    {
+      "level": 2,
+      "language": 0,
+      "object": 110,
+      "glyph": 86,
+      "category": 3,
+      "value": 50,
+      "placements": 1,
+      "accepted": 1,
+      "repeat_rejected": true,
+      "other_cells_preserved": true,
+      "duplicate_weapon_verified": true
+    },
+    {
+      "level": 2,
+      "language": 1,
+      "object": 100,
+      "glyph": 88,
+      "category": 10,
+      "value": 1,
+      "placements": 1,
+      "accepted": 1,
+      "repeat_rejected": true,
+      "other_cells_preserved": true,
+      "duplicate_weapon_verified": false
+    },
+    {
+      "level": 2,
+      "language": 1,
+      "object": 101,
+      "glyph": 89,
+      "category": 10,
+      "value": 2,
+      "placements": 1,
+      "accepted": 1,
+      "repeat_rejected": true,
+      "other_cells_preserved": true,
+      "duplicate_weapon_verified": false
+    },
+    {
+      "level": 2,
+      "language": 1,
+      "object": 102,
+      "glyph": 90,
+      "category": 10,
+      "value": 4,
+      "placements": 1,
+      "accepted": 1,
+      "repeat_rejected": true,
+      "other_cells_preserved": true,
+      "duplicate_weapon_verified": false
+    },
+    {
+      "level": 2,
+      "language": 1,
+      "object": 103,
+      "glyph": 64,
+      "category": 0,
+      "value": 10,
+      "placements": 27,
+      "accepted": 1,
+      "repeat_rejected": true,
+      "other_cells_preserved": true,
+      "duplicate_weapon_verified": false
+    },
+    {
+      "level": 2,
+      "language": 1,
+      "object": 104,
+      "glyph": 56,
+      "category": 0,
+      "value": 15,
+      "placements": 10,
+      "accepted": 1,
+      "repeat_rejected": true,
+      "other_cells_preserved": true,
+      "duplicate_weapon_verified": false
+    },
+    {
+      "level": 2,
+      "language": 1,
+      "object": 105,
+      "glyph": 41,
+      "category": 1,
+      "value": 50,
+      "placements": 62,
+      "accepted": 1,
+      "repeat_rejected": true,
+      "other_cells_preserved": true,
+      "duplicate_weapon_verified": false
+    },
+    {
+      "level": 2,
+      "language": 1,
+      "object": 106,
+      "glyph": 42,
+      "category": 0,
+      "value": -10,
+      "placements": 55,
+      "accepted": 1,
+      "repeat_rejected": true,
+      "other_cells_preserved": true,
+      "duplicate_weapon_verified": false
+    },
+    {
+      "level": 2,
+      "language": 1,
+      "object": 108,
+      "glyph": 57,
+      "category": 200,
+      "value": 1,
+      "placements": 1,
+      "accepted": 1,
+      "repeat_rejected": true,
+      "other_cells_preserved": true,
+      "duplicate_weapon_verified": false
+    },
+    {
+      "level": 2,
+      "language": 1,
+      "object": 109,
+      "glyph": 87,
+      "category": 3,
+      "value": 50,
+      "placements": 1,
+      "accepted": 1,
+      "repeat_rejected": true,
+      "other_cells_preserved": true,
+      "duplicate_weapon_verified": true
+    },
+    {
+      "level": 2,
+      "language": 1,
+      "object": 110,
+      "glyph": 86,
+      "category": 3,
+      "value": 50,
+      "placements": 1,
+      "accepted": 1,
+      "repeat_rejected": true,
+      "other_cells_preserved": true,
+      "duplicate_weapon_verified": true
+    },
+    {
+      "level": 3,
+      "language": 0,
+      "object": 141,
+      "glyph": 88,
+      "category": 10,
+      "value": 1,
+      "placements": 1,
+      "accepted": 1,
+      "repeat_rejected": true,
+      "other_cells_preserved": true,
+      "duplicate_weapon_verified": false
+    },
+    {
+      "level": 3,
+      "language": 0,
+      "object": 142,
+      "glyph": 89,
+      "category": 10,
+      "value": 2,
+      "placements": 1,
+      "accepted": 1,
+      "repeat_rejected": true,
+      "other_cells_preserved": true,
+      "duplicate_weapon_verified": false
+    },
+    {
+      "level": 3,
+      "language": 0,
+      "object": 143,
+      "glyph": 90,
+      "category": 10,
+      "value": 4,
+      "placements": 1,
+      "accepted": 1,
+      "repeat_rejected": true,
+      "other_cells_preserved": true,
+      "duplicate_weapon_verified": false
+    },
+    {
+      "level": 3,
+      "language": 0,
+      "object": 145,
+      "glyph": 56,
+      "category": 0,
+      "value": 15,
+      "placements": 78,
+      "accepted": 1,
+      "repeat_rejected": true,
+      "other_cells_preserved": true,
+      "duplicate_weapon_verified": false
+    },
+    {
+      "level": 3,
+      "language": 0,
+      "object": 146,
+      "glyph": 41,
+      "category": 1,
+      "value": 50,
+      "placements": 100,
+      "accepted": 1,
+      "repeat_rejected": true,
+      "other_cells_preserved": true,
+      "duplicate_weapon_verified": false
+    },
+    {
+      "level": 3,
+      "language": 0,
+      "object": 147,
+      "glyph": 42,
+      "category": 0,
+      "value": -10,
+      "placements": 92,
+      "accepted": 1,
+      "repeat_rejected": true,
+      "other_cells_preserved": true,
+      "duplicate_weapon_verified": false
+    },
+    {
+      "level": 3,
+      "language": 0,
+      "object": 150,
+      "glyph": 87,
+      "category": 3,
+      "value": 50,
+      "placements": 1,
+      "accepted": 1,
+      "repeat_rejected": true,
+      "other_cells_preserved": true,
+      "duplicate_weapon_verified": true
+    },
+    {
+      "level": 3,
+      "language": 0,
+      "object": 151,
+      "glyph": 86,
+      "category": 3,
+      "value": 50,
+      "placements": 1,
+      "accepted": 1,
+      "repeat_rejected": true,
+      "other_cells_preserved": true,
+      "duplicate_weapon_verified": true
+    },
+    {
+      "level": 3,
+      "language": 1,
+      "object": 141,
+      "glyph": 88,
+      "category": 10,
+      "value": 1,
+      "placements": 1,
+      "accepted": 1,
+      "repeat_rejected": true,
+      "other_cells_preserved": true,
+      "duplicate_weapon_verified": false
+    },
+    {
+      "level": 3,
+      "language": 1,
+      "object": 142,
+      "glyph": 89,
+      "category": 10,
+      "value": 2,
+      "placements": 1,
+      "accepted": 1,
+      "repeat_rejected": true,
+      "other_cells_preserved": true,
+      "duplicate_weapon_verified": false
+    },
+    {
+      "level": 3,
+      "language": 1,
+      "object": 143,
+      "glyph": 90,
+      "category": 10,
+      "value": 4,
+      "placements": 1,
+      "accepted": 1,
+      "repeat_rejected": true,
+      "other_cells_preserved": true,
+      "duplicate_weapon_verified": false
+    },
+    {
+      "level": 3,
+      "language": 1,
+      "object": 145,
+      "glyph": 56,
+      "category": 0,
+      "value": 15,
+      "placements": 78,
+      "accepted": 1,
+      "repeat_rejected": true,
+      "other_cells_preserved": true,
+      "duplicate_weapon_verified": false
+    },
+    {
+      "level": 3,
+      "language": 1,
+      "object": 146,
+      "glyph": 41,
+      "category": 1,
+      "value": 50,
+      "placements": 100,
+      "accepted": 1,
+      "repeat_rejected": true,
+      "other_cells_preserved": true,
+      "duplicate_weapon_verified": false
+    },
+    {
+      "level": 3,
+      "language": 1,
+      "object": 147,
+      "glyph": 42,
+      "category": 0,
+      "value": -10,
+      "placements": 92,
+      "accepted": 1,
+      "repeat_rejected": true,
+      "other_cells_preserved": true,
+      "duplicate_weapon_verified": false
+    },
+    {
+      "level": 3,
+      "language": 1,
+      "object": 150,
+      "glyph": 87,
+      "category": 3,
+      "value": 50,
+      "placements": 1,
+      "accepted": 1,
+      "repeat_rejected": true,
+      "other_cells_preserved": true,
+      "duplicate_weapon_verified": true
+    },
+    {
+      "level": 3,
+      "language": 1,
+      "object": 151,
+      "glyph": 86,
+      "category": 3,
+      "value": 50,
+      "placements": 1,
+      "accepted": 1,
+      "repeat_rejected": true,
+      "other_cells_preserved": true,
+      "duplicate_weapon_verified": true
+    }
+  ],
+  "live_pickup": [
+    {
+      "language": 0,
+      "object": 103,
+      "cell": 3038,
+      "production_motion_path": true,
+      "full_positive_item_retained": true,
+      "changed_scene_pixels": 978,
+      "before": {
+        "path": "build/g12/sprite-check/item-before-0.png",
+        "framebuffer_sha256": "06ac15b3eb933f96dc4c8940c1142e66f58a3338d3eff03af3b4db155264748d",
+        "cycles": 4575284,
+        "faces": 39
+      },
+      "after": {
+        "path": "build/g12/sprite-check/item-after-0.png",
+        "framebuffer_sha256": "dac186808f65f632def0eddf620fc8eda6ed6e6f3d61e7161317dbe670f672e9",
+        "cycles": 4643015,
+        "faces": 38
+      }
+    },
+    {
+      "language": 1,
+      "object": 103,
+      "cell": 3038,
+      "production_motion_path": true,
+      "full_positive_item_retained": true,
+      "changed_scene_pixels": 978,
+      "before": {
+        "path": "build/g12/sprite-check/item-before-1.png",
+        "framebuffer_sha256": "67ff71178af3af0275ad6bd061f3fce294fb14e209abdede4075c6d7b0c3df07",
+        "cycles": 4573374,
+        "faces": 39
+      },
+      "after": {
+        "path": "build/g12/sprite-check/item-after-1.png",
+        "framebuffer_sha256": "0b4a4edab76079de09c49772d83ed6259516f5cd42d6c70429100ea71e7d181f",
+        "cycles": 4642405,
+        "faces": 38
+      }
+    }
+  ],
+  "stack": {
+    "main_stack_low": 50356224,
+    "main_stack_top": 50364160,
+    "sentinel_word": 219540062,
+    "untouched_margin_bytes": 5560,
+    "high_water_bytes": 2376,
+    "irq_and_bios_excluded": true,
+    "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+  },
+  "originals": [
+    {
+      "path": "originals/pkr/RUS/PKR.RES",
+      "sha256": "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816"
+    },
+    {
+      "path": "originals/pkr/ENG/PKE.RES",
+      "sha256": "865da340621fa6f90548a84e9ae9bf0a85071befb32a40ca1d359e488f74d458"
+    },
+    {
+      "path": "originals/pkr/RUS/PKR.RES",
+      "sha256": "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816"
+    },
+    {
+      "path": "originals/pkr/ENG/PKE.RES",
+      "sha256": "865da340621fa6f90548a84e9ae9bf0a85071befb32a40ca1d359e488f74d458"
+    },
+    {
+      "path": "originals/pkr/RUS/PKR.RES",
+      "sha256": "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816"
+    },
+    {
+      "path": "originals/pkr/ENG/PKE.RES",
+      "sha256": "865da340621fa6f90548a84e9ae9bf0a85071befb32a40ca1d359e488f74d458"
+    }
+  ],
+  "physical_gba_tested": false,
+  "whole_dos_session_equivalence": false
+}

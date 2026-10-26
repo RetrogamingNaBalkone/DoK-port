@@ -7,6 +7,8 @@ extern unsigned gba_motion_start(dok_runtime *);
 extern void gba_motion_level(dok_runtime *);
 extern void gba_motion_poll(uint16_t);
 extern void gba_motion_cost(uint32_t);
+extern int gba_items_stat(int16_t category,int16_t value);
+extern int gba_items_pickup(void);
 #include <stddef.h>
 
 #define R16(a) (*(volatile uint16_t *)(a))
@@ -89,6 +91,16 @@ volatile struct {uint32_t request,ack,level;int32_t x,y,z,heading;} g_camera_pro
  * Default zero; excluded from the CPU timer and ordinary cadence tests. */
 volatile uint32_t g_camera_capture_hold;
 volatile struct {uint32_t enable,object;int32_t x,y,z;} g_sprite_probe;
+/* G12 test-only: commit request last; commands1=stat,2=current-cell pickup.
+ * Executes the production context/sink and acknowledges before scene draw. */
+volatile struct {uint32_t request,ack,command;int32_t category,value;uint32_t result;} g_items_probe;
+static void items_update(void) {
+    if(g_items_probe.request==g_items_probe.ack) return;
+    int result=0;
+    if(g_items_probe.command==1) result=gba_items_stat((int16_t)g_items_probe.category,(int16_t)g_items_probe.value);
+    else if(g_items_probe.command==2) result=gba_items_pickup();
+    g_items_probe.result=(uint32_t)result;g_items_probe.ack=g_items_probe.request;
+}
 static unsigned test_camera;
 static const uint8_t *font;
 static uint8_t palette[768];
@@ -299,6 +311,7 @@ __attribute__((noreturn)) void gba_main(void)
             switched=1;
         }
         g_render_diag.last_keys=g_diag.keys;
+        items_update();
         visual_update();
         g_render_diag.reserved3=1;
         g_render_frame.sprite_count=g_sprite_probe.enable?1:0;

@@ -129,7 +129,7 @@ dok_rom_status dok_rom_level(dok_runtime_level *out,const dok_rom_assets *a,unsi
         if(l.definitions[i].class_id==9 && o->state.monster.course_counter_known>1) return DOK_ROM_FORMAT;
     }
     for(i=0;i<l.actor_count;++i) if((l.initial_actors[i].known&~15u) || !zero(l.initial_actors[i].reserved,2)) return DOK_ROM_FORMAT;
-    if(l.initial_player->reserved) return DOK_ROM_FORMAT;
+    if(l.initial_player->map_revealed) return DOK_ROM_FORMAT;
     for(i=0;i<9;++i) if(l.initial_player->weapons[i]>l.object_count) return DOK_ROM_REFERENCE;
     /* Bindings are strictly sorted, unique, and agree with descriptor names. */
     for(i=0;i<u16(v+76);++i) {

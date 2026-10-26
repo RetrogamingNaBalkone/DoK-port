@@ -14,6 +14,12 @@ if ($Compiler -eq 'zig') {
     try {
         $env:ZIG_GLOBAL_CACHE_DIR = Join-Path $taskRoot 'build/zig-cache'
         $taskCommon = @('cc','-std=c11','-Wall','-Wextra','-Werror','-O2','-I','include')
+        & $ZigExe @taskCommon src/items.c tests/test_items.c -o build/native/dok-items-tests.exe
+        if ($LASTEXITCODE -ne 0) { throw 'Items tests build failed' }
+        & ./build/native/dok-items-tests.exe
+        if ($LASTEXITCODE -ne 0) { throw 'Items tests failed' }
+        & $ZigExe @taskCommon src/items.c tools/items_probe.c -o build/native/dok-items-probe.exe
+        if ($LASTEXITCODE -ne 0) { throw 'Items probe build failed' }
         & $ZigExe @taskCommon -DDOK_RUNTIME_ROM_ONLY src/runtime.c src/rom_assets.c src/image.c src/animation.c src/scheduler.c src/visual.c tools/visual_probe.c -o build/native/dok-visual-probe.exe
         if ($LASTEXITCODE -ne 0) { throw 'Visual probe build failed' }
         & $ZigExe @taskCommon src/interactions.c src/scheduler.c src/movement.c src/collision.c tests/interactions_cases.c tests/test_interactions.c -o build/native/dok-interactions-tests.exe
@@ -101,6 +107,10 @@ if ($Compiler -eq 'zig') {
         & ./build/native/dok-sound-tests.exe
         if ($LASTEXITCODE -ne 0) { throw 'Sound tests failed' }
         if ($CrossChecks) {
+            & $ZigExe cc -target x86_64-linux-musl -static -std=c11 -Wall -Wextra -Werror -O2 -I include src/items.c tests/test_items.c -o build/native/dok-items-tests-linux
+            if ($LASTEXITCODE -ne 0) { throw 'Linux items build failed' }
+            & $ZigExe cc -target thumb-freestanding-eabi -mcpu=arm7tdmi -ffreestanding -std=c11 -Wall -Wextra -Werror -O2 -I include -c src/items.c -o build/native/items-arm7tdmi.o
+            if ($LASTEXITCODE -ne 0) { throw 'Thumb items compile failed' }
             & $ZigExe cc -target x86_64-linux-musl -static -std=c11 -Wall -Wextra -Werror -O2 -I include src/interactions.c src/scheduler.c src/movement.c src/collision.c tests/interactions_cases.c tests/test_interactions.c -o build/native/dok-interactions-tests-linux
             if ($LASTEXITCODE -ne 0) { throw 'Linux interactions build failed' }
             & $ZigExe cc -target thumb-freestanding-eabi -mcpu=arm7tdmi -ffreestanding -std=c11 -Wall -Wextra -Werror -O2 -I include -c src/interactions.c -o build/native/interactions-arm7tdmi.o

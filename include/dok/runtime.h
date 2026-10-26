@@ -83,7 +83,7 @@ typedef struct {
     int16_t parameters_76_7a[3];
     int16_t selected_weapon, pending_weapon, lives, score;
     uint16_t weapons[9]; /* object index+1;0=null, never far-pointer tokens */
-    uint16_t reserved;
+    uint16_t map_revealed; /* native world+0C flag; compact per-level inventory */
     uint32_t auxiliary_da;
 } dok_runtime_player;
 /* Borrowed ROM view. Every referenced array must outlive every runtime using it.

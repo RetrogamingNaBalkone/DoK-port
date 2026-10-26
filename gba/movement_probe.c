@@ -1,12 +1,23 @@
 #include "dok/collision.h"
 #include "dok/clock.h"
 #include "dok/interactions.h"
+#include "dok/items.h"
 extern uint32_t gba_time_ticks(void);
 extern void gba_visual_poll(uint32_t tick);
 extern unsigned dok_movement_cases(void);
 extern unsigned dok_collision_cases(dok_runtime *);
 extern unsigned dok_interactions_cases(dok_runtime *,dok_interactions *);
 static dok_interactions interactions;
+static dok_items items;
+volatile struct {uint32_t magic,error,events,kind,object,category,value,pickups;} g_items_diag;
+static void item_notice(void *p,dok_item_kind kind,uint16_t id,int16_t category,int16_t value)
+{
+ (void)p;++g_items_diag.events;g_items_diag.kind=kind;g_items_diag.object=id;
+ g_items_diag.category=(uint32_t)(int32_t)category;g_items_diag.value=(uint32_t)(int32_t)value;
+ if(kind==DOK_ITEM_PICKUP) ++g_items_diag.pickups;
+}
+int gba_items_stat(int16_t category,int16_t value) {return dok_items_stat(&items,category,value);}
+int gba_items_pickup(void) {return dok_items_pickup(&items);}
 volatile struct {uint32_t magic,error,events,kind,object,a,b,visual_steps,now,pending;} g_interaction_diag;
 static uint32_t visual_next,visual_phase,simulation_now;
 static void notice(void *p,dok_interaction_kind kind,uint16_t id,int32_t a,int32_t b)
@@ -18,6 +29,7 @@ static void interaction_start(dok_runtime *w)
 {
     simulation_now=gba_time_ticks();visual_next=simulation_now+333;visual_phase=0;
     dok_interactions_init(&interactions,w,simulation_now,notice,0);
+    dok_items_init(&items,w,item_notice,0);g_items_diag.magic=0x4954454d;
     g_interaction_diag.magic=0x494e5439;
 }
 static void interaction_advance(uint32_t tick)
@@ -99,7 +111,7 @@ void gba_motion_poll(uint16_t keys)
             for(unsigned i=0;i<count;++i) {
                 simulation_now+=416;interaction_advance(simulation_now);
                 if(g_motion_probe.commands&DOK_INPUT_USE) dok_interactions_use(&interactions,player);
-                dok_interactions_zone(&interactions,player);
+                dok_items_pickup(&items);dok_interactions_zone(&interactions,player);
                 dok_motion_update(player,&motion,g_motion_probe.commands,416,dok_collision_move,collision_world);
                 g_motion_diag.steps++;
             }
@@ -113,7 +125,7 @@ void gba_motion_poll(uint16_t keys)
             uint32_t commands=dok_input_commands(&sample);pending_pressed=0;
             simulation_now+=416;interaction_advance(simulation_now);
             if(commands&DOK_INPUT_USE) dok_interactions_use(&interactions,player);
-            dok_interactions_zone(&interactions,player);
+            dok_items_pickup(&items);dok_interactions_zone(&interactions,player);
             dok_motion_update(player,&motion,commands,416,dok_collision_move,collision_world);
             g_motion_diag.commands=commands;++g_motion_diag.steps;
         }
