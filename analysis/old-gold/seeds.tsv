@@ -1,0 +1,36 @@
+# Ghidra MZ address<TAB>role<TAB>evidence. Names are recovered roles, not author symbols.
+1a0c:005c	og_level_parse	Section dispatch; CS table 1a0c:0724 and Game Ini/Palette/Game Object/TMap/MMap/FCMap strings.
+1ae1:0003	og_object_factory	Class <=13; CS table 1ae1:0142; class11 rejected; vtable reader call +4.
+1ae1:128f	og_player_construct	Factory class1; lives +D6=3; weapons +AA cleared; money +D8=0.
+1ae1:15a2	og_player_check_death	Health +5E; decrement lives +D6; restore world and health; returns 0/1/2/3.
+1ae1:18b9	og_player_apply_stat	Categories 0/1/2/3/10/99/100/101/102/200/1000; money gate +D8 vs world+710.
+1ae1:1b79	og_player_register_weapon	Far slot array +AA and weapon slot getter 1ae1:3f37.
+1ae1:1c8e	og_player_select_weapon	Current +CE and pending +D0, hide/show callbacks.
+1ae1:21ea	og_projectile_read	Speed +3C, words +58/+5A, damage floor +5C=+5A SAR1.
+1ae1:2eea	og_door_use	Event 800; key mask +5C; CS table 1ae1:30C5 and door messages.
+1ae1:32ac	og_monster_hit	Event 40000; wake sleeping actor; active actor health +A4 -= source+5A.
+1ae1:3a42	og_monster_read	Class9 reader; animation/sound bindings, health +A4, distance +BA, course +AE.
+1ae1:3f29	og_projectile_damage	Getter word source+5A used by og_monster_hit.
+1ae1:3f46	og_world_total_money	Getter word world+710; initialized by og_world_prepare; used by exit gate.
+1f1d:0251	og_hud_load	Loads PANEL/PZHIZN/PMAGIA/PDENGI and weapon/key resources; PANEL_DAT.
+1f1d:04c8	og_hud_draw_icons	Repeated sprite bar: count=nonzero max(1,current*slots/maximum); caller slots=5.
+1f1d:05c5	og_hud_draw	Dirty flags; five life/magic/money icons and weapon/key sprites. Message branch remains provisional.
+1f1d:0bc6	og_hud_set_money	HUD+22=value; dirty |=402; invoked after category99.
+1f1d:0cb2	og_centered_text	Text metrics, center, glyph string draw, optional input wait.
+1f1d:0da1	og_input_poll	DOS scan codes and mouse/joystick event masks; J/M toggles.
+2091:0119	og_font_draw_glyph	Glyph bitmap and clipping loop.
+2091:01da	og_font_draw_text	Iterate bytes, newline/CR/dollar handling and glyph calls.
+20c4:0027	og_title_screen	Loads ZASTAVKA palette/sprite/sound, presents, waits, releases.
+20c4:0168	og_select_demo_level	Assigns LEVEL4/INTRO4B/INTRO4E string pointers.
+20c4:0198	og_story_screen	Loads INTRO4BSPR, sound and text resource supplied by caller.
+20c4:02eb	og_command_help	Prints version/usage and speaker/Sound Blaster command options.
+20c4:03b0	og_main	Startup CALLF at1000:014C; verified audio switch20c4:055D; LEVEL4 and simulation loop.
+21b8:0058	og_world_load	Parse level, copy maps and initialize world; calls og_world_prepare.
+21b8:02f5	og_world_construct	Allocate world then call og_world_load.
+21b8:0d90	og_world_prepare	Map validation/row reversal; sum class3/category99 values into world+710; place actors.
+18a6:00f6	og_sound_bind	Copy SVM header from +2; preserve vtable; samples=resource+24h when pointer is zero.
+1823:01b6	og_speaker_convert	Convert sample buffer to range1..64 and terminal zero; requires ASM/IRQ comparison.
+180b:0002	og_audio_timer_start	Install IRQ0 handler and program PIT/PIC/speaker ports 40/43/61.
+2b41:000f	og_speaker_irq	Address passed by1823:0243 to180b:0002. Interrupt ABI, not an ordinary C call.
+2b41:0077	og_sb_irq	Address passed by2ad5:0510 to180b:0002. Interrupt ABI, not an ordinary C call.
+2b57:005b	og_vga_construct	320x200 buffer, BIOS mode13h, A000 video pointer; called by main.

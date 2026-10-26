@@ -1,0 +1,356 @@
+{
+  "date": "2026-10-26",
+  "ghidra": {
+    "sample": "originals/Old_Gold_3D/OG.EXE",
+    "sha256_before": {
+      "OG.EXE": "7965e1d67128f196fbcf2bc449d97197f355c6b81cf043608fc9e01103ea043f",
+      "OLD_GOLD.RES": "e376855167b64a7190ec2da0ba9bd1da129ba178c4033aebadebca3f08b2be25"
+    },
+    "sha256_after": {
+      "OG.EXE": "7965e1d67128f196fbcf2bc449d97197f355c6b81cf043608fc9e01103ea043f",
+      "OLD_GOLD.RES": "e376855167b64a7190ec2da0ba9bd1da129ba178c4033aebadebca3f08b2be25"
+    },
+    "project": "build/ghidra/old-gold-full/OldGold.gpr",
+    "export": "decompiled/old-gold",
+    "ghidra_version": "12.1.2",
+    "language": "x86:LE:16:Real Mode",
+    "compiler": "default",
+    "scripts": [
+      {
+        "sha256": "71f8bcd35d37e236d8132239ab36b4b5c6aa2389b7e80f2618a1ac6ac21a828c",
+        "path": "scripts/PrepareOldGold.java"
+      },
+      {
+        "sha256": "2a9eac60a792637b4838833649274b3075dfcd1be75c0e3b4251a3ab45f1349a",
+        "path": "scripts/InspectOldGoldContext.java"
+      },
+      {
+        "sha256": "2683be756d9179e1b7a488934fc97ad3f200ef197cbae2ae12ac307d26845bb8",
+        "path": "scripts/ExportOldGold.java"
+      },
+      {
+        "sha256": "87192c992690a5be8977bf554400af10578d5dc067b9bcc1407955c36f2c3924",
+        "path": "scripts/decompile-old-gold.ps1"
+      },
+      {
+        "sha256": "22d194f4e64fa32c971ada968473c99afe017a1c505afb5066ad00b9ee07ed8e",
+        "path": "analysis/old-gold/seeds.tsv"
+      }
+    ]
+  },
+  "input_files": [
+    {
+      "path": "originals/Old_Gold_3D/OG.EXE",
+      "size": 157456,
+      "sha256": "7965e1d67128f196fbcf2bc449d97197f355c6b81cf043608fc9e01103ea043f"
+    },
+    {
+      "path": "originals/Old_Gold_3D/old-games.nfo",
+      "size": 1620,
+      "sha256": "cc2283945241a42a54020c30fa83aa3c17a91a59c034ae5f444db62e303b1602"
+    },
+    {
+      "path": "originals/Old_Gold_3D/OLD_GOLD.RES",
+      "size": 528314,
+      "sha256": "e376855167b64a7190ec2da0ba9bd1da129ba178c4033aebadebca3f08b2be25"
+    },
+    {
+      "path": "originals/Old_Gold_3D/README.TXT",
+      "size": 3045,
+      "sha256": "456d39010efe5e41f17445eeb5c0851b06472cbb84a0a4a5c854948b97f00a29"
+    }
+  ],
+  "originals_unchanged": true,
+  "mz": {
+    "declared_size": 157442,
+    "header_bytes": 9728,
+    "relocation_count": 1589,
+    "trailing_bytes": 14
+  },
+  "summary": {
+    "program": "OG.EXE",
+    "language": "x86:LE:16:Real Mode",
+    "compiler": "default",
+    "functions": "889",
+    "decompiled": "889",
+    "failed": "0",
+    "prologue_functions_added": "0",
+    "prologue_candidates_rejected": "2"
+  },
+  "coverage": {
+    "size": 147714,
+    "instruction_bytes": 115117,
+    "function_bytes": 114644,
+    "function_bytes_percent": 77.6121
+  },
+  "warning_functions": [
+    "1000:0364",
+    "1000:0372",
+    "1000:0386",
+    "1000:039a",
+    "1000:03b2",
+    "1000:03bc",
+    "1000:03ca",
+    "1000:03f6",
+    "1000:04fc",
+    "1000:0753",
+    "1000:0a5e",
+    "1000:0a66",
+    "1000:0ae8",
+    "1000:0da5",
+    "1000:0ef5",
+    "1000:1347",
+    "1000:18ea",
+    "1000:1b67",
+    "1000:25d4",
+    "1000:2a3f",
+    "1000:36ad",
+    "1000:3afa",
+    "1000:3b5a",
+    "18d5:0349",
+    "1a0c:005c",
+    "1ae1:0003",
+    "1ae1:22fa",
+    "1ae1:230c",
+    "1ae1:2959",
+    "1ae1:2eea",
+    "1f1d:0006",
+    "1f1d:0119",
+    "1f1d:04c8",
+    "1f1d:05c5",
+    "20c4:0027",
+    "20c4:0198",
+    "20c4:03b0",
+    "21b8:0058",
+    "21b8:1114",
+    "276a:0001",
+    "276a:05f1",
+    "2800:0081",
+    "2833:004f",
+    "29d0:0130",
+    "2ad5:0008",
+    "2ad5:02d2",
+    "2ad5:0322",
+    "2d80:154e",
+    "2d80:1c13",
+    "2d80:25ae",
+    "2d80:269c",
+    "2d80:2714",
+    "2ff8:003c"
+  ],
+  "unique_log_warnings": [
+    "WARN  Decompiling 1000:04fc, pcode error at 1000:0563: Unable to resolve constructor at 1000:0563 (DecompileCallback)  ",
+    "WARN  Decompiling 1000:0ef5, pcode error at 1000:0f3f: Unable to resolve constructor at 1000:0f3f (DecompileCallback)  "
+  ],
+  "functions_with_diagnostics": [],
+  "switch_overrides": [
+    {
+      "function": "1a0c:005c",
+      "jump": "1a0c:0219",
+      "table": "1a0c:0724",
+      "file_offset": 52708,
+      "targets": [
+        "1a0c:021e",
+        "1a0c:039b",
+        "1a0c:03f0",
+        "1a0c:067a",
+        "1a0c:069d",
+        "1a0c:06c0"
+      ]
+    },
+    {
+      "function": "1ae1:0003",
+      "jump": "1ae1:0017",
+      "table": "1ae1:0142",
+      "file_offset": 54610,
+      "targets": [
+        "1ae1:001c",
+        "1ae1:0037",
+        "1ae1:004d",
+        "1ae1:005e",
+        "1ae1:006f",
+        "1ae1:0080",
+        "1ae1:0095",
+        "1ae1:00a6",
+        "1ae1:00b8",
+        "1ae1:00ca",
+        "1ae1:00e3",
+        "1ae1:0119",
+        "1ae1:00f5",
+        "1ae1:0107"
+      ]
+    },
+    {
+      "function": "1ae1:2eea",
+      "jump": "1ae1:2fcf",
+      "table": "1ae1:30c5",
+      "file_offset": 66773,
+      "targets": [
+        "1ae1:2fd4",
+        "1ae1:2fe3",
+        "1ae1:3010",
+        "1ae1:2ff2",
+        "1ae1:3010",
+        "1ae1:3010",
+        "1ae1:3010",
+        "1ae1:3001"
+      ]
+    },
+    {
+      "function": "20c4:03b0",
+      "jump": "20c4:055d",
+      "table": "20c4:0d62",
+      "file_offset": 81826,
+      "targets": [
+        "20c4:0562",
+        "20c4:0572",
+        "20c4:0598",
+        "20c4:05a2"
+      ]
+    }
+  ],
+  "clean_import_recheck": {
+    "project": "build/ghidra/old-gold-clean-final/OldGold.gpr",
+    "export": "build/old-gold/recheck-export",
+    "byte_identical": {
+      "functions.tsv": true,
+      "blocks.tsv": true,
+      "listing.asm": true,
+      "references.tsv": true,
+      "unrecovered.tsv": true,
+      "decompiled.c": true,
+      "strings.tsv": true
+    },
+    "with_types_equal_after_header_type_order_normalization": true,
+    "with_types_byte_identical": false
+  },
+  "native_resource_reader": {
+    "entries_verified": 82,
+    "executable": {
+      "path": "build/native/dok-res.exe",
+      "size": 149504,
+      "sha256": "79c33513611ef57d3118e876797b1abb58616592281f6b5e793dd4aa8ac61585"
+    }
+  },
+  "native_decoders": {
+    "resources_verified": {
+      "indexed_image18": 49,
+      "animation8_10_image18": 12,
+      "svm_pcm8": 10
+    },
+    "executables": [
+      {
+        "path": "build/native/dok-anim.exe",
+        "size": 150016,
+        "sha256": "e5e6eb9863acd118e14807d71538ab6dc1328a6aa172b8bfad4ee407720586b9"
+      },
+      {
+        "path": "build/native/dok-sound.exe",
+        "size": 151040,
+        "sha256": "41404de788d7b9b09ede3f554d90d0320a8439d4844939383be48eae26a02592"
+      },
+      {
+        "path": "build/native/dok-level.exe",
+        "size": 162304,
+        "sha256": "4818c62c44717c6e916453bd27c401ebb73bb0b78f1e3cf6f99aaf633f1ecb4e"
+      }
+    ]
+  },
+  "kremlin_level_parser_probe": {
+    "exit_code": 1,
+    "diagnostic": "LEVEL error 2 at line 115",
+    "compatible_without_changes": false
+  },
+  "exporter_checks": {
+    "indexed_functions_present": true,
+    "all_decompiled": true,
+    "no_log_errors": true,
+    "no_analysis_timeout": true
+  },
+  "exports": [
+    {
+      "path": "decompiled/old-gold/blocks.tsv",
+      "size": 2335,
+      "sha256": "93ad674f2eaba75f54539d3f0322b1aa9b17181b78b132d27105dc372dffb718"
+    },
+    {
+      "path": "decompiled/old-gold/decompiled.c",
+      "size": 805056,
+      "sha256": "8396fe150ec2e2688e9b361b0d76fc566f98a7c68ad643a2a9bb3c2f52ac9cce"
+    },
+    {
+      "path": "decompiled/old-gold/functions.tsv",
+      "size": 48435,
+      "sha256": "65a7735b5b2f7e636390a5927850ebb2f72a929ef04cee85036eda9fcf39d3af"
+    },
+    {
+      "path": "decompiled/old-gold/ghidra.log",
+      "size": 17248,
+      "sha256": "4a28b43ac159619389341caf065c4f42999fc890703960166200a68a098ea67e"
+    },
+    {
+      "path": "decompiled/old-gold/listing.asm",
+      "size": 1181404,
+      "sha256": "aa61a1cf5112a8c7b4ea841dc86de8ec8315929024a47e24a27459ef813679f7"
+    },
+    {
+      "path": "decompiled/old-gold/manifest.json",
+      "size": 1912,
+      "sha256": "17ec87a33d1c760550c966fe50628456e556fa921ed7457ef7c8b4f1f6313a39"
+    },
+    {
+      "path": "decompiled/old-gold/references.tsv",
+      "size": 584323,
+      "sha256": "f44f473ceb88ea802bd30826f4471fc0066b793b30f8bdbb1a1da3ef8129032a"
+    },
+    {
+      "path": "decompiled/old-gold/strings.tsv",
+      "size": 44779,
+      "sha256": "b891ace559bf7f7627dfa8bc326c57c8387c95a4695565c08a6cff72999e4c66"
+    },
+    {
+      "path": "decompiled/old-gold/summary.txt",
+      "size": 165,
+      "sha256": "fd1df3b923ab3a4741e37af1bded8fc3f8a6eff613dd1a33806b66a7ca1bc8e8"
+    },
+    {
+      "path": "decompiled/old-gold/unrecovered.tsv",
+      "size": 12679,
+      "sha256": "7d0deacdcc392406863873c4465ada34d5d32696b3ebd473f94c05f989f50d25"
+    },
+    {
+      "path": "decompiled/old-gold/with_types.c",
+      "size": 777670,
+      "sha256": "5d568845409d328ecd281b0500796918e56f095ceeb7c379d9076df2dd4b6836"
+    }
+  ],
+  "verifier_sources": [
+    {
+      "path": "scripts/analyze_old_gold_port.py",
+      "size": 16497,
+      "sha256": "e82469eca0cd4601ebebfc67268dd61de77c75379176328085f79108cba14c70"
+    },
+    {
+      "path": "scripts/analyze_resources.py",
+      "size": 9459,
+      "sha256": "1fe6b868ed6dd3b338a677feadfbe65abd0e9bdff3577e0738a4a107011571d3"
+    },
+    {
+      "path": "scripts/analyze_animations.py",
+      "size": 9155,
+      "sha256": "5fbe0d6d66c52aa5be51c0eb8bb6477795bd2d6529525ee20a656a37e5019fae"
+    },
+    {
+      "path": "scripts/analyze_sounds.py",
+      "size": 7114,
+      "sha256": "7577cc8bb172dbbb695ae076c7605410e564a18187639e346ea82a99d4bd4949"
+    }
+  ],
+  "limitations": [
+    "Automatic C is not buildable or behavior-verified source.",
+    "Executable block coverage includes data; not a semantic recovery percentage.",
+    "CS jump overrides preserve targets, not high-level switch expressions or case labels.",
+    "Resource decoder checks validate bytes, not DOS execution equivalence.",
+    "DOS gameplay, original audio hardware and SDL2 execution were not tested."
+  ]
+}

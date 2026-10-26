@@ -1,0 +1,4086 @@
+{
+  "old_gold": {
+    "path": "originals/Old_Gold_3D/OLD_GOLD.RES",
+    "size": 528314,
+    "sha256": "e376855167b64a7190ec2da0ba9bd1da129ba178c4033aebadebca3f08b2be25",
+    "count": 82,
+    "formats": {
+      "text": 4,
+      "indexed_image18": 49,
+      "bitmap_font": 2,
+      "level_text": 1,
+      "vga_palette": 3,
+      "lighting_table": 1,
+      "animation8_10_image18": 12,
+      "svm_pcm8": 10
+    },
+    "levels": {
+      "LEVEL4": {
+        "settings": {
+          "Level Width": 64,
+          "Level Length": 64,
+          "Level Height": 1,
+          "Cell Side": 336,
+          "Cell Height": 672,
+          "Floor Color": 10,
+          "Ceiling Color": 143,
+          "Min Dis": 165,
+          "Step Ver": 4
+        },
+        "maps": {
+          "MMap": {
+            "width": 64,
+            "height": 64,
+            "sha256": "6965c1afe214403a5ab667de124f90f7d7eb9847968a713ca0bb584489ba542b"
+          },
+          "TMap": {
+            "width": 64,
+            "height": 64,
+            "sha256": "710912fbbdc7d5b1e7e04158796cd3d2228d3fac52bd0d227fe244b44f7d5fcc"
+          },
+          "FCMap": {
+            "width": 64,
+            "height": 64,
+            "sha256": "d4fb03fdbc1ca43eca6d1eeed2c4a44645510bf06f96dc337e52191390ea9e1a"
+          }
+        },
+        "object_definitions": 119,
+        "native_type_counts": {
+          "0": 3,
+          "1": 1,
+          "2": 4,
+          "3": 11,
+          "4": 2,
+          "6": 2,
+          "7": 21,
+          "8": 3,
+          "9": 64,
+          "10": 2,
+          "12": 4,
+          "13": 2
+        },
+        "definitions": [
+          {
+            "glyph_hex": "4d",
+            "glyph": "M",
+            "class_id": 1,
+            "flags": 4,
+            "width": 4,
+            "height": 200,
+            "marker": 7,
+            "placements": {
+              "MMap": 1,
+              "TMap": 0,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАК1 2",
+              "animation": null,
+              "sound": "ЧЕЛЗ_УБИТ"
+            }
+          },
+          {
+            "glyph_hex": "80",
+            "glyph": "А",
+            "class_id": 9,
+            "flags": 8,
+            "width": 6,
+            "height": 150,
+            "marker": 12,
+            "placements": {
+              "MMap": 1,
+              "TMap": 0,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАК1 2",
+              "animation": "МЫШЬЗ_АТАК",
+              "sound": "МОНСТР_ЗИДТИ"
+            }
+          },
+          {
+            "glyph_hex": "81",
+            "glyph": "Б",
+            "class_id": 9,
+            "flags": 8,
+            "width": 6,
+            "height": 150,
+            "marker": 12,
+            "placements": {
+              "MMap": 1,
+              "TMap": 0,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАК1 2",
+              "animation": "МЫШЬЗ_АТАК",
+              "sound": "МОНСТР_ЗИДТИ"
+            }
+          },
+          {
+            "glyph_hex": "82",
+            "glyph": "В",
+            "class_id": 9,
+            "flags": 8,
+            "width": 6,
+            "height": 150,
+            "marker": 12,
+            "placements": {
+              "MMap": 1,
+              "TMap": 0,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАК1 2",
+              "animation": "МЫШЬЗ_АТАК",
+              "sound": "МОНСТР_ЗИДТИ"
+            }
+          },
+          {
+            "glyph_hex": "83",
+            "glyph": "Г",
+            "class_id": 9,
+            "flags": 8,
+            "width": 6,
+            "height": 150,
+            "marker": 12,
+            "placements": {
+              "MMap": 1,
+              "TMap": 0,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАК1 2",
+              "animation": "МЫШЬЗ_АТАК",
+              "sound": "МОНСТР_ЗИДТИ"
+            }
+          },
+          {
+            "glyph_hex": "84",
+            "glyph": "Д",
+            "class_id": 9,
+            "flags": 8,
+            "width": 6,
+            "height": 150,
+            "marker": 12,
+            "placements": {
+              "MMap": 1,
+              "TMap": 0,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАК1 2",
+              "animation": "МЫШЬЗ_АТАК",
+              "sound": "МОНСТР_ЗИДТИ"
+            }
+          },
+          {
+            "glyph_hex": "85",
+            "glyph": "Е",
+            "class_id": 9,
+            "flags": 8,
+            "width": 6,
+            "height": 150,
+            "marker": 12,
+            "placements": {
+              "MMap": 1,
+              "TMap": 0,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАК1 2",
+              "animation": "МЫШЬЗ_АТАК",
+              "sound": "МОНСТР_ЗИДТИ"
+            }
+          },
+          {
+            "glyph_hex": "a5",
+            "glyph": "е",
+            "class_id": 9,
+            "flags": 8,
+            "width": 6,
+            "height": 150,
+            "marker": 12,
+            "placements": {
+              "MMap": 1,
+              "TMap": 0,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАК1 2",
+              "animation": "МЫШЬЗ_АТАК",
+              "sound": "МОНСТР_ЗИДТИ"
+            }
+          },
+          {
+            "glyph_hex": "86",
+            "glyph": "Ж",
+            "class_id": 9,
+            "flags": 8,
+            "width": 6,
+            "height": 150,
+            "marker": 12,
+            "placements": {
+              "MMap": 1,
+              "TMap": 0,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАК1 2",
+              "animation": "МЫШЬЗ_АТАК",
+              "sound": "МОНСТР_ЗИДТИ"
+            }
+          },
+          {
+            "glyph_hex": "87",
+            "glyph": "З",
+            "class_id": 9,
+            "flags": 8,
+            "width": 6,
+            "height": 150,
+            "marker": 12,
+            "placements": {
+              "MMap": 1,
+              "TMap": 0,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАК1 2",
+              "animation": "МЫШЬЗ_АТАК",
+              "sound": "МОНСТР_ЗИДТИ"
+            }
+          },
+          {
+            "glyph_hex": "88",
+            "glyph": "И",
+            "class_id": 9,
+            "flags": 8,
+            "width": 6,
+            "height": 150,
+            "marker": 12,
+            "placements": {
+              "MMap": 1,
+              "TMap": 0,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАК1 2",
+              "animation": "МЫШЬЗ_АТАК",
+              "sound": "МОНСТР_ЗИДТИ"
+            }
+          },
+          {
+            "glyph_hex": "89",
+            "glyph": "Й",
+            "class_id": 9,
+            "flags": 8,
+            "width": 6,
+            "height": 150,
+            "marker": 12,
+            "placements": {
+              "MMap": 0,
+              "TMap": 0,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАК1 2",
+              "animation": "МЫШЬЗ_АТАК",
+              "sound": "МОНСТР_ЗИДТИ"
+            }
+          },
+          {
+            "glyph_hex": "8a",
+            "glyph": "К",
+            "class_id": 9,
+            "flags": 8,
+            "width": 6,
+            "height": 150,
+            "marker": 12,
+            "placements": {
+              "MMap": 1,
+              "TMap": 0,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАК1 2",
+              "animation": "МЫШЬЗ_АТАК",
+              "sound": "МОНСТР_ЗИДТИ"
+            }
+          },
+          {
+            "glyph_hex": "8b",
+            "glyph": "Л",
+            "class_id": 9,
+            "flags": 8,
+            "width": 6,
+            "height": 150,
+            "marker": 12,
+            "placements": {
+              "MMap": 1,
+              "TMap": 0,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАК1 2",
+              "animation": "МЫШЬЗ_АТАК",
+              "sound": "МОНСТР_ЗИДТИ"
+            }
+          },
+          {
+            "glyph_hex": "8c",
+            "glyph": "М",
+            "class_id": 9,
+            "flags": 8,
+            "width": 6,
+            "height": 150,
+            "marker": 12,
+            "placements": {
+              "MMap": 0,
+              "TMap": 0,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАК1 2",
+              "animation": "МЫШЬЗ_АТАК",
+              "sound": "МОНСТР_ЗИДТИ"
+            }
+          },
+          {
+            "glyph_hex": "8d",
+            "glyph": "Н",
+            "class_id": 9,
+            "flags": 8,
+            "width": 6,
+            "height": 150,
+            "marker": 12,
+            "placements": {
+              "MMap": 1,
+              "TMap": 0,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАК1 2",
+              "animation": "МЫШЬЗ_АТАК",
+              "sound": "МОНСТР_ЗИДТИ"
+            }
+          },
+          {
+            "glyph_hex": "8e",
+            "glyph": "О",
+            "class_id": 9,
+            "flags": 8,
+            "width": 6,
+            "height": 150,
+            "marker": 12,
+            "placements": {
+              "MMap": 1,
+              "TMap": 0,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАК1 2",
+              "animation": "МЫШЬЗ_АТАК",
+              "sound": "МОНСТР_ЗИДТИ"
+            }
+          },
+          {
+            "glyph_hex": "8f",
+            "glyph": "П",
+            "class_id": 9,
+            "flags": 8,
+            "width": 6,
+            "height": 150,
+            "marker": 12,
+            "placements": {
+              "MMap": 1,
+              "TMap": 0,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАК1 2",
+              "animation": "МЫШЬЗ_АТАК",
+              "sound": "МОНСТР_ЗИДТИ"
+            }
+          },
+          {
+            "glyph_hex": "90",
+            "glyph": "Р",
+            "class_id": 9,
+            "flags": 8,
+            "width": 6,
+            "height": 150,
+            "marker": 12,
+            "placements": {
+              "MMap": 1,
+              "TMap": 0,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАК1 2",
+              "animation": "МЫШЬЗ_АТАК",
+              "sound": "МОНСТР_ЗИДТИ"
+            }
+          },
+          {
+            "glyph_hex": "91",
+            "glyph": "С",
+            "class_id": 9,
+            "flags": 8,
+            "width": 6,
+            "height": 150,
+            "marker": 12,
+            "placements": {
+              "MMap": 1,
+              "TMap": 0,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАК1 2",
+              "animation": "МЫШЬЗ_АТАК",
+              "sound": "МОНСТР_ЗИДТИ"
+            }
+          },
+          {
+            "glyph_hex": "92",
+            "glyph": "Т",
+            "class_id": 9,
+            "flags": 8,
+            "width": 6,
+            "height": 150,
+            "marker": 12,
+            "placements": {
+              "MMap": 1,
+              "TMap": 0,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАК1 2",
+              "animation": "МЫШЬЗ_АТАК",
+              "sound": "МОНСТР_ЗИДТИ"
+            }
+          },
+          {
+            "glyph_hex": "93",
+            "glyph": "У",
+            "class_id": 9,
+            "flags": 8,
+            "width": 6,
+            "height": 150,
+            "marker": 12,
+            "placements": {
+              "MMap": 1,
+              "TMap": 0,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАК1 2",
+              "animation": "МЫШЬЗ_АТАК",
+              "sound": "МОНСТР_ЗИДТИ"
+            }
+          },
+          {
+            "glyph_hex": "94",
+            "glyph": "Ф",
+            "class_id": 9,
+            "flags": 8,
+            "width": 6,
+            "height": 150,
+            "marker": 12,
+            "placements": {
+              "MMap": 1,
+              "TMap": 0,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАК1 2",
+              "animation": "МЫШЬЗ_АТАК",
+              "sound": "МОНСТР_ЗИДТИ"
+            }
+          },
+          {
+            "glyph_hex": "95",
+            "glyph": "Х",
+            "class_id": 9,
+            "flags": 8,
+            "width": 6,
+            "height": 150,
+            "marker": 12,
+            "placements": {
+              "MMap": 1,
+              "TMap": 0,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАК1 2",
+              "animation": "МЫШЬЗ_АТАК",
+              "sound": "МОНСТР_ЗИДТИ"
+            }
+          },
+          {
+            "glyph_hex": "96",
+            "glyph": "Ц",
+            "class_id": 9,
+            "flags": 8,
+            "width": 6,
+            "height": 150,
+            "marker": 12,
+            "placements": {
+              "MMap": 1,
+              "TMap": 0,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАК1 2",
+              "animation": "МЫШЬЗ_АТАК",
+              "sound": "МОНСТР_ЗИДТИ"
+            }
+          },
+          {
+            "glyph_hex": "97",
+            "glyph": "Ч",
+            "class_id": 9,
+            "flags": 8,
+            "width": 6,
+            "height": 150,
+            "marker": 12,
+            "placements": {
+              "MMap": 1,
+              "TMap": 0,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАК1 2",
+              "animation": "МЫШЬЗ_АТАК",
+              "sound": "МОНСТР_ЗИДТИ"
+            }
+          },
+          {
+            "glyph_hex": "98",
+            "glyph": "Ш",
+            "class_id": 9,
+            "flags": 8,
+            "width": 6,
+            "height": 150,
+            "marker": 12,
+            "placements": {
+              "MMap": 1,
+              "TMap": 0,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАК1 2",
+              "animation": "МЫШЬЗ_АТАК",
+              "sound": "МОНСТР_ЗИДТИ"
+            }
+          },
+          {
+            "glyph_hex": "99",
+            "glyph": "Щ",
+            "class_id": 9,
+            "flags": 8,
+            "width": 6,
+            "height": 150,
+            "marker": 12,
+            "placements": {
+              "MMap": 1,
+              "TMap": 0,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАК1 2",
+              "animation": "МЫШЬЗ_АТАК",
+              "sound": "МОНСТР_ЗИДТИ"
+            }
+          },
+          {
+            "glyph_hex": "9a",
+            "glyph": "Ъ",
+            "class_id": 9,
+            "flags": 8,
+            "width": 6,
+            "height": 150,
+            "marker": 12,
+            "placements": {
+              "MMap": 1,
+              "TMap": 0,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАК1 2",
+              "animation": "МЫШЬЗ_АТАК",
+              "sound": "МОНСТР_ЗИДТИ"
+            }
+          },
+          {
+            "glyph_hex": "9b",
+            "glyph": "Ы",
+            "class_id": 9,
+            "flags": 8,
+            "width": 6,
+            "height": 150,
+            "marker": 12,
+            "placements": {
+              "MMap": 0,
+              "TMap": 0,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАК1 2",
+              "animation": "МЫШЬЗ_АТАК",
+              "sound": "МОНСТР_ЗИДТИ"
+            }
+          },
+          {
+            "glyph_hex": "9c",
+            "glyph": "Ь",
+            "class_id": 9,
+            "flags": 8,
+            "width": 6,
+            "height": 150,
+            "marker": 12,
+            "placements": {
+              "MMap": 0,
+              "TMap": 0,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАК1 2",
+              "animation": "МЫШЬЗ_АТАК",
+              "sound": "МОНСТР_ЗИДТИ"
+            }
+          },
+          {
+            "glyph_hex": "9d",
+            "glyph": "Э",
+            "class_id": 9,
+            "flags": 8,
+            "width": 6,
+            "height": 150,
+            "marker": 12,
+            "placements": {
+              "MMap": 1,
+              "TMap": 0,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАК1 2",
+              "animation": "МЫШЬЗ_АТАК",
+              "sound": "МОНСТР_ЗИДТИ"
+            }
+          },
+          {
+            "glyph_hex": "9e",
+            "glyph": "Ю",
+            "class_id": 9,
+            "flags": 8,
+            "width": 6,
+            "height": 150,
+            "marker": 12,
+            "placements": {
+              "MMap": 1,
+              "TMap": 0,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАК1 2",
+              "animation": "МЫШЬЗ_АТАК",
+              "sound": "МОНСТР_ЗИДТИ"
+            }
+          },
+          {
+            "glyph_hex": "9f",
+            "glyph": "Я",
+            "class_id": 9,
+            "flags": 8,
+            "width": 6,
+            "height": 150,
+            "marker": 12,
+            "placements": {
+              "MMap": 1,
+              "TMap": 0,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАК1 2",
+              "animation": "МЫШЬЗ_АТАК",
+              "sound": "МОНСТР_ЗИДТИ"
+            }
+          },
+          {
+            "glyph_hex": "a0",
+            "glyph": "а",
+            "class_id": 9,
+            "flags": 8,
+            "width": 10,
+            "height": 150,
+            "marker": 12,
+            "placements": {
+              "MMap": 1,
+              "TMap": 0,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАК1 2",
+              "animation": "МЫШЬР_АТАК",
+              "sound": "МОНСТР_ЗИДТИ"
+            }
+          },
+          {
+            "glyph_hex": "a1",
+            "glyph": "б",
+            "class_id": 9,
+            "flags": 8,
+            "width": 10,
+            "height": 150,
+            "marker": 12,
+            "placements": {
+              "MMap": 1,
+              "TMap": 0,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАК1 2",
+              "animation": "МЫШЬР_АТАК",
+              "sound": "МОНСТР_ЗИДТИ"
+            }
+          },
+          {
+            "glyph_hex": "a2",
+            "glyph": "в",
+            "class_id": 9,
+            "flags": 8,
+            "width": 10,
+            "height": 100,
+            "marker": 12,
+            "placements": {
+              "MMap": 1,
+              "TMap": 0,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАК1 2",
+              "animation": "МЫШЬР_АТАК",
+              "sound": "МОНСТР_ЗИДТИ"
+            }
+          },
+          {
+            "glyph_hex": "a3",
+            "glyph": "г",
+            "class_id": 9,
+            "flags": 8,
+            "width": 10,
+            "height": 150,
+            "marker": 12,
+            "placements": {
+              "MMap": 1,
+              "TMap": 0,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАК1 2",
+              "animation": "МЫШЬР_АТАК",
+              "sound": "МОНСТР_ЗИДТИ"
+            }
+          },
+          {
+            "glyph_hex": "a4",
+            "glyph": "д",
+            "class_id": 9,
+            "flags": 8,
+            "width": 10,
+            "height": 150,
+            "marker": 12,
+            "placements": {
+              "MMap": 1,
+              "TMap": 0,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАК1 2",
+              "animation": "МЫШЬР_АТАК",
+              "sound": "МОНСТР_ЗИДТИ"
+            }
+          },
+          {
+            "glyph_hex": "a6",
+            "glyph": "ж",
+            "class_id": 9,
+            "flags": 8,
+            "width": 10,
+            "height": 150,
+            "marker": 12,
+            "placements": {
+              "MMap": 1,
+              "TMap": 0,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАК1 2",
+              "animation": "МЫШЬР_АТАК",
+              "sound": "МОНСТР_ЗИДТИ"
+            }
+          },
+          {
+            "glyph_hex": "a7",
+            "glyph": "з",
+            "class_id": 9,
+            "flags": 8,
+            "width": 10,
+            "height": 150,
+            "marker": 12,
+            "placements": {
+              "MMap": 1,
+              "TMap": 0,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАК1 2",
+              "animation": "МЫШЬР_АТАК",
+              "sound": "МОНСТР_ЗИДТИ"
+            }
+          },
+          {
+            "glyph_hex": "a8",
+            "glyph": "и",
+            "class_id": 9,
+            "flags": 8,
+            "width": 10,
+            "height": 150,
+            "marker": 12,
+            "placements": {
+              "MMap": 1,
+              "TMap": 0,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАК1 2",
+              "animation": "МЫШЬР_АТАК",
+              "sound": "МОНСТР_ЗИДТИ"
+            }
+          },
+          {
+            "glyph_hex": "a9",
+            "glyph": "й",
+            "class_id": 9,
+            "flags": 8,
+            "width": 10,
+            "height": 150,
+            "marker": 12,
+            "placements": {
+              "MMap": 0,
+              "TMap": 0,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАК1 2",
+              "animation": "МЫШЬР_АТАК",
+              "sound": "МОНСТР_ЗИДТИ"
+            }
+          },
+          {
+            "glyph_hex": "aa",
+            "glyph": "к",
+            "class_id": 9,
+            "flags": 8,
+            "width": 10,
+            "height": 150,
+            "marker": 12,
+            "placements": {
+              "MMap": 1,
+              "TMap": 0,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАК1 2",
+              "animation": "МЫШЬР_АТАК",
+              "sound": "МОНСТР_ЗИДТИ"
+            }
+          },
+          {
+            "glyph_hex": "ab",
+            "glyph": "л",
+            "class_id": 9,
+            "flags": 8,
+            "width": 10,
+            "height": 150,
+            "marker": 12,
+            "placements": {
+              "MMap": 1,
+              "TMap": 0,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАК1 2",
+              "animation": "МЫШЬР_АТАК",
+              "sound": "МОНСТР_ЗИДТИ"
+            }
+          },
+          {
+            "glyph_hex": "ac",
+            "glyph": "м",
+            "class_id": 9,
+            "flags": 8,
+            "width": 10,
+            "height": 150,
+            "marker": 12,
+            "placements": {
+              "MMap": 1,
+              "TMap": 0,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАК1 2",
+              "animation": "МЫШЬР_АТАК",
+              "sound": "МОНСТР_ЗИДТИ"
+            }
+          },
+          {
+            "glyph_hex": "ad",
+            "glyph": "н",
+            "class_id": 9,
+            "flags": 8,
+            "width": 10,
+            "height": 150,
+            "marker": 12,
+            "placements": {
+              "MMap": 1,
+              "TMap": 0,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАК1 2",
+              "animation": "МЫШЬР_АТАК",
+              "sound": "МОНСТР_ЗИДТИ"
+            }
+          },
+          {
+            "glyph_hex": "ae",
+            "glyph": "о",
+            "class_id": 9,
+            "flags": 8,
+            "width": 10,
+            "height": 150,
+            "marker": 12,
+            "placements": {
+              "MMap": 1,
+              "TMap": 0,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАК1 2",
+              "animation": "МЫШЬР_АТАК",
+              "sound": "МОНСТР_ЗИДТИ"
+            }
+          },
+          {
+            "glyph_hex": "af",
+            "glyph": "п",
+            "class_id": 9,
+            "flags": 8,
+            "width": 10,
+            "height": 150,
+            "marker": 12,
+            "placements": {
+              "MMap": 1,
+              "TMap": 0,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАК1 2",
+              "animation": "МЫШЬР_АТАК",
+              "sound": "МОНСТР_ЗИДТИ"
+            }
+          },
+          {
+            "glyph_hex": "e0",
+            "glyph": "р",
+            "class_id": 9,
+            "flags": 8,
+            "width": 10,
+            "height": 150,
+            "marker": 12,
+            "placements": {
+              "MMap": 1,
+              "TMap": 0,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАК1 2",
+              "animation": "МЫШЬР_АТАК",
+              "sound": "МОНСТР_ЗИДТИ"
+            }
+          },
+          {
+            "glyph_hex": "e1",
+            "glyph": "с",
+            "class_id": 9,
+            "flags": 8,
+            "width": 10,
+            "height": 150,
+            "marker": 12,
+            "placements": {
+              "MMap": 1,
+              "TMap": 0,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАК1 2",
+              "animation": "МЫШЬР_АТАК",
+              "sound": "МОНСТР_ЗИДТИ"
+            }
+          },
+          {
+            "glyph_hex": "e2",
+            "glyph": "т",
+            "class_id": 9,
+            "flags": 8,
+            "width": 10,
+            "height": 150,
+            "marker": 12,
+            "placements": {
+              "MMap": 1,
+              "TMap": 0,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАК1 2",
+              "animation": "МЫШЬР_АТАК",
+              "sound": "МОНСТР_ЗИДТИ"
+            }
+          },
+          {
+            "glyph_hex": "e3",
+            "glyph": "у",
+            "class_id": 9,
+            "flags": 8,
+            "width": 10,
+            "height": 150,
+            "marker": 12,
+            "placements": {
+              "MMap": 1,
+              "TMap": 0,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАК1 2",
+              "animation": "МЫШЬР_АТАК",
+              "sound": "МОНСТР_ЗИДТИ"
+            }
+          },
+          {
+            "glyph_hex": "e4",
+            "glyph": "ф",
+            "class_id": 9,
+            "flags": 8,
+            "width": 10,
+            "height": 150,
+            "marker": 12,
+            "placements": {
+              "MMap": 1,
+              "TMap": 0,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАК1 2",
+              "animation": "МЫШЬР_АТАК",
+              "sound": "МОНСТР_ЗИДТИ"
+            }
+          },
+          {
+            "glyph_hex": "e5",
+            "glyph": "х",
+            "class_id": 9,
+            "flags": 8,
+            "width": 10,
+            "height": 150,
+            "marker": 12,
+            "placements": {
+              "MMap": 1,
+              "TMap": 0,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАК1 2",
+              "animation": "МЫШЬР_АТАК",
+              "sound": "МОНСТР_ЗИДТИ"
+            }
+          },
+          {
+            "glyph_hex": "e6",
+            "glyph": "ц",
+            "class_id": 9,
+            "flags": 8,
+            "width": 10,
+            "height": 150,
+            "marker": 12,
+            "placements": {
+              "MMap": 1,
+              "TMap": 0,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАК1 2",
+              "animation": "МЫШЬР_АТАК",
+              "sound": "МОНСТР_ЗИДТИ"
+            }
+          },
+          {
+            "glyph_hex": "e7",
+            "glyph": "ч",
+            "class_id": 9,
+            "flags": 8,
+            "width": 10,
+            "height": 150,
+            "marker": 12,
+            "placements": {
+              "MMap": 1,
+              "TMap": 0,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАК1 2",
+              "animation": "МЫШЬР_АТАК",
+              "sound": "МОНСТР_ЗИДТИ"
+            }
+          },
+          {
+            "glyph_hex": "e8",
+            "glyph": "ш",
+            "class_id": 9,
+            "flags": 8,
+            "width": 10,
+            "height": 150,
+            "marker": 12,
+            "placements": {
+              "MMap": 1,
+              "TMap": 0,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАК1 2",
+              "animation": "МЫШЬР_АТАК",
+              "sound": "МОНСТР_ЗИДТИ"
+            }
+          },
+          {
+            "glyph_hex": "e9",
+            "glyph": "щ",
+            "class_id": 9,
+            "flags": 8,
+            "width": 10,
+            "height": 150,
+            "marker": 12,
+            "placements": {
+              "MMap": 1,
+              "TMap": 0,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАК1 2",
+              "animation": "МЫШЬР_АТАК",
+              "sound": "МОНСТР_ЗИДТИ"
+            }
+          },
+          {
+            "glyph_hex": "ea",
+            "glyph": "ъ",
+            "class_id": 9,
+            "flags": 8,
+            "width": 10,
+            "height": 150,
+            "marker": 12,
+            "placements": {
+              "MMap": 1,
+              "TMap": 0,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАК1 2",
+              "animation": "МЫШЬР_АТАК",
+              "sound": "МОНСТР_ЗИДТИ"
+            }
+          },
+          {
+            "glyph_hex": "eb",
+            "glyph": "ы",
+            "class_id": 9,
+            "flags": 8,
+            "width": 10,
+            "height": 150,
+            "marker": 12,
+            "placements": {
+              "MMap": 1,
+              "TMap": 0,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАК1 2",
+              "animation": "МЫШЬР_АТАК",
+              "sound": "МОНСТР_ЗИДТИ"
+            }
+          },
+          {
+            "glyph_hex": "ec",
+            "glyph": "ь",
+            "class_id": 9,
+            "flags": 8,
+            "width": 10,
+            "height": 150,
+            "marker": 12,
+            "placements": {
+              "MMap": 0,
+              "TMap": 0,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАК1 2",
+              "animation": "МЫШЬР_АТАК",
+              "sound": "МОНСТР_ЗИДТИ"
+            }
+          },
+          {
+            "glyph_hex": "ed",
+            "glyph": "э",
+            "class_id": 9,
+            "flags": 8,
+            "width": 10,
+            "height": 150,
+            "marker": 12,
+            "placements": {
+              "MMap": 1,
+              "TMap": 0,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАК1 2",
+              "animation": "МЫШЬР_АТАК",
+              "sound": "МОНСТР_ЗИДТИ"
+            }
+          },
+          {
+            "glyph_hex": "ee",
+            "glyph": "ю",
+            "class_id": 9,
+            "flags": 8,
+            "width": 10,
+            "height": 150,
+            "marker": 12,
+            "placements": {
+              "MMap": 1,
+              "TMap": 0,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАК1 2",
+              "animation": "МЫШЬР_АТАК",
+              "sound": "МОНСТР_ЗИДТИ"
+            }
+          },
+          {
+            "glyph_hex": "ef",
+            "glyph": "я",
+            "class_id": 9,
+            "flags": 8,
+            "width": 10,
+            "height": 150,
+            "marker": 12,
+            "placements": {
+              "MMap": 1,
+              "TMap": 0,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАК1 2",
+              "animation": "МЫШЬР_АТАК",
+              "sound": "МОНСТР_ЗИДТИ"
+            }
+          },
+          {
+            "glyph_hex": "31",
+            "glyph": "1",
+            "class_id": 8,
+            "flags": 8,
+            "width": 6,
+            "height": 250,
+            "marker": 5,
+            "placements": {
+              "MMap": 0,
+              "TMap": 0,
+              "FCMap": 0
+            },
+            "projectile_payload_tokens": [
+              "220",
+              "0",
+              "2"
+            ],
+            "inherited_bindings": {
+              "sprite": "СТЕНАК1 2",
+              "animation": "МАГИЯК",
+              "sound": "МАГИЯ_ЗВУК"
+            }
+          },
+          {
+            "glyph_hex": "32",
+            "glyph": "2",
+            "class_id": 8,
+            "flags": 8,
+            "width": 6,
+            "height": 250,
+            "marker": 5,
+            "placements": {
+              "MMap": 0,
+              "TMap": 0,
+              "FCMap": 0
+            },
+            "projectile_payload_tokens": [
+              "220",
+              "0",
+              "6"
+            ],
+            "inherited_bindings": {
+              "sprite": "СТЕНАК1 2",
+              "animation": "МАГИЯС",
+              "sound": "МАГИЯ_ЗВУК"
+            }
+          },
+          {
+            "glyph_hex": "33",
+            "glyph": "3",
+            "class_id": 8,
+            "flags": 8,
+            "width": 6,
+            "height": 250,
+            "marker": 5,
+            "placements": {
+              "MMap": 0,
+              "TMap": 0,
+              "FCMap": 0
+            },
+            "projectile_payload_tokens": [
+              "30",
+              "0",
+              "5"
+            ],
+            "inherited_bindings": {
+              "sprite": "СТЕНАК1 2",
+              "animation": "МАГИЯЗ",
+              "sound": "МАГИЯ_ЗВУК"
+            }
+          },
+          {
+            "glyph_hex": "20",
+            "glyph": " ",
+            "class_id": 0,
+            "flags": 16,
+            "width": 7,
+            "height": 0,
+            "marker": 128,
+            "placements": {
+              "MMap": 2320,
+              "TMap": 1689,
+              "FCMap": 3277
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАК1 2",
+              "animation": "МАГИЯЗ",
+              "sound": "МАГИЯ_ЗВУК"
+            }
+          },
+          {
+            "glyph_hex": "2b",
+            "glyph": "+",
+            "class_id": 0,
+            "flags": 16,
+            "width": 7,
+            "height": 0,
+            "marker": 128,
+            "placements": {
+              "MMap": 0,
+              "TMap": 0,
+              "FCMap": 166
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАК1 2",
+              "animation": "МАГИЯЗ",
+              "sound": "МАГИЯ_ЗВУК"
+            }
+          },
+          {
+            "glyph_hex": "db",
+            "glyph": "█",
+            "class_id": 2,
+            "flags": 2,
+            "width": 7,
+            "height": 0,
+            "marker": 14,
+            "placements": {
+              "MMap": 1703,
+              "TMap": 1791,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАК1 2",
+              "animation": "МАГИЯЗ",
+              "sound": "МАГИЯ_ЗВУК"
+            }
+          },
+          {
+            "glyph_hex": "49",
+            "glyph": "I",
+            "class_id": 2,
+            "flags": 2,
+            "width": 7,
+            "height": 0,
+            "marker": 14,
+            "placements": {
+              "MMap": 8,
+              "TMap": 7,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАК1 2",
+              "animation": "МАГИЯЗ",
+              "sound": "МАГИЯ_ЗВУК"
+            }
+          },
+          {
+            "glyph_hex": "45",
+            "glyph": "E",
+            "class_id": 2,
+            "flags": 2,
+            "width": 7,
+            "height": 0,
+            "marker": 14,
+            "placements": {
+              "MMap": 6,
+              "TMap": 18,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАК1 2",
+              "animation": "МАГИЯЗ",
+              "sound": "МАГИЯ_ЗВУК"
+            }
+          },
+          {
+            "glyph_hex": "41",
+            "glyph": "A",
+            "class_id": 4,
+            "flags": 24,
+            "width": 7,
+            "height": 0,
+            "marker": 14,
+            "placements": {
+              "MMap": 0,
+              "TMap": 6,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАКАР 8",
+              "animation": "МАГИЯЗ",
+              "sound": "МАГИЯ_ЗВУК"
+            }
+          },
+          {
+            "glyph_hex": "44",
+            "glyph": "D",
+            "class_id": 4,
+            "flags": 8,
+            "width": 7,
+            "height": 0,
+            "marker": 14,
+            "placements": {
+              "MMap": 0,
+              "TMap": 53,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "РЕШ1 8",
+              "animation": "МАГИЯЗ",
+              "sound": "МАГИЯ_ЗВУК"
+            }
+          },
+          {
+            "glyph_hex": "48",
+            "glyph": "H",
+            "class_id": 2,
+            "flags": 2050,
+            "width": 7,
+            "height": 0,
+            "marker": 14,
+            "placements": {
+              "MMap": 0,
+              "TMap": 8,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "РЕШ1 8",
+              "animation": "СТЕНАКВ",
+              "sound": "МАГИЯ_ЗВУК"
+            }
+          },
+          {
+            "glyph_hex": "61",
+            "glyph": "a",
+            "class_id": 7,
+            "flags": 64,
+            "width": 7,
+            "height": 0,
+            "marker": 8,
+            "placements": {
+              "MMap": 0,
+              "TMap": 2,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "ДВЕРЬ_М 72",
+              "animation": "СТЕНАКВ",
+              "sound": "ДВЕРЬ_ЗВУК"
+            }
+          },
+          {
+            "glyph_hex": "62",
+            "glyph": "b",
+            "class_id": 7,
+            "flags": 64,
+            "width": 7,
+            "height": 0,
+            "marker": 13,
+            "placements": {
+              "MMap": 0,
+              "TMap": 2,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "ДВЕРЬ_Ж 72",
+              "animation": "СТЕНАКВ",
+              "sound": "ДВЕРЬ_ЗВУК"
+            }
+          },
+          {
+            "glyph_hex": "63",
+            "glyph": "c",
+            "class_id": 7,
+            "flags": 64,
+            "width": 7,
+            "height": 0,
+            "marker": 3,
+            "placements": {
+              "MMap": 0,
+              "TMap": 2,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "ДВЕРЬ_З 72",
+              "animation": "СТЕНАКВ",
+              "sound": "ДВЕРЬ_ЗВУК"
+            }
+          },
+          {
+            "glyph_hex": "64",
+            "glyph": "d",
+            "class_id": 7,
+            "flags": 64,
+            "width": 7,
+            "height": 0,
+            "marker": 14,
+            "placements": {
+              "MMap": 0,
+              "TMap": 12,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАКС  264",
+              "animation": "СТЕНАКВ",
+              "sound": "ДВЕРЬ_ЗВУК"
+            }
+          },
+          {
+            "glyph_hex": "65",
+            "glyph": "e",
+            "class_id": 7,
+            "flags": 64,
+            "width": 7,
+            "height": 0,
+            "marker": 14,
+            "placements": {
+              "MMap": 0,
+              "TMap": 4,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАКС  264",
+              "animation": "СТЕНАКВ",
+              "sound": "ДВЕРЬ_ЗВУК"
+            }
+          },
+          {
+            "glyph_hex": "67",
+            "glyph": "g",
+            "class_id": 7,
+            "flags": 64,
+            "width": 7,
+            "height": 0,
+            "marker": 14,
+            "placements": {
+              "MMap": 0,
+              "TMap": 2,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАКС  264",
+              "animation": "СТЕНАКВ",
+              "sound": "ДВЕРЬ_ЗВУК"
+            }
+          },
+          {
+            "glyph_hex": "68",
+            "glyph": "h",
+            "class_id": 7,
+            "flags": 64,
+            "width": 7,
+            "height": 0,
+            "marker": 14,
+            "placements": {
+              "MMap": 0,
+              "TMap": 1,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАКС  264",
+              "animation": "СТЕНАКВ",
+              "sound": "ДВЕРЬ_ЗВУК"
+            }
+          },
+          {
+            "glyph_hex": "69",
+            "glyph": "i",
+            "class_id": 7,
+            "flags": 64,
+            "width": 7,
+            "height": 0,
+            "marker": 14,
+            "placements": {
+              "MMap": 0,
+              "TMap": 1,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАКС  264",
+              "animation": "СТЕНАКВ",
+              "sound": "ДВЕРЬ_ЗВУК"
+            }
+          },
+          {
+            "glyph_hex": "6a",
+            "glyph": "j",
+            "class_id": 7,
+            "flags": 64,
+            "width": 7,
+            "height": 0,
+            "marker": 14,
+            "placements": {
+              "MMap": 0,
+              "TMap": 7,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАКС  264",
+              "animation": "СТЕНАКВ",
+              "sound": "ДВЕРЬ_ЗВУК"
+            }
+          },
+          {
+            "glyph_hex": "6b",
+            "glyph": "k",
+            "class_id": 7,
+            "flags": 64,
+            "width": 7,
+            "height": 0,
+            "marker": 14,
+            "placements": {
+              "MMap": 0,
+              "TMap": 3,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАКС  264",
+              "animation": "СТЕНАКВ",
+              "sound": "ДВЕРЬ_ЗВУК"
+            }
+          },
+          {
+            "glyph_hex": "6c",
+            "glyph": "l",
+            "class_id": 7,
+            "flags": 64,
+            "width": 7,
+            "height": 0,
+            "marker": 14,
+            "placements": {
+              "MMap": 0,
+              "TMap": 1,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАКС  264",
+              "animation": "СТЕНАКВ",
+              "sound": "ДВЕРЬ_ЗВУК"
+            }
+          },
+          {
+            "glyph_hex": "6d",
+            "glyph": "m",
+            "class_id": 7,
+            "flags": 64,
+            "width": 7,
+            "height": 0,
+            "marker": 14,
+            "placements": {
+              "MMap": 0,
+              "TMap": 4,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАКС  264",
+              "animation": "СТЕНАКВ",
+              "sound": "ДВЕРЬ_ЗВУК"
+            }
+          },
+          {
+            "glyph_hex": "6e",
+            "glyph": "n",
+            "class_id": 7,
+            "flags": 64,
+            "width": 7,
+            "height": 0,
+            "marker": 14,
+            "placements": {
+              "MMap": 0,
+              "TMap": 0,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАКС  264",
+              "animation": "СТЕНАКВ",
+              "sound": "ДВЕРЬ_ЗВУК"
+            }
+          },
+          {
+            "glyph_hex": "6f",
+            "glyph": "o",
+            "class_id": 7,
+            "flags": 64,
+            "width": 7,
+            "height": 0,
+            "marker": 14,
+            "placements": {
+              "MMap": 0,
+              "TMap": 1,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАКС  264",
+              "animation": "СТЕНАКВ",
+              "sound": "ДВЕРЬ_ЗВУК"
+            }
+          },
+          {
+            "glyph_hex": "70",
+            "glyph": "p",
+            "class_id": 7,
+            "flags": 64,
+            "width": 7,
+            "height": 0,
+            "marker": 14,
+            "placements": {
+              "MMap": 0,
+              "TMap": 2,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАКС  264",
+              "animation": "СТЕНАКВ",
+              "sound": "ДВЕРЬ_ЗВУК"
+            }
+          },
+          {
+            "glyph_hex": "71",
+            "glyph": "q",
+            "class_id": 7,
+            "flags": 64,
+            "width": 7,
+            "height": 0,
+            "marker": 14,
+            "placements": {
+              "MMap": 0,
+              "TMap": 2,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАКС  264",
+              "animation": "СТЕНАКВ",
+              "sound": "ДВЕРЬ_ЗВУК"
+            }
+          },
+          {
+            "glyph_hex": "72",
+            "glyph": "r",
+            "class_id": 7,
+            "flags": 64,
+            "width": 7,
+            "height": 0,
+            "marker": 14,
+            "placements": {
+              "MMap": 0,
+              "TMap": 9,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАКС  264",
+              "animation": "СТЕНАКВ",
+              "sound": "ДВЕРЬ_ЗВУК"
+            }
+          },
+          {
+            "glyph_hex": "74",
+            "glyph": "t",
+            "class_id": 7,
+            "flags": 64,
+            "width": 7,
+            "height": 0,
+            "marker": 14,
+            "placements": {
+              "MMap": 0,
+              "TMap": 3,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАКС  264",
+              "animation": "СТЕНАКВ",
+              "sound": "ДВЕРЬ_ЗВУК"
+            }
+          },
+          {
+            "glyph_hex": "75",
+            "glyph": "u",
+            "class_id": 7,
+            "flags": 64,
+            "width": 7,
+            "height": 0,
+            "marker": 14,
+            "placements": {
+              "MMap": 0,
+              "TMap": 3,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАКС  264",
+              "animation": "СТЕНАКВ",
+              "sound": "ДВЕРЬ_ЗВУК"
+            }
+          },
+          {
+            "glyph_hex": "76",
+            "glyph": "v",
+            "class_id": 7,
+            "flags": 64,
+            "width": 7,
+            "height": 0,
+            "marker": 14,
+            "placements": {
+              "MMap": 0,
+              "TMap": 2,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАКС  264",
+              "animation": "СТЕНАКВ",
+              "sound": "ДВЕРЬ_ЗВУК"
+            }
+          },
+          {
+            "glyph_hex": "77",
+            "glyph": "w",
+            "class_id": 7,
+            "flags": 64,
+            "width": 7,
+            "height": 0,
+            "marker": 14,
+            "placements": {
+              "MMap": 0,
+              "TMap": 4,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "СТЕНАКС  264",
+              "animation": "СТЕНАКВ",
+              "sound": "ДВЕРЬ_ЗВУК"
+            }
+          },
+          {
+            "glyph_hex": "53",
+            "glyph": "S",
+            "class_id": 6,
+            "flags": 24,
+            "width": 4,
+            "height": 0,
+            "marker": 28,
+            "placements": {
+              "MMap": 0,
+              "TMap": 123,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "ЧЕРЕП 24",
+              "animation": "СТЕНАКВ",
+              "sound": "ДВЕРЬ_ЗВУК"
+            }
+          },
+          {
+            "glyph_hex": "30",
+            "glyph": "0",
+            "class_id": 3,
+            "flags": 24,
+            "width": 3,
+            "height": 140,
+            "marker": 3,
+            "placements": {
+              "MMap": 0,
+              "TMap": 1,
+              "FCMap": 0
+            },
+            "category": 1000,
+            "value": 1,
+            "inherited_bindings": {
+              "sprite": "ВЫХОД 536",
+              "animation": "СТЕНАКВ",
+              "sound": "ДВЕРЬ_ЗВУК"
+            }
+          },
+          {
+            "glyph_hex": "47",
+            "glyph": "G",
+            "class_id": 6,
+            "flags": 8,
+            "width": 6,
+            "height": 0,
+            "marker": 28,
+            "placements": {
+              "MMap": 0,
+              "TMap": 39,
+              "FCMap": 0
+            },
+            "inherited_bindings": {
+              "sprite": "БОЧКА 8",
+              "animation": "СТЕНАКВ",
+              "sound": "ДВЕРЬ_ЗВУК"
+            }
+          },
+          {
+            "glyph_hex": "58",
+            "glyph": "X",
+            "class_id": 3,
+            "flags": 24,
+            "width": 6,
+            "height": 0,
+            "marker": 6,
+            "placements": {
+              "MMap": 0,
+              "TMap": 1,
+              "FCMap": 0
+            },
+            "category": 10,
+            "value": 1,
+            "inherited_bindings": {
+              "sprite": "КЛЮЧ_М 24",
+              "animation": "СТЕНАКВ",
+              "sound": "ПРЕДМЕТ_ЗВУК"
+            }
+          },
+          {
+            "glyph_hex": "59",
+            "glyph": "Y",
+            "class_id": 3,
+            "flags": 24,
+            "width": 6,
+            "height": 0,
+            "marker": 6,
+            "placements": {
+              "MMap": 0,
+              "TMap": 1,
+              "FCMap": 0
+            },
+            "category": 10,
+            "value": 2,
+            "inherited_bindings": {
+              "sprite": "КЛЮЧ_Ж 24",
+              "animation": "СТЕНАКВ",
+              "sound": "ПРЕДМЕТ_ЗВУК"
+            }
+          },
+          {
+            "glyph_hex": "5a",
+            "glyph": "Z",
+            "class_id": 3,
+            "flags": 24,
+            "width": 6,
+            "height": 0,
+            "marker": 6,
+            "placements": {
+              "MMap": 0,
+              "TMap": 1,
+              "FCMap": 0
+            },
+            "category": 10,
+            "value": 4,
+            "inherited_bindings": {
+              "sprite": "КЛЮЧ_З  24",
+              "animation": "СТЕНАКВ",
+              "sound": "ПРЕДМЕТ_ЗВУК"
+            }
+          },
+          {
+            "glyph_hex": "24",
+            "glyph": "$",
+            "class_id": 3,
+            "flags": 2072,
+            "width": 3,
+            "height": 0,
+            "marker": 3,
+            "placements": {
+              "MMap": 0,
+              "TMap": 105,
+              "FCMap": 0
+            },
+            "category": 99,
+            "value": 1,
+            "inherited_bindings": {
+              "sprite": "КЛЮЧ_З  24",
+              "animation": "РУБЛЬ",
+              "sound": "ПРЕДМЕТ_ЗВУК"
+            }
+          },
+          {
+            "glyph_hex": "40",
+            "glyph": "@",
+            "class_id": 3,
+            "flags": 24,
+            "width": 4,
+            "height": 0,
+            "marker": 1,
+            "placements": {
+              "MMap": 0,
+              "TMap": 16,
+              "FCMap": 0
+            },
+            "category": 0,
+            "value": 10,
+            "inherited_bindings": {
+              "sprite": "КОЛБА_К 24",
+              "animation": "РУБЛЬ",
+              "sound": "ПРЕДМЕТ_ЗВУК"
+            }
+          },
+          {
+            "glyph_hex": "21",
+            "glyph": "!",
+            "class_id": 3,
+            "flags": 24,
+            "width": 4,
+            "height": 0,
+            "marker": 4,
+            "placements": {
+              "MMap": 0,
+              "TMap": 15,
+              "FCMap": 0
+            },
+            "category": 1,
+            "value": 50,
+            "inherited_bindings": {
+              "sprite": "КОЛБА_С 24",
+              "animation": "РУБЛЬ",
+              "sound": "ПРЕДМЕТ_ЗВУК"
+            }
+          },
+          {
+            "glyph_hex": "28",
+            "glyph": "(",
+            "class_id": 3,
+            "flags": 24,
+            "width": 4,
+            "height": 0,
+            "marker": 1,
+            "placements": {
+              "MMap": 0,
+              "TMap": 68,
+              "FCMap": 0
+            },
+            "category": 1,
+            "value": 5,
+            "inherited_bindings": {
+              "sprite": "ШАР_К 24",
+              "animation": "РУБЛЬ",
+              "sound": "ПРЕДМЕТ_ЗВУК"
+            }
+          },
+          {
+            "glyph_hex": "29",
+            "glyph": ")",
+            "class_id": 3,
+            "flags": 24,
+            "width": 4,
+            "height": 0,
+            "marker": 4,
+            "placements": {
+              "MMap": 0,
+              "TMap": 77,
+              "FCMap": 0
+            },
+            "category": 1,
+            "value": 10,
+            "inherited_bindings": {
+              "sprite": "ШАР_С 24",
+              "animation": "РУБЛЬ",
+              "sound": "ПРЕДМЕТ_ЗВУК"
+            }
+          },
+          {
+            "glyph_hex": "2a",
+            "glyph": "*",
+            "class_id": 3,
+            "flags": 24,
+            "width": 4,
+            "height": 0,
+            "marker": 2,
+            "placements": {
+              "MMap": 0,
+              "TMap": 7,
+              "FCMap": 0
+            },
+            "category": 0,
+            "value": -10,
+            "inherited_bindings": {
+              "sprite": "КОЛБА_З 24",
+              "animation": "РУБЛЬ",
+              "sound": "ПРЕДМЕТ_ЗВУК"
+            }
+          },
+          {
+            "glyph_hex": "39",
+            "glyph": "9",
+            "class_id": 3,
+            "flags": 24,
+            "width": 4,
+            "height": 0,
+            "marker": 6,
+            "placements": {
+              "MMap": 0,
+              "TMap": 1,
+              "FCMap": 0
+            },
+            "category": 200,
+            "value": 1,
+            "inherited_bindings": {
+              "sprite": "КАРТА 24",
+              "animation": "РУБЛЬ",
+              "sound": "ПРЕДМЕТ_ЗВУК"
+            }
+          },
+          {
+            "glyph_hex": "57",
+            "glyph": "W",
+            "class_id": 10,
+            "flags": 24,
+            "width": 4,
+            "height": 0,
+            "marker": 1,
+            "placements": {
+              "MMap": 0,
+              "TMap": 1,
+              "FCMap": 0
+            },
+            "weapon_slot": 1,
+            "category": 3,
+            "value": 150,
+            "inherited_bindings": {
+              "sprite": "ОРУЖИЕК 24",
+              "animation": "ОРУЖИЕКФ",
+              "sound": "ПРЕДМЕТ_ЗВУК"
+            }
+          },
+          {
+            "glyph_hex": "56",
+            "glyph": "V",
+            "class_id": 10,
+            "flags": 24,
+            "width": 4,
+            "height": 0,
+            "marker": 4,
+            "placements": {
+              "MMap": 0,
+              "TMap": 1,
+              "FCMap": 0
+            },
+            "weapon_slot": 2,
+            "category": 3,
+            "value": 150,
+            "inherited_bindings": {
+              "sprite": "ОРУЖИЕС 24",
+              "animation": "ОРУЖИЕСФ",
+              "sound": "ПРЕДМЕТ_ЗВУК"
+            }
+          },
+          {
+            "glyph_hex": "78",
+            "glyph": "x",
+            "class_id": 12,
+            "flags": 16,
+            "width": 7,
+            "height": 0,
+            "marker": 4,
+            "placements": {
+              "MMap": 0,
+              "TMap": 0,
+              "FCMap": 1
+            },
+            "inherited_bindings": {
+              "sprite": "ПОЛВ  16",
+              "animation": "ОРУЖИЕСФ",
+              "sound": "ПРЕДМЕТ_ЗВУК"
+            }
+          },
+          {
+            "glyph_hex": "b0",
+            "glyph": "░",
+            "class_id": 12,
+            "flags": 16,
+            "width": 7,
+            "height": 0,
+            "marker": 4,
+            "placements": {
+              "MMap": 0,
+              "TMap": 0,
+              "FCMap": 312
+            },
+            "inherited_bindings": {
+              "sprite": "ВОДА1 1032",
+              "animation": "ОРУЖИЕСФ",
+              "sound": "ПРЕДМЕТ_ЗВУК"
+            }
+          },
+          {
+            "glyph_hex": "b2",
+            "glyph": "▓",
+            "class_id": 12,
+            "flags": 16,
+            "width": 7,
+            "height": 0,
+            "marker": 2,
+            "placements": {
+              "MMap": 0,
+              "TMap": 0,
+              "FCMap": 80
+            },
+            "inherited_bindings": {
+              "sprite": "ЧИЧА 4104",
+              "animation": "ОРУЖИЕСФ",
+              "sound": "ПРЕДМЕТ_ЗВУК"
+            }
+          },
+          {
+            "glyph_hex": "73",
+            "glyph": "s",
+            "class_id": 12,
+            "flags": 16,
+            "width": 7,
+            "height": 0,
+            "marker": 13,
+            "placements": {
+              "MMap": 0,
+              "TMap": 0,
+              "FCMap": 1
+            },
+            "inherited_bindings": {
+              "sprite": "ПОЛВ 16",
+              "animation": "ОРУЖИЕСФ",
+              "sound": "ПРЕДМЕТ_ЗВУК"
+            }
+          },
+          {
+            "glyph_hex": "66",
+            "glyph": "f",
+            "class_id": 13,
+            "flags": 16,
+            "width": 7,
+            "height": 0,
+            "marker": 128,
+            "placements": {
+              "MMap": 0,
+              "TMap": 0,
+              "FCMap": 6
+            },
+            "inherited_bindings": {
+              "sprite": "ПОЛВ 16",
+              "animation": "ОРУЖИЕСФ",
+              "sound": "ПРЕДМЕТ_ЗВУК"
+            }
+          },
+          {
+            "glyph_hex": "7a",
+            "glyph": "z",
+            "class_id": 13,
+            "flags": 16,
+            "width": 7,
+            "height": 0,
+            "marker": 128,
+            "placements": {
+              "MMap": 0,
+              "TMap": 0,
+              "FCMap": 1
+            },
+            "inherited_bindings": {
+              "sprite": "ПОЛВ 16",
+              "animation": "ОРУЖИЕСФ",
+              "sound": "ПРЕДМЕТ_ЗВУК"
+            }
+          }
+        ],
+        "placed_category99": 105,
+        "total_category99_value": 105
+      }
+    }
+  },
+  "ru": {
+    "path": "originals/pkr/RUS/PKR.RES",
+    "size": 2718099,
+    "sha256": "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816",
+    "count": 146,
+    "formats": {
+      "text": 9,
+      "indexed_image18": 77,
+      "bitmap_font": 2,
+      "level_text": 3,
+      "vga_palette": 5,
+      "lighting_table": 3,
+      "animation8_10_image18": 24,
+      "svm_pcm8": 23
+    },
+    "levels": {
+      "LEVEL1": {
+        "settings": {
+          "Level Width": 64,
+          "Level Length": 64,
+          "Level Height": 1,
+          "Cell Side": 480,
+          "Cell Height": 960,
+          "Floor Color": 10,
+          "Ceiling Color": 143,
+          "Min Dis": 238,
+          "Step Ver": 4
+        },
+        "maps": {
+          "MMap": {
+            "width": 64,
+            "height": 64,
+            "sha256": "d71c4ef03b8b4925369a9e54b6d93a1899f479410bf5a161ea67e64e08dc6340"
+          },
+          "TMap": {
+            "width": 64,
+            "height": 64,
+            "sha256": "32a4880d9c2f57f4a1c231f04113cd686cf1c963885bda864ab02f7c90b745e4"
+          },
+          "FCMap": {
+            "width": 64,
+            "height": 64,
+            "sha256": "69b0af24d331c85b98dd56084b9d2be4b0a9c364356bf7c0379d20bb40d44dc3"
+          }
+        },
+        "object_definitions": 115,
+        "native_type_counts": {
+          "0": 3,
+          "1": 1,
+          "2": 3,
+          "3": 9,
+          "4": 2,
+          "6": 5,
+          "7": 18,
+          "8": 3,
+          "9": 64,
+          "10": 2,
+          "12": 5
+        },
+        "definitions": [
+          {
+            "glyph_hex": "58",
+            "glyph": "X",
+            "class_id": 3,
+            "flags": 2072,
+            "width": 4,
+            "height": 0,
+            "marker": 6,
+            "placements": {
+              "MMap": 0,
+              "TMap": 1,
+              "FCMap": 0
+            },
+            "category": 10,
+            "value": 1,
+            "inherited_bindings": {
+              "sprite": "КРЕСТ2 8",
+              "animation": "КЛЮЧ_М",
+              "sound": "зВЗЯТЬ_КЛЮЧ"
+            }
+          },
+          {
+            "glyph_hex": "59",
+            "glyph": "Y",
+            "class_id": 3,
+            "flags": 2072,
+            "width": 4,
+            "height": 0,
+            "marker": 6,
+            "placements": {
+              "MMap": 0,
+              "TMap": 1,
+              "FCMap": 0
+            },
+            "category": 10,
+            "value": 2,
+            "inherited_bindings": {
+              "sprite": "КРЕСТ2 8",
+              "animation": "КЛЮЧ_Ж",
+              "sound": "зВЗЯТЬ_КЛЮЧ"
+            }
+          },
+          {
+            "glyph_hex": "5a",
+            "glyph": "Z",
+            "class_id": 3,
+            "flags": 2072,
+            "width": 4,
+            "height": 0,
+            "marker": 6,
+            "placements": {
+              "MMap": 0,
+              "TMap": 1,
+              "FCMap": 0
+            },
+            "category": 10,
+            "value": 4,
+            "inherited_bindings": {
+              "sprite": "КРЕСТ2 8",
+              "animation": "КЛЮЧ_З",
+              "sound": "зВЗЯТЬ_КЛЮЧ"
+            }
+          },
+          {
+            "glyph_hex": "40",
+            "glyph": "@",
+            "class_id": 3,
+            "flags": 24,
+            "width": 2,
+            "height": 0,
+            "marker": 1,
+            "placements": {
+              "MMap": 0,
+              "TMap": 22,
+              "FCMap": 0
+            },
+            "category": 0,
+            "value": 10,
+            "inherited_bindings": {
+              "sprite": "КОВШ 24",
+              "animation": "КЛЮЧ_З",
+              "sound": "зВЗЯТЬ_ЖИЗНЬ"
+            }
+          },
+          {
+            "glyph_hex": "38",
+            "glyph": "8",
+            "class_id": 3,
+            "flags": 24,
+            "width": 3,
+            "height": 0,
+            "marker": 1,
+            "placements": {
+              "MMap": 0,
+              "TMap": 4,
+              "FCMap": 0
+            },
+            "category": 0,
+            "value": 15,
+            "inherited_bindings": {
+              "sprite": "ГОРШОК 24",
+              "animation": "КЛЮЧ_З",
+              "sound": "зВЗЯТЬ_ЖИЗНЬ"
+            }
+          },
+          {
+            "glyph_hex": "29",
+            "glyph": ")",
+            "class_id": 3,
+            "flags": 24,
+            "width": 3,
+            "height": 0,
+            "marker": 4,
+            "placements": {
+              "MMap": 0,
+              "TMap": 65,
+              "FCMap": 0
+            },
+            "category": 1,
+            "value": 50,
+            "inherited_bindings": {
+              "sprite": "ПАТРОНЫ 24",
+              "animation": "КЛЮЧ_З",
+              "sound": "зВЗЯТЬ_ПУЛЮ"
+            }
+          },
+          {
+            "glyph_hex": "2a",
+            "glyph": "*",
+            "class_id": 3,
+            "flags": 24,
+            "width": 3,
+            "height": 0,
+            "marker": 128,
+            "placements": {
+              "MMap": 0,
+              "TMap": 80,
+              "FCMap": 0
+            },
+            "category": 0,
+            "value": -10,
+            "inherited_bindings": {
+              "sprite": "МУХОМОР 24",
+              "animation": "КЛЮЧ_З",
+              "sound": "зВЗЯТЬ_МУХ"
+            }
+          },
+          {
+            "glyph_hex": "21",
+            "glyph": "!",
+            "class_id": 3,
+            "flags": 24,
+            "width": 3,
+            "height": 0,
+            "marker": 128,
+            "placements": {
+              "MMap": 0,
+              "TMap": 14,
+              "FCMap": 0
+            },
+            "category": 0,
+            "value": -15,
+            "inherited_bindings": {
+              "sprite": "КРУШКА 24",
+              "animation": "КЛЮЧ_З",
+              "sound": "зВЗЯТЬ_МУХ"
+            }
+          },
+          {
+            "glyph_hex": "39",
+            "glyph": "9",
+            "class_id": 3,
+            "flags": 24,
+            "width": 2,
+            "height": 0,
+            "marker": 6,
+            "placements": {
+              "MMap": 0,
+              "TMap": 1,
+              "FCMap": 0
+            },
+            "category": 200,
+            "value": 1,
+            "inherited_bindings": {
+              "sprite": "КАРТА 24",
+              "animation": "КЛЮЧ_З",
+              "sound": "зВЗЯТЬ_КАРТУ"
+            }
+          },
+          {
+            "glyph_hex": "57",
+            "glyph": "W",
+            "class_id": 10,
+            "flags": 24,
+            "width": 4,
+            "height": 0,
+            "marker": 1,
+            "placements": {
+              "MMap": 0,
+              "TMap": 1,
+              "FCMap": 0
+            },
+            "weapon_slot": 1,
+            "category": 3,
+            "value": 50,
+            "inherited_bindings": {
+              "sprite": "sРУЖЬЕ 24",
+              "animation": "fРУЖЬЕ",
+              "sound": "зРУЖЬЕ_ВЫСТРЕЛ"
+            }
+          },
+          {
+            "glyph_hex": "56",
+            "glyph": "V",
+            "class_id": 10,
+            "flags": 24,
+            "width": 4,
+            "height": 0,
+            "marker": 4,
+            "placements": {
+              "MMap": 0,
+              "TMap": 1,
+              "FCMap": 0
+            },
+            "weapon_slot": 2,
+            "category": 3,
+            "value": 50,
+            "inherited_bindings": {
+              "sprite": "sЛАЗЕР 24",
+              "animation": "fЛАЗЕР",
+              "sound": "зЛАЗЕР_ВЫСТРЕЛ"
+            }
+          }
+        ],
+        "placed_category99": 0,
+        "total_category99_value": 0,
+        "definition_subset": "item_and_weapon_descriptors_only"
+      },
+      "LEVEL2": {
+        "settings": {
+          "Level Width": 64,
+          "Level Length": 64,
+          "Level Height": 1,
+          "Cell Side": 480,
+          "Cell Height": 960,
+          "Floor Color": 10,
+          "Ceiling Color": 143,
+          "Min Dis": 238,
+          "Step Ver": 4
+        },
+        "maps": {
+          "MMap": {
+            "width": 64,
+            "height": 64,
+            "sha256": "8ff45778e59688cbf18a91c25eac9b6d07f8fe5ff140f4bf9ee891d964aca3b8"
+          },
+          "TMap": {
+            "width": 64,
+            "height": 64,
+            "sha256": "e1d980fa343617ba886cc32447bac2086a27087ad9d34ee92b76e03926f2e18e"
+          },
+          "FCMap": {
+            "width": 64,
+            "height": 64,
+            "sha256": "541374fc405e1651ff28ee1e5e6f30784bfa889645ad9abcbac117077a77dc76"
+          }
+        },
+        "object_definitions": 117,
+        "native_type_counts": {
+          "0": 3,
+          "1": 1,
+          "2": 3,
+          "3": 9,
+          "4": 2,
+          "6": 5,
+          "7": 18,
+          "8": 4,
+          "9": 64,
+          "10": 2,
+          "12": 5,
+          "13": 1
+        },
+        "definitions": [
+          {
+            "glyph_hex": "58",
+            "glyph": "X",
+            "class_id": 3,
+            "flags": 2072,
+            "width": 4,
+            "height": 0,
+            "marker": 6,
+            "placements": {
+              "MMap": 0,
+              "TMap": 1,
+              "FCMap": 0
+            },
+            "category": 10,
+            "value": 1,
+            "inherited_bindings": {
+              "sprite": "КРЕСТ2 8",
+              "animation": "КЛЮЧ_М",
+              "sound": "зВЗЯТЬ_КЛЮЧ"
+            }
+          },
+          {
+            "glyph_hex": "59",
+            "glyph": "Y",
+            "class_id": 3,
+            "flags": 2072,
+            "width": 4,
+            "height": 0,
+            "marker": 6,
+            "placements": {
+              "MMap": 0,
+              "TMap": 1,
+              "FCMap": 0
+            },
+            "category": 10,
+            "value": 2,
+            "inherited_bindings": {
+              "sprite": "КРЕСТ2 8",
+              "animation": "КЛЮЧ_Ж",
+              "sound": "зВЗЯТЬ_КЛЮЧ"
+            }
+          },
+          {
+            "glyph_hex": "5a",
+            "glyph": "Z",
+            "class_id": 3,
+            "flags": 2072,
+            "width": 4,
+            "height": 0,
+            "marker": 6,
+            "placements": {
+              "MMap": 0,
+              "TMap": 1,
+              "FCMap": 0
+            },
+            "category": 10,
+            "value": 4,
+            "inherited_bindings": {
+              "sprite": "КРЕСТ2 8",
+              "animation": "КЛЮЧ_З",
+              "sound": "зВЗЯТЬ_КЛЮЧ"
+            }
+          },
+          {
+            "glyph_hex": "40",
+            "glyph": "@",
+            "class_id": 3,
+            "flags": 24,
+            "width": 2,
+            "height": 0,
+            "marker": 1,
+            "placements": {
+              "MMap": 0,
+              "TMap": 27,
+              "FCMap": 0
+            },
+            "category": 0,
+            "value": 10,
+            "inherited_bindings": {
+              "sprite": "КОВШ 24",
+              "animation": "КЛЮЧ_З",
+              "sound": "зВЗЯТЬ_ЖИЗНЬ"
+            }
+          },
+          {
+            "glyph_hex": "38",
+            "glyph": "8",
+            "class_id": 3,
+            "flags": 24,
+            "width": 3,
+            "height": 0,
+            "marker": 1,
+            "placements": {
+              "MMap": 0,
+              "TMap": 10,
+              "FCMap": 0
+            },
+            "category": 0,
+            "value": 15,
+            "inherited_bindings": {
+              "sprite": "ГОРШОК 24",
+              "animation": "КЛЮЧ_З",
+              "sound": "зВЗЯТЬ_ЖИЗНЬ"
+            }
+          },
+          {
+            "glyph_hex": "29",
+            "glyph": ")",
+            "class_id": 3,
+            "flags": 24,
+            "width": 3,
+            "height": 0,
+            "marker": 4,
+            "placements": {
+              "MMap": 0,
+              "TMap": 62,
+              "FCMap": 0
+            },
+            "category": 1,
+            "value": 50,
+            "inherited_bindings": {
+              "sprite": "ПАТРОНЫ 24",
+              "animation": "КЛЮЧ_З",
+              "sound": "зВЗЯТЬ_ПУЛЮ"
+            }
+          },
+          {
+            "glyph_hex": "2a",
+            "glyph": "*",
+            "class_id": 3,
+            "flags": 24,
+            "width": 3,
+            "height": 0,
+            "marker": 128,
+            "placements": {
+              "MMap": 0,
+              "TMap": 55,
+              "FCMap": 0
+            },
+            "category": 0,
+            "value": -10,
+            "inherited_bindings": {
+              "sprite": "МУХОМОР 24",
+              "animation": "КЛЮЧ_З",
+              "sound": "зВЗЯТЬ_МУХ"
+            }
+          },
+          {
+            "glyph_hex": "21",
+            "glyph": "!",
+            "class_id": 3,
+            "flags": 24,
+            "width": 3,
+            "height": 0,
+            "marker": 128,
+            "placements": {
+              "MMap": 0,
+              "TMap": 0,
+              "FCMap": 0
+            },
+            "category": 0,
+            "value": -15,
+            "inherited_bindings": {
+              "sprite": "КРУШКА 24",
+              "animation": "КЛЮЧ_З",
+              "sound": "зВЗЯТЬ_МУХ"
+            }
+          },
+          {
+            "glyph_hex": "39",
+            "glyph": "9",
+            "class_id": 3,
+            "flags": 24,
+            "width": 2,
+            "height": 0,
+            "marker": 6,
+            "placements": {
+              "MMap": 0,
+              "TMap": 1,
+              "FCMap": 0
+            },
+            "category": 200,
+            "value": 1,
+            "inherited_bindings": {
+              "sprite": "КАРТА 24",
+              "animation": "КЛЮЧ_З",
+              "sound": "зВЗЯТЬ_КАРТУ"
+            }
+          },
+          {
+            "glyph_hex": "57",
+            "glyph": "W",
+            "class_id": 10,
+            "flags": 24,
+            "width": 3,
+            "height": 0,
+            "marker": 1,
+            "placements": {
+              "MMap": 0,
+              "TMap": 1,
+              "FCMap": 0
+            },
+            "weapon_slot": 1,
+            "category": 3,
+            "value": 50,
+            "inherited_bindings": {
+              "sprite": "sРУЖЬЕ 24",
+              "animation": "fРУЖЬЕ",
+              "sound": "зРУЖЬЕ_ВЫСТРЕЛ"
+            }
+          },
+          {
+            "glyph_hex": "56",
+            "glyph": "V",
+            "class_id": 10,
+            "flags": 24,
+            "width": 4,
+            "height": 0,
+            "marker": 4,
+            "placements": {
+              "MMap": 0,
+              "TMap": 1,
+              "FCMap": 0
+            },
+            "weapon_slot": 2,
+            "category": 3,
+            "value": 50,
+            "inherited_bindings": {
+              "sprite": "sЛАЗЕР 24",
+              "animation": "fЛАЗЕР",
+              "sound": "зЛАЗЕР_ВЫСТРЕЛ"
+            }
+          }
+        ],
+        "placed_category99": 0,
+        "total_category99_value": 0,
+        "definition_subset": "item_and_weapon_descriptors_only"
+      },
+      "LEVEL3": {
+        "settings": {
+          "Level Width": 64,
+          "Level Length": 64,
+          "Level Height": 1,
+          "Cell Side": 480,
+          "Cell Height": 960,
+          "Floor Color": 10,
+          "Ceiling Color": 143,
+          "Min Dis": 238,
+          "Step Ver": 4
+        },
+        "maps": {
+          "MMap": {
+            "width": 64,
+            "height": 64,
+            "sha256": "db37d1e08cea59a0b303b6b1a56711a8f29332fff89a988f6205e8fa938ddd63"
+          },
+          "TMap": {
+            "width": 64,
+            "height": 64,
+            "sha256": "f29ca8571e3be75bf7d2aa5c700626fc4811db108db742146500adf99ddcaf7e"
+          },
+          "FCMap": {
+            "width": 64,
+            "height": 64,
+            "sha256": "b2984ed7034402b68069243359a4d8e7c8cea38e61845da3ef3122debb57ba52"
+          }
+        },
+        "object_definitions": 158,
+        "native_type_counts": {
+          "0": 3,
+          "1": 1,
+          "2": 3,
+          "3": 9,
+          "4": 2,
+          "6": 5,
+          "7": 18,
+          "8": 4,
+          "9": 105,
+          "10": 2,
+          "12": 5,
+          "13": 1
+        },
+        "definitions": [
+          {
+            "glyph_hex": "58",
+            "glyph": "X",
+            "class_id": 3,
+            "flags": 2072,
+            "width": 4,
+            "height": 0,
+            "marker": 6,
+            "placements": {
+              "MMap": 0,
+              "TMap": 1,
+              "FCMap": 0
+            },
+            "category": 10,
+            "value": 1,
+            "inherited_bindings": {
+              "sprite": "КРЕСТ2 8",
+              "animation": "КЛЮЧ_М",
+              "sound": "зВЗЯТЬ_КЛЮЧ"
+            }
+          },
+          {
+            "glyph_hex": "59",
+            "glyph": "Y",
+            "class_id": 3,
+            "flags": 2072,
+            "width": 4,
+            "height": 0,
+            "marker": 6,
+            "placements": {
+              "MMap": 0,
+              "TMap": 1,
+              "FCMap": 0
+            },
+            "category": 10,
+            "value": 2,
+            "inherited_bindings": {
+              "sprite": "КРЕСТ2 8",
+              "animation": "КЛЮЧ_Ж",
+              "sound": "зВЗЯТЬ_КЛЮЧ"
+            }
+          },
+          {
+            "glyph_hex": "5a",
+            "glyph": "Z",
+            "class_id": 3,
+            "flags": 2072,
+            "width": 4,
+            "height": 0,
+            "marker": 6,
+            "placements": {
+              "MMap": 0,
+              "TMap": 1,
+              "FCMap": 0
+            },
+            "category": 10,
+            "value": 4,
+            "inherited_bindings": {
+              "sprite": "КРЕСТ2 8",
+              "animation": "КЛЮЧ_З",
+              "sound": "зВЗЯТЬ_КЛЮЧ"
+            }
+          },
+          {
+            "glyph_hex": "40",
+            "glyph": "@",
+            "class_id": 3,
+            "flags": 24,
+            "width": 2,
+            "height": 0,
+            "marker": 1,
+            "placements": {
+              "MMap": 0,
+              "TMap": 0,
+              "FCMap": 0
+            },
+            "category": 0,
+            "value": 10,
+            "inherited_bindings": {
+              "sprite": "КОВШ 24",
+              "animation": "КЛЮЧ_З",
+              "sound": "зВЗЯТЬ_ЖИЗНЬ"
+            }
+          },
+          {
+            "glyph_hex": "38",
+            "glyph": "8",
+            "class_id": 3,
+            "flags": 24,
+            "width": 3,
+            "height": 0,
+            "marker": 1,
+            "placements": {
+              "MMap": 0,
+              "TMap": 78,
+              "FCMap": 0
+            },
+            "category": 0,
+            "value": 15,
+            "inherited_bindings": {
+              "sprite": "ГОРШОК 24",
+              "animation": "КЛЮЧ_З",
+              "sound": "зВЗЯТЬ_ЖИЗНЬ"
+            }
+          },
+          {
+            "glyph_hex": "29",
+            "glyph": ")",
+            "class_id": 3,
+            "flags": 24,
+            "width": 3,
+            "height": 0,
+            "marker": 4,
+            "placements": {
+              "MMap": 0,
+              "TMap": 100,
+              "FCMap": 0
+            },
+            "category": 1,
+            "value": 50,
+            "inherited_bindings": {
+              "sprite": "ПАТРОНЫ 24",
+              "animation": "КЛЮЧ_З",
+              "sound": "зВЗЯТЬ_ПУЛЮ"
+            }
+          },
+          {
+            "glyph_hex": "2a",
+            "glyph": "*",
+            "class_id": 3,
+            "flags": 24,
+            "width": 3,
+            "height": 0,
+            "marker": 128,
+            "placements": {
+              "MMap": 0,
+              "TMap": 92,
+              "FCMap": 0
+            },
+            "category": 0,
+            "value": -10,
+            "inherited_bindings": {
+              "sprite": "МУХОМОР 24",
+              "animation": "КЛЮЧ_З",
+              "sound": "зВЗЯТЬ_МУХ"
+            }
+          },
+          {
+            "glyph_hex": "21",
+            "glyph": "!",
+            "class_id": 3,
+            "flags": 24,
+            "width": 3,
+            "height": 0,
+            "marker": 128,
+            "placements": {
+              "MMap": 0,
+              "TMap": 0,
+              "FCMap": 0
+            },
+            "category": 0,
+            "value": -15,
+            "inherited_bindings": {
+              "sprite": "КРУШКА 24",
+              "animation": "КЛЮЧ_З",
+              "sound": "зВЗЯТЬ_МУХ"
+            }
+          },
+          {
+            "glyph_hex": "39",
+            "glyph": "9",
+            "class_id": 3,
+            "flags": 24,
+            "width": 3,
+            "height": 0,
+            "marker": 6,
+            "placements": {
+              "MMap": 0,
+              "TMap": 0,
+              "FCMap": 0
+            },
+            "category": 200,
+            "value": 1,
+            "inherited_bindings": {
+              "sprite": "КАРТА 24",
+              "animation": "КЛЮЧ_З",
+              "sound": "зВЗЯТЬ_КАРТУ"
+            }
+          },
+          {
+            "glyph_hex": "57",
+            "glyph": "W",
+            "class_id": 10,
+            "flags": 24,
+            "width": 3,
+            "height": 0,
+            "marker": 1,
+            "placements": {
+              "MMap": 0,
+              "TMap": 1,
+              "FCMap": 0
+            },
+            "weapon_slot": 1,
+            "category": 3,
+            "value": 50,
+            "inherited_bindings": {
+              "sprite": "sРУЖЬЕ 24",
+              "animation": "fРУЖЬЕ",
+              "sound": "зРУЖЬЕ_ВЫСТРЕЛ"
+            }
+          },
+          {
+            "glyph_hex": "56",
+            "glyph": "V",
+            "class_id": 10,
+            "flags": 24,
+            "width": 4,
+            "height": 0,
+            "marker": 4,
+            "placements": {
+              "MMap": 0,
+              "TMap": 1,
+              "FCMap": 0
+            },
+            "weapon_slot": 2,
+            "category": 3,
+            "value": 50,
+            "inherited_bindings": {
+              "sprite": "sЛАЗЕР 24",
+              "animation": "fЛАЗЕР",
+              "sound": "зЛАЗЕР_ВЫСТРЕЛ"
+            }
+          }
+        ],
+        "placed_category99": 0,
+        "total_category99_value": 0,
+        "definition_subset": "item_and_weapon_descriptors_only"
+      }
+    }
+  },
+  "en": {
+    "path": "originals/pkr/ENG/PKE.RES",
+    "size": 2717872,
+    "sha256": "865da340621fa6f90548a84e9ae9bf0a85071befb32a40ca1d359e488f74d458",
+    "count": 146,
+    "formats": {
+      "text": 9,
+      "indexed_image18": 77,
+      "bitmap_font": 2,
+      "level_text": 3,
+      "vga_palette": 5,
+      "lighting_table": 3,
+      "animation8_10_image18": 24,
+      "svm_pcm8": 23
+    },
+    "levels": {
+      "LEVEL1": {
+        "settings": {
+          "Level Width": 64,
+          "Level Length": 64,
+          "Level Height": 1,
+          "Cell Side": 480,
+          "Cell Height": 960,
+          "Floor Color": 10,
+          "Ceiling Color": 143,
+          "Min Dis": 238,
+          "Step Ver": 4
+        },
+        "maps": {
+          "MMap": {
+            "width": 64,
+            "height": 64,
+            "sha256": "6833a2c0b8dbe4c95c2584e68f365832d012c549e01b5a06855f8b616cb6aa5a"
+          },
+          "TMap": {
+            "width": 64,
+            "height": 64,
+            "sha256": "d1cdc5ea570124f73473e114f2f44f78654fff43f1f97d4a2e88830884eaa1a9"
+          },
+          "FCMap": {
+            "width": 64,
+            "height": 64,
+            "sha256": "26c82ffb7f0b75827e1674ef9dae4e6ace54c47f1b0d413eb73298fff9c6d8b2"
+          }
+        },
+        "object_definitions": 115,
+        "native_type_counts": {
+          "0": 3,
+          "1": 1,
+          "2": 3,
+          "3": 9,
+          "4": 2,
+          "6": 5,
+          "7": 18,
+          "8": 3,
+          "9": 64,
+          "10": 2,
+          "12": 5
+        },
+        "definitions": [
+          {
+            "glyph_hex": "58",
+            "glyph": "X",
+            "class_id": 3,
+            "flags": 2072,
+            "width": 4,
+            "height": 0,
+            "marker": 6,
+            "placements": {
+              "MMap": 0,
+              "TMap": 1,
+              "FCMap": 0
+            },
+            "category": 10,
+            "value": 1,
+            "inherited_bindings": {
+              "sprite": "КРЕСТ2 8",
+              "animation": "КЛЮЧ_М",
+              "sound": "зВЗЯТЬ_КЛЮЧ"
+            }
+          },
+          {
+            "glyph_hex": "59",
+            "glyph": "Y",
+            "class_id": 3,
+            "flags": 2072,
+            "width": 4,
+            "height": 0,
+            "marker": 6,
+            "placements": {
+              "MMap": 0,
+              "TMap": 1,
+              "FCMap": 0
+            },
+            "category": 10,
+            "value": 2,
+            "inherited_bindings": {
+              "sprite": "КРЕСТ2 8",
+              "animation": "КЛЮЧ_Ж",
+              "sound": "зВЗЯТЬ_КЛЮЧ"
+            }
+          },
+          {
+            "glyph_hex": "5a",
+            "glyph": "Z",
+            "class_id": 3,
+            "flags": 2072,
+            "width": 4,
+            "height": 0,
+            "marker": 6,
+            "placements": {
+              "MMap": 0,
+              "TMap": 1,
+              "FCMap": 0
+            },
+            "category": 10,
+            "value": 4,
+            "inherited_bindings": {
+              "sprite": "КРЕСТ2 8",
+              "animation": "КЛЮЧ_З",
+              "sound": "зВЗЯТЬ_КЛЮЧ"
+            }
+          },
+          {
+            "glyph_hex": "40",
+            "glyph": "@",
+            "class_id": 3,
+            "flags": 24,
+            "width": 2,
+            "height": 0,
+            "marker": 1,
+            "placements": {
+              "MMap": 0,
+              "TMap": 22,
+              "FCMap": 0
+            },
+            "category": 0,
+            "value": 10,
+            "inherited_bindings": {
+              "sprite": "КОВШ 24",
+              "animation": "КЛЮЧ_З",
+              "sound": "зВЗЯТЬ_ЖИЗНЬ"
+            }
+          },
+          {
+            "glyph_hex": "38",
+            "glyph": "8",
+            "class_id": 3,
+            "flags": 24,
+            "width": 3,
+            "height": 0,
+            "marker": 1,
+            "placements": {
+              "MMap": 0,
+              "TMap": 4,
+              "FCMap": 0
+            },
+            "category": 0,
+            "value": 15,
+            "inherited_bindings": {
+              "sprite": "ГОРШОК 24",
+              "animation": "КЛЮЧ_З",
+              "sound": "зВЗЯТЬ_ЖИЗНЬ"
+            }
+          },
+          {
+            "glyph_hex": "29",
+            "glyph": ")",
+            "class_id": 3,
+            "flags": 24,
+            "width": 3,
+            "height": 0,
+            "marker": 4,
+            "placements": {
+              "MMap": 0,
+              "TMap": 65,
+              "FCMap": 0
+            },
+            "category": 1,
+            "value": 50,
+            "inherited_bindings": {
+              "sprite": "ПАТРОНЫ 24",
+              "animation": "КЛЮЧ_З",
+              "sound": "зВЗЯТЬ_ПУЛЮ"
+            }
+          },
+          {
+            "glyph_hex": "2a",
+            "glyph": "*",
+            "class_id": 3,
+            "flags": 24,
+            "width": 3,
+            "height": 0,
+            "marker": 128,
+            "placements": {
+              "MMap": 0,
+              "TMap": 80,
+              "FCMap": 0
+            },
+            "category": 0,
+            "value": -10,
+            "inherited_bindings": {
+              "sprite": "МУХОМОР 24",
+              "animation": "КЛЮЧ_З",
+              "sound": "зВЗЯТЬ_МУХ"
+            }
+          },
+          {
+            "glyph_hex": "21",
+            "glyph": "!",
+            "class_id": 3,
+            "flags": 24,
+            "width": 3,
+            "height": 0,
+            "marker": 128,
+            "placements": {
+              "MMap": 0,
+              "TMap": 14,
+              "FCMap": 0
+            },
+            "category": 0,
+            "value": -15,
+            "inherited_bindings": {
+              "sprite": "КРУШКА 24",
+              "animation": "КЛЮЧ_З",
+              "sound": "зВЗЯТЬ_МУХ"
+            }
+          },
+          {
+            "glyph_hex": "39",
+            "glyph": "9",
+            "class_id": 3,
+            "flags": 24,
+            "width": 2,
+            "height": 0,
+            "marker": 6,
+            "placements": {
+              "MMap": 0,
+              "TMap": 1,
+              "FCMap": 0
+            },
+            "category": 200,
+            "value": 1,
+            "inherited_bindings": {
+              "sprite": "КАРТА 24",
+              "animation": "КЛЮЧ_З",
+              "sound": "зВЗЯТЬ_КАРТУ"
+            }
+          },
+          {
+            "glyph_hex": "57",
+            "glyph": "W",
+            "class_id": 10,
+            "flags": 24,
+            "width": 3,
+            "height": 0,
+            "marker": 1,
+            "placements": {
+              "MMap": 0,
+              "TMap": 1,
+              "FCMap": 0
+            },
+            "weapon_slot": 1,
+            "category": 3,
+            "value": 50,
+            "inherited_bindings": {
+              "sprite": "sРУЖЬЕ 24",
+              "animation": "fРУЖЬЕ",
+              "sound": "зРУЖЬЕ_ВЫСТРЕЛ"
+            }
+          },
+          {
+            "glyph_hex": "56",
+            "glyph": "V",
+            "class_id": 10,
+            "flags": 24,
+            "width": 3,
+            "height": 0,
+            "marker": 4,
+            "placements": {
+              "MMap": 0,
+              "TMap": 1,
+              "FCMap": 0
+            },
+            "weapon_slot": 2,
+            "category": 3,
+            "value": 50,
+            "inherited_bindings": {
+              "sprite": "sЛАЗЕР 24",
+              "animation": "fЛАЗЕР",
+              "sound": "зЛАЗЕР_ВЫСТРЕЛ"
+            }
+          }
+        ],
+        "placed_category99": 0,
+        "total_category99_value": 0,
+        "definition_subset": "item_and_weapon_descriptors_only"
+      },
+      "LEVEL2": {
+        "settings": {
+          "Level Width": 64,
+          "Level Length": 64,
+          "Level Height": 1,
+          "Cell Side": 480,
+          "Cell Height": 960,
+          "Floor Color": 10,
+          "Ceiling Color": 143,
+          "Min Dis": 238,
+          "Step Ver": 4
+        },
+        "maps": {
+          "MMap": {
+            "width": 64,
+            "height": 64,
+            "sha256": "8ff45778e59688cbf18a91c25eac9b6d07f8fe5ff140f4bf9ee891d964aca3b8"
+          },
+          "TMap": {
+            "width": 64,
+            "height": 64,
+            "sha256": "fd133e72ca1ec812ed9e2086feaa4bd6a82e6c7865935907f1c65a2338b6b74b"
+          },
+          "FCMap": {
+            "width": 64,
+            "height": 64,
+            "sha256": "541374fc405e1651ff28ee1e5e6f30784bfa889645ad9abcbac117077a77dc76"
+          }
+        },
+        "object_definitions": 117,
+        "native_type_counts": {
+          "0": 3,
+          "1": 1,
+          "2": 3,
+          "3": 9,
+          "4": 2,
+          "6": 5,
+          "7": 18,
+          "8": 4,
+          "9": 64,
+          "10": 2,
+          "12": 5,
+          "13": 1
+        },
+        "definitions": [
+          {
+            "glyph_hex": "58",
+            "glyph": "X",
+            "class_id": 3,
+            "flags": 2072,
+            "width": 4,
+            "height": 0,
+            "marker": 6,
+            "placements": {
+              "MMap": 0,
+              "TMap": 1,
+              "FCMap": 0
+            },
+            "category": 10,
+            "value": 1,
+            "inherited_bindings": {
+              "sprite": "КРЕСТ2 8",
+              "animation": "КЛЮЧ_М",
+              "sound": "зВЗЯТЬ_КЛЮЧ"
+            }
+          },
+          {
+            "glyph_hex": "59",
+            "glyph": "Y",
+            "class_id": 3,
+            "flags": 2072,
+            "width": 4,
+            "height": 0,
+            "marker": 6,
+            "placements": {
+              "MMap": 0,
+              "TMap": 1,
+              "FCMap": 0
+            },
+            "category": 10,
+            "value": 2,
+            "inherited_bindings": {
+              "sprite": "КРЕСТ2 8",
+              "animation": "КЛЮЧ_Ж",
+              "sound": "зВЗЯТЬ_КЛЮЧ"
+            }
+          },
+          {
+            "glyph_hex": "5a",
+            "glyph": "Z",
+            "class_id": 3,
+            "flags": 2072,
+            "width": 4,
+            "height": 0,
+            "marker": 6,
+            "placements": {
+              "MMap": 0,
+              "TMap": 1,
+              "FCMap": 0
+            },
+            "category": 10,
+            "value": 4,
+            "inherited_bindings": {
+              "sprite": "КРЕСТ2 8",
+              "animation": "КЛЮЧ_З",
+              "sound": "зВЗЯТЬ_КЛЮЧ"
+            }
+          },
+          {
+            "glyph_hex": "40",
+            "glyph": "@",
+            "class_id": 3,
+            "flags": 24,
+            "width": 2,
+            "height": 0,
+            "marker": 1,
+            "placements": {
+              "MMap": 0,
+              "TMap": 27,
+              "FCMap": 0
+            },
+            "category": 0,
+            "value": 10,
+            "inherited_bindings": {
+              "sprite": "КОВШ 24",
+              "animation": "КЛЮЧ_З",
+              "sound": "зВЗЯТЬ_ЖИЗНЬ"
+            }
+          },
+          {
+            "glyph_hex": "38",
+            "glyph": "8",
+            "class_id": 3,
+            "flags": 24,
+            "width": 3,
+            "height": 0,
+            "marker": 1,
+            "placements": {
+              "MMap": 0,
+              "TMap": 10,
+              "FCMap": 0
+            },
+            "category": 0,
+            "value": 15,
+            "inherited_bindings": {
+              "sprite": "ГОРШОК 24",
+              "animation": "КЛЮЧ_З",
+              "sound": "зВЗЯТЬ_ЖИЗНЬ"
+            }
+          },
+          {
+            "glyph_hex": "29",
+            "glyph": ")",
+            "class_id": 3,
+            "flags": 24,
+            "width": 3,
+            "height": 0,
+            "marker": 4,
+            "placements": {
+              "MMap": 0,
+              "TMap": 62,
+              "FCMap": 0
+            },
+            "category": 1,
+            "value": 50,
+            "inherited_bindings": {
+              "sprite": "ПАТРОНЫ 24",
+              "animation": "КЛЮЧ_З",
+              "sound": "зВЗЯТЬ_ПУЛЮ"
+            }
+          },
+          {
+            "glyph_hex": "2a",
+            "glyph": "*",
+            "class_id": 3,
+            "flags": 24,
+            "width": 3,
+            "height": 0,
+            "marker": 128,
+            "placements": {
+              "MMap": 0,
+              "TMap": 55,
+              "FCMap": 0
+            },
+            "category": 0,
+            "value": -10,
+            "inherited_bindings": {
+              "sprite": "МУХОМОР 24",
+              "animation": "КЛЮЧ_З",
+              "sound": "зВЗЯТЬ_МУХ"
+            }
+          },
+          {
+            "glyph_hex": "21",
+            "glyph": "!",
+            "class_id": 3,
+            "flags": 24,
+            "width": 3,
+            "height": 0,
+            "marker": 128,
+            "placements": {
+              "MMap": 0,
+              "TMap": 0,
+              "FCMap": 0
+            },
+            "category": 0,
+            "value": -15,
+            "inherited_bindings": {
+              "sprite": "КРУШКА 24",
+              "animation": "КЛЮЧ_З",
+              "sound": "зВЗЯТЬ_МУХ"
+            }
+          },
+          {
+            "glyph_hex": "39",
+            "glyph": "9",
+            "class_id": 3,
+            "flags": 24,
+            "width": 2,
+            "height": 0,
+            "marker": 6,
+            "placements": {
+              "MMap": 0,
+              "TMap": 1,
+              "FCMap": 0
+            },
+            "category": 200,
+            "value": 1,
+            "inherited_bindings": {
+              "sprite": "КАРТА 24",
+              "animation": "КЛЮЧ_З",
+              "sound": "зВЗЯТЬ_КАРТУ"
+            }
+          },
+          {
+            "glyph_hex": "57",
+            "glyph": "W",
+            "class_id": 10,
+            "flags": 24,
+            "width": 3,
+            "height": 0,
+            "marker": 1,
+            "placements": {
+              "MMap": 0,
+              "TMap": 1,
+              "FCMap": 0
+            },
+            "weapon_slot": 1,
+            "category": 3,
+            "value": 50,
+            "inherited_bindings": {
+              "sprite": "sРУЖЬЕ 24",
+              "animation": "fРУЖЬЕ",
+              "sound": "зРУЖЬЕ_ВЫСТРЕЛ"
+            }
+          },
+          {
+            "glyph_hex": "56",
+            "glyph": "V",
+            "class_id": 10,
+            "flags": 24,
+            "width": 4,
+            "height": 0,
+            "marker": 4,
+            "placements": {
+              "MMap": 0,
+              "TMap": 1,
+              "FCMap": 0
+            },
+            "weapon_slot": 2,
+            "category": 3,
+            "value": 50,
+            "inherited_bindings": {
+              "sprite": "sЛАЗЕР 24",
+              "animation": "fЛАЗЕР",
+              "sound": "зЛАЗЕР_ВЫСТРЕЛ"
+            }
+          }
+        ],
+        "placed_category99": 0,
+        "total_category99_value": 0,
+        "definition_subset": "item_and_weapon_descriptors_only"
+      },
+      "LEVEL3": {
+        "settings": {
+          "Level Width": 64,
+          "Level Length": 64,
+          "Level Height": 1,
+          "Cell Side": 480,
+          "Cell Height": 960,
+          "Floor Color": 10,
+          "Ceiling Color": 143,
+          "Min Dis": 238,
+          "Step Ver": 4
+        },
+        "maps": {
+          "MMap": {
+            "width": 64,
+            "height": 64,
+            "sha256": "db37d1e08cea59a0b303b6b1a56711a8f29332fff89a988f6205e8fa938ddd63"
+          },
+          "TMap": {
+            "width": 64,
+            "height": 64,
+            "sha256": "5a8821489939f2f241cfab76ae84ee2a7258467ecc2600b2bf4d713047d728c5"
+          },
+          "FCMap": {
+            "width": 64,
+            "height": 64,
+            "sha256": "b2984ed7034402b68069243359a4d8e7c8cea38e61845da3ef3122debb57ba52"
+          }
+        },
+        "object_definitions": 158,
+        "native_type_counts": {
+          "0": 3,
+          "1": 1,
+          "2": 3,
+          "3": 9,
+          "4": 2,
+          "6": 5,
+          "7": 18,
+          "8": 4,
+          "9": 105,
+          "10": 2,
+          "12": 5,
+          "13": 1
+        },
+        "definitions": [
+          {
+            "glyph_hex": "58",
+            "glyph": "X",
+            "class_id": 3,
+            "flags": 2072,
+            "width": 4,
+            "height": 0,
+            "marker": 6,
+            "placements": {
+              "MMap": 0,
+              "TMap": 1,
+              "FCMap": 0
+            },
+            "category": 10,
+            "value": 1,
+            "inherited_bindings": {
+              "sprite": "КРЕСТ2 8",
+              "animation": "КЛЮЧ_М",
+              "sound": "зВЗЯТЬ_КЛЮЧ"
+            }
+          },
+          {
+            "glyph_hex": "59",
+            "glyph": "Y",
+            "class_id": 3,
+            "flags": 2072,
+            "width": 4,
+            "height": 0,
+            "marker": 6,
+            "placements": {
+              "MMap": 0,
+              "TMap": 1,
+              "FCMap": 0
+            },
+            "category": 10,
+            "value": 2,
+            "inherited_bindings": {
+              "sprite": "КРЕСТ2 8",
+              "animation": "КЛЮЧ_Ж",
+              "sound": "зВЗЯТЬ_КЛЮЧ"
+            }
+          },
+          {
+            "glyph_hex": "5a",
+            "glyph": "Z",
+            "class_id": 3,
+            "flags": 2072,
+            "width": 4,
+            "height": 0,
+            "marker": 6,
+            "placements": {
+              "MMap": 0,
+              "TMap": 1,
+              "FCMap": 0
+            },
+            "category": 10,
+            "value": 4,
+            "inherited_bindings": {
+              "sprite": "КРЕСТ2 8",
+              "animation": "КЛЮЧ_З",
+              "sound": "зВЗЯТЬ_КЛЮЧ"
+            }
+          },
+          {
+            "glyph_hex": "40",
+            "glyph": "@",
+            "class_id": 3,
+            "flags": 24,
+            "width": 2,
+            "height": 0,
+            "marker": 1,
+            "placements": {
+              "MMap": 0,
+              "TMap": 0,
+              "FCMap": 0
+            },
+            "category": 0,
+            "value": 10,
+            "inherited_bindings": {
+              "sprite": "КОВШ 24",
+              "animation": "КЛЮЧ_З",
+              "sound": "зВЗЯТЬ_ЖИЗНЬ"
+            }
+          },
+          {
+            "glyph_hex": "38",
+            "glyph": "8",
+            "class_id": 3,
+            "flags": 24,
+            "width": 3,
+            "height": 0,
+            "marker": 1,
+            "placements": {
+              "MMap": 0,
+              "TMap": 78,
+              "FCMap": 0
+            },
+            "category": 0,
+            "value": 15,
+            "inherited_bindings": {
+              "sprite": "ГОРШОК 24",
+              "animation": "КЛЮЧ_З",
+              "sound": "зВЗЯТЬ_ЖИЗНЬ"
+            }
+          },
+          {
+            "glyph_hex": "29",
+            "glyph": ")",
+            "class_id": 3,
+            "flags": 24,
+            "width": 3,
+            "height": 0,
+            "marker": 4,
+            "placements": {
+              "MMap": 0,
+              "TMap": 100,
+              "FCMap": 0
+            },
+            "category": 1,
+            "value": 50,
+            "inherited_bindings": {
+              "sprite": "ПАТРОНЫ 24",
+              "animation": "КЛЮЧ_З",
+              "sound": "зВЗЯТЬ_ПУЛЮ"
+            }
+          },
+          {
+            "glyph_hex": "2a",
+            "glyph": "*",
+            "class_id": 3,
+            "flags": 24,
+            "width": 3,
+            "height": 0,
+            "marker": 128,
+            "placements": {
+              "MMap": 0,
+              "TMap": 92,
+              "FCMap": 0
+            },
+            "category": 0,
+            "value": -10,
+            "inherited_bindings": {
+              "sprite": "МУХОМОР 24",
+              "animation": "КЛЮЧ_З",
+              "sound": "зВЗЯТЬ_МУХ"
+            }
+          },
+          {
+            "glyph_hex": "21",
+            "glyph": "!",
+            "class_id": 3,
+            "flags": 24,
+            "width": 3,
+            "height": 0,
+            "marker": 128,
+            "placements": {
+              "MMap": 0,
+              "TMap": 0,
+              "FCMap": 0
+            },
+            "category": 0,
+            "value": -15,
+            "inherited_bindings": {
+              "sprite": "КРУШКА 24",
+              "animation": "КЛЮЧ_З",
+              "sound": "зВЗЯТЬ_МУХ"
+            }
+          },
+          {
+            "glyph_hex": "39",
+            "glyph": "9",
+            "class_id": 3,
+            "flags": 24,
+            "width": 2,
+            "height": 0,
+            "marker": 6,
+            "placements": {
+              "MMap": 0,
+              "TMap": 0,
+              "FCMap": 0
+            },
+            "category": 200,
+            "value": 1,
+            "inherited_bindings": {
+              "sprite": "КАРТА 24",
+              "animation": "КЛЮЧ_З",
+              "sound": "зВЗЯТЬ_КАРТУ"
+            }
+          },
+          {
+            "glyph_hex": "57",
+            "glyph": "W",
+            "class_id": 10,
+            "flags": 24,
+            "width": 3,
+            "height": 0,
+            "marker": 1,
+            "placements": {
+              "MMap": 0,
+              "TMap": 1,
+              "FCMap": 0
+            },
+            "weapon_slot": 1,
+            "category": 3,
+            "value": 50,
+            "inherited_bindings": {
+              "sprite": "sРУЖЬЕ 24",
+              "animation": "fРУЖЬЕ",
+              "sound": "зРУЖЬЕ_ВЫСТРЕЛ"
+            }
+          },
+          {
+            "glyph_hex": "56",
+            "glyph": "V",
+            "class_id": 10,
+            "flags": 24,
+            "width": 3,
+            "height": 0,
+            "marker": 4,
+            "placements": {
+              "MMap": 0,
+              "TMap": 1,
+              "FCMap": 0
+            },
+            "weapon_slot": 2,
+            "category": 3,
+            "value": 50,
+            "inherited_bindings": {
+              "sprite": "sЛАЗЕР 24",
+              "animation": "fЛАЗЕР",
+              "sound": "зЛАЗЕР_ВЫСТРЕЛ"
+            }
+          }
+        ],
+        "placed_category99": 0,
+        "total_category99_value": 0,
+        "definition_subset": "item_and_weapon_descriptors_only"
+      }
+    }
+  }
+}
