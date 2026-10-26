@@ -1,0 +1,1825 @@
+﻿{
+    "date":  "2026-10-26",
+    "reason":  "User requested removal of obsolete build and test artifacts",
+    "status":  "completed",
+    "removed_files":  10661,
+    "removed_bytes":  5165518037,
+    "targets":  [
+                    {
+                        "path":  "build/g06a-baseline",
+                        "files":  26,
+                        "bytes":  8825122
+                    },
+                    {
+                        "path":  "build/g06a-cache",
+                        "files":  27,
+                        "bytes":  113667441
+                    },
+                    {
+                        "path":  "build/g06a-column-comparison",
+                        "files":  32,
+                        "bytes":  558035
+                    },
+                    {
+                        "path":  "build/g06a-fast",
+                        "files":  137,
+                        "bytes":  130689859
+                    },
+                    {
+                        "path":  "build/g06a-oct25-scales",
+                        "files":  140,
+                        "bytes":  116188028
+                    },
+                    {
+                        "path":  "build/g06a-oct25-stage1",
+                        "files":  138,
+                        "bytes":  14203165
+                    },
+                    {
+                        "path":  "build/g06a-platform-regression",
+                        "files":  12,
+                        "bytes":  177376
+                    },
+                    {
+                        "path":  "build/g06a-review-background",
+                        "files":  124,
+                        "bytes":  114721679
+                    },
+                    {
+                        "path":  "build/g06a-review-before",
+                        "files":  19,
+                        "bytes":  61175151
+                    },
+                    {
+                        "path":  "build/g06a-review-column",
+                        "files":  28,
+                        "bytes":  113655273
+                    },
+                    {
+                        "path":  "build/g06a-review-coverage",
+                        "files":  28,
+                        "bytes":  129240727
+                    },
+                    {
+                        "path":  "build/g06a-review-half",
+                        "files":  124,
+                        "bytes":  130134819
+                    },
+                    {
+                        "path":  "build/g06a-review-indices",
+                        "files":  28,
+                        "bytes":  129241315
+                    },
+                    {
+                        "path":  "build/g06a-review-magnify",
+                        "files":  127,
+                        "bytes":  130621397
+                    },
+                    {
+                        "path":  "build/g06a-review-magnify-fast",
+                        "files":  32,
+                        "bytes":  129575468
+                    },
+                    {
+                        "path":  "build/g06a-review-opacity",
+                        "files":  123,
+                        "bytes":  114713572
+                    },
+                    {
+                        "path":  "build/g06a-review-span136",
+                        "files":  28,
+                        "bytes":  125564058
+                    },
+                    {
+                        "path":  "build/g06a-review-span140",
+                        "files":  127,
+                        "bytes":  130335118
+                    },
+                    {
+                        "path":  "build/g06a-review-span144",
+                        "files":  22,
+                        "bytes":  68815145
+                    },
+                    {
+                        "path":  "build/g06a-review-span144-shared",
+                        "files":  22,
+                        "bytes":  66449485
+                    },
+                    {
+                        "path":  "build/g06a-review-u",
+                        "files":  28,
+                        "bytes":  113660185
+                    },
+                    {
+                        "path":  "build/g06a-review-unroll",
+                        "files":  27,
+                        "bytes":  113654963
+                    },
+                    {
+                        "path":  "build/g06a-review-wait",
+                        "files":  32,
+                        "bytes":  113694098
+                    },
+                    {
+                        "path":  "build/g06a-source-check",
+                        "files":  25,
+                        "bytes":  113630613
+                    },
+                    {
+                        "path":  "build/g07",
+                        "files":  139,
+                        "bytes":  130129321
+                    },
+                    {
+                        "path":  "build/g08",
+                        "files":  145,
+                        "bytes":  130303397
+                    },
+                    {
+                        "path":  "build/g09",
+                        "files":  153,
+                        "bytes":  130449107
+                    },
+                    {
+                        "path":  "build/g10",
+                        "files":  276,
+                        "bytes":  137532232
+                    },
+                    {
+                        "path":  "build/g11",
+                        "files":  243,
+                        "bytes":  132354553
+                    },
+                    {
+                        "path":  "build/g12",
+                        "files":  73,
+                        "bytes":  130249664
+                    },
+                    {
+                        "path":  "build/g13",
+                        "files":  84,
+                        "bytes":  130474637
+                    },
+                    {
+                        "path":  "build/g14",
+                        "files":  77,
+                        "bytes":  130412056
+                    },
+                    {
+                        "path":  "build/g15",
+                        "files":  90,
+                        "bytes":  130625895
+                    },
+                    {
+                        "path":  "build/g17",
+                        "files":  132,
+                        "bytes":  150579882
+                    },
+                    {
+                        "path":  "build/zig-cache",
+                        "files":  7450,
+                        "bytes":  1328141082
+                    },
+                    {
+                        "path":  "scripts/__pycache__",
+                        "files":  37,
+                        "bytes":  771875
+                    },
+                    {
+                        "path":  "build/ai_dynamiclookup.py",
+                        "files":  1,
+                        "bytes":  1251
+                    },
+                    {
+                        "path":  "build/attack_native.py",
+                        "files":  1,
+                        "bytes":  1749
+                    },
+                    {
+                        "path":  "build/cache-inspect.idx",
+                        "files":  1,
+                        "bytes":  38400
+                    },
+                    {
+                        "path":  "build/cache-inspect.json",
+                        "files":  1,
+                        "bytes":  4322
+                    },
+                    {
+                        "path":  "build/cache-inspect.pal",
+                        "files":  1,
+                        "bytes":  768
+                    },
+                    {
+                        "path":  "build/check_native_status.py",
+                        "files":  1,
+                        "bytes":  881
+                    },
+                    {
+                        "path":  "build/clamped_dynamic.py",
+                        "files":  1,
+                        "bytes":  920
+                    },
+                    {
+                        "path":  "build/docscorpse.py",
+                        "files":  1,
+                        "bytes":  1300
+                    },
+                    {
+                        "path":  "build/docs_dynamic_g15.py",
+                        "files":  1,
+                        "bytes":  2330
+                    },
+                    {
+                        "path":  "build/docs_g15_links.py",
+                        "files":  1,
+                        "bytes":  1259
+                    },
+                    {
+                        "path":  "build/dosbox_pure_libretro.dll.zip",
+                        "files":  1,
+                        "bytes":  24576
+                    },
+                    {
+                        "path":  "build/edge_dynamic_host.py",
+                        "files":  1,
+                        "bytes":  1248
+                    },
+                    {
+                        "path":  "build/edit-g10.py",
+                        "files":  1,
+                        "bytes":  3076
+                    },
+                    {
+                        "path":  "build/extend_g15_tests.py",
+                        "files":  1,
+                        "bytes":  2726
+                    },
+                    {
+                        "path":  "build/finalhost_g15.py",
+                        "files":  1,
+                        "bytes":  1339
+                    },
+                    {
+                        "path":  "build/finalize_g15_docs.py",
+                        "files":  1,
+                        "bytes":  8907
+                    },
+                    {
+                        "path":  "build/final_original_metadata.py",
+                        "files":  1,
+                        "bytes":  495
+                    },
+                    {
+                        "path":  "build/final_source_limits.py",
+                        "files":  1,
+                        "bytes":  539
+                    },
+                    {
+                        "path":  "build/fix_sight.py",
+                        "files":  1,
+                        "bytes":  724
+                    },
+                    {
+                        "path":  "build/g06a-bank-repro.bin",
+                        "files":  1,
+                        "bytes":  25852784
+                    },
+                    {
+                        "path":  "build/g06a-bank-repro.json",
+                        "files":  1,
+                        "bytes":  803
+                    },
+                    {
+                        "path":  "build/g06a-next-quick.json",
+                        "files":  1,
+                        "bytes":  277322
+                    },
+                    {
+                        "path":  "build/g06a-review-validation-120.log",
+                        "files":  1,
+                        "bytes":  11170
+                    },
+                    {
+                        "path":  "build/g06a-review-validation.log",
+                        "files":  1,
+                        "bytes":  13056
+                    },
+                    {
+                        "path":  "build/g06a-runs-quick.json",
+                        "files":  1,
+                        "bytes":  277290
+                    },
+                    {
+                        "path":  "build/g06a-scales-quick.json",
+                        "files":  1,
+                        "bytes":  277290
+                    },
+                    {
+                        "path":  "build/hostwallclass.py",
+                        "files":  1,
+                        "bytes":  275
+                    },
+                    {
+                        "path":  "build/implement_g15.py",
+                        "files":  1,
+                        "bytes":  6156
+                    },
+                    {
+                        "path":  "build/inspect.idx",
+                        "files":  1,
+                        "bytes":  38400
+                    },
+                    {
+                        "path":  "build/inspect.json",
+                        "files":  1,
+                        "bytes":  4904
+                    },
+                    {
+                        "path":  "build/inspect.pal",
+                        "files":  1,
+                        "bytes":  768
+                    },
+                    {
+                        "path":  "build/mailbox_g15.py",
+                        "files":  1,
+                        "bytes":  1801
+                    },
+                    {
+                        "path":  "build/pack-columns-before-runs.py",
+                        "files":  1,
+                        "bytes":  4674
+                    },
+                    {
+                        "path":  "build/pack-columns-before-scales.py",
+                        "files":  1,
+                        "bytes":  2497
+                    },
+                    {
+                        "path":  "build/passport_g15.py",
+                        "files":  1,
+                        "bytes":  2504
+                    },
+                    {
+                        "path":  "build/playermelee_original.py",
+                        "files":  1,
+                        "bytes":  1452
+                    },
+                    {
+                        "path":  "build/profile-cache-worst.json",
+                        "files":  1,
+                        "bytes":  604
+                    },
+                    {
+                        "path":  "build/profile-cache.json",
+                        "files":  1,
+                        "bytes":  602
+                    },
+                    {
+                        "path":  "build/profile-next.json",
+                        "files":  1,
+                        "bytes":  604
+                    },
+                    {
+                        "path":  "build/profile-runs-worst.json",
+                        "files":  1,
+                        "bytes":  606
+                    },
+                    {
+                        "path":  "build/profile-runs.json",
+                        "files":  1,
+                        "bytes":  602
+                    },
+                    {
+                        "path":  "build/profile-scales-worst.json",
+                        "files":  1,
+                        "bytes":  606
+                    },
+                    {
+                        "path":  "build/profile-scales.json",
+                        "files":  1,
+                        "bytes":  602
+                    },
+                    {
+                        "path":  "build/profile-stage1-worst.json",
+                        "files":  1,
+                        "bytes":  608
+                    },
+                    {
+                        "path":  "build/profile-uv-worst.json",
+                        "files":  1,
+                        "bytes":  606
+                    },
+                    {
+                        "path":  "build/profile-uv.json",
+                        "files":  1,
+                        "bytes":  602
+                    },
+                    {
+                        "path":  "build/profile_baseline.py",
+                        "files":  1,
+                        "bytes":  913
+                    },
+                    {
+                        "path":  "build/profile_fast.py",
+                        "files":  1,
+                        "bytes":  904
+                    },
+                    {
+                        "path":  "build/renderer-arm.s",
+                        "files":  1,
+                        "bytes":  793870
+                    },
+                    {
+                        "path":  "build/renderer-before-g06a-next.c",
+                        "files":  1,
+                        "bytes":  22807
+                    },
+                    {
+                        "path":  "build/renderer-before-runs.c",
+                        "files":  1,
+                        "bytes":  27310
+                    },
+                    {
+                        "path":  "build/renderer-current.s",
+                        "files":  1,
+                        "bytes":  1001839
+                    },
+                    {
+                        "path":  "build/renderer-probe-before-g06a-next.c",
+                        "files":  1,
+                        "bytes":  11788
+                    },
+                    {
+                        "path":  "build/renderer-scales.s",
+                        "files":  1,
+                        "bytes":  1185540
+                    },
+                    {
+                        "path":  "build/renderer.o",
+                        "files":  1,
+                        "bytes":  78692
+                    },
+                    {
+                        "path":  "build/report_host_g15.py",
+                        "files":  1,
+                        "bytes":  2349
+                    },
+                    {
+                        "path":  "build/rom-assets-model.o",
+                        "files":  1,
+                        "bytes":  71132
+                    },
+                    {
+                        "path":  "build/runtime-model.o",
+                        "files":  1,
+                        "bytes":  115618
+                    },
+                    {
+                        "path":  "build/strictfinaldocs_g15.py",
+                        "files":  1,
+                        "bytes":  3484
+                    },
+                    {
+                        "path":  "build/test.idx",
+                        "files":  1,
+                        "bytes":  38400
+                    },
+                    {
+                        "path":  "build/test.pal",
+                        "files":  1,
+                        "bytes":  768
+                    },
+                    {
+                        "path":  "build/test_dynamicfront.py",
+                        "files":  1,
+                        "bytes":  1613
+                    },
+                    {
+                        "path":  "build/test_g15.py",
+                        "files":  1,
+                        "bytes":  5980
+                    },
+                    {
+                        "path":  "build/unknown_counter.py",
+                        "files":  1,
+                        "bytes":  807
+                    },
+                    {
+                        "path":  "build/write_task_cards.py",
+                        "files":  1,
+                        "bytes":  40506
+                    },
+                    {
+                        "path":  "build/native/ai-arm7tdmi.o",
+                        "files":  1,
+                        "bytes":  42276
+                    },
+                    {
+                        "path":  "build/native/animation-arm7tdmi.o",
+                        "files":  1,
+                        "bytes":  8516
+                    },
+                    {
+                        "path":  "build/native/audio-arm7tdmi.o",
+                        "files":  1,
+                        "bytes":  5364
+                    },
+                    {
+                        "path":  "build/native/collision-arm7tdmi.o",
+                        "files":  1,
+                        "bytes":  20628
+                    },
+                    {
+                        "path":  "build/native/combat-arm7tdmi.o",
+                        "files":  1,
+                        "bytes":  37908
+                    },
+                    {
+                        "path":  "build/native/dok-ai-combat-tests-linux",
+                        "files":  1,
+                        "bytes":  689536
+                    },
+                    {
+                        "path":  "build/native/dok-ai-combat-tests.exe",
+                        "files":  1,
+                        "bytes":  226816
+                    },
+                    {
+                        "path":  "build/native/dok-ai-combat-tests.pdb",
+                        "files":  1,
+                        "bytes":  872448
+                    },
+                    {
+                        "path":  "build/native/dok-ai-tests-linux",
+                        "files":  1,
+                        "bytes":  699960
+                    },
+                    {
+                        "path":  "build/native/dok-ai-tests.exe",
+                        "files":  1,
+                        "bytes":  213504
+                    },
+                    {
+                        "path":  "build/native/dok-ai-tests.pdb",
+                        "files":  1,
+                        "bytes":  839680
+                    },
+                    {
+                        "path":  "build/native/dok-anim-linux",
+                        "files":  1,
+                        "bytes":  340616
+                    },
+                    {
+                        "path":  "build/native/dok-anim.exe",
+                        "files":  1,
+                        "bytes":  150016
+                    },
+                    {
+                        "path":  "build/native/dok-anim.pdb",
+                        "files":  1,
+                        "bytes":  724992
+                    },
+                    {
+                        "path":  "build/native/dok-animation-tests.exe",
+                        "files":  1,
+                        "bytes":  151552
+                    },
+                    {
+                        "path":  "build/native/dok-animation-tests.pdb",
+                        "files":  1,
+                        "bytes":  720896
+                    },
+                    {
+                        "path":  "build/native/dok-audio-tests-linux",
+                        "files":  1,
+                        "bytes":  250440
+                    },
+                    {
+                        "path":  "build/native/dok-audio-tests.exe",
+                        "files":  1,
+                        "bytes":  148992
+                    },
+                    {
+                        "path":  "build/native/dok-audio-tests.pdb",
+                        "files":  1,
+                        "bytes":  716800
+                    },
+                    {
+                        "path":  "build/native/dok-collision-probe.exe",
+                        "files":  1,
+                        "bytes":  153600
+                    },
+                    {
+                        "path":  "build/native/dok-collision-probe.pdb",
+                        "files":  1,
+                        "bytes":  729088
+                    },
+                    {
+                        "path":  "build/native/dok-collision-replay.exe",
+                        "files":  1,
+                        "bytes":  163840
+                    },
+                    {
+                        "path":  "build/native/dok-collision-replay.pdb",
+                        "files":  1,
+                        "bytes":  757760
+                    },
+                    {
+                        "path":  "build/native/dok-collision-tests-linux",
+                        "files":  1,
+                        "bytes":  277736
+                    },
+                    {
+                        "path":  "build/native/dok-collision-tests.exe",
+                        "files":  1,
+                        "bytes":  154624
+                    },
+                    {
+                        "path":  "build/native/dok-collision-tests.pdb",
+                        "files":  1,
+                        "bytes":  729088
+                    },
+                    {
+                        "path":  "build/native/dok-combat-tests-linux",
+                        "files":  1,
+                        "bytes":  455856
+                    },
+                    {
+                        "path":  "build/native/dok-combat-tests.exe",
+                        "files":  1,
+                        "bytes":  177152
+                    },
+                    {
+                        "path":  "build/native/dok-combat-tests.pdb",
+                        "files":  1,
+                        "bytes":  778240
+                    },
+                    {
+                        "path":  "build/native/dok-flow-tests-linux",
+                        "files":  1,
+                        "bytes":  201648
+                    },
+                    {
+                        "path":  "build/native/dok-flow-tests.exe",
+                        "files":  1,
+                        "bytes":  147456
+                    },
+                    {
+                        "path":  "build/native/dok-flow-tests.pdb",
+                        "files":  1,
+                        "bytes":  712704
+                    },
+                    {
+                        "path":  "build/native/dok-gba-helper-tests.exe",
+                        "files":  1,
+                        "bytes":  150016
+                    },
+                    {
+                        "path":  "build/native/dok-gba-helper-tests.pdb",
+                        "files":  1,
+                        "bytes":  716800
+                    },
+                    {
+                        "path":  "build/native/dok-interactions-probe.exe",
+                        "files":  1,
+                        "bytes":  152064
+                    },
+                    {
+                        "path":  "build/native/dok-interactions-probe.pdb",
+                        "files":  1,
+                        "bytes":  729088
+                    },
+                    {
+                        "path":  "build/native/dok-interactions-scenarios.exe",
+                        "files":  1,
+                        "bytes":  164352
+                    },
+                    {
+                        "path":  "build/native/dok-interactions-scenarios.pdb",
+                        "files":  1,
+                        "bytes":  761856
+                    },
+                    {
+                        "path":  "build/native/dok-interactions-tests-linux",
+                        "files":  1,
+                        "bytes":  303576
+                    },
+                    {
+                        "path":  "build/native/dok-interactions-tests.exe",
+                        "files":  1,
+                        "bytes":  158720
+                    },
+                    {
+                        "path":  "build/native/dok-interactions-tests.pdb",
+                        "files":  1,
+                        "bytes":  749568
+                    },
+                    {
+                        "path":  "build/native/dok-items-probe.exe",
+                        "files":  1,
+                        "bytes":  147968
+                    },
+                    {
+                        "path":  "build/native/dok-items-probe.pdb",
+                        "files":  1,
+                        "bytes":  720896
+                    },
+                    {
+                        "path":  "build/native/dok-items-tests-linux",
+                        "files":  1,
+                        "bytes":  202208
+                    },
+                    {
+                        "path":  "build/native/dok-items-tests.exe",
+                        "files":  1,
+                        "bytes":  147456
+                    },
+                    {
+                        "path":  "build/native/dok-items-tests.pdb",
+                        "files":  1,
+                        "bytes":  712704
+                    },
+                    {
+                        "path":  "build/native/dok-level-linux",
+                        "files":  1,
+                        "bytes":  385840
+                    },
+                    {
+                        "path":  "build/native/dok-level-tests.exe",
+                        "files":  1,
+                        "bytes":  164352
+                    },
+                    {
+                        "path":  "build/native/dok-level-tests.pdb",
+                        "files":  1,
+                        "bytes":  733184
+                    },
+                    {
+                        "path":  "build/native/dok-level.exe",
+                        "files":  1,
+                        "bytes":  162304
+                    },
+                    {
+                        "path":  "build/native/dok-level.pdb",
+                        "files":  1,
+                        "bytes":  733184
+                    },
+                    {
+                        "path":  "build/native/dok-movement-probe.exe",
+                        "files":  1,
+                        "bytes":  152576
+                    },
+                    {
+                        "path":  "build/native/dok-movement-probe.pdb",
+                        "files":  1,
+                        "bytes":  724992
+                    },
+                    {
+                        "path":  "build/native/dok-movement-tests-linux",
+                        "files":  1,
+                        "bytes":  267208
+                    },
+                    {
+                        "path":  "build/native/dok-movement-tests.exe",
+                        "files":  1,
+                        "bytes":  153600
+                    },
+                    {
+                        "path":  "build/native/dok-movement-tests.pdb",
+                        "files":  1,
+                        "bytes":  724992
+                    },
+                    {
+                        "path":  "build/native/dok-native-tests-linux",
+                        "files":  1,
+                        "bytes":  251920
+                    },
+                    {
+                        "path":  "build/native/dok-native-tests.exe",
+                        "files":  1,
+                        "bytes":  147456
+                    },
+                    {
+                        "path":  "build/native/dok-native-tests.pdb",
+                        "files":  1,
+                        "bytes":  712704
+                    },
+                    {
+                        "path":  "build/native/dok-projection-probe.exe",
+                        "files":  1,
+                        "bytes":  147968
+                    },
+                    {
+                        "path":  "build/native/dok-projection-probe.pdb",
+                        "files":  1,
+                        "bytes":  716800
+                    },
+                    {
+                        "path":  "build/native/dok-render-linux",
+                        "files":  1,
+                        "bytes":  615512
+                    },
+                    {
+                        "path":  "build/native/dok-render-one-face.exe",
+                        "files":  1,
+                        "bytes":  194560
+                    },
+                    {
+                        "path":  "build/native/dok-render-one-face.pdb",
+                        "files":  1,
+                        "bytes":  823296
+                    },
+                    {
+                        "path":  "build/native/dok-render-reference.exe",
+                        "files":  1,
+                        "bytes":  194560
+                    },
+                    {
+                        "path":  "build/native/dok-render-reference.pdb",
+                        "files":  1,
+                        "bytes":  819200
+                    },
+                    {
+                        "path":  "build/native/dok-render.exe",
+                        "files":  1,
+                        "bytes":  195072
+                    },
+                    {
+                        "path":  "build/native/dok-render.pdb",
+                        "files":  1,
+                        "bytes":  823296
+                    },
+                    {
+                        "path":  "build/native/dok-res-linux",
+                        "files":  1,
+                        "bytes":  333240
+                    },
+                    {
+                        "path":  "build/native/dok-res-tests.exe",
+                        "files":  1,
+                        "bytes":  151040
+                    },
+                    {
+                        "path":  "build/native/dok-res-tests.pdb",
+                        "files":  1,
+                        "bytes":  716800
+                    },
+                    {
+                        "path":  "build/native/dok-res.exe",
+                        "files":  1,
+                        "bytes":  149504
+                    },
+                    {
+                        "path":  "build/native/dok-res.pdb",
+                        "files":  1,
+                        "bytes":  720896
+                    },
+                    {
+                        "path":  "build/native/dok-rom-assets-linux",
+                        "files":  1,
+                        "bytes":  414184
+                    },
+                    {
+                        "path":  "build/native/dok-rom-assets-tests.exe",
+                        "files":  1,
+                        "bytes":  165888
+                    },
+                    {
+                        "path":  "build/native/dok-rom-assets-tests.pdb",
+                        "files":  1,
+                        "bytes":  749568
+                    },
+                    {
+                        "path":  "build/native/dok-rom-assets.exe",
+                        "files":  1,
+                        "bytes":  163840
+                    },
+                    {
+                        "path":  "build/native/dok-rom-assets.pdb",
+                        "files":  1,
+                        "bytes":  757760
+                    },
+                    {
+                        "path":  "build/native/dok-runtime-linux",
+                        "files":  1,
+                        "bytes":  502312
+                    },
+                    {
+                        "path":  "build/native/dok-runtime-tests.exe",
+                        "files":  1,
+                        "bytes":  190464
+                    },
+                    {
+                        "path":  "build/native/dok-runtime-tests.pdb",
+                        "files":  1,
+                        "bytes":  790528
+                    },
+                    {
+                        "path":  "build/native/dok-runtime.exe",
+                        "files":  1,
+                        "bytes":  185344
+                    },
+                    {
+                        "path":  "build/native/dok-runtime.pdb",
+                        "files":  1,
+                        "bytes":  786432
+                    },
+                    {
+                        "path":  "build/native/dok-sound-linux",
+                        "files":  1,
+                        "bytes":  343848
+                    },
+                    {
+                        "path":  "build/native/dok-sound-tests.exe",
+                        "files":  1,
+                        "bytes":  151040
+                    },
+                    {
+                        "path":  "build/native/dok-sound-tests.pdb",
+                        "files":  1,
+                        "bytes":  720896
+                    },
+                    {
+                        "path":  "build/native/dok-sound.exe",
+                        "files":  1,
+                        "bytes":  151040
+                    },
+                    {
+                        "path":  "build/native/dok-sound.pdb",
+                        "files":  1,
+                        "bytes":  724992
+                    },
+                    {
+                        "path":  "build/native/dok-time-tests-linux",
+                        "files":  1,
+                        "bytes":  280336
+                    },
+                    {
+                        "path":  "build/native/dok-time-tests.exe",
+                        "files":  1,
+                        "bytes":  155136
+                    },
+                    {
+                        "path":  "build/native/dok-time-tests.pdb",
+                        "files":  1,
+                        "bytes":  720896
+                    },
+                    {
+                        "path":  "build/native/dok-ui-tests-linux",
+                        "files":  1,
+                        "bytes":  344632
+                    },
+                    {
+                        "path":  "build/native/dok-ui-tests.exe",
+                        "files":  1,
+                        "bytes":  185856
+                    },
+                    {
+                        "path":  "build/native/dok-ui-tests.pdb",
+                        "files":  1,
+                        "bytes":  749568
+                    },
+                    {
+                        "path":  "build/native/dok-visual-probe.exe",
+                        "files":  1,
+                        "bytes":  165888
+                    },
+                    {
+                        "path":  "build/native/dok-visual-probe.pdb",
+                        "files":  1,
+                        "bytes":  761856
+                    },
+                    {
+                        "path":  "build/native/dok-world-linux",
+                        "files":  1,
+                        "bytes":  436048
+                    },
+                    {
+                        "path":  "build/native/dok-world-tests.exe",
+                        "files":  1,
+                        "bytes":  173568
+                    },
+                    {
+                        "path":  "build/native/dok-world-tests.pdb",
+                        "files":  1,
+                        "bytes":  757760
+                    },
+                    {
+                        "path":  "build/native/dok-world.exe",
+                        "files":  1,
+                        "bytes":  168960
+                    },
+                    {
+                        "path":  "build/native/dok-world.pdb",
+                        "files":  1,
+                        "bytes":  753664
+                    },
+                    {
+                        "path":  "build/native/flow-arm7tdmi.o",
+                        "files":  1,
+                        "bytes":  8452
+                    },
+                    {
+                        "path":  "build/native/image-arm7tdmi.o",
+                        "files":  1,
+                        "bytes":  6868
+                    },
+                    {
+                        "path":  "build/native/interactions-arm7tdmi.o",
+                        "files":  1,
+                        "bytes":  20324
+                    },
+                    {
+                        "path":  "build/native/items-arm7tdmi.o",
+                        "files":  1,
+                        "bytes":  14060
+                    },
+                    {
+                        "path":  "build/native/level-arm7tdmi.o",
+                        "files":  1,
+                        "bytes":  27852
+                    },
+                    {
+                        "path":  "build/native/movement-arm7tdmi.o",
+                        "files":  1,
+                        "bytes":  14632
+                    },
+                    {
+                        "path":  "build/native/native-state-arm7tdmi.o",
+                        "files":  1,
+                        "bytes":  10504
+                    },
+                    {
+                        "path":  "build/native/renderer-arm7tdmi.o",
+                        "files":  1,
+                        "bytes":  100856
+                    },
+                    {
+                        "path":  "build/native/rom-assets-arm7tdmi.o",
+                        "files":  1,
+                        "bytes":  39864
+                    },
+                    {
+                        "path":  "build/native/runtime-arm7tdmi.o",
+                        "files":  1,
+                        "bytes":  45204
+                    },
+                    {
+                        "path":  "build/native/sound-arm7tdmi.o",
+                        "files":  1,
+                        "bytes":  10580
+                    },
+                    {
+                        "path":  "build/native/test-runtime.exe",
+                        "files":  1,
+                        "bytes":  314880
+                    },
+                    {
+                        "path":  "build/native/test-runtime.pdb",
+                        "files":  1,
+                        "bytes":  1142784
+                    },
+                    {
+                        "path":  "build/native/ui-arm7tdmi.o",
+                        "files":  1,
+                        "bytes":  82688
+                    },
+                    {
+                        "path":  "build/native/world-arm7tdmi.o",
+                        "files":  1,
+                        "bytes":  37664
+                    },
+                    {
+                        "path":  "build/gba/dok-diagnostic.elf",
+                        "files":  1,
+                        "bytes":  141292
+                    },
+                    {
+                        "path":  "build/gba/dok-diagnostic.gba",
+                        "files":  1,
+                        "bytes":  2560
+                    },
+                    {
+                        "path":  "build/gba/main.o",
+                        "files":  1,
+                        "bytes":  14392
+                    },
+                    {
+                        "path":  "build/gba/startup.o",
+                        "files":  1,
+                        "bytes":  2716
+                    },
+                    {
+                        "path":  "build/g16/animation.o",
+                        "files":  1,
+                        "bytes":  8516
+                    },
+                    {
+                        "path":  "build/g16/assets-data.o",
+                        "files":  1,
+                        "bytes":  32526060
+                    },
+                    {
+                        "path":  "build/g16/assets-data.S",
+                        "files":  1,
+                        "bytes":  510
+                    },
+                    {
+                        "path":  "build/g16/columns.o",
+                        "files":  1,
+                        "bytes":  2532
+                    },
+                    {
+                        "path":  "build/g16/divmod.o",
+                        "files":  1,
+                        "bytes":  2396
+                    },
+                    {
+                        "path":  "build/g16/gba-clock.o",
+                        "files":  1,
+                        "bytes":  3288
+                    },
+                    {
+                        "path":  "build/g16/image.o",
+                        "files":  1,
+                        "bytes":  6868
+                    },
+                    {
+                        "path":  "build/g16/main.o",
+                        "files":  1,
+                        "bytes":  45412
+                    },
+                    {
+                        "path":  "build/g16/memory.o",
+                        "files":  1,
+                        "bytes":  7420
+                    },
+                    {
+                        "path":  "build/g16/motion-ai.o",
+                        "files":  1,
+                        "bytes":  42276
+                    },
+                    {
+                        "path":  "build/g16/motion-ai_probe.o",
+                        "files":  1,
+                        "bytes":  17012
+                    },
+                    {
+                        "path":  "build/g16/motion-audio.o",
+                        "files":  1,
+                        "bytes":  5364
+                    },
+                    {
+                        "path":  "build/g16/motion-audio_backend.o",
+                        "files":  1,
+                        "bytes":  16192
+                    },
+                    {
+                        "path":  "build/g16/motion-collision.o",
+                        "files":  1,
+                        "bytes":  20628
+                    },
+                    {
+                        "path":  "build/g16/motion-collision_cases.o",
+                        "files":  1,
+                        "bytes":  11796
+                    },
+                    {
+                        "path":  "build/g16/motion-combat.o",
+                        "files":  1,
+                        "bytes":  37908
+                    },
+                    {
+                        "path":  "build/g16/motion-combat_probe.o",
+                        "files":  1,
+                        "bytes":  23124
+                    },
+                    {
+                        "path":  "build/g16/motion-interactions.o",
+                        "files":  1,
+                        "bytes":  20324
+                    },
+                    {
+                        "path":  "build/g16/motion-interactions_cases.o",
+                        "files":  1,
+                        "bytes":  16868
+                    },
+                    {
+                        "path":  "build/g16/motion-items.o",
+                        "files":  1,
+                        "bytes":  14060
+                    },
+                    {
+                        "path":  "build/g16/motion-movement.o",
+                        "files":  1,
+                        "bytes":  14632
+                    },
+                    {
+                        "path":  "build/g16/motion-movement_cases.o",
+                        "files":  1,
+                        "bytes":  10036
+                    },
+                    {
+                        "path":  "build/g16/motion-movement_probe.o",
+                        "files":  1,
+                        "bytes":  20840
+                    },
+                    {
+                        "path":  "build/g16/motion-sound.o",
+                        "files":  1,
+                        "bytes":  10580
+                    },
+                    {
+                        "path":  "build/g16/projection.o",
+                        "files":  1,
+                        "bytes":  5552
+                    },
+                    {
+                        "path":  "build/g16/render-columns.bin",
+                        "files":  1,
+                        "bytes":  29762068
+                    },
+                    {
+                        "path":  "build/g16/render-tables.o",
+                        "files":  1,
+                        "bytes":  262864
+                    },
+                    {
+                        "path":  "build/g16/render-tables.S",
+                        "files":  1,
+                        "bytes":  498372
+                    },
+                    {
+                        "path":  "build/g16/renderer.o",
+                        "files":  1,
+                        "bytes":  127092
+                    },
+                    {
+                        "path":  "build/g16/rom_assets.o",
+                        "files":  1,
+                        "bytes":  39864
+                    },
+                    {
+                        "path":  "build/g16/runtime.o",
+                        "files":  1,
+                        "bytes":  30616
+                    },
+                    {
+                        "path":  "build/g16/startup.o",
+                        "files":  1,
+                        "bytes":  3044
+                    },
+                    {
+                        "path":  "build/g16/time-clock.o",
+                        "files":  1,
+                        "bytes":  4536
+                    },
+                    {
+                        "path":  "build/g16/time-scheduler.o",
+                        "files":  1,
+                        "bytes":  10472
+                    },
+                    {
+                        "path":  "build/g16/time-time_cases.o",
+                        "files":  1,
+                        "bytes":  11676
+                    },
+                    {
+                        "path":  "build/g16/time-time_probe.o",
+                        "files":  1,
+                        "bytes":  6420
+                    },
+                    {
+                        "path":  "build/g16/visual.o",
+                        "files":  1,
+                        "bytes":  18292
+                    },
+                    {
+                        "path":  "build/g18/animation.o",
+                        "files":  1,
+                        "bytes":  8516
+                    },
+                    {
+                        "path":  "build/g18/assets-data.o",
+                        "files":  1,
+                        "bytes":  32526060
+                    },
+                    {
+                        "path":  "build/g18/assets-data.S",
+                        "files":  1,
+                        "bytes":  510
+                    },
+                    {
+                        "path":  "build/g18/columns.o",
+                        "files":  1,
+                        "bytes":  2532
+                    },
+                    {
+                        "path":  "build/g18/divmod.o",
+                        "files":  1,
+                        "bytes":  2396
+                    },
+                    {
+                        "path":  "build/g18/gba-clock.o",
+                        "files":  1,
+                        "bytes":  3288
+                    },
+                    {
+                        "path":  "build/g18/image.o",
+                        "files":  1,
+                        "bytes":  6868
+                    },
+                    {
+                        "path":  "build/g18/main.o",
+                        "files":  1,
+                        "bytes":  35056
+                    },
+                    {
+                        "path":  "build/g18/memory.o",
+                        "files":  1,
+                        "bytes":  7420
+                    },
+                    {
+                        "path":  "build/g18/motion-ai.o",
+                        "files":  1,
+                        "bytes":  42276
+                    },
+                    {
+                        "path":  "build/g18/motion-ai_probe.o",
+                        "files":  1,
+                        "bytes":  17508
+                    },
+                    {
+                        "path":  "build/g18/motion-audio.o",
+                        "files":  1,
+                        "bytes":  5364
+                    },
+                    {
+                        "path":  "build/g18/motion-audio_backend.o",
+                        "files":  1,
+                        "bytes":  16852
+                    },
+                    {
+                        "path":  "build/g18/motion-collision.o",
+                        "files":  1,
+                        "bytes":  20628
+                    },
+                    {
+                        "path":  "build/g18/motion-collision_cases.o",
+                        "files":  1,
+                        "bytes":  11796
+                    },
+                    {
+                        "path":  "build/g18/motion-combat.o",
+                        "files":  1,
+                        "bytes":  37908
+                    },
+                    {
+                        "path":  "build/g18/motion-combat_probe.o",
+                        "files":  1,
+                        "bytes":  23432
+                    },
+                    {
+                        "path":  "build/g18/motion-flow.o",
+                        "files":  1,
+                        "bytes":  8452
+                    },
+                    {
+                        "path":  "build/g18/motion-flow_backend.o",
+                        "files":  1,
+                        "bytes":  14128
+                    },
+                    {
+                        "path":  "build/g18/motion-interactions.o",
+                        "files":  1,
+                        "bytes":  20324
+                    },
+                    {
+                        "path":  "build/g18/motion-interactions_cases.o",
+                        "files":  1,
+                        "bytes":  16868
+                    },
+                    {
+                        "path":  "build/g18/motion-items.o",
+                        "files":  1,
+                        "bytes":  14060
+                    },
+                    {
+                        "path":  "build/g18/motion-movement.o",
+                        "files":  1,
+                        "bytes":  14632
+                    },
+                    {
+                        "path":  "build/g18/motion-movement_cases.o",
+                        "files":  1,
+                        "bytes":  10036
+                    },
+                    {
+                        "path":  "build/g18/motion-movement_probe.o",
+                        "files":  1,
+                        "bytes":  22332
+                    },
+                    {
+                        "path":  "build/g18/motion-sound.o",
+                        "files":  1,
+                        "bytes":  10580
+                    },
+                    {
+                        "path":  "build/g18/motion-ui.o",
+                        "files":  1,
+                        "bytes":  82688
+                    },
+                    {
+                        "path":  "build/g18/motion-ui_backend.o",
+                        "files":  1,
+                        "bytes":  9244
+                    },
+                    {
+                        "path":  "build/g18/projection.o",
+                        "files":  1,
+                        "bytes":  5552
+                    },
+                    {
+                        "path":  "build/g18/render-columns.bin",
+                        "files":  1,
+                        "bytes":  29762068
+                    },
+                    {
+                        "path":  "build/g18/render-tables.o",
+                        "files":  1,
+                        "bytes":  262864
+                    },
+                    {
+                        "path":  "build/g18/render-tables.S",
+                        "files":  1,
+                        "bytes":  498372
+                    },
+                    {
+                        "path":  "build/g18/renderer.o",
+                        "files":  1,
+                        "bytes":  127092
+                    },
+                    {
+                        "path":  "build/g18/rom_assets.o",
+                        "files":  1,
+                        "bytes":  39864
+                    },
+                    {
+                        "path":  "build/g18/runtime.o",
+                        "files":  1,
+                        "bytes":  30616
+                    },
+                    {
+                        "path":  "build/g18/startup.o",
+                        "files":  1,
+                        "bytes":  3044
+                    },
+                    {
+                        "path":  "build/g18/time-clock.o",
+                        "files":  1,
+                        "bytes":  4536
+                    },
+                    {
+                        "path":  "build/g18/time-scheduler.o",
+                        "files":  1,
+                        "bytes":  10472
+                    },
+                    {
+                        "path":  "build/g18/time-time_cases.o",
+                        "files":  1,
+                        "bytes":  11676
+                    },
+                    {
+                        "path":  "build/g18/time-time_probe.o",
+                        "files":  1,
+                        "bytes":  7160
+                    },
+                    {
+                        "path":  "build/g18/visual.o",
+                        "files":  1,
+                        "bytes":  18292
+                    },
+                    {
+                        "path":  "build/gba-assets/assets-data.o",
+                        "files":  1,
+                        "bytes":  2763800
+                    },
+                    {
+                        "path":  "build/gba-assets/assets_probe.o",
+                        "files":  1,
+                        "bytes":  14252
+                    },
+                    {
+                        "path":  "build/gba-assets/dok-diagnostic.elf",
+                        "files":  1,
+                        "bytes":  2949280
+                    },
+                    {
+                        "path":  "build/gba-assets/dok-diagnostic.gba",
+                        "files":  1,
+                        "bytes":  2776104
+                    },
+                    {
+                        "path":  "build/gba-assets/main.o",
+                        "files":  1,
+                        "bytes":  14820
+                    },
+                    {
+                        "path":  "build/gba-assets/memory.o",
+                        "files":  1,
+                        "bytes":  5200
+                    },
+                    {
+                        "path":  "build/gba-assets/rom_assets.o",
+                        "files":  1,
+                        "bytes":  39696
+                    },
+                    {
+                        "path":  "build/gba-assets/runtime.o",
+                        "files":  1,
+                        "bytes":  29820
+                    },
+                    {
+                        "path":  "build/gba-assets/startup.o",
+                        "files":  1,
+                        "bytes":  2716
+                    },
+                    {
+                        "path":  "build/gba-clean/dok-diagnostic.elf",
+                        "files":  1,
+                        "bytes":  141288
+                    },
+                    {
+                        "path":  "build/gba-clean/dok-diagnostic.gba",
+                        "files":  1,
+                        "bytes":  2560
+                    },
+                    {
+                        "path":  "build/gba-clean/main.o",
+                        "files":  1,
+                        "bytes":  14388
+                    },
+                    {
+                        "path":  "build/gba-clean/startup.o",
+                        "files":  1,
+                        "bytes":  2716
+                    },
+                    {
+                        "path":  "build/gba-memory/dok-diagnostic.elf",
+                        "files":  1,
+                        "bytes":  167876
+                    },
+                    {
+                        "path":  "build/gba-memory/dok-diagnostic.gba",
+                        "files":  1,
+                        "bytes":  7640
+                    },
+                    {
+                        "path":  "build/gba-memory/main.o",
+                        "files":  1,
+                        "bytes":  14616
+                    },
+                    {
+                        "path":  "build/gba-memory/memory-probe.o",
+                        "files":  1,
+                        "bytes":  10576
+                    },
+                    {
+                        "path":  "build/gba-memory/memory.o",
+                        "files":  1,
+                        "bytes":  4560
+                    },
+                    {
+                        "path":  "build/gba-memory/runtime.o",
+                        "files":  1,
+                        "bytes":  30108
+                    },
+                    {
+                        "path":  "build/gba-memory/startup.o",
+                        "files":  1,
+                        "bytes":  2716
+                    },
+                    {
+                        "path":  "build/gba-renderer/assets-data.o",
+                        "files":  1,
+                        "bytes":  2763804
+                    },
+                    {
+                        "path":  "build/gba-renderer/divmod.o",
+                        "files":  1,
+                        "bytes":  2396
+                    },
+                    {
+                        "path":  "build/gba-renderer/dok-diagnostic.elf",
+                        "files":  1,
+                        "bytes":  3005764
+                    },
+                    {
+                        "path":  "build/gba-renderer/dok-diagnostic.gba",
+                        "files":  1,
+                        "bytes":  2787036
+                    },
+                    {
+                        "path":  "build/gba-renderer/gba-clock.o",
+                        "files":  1,
+                        "bytes":  3288
+                    },
+                    {
+                        "path":  "build/gba-renderer/image.o",
+                        "files":  1,
+                        "bytes":  6868
+                    },
+                    {
+                        "path":  "build/gba-renderer/main.o",
+                        "files":  1,
+                        "bytes":  36012
+                    },
+                    {
+                        "path":  "build/gba-renderer/memory.o",
+                        "files":  1,
+                        "bytes":  6232
+                    },
+                    {
+                        "path":  "build/gba-renderer/projection.o",
+                        "files":  1,
+                        "bytes":  5704
+                    },
+                    {
+                        "path":  "build/gba-renderer/renderer.o",
+                        "files":  1,
+                        "bytes":  39780
+                    },
+                    {
+                        "path":  "build/gba-renderer/rom_assets.o",
+                        "files":  1,
+                        "bytes":  39696
+                    },
+                    {
+                        "path":  "build/gba-renderer/runtime.o",
+                        "files":  1,
+                        "bytes":  29820
+                    },
+                    {
+                        "path":  "build/gba-renderer/startup.o",
+                        "files":  1,
+                        "bytes":  2756
+                    },
+                    {
+                        "path":  "build/gba-renderer/time-clock.o",
+                        "files":  1,
+                        "bytes":  4536
+                    },
+                    {
+                        "path":  "build/gba-renderer/time-scheduler.o",
+                        "files":  1,
+                        "bytes":  10472
+                    },
+                    {
+                        "path":  "build/gba-renderer/time-time_cases.o",
+                        "files":  1,
+                        "bytes":  11676
+                    },
+                    {
+                        "path":  "build/gba-renderer/time-time_probe.o",
+                        "files":  1,
+                        "bytes":  6420
+                    },
+                    {
+                        "path":  "build/linker-check/dok-diagnostic.elf",
+                        "files":  1,
+                        "bytes":  141332
+                    },
+                    {
+                        "path":  "build/linker-check/dok-diagnostic.gba",
+                        "files":  1,
+                        "bytes":  2560
+                    },
+                    {
+                        "path":  "build/linker-check/main.o",
+                        "files":  1,
+                        "bytes":  14392
+                    },
+                    {
+                        "path":  "build/linker-check/reserve.elf",
+                        "files":  1,
+                        "bytes":  141376
+                    },
+                    {
+                        "path":  "build/linker-check/startup.o",
+                        "files":  1,
+                        "bytes":  2716
+                    },
+                    {
+                        "path":  "debug.log",
+                        "files":  1,
+                        "bytes":  150
+                    }
+                ],
+    "preserved_sha256":  [
+                             {
+                                 "path":  "originals/Old_Gold_3D/OG.EXE",
+                                 "sha256":  "7965e1d67128f196fbcf2bc449d97197f355c6b81cf043608fc9e01103ea043f"
+                             },
+                             {
+                                 "path":  "originals/Old_Gold_3D/old-games.nfo",
+                                 "sha256":  "cc2283945241a42a54020c30fa83aa3c17a91a59c034ae5f444db62e303b1602"
+                             },
+                             {
+                                 "path":  "originals/Old_Gold_3D/OLD_GOLD.RES",
+                                 "sha256":  "e376855167b64a7190ec2da0ba9bd1da129ba178c4033aebadebca3f08b2be25"
+                             },
+                             {
+                                 "path":  "originals/Old_Gold_3D/README.TXT",
+                                 "sha256":  "456d39010efe5e41f17445eeb5c0851b06472cbb84a0a4a5c854948b97f00a29"
+                             },
+                             {
+                                 "path":  "originals/Old_Gold_Old_Version/OG.EXE",
+                                 "sha256":  "673563eccad4d23c3cebe56f16ce9a1f631b6d45ffb73559d5c53c1bf252da90"
+                             },
+                             {
+                                 "path":  "originals/Old_Gold_Old_Version/old-games.nfo",
+                                 "sha256":  "cc2283945241a42a54020c30fa83aa3c17a91a59c034ae5f444db62e303b1602"
+                             },
+                             {
+                                 "path":  "originals/Old_Gold_Old_Version/OLD_GOLD.RES",
+                                 "sha256":  "e376855167b64a7190ec2da0ba9bd1da129ba178c4033aebadebca3f08b2be25"
+                             },
+                             {
+                                 "path":  "originals/Old_Gold_Old_Version/README.TXT",
+                                 "sha256":  "142858dd6f21135ac29d9dccfa29f6b08277513a67498adeb6d793327294ef5f"
+                             },
+                             {
+                                 "path":  "originals/pkr/ENG/DPMI16BI.OVL",
+                                 "sha256":  "d7b0fe7a20b535f983767d472a520da3bf03018932a1f65625916d0cd6e96110"
+                             },
+                             {
+                                 "path":  "originals/pkr/ENG/PK.ICO",
+                                 "sha256":  "b187a8c37e4ba21f11efa3030fc0e97925a68f45efcc885cc16c3f209231121c"
+                             },
+                             {
+                                 "path":  "originals/pkr/ENG/PKE.EXE",
+                                 "sha256":  "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b"
+                             },
+                             {
+                                 "path":  "originals/pkr/ENG/PKE.PIF",
+                                 "sha256":  "bf0cce218c19dc0f1385faf922e9d7091f0f74ea4e90549c03f5d513fbcbbf80"
+                             },
+                             {
+                                 "path":  "originals/pkr/ENG/PKE.RES",
+                                 "sha256":  "865da340621fa6f90548a84e9ae9bf0a85071befb32a40ca1d359e488f74d458"
+                             },
+                             {
+                                 "path":  "originals/pkr/ENG/RTM.EXE",
+                                 "sha256":  "10acd85af3767634450a793f2af1e057de888621cbfc578d35d3fa91abc09661"
+                             },
+                             {
+                                 "path":  "originals/pkr/RUS/DPMI16BI.OVL",
+                                 "sha256":  "d7b0fe7a20b535f983767d472a520da3bf03018932a1f65625916d0cd6e96110"
+                             },
+                             {
+                                 "path":  "originals/pkr/RUS/old-games.nfo",
+                                 "sha256":  "cc2283945241a42a54020c30fa83aa3c17a91a59c034ae5f444db62e303b1602"
+                             },
+                             {
+                                 "path":  "originals/pkr/RUS/PK.ICO",
+                                 "sha256":  "b187a8c37e4ba21f11efa3030fc0e97925a68f45efcc885cc16c3f209231121c"
+                             },
+                             {
+                                 "path":  "originals/pkr/RUS/PKR.EXE",
+                                 "sha256":  "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28"
+                             },
+                             {
+                                 "path":  "originals/pkr/RUS/PKR.PIF",
+                                 "sha256":  "84bf9acfb5c021d4aedbe081ebc1b5d3af9eef432ff16fc7fc5c47deaca4689a"
+                             },
+                             {
+                                 "path":  "originals/pkr/RUS/PKR.RES",
+                                 "sha256":  "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816"
+                             },
+                             {
+                                 "path":  "originals/pkr/RUS/README.TXT",
+                                 "sha256":  "0312e896c3d99300169f14e06cb7f78895799643094e2280f5d010706fb55dc5"
+                             },
+                             {
+                                 "path":  "originals/pkr/RUS/RTM.EXE",
+                                 "sha256":  "10acd85af3767634450a793f2af1e057de888621cbfc578d35d3fa91abc09661"
+                             },
+                             {
+                                 "path":  "build/g18/dok-diagnostic.gba",
+                                 "sha256":  "46e4bfa412dd1abb6b729d4a9ed014802e99430b1dbc47ffb70d2de077eeb3c0"
+                             },
+                             {
+                                 "path":  "build/g18/dok-diagnostic.elf",
+                                 "sha256":  "5a021e05cc3b93b9a6f9fcc51af0001b5d69ea3a2f7d617dd365e9c76239b61b"
+                             },
+                             {
+                                 "path":  "build/g18/dok-diagnostic.map",
+                                 "sha256":  "f9823939053efd616dde911cc8c8604da0d4d8d86cf372fdc43c1bbe696cc508"
+                             },
+                             {
+                                 "path":  "build/g16/audio-check/listened-short-loop.wav",
+                                 "sha256":  "81d9ab296af0ce1fa91a9afa75ad2b931a3c88184dc87b4837812906efeda94b"
+                             }
+                         ]
+}
