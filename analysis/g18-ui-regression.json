@@ -1,0 +1,163 @@
+{
+  "task": "G17",
+  "status": "passed",
+  "rom_sha256": "46e4bfa412dd1abb6b729d4a9ed014802e99430b1dbc47ffb70d2de077eeb3c0",
+  "script_sha256": "ebcc022b6aea8959c97117d1c1188592bc1676946c4aee9d2684b4a3d1c463b4",
+  "source": {
+    "path": "originals/pkr/RUS/PKR.RES",
+    "sha256": "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816"
+  },
+  "screens": {
+    "title_ru": {
+      "path": "build/g18/ui-check/title-ru.png",
+      "sha256": "5b5b8059fcc9609b9371f5d4b3a0e37a1eb4d3ce2c85c6521c67a2dfc9b8cb30",
+      "framebuffer_sha256": "a4d8d77cc96f99c9aa882277fb9d5330fcaa889a6a17eb138490ff6eee9a0e78"
+    },
+    "title_en": {
+      "path": "build/g18/ui-check/title-en.png",
+      "sha256": "4bdfa2a5ed920e4a677f8b0cc3d8388d5b3ba14c9a70829352660d2c97d19a50",
+      "framebuffer_sha256": "39e42870fdb912c660dcb32e72b06ebadebb5c76f952012d358839fbc2e66a72"
+    },
+    "help_en": {
+      "path": "build/g18/ui-check/help-en.png",
+      "sha256": "2ff2579ec8cd77133b52185ec98c285db35cc001934d3233e54230d9c537cbcd",
+      "framebuffer_sha256": "e9bcf54656167ea3366174f5a336182bf0cff20791c986e71d09308537fdc196"
+    },
+    "statistics_en": {
+      "path": "build/g18/ui-check/statistics-en.png",
+      "sha256": "474170c1b0ea4cf783e4cf4aab4bccdaca25123fd3f5f5041fe0765fe8606cae",
+      "framebuffer_sha256": "5c18085dcf8deecb39019ea41e944bb87c8632a695a4ecf48f44b8a36314fc71"
+    },
+    "pause_en": {
+      "path": "build/g18/ui-check/pause-en.png",
+      "sha256": "134ca6819728783d7b967e4546a7cd4293bd688819353f31c8dd86378a572ee8",
+      "framebuffer_sha256": "035ccbac182a580d1af51abfbe70e735c3f4d0602dfe8b108526d138481bef8d"
+    },
+    "hud_ru": {
+      "path": "build/g18/ui-check/hud-ru.png",
+      "sha256": "8c05a0e854bf9c5c90e8a2e78db6a271042498229b46579227e689f0502ccb6d",
+      "framebuffer_sha256": "8e52ea455c9a1a80ba3b338cd13299974bf86cb87c1522ddf6aa4b508db27358"
+    },
+    "message_0": {
+      "path": "build/g18/ui-check/message-0.png",
+      "sha256": "41908697ca8736d34c1a10000aebb6ac7f41a071b9c0c88cf357c7977cde29ef",
+      "framebuffer_sha256": "6d7e6b2de207855bc7b44f9ff81b0bd3cad64aa31597fe4c351a8b53e7a8a73e"
+    },
+    "message_1": {
+      "path": "build/g18/ui-check/message-1.png",
+      "sha256": "b46892743cda4e59493db36ff7e19b8d9daa0e753ced09bad3360f333a004049",
+      "framebuffer_sha256": "bcb73f630625b5685e1842a90584b8627591f21a7ea3e0e53a527e86c133178e"
+    },
+    "stress": {
+      "path": "build/g18/ui-check/stress.png",
+      "sha256": "e2101cbc6887cdab62d4b8105c65764f4b1fe994cba389e409536af684f510b2",
+      "framebuffer_sha256": "559de5e96b25d83f97aadd49a0c63275d56098bc284c8b261ddf16ec767d6a1e"
+    },
+    "pickup_0": {
+      "path": "build/g18/ui-check/pickup-0.png",
+      "sha256": "ad9e87103a2f059c7980823e2884734cc7525e37cbc3ca4cae4dd559f87ef8bb",
+      "framebuffer_sha256": "cef4725400ede3fa6f91d76ee382937400f3f83978e381372c0234ff9fa40969"
+    },
+    "death_0": {
+      "path": "build/g18/ui-check/death-0.png",
+      "sha256": "cc5656d91e72b1b715f19ccd14e34cea8e60592fb039cb6b521f2f2e91dfe478",
+      "framebuffer_sha256": "36a48a5f161d1dc6c025dae59051c89aa4521ae9d12cbb6d884d105c3369a2e8"
+    },
+    "pickup_1": {
+      "path": "build/g18/ui-check/pickup-1.png",
+      "sha256": "6b6d7f18456d5271941b48dd55e47582fa5c3bcee7c60205caa370cb9741ae28",
+      "framebuffer_sha256": "232c87dbe1f895a5863fa820ed890ff237913245d964ff0208970d2605bb4f6d"
+    },
+    "death_1": {
+      "path": "build/g18/ui-check/death-1.png",
+      "sha256": "eda8b7ae41a3dd0a0fde468869998d26a9a70205cda6516db9a834dcb9f98505",
+      "framebuffer_sha256": "bac5dd12baf35eb17e8403a73a249901823bcacd86cf64f611b761f5312d9d86"
+    }
+  },
+  "checks": {
+    "real_keypad_menu": true,
+    "title_help_statistics": true,
+    "chord_suppressed_use_and_language": true,
+    "paused_world_and_clock": true,
+    "pause_preserved_fraction_and_raw_timer_continued": true,
+    "resume_excluded_paused_time": true,
+    "no_resume_fire_leak": true,
+    "language_preserved_world": true,
+    "exact_original_font8_pixels": true,
+    "exact_original_font16_pixels": true,
+    "signed16_hud_extremes": true,
+    "bounded_240byte_stress": true,
+    "viewport_240x144_messages_240x16": true
+  },
+  "messages": [
+    {
+      "language": 0,
+      "bytes": 36,
+      "object": 103,
+      "slot": 88
+    },
+    {
+      "language": 1,
+      "bytes": 31,
+      "object": 103,
+      "slot": 88
+    }
+  ],
+  "pages": [
+    {
+      "page": 1,
+      "exact_font_pixels": true
+    },
+    {
+      "page": 2,
+      "exact_font_pixels": true
+    },
+    {
+      "page": 3,
+      "exact_font_pixels": true
+    }
+  ],
+  "notifications": [
+    {
+      "language": 0,
+      "actual_pickup_item": 103,
+      "actual_completed_monster_death": 1,
+      "exact_death_text_pixels": true
+    },
+    {
+      "language": 1,
+      "actual_pickup_item": 103,
+      "actual_completed_monster_death": 1,
+      "exact_death_text_pixels": true
+    }
+  ],
+  "final": {
+    "magic": 1430860087,
+    "state": 2,
+    "focus": 0,
+    "language": 1,
+    "messages": 3,
+    "object": 1,
+    "slot": 190,
+    "length": 22,
+    "page": 0,
+    "pages": 1,
+    "remaining": 30000,
+    "draws": 230,
+    "font8": 1,
+    "font16": 1,
+    "last_keys": 0,
+    "errors": 0
+  },
+  "stack": {
+    "main_stack_low": 50356224,
+    "main_stack_top": 50364160,
+    "sentinel_word": 219540062,
+    "untouched_margin_bytes": 5576,
+    "high_water_bytes": 2360,
+    "irq_and_bios_excluded": true,
+    "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+  },
+  "physical_gba_tested": false,
+  "full_dos_session_tested": false
+}

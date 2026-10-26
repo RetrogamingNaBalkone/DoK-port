@@ -160,6 +160,12 @@ def main():
         for _ in range(3):
             p.press(4)
         p.press(8)
+        if 'g_flow_probe' in p.symbols:
+            # G17-only regression resumes its old fixture explicitly. Full G18
+            # boot/intro/death/exit is independently verified in flow harness.
+            address=p.symbols['g_flow_probe'];request=p.words('g_flow_probe',2)[1]+1
+            p.write(address+8,struct.pack('<2I',3,0));p.write(address,struct.pack('<I',request))
+            p.until(lambda d:p.words('g_flow_probe',2)[1]==request)
         assert p.ui()['state'] == 0
         # Chord is pause, without a simultaneous Use or language switch.
         language = p.ui()['language']
@@ -283,6 +289,7 @@ def main():
             p.command(2, language)
             p.camera(1, 15120, -300, 22800, 90)
             p.camera(0, 15120, -300, 22800, 90)
+            if 'g_flow_probe' in p.symbols:p.command(1, 2)
             runtime = load_json(f'build/runtime/{"ru" if language == 0 else "en"}/LEVEL1-runtime.json')
             p.set_player(baseline())
             target = 47*64+30

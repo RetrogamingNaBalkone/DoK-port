@@ -8,11 +8,14 @@ enum {DOK_UI_PLAY,DOK_UI_TITLE,DOK_UI_PAUSE,DOK_UI_HELP,DOK_UI_STATUS};
 typedef struct {uint16_t object,slot;} dok_ui_message;
 typedef struct {
  uint32_t state,focus,language,last_keys,blocked,return_state;
+ uint32_t action,start_level;
  uint32_t messages,length,page,pages,deadline,active,errors;
  dok_ui_message queue[4];uint32_t read,count;
  uint16_t object,slot;
  uint8_t literal[DOK_UI_TEXT_LIMIT];uint16_t literal_size;
 } dok_ui;
+void dok_ui_screen(uint8_t *,const uint8_t *,const uint8_t *,unsigned,unsigned,const uint8_t *,size_t,unsigned,const char *,unsigned);
+unsigned dok_ui_screen_pages(const uint8_t *,size_t);
 void dok_ui_init(dok_ui *);
 /* Returns1 only on a requested presentation language change. */
 unsigned dok_ui_input(dok_ui *,uint16_t keys);

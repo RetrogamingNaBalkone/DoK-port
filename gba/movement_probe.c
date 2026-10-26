@@ -15,6 +15,8 @@ extern void gba_combat_cycle(void);
 extern void gba_audio_event(uint16_t,uint16_t,unsigned);
 extern void gba_ui_notify(uint16_t,uint16_t);
 extern void gba_ui_system(unsigned);
+extern void gba_flow_finish(void);
+extern unsigned gba_flow_abort(void);
 dok_items *gba_items_context(void) {return &items;}
 volatile struct {uint32_t magic,error,events,kind,object,category,value,pickups;} g_items_diag;
 static void item_notice(void *p,dok_item_kind kind,uint16_t id,int16_t category,int16_t value)
@@ -31,6 +33,7 @@ static void notice(void *p,dok_interaction_kind kind,uint16_t id,int32_t a,int32
 {
     (void)p;g_interaction_diag.events++;g_interaction_diag.kind=kind;
     g_interaction_diag.object=id;g_interaction_diag.a=(uint32_t)a;g_interaction_diag.b=(uint32_t)b;
+    if(kind==DOK_INTERACTION_FINISH)gba_flow_finish();
     if(kind==DOK_INTERACTION_MOVING)gba_audio_event(id,DOK_ROM_SLOT_SOUND,2);
     else if(kind==DOK_INTERACTION_LOCKED){gba_audio_event(id,DOK_ROM_SLOT_SOUND,0);gba_ui_system(a==1?2:a==2?3:a==4?4:a==8?5:6);}
     else if(kind==DOK_INTERACTION_OPENED || kind==DOK_INTERACTION_CLOSED){gba_audio_event(id,DOK_ROM_SLOT_SOUND,3);gba_ui_system(kind==DOK_INTERACTION_OPENED?0:1);}
@@ -104,7 +107,7 @@ unsigned gba_motion_start(dok_runtime *world)
 void gba_motion_level(dok_runtime *world)
 {
     collision_world=world;player=player_actor(world);motion.remembered_flags=0;
-    dok_steps_init(&steps,gba_time_ticks(),416);pending_pressed=0;
+    dok_steps_init(&steps,gba_time_ticks(),416);pending_pressed=0;input=(dok_input){0};
     interaction_start(world);
     if(player) snapshot();
 }
@@ -124,7 +127,7 @@ void gba_motion_poll(uint16_t keys)
                 if(g_motion_probe.commands&DOK_INPUT_USE) dok_interactions_use(&interactions,player);
                 dok_items_pickup(&items);gba_combat_poll(simulation_now,g_motion_probe.commands);dok_interactions_zone(&interactions,player);
                 dok_motion_update(player,&motion,g_motion_probe.commands,416,dok_collision_move,collision_world);
-                g_motion_diag.steps++;
+                g_motion_diag.steps++;if(gba_flow_abort())break;
             }
             g_motion_diag.commands=g_motion_probe.commands;snapshot();
             g_motion_probe.ack=g_motion_probe.request;
@@ -138,7 +141,7 @@ void gba_motion_poll(uint16_t keys)
             if(commands&DOK_INPUT_USE) dok_interactions_use(&interactions,player);
             dok_items_pickup(&items);gba_combat_poll(simulation_now,commands);dok_interactions_zone(&interactions,player);
             dok_motion_update(player,&motion,commands,416,dok_collision_move,collision_world);
-            g_motion_diag.commands=commands;++g_motion_diag.steps;
+            g_motion_diag.commands=commands;++g_motion_diag.steps;if(gba_flow_abort())break;
         }
         snapshot();
     }
@@ -149,4 +152,10 @@ void gba_motion_cost(uint32_t cycles)
 {
     g_motion_diag.last_cycles=cycles;g_motion_diag.total_cycles+=cycles;
     if(cycles>g_motion_diag.max_cycles) g_motion_diag.max_cycles=cycles;
+}
+
+void gba_motion_quiet(void){
+ for(unsigned i=0;i<DOK_RUNTIME_MAX_OBJECTS;i++)dok_scheduler_destroy(&interactions.scheduler,(uint16_t)i);
+ interactions.previous_zone=DOK_RUNTIME_NONE;g_interaction_diag.pending=0;
+ input=(dok_input){0};pending_pressed=0;dok_steps_init(&steps,gba_time_ticks(),416);g_motion_diag.debt=0;
 }

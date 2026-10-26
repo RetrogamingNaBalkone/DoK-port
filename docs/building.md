@@ -1,33 +1,36 @@
 # Сборка первых модулей и VS Code
 
-Актуальный общий GBA-ROM после G17:
+Актуальный общий GBA-ROM G18:
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-gba-ui.ps1 -CrossChecks -OriginalEvidence
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-gba-flow.ps1 -CrossChecks -OriginalEvidence
 ```
 
-Артефакты — `build/g17/`, методика/границы — [ui-localization.md](ui-localization.md),
-проверка и измерения — `analysis/g17-review.json`. Части pipeline выполнены отдельно,
-aggregate проверен; полный вызов воспроизводит тот же порядок. Старые описания первых
+Артефакты — `build/g18/`, методика/границы — [game-flow.md](game-flow.md),
+проверка и измерения — `analysis/g18-review.json`. Части pipeline выполняются отдельно,
+aggregate связывает их результаты; полный вызов воспроизводит тот же порядок. Старые описания первых
 статичных проб далее не обозначают текущее отсутствие движения/поверхностей/спрайтов.
 
-Driver G17 собирает отдельные host UI tests, Linux static/Thumb compile checks,
-общий ROM и запускает original x86/ARM UI, renderer/interactions/time/28AI/23PCM
+Driver G18 собирает host flow/UI tests, Linux static/Thumb compile checks,
+общий ROM и запускает original x86, аудит исходных выходов RES, ARM flow/UI,
+renderer/interactions/time/28AI/23PCM
 регрессии. `-RegressionOnly -CrossChecks` использует уже готовые build artifacts.
 `DOK_PROBE_FAST_VIDEO=1` откладывает Python RGB conversion до PNG; консоль
 продолжает настоящий rasterization. Actual UI PNG и их визуальное заключение
 привязаны к ROM/SHA. Полный driver одним вызовом не повторялся.
 Титульное меню требует A/Start; Start+Select ставит паузу, Start сохраняет Use.
-G17 Continue сохраняет мир, полноценный new game/переходы/финал — G18.
-ROM32876132bytes, EWRAM248564, IWRAM20684;30FPS остаются G20.
+Новая игра выбирает LEVEL1–3 и показывает BINTRO; Continue возобновляет сессию.
+Завершение показывает EINTRO и возвращает выбор уровня, как исходный startup.
+Между независимо выбранными мирами инвентарь не переносится. «Выход» показывает ENDTXT.
+ROM32881620bytes, EWRAM248688, IWRAM20684;30FPS остаются G20.
 
 Сейчас собираются читалка RES, декодеры изображений/анимаций/звука,
 загрузчик LEVEL, подготовка мира, компактный runtime, адаптер native-состояния и тесты.
 Приоритет — GBA: [позадачный план](gba-plan.md). G01 выполнена:
 диагностический GBA-ROM собирается и запускается в mGBA;
 [команды и платформа](gba-platform.md). Общий GBA-ROM уже содержит движение,
-коллизии, предметы, оружие и перемещение AI. Полный игровой цикл планируется
-в G18; исполняемого SDL2-движка пока нет. Команды первых проб ниже исторические.
+коллизии, предметы, оружие, AI и игровой цикл G18. Исполняемого SDL2-движка пока нет.
+Команды первых проб ниже исторические.
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-gba.ps1 -Verify

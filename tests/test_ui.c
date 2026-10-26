@@ -17,7 +17,7 @@ int main(void){
  dok_ui_input(&u,4);release(&u);assert(u.state==2);
  dok_ui_input(&u,128);release(&u);dok_ui_input(&u,1);release(&u);assert(u.state==1);
  dok_ui_input(&u,8);assert(!u.state && !dok_ui_game_keys(&u,8));release(&u);
- dok_ui_init(&u);dok_ui_input(&u,64);assert(u.focus==3);release(&u);
+ dok_ui_init(&u);dok_ui_input(&u,64);assert(u.focus==5);release(&u);
  dok_ui_input(&u,128);assert(u.focus==0);release(&u);
  uint8_t long_text[1024];for(unsigned i=0;i<sizeof(long_text);i++)long_text[i]=(uint8_t)i;
  dok_ui_literal(&u,long_text,sizeof(long_text),0xfffff000u);assert(u.literal_size==240);

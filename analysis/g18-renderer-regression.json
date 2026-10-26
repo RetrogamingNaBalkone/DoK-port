@@ -1,0 +1,996 @@
+{
+  "task": "G05",
+  "status": "passed",
+  "emulator": "mGBA",
+  "emulator_version": "0.11-212-7a12d6d",
+  "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+  "bios": "mGBA replacement BIOS (no external BIOS)",
+  "rom_sha256": "46e4bfa412dd1abb6b729d4a9ed014802e99430b1dbc47ffb70d2de077eeb3c0",
+  "rom_bytes": 32881620,
+  "package_sha256": "3efa5d3027d63ffd65e0ae8c0b45be23ee8394b3c5151c8e9f10e76fa8674351",
+  "embedded_package_byte_identical": true,
+  "ewram_static_bytes": 248688,
+  "iwram_stack_bios_reserve": 8192,
+  "ru": {
+    "diag": {
+      "magic": 1380860981,
+      "status": 0,
+      "language": 0,
+      "level": 0,
+      "draws": 33,
+      "last_cycles": 4773504,
+      "min_cycles": 4735872,
+      "max_cycles": 5234880,
+      "faces": 15,
+      "columns": 0,
+      "pixels": 17246,
+      "switches": 0,
+      "last_keys": 0,
+      "player_x": 15120,
+      "player_y": -300,
+      "player_z": 22800,
+      "scene_height": 144,
+      "message_height": 16,
+      "cycle_budget": 561792,
+      "over_budget": 34,
+      "present_vblank": 793,
+      "frame_bytes": 38400,
+      "world_bytes": 33864,
+      "workspace_bytes": 160260,
+      "guard_ok": 1,
+      "palette_ready": 1,
+      "font_ready": 1,
+      "visible_page": 1,
+      "face_count": 38,
+      "geometry_fnv1a": 3213303041,
+      "phase": 2,
+      "reserved4": 0
+    },
+    "framebuffer_sha256": "92d2f6a10b68a1870cd93062e1e80e49e4541a3567adbf7abf432ef5c7b66ed4",
+    "scene_sha256": "de6d6d86d629341557fcd6ef59162a9b12fa22f02f3b051db611252183c2476e",
+    "message_sha256": "a8eac8b0d3b1fde368813438dd5ba415a796fd6dd0a2a42fb6a5a2dfb2429576",
+    "palette_sha256": "563188cc97da73f8b40c595cf61a4d2998a9f69f4177b8edf91b909ebe0594ac",
+    "geometry_fnv1a": 3213303041,
+    "geometry_sha256": "52584829254c51d8962db57bcd1c87861881279e3f238d3d540e168fd8f9b861",
+    "geometry_faces": 38,
+    "dispcnt": 1044
+  },
+  "en": {
+    "diag": {
+      "magic": 1380860981,
+      "status": 0,
+      "language": 1,
+      "level": 0,
+      "draws": 66,
+      "last_cycles": 4773184,
+      "min_cycles": 4735872,
+      "max_cycles": 5234880,
+      "faces": 15,
+      "columns": 0,
+      "pixels": 17246,
+      "switches": 1,
+      "last_keys": 0,
+      "player_x": 15120,
+      "player_y": -300,
+      "player_z": 22800,
+      "scene_height": 144,
+      "message_height": 16,
+      "cycle_budget": 561792,
+      "over_budget": 67,
+      "present_vblank": 1354,
+      "frame_bytes": 38400,
+      "world_bytes": 33864,
+      "workspace_bytes": 160260,
+      "guard_ok": 1,
+      "palette_ready": 1,
+      "font_ready": 1,
+      "visible_page": 0,
+      "face_count": 38,
+      "geometry_fnv1a": 3213303041,
+      "phase": 2,
+      "reserved4": 0
+    },
+    "framebuffer_sha256": "92d2f6a10b68a1870cd93062e1e80e49e4541a3567adbf7abf432ef5c7b66ed4",
+    "scene_sha256": "de6d6d86d629341557fcd6ef59162a9b12fa22f02f3b051db611252183c2476e",
+    "message_sha256": "a8eac8b0d3b1fde368813438dd5ba415a796fd6dd0a2a42fb6a5a2dfb2429576",
+    "palette_sha256": "563188cc97da73f8b40c595cf61a4d2998a9f69f4177b8edf91b909ebe0594ac",
+    "geometry_fnv1a": 3213303041,
+    "geometry_sha256": "52584829254c51d8962db57bcd1c87861881279e3f238d3d540e168fd8f9b861",
+    "geometry_faces": 38,
+    "dispcnt": 1028
+  },
+  "ru_return": {
+    "diag": {
+      "magic": 1380860981,
+      "status": 0,
+      "language": 0,
+      "level": 0,
+      "draws": 99,
+      "last_cycles": 4773184,
+      "min_cycles": 4735872,
+      "max_cycles": 5234880,
+      "faces": 15,
+      "columns": 0,
+      "pixels": 17246,
+      "switches": 2,
+      "last_keys": 0,
+      "player_x": 15120,
+      "player_y": -300,
+      "player_z": 22800,
+      "scene_height": 144,
+      "message_height": 16,
+      "cycle_budget": 561792,
+      "over_budget": 100,
+      "present_vblank": 1915,
+      "frame_bytes": 38400,
+      "world_bytes": 33864,
+      "workspace_bytes": 160260,
+      "guard_ok": 1,
+      "palette_ready": 1,
+      "font_ready": 1,
+      "visible_page": 1,
+      "face_count": 38,
+      "geometry_fnv1a": 3213303041,
+      "phase": 2,
+      "reserved4": 0
+    },
+    "framebuffer_sha256": "92d2f6a10b68a1870cd93062e1e80e49e4541a3567adbf7abf432ef5c7b66ed4",
+    "scene_sha256": "de6d6d86d629341557fcd6ef59162a9b12fa22f02f3b051db611252183c2476e",
+    "message_sha256": "a8eac8b0d3b1fde368813438dd5ba415a796fd6dd0a2a42fb6a5a2dfb2429576",
+    "palette_sha256": "563188cc97da73f8b40c595cf61a4d2998a9f69f4177b8edf91b909ebe0594ac",
+    "geometry_fnv1a": 3213303041,
+    "geometry_sha256": "52584829254c51d8962db57bcd1c87861881279e3f238d3d540e168fd8f9b861",
+    "geometry_faces": 38,
+    "dispcnt": 1044
+  },
+  "restart_after_poison": {
+    "magic": 1380860981,
+    "status": 0,
+    "language": 0,
+    "level": 0,
+    "draws": 3,
+    "last_cycles": 4735872,
+    "min_cycles": 4735872,
+    "max_cycles": 5234880,
+    "faces": 15,
+    "columns": 0,
+    "pixels": 17246,
+    "switches": 0,
+    "last_keys": 0,
+    "player_x": 15120,
+    "player_y": -300,
+    "player_z": 22800,
+    "scene_height": 144,
+    "message_height": 16,
+    "cycle_budget": 561792,
+    "over_budget": 3,
+    "present_vblank": 283,
+    "frame_bytes": 38400,
+    "world_bytes": 33864,
+    "workspace_bytes": 160260,
+    "guard_ok": 1,
+    "palette_ready": 1,
+    "font_ready": 1,
+    "visible_page": 1,
+    "face_count": 38,
+    "geometry_fnv1a": 3213303041,
+    "phase": 1,
+    "reserved4": 0
+  },
+  "world_bytes": 33864,
+  "mutable_world_sha256": "cc868648a3c586e203186b897dfb116211ccc74af39bbb9913744107951eb18c",
+  "mutable_world_preserved_byte_for_byte": true,
+  "scene_geometry_signature_preserved": true,
+  "scene_geometry_preserved_byte_for_byte": true,
+  "scene_pixels_preserved_byte_for_byte": true,
+  "localized_message_changed": true,
+  "framebuffer_guards_passed": true,
+  "poisoned_ewram_reset_passed": true,
+  "stack_before_reset": {
+    "main_stack_low": 50356224,
+    "main_stack_top": 50364160,
+    "sentinel_word": 219540062,
+    "untouched_margin_bytes": 5576,
+    "high_water_bytes": 2360,
+    "irq_and_bios_excluded": true,
+    "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+  },
+  "stack_after_reset": {
+    "main_stack_low": 50356224,
+    "main_stack_top": 50364160,
+    "sentinel_word": 219540062,
+    "untouched_margin_bytes": 5576,
+    "high_water_bytes": 2360,
+    "irq_and_bios_excluded": true,
+    "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+  },
+  "timing": {
+    "cpu_hz": 16777216,
+    "hardware_frame_cycles": 280896,
+    "target_cycles": 561792,
+    "target_hardware_frames": 2,
+    "scope": "Timer0/1 cascade: time-poll + input/language switch + renderer + HUD + halfword VRAM back-page copy; excludes presentation wait",
+    "min_cycles": 4735872,
+    "max_cycles": 5234880,
+    "worst_render_budget_ratio": 9.318181818181818,
+    "nominal_target_fps": 29.863750284802915,
+    "over_budget_draws": 100,
+    "all_observed_draws_fit_target": false,
+    "min_present_interval_vblanks": 17,
+    "max_present_interval_vblanks": 17,
+    "cadence_intervals_vblanks": [
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17
+    ],
+    "cadence_warmup_excluded_draws": 8,
+    "observed_steady_presentation_fps": 3.513382386447402,
+    "sampled_draws": 99,
+    "samples": [
+      {
+        "draws": 1,
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 5217344,
+        "present_vblank": 247
+      },
+      {
+        "draws": 2,
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 5234880,
+        "present_vblank": 266
+      },
+      {
+        "draws": 3,
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 4735872,
+        "present_vblank": 283
+      },
+      {
+        "draws": 4,
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 4769664,
+        "present_vblank": 300
+      },
+      {
+        "draws": 5,
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 4772864,
+        "present_vblank": 317
+      },
+      {
+        "draws": 6,
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 4773184,
+        "present_vblank": 334
+      },
+      {
+        "draws": 7,
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 4772864,
+        "present_vblank": 351
+      },
+      {
+        "draws": 8,
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 4773504,
+        "present_vblank": 368
+      },
+      {
+        "draws": 9,
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 4773568,
+        "present_vblank": 385
+      },
+      {
+        "draws": 10,
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 4769664,
+        "present_vblank": 402
+      },
+      {
+        "draws": 11,
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 4773504,
+        "present_vblank": 419
+      },
+      {
+        "draws": 12,
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 4772864,
+        "present_vblank": 436
+      },
+      {
+        "draws": 13,
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 4773184,
+        "present_vblank": 453
+      },
+      {
+        "draws": 14,
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 4772928,
+        "present_vblank": 470
+      },
+      {
+        "draws": 15,
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 4773504,
+        "present_vblank": 487
+      },
+      {
+        "draws": 16,
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 4772928,
+        "present_vblank": 504
+      },
+      {
+        "draws": 17,
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 4770368,
+        "present_vblank": 521
+      },
+      {
+        "draws": 18,
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 4772864,
+        "present_vblank": 538
+      },
+      {
+        "draws": 19,
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 4773504,
+        "present_vblank": 555
+      },
+      {
+        "draws": 20,
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 4772544,
+        "present_vblank": 572
+      },
+      {
+        "draws": 21,
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 4773504,
+        "present_vblank": 589
+      },
+      {
+        "draws": 22,
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 4773568,
+        "present_vblank": 606
+      },
+      {
+        "draws": 23,
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 4772544,
+        "present_vblank": 623
+      },
+      {
+        "draws": 24,
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 4773504,
+        "present_vblank": 640
+      },
+      {
+        "draws": 25,
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 4770048,
+        "present_vblank": 657
+      },
+      {
+        "draws": 26,
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 4773184,
+        "present_vblank": 674
+      },
+      {
+        "draws": 27,
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 4772928,
+        "present_vblank": 691
+      },
+      {
+        "draws": 28,
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 4773504,
+        "present_vblank": 708
+      },
+      {
+        "draws": 29,
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 4772928,
+        "present_vblank": 725
+      },
+      {
+        "draws": 30,
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 4773184,
+        "present_vblank": 742
+      },
+      {
+        "draws": 31,
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 4772928,
+        "present_vblank": 759
+      },
+      {
+        "draws": 32,
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 4770688,
+        "present_vblank": 776
+      },
+      {
+        "draws": 33,
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 4772544,
+        "present_vblank": 793
+      },
+      {
+        "draws": 34,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 4773504,
+        "present_vblank": 810
+      },
+      {
+        "draws": 35,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 4780224,
+        "present_vblank": 827
+      },
+      {
+        "draws": 36,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 4773248,
+        "present_vblank": 844
+      },
+      {
+        "draws": 37,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 4773312,
+        "present_vblank": 861
+      },
+      {
+        "draws": 38,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 4773056,
+        "present_vblank": 878
+      },
+      {
+        "draws": 39,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 4770880,
+        "present_vblank": 895
+      },
+      {
+        "draws": 40,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 4773312,
+        "present_vblank": 912
+      },
+      {
+        "draws": 41,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 4772992,
+        "present_vblank": 929
+      },
+      {
+        "draws": 42,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 4773696,
+        "present_vblank": 946
+      },
+      {
+        "draws": 43,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 4772672,
+        "present_vblank": 963
+      },
+      {
+        "draws": 44,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 4773696,
+        "present_vblank": 980
+      },
+      {
+        "draws": 45,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 4772992,
+        "present_vblank": 997
+      },
+      {
+        "draws": 46,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 4773696,
+        "present_vblank": 1014
+      },
+      {
+        "draws": 47,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 4769856,
+        "present_vblank": 1031
+      },
+      {
+        "draws": 48,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 4773696,
+        "present_vblank": 1048
+      },
+      {
+        "draws": 49,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 4773056,
+        "present_vblank": 1065
+      },
+      {
+        "draws": 50,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 4773376,
+        "present_vblank": 1082
+      },
+      {
+        "draws": 51,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 4773056,
+        "present_vblank": 1099
+      },
+      {
+        "draws": 52,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 4773696,
+        "present_vblank": 1116
+      },
+      {
+        "draws": 53,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 4773056,
+        "present_vblank": 1133
+      },
+      {
+        "draws": 54,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 4770496,
+        "present_vblank": 1150
+      },
+      {
+        "draws": 55,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 4773056,
+        "present_vblank": 1167
+      },
+      {
+        "draws": 56,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 4773632,
+        "present_vblank": 1184
+      },
+      {
+        "draws": 57,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 4773312,
+        "present_vblank": 1201
+      },
+      {
+        "draws": 58,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 4773056,
+        "present_vblank": 1218
+      },
+      {
+        "draws": 59,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 4773760,
+        "present_vblank": 1235
+      },
+      {
+        "draws": 60,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 4772672,
+        "present_vblank": 1252
+      },
+      {
+        "draws": 61,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 4770880,
+        "present_vblank": 1269
+      },
+      {
+        "draws": 62,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 4773056,
+        "present_vblank": 1286
+      },
+      {
+        "draws": 63,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 4773376,
+        "present_vblank": 1303
+      },
+      {
+        "draws": 64,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 4773056,
+        "present_vblank": 1320
+      },
+      {
+        "draws": 65,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 4773568,
+        "present_vblank": 1337
+      },
+      {
+        "draws": 66,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 4772928,
+        "present_vblank": 1354
+      },
+      {
+        "draws": 67,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 4773184,
+        "present_vblank": 1371
+      },
+      {
+        "draws": 68,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 4776704,
+        "present_vblank": 1388
+      },
+      {
+        "draws": 69,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 4773824,
+        "present_vblank": 1405
+      },
+      {
+        "draws": 70,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 4773376,
+        "present_vblank": 1422
+      },
+      {
+        "draws": 71,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 4773056,
+        "present_vblank": 1439
+      },
+      {
+        "draws": 72,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 4773696,
+        "present_vblank": 1456
+      },
+      {
+        "draws": 73,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 4772992,
+        "present_vblank": 1473
+      },
+      {
+        "draws": 74,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 4773312,
+        "present_vblank": 1490
+      },
+      {
+        "draws": 75,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 4770176,
+        "present_vblank": 1507
+      },
+      {
+        "draws": 76,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 4773696,
+        "present_vblank": 1524
+      },
+      {
+        "draws": 77,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 4772672,
+        "present_vblank": 1541
+      },
+      {
+        "draws": 78,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 4773696,
+        "present_vblank": 1558
+      },
+      {
+        "draws": 79,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 4773056,
+        "present_vblank": 1575
+      },
+      {
+        "draws": 80,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 4773376,
+        "present_vblank": 1592
+      },
+      {
+        "draws": 81,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 4773696,
+        "present_vblank": 1609
+      },
+      {
+        "draws": 82,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 4770176,
+        "present_vblank": 1626
+      },
+      {
+        "draws": 83,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 4773312,
+        "present_vblank": 1643
+      },
+      {
+        "draws": 84,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 4772992,
+        "present_vblank": 1660
+      },
+      {
+        "draws": 85,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 4773696,
+        "present_vblank": 1677
+      },
+      {
+        "draws": 86,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 4773056,
+        "present_vblank": 1694
+      },
+      {
+        "draws": 87,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 4773376,
+        "present_vblank": 1711
+      },
+      {
+        "draws": 88,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 4772992,
+        "present_vblank": 1728
+      },
+      {
+        "draws": 89,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 4770880,
+        "present_vblank": 1745
+      },
+      {
+        "draws": 90,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 4772672,
+        "present_vblank": 1762
+      },
+      {
+        "draws": 91,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 4773696,
+        "present_vblank": 1779
+      },
+      {
+        "draws": 92,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 4773056,
+        "present_vblank": 1796
+      },
+      {
+        "draws": 93,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 4773696,
+        "present_vblank": 1813
+      },
+      {
+        "draws": 94,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 4772672,
+        "present_vblank": 1830
+      },
+      {
+        "draws": 95,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 4773696,
+        "present_vblank": 1847
+      },
+      {
+        "draws": 96,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 4769728,
+        "present_vblank": 1864
+      },
+      {
+        "draws": 97,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 4773504,
+        "present_vblank": 1881
+      },
+      {
+        "draws": 98,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 4772864,
+        "present_vblank": 1898
+      },
+      {
+        "draws": 99,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 4773504,
+        "present_vblank": 1915
+      }
+    ]
+  },
+  "physical_gba_tested": false,
+  "full_game_performance_verified": false,
+  "visual_playback_frozen": true,
+  "screenshots": {
+    "renderer-ru.png": "1c254bb83274b1019fa6c5d9ac5ec6ea7adfdc51411472aec095da284af4212b",
+    "renderer-en.png": "1c254bb83274b1019fa6c5d9ac5ec6ea7adfdc51411472aec095da284af4212b",
+    "renderer-ru-return.png": "1c254bb83274b1019fa6c5d9ac5ec6ea7adfdc51411472aec095da284af4212b"
+  }
+}

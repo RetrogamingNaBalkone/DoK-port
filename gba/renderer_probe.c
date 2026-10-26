@@ -1,5 +1,17 @@
 #include "dok/renderer.h"
 #include "dok/visual.h"
+#include "dok/flow.h"
+#include "dok/combat.h"
+#include "dok/collision.h"
+extern dok_combat g_combat;
+extern unsigned gba_flow_active(void);
+extern void gba_flow_update(void);
+extern void gba_flow_draw(uint8_t *,const uint8_t *,const uint8_t *,unsigned,unsigned);
+extern void gba_audio_quiet(void);
+extern void gba_ai_quiet(void);
+extern void gba_combat_quiet(void);
+extern void gba_motion_quiet(void);
+extern void gba_ui_reset(void);
 extern void gba_ui_start(void);
 extern unsigned gba_ui_input(uint16_t);
 extern unsigned gba_ui_language(void);
@@ -201,6 +213,26 @@ static __attribute__((section(".iwram"),target("arm"))) void load_ui(unsigned la
     g_render_diag.palette_ready=1;
 }
 
+const dok_rom_assets *gba_flow_assets(void){return &package;}
+unsigned gba_flow_level(void){return g_render_diag.level;}
+void gba_flow_quiet(void){
+ /* Release every occupied projectile before a borrowed context can expire. */
+ dok_collision_overlay(0,0,0);
+ gba_combat_quiet();g_render_frame.sprite_count=0;gba_audio_quiet();
+ gba_ai_quiet();gba_motion_quiet();
+ for(unsigned i=0;i<DOK_RUNTIME_MAX_OBJECTS;i++){dok_scheduler_destroy(&visual.scheduler,(uint16_t)i);visual.resource[i]=0;visual.loop[i]=0;visual_visible[i]=0;}
+ g_visual_diag.active=0;g_visual_diag.deadline=0;gba_ui_reset();
+}
+void gba_flow_load(unsigned level,unsigned carry){
+ (void)carry;
+ dok_collision_overlay(0,0,0);gba_flow_quiet();
+ prepare_level(level);g_render_view=localized_views[g_render_diag.language];
+ if(dok_runtime_reset(&g_render_world,&g_render_view)!=DOK_RUNTIME_OK)panic(0x95);
+ g_render_diag.level=level;load_ui(g_render_diag.language);test_camera=0;
+ gba_motion_level(&g_render_world);visual_start();gba_ui_reset();
+ if(dok_renderer_camera_from_runtime(&camera,&g_render_world)!=DOK_RENDER_OK)panic(0x98);
+}
+
 __attribute__((noreturn)) void gba_main(void)
 {
     unsigned bss_ok=g_diag.magic==0 && g_vblanks==0 && g_render_diag.magic==0;
@@ -244,11 +276,7 @@ __attribute__((noreturn)) void gba_main(void)
             unsigned level=g_camera_probe.level;
             if(level>=3) panic(0x94);
             if(level!=g_render_diag.level) {
-                prepare_level(level);g_render_view=localized_views[g_render_diag.language];
-                if(dok_runtime_reset(&g_render_world,&g_render_view)!=DOK_RUNTIME_OK) panic(0x95);
-                g_render_diag.level=level;load_ui(g_render_diag.language);
-                gba_motion_level(&g_render_world);
-                visual_start();
+                gba_flow_load(level,0);test_camera=1;
             }
             camera.x=g_camera_probe.x;camera.y=g_camera_probe.y;camera.z=g_camera_probe.z;
             dok_renderer_camera_heading(&camera,g_camera_probe.heading);
@@ -260,7 +288,7 @@ __attribute__((noreturn)) void gba_main(void)
         unsigned switched=gba_ui_input((uint16_t)g_diag.keys);
         gba_time_poll();
         uint32_t motion_start=timer_sample();
-        gba_motion_poll(gba_ui_keys((uint16_t)g_diag.keys));
+        if(gba_flow_active())gba_motion_poll(gba_ui_keys((uint16_t)g_diag.keys));
         if(!test_camera && dok_renderer_camera_from_runtime(&camera,&g_render_world)!=DOK_RENDER_OK) panic(0x98);
         gba_motion_cost(timer_sample()-motion_start);
         if(!test_camera) {
@@ -280,6 +308,7 @@ __attribute__((noreturn)) void gba_main(void)
         gba_ai_update(g_render_diag.language);
         g_render_diag.reserved3=1;
         gba_combat_update(&g_render_frame,g_render_diag.language);
+        gba_flow_update();
         if(g_sprite_probe.enable && g_render_frame.sprite_count<DOK_RENDER_SPRITE_CAPACITY) {
             unsigned n=g_render_frame.sprite_count++;
             g_render_frame.sprites[n]=(dok_renderer_sprite){g_sprite_probe.x,g_sprite_probe.y,g_sprite_probe.z,(uint16_t)g_sprite_probe.object,0};
@@ -289,7 +318,7 @@ __attribute__((noreturn)) void gba_main(void)
             g_render_diag.language,&camera,&g_render_stats);
         g_render_diag.status=status;
         if (status!=DOK_RENDER_OK) panic(0xa0+(unsigned)status);
-        gba_combat_overlay(&g_render_frame);gba_ui_draw(g_render_frame.frame,font,font16,white,black);gba_render_stage(5);
+        gba_combat_overlay(&g_render_frame);gba_ui_draw(g_render_frame.frame,font,font16,white,black);gba_flow_draw(g_render_frame.frame,font,font16,white,black);gba_render_stage(5);
         volatile uint16_t *page=visible ? PAGE0 : PAGE1;
         /* DMA3 pauses the CPU, including audio IRQ refills. Bound each pause
          * while preserving every Mode4 pixel. DMA1 has higher bus priority. */

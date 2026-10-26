@@ -1,0 +1,28 @@
+{
+  "task": "G18",
+  "status": "passed",
+  "stdout": [
+    "G18 flow: native pose subset, health max, retained inventory/world and occupancy clamp passed",
+    "G17 UI: keypad/chord/held-edge, localization, queue, 240-byte clamp, wraparound deadlines, all states framebuffer guards passed"
+  ],
+  "cross_compiled": true,
+  "linux_execution": false,
+  "msvc_execution": false,
+  "cmake_execution": false,
+  "sources": {
+    "include/dok/flow.h": "320c4e67f4197e12b5e2fe0d43653d16763207dc66953eda2a43bd6e579aa8d0",
+    "src/flow.c": "b46f68f3cdea4c64b698ab47e3a9dabda4a790ac10fda8bf595126fac991594b",
+    "tests/test_flow.c": "b34db40f99bf39253bdefe36e2f3d97a07fb56eecda65f56b0ea967e3b69350d",
+    "include/dok/ui.h": "277b07180bf76711b2ccbabc52561d0068121215e7f6b4ff39a30596a327873a",
+    "src/ui.c": "f67e472147e6ad77fbb5f99b5c49464bf37e381e40b9a300e51cfc012a468fbc",
+    "tests/test_ui.c": "c6c03a07e13aa6eda8027381db5ad4d23ad73a50ef20de1ae9d9d5aac35ae58b"
+  },
+  "artifacts": {
+    "build/native/dok-flow-tests.exe": "bfb445a76f167e30768023f4f19b9d05a8ca3ef4049b943ab5b120b41ef16efa",
+    "build/native/dok-ui-tests.exe": "48362b87bbe763a0c5045aff151568adf63fb25a961c82186f6f9c849c1e046a",
+    "build/native/dok-flow-tests-linux": "3622be780cccf30322947c5fd2c06b1545bb97efb66f87ab14a061fad8f877c8",
+    "build/native/flow-arm7tdmi.o": "db8597bc329820d1868d042050c841f79fcceb8502f06ad16eccbac031347b3e",
+    "build/native/dok-ui-tests-linux": "05b3b14e14c022dbd218651ac255070ac349d99495dd8f00119c7874b2da9b9b",
+    "build/native/ui-arm7tdmi.o": "ee63db48ffc31c7faeaf9c4626f906b89fe7d3583a1d42b058a4e948daf1d383"
+  }
+}

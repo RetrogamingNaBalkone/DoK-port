@@ -1,5 +1,65 @@
 # Передача контекста между чатами
 
+## Текущая граница G18
+
+26 октября 2026 года: **G00–G18 готовы; реализация, независимые проверки и review
+G18 завершены. Следующий ID — G20; его не начинали.**
+См. [game-flow.md](game-flow.md), [tasks/G18.md](tasks/G18.md),
+`analysis/g18-review.json`. Ниже оставлена историческая передача G17 и ранних этапов.
+
+Важное уточнение исходного gameplay: PKR/PKE выбирают уровни1–3 независимо.
+BINTRO → игра → EINTRO → выбор уровня; автоматической кампании и переноса
+инвентаря в другой мир нет. ENDTXT показывается при выходе из выбора, поэтому
+на GBA доступен пунктом «Выход». В EXE есть score==world total, но во всех6
+исходных LEVEL нет category99 предметов и total=0: собирать очки для выхода
+**не нужно**. Подтверждение — свежие Ghidra/x86 и `g18-exit-audit.json`, не Old Gold.
+
+New Game (title focus4, Left/Right выбирает LEVEL1–3) полностью сбрасывает мир,
+инвентарь, keys/map/visited, input/debt, UI queue, overlay, все owners/events,
+снаряды и PCM/DMA/Timer0/1. Перед сменой borrowed context снимается
+`dok_collision_overlay(0,0,0)` и освобождается occupancy старых снарядов.
+FINISH только ставит pending, disposal выполняется после callback dispatch.
+Finish/END/Game Over очищают завершённую сессию; фон runtime остаётся валидным.
+Retry того же мира сохраняет события/снаряды/предметы/инвентарь; native copy
+восстанавливает только modeled часть hero+26…43 и HP=max. Lives — wrap16 DEC.
+Не копировать весь actor64 при retry. Отрицательный HP — исходный finish sentinel.
+Continue сохраняет suspended world и все законные события, New Game заменяет его.
+
+Title6rows: Continue/Language/Controls/Statistics/New Game/End; пауза прежняя.
+Игровые A/B/D-pad/L/R/StartUse/SelectLanguage/Start+SelectPause сохранены.
+Текстовые экраны: A/Start дальше, B назад/в меню, Select язык; held переходная
+кнопка блокируется до отпускания на **каждом** sample. Тексты из существующего
+ROM, CP866 FONT8,30×14 y20, CR/LF/`$`, без дублирования/усечения; заголовок FONT16.
+Временные экраны останавливают simulation ticks/remainder/deadlines без catch-up,
+hardware clock и текущий PCM продолжаются до disposal.
+
+Frozen `build/g18/dok-diagnostic.gba`:32881620bytes,
+SHA `46e4bfa412dd1abb6b729d4a9ed014802e99430b1dbc47ffb70d2de077eeb3c0`.
+EWRAM248688/free13456; IWRAM20684/free3892 до8KiB stack reserve.
+Main2360/margin5576; IRQ80/margin80;32MiB ROM remaining672812.
+Renderer4735872…5234880 cycles;30FPS остаётся G20, качество не снижали.
+
+Пройдены host flow/UI и cross compile, SHA до/после Ghidra, original x86
+16stat+14death+2helper, аудит6 исходных LEVEL, независимый ARM всех6 уровней/
+14text resources, real stats death/retry/3lives/Game Over, реальные выходы,
+seeded door/AI/visual/projectile/loopPCM retain/dispose, Continue/END/NewGame,
+точные исходные FONT8 pixels всех страниц;8 representative PNG просмотрены root.
+UI/renderer/interactions/time/28AI/23PCM регрессии прошли на final ROM; underruns0.
+`analysis/g18-review.json` связывает11 отчётов и source/ELF/ROM/map.
+
+Воспроизведение: `scripts/build-gba-flow.ps1 -CrossChecks -OriginalEvidence`.
+Шаги реально выполнены отдельно; полный driver одним вызовом не повторялся.
+Shared Zig/Python/mGBA — прежние пути [building.md](building.md), копий нет.
+Legacy harness helper явно вызывает op3 `g_flow_probe` и обходит только flow;
+полноценный ARM flow verifier использует настоящий boot/кнопки/production callbacks.
+ABI `g_flow_diag`14word/`g_flow_probe`4word указан в game-flow. Старые world/object/
+player и mailboxes ABI сохранены. Save/load отсутствует; G19 удалена пользователем.
+
+Физическая GBA, оригинальный BIOS, целая DOS-сессия, Linux/MSVC/CMake execution
+не проверены. Accepted G16 listening остаётся прежним, G18 PCM проверен численно.
+В параллельной внешней работе появились `analysis/old-gold/` и OldGold scripts;
+они не относятся к G18 и должны сохраняться отдельно, без включения в его commit.
+
 ## Текущая граница G17
 
 Обновлено 26 октября 2026 года: **G00–G17 готовы, следующий ID — G18**.

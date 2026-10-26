@@ -42,3 +42,5 @@ void gba_ai_update(unsigned language){
  g_ai_diag.object=id;g_ai_diag.state=o->state.monster.state;g_ai_diag.counter=o->state.monster.course_counter;g_ai_diag.x=p?p->x:0;g_ai_diag.z=p?p->z:0;g_ai_diag.heading=p?p->heading:0;g_ai_diag.frame=o->frame;g_ai_diag.deadline=index<128?a->owners[index].events[0].deadline:0;g_ai_diag.active=index<128?a->owners[index].count:0;
  g_ai_diag.attacks=a->attacks;g_ai_diag.hurts=a->hurts;g_ai_diag.deaths=a->deaths;g_ai_diag.completed=a->completed;g_ai_diag.melee=a->melee;g_ai_diag.ranged=a->ranged;g_ai_diag.burst=o->state.monster.shot_count;g_ai_diag.timer=o->state.monster.burst_started;g_ai_diag.resource=o->visual_resource;g_ai_diag.health=o->state.monster.health;g_ai_diag.flags=o->flags;
 }
+
+void gba_ai_quiet(void){for(unsigned i=0;i<DOK_RUNTIME_MAX_ACTORS;i++)dok_scheduler_destroy(&g_ai.scheduler,(uint16_t)i);g_ai_diag.owners=0;g_ai_diag.active=0;g_ai_diag.deadline=0;}

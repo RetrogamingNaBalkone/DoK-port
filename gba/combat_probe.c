@@ -91,3 +91,5 @@ void gba_combat_overlay(dok_renderer_workspace *w) {
   if(color)w->frame[(y+top)*240+x+left]=color;
  }
 }
+
+void gba_combat_quiet(void){dok_combat_clear(&g_combat);g_combat_diag.active=0;g_combat_diag.pstate=0;g_combat_diag.next=DOK_RUNTIME_NONE;g_combat_diag.previous=DOK_RUNTIME_NONE;}

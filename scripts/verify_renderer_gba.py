@@ -25,6 +25,16 @@ def start_gameplay(frontend, symbols):
     Called only by legacy harnesses. UIProbe opts out and drives real buttons.
     Commit request last, using the same public test mailbox as other scenarios.
     """
+    if 'g_flow_probe' in symbols:
+        address=symbols['g_flow_probe']
+        request,ack=struct.unpack('<2I',frontend.read(address,8))
+        magic,state=struct.unpack('<2I',frontend.read(symbols['g_flow_diag'],8))
+        if magic!=0x464c3138:return False
+        if state!=2 and request==ack:
+            ct.memmove(frontend.pointer(address+8,8),struct.pack('<2I',3,0),8)
+            ct.memmove(frontend.pointer(address,4),struct.pack('<I',ack+1),4)
+            return False
+        return state==2 and request==ack
     if 'g_ui_probe' not in symbols:
         return True
     magic,state = struct.unpack('<2I', frontend.read(symbols['g_ui_diag'],8))

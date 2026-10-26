@@ -1,0 +1,59 @@
+{
+  "task": "G18",
+  "status": "passed",
+  "rom_sha256": "46e4bfa412dd1abb6b729d4a9ed014802e99430b1dbc47ffb70d2de077eeb3c0",
+  "method": "Root visually inspected representative actual GBA indexed-framebuffer PNGs with view_image",
+  "screens": [
+    {
+      "path": "build/g18/ui-check/flow-title-ru.png",
+      "sha256": "5b5b8059fcc9609b9371f5d4b3a0e37a1eb4d3ce2c85c6521c67a2dfc9b8cb30",
+      "framebuffer_sha256": "a4d8d77cc96f99c9aa882277fb9d5330fcaa889a6a17eb138490ff6eee9a0e78"
+    },
+    {
+      "path": "build/g18/ui-check/flow-retry-0.png",
+      "sha256": "479289b02f6da6f3d8d719a43bc203f41fd9034bebdda9062df241f8ef805258",
+      "framebuffer_sha256": "8bdd26729b4feb59b0c1cb66d45899fa9030cad3493b019adeb4bdbe0f6fe428"
+    },
+    {
+      "path": "build/g18/ui-check/flow-gameover-en.png",
+      "sha256": "bf1c77a86602a76516b4e25bcb57abaf1653836bff58dc90d316ee33495dcaf3",
+      "framebuffer_sha256": "3a91e9e86431a1aa8f57347c439da85b8c83a1639c4126256184f4d2658dec5c"
+    },
+    {
+      "path": "build/g18/ui-check/bintro1-0-page0.png",
+      "sha256": "b7200d1598f4dd344f322750e7eb405020c9a1acc96653d714e351cc1de86b12",
+      "framebuffer_sha256": "c5376c4c95c390e4db623dec67421706099be7d14988b31caeaad8bff0c53a4f"
+    },
+    {
+      "path": "build/g18/ui-check/bintro1-1-page1.png",
+      "sha256": "bbacd1b91ccbea11889cf72d1948e755818ad754a01dafcff7985decc97463b9",
+      "framebuffer_sha256": "057354a9340c5b82dca5c71d15300c44c110a855738b30cff6986e125b8e5dd7"
+    },
+    {
+      "path": "build/g18/ui-check/endtxt-0-page1.png",
+      "sha256": "63b8bea12d0fc26bd4b38a8282c45493023580251d2c3dc6500b314e17d18380",
+      "framebuffer_sha256": "0259b577a896e5ad699486f1c04d885c692a0a49b4997203d22697731a841698"
+    },
+    {
+      "path": "build/g18/ui-check/endtxt-1-page0.png",
+      "sha256": "891a48e8fceb1e50a7ab803eb4d9c7d604a1e245370c78ae2c80bfdd0601dc6d",
+      "framebuffer_sha256": "4fd804c6fdccbeba18d947e4afd41f348706faf55abfae8831fa84181d2307b8"
+    },
+    {
+      "path": "build/g18/ui-check/eintro3-0-page0.png",
+      "sha256": "99c2d2e9bff2a5131a5f5e5a433e71c5f16c4f03033d01a1b2fc29ddd0dadb27",
+      "framebuffer_sha256": "dfd6d55b6849b4c32cd8975eafcde5dbd7141d27999b69c6ef445b31dd16ed15"
+    }
+  ],
+  "findings": [
+    "Six-row Russian title and hint fit above corner HUD without overlap",
+    "Original Russian and English CP866 text readable with original FONT8/FONT16",
+    "Intro/outro/ENDTXT page indicators and button hints visible",
+    "Retry and Game Over screens visibly distinct",
+    "No missing or clipped source glyphs; all source pages independently checked numerically"
+  ],
+  "limits": [
+    "Representative PNG review on host display, not physical GBA screen",
+    "Fixed30-column line wrapping preserves source bytes and can split a word at a line or page boundary"
+  ]
+}

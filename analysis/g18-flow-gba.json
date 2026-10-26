@@ -1,0 +1,571 @@
+{
+  "task": "G18",
+  "status": "passed",
+  "rom_sha256": "46e4bfa412dd1abb6b729d4a9ed014802e99430b1dbc47ffb70d2de077eeb3c0",
+  "script_sha256": "9a7439d263a1552788e0348dc46aeabfd96557a969166fbbdcc71b35daa650cd",
+  "levels": [
+    {
+      "language": 0,
+      "level": 1,
+      "actual_fcmap_exit_cell": 3678,
+      "score_collection_required": false,
+      "score": 0,
+      "total": 0,
+      "completed_to_title": true,
+      "fresh_inventory_on_start": true,
+      "retired_world_event_projectile_audio_cleanup": true
+    },
+    {
+      "language": 0,
+      "level": 2,
+      "actual_fcmap_exit_cell": 474,
+      "score_collection_required": false,
+      "score": 0,
+      "total": 0,
+      "completed_to_title": true,
+      "fresh_inventory_on_start": true,
+      "retired_world_event_projectile_audio_cleanup": true
+    },
+    {
+      "language": 0,
+      "level": 3,
+      "actual_fcmap_exit_cell": 1316,
+      "score_collection_required": false,
+      "score": 0,
+      "total": 0,
+      "completed_to_title": true,
+      "fresh_inventory_on_start": true,
+      "retired_world_event_projectile_audio_cleanup": true
+    },
+    {
+      "language": 1,
+      "level": 1,
+      "actual_fcmap_exit_cell": 3678,
+      "score_collection_required": false,
+      "score": 0,
+      "total": 0,
+      "completed_to_title": true,
+      "fresh_inventory_on_start": true,
+      "retired_world_event_projectile_audio_cleanup": true
+    },
+    {
+      "language": 1,
+      "level": 2,
+      "actual_fcmap_exit_cell": 474,
+      "score_collection_required": false,
+      "score": 0,
+      "total": 0,
+      "completed_to_title": true,
+      "fresh_inventory_on_start": true,
+      "retired_world_event_projectile_audio_cleanup": true
+    },
+    {
+      "language": 1,
+      "level": 3,
+      "actual_fcmap_exit_cell": 1316,
+      "score_collection_required": false,
+      "score": 0,
+      "total": 0,
+      "completed_to_title": true,
+      "fresh_inventory_on_start": true,
+      "retired_world_event_projectile_audio_cleanup": true
+    }
+  ],
+  "retries": [
+    {
+      "language": 0,
+      "lives": 2,
+      "inventory_world_visited_preserved": true,
+      "original_pose_subset_restored": true,
+      "other_actor_fields_preserved": true,
+      "ai_visual_door_events_preserved": true,
+      "projectiles_preserved": true,
+      "existing_sound_preserved_by_busy_death_voice": true
+    },
+    {
+      "language": 1,
+      "lives": 2,
+      "inventory_world_visited_preserved": true,
+      "original_pose_subset_restored": true,
+      "other_actor_fields_preserved": true,
+      "ai_visual_door_events_preserved": true,
+      "projectiles_preserved": true,
+      "existing_sound_preserved_by_busy_death_voice": true
+    }
+  ],
+  "screens": [
+    {
+      "resource": "BINTRO1",
+      "language": 0,
+      "bytes": 338,
+      "pages": [
+        {
+          "path": "build/g18/ui-check/bintro1-0-page0.png",
+          "sha256": "b7200d1598f4dd344f322750e7eb405020c9a1acc96653d714e351cc1de86b12",
+          "framebuffer_sha256": "c5376c4c95c390e4db623dec67421706099be7d14988b31caeaad8bff0c53a4f"
+        },
+        {
+          "path": "build/g18/ui-check/bintro1-0-page1.png",
+          "sha256": "d98b3819b836d32f1b687c0c7fb54b7b909bb242683f7ee01fd738d8e4ab874c",
+          "framebuffer_sha256": "664e314814fcbfec4a10c96162f185c45999bf91744a6b056cc49e6f6975c571"
+        }
+      ],
+      "source": {
+        "path": "originals/pkr/RUS/PKR.RES",
+        "sha256": "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816"
+      },
+      "source_sha256": "80fab53555f684f5a91a1f197ac7b8c0c6a0aee06ab0495783345475ba150a24",
+      "all_original_text_pixels": true
+    },
+    {
+      "resource": "EINTRO1",
+      "language": 0,
+      "bytes": 82,
+      "pages": [
+        {
+          "path": "build/g18/ui-check/eintro1-0-page0.png",
+          "sha256": "6a355ca7abb9c6ec08eb83707d7a7d1891edf2a559de4729ef225f1bfe56a8bf",
+          "framebuffer_sha256": "4ec8ce27a98b189efed268ee0eb7562c3981c02f717aec16694e09dc5178550b"
+        }
+      ],
+      "source": {
+        "path": "originals/pkr/RUS/PKR.RES",
+        "sha256": "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816"
+      },
+      "source_sha256": "f2f3e199f136588a3a7d465472c7284562e76317f563017d0785bcbec91bf6c5",
+      "all_original_text_pixels": true
+    },
+    {
+      "resource": "BINTRO2",
+      "language": 0,
+      "bytes": 226,
+      "pages": [
+        {
+          "path": "build/g18/ui-check/bintro2-0-page0.png",
+          "sha256": "6ff1eb8587a4d86e4cf80bd48b963742436a1fbf6049468dca147ce0eefe21ea",
+          "framebuffer_sha256": "1bdad9607c9c294f996c86ee4cfbed7bac0b66c6b2f3fd6252ab606053fb7132"
+        }
+      ],
+      "source": {
+        "path": "originals/pkr/RUS/PKR.RES",
+        "sha256": "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816"
+      },
+      "source_sha256": "b4cf10a3fb5a79f526ab61c7e7cb521c0079930e26d1d544cd374bb315e8e928",
+      "all_original_text_pixels": true
+    },
+    {
+      "resource": "EINTRO2",
+      "language": 0,
+      "bytes": 92,
+      "pages": [
+        {
+          "path": "build/g18/ui-check/eintro2-0-page0.png",
+          "sha256": "7ff9c51ff3c2035a15ab1005bb223370857f47c6aae0f9590dfae5dd4418c34a",
+          "framebuffer_sha256": "1eedeb75e834034f76af0084bde6950d126a23c2c2322b95931389ca59413ea0"
+        }
+      ],
+      "source": {
+        "path": "originals/pkr/RUS/PKR.RES",
+        "sha256": "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816"
+      },
+      "source_sha256": "c1795458c56d5e7a9c280d10663ff18178ad900bb39572964809cd2996a4b1e0",
+      "all_original_text_pixels": true
+    },
+    {
+      "resource": "BINTRO3",
+      "language": 0,
+      "bytes": 345,
+      "pages": [
+        {
+          "path": "build/g18/ui-check/bintro3-0-page0.png",
+          "sha256": "c721b090f868973e1d3297a3979c5865da741455f7bce8af491a690739df0d92",
+          "framebuffer_sha256": "1d81837bcfe570dbaf568fddbc57eab9a860b980b52163839fcd987944357e8a"
+        },
+        {
+          "path": "build/g18/ui-check/bintro3-0-page1.png",
+          "sha256": "9bc3b05fab7c447bda40648947fc991678e71cf0a1c63c1ed58375d0bcdc5291",
+          "framebuffer_sha256": "9bcaa487e2c95b2fab752a83c12ca70cf1080fc4072cd05c5c7da1d797c8b217"
+        }
+      ],
+      "source": {
+        "path": "originals/pkr/RUS/PKR.RES",
+        "sha256": "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816"
+      },
+      "source_sha256": "d7d5f42547b65f7ebbdf35ab8dde341a78bbae14a6aae2d658fa577b2c5de3ce",
+      "all_original_text_pixels": true
+    },
+    {
+      "resource": "EINTRO3",
+      "language": 0,
+      "bytes": 134,
+      "pages": [
+        {
+          "path": "build/g18/ui-check/eintro3-0-page0.png",
+          "sha256": "99c2d2e9bff2a5131a5f5e5a433e71c5f16c4f03033d01a1b2fc29ddd0dadb27",
+          "framebuffer_sha256": "dfd6d55b6849b4c32cd8975eafcde5dbd7141d27999b69c6ef445b31dd16ed15"
+        }
+      ],
+      "source": {
+        "path": "originals/pkr/RUS/PKR.RES",
+        "sha256": "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816"
+      },
+      "source_sha256": "3246c9b30c62aa8ca9177fed3c73890901c4b2e563684e5302834af2a5daf84e",
+      "all_original_text_pixels": true
+    },
+    {
+      "resource": "ENDTXT",
+      "language": 0,
+      "bytes": 227,
+      "pages": [
+        {
+          "path": "build/g18/ui-check/endtxt-0-page0.png",
+          "sha256": "b0ce0f9ebb8c7b66d77e8b6162a4c1a6c9b351f979e8f17cd577faec5a9be045",
+          "framebuffer_sha256": "8abf9f00a789e75e91aeef432eb62cfc46b1e713a526a7fbd05af1e09e8d3dcf"
+        },
+        {
+          "path": "build/g18/ui-check/endtxt-0-page1.png",
+          "sha256": "63b8bea12d0fc26bd4b38a8282c45493023580251d2c3dc6500b314e17d18380",
+          "framebuffer_sha256": "0259b577a896e5ad699486f1c04d885c692a0a49b4997203d22697731a841698"
+        }
+      ],
+      "source": {
+        "path": "originals/pkr/RUS/PKR.RES",
+        "sha256": "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816"
+      },
+      "source_sha256": "12c2b6e8f4f284f3d33e7add89450f7dfb00e90f30d08c7cc6eba8ad014c4fb1",
+      "all_original_text_pixels": true
+    },
+    {
+      "resource": "BINTRO1",
+      "language": 1,
+      "bytes": 364,
+      "pages": [
+        {
+          "path": "build/g18/ui-check/bintro1-1-page0.png",
+          "sha256": "0523df77d55235b7d08337afdca5ef1c093e1e850e1fcaf51f07751204b5202a",
+          "framebuffer_sha256": "08e4ea56e1f8d2db11a9123d776a95118b62030c54af942a29af4d3d51802c91"
+        },
+        {
+          "path": "build/g18/ui-check/bintro1-1-page1.png",
+          "sha256": "bbacd1b91ccbea11889cf72d1948e755818ad754a01dafcff7985decc97463b9",
+          "framebuffer_sha256": "057354a9340c5b82dca5c71d15300c44c110a855738b30cff6986e125b8e5dd7"
+        }
+      ],
+      "source": {
+        "path": "originals/pkr/ENG/PKE.RES",
+        "sha256": "865da340621fa6f90548a84e9ae9bf0a85071befb32a40ca1d359e488f74d458"
+      },
+      "source_sha256": "83497aad4a1b377bfea1011d8ad2a055a67348624a5347b3361612c0f1e5816c",
+      "all_original_text_pixels": true
+    },
+    {
+      "resource": "EINTRO1",
+      "language": 1,
+      "bytes": 101,
+      "pages": [
+        {
+          "path": "build/g18/ui-check/eintro1-1-page0.png",
+          "sha256": "9cafe9ef286eafb06bd1cdbe2338403a1391a30169bef262db73cee386c713bf",
+          "framebuffer_sha256": "0ad99a733bd8981c092853c6ebabfa1e6b0e2ca7bc100da314ff2b7746d833fd"
+        }
+      ],
+      "source": {
+        "path": "originals/pkr/ENG/PKE.RES",
+        "sha256": "865da340621fa6f90548a84e9ae9bf0a85071befb32a40ca1d359e488f74d458"
+      },
+      "source_sha256": "869b55df4569273c04170b821bc02a8b60677ebe5c13c74f3f1f170c4e1cdc13",
+      "all_original_text_pixels": true
+    },
+    {
+      "resource": "BINTRO2",
+      "language": 1,
+      "bytes": 251,
+      "pages": [
+        {
+          "path": "build/g18/ui-check/bintro2-1-page0.png",
+          "sha256": "f40fbea6b16e78a5be7c16416ec9a7a44e62d88e707c64540e65e2c02cf02bce",
+          "framebuffer_sha256": "9532b512953bf9cf23b61e196b2d81f4e2a27a9a398e28bc44815ef1834f5a12"
+        }
+      ],
+      "source": {
+        "path": "originals/pkr/ENG/PKE.RES",
+        "sha256": "865da340621fa6f90548a84e9ae9bf0a85071befb32a40ca1d359e488f74d458"
+      },
+      "source_sha256": "6f8399fea5621ebba6d0120bf625b8370f93f5de2a2ff4f90612356ede3f6c26",
+      "all_original_text_pixels": true
+    },
+    {
+      "resource": "EINTRO2",
+      "language": 1,
+      "bytes": 86,
+      "pages": [
+        {
+          "path": "build/g18/ui-check/eintro2-1-page0.png",
+          "sha256": "45b26a2fc665dfab08a000be217dd743c0afd8a15d833c64d515c7d849fb2878",
+          "framebuffer_sha256": "a2d4988de5051094bf23672487fea39fac2b194f1f1aab557e1e9090d8b656ad"
+        }
+      ],
+      "source": {
+        "path": "originals/pkr/ENG/PKE.RES",
+        "sha256": "865da340621fa6f90548a84e9ae9bf0a85071befb32a40ca1d359e488f74d458"
+      },
+      "source_sha256": "fe5abd958d628ef6046c6efacdb4dd4eb7365448f4fa92c89738a47151c43e64",
+      "all_original_text_pixels": true
+    },
+    {
+      "resource": "BINTRO3",
+      "language": 1,
+      "bytes": 381,
+      "pages": [
+        {
+          "path": "build/g18/ui-check/bintro3-1-page0.png",
+          "sha256": "a82426018a13b233b31f163ed247bda4c078a77bdc446ba0b46f7f8d9139ae80",
+          "framebuffer_sha256": "9ca47def595664b2d73054f8bd457f96835aeb614e33fba40df7a248107681f0"
+        },
+        {
+          "path": "build/g18/ui-check/bintro3-1-page1.png",
+          "sha256": "3cbb05f43d21fe5eb4f71c1b93bf361ae75a76db5c3320b2cd8c96f604eadc86",
+          "framebuffer_sha256": "365e1e412b9aa44ad44b94846b4a0bd45338ae899e1264711be71314aab09714"
+        }
+      ],
+      "source": {
+        "path": "originals/pkr/ENG/PKE.RES",
+        "sha256": "865da340621fa6f90548a84e9ae9bf0a85071befb32a40ca1d359e488f74d458"
+      },
+      "source_sha256": "393a080a6383d6913f4dea9b86e99d91fa1247fdb08321fa3ccd2996b82347f0",
+      "all_original_text_pixels": true
+    },
+    {
+      "resource": "EINTRO3",
+      "language": 1,
+      "bytes": 153,
+      "pages": [
+        {
+          "path": "build/g18/ui-check/eintro3-1-page0.png",
+          "sha256": "dc56bad12cbc8ecb2f74cf9c034eb490984f6a4c74211218cd00a12beecd5309",
+          "framebuffer_sha256": "ef23553c51f2732d2a513bf8f02efa5aa1859e1f252462fad93e3d13c6f8386c"
+        }
+      ],
+      "source": {
+        "path": "originals/pkr/ENG/PKE.RES",
+        "sha256": "865da340621fa6f90548a84e9ae9bf0a85071befb32a40ca1d359e488f74d458"
+      },
+      "source_sha256": "af47c90d2b090931b78a11a966706188e6ca77986c51e04fcd3f18a1f070448c",
+      "all_original_text_pixels": true
+    },
+    {
+      "resource": "ENDTXT",
+      "language": 1,
+      "bytes": 219,
+      "pages": [
+        {
+          "path": "build/g18/ui-check/endtxt-1-page0.png",
+          "sha256": "891a48e8fceb1e50a7ab803eb4d9c7d604a1e245370c78ae2c80bfdd0601dc6d",
+          "framebuffer_sha256": "4fd804c6fdccbeba18d947e4afd41f348706faf55abfae8831fa84181d2307b8"
+        },
+        {
+          "path": "build/g18/ui-check/endtxt-1-page1.png",
+          "sha256": "2d47472153232d44e9e1c70a1c0c84bbfe35b5efc4979a0c52c3f79b15efa624",
+          "framebuffer_sha256": "80b9770d0901e609a83986be079ed2362eb3ff3abcbf03a80c5c27d9223bf352"
+        }
+      ],
+      "source": {
+        "path": "originals/pkr/ENG/PKE.RES",
+        "sha256": "865da340621fa6f90548a84e9ae9bf0a85071befb32a40ca1d359e488f74d458"
+      },
+      "source_sha256": "19438eb8ceab0925cc85d9287acca7301e2e944b79a08c5de38ee096f379dc52",
+      "all_original_text_pixels": true
+    },
+    {
+      "resource": "BINTRO1",
+      "language": 1,
+      "bytes": 364,
+      "pages": [
+        {
+          "path": "build/g18/ui-check/bintro1-1-page0.png",
+          "sha256": "0523df77d55235b7d08337afdca5ef1c093e1e850e1fcaf51f07751204b5202a",
+          "framebuffer_sha256": "08e4ea56e1f8d2db11a9123d776a95118b62030c54af942a29af4d3d51802c91"
+        },
+        {
+          "path": "build/g18/ui-check/bintro1-1-page1.png",
+          "sha256": "bbacd1b91ccbea11889cf72d1948e755818ad754a01dafcff7985decc97463b9",
+          "framebuffer_sha256": "057354a9340c5b82dca5c71d15300c44c110a855738b30cff6986e125b8e5dd7"
+        }
+      ],
+      "source": {
+        "path": "originals/pkr/ENG/PKE.RES",
+        "sha256": "865da340621fa6f90548a84e9ae9bf0a85071befb32a40ca1d359e488f74d458"
+      },
+      "source_sha256": "83497aad4a1b377bfea1011d8ad2a055a67348624a5347b3361612c0f1e5816c",
+      "all_original_text_pixels": true
+    },
+    {
+      "resource": "BINTRO3",
+      "language": 0,
+      "bytes": 345,
+      "pages": [
+        {
+          "path": "build/g18/ui-check/bintro3-0-page0.png",
+          "sha256": "c721b090f868973e1d3297a3979c5865da741455f7bce8af491a690739df0d92",
+          "framebuffer_sha256": "1d81837bcfe570dbaf568fddbc57eab9a860b980b52163839fcd987944357e8a"
+        },
+        {
+          "path": "build/g18/ui-check/bintro3-0-page1.png",
+          "sha256": "9bc3b05fab7c447bda40648947fc991678e71cf0a1c63c1ed58375d0bcdc5291",
+          "framebuffer_sha256": "9bcaa487e2c95b2fab752a83c12ca70cf1080fc4072cd05c5c7da1d797c8b217"
+        }
+      ],
+      "source": {
+        "path": "originals/pkr/RUS/PKR.RES",
+        "sha256": "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816"
+      },
+      "source_sha256": "d7d5f42547b65f7ebbdf35ab8dde341a78bbae14a6aae2d658fa577b2c5de3ce",
+      "all_original_text_pixels": true
+    },
+    {
+      "resource": "ENDTXT",
+      "language": 0,
+      "bytes": 227,
+      "pages": [
+        {
+          "path": "build/g18/ui-check/endtxt-0-page0.png",
+          "sha256": "b0ce0f9ebb8c7b66d77e8b6162a4c1a6c9b351f979e8f17cd577faec5a9be045",
+          "framebuffer_sha256": "8abf9f00a789e75e91aeef432eb62cfc46b1e713a526a7fbd05af1e09e8d3dcf"
+        },
+        {
+          "path": "build/g18/ui-check/endtxt-0-page1.png",
+          "sha256": "63b8bea12d0fc26bd4b38a8282c45493023580251d2c3dc6500b314e17d18380",
+          "framebuffer_sha256": "0259b577a896e5ad699486f1c04d885c692a0a49b4997203d22697731a841698"
+        }
+      ],
+      "source": {
+        "path": "originals/pkr/RUS/PKR.RES",
+        "sha256": "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816"
+      },
+      "source_sha256": "12c2b6e8f4f284f3d33e7add89450f7dfb00e90f30d08c7cc6eba8ad014c4fb1",
+      "all_original_text_pixels": true
+    },
+    {
+      "resource": "BINTRO1",
+      "language": 0,
+      "bytes": 338,
+      "pages": [
+        {
+          "path": "build/g18/ui-check/bintro1-0-page0.png",
+          "sha256": "b7200d1598f4dd344f322750e7eb405020c9a1acc96653d714e351cc1de86b12",
+          "framebuffer_sha256": "c5376c4c95c390e4db623dec67421706099be7d14988b31caeaad8bff0c53a4f"
+        },
+        {
+          "path": "build/g18/ui-check/bintro1-0-page1.png",
+          "sha256": "d98b3819b836d32f1b687c0c7fb54b7b909bb242683f7ee01fd738d8e4ab874c",
+          "framebuffer_sha256": "664e314814fcbfec4a10c96162f185c45999bf91744a6b056cc49e6f6975c571"
+        }
+      ],
+      "source": {
+        "path": "originals/pkr/RUS/PKR.RES",
+        "sha256": "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816"
+      },
+      "source_sha256": "80fab53555f684f5a91a1f197ac7b8c0c6a0aee06ab0495783345475ba150a24",
+      "all_original_text_pixels": true
+    },
+    {
+      "resource": "BINTRO2",
+      "language": 0,
+      "bytes": 226,
+      "pages": [
+        {
+          "path": "build/g18/ui-check/bintro2-0-page0.png",
+          "sha256": "6ff1eb8587a4d86e4cf80bd48b963742436a1fbf6049468dca147ce0eefe21ea",
+          "framebuffer_sha256": "1bdad9607c9c294f996c86ee4cfbed7bac0b66c6b2f3fd6252ab606053fb7132"
+        }
+      ],
+      "source": {
+        "path": "originals/pkr/RUS/PKR.RES",
+        "sha256": "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816"
+      },
+      "source_sha256": "b4cf10a3fb5a79f526ab61c7e7cb521c0079930e26d1d544cd374bb315e8e928",
+      "all_original_text_pixels": true
+    },
+    {
+      "resource": "EINTRO2",
+      "language": 0,
+      "bytes": 92,
+      "pages": [
+        {
+          "path": "build/g18/ui-check/eintro2-0-page0.png",
+          "sha256": "7ff9c51ff3c2035a15ab1005bb223370857f47c6aae0f9590dfae5dd4418c34a",
+          "framebuffer_sha256": "1eedeb75e834034f76af0084bde6950d126a23c2c2322b95931389ca59413ea0"
+        }
+      ],
+      "source": {
+        "path": "originals/pkr/RUS/PKR.RES",
+        "sha256": "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816"
+      },
+      "source_sha256": "c1795458c56d5e7a9c280d10663ff18178ad900bb39572964809cd2996a4b1e0",
+      "all_original_text_pixels": true
+    }
+  ],
+  "ui_screens": {
+    "title_ru": {
+      "path": "build/g18/ui-check/flow-title-ru.png",
+      "sha256": "5b5b8059fcc9609b9371f5d4b3a0e37a1eb4d3ce2c85c6521c67a2dfc9b8cb30",
+      "framebuffer_sha256": "a4d8d77cc96f99c9aa882277fb9d5330fcaa889a6a17eb138490ff6eee9a0e78"
+    },
+    "retry_0": {
+      "path": "build/g18/ui-check/flow-retry-0.png",
+      "sha256": "479289b02f6da6f3d8d719a43bc203f41fd9034bebdda9062df241f8ef805258",
+      "framebuffer_sha256": "8bdd26729b4feb59b0c1cb66d45899fa9030cad3493b019adeb4bdbe0f6fe428"
+    },
+    "retry_1": {
+      "path": "build/g18/ui-check/flow-retry-1.png",
+      "sha256": "16c5baaac1167aa334475e6e9d728d8e27783a9eedfa4b7977fe3a6eb7f5ee29",
+      "framebuffer_sha256": "3107c0d29c6fe33b84f6596540faf4eceaa4f44918f7ed16c62a67564b9ab33c"
+    },
+    "gameover_en": {
+      "path": "build/g18/ui-check/flow-gameover-en.png",
+      "sha256": "bf1c77a86602a76516b4e25bcb57abaf1653836bff58dc90d316ee33495dcaf3",
+      "framebuffer_sha256": "3a91e9e86431a1aa8f57347c439da85b8c83a1639c4126256184f4d2658dec5c"
+    },
+    "suspended_title_ru": {
+      "path": "build/g18/ui-check/flow-suspended-title-ru.png",
+      "sha256": "de020c7cda4c8aa8acb5319bcee77c15701a48c0aa3ad12cea097671b439eff5",
+      "framebuffer_sha256": "511a540ad2430bc0a066547a03e41a97cf4568ee4551327ab0b103da7962a680"
+    }
+  },
+  "gameover_three_lives": true,
+  "new_game_after_gameover": true,
+  "ending_from_title": true,
+  "suspended_continue_preserved_world_events_projectiles": true,
+  "ending_discarded_suspended_world_streams": true,
+  "new_game_replaced_live_world_without_old_owners": true,
+  "negative_hp_native_finish_sentinel": true,
+  "source_flow_independent_levels": true,
+  "no_automatic_campaign_or_inventory_carry": true,
+  "stack": {
+    "main_stack_low": 50356224,
+    "main_stack_top": 50364160,
+    "sentinel_word": 219540062,
+    "untouched_margin_bytes": 5576,
+    "high_water_bytes": 2360,
+    "irq_and_bios_excluded": true,
+    "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+  },
+  "final": {
+    "magic": 1179398456,
+    "state": 0,
+    "level": 1,
+    "session": 0,
+    "lives": 3,
+    "score": 0,
+    "transitions": 54,
+    "resets": 10,
+    "pending": 0,
+    "text_id": 65535,
+    "text_size": 0,
+    "page": 0,
+    "pages": 1,
+    "errors": 0
+  },
+  "physical_gba_tested": false,
+  "whole_dos_session_tested": false
+}

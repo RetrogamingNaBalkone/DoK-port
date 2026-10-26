@@ -1,0 +1,343 @@
+{
+  "task": "G18",
+  "status": "passed",
+  "whole_DOS_session": false,
+  "languages": {
+    "ru": {
+      "sample": "originals/pkr/RUS/PKR.EXE",
+      "sha256": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+      "manifest_sha256": "32a47220192d0cd17b9d263ff03015749d6e4a1f012ab4dbba23e264cf1cf034",
+      "asm_sha256": "5cbab24185327fedc15bb2a3cef70afc2a1f462b77f2e1a74950be408cac1371",
+      "stat_entry": "1068:1cc2",
+      "death_entry": "1068:193e",
+      "respawn_helper": "1098:125b",
+      "helper_native_far_args_and_CX30": true,
+      "equality_vectors": [
+        {
+          "score": 0,
+          "total": 0,
+          "health": -1
+        },
+        {
+          "score": 0,
+          "total": 1,
+          "health": 77
+        },
+        {
+          "score": 1,
+          "total": 0,
+          "health": 77
+        },
+        {
+          "score": 1,
+          "total": 1,
+          "health": -1
+        },
+        {
+          "score": 32767,
+          "total": 32767,
+          "health": -1
+        },
+        {
+          "score": -32768,
+          "total": -32768,
+          "health": -1
+        },
+        {
+          "score": -1,
+          "total": 0,
+          "health": 77
+        },
+        {
+          "score": -1,
+          "total": -1,
+          "health": -1
+        }
+      ],
+      "death_vectors": [
+        {
+          "health": 100,
+          "lives": 3,
+          "result": 0,
+          "lives_after": 3,
+          "preserved_other_fields": true,
+          "external_calls": []
+        },
+        {
+          "health": -1,
+          "lives": 3,
+          "result": 3,
+          "lives_after": 3,
+          "preserved_other_fields": true,
+          "external_calls": []
+        },
+        {
+          "health": 0,
+          "lives": 3,
+          "result": 1,
+          "lives_after": 2,
+          "preserved_other_fields": true,
+          "external_calls": [
+            [
+              4360,
+              503
+            ],
+            [
+              4248,
+              4699
+            ],
+            [
+              4288,
+              5013
+            ]
+          ]
+        },
+        {
+          "health": 0,
+          "lives": 2,
+          "result": 1,
+          "lives_after": 1,
+          "preserved_other_fields": true,
+          "external_calls": [
+            [
+              4360,
+              503
+            ],
+            [
+              4248,
+              4699
+            ],
+            [
+              4288,
+              5013
+            ]
+          ]
+        },
+        {
+          "health": 0,
+          "lives": 1,
+          "result": 2,
+          "lives_after": 0,
+          "preserved_other_fields": true,
+          "external_calls": [
+            [
+              4360,
+              503
+            ]
+          ]
+        },
+        {
+          "health": 0,
+          "lives": 0,
+          "result": 1,
+          "lives_after": -1,
+          "preserved_other_fields": true,
+          "external_calls": [
+            [
+              4360,
+              503
+            ],
+            [
+              4248,
+              4699
+            ],
+            [
+              4288,
+              5013
+            ]
+          ]
+        },
+        {
+          "health": 0,
+          "lives": -32768,
+          "result": 1,
+          "lives_after": 32767,
+          "preserved_other_fields": true,
+          "external_calls": [
+            [
+              4360,
+              503
+            ],
+            [
+              4248,
+              4699
+            ],
+            [
+              4288,
+              5013
+            ]
+          ]
+        }
+      ]
+    },
+    "en": {
+      "sample": "originals/pkr/ENG/PKE.EXE",
+      "sha256": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b",
+      "manifest_sha256": "14d50b9edce05de8812612d79d03408f5a70a836557c45bf2eef511fce35d640",
+      "asm_sha256": "703aa63973d21dddc373b9bde1d481c3704b5e41df5c98991157c7f7e808076d",
+      "stat_entry": "1020:2276",
+      "death_entry": "1020:1efc",
+      "respawn_helper": "1030:133f",
+      "helper_native_far_args_and_CX30": true,
+      "equality_vectors": [
+        {
+          "score": 0,
+          "total": 0,
+          "health": -1
+        },
+        {
+          "score": 0,
+          "total": 1,
+          "health": 77
+        },
+        {
+          "score": 1,
+          "total": 0,
+          "health": 77
+        },
+        {
+          "score": 1,
+          "total": 1,
+          "health": -1
+        },
+        {
+          "score": 32767,
+          "total": 32767,
+          "health": -1
+        },
+        {
+          "score": -32768,
+          "total": -32768,
+          "health": -1
+        },
+        {
+          "score": -1,
+          "total": 0,
+          "health": 77
+        },
+        {
+          "score": -1,
+          "total": -1,
+          "health": -1
+        }
+      ],
+      "death_vectors": [
+        {
+          "health": 100,
+          "lives": 3,
+          "result": 0,
+          "lives_after": 3,
+          "preserved_other_fields": true,
+          "external_calls": []
+        },
+        {
+          "health": -1,
+          "lives": 3,
+          "result": 3,
+          "lives_after": 3,
+          "preserved_other_fields": true,
+          "external_calls": []
+        },
+        {
+          "health": 0,
+          "lives": 3,
+          "result": 1,
+          "lives_after": 2,
+          "preserved_other_fields": true,
+          "external_calls": [
+            [
+              4192,
+              5949
+            ],
+            [
+              4144,
+              4927
+            ],
+            [
+              4176,
+              5880
+            ]
+          ]
+        },
+        {
+          "health": 0,
+          "lives": 2,
+          "result": 1,
+          "lives_after": 1,
+          "preserved_other_fields": true,
+          "external_calls": [
+            [
+              4192,
+              5949
+            ],
+            [
+              4144,
+              4927
+            ],
+            [
+              4176,
+              5880
+            ]
+          ]
+        },
+        {
+          "health": 0,
+          "lives": 1,
+          "result": 2,
+          "lives_after": 0,
+          "preserved_other_fields": true,
+          "external_calls": [
+            [
+              4192,
+              5949
+            ]
+          ]
+        },
+        {
+          "health": 0,
+          "lives": 0,
+          "result": 1,
+          "lives_after": -1,
+          "preserved_other_fields": true,
+          "external_calls": [
+            [
+              4192,
+              5949
+            ],
+            [
+              4144,
+              4927
+            ],
+            [
+              4176,
+              5880
+            ]
+          ]
+        },
+        {
+          "health": 0,
+          "lives": -32768,
+          "result": 1,
+          "lives_after": 32767,
+          "preserved_other_fields": true,
+          "external_calls": [
+            [
+              4192,
+              5949
+            ],
+            [
+              4144,
+              4927
+            ],
+            [
+              4176,
+              5880
+            ]
+          ]
+        }
+      ]
+    }
+  },
+  "external_hooks": "sound/HUD no-op; world restore helper copies audited 30 bytes; helper memcpy external runtime recording/copy",
+  "script_sha256": "b45a9009a61b8a051adae56e1c35c0ac8140b7a7fe74c450ca94ffe8b3b8be97"
+}

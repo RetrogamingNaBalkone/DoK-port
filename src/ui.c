@@ -10,16 +10,17 @@ unsigned dok_ui_input(dok_ui *u,uint16_t keys){
  }else if(u->state==DOK_UI_HELP || u->state==DOK_UI_STATUS){
   if(pressed&(2|4|8)){u->state=u->return_state;u->blocked|=keys;}
  }else{
-  unsigned rows=u->state==DOK_UI_PAUSE?5:4;
+  unsigned rows=u->state==DOK_UI_TITLE?6:5;
+  if(u->state==DOK_UI_TITLE && u->focus==4){if(pressed&16)u->start_level=(u->start_level+1)%3;if(pressed&32)u->start_level=(u->start_level+2)%3;}
   if(pressed&64)u->focus=(u->focus+rows-1)%rows;
   if(pressed&128)u->focus=(u->focus+1)%rows;
   if(pressed&4){if(u->state==DOK_UI_PAUSE){u->state=0;u->blocked|=keys;}else {u->language^=1;changed=1;}}
   else if((pressed&2) && u->state==DOK_UI_PAUSE){u->state=0;u->blocked|=keys;}
   else if(pressed&(1|8)){
-   if(u->focus==0){u->state=0;u->blocked|=keys;}
+   if(u->focus==0){u->action=1;u->state=0;u->blocked|=keys;}
    else if(u->focus==1){u->language^=1;changed=1;}
    else if(u->focus==2 || u->focus==3){u->return_state=u->state;u->state=u->focus==2?DOK_UI_HELP:DOK_UI_STATUS;}
-   else {u->state=DOK_UI_TITLE;u->focus=0;}
+   else if(u->state==DOK_UI_TITLE){u->action=u->focus==4?2:3;u->blocked|=keys;}else {u->state=DOK_UI_TITLE;u->focus=0;}
   }
  }
  return changed;
@@ -91,6 +92,8 @@ static void number(canvas *c,unsigned x,unsigned y,int n){
  while(count)text(c,x,y,&b[--count],1,8),x+=8;
 }
 #include "ui_text.inc"
+static const char *const ui_end[2]={"\202\233\225\216\204", "END / CREDITS"};
+static const char *const ui_new[2]={"\215\216\202\200\237 \210\203\220\200", "NEW GAME"};
 void dok_ui_draw(dok_ui *u,uint8_t *frame,const dok_runtime *w,const uint8_t *f8,const uint8_t *f16,unsigned fg,unsigned bg){
  if(!u || !frame || !w || !f8 || !f16)return;
  canvas c={frame,f8,f16,fg,bg};unsigned en=u->language;
@@ -116,13 +119,23 @@ void dok_ui_draw(dok_ui *u,uint8_t *frame,const dok_runtime *w,const uint8_t *f8
   label(&c,16,116,ui_back[en],8);
  }else{
   label(&c,16,20,u->state==DOK_UI_TITLE?ui_title[en]:ui_pause[en],16);
-  unsigned rows=u->state==DOK_UI_PAUSE?5:4;
+  unsigned rows=u->state==DOK_UI_TITLE?6:5,spacing=u->state==DOK_UI_TITLE?12:14;
   for(unsigned i=0;i<rows;i++){
-   if(i==u->focus){box(&c,14,44+i*14,212,12,fg);c.fg=bg;}
-   label(&c,18,46+i*14,ui_menu[en][i],8);
-   if(i==1)label(&c,184,46+i*14,en?"ENG":"RUS",8);
+   if(i==u->focus){box(&c,14,44+i*spacing,212,u->state==DOK_UI_TITLE?10:12,fg);c.fg=bg;}
+   label(&c,18,46+i*spacing,(i==5)?ui_end[en]:(i==4 && u->state==DOK_UI_TITLE)?ui_new[en]:ui_menu[en][i],8);
+   if(i==4 && u->state==DOK_UI_TITLE)number(&c,194,46+i*spacing,(int)u->start_level+1);
+   if(i==1)label(&c,184,46+i*spacing,en?"ENG":"RUS",8);
    c.fg=fg;
   }
   label(&c,16,116,ui_hint[en],8);
  }
+}
+
+/* Full-screen original CP866 text: CR ignored, LF line break, $/NUL end.
+ * Thirty columns by fourteen lines, pages preserve all source bytes. */
+unsigned dok_ui_screen_pages(const uint8_t *s,size_t n){unsigned row=0,col=0;for(size_t i=0;i<n && s[i] && s[i]!='$';i++){if(s[i]=='\r')continue;if(s[i]=='\n'){++row;col=0;}else{if(col==30){++row;col=0;}++col;}}return row/14+1;}
+void dok_ui_screen(uint8_t *f,const uint8_t *f8,const uint8_t *f16,unsigned fg,unsigned bg,const uint8_t *s,size_t n,unsigned page,const char *heading,unsigned language){
+ canvas c={f,f8,f16,fg,bg};box(&c,0,0,240,160,bg);label(&c,0,0,heading,16);
+ unsigned row=0,col=0;for(size_t i=0;i<n && s[i] && s[i]!='$';i++){unsigned ch=s[i];if(ch=='\r')continue;if(ch=='\n'){++row;col=0;continue;}if(col==30){++row;col=0;}if(row/14==page){uint8_t b=(uint8_t)(ch<32?' ':ch);text(&c,col*8,20+(row%14)*8,&b,1,8);}++col;}
+ label(&c,0,144,language?"A/START: OK B: BACK":"A/START: OK B: \215\200\207\200\204",8);number(&c,200,152,(int)page+1);label(&c,216,152,"/",8);number(&c,224,152,(int)dok_ui_screen_pages(s,n));
 }

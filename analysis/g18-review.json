@@ -1,0 +1,949 @@
+{
+  "task": "G18",
+  "status": "passed",
+  "next": "G20",
+  "rom_sha256": "46e4bfa412dd1abb6b729d4a9ed014802e99430b1dbc47ffb70d2de077eeb3c0",
+  "rom_bytes": 32881620,
+  "ewram_static_bytes": 248688,
+  "ewram_remaining_bytes": 13456,
+  "iwram_static_bytes": 20684,
+  "iwram_remaining_before_stack_reserve": 3892,
+  "stack_reserve_bytes": 8192,
+  "sources": {
+    "CMakeLists.txt": "8ca8dddd63108f57922f00385efb572c63c76e9d4894fe5723a47e045400b92e",
+    "gba/ai_probe.c": "2860cfbfc1afd3d7282d9f766e86e3acad4aaea561fef32b92978ea602cb3bfd",
+    "gba/assets_probe.c": "2e412592dcd4402f86317845abd39f63b15c6298189e20064dfd95898203dca9",
+    "gba/audio_backend.c": "885fb2da8d190bb1bd1a7be4684444213cfcef4a0b515b0b38c9ff5915afe648",
+    "gba/clock.c": "67f87c0f6ad6b3cf982d8ec819f4d1919955c3977c9e05bbbfb435938401ce4f",
+    "gba/columns.S": "93dffc48919f1e8a6dba3be5a80ef425ca4b316763d937b43e3888c9c73f6686",
+    "gba/combat_probe.c": "8d8dd05ada0fa931251aab9820337ecf6b838e6b12e545e517c5dcb5f35a6738",
+    "gba/divmod.S": "d6d8437c0aebc65d133ff6ada61c9aed6c99cce4d4a70eec997927816eaa8c7c",
+    "gba/flow_backend.c": "469ec1c4d1d372193bee55f25d67269db8ca2fdca070c9679955324e448c21d7",
+    "gba/gba.ld": "653de1ab2403b9fb234e2e97fa68c5c2e54ee081e8c9d6e8661694675ce2c661",
+    "gba/main.c": "724be23c0141dfc80ad4e8ba8e8d569f274d2bee41fdce8f0e0db42a823c04c3",
+    "gba/memory.c": "893a7f22e4427b3c298ee7d4b606f739d32fb6a1dcb4a90f1550db194db75e88",
+    "gba/memory_probe.c": "a6298954e7d948a16b78ac9657d6073923b393823e06228284904be8d54dcf40",
+    "gba/movement_probe.c": "eb497fe942dd5fa270c10220a22b4d637a78fa3c8961e69dbf284633da8880da",
+    "gba/renderer_probe.c": "2793ef86280077904c0d3dc1519d4f43928c36a5ca2092b409c3ea087f5e1279",
+    "gba/startup.S": "9f47c81d8891a82d74ac5d8c40826a879ca8e664dffd295d1e65be61f78d22cb",
+    "gba/time_probe.c": "8f005bc4ab248f79fc3b33004257a9bbf6c0ad59f01ccf1f1b534925a14d125f",
+    "gba/ui_backend.c": "719ca577b5a18e27475ed154d01a25c25573c989019ef36660c240ce0bf6113f",
+    "include/dok/ai.h": "70772afbfcb6792e815cd5f963304a93cee75895b690b2108f5c4de4c8f0e4ed",
+    "include/dok/animation.h": "54d0dc6599a7eca9cda958c2d4746d3034d5a75b8eb358cdfbd9d72e619d0d1d",
+    "include/dok/audio.h": "3027b916c54f40822a5231d282f3cbeeb307ad3c1992e2ac5527a9f961a9cb1e",
+    "include/dok/clock.h": "a338e61dad6947cd5b771dff1c805c479da8b4dd48c537abea4e08d2f3107204",
+    "include/dok/collision.h": "f8eafb9cff3a478c1d494c7a32d953c6f21cb5c2ec34faa611b46924ddcf5874",
+    "include/dok/combat.h": "c4388d2c56bc5c585b42d882c02284c3197b97cac2c8e47c13fb2d3a15e425ac",
+    "include/dok/flow.h": "320c4e67f4197e12b5e2fe0d43653d16763207dc66953eda2a43bd6e579aa8d0",
+    "include/dok/image.h": "18d89e8b480599a2d68916c747449675ee3cf59df6ff10c56ac5493dfab1af92",
+    "include/dok/interactions.h": "223fb2377aa4127268797f67e5d8b5cca2c88172fe4fee3bae47eac974080ee0",
+    "include/dok/items.h": "54ea8669a1472da66db7effe5dce2bfe7021d66264006f799252e00d3f1ff15f",
+    "include/dok/level.h": "7677c5beaf85bd7980a9fb2c2c4db470b6be49a76267fb59941a9ce64e22cd3d",
+    "include/dok/movement.h": "42a9bd8c333de79a985bb6e351eff3798b5d0c4b76716aad6e09ac812f097655",
+    "include/dok/native_state.h": "d8afd13d9e55b1c5c16ed3252910862940a8f02056d12a685b3294f537407898",
+    "include/dok/projection.h": "bb6c518d58cbb2cf2a7f40f596b20525decdfd05e99ed27cd3f164c972a3d15f",
+    "include/dok/renderer.h": "34e4f8140d7a82b359a25c347f7b9b7858b65ad6b54e0857b8edf4eb8c12b7be",
+    "include/dok/res.h": "4b37a74aeebe027231ae7290b5383e39647833f8b7351d98e0067c60a0cc3d11",
+    "include/dok/rom_assets.h": "6fac1b8e0a2e03eeb7d3e568d6d4ad76aa9831ae27e6ecc8f00be8abbe470d1d",
+    "include/dok/runtime.h": "b4c10752d39b8215c42073487a030939fa24a2df14b45b8d4cd0c6279697d6bd",
+    "include/dok/scheduler.h": "2a5e22df11b869a59569c0c24b13fcf28e07ad983a1d610ae84ea86bba496e22",
+    "include/dok/sound.h": "d1b794189b779fe13c853c7c35651b4052b0a7c54599d38e6c359831045a6745",
+    "include/dok/ui.h": "277b07180bf76711b2ccbabc52561d0068121215e7f6b4ff39a30596a327873a",
+    "include/dok/visual.h": "e286d1fd4c0c86bbd856f47ca393b1471e8f7b4eeda72361ebb1acaaa69ef3d3",
+    "include/dok/world.h": "27b18f98a7d7aba61a7caab21e81de5a54eefd778c103057e65f40860b1cd725",
+    "scripts/analyze-flow.ps1": "4ca715ea9e7a1d2a29152c27eb1d9a8d8c95b821bea5f0f17e95a72f53593432",
+    "scripts/audit_flow_exits.py": "24cea92cef8f04e1cd4a47bfbe3b256b140cd8a5f8b16f04288dc20ee6384340",
+    "scripts/build-gba-flow.ps1": "85bde882d4b0f0bd8b9bb6d15bc170b70722e4fce94d421f15ce5b4a549e6088",
+    "scripts/build-gba.ps1": "b42f0bfd14b4c3fffa0fc6d34dc551bb6ec7a90fb9c8ad255d822ff24fa312e5",
+    "scripts/InspectFlow.java": "7607b0eec199994d98b3ec3967f96797a15772be7073d6d5d2d67a7b2281253b",
+    "scripts/report_flow.py": "eb3c77fd1a5b3f1967eedc5cdc3a317940eff7a64c6a41bedf05181ff5b77176",
+    "scripts/verify_ai_combat_gba.py": "b9b185787c145ee149c9dc0f2318c1f74e9f5d9037ef666ec8043926579eec9e",
+    "scripts/verify_audio_gba.py": "eb6bfe8c5e156d7d5e3172ec3937672a9b2fc50c67ffad00322c2d1a3089e862",
+    "scripts/verify_flow_gba.py": "9a7439d263a1552788e0348dc46aeabfd96557a969166fbbdcc71b35daa650cd",
+    "scripts/verify_flow_host.py": "20afc4e0b9b236a0cbad54efc11fcc009f1a0ac5401ec9959d22081f92e8f4f3",
+    "scripts/verify_flow_original.py": "b45a9009a61b8a051adae56e1c35c0ac8140b7a7fe74c450ca94ffe8b3b8be97",
+    "scripts/verify_gba.py": "73289964eebc26d879d5dcc29c9e4b12cb6206ba4c69acd6ad9d11a3605f3398",
+    "scripts/verify_interactions_gba.py": "8e44b03a67d20eafef22ec65c55742f3749652bf478676fe8883242430d04820",
+    "scripts/verify_renderer_gba.py": "bd6680359225cb7f4017989c1f25f9673edd4e625e1bc63e715b5ab3dae232a0",
+    "scripts/verify_sprites_gba.py": "b545d88ec94e5a7b088979871cb2eca27bfd8a5add2eb4e35f916668da8d22a9",
+    "scripts/verify_time_gba.py": "751b45bc57fa9b1b9c1ccd27bb271a72779e2fde5eb0ff63d4c624cbbfc6d21f",
+    "scripts/verify_ui_gba.py": "ebcc022b6aea8959c97117d1c1188592bc1676946c4aee9d2684b4a3d1c463b4",
+    "src/ai.c": "774e31dbc04201848615aaeb6ddcbf27dd5325c548f2b973beffbc68199bcd60",
+    "src/ai_atan.inc": "b97121ae473a9a9921acb76e596ba2696315371528c734d377d1a35cfddf405d",
+    "src/animation.c": "39c1ddf934dd3cb48f9ac165e7ead7b6aa00be26505c7c1faadcd584895d085b",
+    "src/audio.c": "e422dab40753bf618e5b0f31f50335c754032dd154256a6703f79ff97453319f",
+    "src/clock.c": "9a8f4d4eb390f55e5988160338b9042c665c2616b4965f1f1616f849b4e7a121",
+    "src/collision.c": "0a978c5a10a4fa642b45130c3b8dcc3b5950f0963a020b90106534ca46f02129",
+    "src/combat.c": "14042da9191d6368af8620dbcedd4ae308d81112b9e8406e75ab3a5d0dc9ee67",
+    "src/flow.c": "b46f68f3cdea4c64b698ab47e3a9dabda4a790ac10fda8bf595126fac991594b",
+    "src/image.c": "88e9445e256cc771f2f243e9ee2940b21a7eeeca5b43175e34c0d06c35de7dc7",
+    "src/interactions.c": "207492215929d9267f67179528bcd2d8b265c2e8511274a5be3c9896b7b04c3c",
+    "src/items.c": "301de7b050fb15b662d1602be1e28c5fc59fdd19e3aefa143fd563fe402289de",
+    "src/level.c": "36827fedd08d3d457686f11723401983b3e6467a72164b9dc070a4450472ba54",
+    "src/movement.c": "6bdb1b0990d9cbd5403f98868692026e092a34b2ed3a9cf4a18a4333d91fba08",
+    "src/native_state.c": "8ebe41f87bc8975b8456526667e8d59e62a30a09b4728204b80a82992152e4f7",
+    "src/projection.c": "300cedf7fe914a90e7be0f55faf476922f54366122a61f767ec20f69c87b707a",
+    "src/renderer.c": "5c0530a9774aed383a0f380bd0a02949797cc826bc3f53b817236017e5440e9f",
+    "src/renderer_sprites.inc": "9dc432eee3020640642e4613d608dc7fbda7c7559656d89f989aeb09248e03fa",
+    "src/renderer_surface_raster.inc": "9965c06934012f335c32b590da6fdb14bd75da6c4eecd03efe5d8f0835722053",
+    "src/renderer_surface_sides.inc": "7afa6db6513b9d9a3b771b2d9a146eabefb67343350f85c4b755366bbbd8be47",
+    "src/renderer_surfaces.inc": "f5bd7002cb4a14d5da062d75fe92a549c2213f2f8ba257faa8fa1dbd6f5af6df",
+    "src/renderer_trig.inc": "3fc1acca3c6c7053ce9ce05e6179833e943195a24ce47a780187e3261b6762b1",
+    "src/res.c": "679043c637b9db432da020cc7ee5024b54089a33dfec8a2022634f1327c8fa86",
+    "src/rom_assets.c": "783fb0337292ba214f64da6f7d8c2a36014280113993f47de3c9f17063406204",
+    "src/runtime.c": "e8a66fc5707965d5577c3548eac63206ea5b239457ef09aa5fa46dadc6414d68",
+    "src/scheduler.c": "4406fb6fbf04efd26e3e31e6e8c0f16ed2bbb7ec287aabefdd8f07ac3f4b9d31",
+    "src/sound.c": "c2905e19b49d3e2aed2afd49d5c769c21ec82d846b093b218a1a9d6f5b72eee2",
+    "src/ui.c": "f67e472147e6ad77fbb5f99b5c49464bf37e381e40b9a300e51cfc012a468fbc",
+    "src/ui_native_text.inc": "f557a4965b8716972d8c5870de5743df260beb0328caf73c6efe06ec93e80ceb",
+    "src/ui_text.inc": "fc1ef715b4c89bade71d474048488eaa42e4e7aaa7bd4d2059c870281aa02a3f",
+    "src/visual.c": "6c11a65e419e81469f0b413eed2c6ac07f82a725c57e0d12695c20f419dee5f8",
+    "src/world.c": "721c5e402c4b43dfdc7f300ef46ab2fdafc5b481a14624884941d4bcfe6a70f4",
+    "tests/collision_cases.c": "cb0f0d929e1707214515cb08fc690b3d350a14d3b4922cbbe6f65683c4b30b15",
+    "tests/interactions_cases.c": "55d69be2fb8e61dd729eb228a625ac6d0d490964581cfd94b90bd0fc8f8b3e33",
+    "tests/movement_cases.c": "c2430813252e98e4384eca8518039cd81303ad969c118662026b7db6768c4994",
+    "tests/test_ai.c": "ef6cf2d6842b9677feeedc26b529a85a6989287a45f69e3ecd67aa52860a0b47",
+    "tests/test_ai_combat.c": "90247abecc31793a80aad1bf4da9b125585e4d62f622f0e27d50c8ce944eeb44",
+    "tests/test_animation.c": "c4eda79214050ae57773b9e19205863c46b2997c50cca3cb6c06e58951edc678",
+    "tests/test_audio.c": "f5aed83fa17fe469bab5626918ad7ac388cf574924180ddecb94fb508b0f5cf8",
+    "tests/test_collision.c": "ea19102d741538e7187b9016414f9d0485e878323e90812fd2236a99353679ae",
+    "tests/test_combat.c": "184c218b3275931e66ce3be00794d4dfd16897d68c62fece8383022ac20179af",
+    "tests/test_flow.c": "b34db40f99bf39253bdefe36e2f3d97a07fb56eecda65f56b0ea967e3b69350d",
+    "tests/test_gba_helpers.c": "291c8cfade331ef5a5f2848126a7643ac47276f93572243ab5b5bf872e146fa3",
+    "tests/test_interactions.c": "936211d5f62d2a6fd373f24b92adaae7c15fe32d04c90c4661a0e477381f70bc",
+    "tests/test_items.c": "1118f05cccb55648ac7db51267e7eefdcb900a2e288d547af671d24861256e18",
+    "tests/test_level.c": "1dddca60e7a31ecb0cad30105b3e862b85fc959bd3fb49f94add624ca8c635f5",
+    "tests/test_movement.c": "13d464aa5daac17f11f2ecd5230b593d231bbdf7328333c6dfcd1c3d82583396",
+    "tests/test_native_state.c": "6a62bb63e3e5589dbe80d23a680106c67fc6b78129bc36589266595d63613cbe",
+    "tests/test_res.c": "16ac30a827a5e3d35849da0c6210282b47bf18843d6f7ae46d55cad5b2bfb126",
+    "tests/test_rom_assets.c": "f0a855dd188cd8b2549c4e85115fb097bc3da6a6cb985f3ff2bb8bf6190ce90c",
+    "tests/test_runtime.c": "e9a7b0ea0d549e08025a06927205b90072097372b43526779f1beb4a53af1826",
+    "tests/test_sound.c": "2e28cf31df59c71d6506a9dbe9617927cadf3f796c6ffec8b327ca99aa3973ae",
+    "tests/test_time.c": "eb365902150989098da7248a822ca5d038dc1d46d035daebdd9792704ed42888",
+    "tests/test_ui.c": "c6c03a07e13aa6eda8027381db5ad4d23ad73a50ef20de1ae9d9d5aac35ae58b",
+    "tests/test_world.c": "9b91e51518a48d8524ad4c6c204428079e4c566b613435fafa453a671f7d7cbb",
+    "tests/time_cases.c": "f3c7c48ff39a3af9677e18a143e1ce3d35cf5fc4076a7073b9d61cedb00e7c57"
+  },
+  "artifacts": {
+    "build/g18/dok-diagnostic.gba": "46e4bfa412dd1abb6b729d4a9ed014802e99430b1dbc47ffb70d2de077eeb3c0",
+    "build/g18/dok-diagnostic.elf": "5a021e05cc3b93b9a6f9fcc51af0001b5d69ea3a2f7d617dd365e9c76239b61b",
+    "build/g18/dok-diagnostic.map": "f9823939053efd616dde911cc8c8604da0d4d8d86cf372fdc43c1bbe696cc508"
+  },
+  "reports": {
+    "analysis/g18-host-verification.json": "800f48cfe9011aba7c793d58622d92a804b75612ff1f6c135a03fc19874141b2",
+    "analysis/g18-original-flow.json": "41176a49000be450c7379a911fa2354cc20467fff515ba465084889f790afc35",
+    "analysis/g18-exit-audit.json": "dad177b87a85ee1ff7b131a7a003924bdce6b86446708fad408d24bdcaacae55",
+    "analysis/g18-flow-gba.json": "eb440f82f310cb727fce7909f0e13190f2eae63cb3398e9b8c75d880316acd10",
+    "analysis/g18-visual-review.json": "ef56e4773b40ee64db43814951bb5191d85375796cf3f71b3cd0489de3e0f517",
+    "analysis/g18-ui-regression.json": "5afe99b225b7401870a5114b1545d7ff94f8cec6e62d7481b64fe56912543fae",
+    "analysis/g18-renderer-regression.json": "9069ab67bd9953b2fc8db1771c6c231709a4cae1bf9ccef6afa78a4f40d89713",
+    "analysis/g18-interactions-regression.json": "96a8fb78451b5ca37bbc37e4e1b61d9588728021b3184b5d402d9e6ea397cf3e",
+    "analysis/g18-time-regression.json": "74339335c5e9974a4fd34a7a842bd9944ed6cd62a2dfb0209a5dfdd8a1b43ef6",
+    "analysis/g18-ai-combat-regression.json": "0eaec7d370db4b7733083bbf59b4fbe06e2936521d102ec9b9c7b9151f969ece",
+    "analysis/g18-audio-regression.json": "909c318606cbee0b385d9580bbf51be8c479f6074f9c1c76d48a61aa1d8fcb93"
+  },
+  "checks": {
+    "original_equality_vectors": 16,
+    "original_death_vectors": 14,
+    "original_pose_helper_vectors": 2,
+    "independent_original_RES_audit": true,
+    "all_three_levels_both_languages": true,
+    "actual_rules_and_keypad": true,
+    "renderer_interactions_time_ui_regressions": true,
+    "ai_combat_variants": 28,
+    "actual_audio_all23": true
+  },
+  "performance": {
+    "renderer_timing": {
+      "cpu_hz": 16777216,
+      "hardware_frame_cycles": 280896,
+      "target_cycles": 561792,
+      "target_hardware_frames": 2,
+      "scope": "Timer0/1 cascade: time-poll + input/language switch + renderer + HUD + halfword VRAM back-page copy; excludes presentation wait",
+      "min_cycles": 4735872,
+      "max_cycles": 5234880,
+      "worst_render_budget_ratio": 9.318181818181818,
+      "nominal_target_fps": 29.863750284802915,
+      "over_budget_draws": 100,
+      "all_observed_draws_fit_target": false,
+      "min_present_interval_vblanks": 17,
+      "max_present_interval_vblanks": 17,
+      "cadence_intervals_vblanks": [
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17
+      ],
+      "cadence_warmup_excluded_draws": 8,
+      "observed_steady_presentation_fps": 3.513382386447402,
+      "sampled_draws": 99,
+      "samples": [
+        {
+          "draws": 1,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 5217344,
+          "present_vblank": 247
+        },
+        {
+          "draws": 2,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 5234880,
+          "present_vblank": 266
+        },
+        {
+          "draws": 3,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4735872,
+          "present_vblank": 283
+        },
+        {
+          "draws": 4,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4769664,
+          "present_vblank": 300
+        },
+        {
+          "draws": 5,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4772864,
+          "present_vblank": 317
+        },
+        {
+          "draws": 6,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4773184,
+          "present_vblank": 334
+        },
+        {
+          "draws": 7,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4772864,
+          "present_vblank": 351
+        },
+        {
+          "draws": 8,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4773504,
+          "present_vblank": 368
+        },
+        {
+          "draws": 9,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4773568,
+          "present_vblank": 385
+        },
+        {
+          "draws": 10,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4769664,
+          "present_vblank": 402
+        },
+        {
+          "draws": 11,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4773504,
+          "present_vblank": 419
+        },
+        {
+          "draws": 12,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4772864,
+          "present_vblank": 436
+        },
+        {
+          "draws": 13,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4773184,
+          "present_vblank": 453
+        },
+        {
+          "draws": 14,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4772928,
+          "present_vblank": 470
+        },
+        {
+          "draws": 15,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4773504,
+          "present_vblank": 487
+        },
+        {
+          "draws": 16,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4772928,
+          "present_vblank": 504
+        },
+        {
+          "draws": 17,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4770368,
+          "present_vblank": 521
+        },
+        {
+          "draws": 18,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4772864,
+          "present_vblank": 538
+        },
+        {
+          "draws": 19,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4773504,
+          "present_vblank": 555
+        },
+        {
+          "draws": 20,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4772544,
+          "present_vblank": 572
+        },
+        {
+          "draws": 21,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4773504,
+          "present_vblank": 589
+        },
+        {
+          "draws": 22,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4773568,
+          "present_vblank": 606
+        },
+        {
+          "draws": 23,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4772544,
+          "present_vblank": 623
+        },
+        {
+          "draws": 24,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4773504,
+          "present_vblank": 640
+        },
+        {
+          "draws": 25,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4770048,
+          "present_vblank": 657
+        },
+        {
+          "draws": 26,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4773184,
+          "present_vblank": 674
+        },
+        {
+          "draws": 27,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4772928,
+          "present_vblank": 691
+        },
+        {
+          "draws": 28,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4773504,
+          "present_vblank": 708
+        },
+        {
+          "draws": 29,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4772928,
+          "present_vblank": 725
+        },
+        {
+          "draws": 30,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4773184,
+          "present_vblank": 742
+        },
+        {
+          "draws": 31,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4772928,
+          "present_vblank": 759
+        },
+        {
+          "draws": 32,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4770688,
+          "present_vblank": 776
+        },
+        {
+          "draws": 33,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4772544,
+          "present_vblank": 793
+        },
+        {
+          "draws": 34,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4773504,
+          "present_vblank": 810
+        },
+        {
+          "draws": 35,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4780224,
+          "present_vblank": 827
+        },
+        {
+          "draws": 36,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4773248,
+          "present_vblank": 844
+        },
+        {
+          "draws": 37,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4773312,
+          "present_vblank": 861
+        },
+        {
+          "draws": 38,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4773056,
+          "present_vblank": 878
+        },
+        {
+          "draws": 39,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4770880,
+          "present_vblank": 895
+        },
+        {
+          "draws": 40,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4773312,
+          "present_vblank": 912
+        },
+        {
+          "draws": 41,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4772992,
+          "present_vblank": 929
+        },
+        {
+          "draws": 42,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4773696,
+          "present_vblank": 946
+        },
+        {
+          "draws": 43,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4772672,
+          "present_vblank": 963
+        },
+        {
+          "draws": 44,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4773696,
+          "present_vblank": 980
+        },
+        {
+          "draws": 45,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4772992,
+          "present_vblank": 997
+        },
+        {
+          "draws": 46,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4773696,
+          "present_vblank": 1014
+        },
+        {
+          "draws": 47,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4769856,
+          "present_vblank": 1031
+        },
+        {
+          "draws": 48,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4773696,
+          "present_vblank": 1048
+        },
+        {
+          "draws": 49,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4773056,
+          "present_vblank": 1065
+        },
+        {
+          "draws": 50,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4773376,
+          "present_vblank": 1082
+        },
+        {
+          "draws": 51,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4773056,
+          "present_vblank": 1099
+        },
+        {
+          "draws": 52,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4773696,
+          "present_vblank": 1116
+        },
+        {
+          "draws": 53,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4773056,
+          "present_vblank": 1133
+        },
+        {
+          "draws": 54,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4770496,
+          "present_vblank": 1150
+        },
+        {
+          "draws": 55,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4773056,
+          "present_vblank": 1167
+        },
+        {
+          "draws": 56,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4773632,
+          "present_vblank": 1184
+        },
+        {
+          "draws": 57,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4773312,
+          "present_vblank": 1201
+        },
+        {
+          "draws": 58,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4773056,
+          "present_vblank": 1218
+        },
+        {
+          "draws": 59,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4773760,
+          "present_vblank": 1235
+        },
+        {
+          "draws": 60,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4772672,
+          "present_vblank": 1252
+        },
+        {
+          "draws": 61,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4770880,
+          "present_vblank": 1269
+        },
+        {
+          "draws": 62,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4773056,
+          "present_vblank": 1286
+        },
+        {
+          "draws": 63,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4773376,
+          "present_vblank": 1303
+        },
+        {
+          "draws": 64,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4773056,
+          "present_vblank": 1320
+        },
+        {
+          "draws": 65,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4773568,
+          "present_vblank": 1337
+        },
+        {
+          "draws": 66,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4772928,
+          "present_vblank": 1354
+        },
+        {
+          "draws": 67,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4773184,
+          "present_vblank": 1371
+        },
+        {
+          "draws": 68,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4776704,
+          "present_vblank": 1388
+        },
+        {
+          "draws": 69,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4773824,
+          "present_vblank": 1405
+        },
+        {
+          "draws": 70,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4773376,
+          "present_vblank": 1422
+        },
+        {
+          "draws": 71,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4773056,
+          "present_vblank": 1439
+        },
+        {
+          "draws": 72,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4773696,
+          "present_vblank": 1456
+        },
+        {
+          "draws": 73,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4772992,
+          "present_vblank": 1473
+        },
+        {
+          "draws": 74,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4773312,
+          "present_vblank": 1490
+        },
+        {
+          "draws": 75,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4770176,
+          "present_vblank": 1507
+        },
+        {
+          "draws": 76,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4773696,
+          "present_vblank": 1524
+        },
+        {
+          "draws": 77,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4772672,
+          "present_vblank": 1541
+        },
+        {
+          "draws": 78,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4773696,
+          "present_vblank": 1558
+        },
+        {
+          "draws": 79,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4773056,
+          "present_vblank": 1575
+        },
+        {
+          "draws": 80,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4773376,
+          "present_vblank": 1592
+        },
+        {
+          "draws": 81,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4773696,
+          "present_vblank": 1609
+        },
+        {
+          "draws": 82,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4770176,
+          "present_vblank": 1626
+        },
+        {
+          "draws": 83,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4773312,
+          "present_vblank": 1643
+        },
+        {
+          "draws": 84,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4772992,
+          "present_vblank": 1660
+        },
+        {
+          "draws": 85,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4773696,
+          "present_vblank": 1677
+        },
+        {
+          "draws": 86,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4773056,
+          "present_vblank": 1694
+        },
+        {
+          "draws": 87,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4773376,
+          "present_vblank": 1711
+        },
+        {
+          "draws": 88,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4772992,
+          "present_vblank": 1728
+        },
+        {
+          "draws": 89,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4770880,
+          "present_vblank": 1745
+        },
+        {
+          "draws": 90,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4772672,
+          "present_vblank": 1762
+        },
+        {
+          "draws": 91,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4773696,
+          "present_vblank": 1779
+        },
+        {
+          "draws": 92,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4773056,
+          "present_vblank": 1796
+        },
+        {
+          "draws": 93,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4773696,
+          "present_vblank": 1813
+        },
+        {
+          "draws": 94,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4772672,
+          "present_vblank": 1830
+        },
+        {
+          "draws": 95,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4773696,
+          "present_vblank": 1847
+        },
+        {
+          "draws": 96,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4769728,
+          "present_vblank": 1864
+        },
+        {
+          "draws": 97,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4773504,
+          "present_vblank": 1881
+        },
+        {
+          "draws": 98,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4772864,
+          "present_vblank": 1898
+        },
+        {
+          "draws": 99,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4773504,
+          "present_vblank": 1915
+        }
+      ]
+    },
+    "target30fps_verified": false
+  },
+  "limits": [
+    "Physical GBA/original BIOS and whole DOS session untested",
+    "Original levels are selected independently; no automatic campaign or inter-world inventory carry",
+    "PKR/PKE have no category99 collectibles: original score/total equality is 0==0, not a collection goal",
+    "GBA menu/keypad/text pagination and suspended Continue are platform adaptations",
+    "Linux static and Thumb compile checked; Linux/MSVC/CMake execution untested",
+    "30FPS remains G20; original viewport and detail retained",
+    "Audio G16 user listening accepted; G18 PCM numerically captured, not newly user-listened"
+  ]
+}

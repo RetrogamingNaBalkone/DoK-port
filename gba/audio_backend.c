@@ -83,3 +83,6 @@ void gba_audio_update(unsigned lang){language=lang;
   g_audio_probe.result=(uint32_t)result;g_audio_probe.ack=g_audio_probe.request;
  }
 }
+
+void gba_audio_quiet(void){uint16_t old=R16(0x04000208);R16(0x04000208)=0;
+ if(voice.active)dok_audio_stop(&voice,voice.resource);hardware_stop();voice=(dok_audio){0};cursor=(dok_audio){0};remaining=chunk=0;sync();R16(0x04000208)=old;}

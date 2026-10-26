@@ -1,0 +1,134 @@
+{
+  "task": "G18",
+  "status": "passed",
+  "script_sha256": "24cea92cef8f04e1cd4a47bfbe3b256b140cd8a5f8b16f04288dc20ee6384340",
+  "scope": "Original PKR/PKE LEVEL data; actual EXE branch is verified separately by G18 native probes",
+  "levels": [
+    {
+      "language": "ru",
+      "level": 1,
+      "archive": "originals/pkr/RUS/PKR.RES",
+      "archive_sha256": "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816",
+      "exe_sha256": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+      "score_item_definitions": [],
+      "score_total": 0,
+      "exits": [
+        {
+          "object": 114,
+          "glyph": 178,
+          "fcmap_cells": [
+            414,
+            415
+          ]
+        }
+      ],
+      "address_system": "original LEVEL FCMap row-major file cells, not GBA reversed runtime rows"
+    },
+    {
+      "language": "ru",
+      "level": 2,
+      "archive": "originals/pkr/RUS/PKR.RES",
+      "archive_sha256": "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816",
+      "exe_sha256": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+      "score_item_definitions": [],
+      "score_total": 0,
+      "exits": [
+        {
+          "object": 115,
+          "glyph": 178,
+          "fcmap_cells": [
+            3610,
+            3611
+          ]
+        }
+      ],
+      "address_system": "original LEVEL FCMap row-major file cells, not GBA reversed runtime rows"
+    },
+    {
+      "language": "ru",
+      "level": 3,
+      "archive": "originals/pkr/RUS/PKR.RES",
+      "archive_sha256": "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816",
+      "exe_sha256": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+      "score_item_definitions": [],
+      "score_total": 0,
+      "exits": [
+        {
+          "object": 156,
+          "glyph": 178,
+          "fcmap_cells": [
+            2788,
+            2789,
+            2790,
+            2791
+          ]
+        }
+      ],
+      "address_system": "original LEVEL FCMap row-major file cells, not GBA reversed runtime rows"
+    },
+    {
+      "language": "en",
+      "level": 1,
+      "archive": "originals/pkr/ENG/PKE.RES",
+      "archive_sha256": "865da340621fa6f90548a84e9ae9bf0a85071befb32a40ca1d359e488f74d458",
+      "exe_sha256": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b",
+      "score_item_definitions": [],
+      "score_total": 0,
+      "exits": [
+        {
+          "object": 114,
+          "glyph": 178,
+          "fcmap_cells": [
+            414,
+            415
+          ]
+        }
+      ],
+      "address_system": "original LEVEL FCMap row-major file cells, not GBA reversed runtime rows"
+    },
+    {
+      "language": "en",
+      "level": 2,
+      "archive": "originals/pkr/ENG/PKE.RES",
+      "archive_sha256": "865da340621fa6f90548a84e9ae9bf0a85071befb32a40ca1d359e488f74d458",
+      "exe_sha256": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b",
+      "score_item_definitions": [],
+      "score_total": 0,
+      "exits": [
+        {
+          "object": 115,
+          "glyph": 178,
+          "fcmap_cells": [
+            3610,
+            3611
+          ]
+        }
+      ],
+      "address_system": "original LEVEL FCMap row-major file cells, not GBA reversed runtime rows"
+    },
+    {
+      "language": "en",
+      "level": 3,
+      "archive": "originals/pkr/ENG/PKE.RES",
+      "archive_sha256": "865da340621fa6f90548a84e9ae9bf0a85071befb32a40ca1d359e488f74d458",
+      "exe_sha256": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b",
+      "score_item_definitions": [],
+      "score_total": 0,
+      "exits": [
+        {
+          "object": 156,
+          "glyph": 178,
+          "fcmap_cells": [
+            2788,
+            2789,
+            2790,
+            2791
+          ]
+        }
+      ],
+      "address_system": "original LEVEL FCMap row-major file cells, not GBA reversed runtime rows"
+    }
+  ],
+  "conclusion": "No score collection is required for exits in any supplied PKR/PKE level. The inherited equality branch is satisfied by initial score0 and total0.",
+  "whole_dos_session_tested": false
+}
