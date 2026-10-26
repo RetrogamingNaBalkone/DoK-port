@@ -1,4 +1,5 @@
 #include "dok/combat.h"
+#include "dok/cell_coordinate.h"
 #include "dok/movement.h"
 #include "dok/animation.h"
 static int16_t word(int32_t x) {uint16_t n=(uint16_t)x;return n<32768?(int16_t)n:(int16_t)((int32_t)n-65536);}
@@ -106,6 +107,12 @@ int dok_combat_damage(dok_combat *c,uint16_t target,uint16_t source,int16_t dama
 }
 static int cell(dok_combat *c,int32_t x,int32_t z) {
  const dok_runtime_level *l=c->world->level;int side=l->settings[DOK_LEVEL_CELL_SIDE];
+#ifdef DOK_RENDERER_PROBE
+ if(side==480 && l->settings[DOK_LEVEL_WIDTH]==64 && l->settings[DOK_LEVEL_LENGTH]==64){
+  if((uint32_t)x>=30720 || (uint32_t)z>=30720)return -1;
+  return dok_cell_480[(uint32_t)x>>4]+((unsigned)dok_cell_480[(uint32_t)z>>4]<<6);
+ }
+#endif
  int cx=x/side,cz=z/side;if(x<0 || z<0 || cx>=l->settings[DOK_LEVEL_WIDTH] || cz>=l->settings[DOK_LEVEL_LENGTH])return -1;
  return cz*l->settings[DOK_LEVEL_WIDTH]+cx;
 }

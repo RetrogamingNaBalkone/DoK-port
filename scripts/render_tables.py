@@ -10,4 +10,7 @@ lines = ['.section .rodata.render_tables,"a",%progbits', '.balign 4',
 values = [0, 0xffffffff] + [(1 << 32)//d for d in range(2, 65536)]
 for i in range(0, len(values), 8):
     lines.append('.word ' + ','.join(str(v) for v in values[i:i+8]))
+lines.extend(('.global dok_cell_480','dok_cell_480:'))
+for i in range(0,1920,32):
+    lines.append('.byte '+','.join(str(n//30) for n in range(i,min(i+32,1920))))
 a.output.write_text('\n'.join(lines)+'\n', encoding='ascii')

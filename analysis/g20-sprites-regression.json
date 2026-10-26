@@ -1,0 +1,1586 @@
+{
+  "task": "G11",
+  "status": "passed",
+  "rom_sha256": "a56330bf11dc6f3e5906d71b8d2dbb20b2c36a55c9f3e63c8c8eb5baa44c5c94",
+  "script_sha256": "b545d88ec94e5a7b088979871cb2eca27bfd8a5add2eb4e35f916668da8d22a9",
+  "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+  "emulator": "mGBA",
+  "emulator_version": "0.11-212-7a12d6d",
+  "automatic": {
+    "level": 2,
+    "changed_objects": [
+      112,
+      113,
+      115
+    ],
+    "water_objects": [
+      111,
+      112,
+      113,
+      114
+    ],
+    "phase_trace_per_presentation": [
+      [
+        18,
+        4,
+        4,
+        18
+      ],
+      [
+        18,
+        9,
+        9,
+        18
+      ],
+      [
+        18,
+        14,
+        14,
+        18
+      ],
+      [
+        18,
+        0,
+        18,
+        18
+      ],
+      [
+        18,
+        4,
+        4,
+        18
+      ]
+    ],
+    "multiple_steps_per_draw_verified": true
+  },
+  "water_callback": {
+    "object": 112,
+    "states": [
+      {
+        "counter": 5,
+        "displayed_crop": 4,
+        "active": 1
+      },
+      {
+        "counter": 6,
+        "displayed_crop": 5,
+        "active": 1
+      },
+      {
+        "counter": 7,
+        "displayed_crop": 6,
+        "active": 1
+      },
+      {
+        "counter": 8,
+        "displayed_crop": 7,
+        "active": 1
+      },
+      {
+        "counter": 9,
+        "displayed_crop": 8,
+        "active": 1
+      },
+      {
+        "counter": 10,
+        "displayed_crop": 9,
+        "active": 1
+      },
+      {
+        "counter": 11,
+        "displayed_crop": 10,
+        "active": 1
+      },
+      {
+        "counter": 12,
+        "displayed_crop": 11,
+        "active": 1
+      },
+      {
+        "counter": 13,
+        "displayed_crop": 12,
+        "active": 1
+      },
+      {
+        "counter": 14,
+        "displayed_crop": 13,
+        "active": 1
+      },
+      {
+        "counter": 15,
+        "displayed_crop": 14,
+        "active": 1
+      },
+      {
+        "counter": 16,
+        "displayed_crop": 15,
+        "active": 1
+      },
+      {
+        "counter": 17,
+        "displayed_crop": 16,
+        "active": 1
+      },
+      {
+        "counter": 18,
+        "displayed_crop": 17,
+        "active": 1
+      },
+      {
+        "counter": 18,
+        "displayed_crop": 17,
+        "active": 0
+      }
+    ],
+    "crop_then_increment_verified": true
+  },
+  "playback": [
+    {
+      "language": 0,
+      "object": 1,
+      "slot": 65521,
+      "resource": "818e9f905f88",
+      "loop": false,
+      "transitions": [
+        {
+          "frame": 0,
+          "interval": 2500,
+          "deadline": 1002500,
+          "poll_tick": 1002500,
+          "after": {
+            "magic": 1447646001,
+            "error": 0,
+            "steps": 1,
+            "completed": 0,
+            "now": 1002500,
+            "object": 1,
+            "frame": 1,
+            "active": 1,
+            "deadline": 1005000,
+            "resource": 44,
+            "budget": 200
+          }
+        },
+        {
+          "frame": 1,
+          "interval": 2500,
+          "deadline": 1005000,
+          "poll_tick": 1005000,
+          "after": {
+            "magic": 1447646001,
+            "error": 0,
+            "steps": 2,
+            "completed": 0,
+            "now": 1005000,
+            "object": 1,
+            "frame": 2,
+            "active": 1,
+            "deadline": 1007500,
+            "resource": 44,
+            "budget": 200
+          }
+        },
+        {
+          "frame": 2,
+          "interval": 2500,
+          "deadline": 1007500,
+          "poll_tick": 1007500,
+          "after": {
+            "magic": 1447646001,
+            "error": 0,
+            "steps": 3,
+            "completed": 0,
+            "now": 1007500,
+            "object": 1,
+            "frame": 3,
+            "active": 1,
+            "deadline": 1010000,
+            "resource": 44,
+            "budget": 200
+          }
+        },
+        {
+          "frame": 3,
+          "interval": 2500,
+          "deadline": 1010000,
+          "poll_tick": 1010000,
+          "after": {
+            "magic": 1447646001,
+            "error": 0,
+            "steps": 3,
+            "completed": 1,
+            "now": 1010000,
+            "object": 1,
+            "frame": 3,
+            "active": 0,
+            "deadline": 1012500,
+            "resource": 44,
+            "budget": 200
+          }
+        }
+      ],
+      "negative_intervals": 0
+    },
+    {
+      "language": 0,
+      "object": 1,
+      "slot": 65521,
+      "resource": "818e9f905f88",
+      "loop": true,
+      "transitions": [
+        {
+          "frame": 0,
+          "interval": 2500,
+          "deadline": 1002500,
+          "poll_tick": 1002500,
+          "after": {
+            "magic": 1447646001,
+            "error": 0,
+            "steps": 4,
+            "completed": 1,
+            "now": 1002500,
+            "object": 1,
+            "frame": 1,
+            "active": 1,
+            "deadline": 1005000,
+            "resource": 44,
+            "budget": 199
+          }
+        },
+        {
+          "frame": 1,
+          "interval": 2500,
+          "deadline": 1005000,
+          "poll_tick": 1005000,
+          "after": {
+            "magic": 1447646001,
+            "error": 0,
+            "steps": 5,
+            "completed": 1,
+            "now": 1005000,
+            "object": 1,
+            "frame": 2,
+            "active": 1,
+            "deadline": 1007500,
+            "resource": 44,
+            "budget": 198
+          }
+        },
+        {
+          "frame": 2,
+          "interval": 2500,
+          "deadline": 1007500,
+          "poll_tick": 1007500,
+          "after": {
+            "magic": 1447646001,
+            "error": 0,
+            "steps": 6,
+            "completed": 1,
+            "now": 1007500,
+            "object": 1,
+            "frame": 3,
+            "active": 1,
+            "deadline": 1010000,
+            "resource": 44,
+            "budget": 197
+          }
+        },
+        {
+          "frame": 3,
+          "interval": 2500,
+          "deadline": 1010000,
+          "poll_tick": 1010000,
+          "after": {
+            "magic": 1447646001,
+            "error": 0,
+            "steps": 7,
+            "completed": 1,
+            "now": 1010000,
+            "object": 1,
+            "frame": 0,
+            "active": 1,
+            "deadline": 1012500,
+            "resource": 44,
+            "budget": 196
+          }
+        },
+        {
+          "frame": 0,
+          "interval": 2500,
+          "deadline": 1012500,
+          "poll_tick": 1012500,
+          "after": {
+            "magic": 1447646001,
+            "error": 0,
+            "steps": 8,
+            "completed": 1,
+            "now": 1012500,
+            "object": 1,
+            "frame": 1,
+            "active": 1,
+            "deadline": 1015000,
+            "resource": 44,
+            "budget": 195
+          }
+        },
+        {
+          "frame": 1,
+          "interval": 2500,
+          "deadline": 1015000,
+          "poll_tick": 1015000,
+          "after": {
+            "magic": 1447646001,
+            "error": 0,
+            "steps": 9,
+            "completed": 1,
+            "now": 1015000,
+            "object": 1,
+            "frame": 2,
+            "active": 1,
+            "deadline": 1017500,
+            "resource": 44,
+            "budget": 194
+          }
+        }
+      ],
+      "negative_intervals": 0
+    },
+    {
+      "language": 0,
+      "object": 1,
+      "slot": 236,
+      "resource": "818e9f905f93",
+      "loop": false,
+      "transitions": [
+        {
+          "frame": 0,
+          "interval": 1000,
+          "deadline": 1001000,
+          "poll_tick": 1001000,
+          "after": {
+            "magic": 1447646001,
+            "error": 0,
+            "steps": 10,
+            "completed": 1,
+            "now": 1001000,
+            "object": 1,
+            "frame": 1,
+            "active": 1,
+            "deadline": 1002000,
+            "resource": 45,
+            "budget": 200
+          }
+        },
+        {
+          "frame": 1,
+          "interval": 1000,
+          "deadline": 1002000,
+          "poll_tick": 1002000,
+          "after": {
+            "magic": 1447646001,
+            "error": 0,
+            "steps": 11,
+            "completed": 1,
+            "now": 1002000,
+            "object": 1,
+            "frame": 2,
+            "active": 1,
+            "deadline": 1003000,
+            "resource": 45,
+            "budget": 200
+          }
+        },
+        {
+          "frame": 2,
+          "interval": 1000,
+          "deadline": 1003000,
+          "poll_tick": 1003000,
+          "after": {
+            "magic": 1447646001,
+            "error": 0,
+            "steps": 12,
+            "completed": 1,
+            "now": 1003000,
+            "object": 1,
+            "frame": 3,
+            "active": 1,
+            "deadline": 1004000,
+            "resource": 45,
+            "budget": 200
+          }
+        },
+        {
+          "frame": 3,
+          "interval": 1000,
+          "deadline": 1004000,
+          "poll_tick": 1004000,
+          "after": {
+            "magic": 1447646001,
+            "error": 0,
+            "steps": 13,
+            "completed": 1,
+            "now": 1004000,
+            "object": 1,
+            "frame": 4,
+            "active": 1,
+            "deadline": 1005000,
+            "resource": 45,
+            "budget": 200
+          }
+        },
+        {
+          "frame": 4,
+          "interval": 1000,
+          "deadline": 1005000,
+          "poll_tick": 1005000,
+          "after": {
+            "magic": 1447646001,
+            "error": 0,
+            "steps": 14,
+            "completed": 1,
+            "now": 1005000,
+            "object": 1,
+            "frame": 5,
+            "active": 1,
+            "deadline": 1006000,
+            "resource": 45,
+            "budget": 200
+          }
+        },
+        {
+          "frame": 5,
+          "interval": 1000,
+          "deadline": 1006000,
+          "poll_tick": 1006000,
+          "after": {
+            "magic": 1447646001,
+            "error": 0,
+            "steps": 15,
+            "completed": 1,
+            "now": 1006000,
+            "object": 1,
+            "frame": 6,
+            "active": 1,
+            "deadline": 1007000,
+            "resource": 45,
+            "budget": 200
+          }
+        },
+        {
+          "frame": 6,
+          "interval": 1000,
+          "deadline": 1007000,
+          "poll_tick": 1007000,
+          "after": {
+            "magic": 1447646001,
+            "error": 0,
+            "steps": 16,
+            "completed": 1,
+            "now": 1007000,
+            "object": 1,
+            "frame": 7,
+            "active": 1,
+            "deadline": 975928,
+            "resource": 45,
+            "budget": 200
+          }
+        },
+        {
+          "frame": 7,
+          "interval": -31072,
+          "deadline": 975928,
+          "poll_tick": 1007000,
+          "after": {
+            "magic": 1447646001,
+            "error": 0,
+            "steps": 16,
+            "completed": 2,
+            "now": 1007000,
+            "object": 1,
+            "frame": 7,
+            "active": 0,
+            "deadline": 975928,
+            "resource": 45,
+            "budget": 200
+          }
+        }
+      ],
+      "negative_intervals": 1
+    },
+    {
+      "language": 0,
+      "object": 35,
+      "slot": 236,
+      "resource": "8c9b989c5f93",
+      "loop": false,
+      "transitions": [
+        {
+          "frame": 0,
+          "interval": 2000,
+          "deadline": 1002000,
+          "poll_tick": 1002000,
+          "after": {
+            "magic": 1447646001,
+            "error": 0,
+            "steps": 17,
+            "completed": 2,
+            "now": 1002000,
+            "object": 35,
+            "frame": 1,
+            "active": 1,
+            "deadline": 1004000,
+            "resource": 95,
+            "budget": 200
+          }
+        },
+        {
+          "frame": 1,
+          "interval": 2000,
+          "deadline": 1004000,
+          "poll_tick": 1004000,
+          "after": {
+            "magic": 1447646001,
+            "error": 0,
+            "steps": 18,
+            "completed": 2,
+            "now": 1004000,
+            "object": 35,
+            "frame": 2,
+            "active": 1,
+            "deadline": 1006000,
+            "resource": 95,
+            "budget": 200
+          }
+        },
+        {
+          "frame": 2,
+          "interval": 2000,
+          "deadline": 1006000,
+          "poll_tick": 1006000,
+          "after": {
+            "magic": 1447646001,
+            "error": 0,
+            "steps": 19,
+            "completed": 2,
+            "now": 1006000,
+            "object": 35,
+            "frame": 3,
+            "active": 1,
+            "deadline": 1008000,
+            "resource": 95,
+            "budget": 200
+          }
+        },
+        {
+          "frame": 3,
+          "interval": 2000,
+          "deadline": 1008000,
+          "poll_tick": 1008000,
+          "after": {
+            "magic": 1447646001,
+            "error": 0,
+            "steps": 20,
+            "completed": 2,
+            "now": 1008000,
+            "object": 35,
+            "frame": 4,
+            "active": 1,
+            "deadline": 1010000,
+            "resource": 95,
+            "budget": 200
+          }
+        },
+        {
+          "frame": 4,
+          "interval": 2000,
+          "deadline": 1010000,
+          "poll_tick": 1010000,
+          "after": {
+            "magic": 1447646001,
+            "error": 0,
+            "steps": 21,
+            "completed": 2,
+            "now": 1010000,
+            "object": 35,
+            "frame": 5,
+            "active": 1,
+            "deadline": 978928,
+            "resource": 95,
+            "budget": 200
+          }
+        },
+        {
+          "frame": 5,
+          "interval": -31072,
+          "deadline": 978928,
+          "poll_tick": 1010000,
+          "after": {
+            "magic": 1447646001,
+            "error": 0,
+            "steps": 21,
+            "completed": 3,
+            "now": 1010000,
+            "object": 35,
+            "frame": 5,
+            "active": 0,
+            "deadline": 978928,
+            "resource": 95,
+            "budget": 200
+          }
+        }
+      ],
+      "negative_intervals": 1
+    },
+    {
+      "language": 1,
+      "object": 1,
+      "slot": 65521,
+      "resource": "818e9f905f88",
+      "loop": false,
+      "transitions": [
+        {
+          "frame": 0,
+          "interval": 2500,
+          "deadline": 1002500,
+          "poll_tick": 1002500,
+          "after": {
+            "magic": 1447646001,
+            "error": 0,
+            "steps": 22,
+            "completed": 3,
+            "now": 1002500,
+            "object": 1,
+            "frame": 1,
+            "active": 1,
+            "deadline": 1005000,
+            "resource": 44,
+            "budget": 200
+          }
+        },
+        {
+          "frame": 1,
+          "interval": 2500,
+          "deadline": 1005000,
+          "poll_tick": 1005000,
+          "after": {
+            "magic": 1447646001,
+            "error": 0,
+            "steps": 23,
+            "completed": 3,
+            "now": 1005000,
+            "object": 1,
+            "frame": 2,
+            "active": 1,
+            "deadline": 1007500,
+            "resource": 44,
+            "budget": 200
+          }
+        },
+        {
+          "frame": 2,
+          "interval": 2500,
+          "deadline": 1007500,
+          "poll_tick": 1007500,
+          "after": {
+            "magic": 1447646001,
+            "error": 0,
+            "steps": 24,
+            "completed": 3,
+            "now": 1007500,
+            "object": 1,
+            "frame": 3,
+            "active": 1,
+            "deadline": 1010000,
+            "resource": 44,
+            "budget": 200
+          }
+        },
+        {
+          "frame": 3,
+          "interval": 2500,
+          "deadline": 1010000,
+          "poll_tick": 1010000,
+          "after": {
+            "magic": 1447646001,
+            "error": 0,
+            "steps": 24,
+            "completed": 4,
+            "now": 1010000,
+            "object": 1,
+            "frame": 3,
+            "active": 0,
+            "deadline": 1012500,
+            "resource": 44,
+            "budget": 200
+          }
+        }
+      ],
+      "negative_intervals": 0
+    },
+    {
+      "language": 1,
+      "object": 1,
+      "slot": 65521,
+      "resource": "818e9f905f88",
+      "loop": true,
+      "transitions": [
+        {
+          "frame": 0,
+          "interval": 2500,
+          "deadline": 1002500,
+          "poll_tick": 1002500,
+          "after": {
+            "magic": 1447646001,
+            "error": 0,
+            "steps": 25,
+            "completed": 4,
+            "now": 1002500,
+            "object": 1,
+            "frame": 1,
+            "active": 1,
+            "deadline": 1005000,
+            "resource": 44,
+            "budget": 199
+          }
+        },
+        {
+          "frame": 1,
+          "interval": 2500,
+          "deadline": 1005000,
+          "poll_tick": 1005000,
+          "after": {
+            "magic": 1447646001,
+            "error": 0,
+            "steps": 26,
+            "completed": 4,
+            "now": 1005000,
+            "object": 1,
+            "frame": 2,
+            "active": 1,
+            "deadline": 1007500,
+            "resource": 44,
+            "budget": 198
+          }
+        },
+        {
+          "frame": 2,
+          "interval": 2500,
+          "deadline": 1007500,
+          "poll_tick": 1007500,
+          "after": {
+            "magic": 1447646001,
+            "error": 0,
+            "steps": 27,
+            "completed": 4,
+            "now": 1007500,
+            "object": 1,
+            "frame": 3,
+            "active": 1,
+            "deadline": 1010000,
+            "resource": 44,
+            "budget": 197
+          }
+        },
+        {
+          "frame": 3,
+          "interval": 2500,
+          "deadline": 1010000,
+          "poll_tick": 1010000,
+          "after": {
+            "magic": 1447646001,
+            "error": 0,
+            "steps": 28,
+            "completed": 4,
+            "now": 1010000,
+            "object": 1,
+            "frame": 0,
+            "active": 1,
+            "deadline": 1012500,
+            "resource": 44,
+            "budget": 196
+          }
+        },
+        {
+          "frame": 0,
+          "interval": 2500,
+          "deadline": 1012500,
+          "poll_tick": 1012500,
+          "after": {
+            "magic": 1447646001,
+            "error": 0,
+            "steps": 29,
+            "completed": 4,
+            "now": 1012500,
+            "object": 1,
+            "frame": 1,
+            "active": 1,
+            "deadline": 1015000,
+            "resource": 44,
+            "budget": 195
+          }
+        },
+        {
+          "frame": 1,
+          "interval": 2500,
+          "deadline": 1015000,
+          "poll_tick": 1015000,
+          "after": {
+            "magic": 1447646001,
+            "error": 0,
+            "steps": 30,
+            "completed": 4,
+            "now": 1015000,
+            "object": 1,
+            "frame": 2,
+            "active": 1,
+            "deadline": 1017500,
+            "resource": 44,
+            "budget": 194
+          }
+        }
+      ],
+      "negative_intervals": 0
+    },
+    {
+      "language": 1,
+      "object": 1,
+      "slot": 236,
+      "resource": "818e9f905f93",
+      "loop": false,
+      "transitions": [
+        {
+          "frame": 0,
+          "interval": 1000,
+          "deadline": 1001000,
+          "poll_tick": 1001000,
+          "after": {
+            "magic": 1447646001,
+            "error": 0,
+            "steps": 31,
+            "completed": 4,
+            "now": 1001000,
+            "object": 1,
+            "frame": 1,
+            "active": 1,
+            "deadline": 1002000,
+            "resource": 45,
+            "budget": 200
+          }
+        },
+        {
+          "frame": 1,
+          "interval": 1000,
+          "deadline": 1002000,
+          "poll_tick": 1002000,
+          "after": {
+            "magic": 1447646001,
+            "error": 0,
+            "steps": 32,
+            "completed": 4,
+            "now": 1002000,
+            "object": 1,
+            "frame": 2,
+            "active": 1,
+            "deadline": 1003000,
+            "resource": 45,
+            "budget": 200
+          }
+        },
+        {
+          "frame": 2,
+          "interval": 1000,
+          "deadline": 1003000,
+          "poll_tick": 1003000,
+          "after": {
+            "magic": 1447646001,
+            "error": 0,
+            "steps": 33,
+            "completed": 4,
+            "now": 1003000,
+            "object": 1,
+            "frame": 3,
+            "active": 1,
+            "deadline": 1004000,
+            "resource": 45,
+            "budget": 200
+          }
+        },
+        {
+          "frame": 3,
+          "interval": 1000,
+          "deadline": 1004000,
+          "poll_tick": 1004000,
+          "after": {
+            "magic": 1447646001,
+            "error": 0,
+            "steps": 34,
+            "completed": 4,
+            "now": 1004000,
+            "object": 1,
+            "frame": 4,
+            "active": 1,
+            "deadline": 1005000,
+            "resource": 45,
+            "budget": 200
+          }
+        },
+        {
+          "frame": 4,
+          "interval": 1000,
+          "deadline": 1005000,
+          "poll_tick": 1005000,
+          "after": {
+            "magic": 1447646001,
+            "error": 0,
+            "steps": 35,
+            "completed": 4,
+            "now": 1005000,
+            "object": 1,
+            "frame": 5,
+            "active": 1,
+            "deadline": 1006000,
+            "resource": 45,
+            "budget": 200
+          }
+        },
+        {
+          "frame": 5,
+          "interval": 1000,
+          "deadline": 1006000,
+          "poll_tick": 1006000,
+          "after": {
+            "magic": 1447646001,
+            "error": 0,
+            "steps": 36,
+            "completed": 4,
+            "now": 1006000,
+            "object": 1,
+            "frame": 6,
+            "active": 1,
+            "deadline": 1007000,
+            "resource": 45,
+            "budget": 200
+          }
+        },
+        {
+          "frame": 6,
+          "interval": 1000,
+          "deadline": 1007000,
+          "poll_tick": 1007000,
+          "after": {
+            "magic": 1447646001,
+            "error": 0,
+            "steps": 37,
+            "completed": 4,
+            "now": 1007000,
+            "object": 1,
+            "frame": 7,
+            "active": 1,
+            "deadline": 975928,
+            "resource": 45,
+            "budget": 200
+          }
+        },
+        {
+          "frame": 7,
+          "interval": -31072,
+          "deadline": 975928,
+          "poll_tick": 1007000,
+          "after": {
+            "magic": 1447646001,
+            "error": 0,
+            "steps": 37,
+            "completed": 5,
+            "now": 1007000,
+            "object": 1,
+            "frame": 7,
+            "active": 0,
+            "deadline": 975928,
+            "resource": 45,
+            "budget": 200
+          }
+        }
+      ],
+      "negative_intervals": 1
+    },
+    {
+      "language": 1,
+      "object": 35,
+      "slot": 236,
+      "resource": "8c9b989c5f93",
+      "loop": false,
+      "transitions": [
+        {
+          "frame": 0,
+          "interval": 2000,
+          "deadline": 1002000,
+          "poll_tick": 1002000,
+          "after": {
+            "magic": 1447646001,
+            "error": 0,
+            "steps": 38,
+            "completed": 5,
+            "now": 1002000,
+            "object": 35,
+            "frame": 1,
+            "active": 1,
+            "deadline": 1004000,
+            "resource": 95,
+            "budget": 200
+          }
+        },
+        {
+          "frame": 1,
+          "interval": 2000,
+          "deadline": 1004000,
+          "poll_tick": 1004000,
+          "after": {
+            "magic": 1447646001,
+            "error": 0,
+            "steps": 39,
+            "completed": 5,
+            "now": 1004000,
+            "object": 35,
+            "frame": 2,
+            "active": 1,
+            "deadline": 1006000,
+            "resource": 95,
+            "budget": 200
+          }
+        },
+        {
+          "frame": 2,
+          "interval": 2000,
+          "deadline": 1006000,
+          "poll_tick": 1006000,
+          "after": {
+            "magic": 1447646001,
+            "error": 0,
+            "steps": 40,
+            "completed": 5,
+            "now": 1006000,
+            "object": 35,
+            "frame": 3,
+            "active": 1,
+            "deadline": 1008000,
+            "resource": 95,
+            "budget": 200
+          }
+        },
+        {
+          "frame": 3,
+          "interval": 2000,
+          "deadline": 1008000,
+          "poll_tick": 1008000,
+          "after": {
+            "magic": 1447646001,
+            "error": 0,
+            "steps": 41,
+            "completed": 5,
+            "now": 1008000,
+            "object": 35,
+            "frame": 4,
+            "active": 1,
+            "deadline": 1010000,
+            "resource": 95,
+            "budget": 200
+          }
+        },
+        {
+          "frame": 4,
+          "interval": 2000,
+          "deadline": 1010000,
+          "poll_tick": 1010000,
+          "after": {
+            "magic": 1447646001,
+            "error": 0,
+            "steps": 42,
+            "completed": 5,
+            "now": 1010000,
+            "object": 35,
+            "frame": 5,
+            "active": 1,
+            "deadline": 978928,
+            "resource": 95,
+            "budget": 200
+          }
+        },
+        {
+          "frame": 5,
+          "interval": -31072,
+          "deadline": 978928,
+          "poll_tick": 1010000,
+          "after": {
+            "magic": 1447646001,
+            "error": 0,
+            "steps": 42,
+            "completed": 6,
+            "now": 1010000,
+            "object": 35,
+            "frame": 5,
+            "active": 0,
+            "deadline": 978928,
+            "resource": 95,
+            "budget": 200
+          }
+        }
+      ],
+      "negative_intervals": 1
+    }
+  ],
+  "captures": [
+    {
+      "language": 0,
+      "path": "build/g20/sprite-check/playback-0.png",
+      "framebuffer_sha256": "92d2f6a10b68a1870cd93062e1e80e49e4541a3567adbf7abf432ef5c7b66ed4",
+      "cycles": 2521088,
+      "faces": 38
+    },
+    {
+      "language": 0,
+      "object": 65,
+      "frame": 0,
+      "depth": 320,
+      "changed_scene_pixels": 32,
+      "geometry": [
+        116,
+        121,
+        81,
+        81,
+        88,
+        88,
+        320,
+        320,
+        0,
+        2,
+        316,
+        65,
+        0
+      ],
+      "path": "build/g20/sprite-check/projectile-0-65-0-320.png",
+      "framebuffer_sha256": "0d75b16f52d566c514233b873b006b7ecff82bc4cda326cb07704e43deddf9dc",
+      "cycles": 2531968,
+      "faces": 39
+    },
+    {
+      "language": 0,
+      "object": 65,
+      "frame": 0,
+      "depth": 640,
+      "changed_scene_pixels": 10,
+      "geometry": [
+        117,
+        120,
+        77,
+        77,
+        81,
+        81,
+        640,
+        640,
+        0,
+        2,
+        636,
+        65,
+        0
+      ],
+      "path": "build/g20/sprite-check/projectile-0-65-0-640.png",
+      "framebuffer_sha256": "b20f61102bead9058f5078de43d9334302605189183e678f1642894b6bfc376a",
+      "cycles": 2531264,
+      "faces": 39
+    },
+    {
+      "language": 0,
+      "object": 66,
+      "frame": 0,
+      "depth": 320,
+      "changed_scene_pixels": 24,
+      "geometry": [
+        117,
+        120,
+        83,
+        83,
+        88,
+        88,
+        320,
+        320,
+        0,
+        0,
+        319,
+        66,
+        0
+      ],
+      "path": "build/g20/sprite-check/projectile-0-66-0-320.png",
+      "framebuffer_sha256": "55c1045076c82026af89398efcb9898c49d9c45beeb18b4820b886506818c745",
+      "cycles": 2530176,
+      "faces": 39
+    },
+    {
+      "language": 0,
+      "object": 66,
+      "frame": 0,
+      "depth": 640,
+      "changed_scene_pixels": 6,
+      "geometry": [
+        118,
+        119,
+        79,
+        79,
+        81,
+        81,
+        640,
+        640,
+        0,
+        0,
+        639,
+        66,
+        0
+      ],
+      "path": "build/g20/sprite-check/projectile-0-66-0-640.png",
+      "framebuffer_sha256": "743696be225ec7b8a4a48f83275b393bde142cdcede55b31254c46fba696cda4",
+      "cycles": 2528896,
+      "faces": 39
+    },
+    {
+      "language": 0,
+      "object": 67,
+      "frame": 0,
+      "depth": 320,
+      "changed_scene_pixels": 720,
+      "geometry": [
+        105,
+        132,
+        31,
+        31,
+        88,
+        88,
+        320,
+        320,
+        0,
+        15,
+        296,
+        67,
+        0
+      ],
+      "path": "build/g20/sprite-check/projectile-0-67-0-320.png",
+      "framebuffer_sha256": "0e627154d59fe1c2b3ffee810d14599e236a96d9f0b6178201e40a505727d33c",
+      "cycles": 2605632,
+      "faces": 39
+    },
+    {
+      "language": 0,
+      "object": 67,
+      "frame": 0,
+      "depth": 640,
+      "changed_scene_pixels": 278,
+      "geometry": [
+        110,
+        127,
+        46,
+        46,
+        81,
+        81,
+        640,
+        640,
+        0,
+        15,
+        616,
+        67,
+        0
+      ],
+      "path": "build/g20/sprite-check/projectile-0-67-0-640.png",
+      "framebuffer_sha256": "455cf39f87d500425f305e80c66c185a0df08c8fdd79df71a90624065dce3404",
+      "cycles": 2567552,
+      "faces": 39
+    },
+    {
+      "language": 0,
+      "object": 67,
+      "frame": 4,
+      "depth": 320,
+      "changed_scene_pixels": 522,
+      "geometry": [
+        78,
+        159,
+        -33,
+        -33,
+        88,
+        88,
+        320,
+        320,
+        0,
+        45,
+        251,
+        67,
+        0
+      ],
+      "path": "build/g20/sprite-check/projectile-0-67-4-320.png",
+      "framebuffer_sha256": "ddd316da0e135915e2cfe45ca12af71121a8daab64645c75a6921e513c613451",
+      "cycles": 2874432,
+      "faces": 39
+    },
+    {
+      "language": 0,
+      "object": 67,
+      "frame": 4,
+      "depth": 640,
+      "changed_scene_pixels": 288,
+      "geometry": [
+        94,
+        143,
+        7,
+        7,
+        81,
+        81,
+        640,
+        640,
+        0,
+        45,
+        571,
+        67,
+        0
+      ],
+      "path": "build/g20/sprite-check/projectile-0-67-4-640.png",
+      "framebuffer_sha256": "a2d6472088bb51a7275a6eee2dbebc6b605ad2c292b7bacbd861259d4e24871a",
+      "cycles": 2725440,
+      "faces": 39
+    },
+    {
+      "language": 1,
+      "path": "build/g20/sprite-check/playback-1.png",
+      "framebuffer_sha256": "92d2f6a10b68a1870cd93062e1e80e49e4541a3567adbf7abf432ef5c7b66ed4",
+      "cycles": 2523072,
+      "faces": 38
+    },
+    {
+      "language": 1,
+      "object": 65,
+      "frame": 0,
+      "depth": 320,
+      "changed_scene_pixels": 32,
+      "geometry": [
+        116,
+        121,
+        81,
+        81,
+        88,
+        88,
+        320,
+        320,
+        0,
+        2,
+        316,
+        65,
+        0
+      ],
+      "path": "build/g20/sprite-check/projectile-1-65-0-320.png",
+      "framebuffer_sha256": "0d75b16f52d566c514233b873b006b7ecff82bc4cda326cb07704e43deddf9dc",
+      "cycles": 2531328,
+      "faces": 39
+    },
+    {
+      "language": 1,
+      "object": 65,
+      "frame": 0,
+      "depth": 640,
+      "changed_scene_pixels": 10,
+      "geometry": [
+        117,
+        120,
+        77,
+        77,
+        81,
+        81,
+        640,
+        640,
+        0,
+        2,
+        636,
+        65,
+        0
+      ],
+      "path": "build/g20/sprite-check/projectile-1-65-0-640.png",
+      "framebuffer_sha256": "b20f61102bead9058f5078de43d9334302605189183e678f1642894b6bfc376a",
+      "cycles": 2531264,
+      "faces": 39
+    },
+    {
+      "language": 1,
+      "object": 66,
+      "frame": 0,
+      "depth": 320,
+      "changed_scene_pixels": 24,
+      "geometry": [
+        117,
+        120,
+        83,
+        83,
+        88,
+        88,
+        320,
+        320,
+        0,
+        0,
+        319,
+        66,
+        0
+      ],
+      "path": "build/g20/sprite-check/projectile-1-66-0-320.png",
+      "framebuffer_sha256": "55c1045076c82026af89398efcb9898c49d9c45beeb18b4820b886506818c745",
+      "cycles": 2530176,
+      "faces": 39
+    },
+    {
+      "language": 1,
+      "object": 66,
+      "frame": 0,
+      "depth": 640,
+      "changed_scene_pixels": 6,
+      "geometry": [
+        118,
+        119,
+        79,
+        79,
+        81,
+        81,
+        640,
+        640,
+        0,
+        0,
+        639,
+        66,
+        0
+      ],
+      "path": "build/g20/sprite-check/projectile-1-66-0-640.png",
+      "framebuffer_sha256": "743696be225ec7b8a4a48f83275b393bde142cdcede55b31254c46fba696cda4",
+      "cycles": 2528896,
+      "faces": 39
+    },
+    {
+      "language": 1,
+      "object": 67,
+      "frame": 0,
+      "depth": 320,
+      "changed_scene_pixels": 720,
+      "geometry": [
+        105,
+        132,
+        31,
+        31,
+        88,
+        88,
+        320,
+        320,
+        0,
+        15,
+        296,
+        67,
+        0
+      ],
+      "path": "build/g20/sprite-check/projectile-1-67-0-320.png",
+      "framebuffer_sha256": "0e627154d59fe1c2b3ffee810d14599e236a96d9f0b6178201e40a505727d33c",
+      "cycles": 2606272,
+      "faces": 39
+    },
+    {
+      "language": 1,
+      "object": 67,
+      "frame": 0,
+      "depth": 640,
+      "changed_scene_pixels": 278,
+      "geometry": [
+        110,
+        127,
+        46,
+        46,
+        81,
+        81,
+        640,
+        640,
+        0,
+        15,
+        616,
+        67,
+        0
+      ],
+      "path": "build/g20/sprite-check/projectile-1-67-0-640.png",
+      "framebuffer_sha256": "455cf39f87d500425f305e80c66c185a0df08c8fdd79df71a90624065dce3404",
+      "cycles": 2566912,
+      "faces": 39
+    },
+    {
+      "language": 1,
+      "object": 67,
+      "frame": 4,
+      "depth": 320,
+      "changed_scene_pixels": 522,
+      "geometry": [
+        78,
+        159,
+        -33,
+        -33,
+        88,
+        88,
+        320,
+        320,
+        0,
+        45,
+        251,
+        67,
+        0
+      ],
+      "path": "build/g20/sprite-check/projectile-1-67-4-320.png",
+      "framebuffer_sha256": "ddd316da0e135915e2cfe45ca12af71121a8daab64645c75a6921e513c613451",
+      "cycles": 2874432,
+      "faces": 39
+    },
+    {
+      "language": 1,
+      "object": 67,
+      "frame": 4,
+      "depth": 640,
+      "changed_scene_pixels": 288,
+      "geometry": [
+        94,
+        143,
+        7,
+        7,
+        81,
+        81,
+        640,
+        640,
+        0,
+        45,
+        571,
+        67,
+        0
+      ],
+      "path": "build/g20/sprite-check/projectile-1-67-4-640.png",
+      "framebuffer_sha256": "a2d6472088bb51a7275a6eee2dbebc6b605ad2c292b7bacbd861259d4e24871a",
+      "cycles": 2726144,
+      "faces": 39
+    }
+  ],
+  "stack": {
+    "main_stack_low": 50356224,
+    "main_stack_top": 50364160,
+    "sentinel_word": 219540062,
+    "untouched_margin_bytes": 5568,
+    "high_water_bytes": 2368,
+    "irq_and_bios_excluded": true,
+    "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+  },
+  "embedded_package_byte_identical": true,
+  "package_sha256": "3efa5d3027d63ffd65e0ae8c0b45be23ee8394b3c5151c8e9f10e76fa8674351",
+  "originals": [
+    {
+      "path": "originals/pkr/RUS/PKR.RES",
+      "sha256": "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816"
+    },
+    {
+      "path": "originals/pkr/ENG/PKE.RES",
+      "sha256": "865da340621fa6f90548a84e9ae9bf0a85071befb32a40ca1d359e488f74d458"
+    }
+  ],
+  "physical_gba_tested": false,
+  "whole_dos_session_equivalence": false
+}

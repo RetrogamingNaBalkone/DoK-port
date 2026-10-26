@@ -1,0 +1,62 @@
+{
+  "task": "G17 UI refresh",
+  "status": "passed",
+  "rom_sha256": "e9895ed2037fc970529111ff7a22897b94451a5543bcba7193312e3631bda573",
+  "rom_bytes": 32890948,
+  "ewram_static_bytes": 253668,
+  "iwram_static_bytes": 24308,
+  "host_stdout": "G17 UI: keypad/chord/held-edge, localization, queue, 240-byte clamp, wraparound deadlines, all states framebuffer guards passed",
+  "linux_compiled": true,
+  "linux_executed": false,
+  "originals_unchanged_from_catalog": {
+    "originals/pkr/RUS/PKR.RES": "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816",
+    "originals/pkr/RUS/PKR.EXE": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+    "originals/pkr/ENG/PKE.RES": "865da340621fa6f90548a84e9ae9bf0a85071befb32a40ca1d359e488f74d458",
+    "originals/pkr/ENG/PKE.EXE": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b"
+  },
+  "sources": {
+    "include/dok/ui.h": "601d8bc704f5d11388e405ac950a467ab586213a05dc330efc6b4121211b16d1",
+    "src/ui.c": "a505076dcf16c3e55417450e50fab4d993cd727d1be40f02e7355cb574889d88",
+    "gba/renderer_probe.c": "21a02c893738b841c019f9fa2f85b9580990151ae05c6fae03fa714341ece147",
+    "scripts/verify_ui_gba.py": "f58ca4564521a394ea51656cf0c0006b0e1bc2a151ca944688480c5dff6aaa27",
+    "scripts/verify_flow_gba.py": "19f4ae4a48a35d7d301fe6a8188bef160218dda027b51cf823c6ff96d399d653",
+    "tests/test_ui.c": "c6c03a07e13aa6eda8027381db5ad4d23ad73a50ef20de1ae9d9d5aac35ae58b"
+  },
+  "reports": {
+    "analysis/g17-ui-refresh.json": "c2372f4de1c4978df7b3ac193db1884b546031cd7d3247fe50a03d549aefe074",
+    "analysis/g17-ui-flow-regression.json": "ceed38031a66a8c94859fb19d52fd45c83de70513e8350eadf5568833e7509b5",
+    "analysis/g17-ui-renderer-regression.json": "05ea633451f5f3668328d3be440c704b8d60f7d0f92cd83df96632e190073b3e",
+    "analysis/g17-ui-time-regression.json": "5f6ae84202d221492f9e41c63df645e51d6d87cc813b26ef0ea18419d61f3b72"
+  },
+  "visual_review": {
+    "game_0": {
+      "path": "build/g17-ui/ui-check/game-0.png",
+      "sha256": "2ed8805377f7e49e4a7182b73bb76077e2a54ee925a9b05c145a14f19e303de4",
+      "framebuffer_sha256": "5e564af115db9e1c78d3cf4ef945373625cc10274e57a83fa31f5c50bc76207c"
+    },
+    "keys_0": {
+      "path": "build/g17-ui/ui-check/keys-0.png",
+      "sha256": "8a33c598c0486c591a73f0f3f565f3263cd87e4fed9f40de8715c5b000303651",
+      "framebuffer_sha256": "8bb2ad6e377e33b236f5be7c398dc610e1ca16d7fd022c5d6c1a92c0703e1a6a"
+    },
+    "title_ru": {
+      "path": "build/g17-ui/ui-check/title-ru.png",
+      "sha256": "7d3786d29ffeb6cb188fda7f866bbc0d79c7b87aa09025cede33802407728168",
+      "framebuffer_sha256": "1810907c63c2a4561e0c352c5493a0d31f510e32cff09a69a1ba08e5e8d03e3b"
+    },
+    "message_0": {
+      "path": "build/g17-ui/ui-check/message-0.png",
+      "sha256": "e4a508dd3457f285b8e86e7b80243845e74c082d8fd1714cb99d0d2c3b58045f",
+      "framebuffer_sha256": "1e50b8fc3529bfe236ed40efb6cdcd3e21817a6e8e3e95dd65c13f688ebc0c6e"
+    }
+  },
+  "artifacts": {
+    "build/g17-ui/dok-diagnostic.gba": "e9895ed2037fc970529111ff7a22897b94451a5543bcba7193312e3631bda573",
+    "build/g17-ui/dok-diagnostic.elf": "51ab5a0dc6550ad5a6bf66a73313a1bac9eb076a73ea989e9a9d9464f36eccef",
+    "build/g17-ui/dok-diagnostic.map": "bc7e900b1df72bc472c9bbc9c6ae38d4502f00fad3abc0c25da37178cc80a0b0",
+    "build/g17-ui/ui-tests.exe": "0dee089be57a41c762726407dd474956cb2e385721bb147e0799bf4c61c27a3d",
+    "build/g17-ui/ui-tests-linux": "baa9fb378dee32586ada1c668fad1aa534dd87bfba8ecd67036d8eb227ac8365"
+  },
+  "physical_gba_tested": false,
+  "full_performance_ai_audio_repeated": false
+}

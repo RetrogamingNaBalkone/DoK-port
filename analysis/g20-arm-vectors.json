@@ -1,0 +1,17 @@
+{
+  "task": "G20",
+  "status": "passed",
+  "elf_sha256": "d4e06803517d3853fcc24b54d2da4e7c98fab20841f4f6d344f226d5cac4db31",
+  "rom_sha256": "a56330bf11dc6f3e5906d71b8d2dbb20b2c36a55c9f3e63c8c8eb5baa44c5c94",
+  "script_sha256": "938a5e3812d00480e44f14ed2e0948bb444fb98f30c50c110f1fc894d2bb7ff7",
+  "sampler_vectors": 4096,
+  "coverage_edge_vectors": 2048,
+  "exact_cell_coordinate_vectors": 30720,
+  "sampler_digest": "2c2dd731c00d3277a5889253618f8a4d37cf0a2714b82f2393de947a6d35ea66",
+  "original_animation_resources": 48,
+  "original_animation_frames": 308,
+  "callee_saved_registers_and_stack_checked": true,
+  "mutable_buffer_truncation_and_unchanged_error_output": true,
+  "timing_measured": false,
+  "scope": "ARM/Thumb execution in Unicorn; hardware timing checked separately in mGBA"
+}

@@ -87,3 +87,80 @@ dok_gba_mapped_column:
     pop {r4,r5,r6,lr}
     bx lr
 .size dok_gba_mapped_column,.-dok_gba_mapped_column
+
+#ifdef DOK_RENDER_HALF_COLUMNS
+.global dok_gba_surface_span
+.type dok_gba_surface_span,%function
+/* surface_span ABI is asserted in renderer_surface_raster.inc. All source
+ * coordinates retain signed Q16 arithmetic and exact clamp-before-sample.
+ * The bitmap has one 5-word column per displayed pair; zero is opaque here.
+ * No calls, no interrupts masked, original ROM bytes and LIGHT table retained. */
+dok_gba_surface_span:
+    ldr r1,[r0,#20]
+    ldr r2,[r0,#24]
+    cmp r1,r2
+    movhi r0,#0
+    bxhi lr
+    push {r4-r11,lr}
+    sub sp,sp,#4
+    mov r12,#0
+    str r12,[sp]
+    mov lr,r0
+    ldmia lr,{r1,r2,r12}
+    ldr r3,[lr,#32]
+    ldr r4,[lr,#36]
+    ldr r5,[lr,#40]
+    ldr r6,[lr,#44]
+    lsl r5,r5,#1
+    lsl r6,r6,#1
+    ldr r7,[lr,#12]
+    ldr r8,[lr,#16]
+    sub r7,r7,#1
+    sub r8,r8,#1
+    ldr r9,[lr,#48]
+    ldr r10,[lr,#52]
+    ldr r11,[lr,#24]
+    ldr r0,[lr,#20]
+    sub r11,r11,r0
+    mov r11,r11,lsr #1
+    add r11,r11,#1
+    mov r0,r12
+1:
+    ldr r12,[r9]
+    tst r12,r10
+    bne 2f
+    orr r12,r12,r10
+    str r12,[r9]
+    mov r12,r3,asr #16
+    cmp r12,#0
+    movlt r12,#0
+    cmp r12,r7
+    movgt r12,r7
+    mov lr,r4,asr #16
+    cmp lr,#0
+    movlt lr,#0
+    cmp lr,r8
+    movgt lr,r8
+    mla lr,r7,lr,lr
+    add lr,lr,r12
+    ldrb lr,[r1,lr]
+    ldrb lr,[r2,lr]
+    orr lr,lr,lr,lsl #8
+    strh lr,[r0]
+    ldr r12,[sp]
+    add r12,r12,#1
+    str r12,[sp]
+2:
+    add r0,r0,#2
+    add r9,r9,#20
+    add r3,r3,r5
+    add r4,r4,r6
+    subs r11,r11,#1
+    bne 1b
+    ldr r0,[sp]
+    add sp,sp,#4
+    pop {r4-r11,lr}
+    bx lr
+.size dok_gba_surface_span,.-dok_gba_surface_span
+.ltorg
+#endif

@@ -1,5 +1,129 @@
 # Передача контекста между чатами
 
+## Компактный HUD и бэклог UI — 26 октября 2026 года
+
+По запросу пользователя готовый ROM также выделен в
+`artifacts/gba/DoK-port.gba`: копия проверенного `build/g17-ui/dok-diagnostic.gba`
+с тем же SHA-256. ROM исключён из Git, промежуточные файлы остались в `build/`.
+
+По запросу пользователя реализованы компактные HP/заряд с исходными иконками,
+оригинальная сине-серая рамка и зелёный текст. W/L полностью удалены из HUD.
+Медный/железный/золотой ключи появляются маленькими исходными иконками только
+при наличии. Сцена/полоса сообщений сохранены. Источники, геометрия и команды —
+[ui-hud-refresh.md](ui-hud-refresh.md); исходные GBA-изменения рабочей копии
+сохранены, SDL2-линия не менялась.
+
+Текущий ROM с новым UI — `build/g17-ui/dok-diagnostic.gba`, 32890948 байт,
+SHA `e9895ed2037fc970529111ff7a22897b94451a5543bcba7193312e3631bda573`.
+Frozen G18 и прежняя G20 сохранены. Host UI и ARM UI/flow/renderer/time прошли,
+включая 8 масок ключей × RU/EN и точные пиксели из RES; реальные экраны
+просмотрены. Отчёты — `analysis/g17-ui-*.json`. EWRAM253668/free8476;
+IWRAM24308/free268 до резерва стеков. Новый полный performance/AI/audio проход
+и физическая GBA не проверялись, 30 FPS не объявлены достигнутыми.
+
+**Новая задача основного плана [G20B](tasks/G20B.md): полноценная заставка
+и главное меню, после G20A и до G21. Ожидает, не начата; нынешний интерфейс
+остаётся временным. G20B — обязательная зависимость релизной регрессии G21.**
+G17 готова, G20 остаётся открытой по бюджету, следующий основной шаг — G20A.
+
+## Пересборка текущей GBA-версии — 26 октября 2026 года
+
+По запросу пользователя выполнена команда
+`powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-gba.ps1 -RendererProbe -HalfColumns -OutDir build/g20`.
+ROM/ELF/map и `build-report.json` обновлены в `build/g20/`.
+ROM: 32 890 604 байта, SHA-256
+`a56330bf11dc6f3e5906d71b8d2dbb20b2c36a55c9f3e63c8c8eb5baa44c5c94`;
+побайтно воспроизведена ранее проверенная G20. Дополнительно выполнена
+`scripts/verify_flow_gba.py --build-dir build/g20 --report build/g20/rebuild-flow-verification.json`
+с общим Python и `DOK_PROBE_FAST_VIDEO=1`: все шесть миров/локализаций,
+14 текстовых ресурсов, смерть/повтор/Game Over и Continue прошли в mGBA.
+Полный профиль G20 повторно не запускался. Исходники и статусы этапов не изменены;
+следующий шаг остаётся G20A.
+
+## G20: оптимизация без усечений — 26 октября 2026 года
+
+**G00–G18 готовы. Проход оптимизации G20 выполнен и проверен; G20 открыта
+по 30 FPS. Следующий ID — G20A, определение усечений.** Прямое уточнение
+пользователя: в G20 не урезать заметную на целевом разрешении графику,
+а при превышении бюджета вынести выбор усечений в следующий шаг.
+G20A оформлена в `docs/tasks/G20A.md` и не начата; G21 ожидает закрытия бюджета.
+
+Читать [gba-performance.md](gba-performance.md), [tasks/G20.md](tasks/G20.md),
+`analysis/gba-final-budget.json`. Прежний документ G06A сохранён без потери
+содержимого в `docs/gba-performance-g06a.md`; его числа не относятся к G20.
+
+`build/g20/dok-diagnostic.gba`: **32 890 604 bytes**, SHA-256
+`a56330bf11dc6f3e5906d71b8d2dbb20b2c36a55c9f3e63c8c8eb5baa44c5c94`.
+ELF/map рядом. Frozen G18 с SHA `46e4bfa4…eeb3c0` сохранён отдельно:
+он нужен для paired pixel oracle, не пересобирать его из новых исходников
+под видом старого эталона. Оба ROM и оригиналы остаются вне Git.
+
+Сохранены 120 колонок сцены → 240×144, UI 240×160, texture/LIGHT sampling,
+геометрия и видимость, прозрачность, cadence и object/projectile limits.
+488 полных кадров трёх миров × RU/EN (5° sweep, near/corners, четыре направления
+воды × 0/1/9/17) побайтно совпали с G18. Парная медиана ускорилась в 1,80×;
+стартовый CPU без PCM 4 772 864 → 2 531 520 cycles. Обычные живые стартовые
+сцены с PCM дают ≈5,4–6,7 FPS вместо ≈2,8–3,1. Цель 561792 cycles/30 FPS
+не достигнута. Лучший непустой стартовый обзор 1376640 cycles, худший 3203904.
+
+Полный профиль: normal live, frozen/PCM, native pool-capacity 141/139/98
+и all-awake live для каждого мира/языка. В обычных сценах motion debt <416 ticks,
+cadence сохраняется. В all-awake stress 57–100 AI owners CPU до 651634240 cycles
+и большой retained debt; это не обычная сцена и не подтверждение реального
+времени при любой нагрузке. Не скрывать проблему dropping ticks. Возможность
+иного алгоритма без усечений не опровергнута; все переписывания не исчерпаны.
+
+EWRAM 253376/free8768; IWRAM 24268/free308 до отдельного 8 KiB stacks/BIOS
+reserve. Main 2368/margin5568, IRQ 80/margin80. Mode4 pages 76800, high address
+offset 79360, ROM free663828. Heap0; guards/linker/watermarks без overflow
+в проверенных сценариях, audio underruns0, включая длительные overloaded кадры.
+
+Изменения:
+
+- `src/renderer*.{c,inc}`, `gba/columns.S`, `gba/divmod.S`: bitmap coverage,
+  lazy intervals/bit scans, exact ARM floor spans, active edges, vertex cache,
+  перенос startup-only данных из IWRAM. Epoch rollover проверен.
+- `src/ui.c`: word fill с byte edges, исходные FONT8/FONT16 pixels сохранены.
+- Исправлена ошибка порта: texture index клона снаряда не используется для
+  чтения за границей LEVEL definitions при проверке door crop. Это не изменение
+  исходных правил PKR/PKE. После исправления повторён полный pipeline.
+- `src/ai.c`, `src/collision.c`, `src/combat.c`, `include/dok/cell_coordinate.h`,
+  `scripts/render_tables.py`: immutable fields и точные cell/collision lookups.
+- `src/animation.c`, `include/dok/animation.h`, `scripts/pack_animation_index.py`,
+  `scripts/build-gba.ps1`: validated immutable ROM index, 24 resources/157 frames,
+  1016 bytes, checked mutable-buffer fallback. Новых native/DPMI адресов нет.
+- `gba/renderer_probe.c`: completed stage snapshot, hash only on changed camera.
+  Старые mailbox/diag/world/object/player ABI сохранены. Добавлены
+  `g_render_completed_stages[7]`, optional `g_render_work[5]`
+  (enable, wallticks, surfaceticks, wallcount, surfacecount), `g_ai_work[4]`
+  (lookupcalls, sightcalls, longestray, cappedrays). Timing quantum 64 cycles.
+- Scripts: `build-gba-performance.ps1`, `verify_performance_arm.py`,
+  `verify_performance_gba.py`, `profile_game_gba.py`, `profile_renderer.py`,
+  `report_performance.py`; evidence — `analysis/g20-*.json` и final budget.
+
+Полный driver **выполнен одним вызовом**:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-gba-performance.ps1 -CrossChecks
+```
+
+Лог `build/g20/g20-validation-final.log`. Windows host/UI/flow прошли;
+Linux static и Thumb compile checks прошли, Linux не запускался. Unicorn:
+4096 sampler + 2048 bitmap + 30720 cell vectors, 48 original animation resources/
+308 frames, ABI/stack/error-output checks. mGBA: flow 6 worlds/14 texts,
+UI/fonts, renderer, sprites/water, interactions, time/reset, 28 AI variants,
+23 PCM actual capture/correlation. Root просмотрел 3 PNG, SHA —
+`analysis/g20-visual-review.json`; это не новое пользовательское listening.
+Промежуточные эксперименты сведены в `analysis/g20-experiments.json`.
+
+Все 22 original SHA совпали до/после и с pre-G20 cleanup inventory. EXE-анализ
+в этой задаче не проводился. Physical GBA, original BIOS, whole DOS session,
+Linux/MSVC/CMake execution не проверялись. Общие Zig/Python/mGBA прежние,
+Unicorn — `C:/Source/wasdify/build/research-deps`, копий toolchain нет.
+Параллельные SDL2/Old Gold планы и их commits к G20 не относятся; их не менять.
+
+Ниже — историческая передача до G20.
+
 ## Очистка артефактов — 26 октября 2026 года
 
 По запросу пользователя удалены 10 661 файлов (5 165 518 037 байт, 4,81 GiB):
@@ -701,7 +825,7 @@ G07/G08, G09–G11 и полной игры — в конце `docs/gba-renderer
 текстуры сохранены. G07 в этом проходе не начинался.
 
 Актуальная методика, формат банка, эксперименты и выводы по GBADoom:
-[дополнительный проход](gba-renderer-review.md). `gba-performance.md` помечен
+[дополнительный проход](gba-renderer-review.md). `gba-performance-g06a.md` помечен
 историческим снимком предыдущего варианта 240. ROM/ELF/map/банк/PNG —
 `build/g06a-fast/`. `scripts/build-gba-early.ps1 -CrossChecks` завершился успешно.
 Бюджет 400 000 отложен (`budget_met=false`, `performance_status=deferred`),

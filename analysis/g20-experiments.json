@@ -1,0 +1,1022 @@
+{
+  "task": "G20",
+  "note": "Observed intermediate experiments consolidated; intermediate ROM/source variants were not frozen. Final reproducible evidence is separate.",
+  "experiments": [
+    {
+      "name": "g20-asm-startup.json",
+      "original_json_sha256": "9d024dffe9e5d5e7a69ffba5e4e3ccb3056a2fc9fc6a3fa413751d29e804be41",
+      "rom_sha256": "e44d080c67787f670f293762e7028f56382103cfcfbf4030a09db0967265b6e1",
+      "total": 2973952,
+      "stages": {
+        "clear_resources": 11136,
+        "geometry": 704064,
+        "sort": 7744,
+        "raster": 2000192,
+        "hud": 120128,
+        "copy": 79424
+      },
+      "primitives": {
+        "wall_cycles": 792448,
+        "surface_cycles": 1047744,
+        "walls": 38,
+        "surfaces": 94
+      }
+    },
+    {
+      "name": "g20-bitmap-startup.json",
+      "original_json_sha256": "30f5fb39e290bc0c49e541f33294168840059b84ea17b713c4366a53963f9ac8",
+      "rom_sha256": "18ddff98d1bfaabb296eebee38a28ed4a2d92c41507b545653237dc3acf2fc8c",
+      "total": 3762432,
+      "stages": {
+        "clear_resources": 11136,
+        "geometry": 782144,
+        "sort": 6656,
+        "raster": 2702848,
+        "hud": 120128,
+        "copy": 79424
+      }
+    },
+    {
+      "name": "g20-bitwalk-startup.json",
+      "original_json_sha256": "b6ded0aa04d6c0067b3f0ccced72e50c3c6456f5eb0f4389d9d13a5d9a0e32b8",
+      "rom_sha256": "e358f1f4aba4edcdc8e5c355c5c4ebd600d93ca619a343b19d6a9d3202a0b94d",
+      "total": 2644480,
+      "stages": {
+        "clear_resources": 11136,
+        "geometry": 681344,
+        "sort": 7808,
+        "raster": 1697984,
+        "hud": 120128,
+        "copy": 79360
+      },
+      "primitives": {
+        "wall_cycles": 575936,
+        "surface_cycles": 956736,
+        "walls": 38,
+        "surfaces": 94
+      }
+    },
+    {
+      "name": "g20-cameras-bitwalk.json",
+      "original_json_sha256": "c8b13f60086e306fc7168e6bdab70f5083da05e82ca666e3730c064f3cf20e22",
+      "rom_sha256": "e358f1f4aba4edcdc8e5c355c5c4ebd600d93ca619a343b19d6a9d3202a0b94d",
+      "pixel_exact_frames": 168,
+      "minimum": 477568,
+      "maximum": 3276096
+    },
+    {
+      "name": "g20-cameras-cull.json",
+      "original_json_sha256": "8b413882c608274a87454441dcde36b7d24e9463b945fe7e0e6cf5fe3d31ff88",
+      "rom_sha256": "65cd96d1bc3a3d3c0c7a6c53a30e15205c83c73a9d554d4a7a1ed529dc4e39bf",
+      "pixel_exact_frames": 168,
+      "minimum": 475456,
+      "maximum": 3686912
+    },
+    {
+      "name": "g20-cameras-edges.json",
+      "original_json_sha256": "d025b21ab456293d57226517b762eb0d15aaa0346c3b8dff0956fad3aacff0f1",
+      "rom_sha256": "f5646892c4063cc74624426ce9555bd72daae422458e0ab602aa4937fb42a713",
+      "pixel_exact_frames": 168,
+      "minimum": 475456,
+      "maximum": 3639744
+    },
+    {
+      "name": "g20-cameras-initial.json",
+      "original_json_sha256": "a5c917a443a0a89b178186f1cb4bca21f4bedff95d6544f9e2cb22545d644529",
+      "rom_sha256": "66c84bcb05c20a39c6c062cdefeb4a1694a880ef9a80a59ac0d1def5bd6cdd9b",
+      "pixel_exact_frames": 72,
+      "minimum": 490240,
+      "maximum": 4240896
+    },
+    {
+      "name": "g20-cameras-rows.json",
+      "original_json_sha256": "a71204ce15d2ae0b6f6fe3ee6904f318aa149ef9aa2c77ef8ad5f7bbf2b2605f",
+      "rom_sha256": "1e4826fed46e5453f9d469a5991cfca972323c839a8afbb063c73e787acbc853",
+      "pixel_exact_frames": 72,
+      "minimum": 510144,
+      "maximum": 4444096
+    },
+    {
+      "name": "g20-cameras-ui.json",
+      "original_json_sha256": "f77f61746c02c6a2ab8879300a40312371fd4c8865866ff66a0c82e927553803",
+      "rom_sha256": "55e4a52a4f40867a16c14547358274fa83be7c40e18e3ed7a90f8e9d15040200",
+      "pixel_exact_frames": 168,
+      "minimum": 401920,
+      "maximum": 3200384
+    },
+    {
+      "name": "g20-cameras-vertices.json",
+      "original_json_sha256": "f2405401345f086458124389a3d8e2246e91df9be03283ffebf79f109aaa286f",
+      "rom_sha256": "ae2304adceb65b169514232fa03d480c671c76fc3f85796a1f76b0326ca8ee69",
+      "pixel_exact_frames": 72,
+      "minimum": 482752,
+      "maximum": 4124288
+    },
+    {
+      "name": "g20-cull-startup.json",
+      "original_json_sha256": "eeea3ae64fafe2e970da6777f3332a1893f8ca2c757bc511f06445337cbd7bd3",
+      "rom_sha256": "65cd96d1bc3a3d3c0c7a6c53a30e15205c83c73a9d554d4a7a1ed529dc4e39bf",
+      "total": 2961024,
+      "stages": {
+        "clear_resources": 11136,
+        "geometry": 681344,
+        "sort": 7808,
+        "raster": 2009984,
+        "hud": 120128,
+        "copy": 79424
+      },
+      "primitives": {
+        "wall_cycles": 792384,
+        "surface_cycles": 1057536,
+        "walls": 38,
+        "surfaces": 94
+      }
+    },
+    {
+      "name": "g20-edges-startup.json",
+      "original_json_sha256": "a7689042c88ea04da1d3db445a274f0824fe1bf5a1cdb708d90e0e95b69b9806",
+      "rom_sha256": "f5646892c4063cc74624426ce9555bd72daae422458e0ab602aa4937fb42a713",
+      "total": 2947072,
+      "stages": {
+        "clear_resources": 11136,
+        "geometry": 681344,
+        "sort": 7808,
+        "raster": 1995968,
+        "hud": 120128,
+        "copy": 79424
+      },
+      "primitives": {
+        "wall_cycles": 794496,
+        "surface_cycles": 1036608,
+        "walls": 38,
+        "surfaces": 94
+      }
+    },
+    {
+      "name": "g20-game-collision.json",
+      "original_json_sha256": "43681bef96f95a3264093329570ec42b119414fd9768ec93d83edad499905e5d",
+      "rom_sha256": "a704fcefa25eead7ab8e5a7555107e1f444ada0ba1a06004465717250de041cb",
+      "scenes": [
+        {
+          "level": 1,
+          "language": 0,
+          "scene": "startup-render-pcm",
+          "minimum": 2902656,
+          "median": 2903968.0,
+          "maximum": 2909376,
+          "presented_fps": 5.348731394293059
+        },
+        {
+          "level": 1,
+          "language": 0,
+          "scene": "natural-live-pcm",
+          "minimum": 2904832,
+          "median": 3015936.0,
+          "maximum": 3061376,
+          "presented_fps": 5.429772779055075
+        },
+        {
+          "level": 1,
+          "language": 0,
+          "scene": "pool-capacity-render-pcm",
+          "minimum": 3186752,
+          "median": 3188064.0,
+          "maximum": 3201536,
+          "presented_fps": 4.909109635858013
+        },
+        {
+          "level": 1,
+          "language": 0,
+          "scene": "all-awake-live-volley-pcm",
+          "minimum": 117856256,
+          "median": 138193536.0,
+          "maximum": 174542464,
+          "presented_fps": 0.11973438136239058
+        },
+        {
+          "level": 2,
+          "language": 0,
+          "scene": "startup-render-pcm",
+          "minimum": 2814208,
+          "median": 2820096.0,
+          "maximum": 2821120,
+          "presented_fps": 5.874836121600573
+        },
+        {
+          "level": 2,
+          "language": 0,
+          "scene": "natural-live-pcm",
+          "minimum": 2821120,
+          "median": 2904416.0,
+          "maximum": 2932544,
+          "presented_fps": 5.513307744886692
+        },
+        {
+          "level": 2,
+          "language": 0,
+          "scene": "pool-capacity-render-pcm",
+          "minimum": 3098048,
+          "median": 3099776.0,
+          "maximum": 4756544,
+          "presented_fps": 4.909109635858013
+        },
+        {
+          "level": 2,
+          "language": 0,
+          "scene": "all-awake-live-volley-pcm",
+          "minimum": 45014144,
+          "median": 64659424.0,
+          "maximum": 146283392,
+          "presented_fps": 0.2259552354461759
+        },
+        {
+          "level": 3,
+          "language": 0,
+          "scene": "startup-render-pcm",
+          "minimum": 2376064,
+          "median": 2381760.0,
+          "maximum": 2382592,
+          "presented_fps": 6.5157273348660905
+        },
+        {
+          "level": 3,
+          "language": 0,
+          "scene": "natural-live-pcm",
+          "minimum": 2380928,
+          "median": 2467904.0,
+          "maximum": 2480128,
+          "presented_fps": 6.636388952178426
+        },
+        {
+          "level": 3,
+          "language": 0,
+          "scene": "pool-capacity-render-pcm",
+          "minimum": 2492096,
+          "median": 2493792.0,
+          "maximum": 3485568,
+          "presented_fps": 6.073983108773475
+        },
+        {
+          "level": 3,
+          "language": 0,
+          "scene": "all-awake-live-volley-pcm",
+          "minimum": 155387328,
+          "median": 193060192.0,
+          "maximum": 872590976,
+          "presented_fps": 0.055794022017380505
+        },
+        {
+          "level": 1,
+          "language": 1,
+          "scene": "startup-render-pcm",
+          "minimum": 2980608,
+          "median": 2985408.0,
+          "maximum": 2986816,
+          "presented_fps": 5.348731394293059
+        },
+        {
+          "level": 1,
+          "language": 1,
+          "scene": "natural-live-pcm",
+          "minimum": 2985152,
+          "median": 3098016.0,
+          "maximum": 3143872,
+          "presented_fps": 5.348731394293059
+        },
+        {
+          "level": 1,
+          "language": 1,
+          "scene": "pool-capacity-render-pcm",
+          "minimum": 3267840,
+          "median": 3269312.0,
+          "maximum": 4916800,
+          "presented_fps": 4.536265866046013
+        },
+        {
+          "level": 1,
+          "language": 1,
+          "scene": "all-awake-live-volley-pcm",
+          "minimum": 117856384,
+          "median": 138194176.0,
+          "maximum": 174611520,
+          "presented_fps": 0.11973438136239058
+        },
+        {
+          "level": 2,
+          "language": 1,
+          "scene": "startup-render-pcm",
+          "minimum": 2814208,
+          "median": 2820096.0,
+          "maximum": 2821056,
+          "presented_fps": 5.874836121600573
+        },
+        {
+          "level": 2,
+          "language": 1,
+          "scene": "natural-live-pcm",
+          "minimum": 2821120,
+          "median": 2904416.0,
+          "maximum": 2932544,
+          "presented_fps": 5.513307744886692
+        },
+        {
+          "level": 2,
+          "language": 1,
+          "scene": "pool-capacity-render-pcm",
+          "minimum": 3098112,
+          "median": 3099744.0,
+          "maximum": 4756608,
+          "presented_fps": 4.909109635858013
+        },
+        {
+          "level": 2,
+          "language": 1,
+          "scene": "all-awake-live-volley-pcm",
+          "minimum": 45014016,
+          "median": 64659456.0,
+          "maximum": 146284224,
+          "presented_fps": 0.2259552354461759
+        },
+        {
+          "level": 3,
+          "language": 1,
+          "scene": "startup-render-pcm",
+          "minimum": 2376064,
+          "median": 2381824.0,
+          "maximum": 2382592,
+          "presented_fps": 6.5157273348660905
+        },
+        {
+          "level": 3,
+          "language": 1,
+          "scene": "natural-live-pcm",
+          "minimum": 2380864,
+          "median": 2467904.0,
+          "maximum": 2480128,
+          "presented_fps": 6.636388952178426
+        },
+        {
+          "level": 3,
+          "language": 1,
+          "scene": "pool-capacity-render-pcm",
+          "minimum": 2492160,
+          "median": 2493536.0,
+          "maximum": 3484160,
+          "presented_fps": 6.073983108773475
+        },
+        {
+          "level": 3,
+          "language": 1,
+          "scene": "all-awake-live-volley-pcm",
+          "minimum": 155390400,
+          "median": 193060864.0,
+          "maximum": 872590656,
+          "presented_fps": 0.055794022017380505
+        }
+      ]
+    },
+    {
+      "name": "g20-game-fields.json",
+      "original_json_sha256": "d8d481626ab30760c76df12eabbf4061a669ea188790170af959d82c763a25cb",
+      "rom_sha256": "3dc687c628def497fdf73fe1e9e4b5e150c5412ad6d85eb4d1dc5fa4e3f417e8",
+      "scenes": [
+        {
+          "level": 1,
+          "language": 0,
+          "scene": "startup-render-pcm",
+          "minimum": 2902656,
+          "median": 2903968.0,
+          "maximum": 2909376,
+          "presented_fps": 5.348731394293059
+        },
+        {
+          "level": 1,
+          "language": 0,
+          "scene": "pool-capacity-render-pcm",
+          "minimum": 3186304,
+          "median": 3188160.0,
+          "maximum": 3201984,
+          "presented_fps": 4.909109635858013
+        },
+        {
+          "level": 1,
+          "language": 0,
+          "scene": "all-awake-live-volley-pcm",
+          "minimum": 120197632,
+          "median": 140323584.0,
+          "maximum": 174701184,
+          "presented_fps": 0.11823325747859947
+        },
+        {
+          "level": 2,
+          "language": 0,
+          "scene": "startup-render-pcm",
+          "minimum": 2814208,
+          "median": 2820096.0,
+          "maximum": 2821056,
+          "presented_fps": 5.874836121600573
+        },
+        {
+          "level": 2,
+          "language": 0,
+          "scene": "pool-capacity-render-pcm",
+          "minimum": 3097984,
+          "median": 3099808.0,
+          "maximum": 3106112,
+          "presented_fps": 5.348731394293059
+        },
+        {
+          "level": 2,
+          "language": 0,
+          "scene": "all-awake-live-volley-pcm",
+          "minimum": 46768000,
+          "median": 65723872.0,
+          "maximum": 146439872,
+          "presented_fps": 0.22134960062855774
+        },
+        {
+          "level": 3,
+          "language": 0,
+          "scene": "startup-render-pcm",
+          "minimum": 2376064,
+          "median": 2381824.0,
+          "maximum": 2382592,
+          "presented_fps": 6.5157273348660905
+        },
+        {
+          "level": 3,
+          "language": 0,
+          "scene": "pool-capacity-render-pcm",
+          "minimum": 2576704,
+          "median": 2578560.0,
+          "maximum": 2583104,
+          "presented_fps": 6.178706955476465
+        },
+        {
+          "level": 3,
+          "language": 0,
+          "scene": "all-awake-live-volley-pcm",
+          "minimum": 158047296,
+          "median": 195022784.0,
+          "maximum": 872739200,
+          "presented_fps": 0.05545728929397013
+        },
+        {
+          "level": 1,
+          "language": 1,
+          "scene": "startup-render-pcm",
+          "minimum": 2980608,
+          "median": 2985408.0,
+          "maximum": 2986816,
+          "presented_fps": 5.348731394293059
+        },
+        {
+          "level": 1,
+          "language": 1,
+          "scene": "pool-capacity-render-pcm",
+          "minimum": 3267520,
+          "median": 3268544.0,
+          "maximum": 3276032,
+          "presented_fps": 4.909109635858013
+        },
+        {
+          "level": 1,
+          "language": 1,
+          "scene": "all-awake-live-volley-pcm",
+          "minimum": 120196864,
+          "median": 140324576.0,
+          "maximum": 174771840,
+          "presented_fps": 0.11823325747859947
+        },
+        {
+          "level": 2,
+          "language": 1,
+          "scene": "startup-render-pcm",
+          "minimum": 2814272,
+          "median": 2820096.0,
+          "maximum": 2820928,
+          "presented_fps": 5.874836121600573
+        },
+        {
+          "level": 2,
+          "language": 1,
+          "scene": "pool-capacity-render-pcm",
+          "minimum": 3097920,
+          "median": 3099808.0,
+          "maximum": 3106048,
+          "presented_fps": 5.348731394293059
+        },
+        {
+          "level": 2,
+          "language": 1,
+          "scene": "all-awake-live-volley-pcm",
+          "minimum": 46767872,
+          "median": 65724512.0,
+          "maximum": 146439616,
+          "presented_fps": 0.22134960062855774
+        },
+        {
+          "level": 3,
+          "language": 1,
+          "scene": "startup-render-pcm",
+          "minimum": 2376128,
+          "median": 2381056.0,
+          "maximum": 2382720,
+          "presented_fps": 6.5157273348660905
+        },
+        {
+          "level": 3,
+          "language": 1,
+          "scene": "pool-capacity-render-pcm",
+          "minimum": 2576832,
+          "median": 2578528.0,
+          "maximum": 2584448,
+          "presented_fps": 6.178706955476465
+        },
+        {
+          "level": 3,
+          "language": 1,
+          "scene": "all-awake-live-volley-pcm",
+          "minimum": 158049984,
+          "median": 195023648.0,
+          "maximum": 872737984,
+          "presented_fps": 0.05545728929397013
+        }
+      ]
+    },
+    {
+      "name": "g20-game-index.json",
+      "original_json_sha256": "db943d9f2a351733317f5b76677693b30fc7c9d7ac4c541deb849b9212533e9f",
+      "rom_sha256": "d54021d40824dd637634e8c40afb7ccd5c35ca3f87d41303f451b12f179d45bd",
+      "scenes": [
+        {
+          "level": 1,
+          "language": 0,
+          "scene": "startup-render-pcm",
+          "minimum": 2902656,
+          "median": 2903232.0,
+          "maximum": 2909440,
+          "presented_fps": 5.348731394293059
+        },
+        {
+          "level": 1,
+          "language": 0,
+          "scene": "pool-capacity-render-pcm",
+          "minimum": 3186432,
+          "median": 3188224.0,
+          "maximum": 3201856,
+          "presented_fps": 4.909109635858013
+        },
+        {
+          "level": 1,
+          "language": 0,
+          "scene": "all-awake-live-volley-pcm",
+          "minimum": 136280704,
+          "median": 157345280.0,
+          "maximum": 175874880,
+          "presented_fps": 0.107391370517721
+        },
+        {
+          "level": 2,
+          "language": 0,
+          "scene": "startup-render-pcm",
+          "minimum": 2814400,
+          "median": 2820032.0,
+          "maximum": 2821056,
+          "presented_fps": 5.874836121600573
+        },
+        {
+          "level": 2,
+          "language": 0,
+          "scene": "pool-capacity-render-pcm",
+          "minimum": 3097920,
+          "median": 3099776.0,
+          "maximum": 3106112,
+          "presented_fps": 5.348731394293059
+        },
+        {
+          "level": 2,
+          "language": 0,
+          "scene": "all-awake-live-volley-pcm",
+          "minimum": 72056832,
+          "median": 74828576.0,
+          "maximum": 147193472,
+          "presented_fps": 0.194025448520647
+        },
+        {
+          "level": 3,
+          "language": 0,
+          "scene": "startup-render-pcm",
+          "minimum": 2376128,
+          "median": 2381024.0,
+          "maximum": 2382656,
+          "presented_fps": 6.5157273348660905
+        },
+        {
+          "level": 3,
+          "language": 0,
+          "scene": "pool-capacity-render-pcm",
+          "minimum": 2576768,
+          "median": 2578496.0,
+          "maximum": 2584448,
+          "presented_fps": 6.178706955476465
+        },
+        {
+          "level": 3,
+          "language": 0,
+          "scene": "all-awake-live-volley-pcm",
+          "minimum": 175701056,
+          "median": 213858048.0,
+          "maximum": 873732864,
+          "presented_fps": 0.05276280969046452
+        },
+        {
+          "level": 1,
+          "language": 1,
+          "scene": "startup-render-pcm",
+          "minimum": 2980608,
+          "median": 2985408.0,
+          "maximum": 2986816,
+          "presented_fps": 5.348731394293059
+        },
+        {
+          "level": 1,
+          "language": 1,
+          "scene": "pool-capacity-render-pcm",
+          "minimum": 3267712,
+          "median": 3269088.0,
+          "maximum": 3276032,
+          "presented_fps": 4.909109635858013
+        },
+        {
+          "level": 1,
+          "language": 1,
+          "scene": "all-awake-live-volley-pcm",
+          "minimum": 136279808,
+          "median": 157345120.0,
+          "maximum": 175945216,
+          "presented_fps": 0.10735919814788346
+        },
+        {
+          "level": 2,
+          "language": 1,
+          "scene": "startup-render-pcm",
+          "minimum": 2814208,
+          "median": 2820096.0,
+          "maximum": 2821120,
+          "presented_fps": 5.874836121600573
+        },
+        {
+          "level": 2,
+          "language": 1,
+          "scene": "pool-capacity-render-pcm",
+          "minimum": 3097984,
+          "median": 3099872.0,
+          "maximum": 3106112,
+          "presented_fps": 5.348731394293059
+        },
+        {
+          "level": 2,
+          "language": 1,
+          "scene": "all-awake-live-volley-pcm",
+          "minimum": 72056704,
+          "median": 74828480.0,
+          "maximum": 147193280,
+          "presented_fps": 0.194025448520647
+        },
+        {
+          "level": 3,
+          "language": 1,
+          "scene": "startup-render-pcm",
+          "minimum": 2376128,
+          "median": 2381824.0,
+          "maximum": 2382592,
+          "presented_fps": 6.5157273348660905
+        },
+        {
+          "level": 3,
+          "language": 1,
+          "scene": "pool-capacity-render-pcm",
+          "minimum": 2576768,
+          "median": 2578560.0,
+          "maximum": 2583104,
+          "presented_fps": 6.178706955476465
+        },
+        {
+          "level": 3,
+          "language": 1,
+          "scene": "all-awake-live-volley-pcm",
+          "minimum": 175703168,
+          "median": 213859776.0,
+          "maximum": 873735872,
+          "presented_fps": 0.05276280969046452
+        }
+      ]
+    },
+    {
+      "name": "g20-game-rays.json",
+      "original_json_sha256": "a2f7696805eb70d8276f44d541031217a4772727eec5838c1e1ea516e28904b2",
+      "rom_sha256": "907c019583e14958e22f5da7f80370fb2eee394ef489c48a11ad036ee72d6bc1",
+      "scenes": [
+        {
+          "level": 1,
+          "language": 0,
+          "scene": "startup-render-pcm",
+          "minimum": 2902656,
+          "median": 2903968.0,
+          "maximum": 2909376,
+          "presented_fps": 5.348731394293059
+        },
+        {
+          "level": 1,
+          "language": 0,
+          "scene": "pool-capacity-render-pcm",
+          "minimum": 3186304,
+          "median": 3188160.0,
+          "maximum": 3201984,
+          "presented_fps": 4.909109635858013
+        },
+        {
+          "level": 1,
+          "language": 0,
+          "scene": "all-awake-live-volley-pcm",
+          "minimum": 120304256,
+          "median": 140419136.0,
+          "maximum": 174707456,
+          "presented_fps": 0.1181552929171233
+        },
+        {
+          "level": 2,
+          "language": 0,
+          "scene": "startup-render-pcm",
+          "minimum": 2814272,
+          "median": 2819328.0,
+          "maximum": 2820928,
+          "presented_fps": 5.874836121600573
+        },
+        {
+          "level": 2,
+          "language": 0,
+          "scene": "pool-capacity-render-pcm",
+          "minimum": 3097920,
+          "median": 3099712.0,
+          "maximum": 3106048,
+          "presented_fps": 5.348731394293059
+        },
+        {
+          "level": 2,
+          "language": 0,
+          "scene": "all-awake-live-volley-pcm",
+          "minimum": 46800192,
+          "median": 65772672.0,
+          "maximum": 146445248,
+          "presented_fps": 0.22134960062855774
+        },
+        {
+          "level": 3,
+          "language": 0,
+          "scene": "startup-render-pcm",
+          "minimum": 2376128,
+          "median": 2381056.0,
+          "maximum": 2382720,
+          "presented_fps": 6.5157273348660905
+        },
+        {
+          "level": 3,
+          "language": 0,
+          "scene": "pool-capacity-render-pcm",
+          "minimum": 2576832,
+          "median": 2578528.0,
+          "maximum": 2584448,
+          "presented_fps": 6.178706955476465
+        },
+        {
+          "level": 3,
+          "language": 0,
+          "scene": "all-awake-live-volley-pcm",
+          "minimum": 158168320,
+          "median": 195134176.0,
+          "maximum": 872744128,
+          "presented_fps": 0.05544013047921333
+        },
+        {
+          "level": 1,
+          "language": 1,
+          "scene": "startup-render-pcm",
+          "minimum": 2980544,
+          "median": 2985408.0,
+          "maximum": 2986880,
+          "presented_fps": 5.348731394293059
+        },
+        {
+          "level": 1,
+          "language": 1,
+          "scene": "pool-capacity-render-pcm",
+          "minimum": 3267520,
+          "median": 3268544.0,
+          "maximum": 3276032,
+          "presented_fps": 4.909109635858013
+        },
+        {
+          "level": 1,
+          "language": 1,
+          "scene": "all-awake-live-volley-pcm",
+          "minimum": 120304320,
+          "median": 140418944.0,
+          "maximum": 174776896,
+          "presented_fps": 0.1181552929171233
+        },
+        {
+          "level": 2,
+          "language": 1,
+          "scene": "startup-render-pcm",
+          "minimum": 2814144,
+          "median": 2820096.0,
+          "maximum": 2821120,
+          "presented_fps": 5.874836121600573
+        },
+        {
+          "level": 2,
+          "language": 1,
+          "scene": "pool-capacity-render-pcm",
+          "minimum": 3098048,
+          "median": 3099776.0,
+          "maximum": 3106176,
+          "presented_fps": 5.348731394293059
+        },
+        {
+          "level": 2,
+          "language": 1,
+          "scene": "all-awake-live-volley-pcm",
+          "minimum": 46801600,
+          "median": 65771840.0,
+          "maximum": 146445824,
+          "presented_fps": 0.22134960062855774
+        },
+        {
+          "level": 3,
+          "language": 1,
+          "scene": "startup-render-pcm",
+          "minimum": 2376064,
+          "median": 2381792.0,
+          "maximum": 2382592,
+          "presented_fps": 6.5157273348660905
+        },
+        {
+          "level": 3,
+          "language": 1,
+          "scene": "pool-capacity-render-pcm",
+          "minimum": 2576768,
+          "median": 2578560.0,
+          "maximum": 2583104,
+          "presented_fps": 6.178706955476465
+        },
+        {
+          "level": 3,
+          "language": 1,
+          "scene": "all-awake-live-volley-pcm",
+          "minimum": 158171392,
+          "median": 195134720.0,
+          "maximum": 872743488,
+          "presented_fps": 0.05544013047921333
+        }
+      ]
+    },
+    {
+      "name": "g20-index-startup.json",
+      "original_json_sha256": "c9031529d821c739ea86c3922d12a6925bc5031ecca51328b0ada0f2d28b6628",
+      "rom_sha256": "d54021d40824dd637634e8c40afb7ccd5c35ca3f87d41303f451b12f179d45bd",
+      "total": 2547264,
+      "stages": {
+        "clear_resources": 11200,
+        "geometry": 681344,
+        "sort": 7744,
+        "raster": 1678656,
+        "hud": 44416,
+        "copy": 79360
+      }
+    },
+    {
+      "name": "g20-occlusion-startup.json",
+      "original_json_sha256": "4e8cf08f7fd716e183323bca30100e78b975aa788527ff1b40e56ed9f305d614",
+      "rom_sha256": "4b46bb5d6088a25334f3a423c8f7e548ac458d02c9eca32bb74863bed9fba488",
+      "total": 2955968,
+      "stages": {
+        "clear_resources": 11136,
+        "geometry": 681344,
+        "sort": 7808,
+        "raster": 2004864,
+        "hud": 120192,
+        "copy": 79360
+      },
+      "primitives": {
+        "wall_cycles": 824448,
+        "surface_cycles": 1015680,
+        "walls": 38,
+        "surfaces": 94
+      }
+    },
+    {
+      "name": "g20-primitive-profile.json",
+      "original_json_sha256": "80ee6e38f973073c9531f24f50816f33b11c9bb548ffad4e4af2b18242bec0ee",
+      "rom_sha256": "66c84bcb05c20a39c6c062cdefeb4a1694a880ef9a80a59ac0d1def5bd6cdd9b",
+      "total": 3433664,
+      "stages": {
+        "clear_resources": 11136,
+        "geometry": 782080,
+        "sort": 7744,
+        "raster": 2378816,
+        "hud": 120192,
+        "copy": 79360
+      },
+      "primitives": {
+        "wall_cycles": 791616,
+        "surface_cycles": 1426240,
+        "walls": 38,
+        "surfaces": 94
+      }
+    },
+    {
+      "name": "g20-renderer-initial.json",
+      "original_json_sha256": "c603b2fde970e2c0ea1cc470e296a1e7bc8d637597c469e3bfe5c03fbc1fae95",
+      "rom_sha256": "18ddff98d1bfaabb296eebee38a28ed4a2d92c41507b545653237dc3acf2fc8c",
+      "status": "passed"
+    },
+    {
+      "name": "g20-rows-startup.json",
+      "original_json_sha256": "ca4b4683cda1cd51da1aec16ac533ccc9e203ec9f0a61bf10fc96ee8f037e7da",
+      "rom_sha256": "1e4826fed46e5453f9d469a5991cfca972323c839a8afbb063c73e787acbc853",
+      "total": 3655232,
+      "stages": {
+        "clear_resources": 11136,
+        "geometry": 782080,
+        "sort": 7808,
+        "raster": 2595840,
+        "hud": 120192,
+        "copy": 79360
+      },
+      "primitives": {
+        "wall_cycles": 956800,
+        "surface_cycles": 1458432,
+        "walls": 38,
+        "surfaces": 94
+      }
+    },
+    {
+      "name": "g20-span-startup.json",
+      "original_json_sha256": "f757ee0e8e87ae78e6eeabadc1986368b49836d6e41ac93fc21e6b7cb4ffc41f",
+      "rom_sha256": "184b225fe583add9c7ea1a11d8f207c0b3f079aa2aff683ac6765279b047bd08",
+      "total": 3418944,
+      "stages": {
+        "clear_resources": 11136,
+        "geometry": 782080,
+        "sort": 7808,
+        "raster": 2366912,
+        "hud": 120192,
+        "copy": 79360
+      }
+    },
+    {
+      "name": "g20-ui-startup.json",
+      "original_json_sha256": "c54cf0a7b86ece97dc7f0d8ef56223f34b092d52c8066272e21d9d78e4972010",
+      "rom_sha256": "55e4a52a4f40867a16c14547358274fa83be7c40e18e3ed7a90f8e9d15040200",
+      "total": 2547264,
+      "stages": {
+        "clear_resources": 11136,
+        "geometry": 681344,
+        "sort": 7808,
+        "raster": 1678656,
+        "hud": 44416,
+        "copy": 79360
+      }
+    },
+    {
+      "name": "g20-vertices-startup.json",
+      "original_json_sha256": "0a2ca42cf51a4684ce8df4bdac009db41309781a6d57bab5428d8f197bce1e76",
+      "rom_sha256": "ae2304adceb65b169514232fa03d480c671c76fc3f85796a1f76b0326ca8ee69",
+      "total": 3349952,
+      "stages": {
+        "clear_resources": 11200,
+        "geometry": 704000,
+        "sort": 7808,
+        "raster": 2374144,
+        "hud": 120000,
+        "copy": 79360
+      },
+      "primitives": {
+        "wall_cycles": 790528,
+        "surface_cycles": 1423296,
+        "walls": 38,
+        "surfaces": 94
+      }
+    },
+    {
+      "name": "final-clone-definition-bounds",
+      "before_rom_sha256": "115c0dc94a8ce1ecf87c80f974c567da0f3b7f69828070919d0b7567afcda226",
+      "after_rom_sha256": "a56330bf11dc6f3e5906d71b8d2dbb20b2c36a55c9f3e63c8c8eb5baa44c5c94",
+      "before_startup_cycles": 2547264,
+      "after_startup_cycles": 2531520,
+      "note": "Port bounds correction; not an original-game bug. Final complete pipeline repeated; layout-dependent timing delta is not claimed as an independent optimization."
+    }
+  ]
+}

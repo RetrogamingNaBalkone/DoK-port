@@ -75,8 +75,23 @@ size_t dok_ui_text(dok_ui *u,const dok_runtime_level *l,uint8_t out[60]){
  return n;
 }
 typedef struct {uint8_t *f;const uint8_t *f8,*f16;unsigned fg,bg;} canvas;
+static const dok_ui_art *art;
+void dok_ui_set_art(const dok_ui_art *value){art=value;}
 static void box(canvas *c,unsigned x,unsigned y,unsigned w,unsigned h,unsigned color){
- for(unsigned r=y;r<y+h && r<160;r++)for(unsigned col=x;col<x+w && col<240;col++)c->f[r*240+col]=(uint8_t)color;
+ if(x>=240 || y>=160)return;
+ if(w>240-x)w=240-x;if(h>160-y)h=160-y;
+#if defined(__GNUC__)
+ typedef uint32_t fill_word __attribute__((may_alias));
+#else
+ typedef uint32_t fill_word;
+#endif
+ uint32_t fill=(uint8_t)color*UINT32_C(0x01010101);
+ for(unsigned r=y;r<y+h;r++){
+  uint8_t *dst=c->f+r*240+x;unsigned n=w;
+  while(n && ((uintptr_t)dst&3)){*dst++=(uint8_t)color;--n;}
+  while(n>=4){*(fill_word *)(void *)dst=fill;dst+=4;n-=4;}
+  while(n--)*dst++=(uint8_t)color;
+ }
 }
 static void text(canvas *c,unsigned x,unsigned y,const uint8_t *s,size_t n,unsigned height){
  const uint8_t *font=height==16?c->f16:c->f8;
@@ -84,6 +99,31 @@ static void text(canvas *c,unsigned x,unsigned y,const uint8_t *s,size_t n,unsig
   unsigned bits=font[(unsigned)s[i]*height+r];for(unsigned col=0;col<8;col++)if(bits&(128u>>col))c->f[(y+r)*240+x+col]=(uint8_t)c->fg;
  }
 }
+/* Keep the original panel's three-pixel bevel; repeat its plain interior.
+ * No additional palette, framebuffer or decoded asset copy is needed. */
+static void panel(canvas *c,unsigned x,unsigned y,unsigned w,unsigned h){
+ if(!art || !art->panel.pixels){box(c,x,y,w,h,c->bg);return;}
+ const dok_image_view *p=&art->panel;
+ box(c,x,y,w,h,p->pixels[5*p->width+10]);
+ for(unsigned r=0;r<h && y+r<160;r++){
+  unsigned sy=r<3?r:r+3>=h?p->height-(h-r):5;
+  unsigned count=r<3 || r+3>=h?w:6;
+  for(unsigned i=0;i<count;i++){
+   unsigned col=count==6 && i>=3?w-6+i:i;
+   if(x+col>=240)continue;
+   unsigned sx=col<3?col:col+3>=w?p->width-(w-col):10;
+   c->f[(y+r)*240+x+col]=p->pixels[sy*p->width+sx];
+  }
+ }
+}
+static void icon(canvas *c,const dok_image_view *p,unsigned x,unsigned y,unsigned w,unsigned h){
+ if(!p || !p->pixels)return;
+ for(unsigned r=0;r<h && y+r<160;r++)for(unsigned col=0;col<w && x+col<240;col++){
+  unsigned pixel=p->pixels[(r*p->height/h)*p->width+col*p->width/w];
+  if(pixel)c->f[(y+r)*240+x+col]=(uint8_t)pixel;
+ }
+}
+static unsigned digits(int n){unsigned count=n<0?1:0,v=n<0?0u-(unsigned)n:(unsigned)n;do{++count;v/=10;}while(v);return count;}
 static void label(canvas *c,unsigned x,unsigned y,const char *s,unsigned h){text(c,x,y,(const uint8_t *)s,length(s),h);}
 static void number(canvas *c,unsigned x,unsigned y,int n){
  uint8_t b[7];unsigned count=0,v=n<0?0u-(unsigned)n:(unsigned)n;
@@ -97,17 +137,17 @@ static const char *const ui_new[2]={"\215\216\202\200\237 \210\203\220\200", "NE
 void dok_ui_draw(dok_ui *u,uint8_t *frame,const dok_runtime *w,const uint8_t *f8,const uint8_t *f16,unsigned fg,unsigned bg){
  if(!u || !frame || !w || !f8 || !f16)return;
  canvas c={frame,f8,f16,fg,bg};unsigned en=u->language;
- box(&c,0,0,80,12,bg);label(&c,2,2,en?"HP":"HP",8);number(&c,26,2,w->player.health);
- box(&c,160,0,80,12,bg);label(&c,162,2,"E",8);number(&c,178,2,w->player.energy);
- box(&c,0,132,128,12,bg);label(&c,2,134,"W",8);number(&c,10,134,w->player.selected_weapon+1);
- label(&c,66,134,"L",8);number(&c,74,134,w->player.lives);
- box(&c,184,132,56,12,bg);label(&c,186,134,"K",8);
- uint8_t hex[4];for(unsigned i=0;i<4;i++){unsigned n=(w->player.keys>>(12-4*i))&15;hex[i]=(uint8_t)(n<10?'0'+n:'A'+n-10);}
- text(&c,202,134,hex,4,8);
- box(&c,0,144,240,16,bg);uint8_t message[60];size_t n=dok_ui_text(u,w->level,message);
+ unsigned hpw=23+digits(w->player.health)*8,epw=18+digits(w->player.energy)*8,ex=240-epw;
+ panel(&c,0,0,hpw,14);panel(&c,ex,0,epw,14);
+ if(art){icon(&c,&art->health,3,2,15,10);icon(&c,&art->energy,ex+3,2,10,11);}
+ number(&c,20,3,w->player.health);number(&c,ex+15,3,w->player.energy);
+ if(art){unsigned x=240;for(unsigned i=0;i<3;i++)if(w->player.keys&(1u<<i)){
+  x-=16;panel(&c,x,128,16,16);icon(&c,&art->keys[i],x+2,129,12,14);
+ }}
+ panel(&c,0,144,240,16);uint8_t message[60];size_t n=dok_ui_text(u,w->level,message);
  if(n){text(&c,0,144,message,n>30?30:n,8);if(n>30)text(&c,0,152,message+30,n-30,8);}
  if(!u->state)return;
- box(&c,8,14,224,116,bg);box(&c,8,14,224,1,fg);box(&c,8,129,224,1,fg);
+ panel(&c,8,14,224,116);
  if(u->state==DOK_UI_HELP){
   label(&c,16,20,ui_help[en][0],16);for(unsigned i=1;i<8;i++)label(&c,16,36+i*10,ui_help[en][i],8);
  }else if(u->state==DOK_UI_STATUS){
@@ -135,7 +175,7 @@ void dok_ui_draw(dok_ui *u,uint8_t *frame,const dok_runtime *w,const uint8_t *f8
  * Thirty columns by fourteen lines, pages preserve all source bytes. */
 unsigned dok_ui_screen_pages(const uint8_t *s,size_t n){unsigned row=0,col=0;for(size_t i=0;i<n && s[i] && s[i]!='$';i++){if(s[i]=='\r')continue;if(s[i]=='\n'){++row;col=0;}else{if(col==30){++row;col=0;}++col;}}return row/14+1;}
 void dok_ui_screen(uint8_t *f,const uint8_t *f8,const uint8_t *f16,unsigned fg,unsigned bg,const uint8_t *s,size_t n,unsigned page,const char *heading,unsigned language){
- canvas c={f,f8,f16,fg,bg};box(&c,0,0,240,160,bg);label(&c,0,0,heading,16);
+ canvas c={f,f8,f16,fg,bg};panel(&c,0,0,240,160);label(&c,0,0,heading,16);
  unsigned row=0,col=0;for(size_t i=0;i<n && s[i] && s[i]!='$';i++){unsigned ch=s[i];if(ch=='\r')continue;if(ch=='\n'){++row;col=0;continue;}if(col==30){++row;col=0;}if(row/14==page){uint8_t b=(uint8_t)(ch<32?' ':ch);text(&c,col*8,20+(row%14)*8,&b,1,8);}++col;}
  label(&c,0,144,language?"A/START: OK B: BACK":"A/START: OK B: \215\200\207\200\204",8);number(&c,200,152,(int)page+1);label(&c,216,152,"/",8);number(&c,224,152,(int)dok_ui_screen_pages(s,n));
 }

@@ -10,7 +10,7 @@ import os
 from pathlib import Path
 import struct
 
-from verify_ui_gba import UIProbe, glyph_mask, palette_extremes
+from verify_ui_gba import UIProbe, glyph_mask, ui_colors
 from verify_sprites_gba import Probe, original_animations, load_json
 from verify_gba import sha
 from verify_renderer_gba import stack_usage
@@ -150,7 +150,7 @@ class FlowProbe(UIProbe):
         pages = []
         for page in range(expected_pages):
             raw, palette = self.frame()
-            black, white = palette_extremes(palette)
+            black, white = ui_colors(palette)
             font = data[b'FONT8'.hex()]
             for row in range(14):
                 index = page*14+row

@@ -1,12 +1,30 @@
 /* Horizontal spans have no transparency branch in the native ASM. The
  * production port shares front-to-back coverage with vertical planes. */
 static int surface_covered(dok_renderer_workspace *w,unsigned x,unsigned y) {
+#if defined(DOK_RENDERER_PROBE) && defined(DOK_RENDER_HALF_COLUMNS)
+    (void)w;return (coverage_bits[x>>1][y>>5]>>(y&31))&1;
+#else
     for(unsigned k=0;k<COVER_COUNT(w,x);++k) {
         if(COVER(w,x,k)[0]>y) return 0;
         if(COVER(w,x,k)[1]>=y) return 1;
     }
     return 0;
+#endif
 }
+#if defined(DOK_RENDERER_PROBE) && defined(DOK_RENDER_HALF_COLUMNS)
+/* Separate the common unshifted sampler from polygon setup. Apart from the
+ * smaller register live set, the row mask and dimensions are invariant. */
+typedef struct {
+    const uint8_t *pixels,*lut;
+    uint8_t *dst;
+    unsigned width,height,x,last,y;
+    int32_t tu,tv,du,dv;
+    uint32_t *bits;
+    unsigned mask;
+} surface_span;
+_Static_assert(offsetof(surface_span,bits)==48,"ARM surface sampler ABI");
+extern unsigned dok_gba_surface_span(const surface_span *);
+#endif
 static void surface_raster(dok_renderer_workspace *w,const dok_runtime *r,const dok_renderer_surface *f,dok_renderer_stats *stats) {
     const dok_image_view *im=&w->surface_images[f->object][f->plane];
     if(f->plane==2) {
@@ -44,11 +62,18 @@ static void surface_raster(dok_renderer_workspace *w,const dok_runtime *r,const 
         if(x&1) continue;
 #endif
         int found=0;
+#if defined(DOK_RENDERER_PROBE) && defined(DOK_RENDER_HALF_COLUMNS)
+        found=coverage_contains((unsigned)x,(unsigned)yfirst,(unsigned)ylast);
+#else
         for(unsigned k=0;k<COVER_COUNT(w,x);++k)
             if(COVER(w,x,k)[0]<=yfirst && COVER(w,x,k)[1]>=ylast) {found=1;break;}
+#endif
         if(!found) {hidden=0;break;}
     }
     if(hidden) return;
+#if defined(DOK_RENDERER_PROBE) && defined(DOK_RENDER_HALF_COLUMNS)
+    for(int x=(clamp(xmin,0,239)+1)&~1;x<=clamp(xmax,0,239);x+=2) COVER_COUNT(w,x)|=128;
+#endif
     struct {int first,last;int32_t x,u,v,dx,du,dv;} edges[4];
     for(int k=0;k<4;++k) {
         int a=k,b=(k+1)&3;if(f->y[a]>f->y[b]) {int n=a;a=b;b=n;}
@@ -63,26 +88,37 @@ static void surface_raster(dok_renderer_workspace *w,const dok_runtime *r,const 
     int depth_step=(d1-d0)*65536/(f->y[max]-f->y[min]);
     int depth=d0*65536+(yfirst-f->y[min])*depth_step;
     for(int y=yfirst;y<=ylast;++y) {
-        int32_t xs[4],us[4],vs[4];int count=0;
+        int lo=-1,hi=-1,count=0;int32_t xl=0,xh=0;int offset=y-yfirst;
         for(int k=0;k<4;++k) {
             if(edges[k].first!=edges[k].last && y>=edges[k].first && y<=edges[k].last) {
-                xs[count]=edges[k].x;us[count]=edges[k].u;vs[count]=edges[k].v;++count;
+                int32_t x=add(edges[k].x,mul(offset,edges[k].dx));
+                if(lo<0 || x<xl) {lo=k;xl=x;}
+                if(hi<0 || x>xh) {hi=k;xh=x;}
+                ++count;
             }
-            edges[k].x=add(edges[k].x,edges[k].dx);
-            edges[k].u=add(edges[k].u,edges[k].du);edges[k].v=add(edges[k].v,edges[k].dv);
         }
         unsigned row=light_index(sar(depth,16));depth=add(depth,depth_step);
         if(count<2) continue;
-        int lo=0,hi=0;for(int k=1;k<count;++k) {if(xs[k]<xs[lo]) lo=k;if(xs[k]>xs[hi]) hi=k;}
-        int left=sar(xs[lo],16),right=sar(xs[hi],16),span=right-left;
+        int left=sar(xl,16),right=sar(xh,16),span=right-left;
         if(span<=0 || right<0 || left>239) continue;
         int first=clamp(left,0,239),last=clamp(right,0,239);
 #ifdef DOK_RENDER_HALF_COLUMNS
         first=(first+1)&~1;
 #endif
+        if(first>last) continue;
         const uint8_t *lut=w->lights+row*256;
-        int32_t du=(us[hi]-us[lo])/span,dv=(vs[hi]-vs[lo])/span;
-        int32_t tu=us[lo]+(first-left)*du,tv=vs[lo]+(first-left)*dv;
+        int32_t ul=add(edges[lo].u,mul(offset,edges[lo].du)),uh=add(edges[hi].u,mul(offset,edges[hi].du));
+        int32_t vl=add(edges[lo].v,mul(offset,edges[lo].dv)),vh=add(edges[hi].v,mul(offset,edges[hi].dv));
+        int32_t du=(uh-ul)/span,dv=(vh-vl)/span;
+        int32_t tu=ul+(first-left)*du,tv=vl+(first-left)*dv;
+#if defined(DOK_RENDERER_PROBE) && defined(DOK_RENDER_HALF_COLUMNS)
+        if(!shift_x && !shift_y) {
+            surface_span s={im->pixels,lut,w->frame+y*240+first,im->width,im->height,
+                (unsigned)first,(unsigned)last,(unsigned)y,tu,tv,du,dv,
+                &coverage_bits[(unsigned)first>>1][(unsigned)y>>5],1u<<((unsigned)y&31)};
+            stats->pixels_written+=dok_gba_surface_span(&s);continue;
+        }
+#endif
         for(int x=first;x<=last;
 #ifdef DOK_RENDER_HALF_COLUMNS
             x+=2,tu+=du*2,tv+=dv*2
@@ -102,6 +138,10 @@ static void surface_raster(dok_renderer_workspace *w,const dok_runtime *r,const 
                 color=(tx<0 || tx>=im->width || ty<0 || ty>=im->height)?lut[0]:lut[im->pixels[(unsigned)ty*im->width+(unsigned)tx]];
             }
             store_pixel(w->frame+y*240+x,color);
+#if defined(DOK_RENDERER_PROBE) && defined(DOK_RENDER_HALF_COLUMNS)
+            coverage_bits[(unsigned)x>>1][(unsigned)y>>5]|=1u<<((unsigned)y&31);
+            COVER_COUNT(w,x)|=128;
+#else
             unsigned covered=COVER_COUNT(w,x);
             if(!covered) {
                 COVER(w,x,0)[0]=COVER(w,x,0)[1]=(uint8_t)y;COVER_COUNT(w,x)=1;
@@ -109,6 +149,7 @@ static void surface_raster(dok_renderer_workspace *w,const dok_runtime *r,const 
                 if(y<COVER(w,x,0)[0]) COVER(w,x,0)[0]=(uint8_t)y;
                 if(y>COVER(w,x,0)[1]) COVER(w,x,0)[1]=(uint8_t)y;
             } else cover(w,(unsigned)x,(unsigned)y,(unsigned)y);
+#endif
             ++stats->pixels_written;
         }
     }

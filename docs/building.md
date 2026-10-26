@@ -1,12 +1,34 @@
 # Сборка первых модулей и VS Code
 
+Готовый ROM для запуска хранится отдельно от промежуточных файлов:
+`artifacts/gba/DoK-port.gba`. Сейчас это проверенная сборка с обновлённым HUD
+из `build/g17-ui/`. ROM не включается в Git; ELF/map и отчёты остаются в `build/`.
+
+Актуальная сборка G20 и полный профиль без усечений:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-gba-performance.ps1 -CrossChecks
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run-gba.ps1 -Rom build/g20/dok-diagnostic.gba
+```
+
+Полный driver выполнен одним вызовом; лог `build/g20/g20-validation-final.log`.
+ROM/ELF/map — `build/g20/`, бюджет — `analysis/gba-final-budget.json`,
+таблицы/ограничения — [gba-performance.md](gba-performance.md).
+Для pixel oracle сохранять frozen G18 с SHA `46e4bfa4…eeb3c0`; текущая
+пересборка G18 из изменённых исходников не заменяет его. Нужны общие
+Zig/Python/mGBA и существующий Unicorn в `C:/Source/wasdify/build/research-deps`.
+`-RegressionOnly` повторяет проверки неизменённых готовых артефактов.
+30 FPS не достигнуты; G20 открыта по бюджету, следующий шаг — G20A.
+
+Следующие описания G18 и первых проб — исторические команды соответствующих этапов.
+
 После очистки 26 октября 2026 года старые сборки G06A, G07–G15 и G17 удалены;
 для повторных проверок их нужно собрать заново. Итоговые ROM/ELF/map G18
 сохранены. Промежуточные объекты и банки G16/G18 удалены, а общий пакет
 `build/gba/assets/` оставлен. Полная сборка ниже восстановит промежуточные
 файлы и кэш Zig. Перечень очистки: `analysis/artifact-cleanup-20261026.json`.
 
-Актуальный общий GBA-ROM G18:
+Общий GBA-ROM этапа G18:
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-gba-flow.ps1 -CrossChecks -OriginalEvidence

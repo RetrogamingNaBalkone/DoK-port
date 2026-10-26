@@ -19,18 +19,92 @@
 #define DOK_COLD __attribute__((noinline,section(".rom.text")))
 extern void gba_render_stage(unsigned stage);
 #define STAGE(n) gba_render_stage(n)
+/* Optional per-primitive attribution. Zero by default, so normal frame
+ * measurements include only its branch, never the timestamp calls. */
+volatile uint32_t g_render_work[5];
+static DOK_COLD uint32_t render_ticks(void) {
+    volatile const uint16_t *clock=(volatile const uint16_t *)0x04000108;
+    uint16_t hi,lo,next;
+    do {hi=clock[2];lo=clock[0];next=clock[2];} while(hi!=next);
+    return ((uint32_t)hi<<16)|lo;
+}
 /* The single GBA renderer owns these during a draw. IRQs never render.
  * Keep the overwhelmingly common first interval on the fast 32-bit bus. */
-static uint8_t coverage_count[240] __attribute__((section(".iwram.data")))={0};
-static uint8_t coverage_first[240][2] __attribute__((section(".iwram.data")))={{0}};
-static uint16_t face_order[DOK_RENDER_FACE_CAPACITY] __attribute__((section(".iwram.data")))={0};
-#define COVER_COUNT(w,x) coverage_count[x]
-#define COVER(w,x,k) ((k)?(w)->covered[x][k]:coverage_first[x])
+#ifdef DOK_RENDER_HALF_COLUMNS
+#define COVER_X(x) ((x)>>1)
+#define COVER_WIDTH 120
+#else
+#define COVER_X(x) (x)
+#define COVER_WIDTH 240
+#endif
+static uint8_t coverage_count[COVER_WIDTH] __attribute__((section(".iwram.data")))={0};
+static uint8_t coverage_first[COVER_WIDTH][2] __attribute__((section(".iwram.data")))={{0}};
+static uint16_t face_order[DOK_RENDER_FACE_CAPACITY];
+#ifdef DOK_RENDER_HALF_COLUMNS
+/* Horizontal surfaces publish coverage a pixel at a time. Keep their bitset
+ * on the fast bus and reconstruct intervals only when a wall needs them. */
+static uint32_t coverage_bits[120][5] __attribute__((section(".iwram.data")))={{0}};
+static void coverage_mark(unsigned x,unsigned lo,unsigned hi) {
+    uint32_t *bits=coverage_bits[x>>1];
+    unsigned first=lo>>5,last=hi>>5;
+    uint32_t a=UINT32_MAX<<(lo&31),b=UINT32_MAX>>(31-(hi&31));
+    if(first==last) bits[first]|=a&b;
+    else {bits[first]|=a;for(unsigned k=first+1;k<last;++k) bits[k]=UINT32_MAX;bits[last]|=b;}
+}
+static int coverage_contains(unsigned x,unsigned lo,unsigned hi) {
+    const uint32_t *bits=coverage_bits[x>>1];
+    unsigned first=lo>>5,last=hi>>5;
+    uint32_t a=UINT32_MAX<<(lo&31),b=UINT32_MAX>>(31-(hi&31));
+    if(first==last) return (bits[first]&(a&b))==(a&b);
+    if((bits[first]&a)!=a || (bits[last]&b)!=b) return 0;
+    for(unsigned k=first+1;k<last;++k) if(bits[k]!=UINT32_MAX) return 0;
+    return 1;
+}
+#define COVER_MARK(x,lo,hi) coverage_mark(x,lo,hi)
+#else
+#define COVER_MARK(x,lo,hi) ((void)0)
+#endif
+#define COVER_COUNT(w,x) coverage_count[COVER_X(x)]
+#define COVER(w,x,k) ((k)?(w)->covered[x][k]:coverage_first[COVER_X(x)])
 #else
 #define DOK_COLD
 #define STAGE(n) ((void)0)
 #define COVER_COUNT(w,x) ((w)->covered_count[x])
 #define COVER(w,x,k) ((w)->covered[x][k])
+#define COVER_MARK(x,lo,hi) ((void)0)
+#endif
+#if defined(DOK_RENDERER_PROBE) && defined(DOK_RENDER_HALF_COLUMNS)
+static DOK_NOINLINE unsigned coverage_edge(const uint32_t *bits,unsigned y,uint32_t invert) {
+    while(y<144) {
+        uint32_t v=(bits[y>>5]^invert)>>(y&31);
+        if(v) {
+            unsigned n=0;
+            if(!(v&65535)) {v>>=16;n+=16;}
+            if(!(v&255)) {v>>=8;n+=8;}
+            if(!(v&15)) {v>>=4;n+=4;}
+            if(!(v&3)) {v>>=2;n+=2;}
+            if(!(v&1)) ++n;
+            return y+n<144?y+n:144;
+        }
+        y=(y|31)+1;
+    }
+    return 144;
+}
+#endif
+#if defined(DOK_RENDERER_PROBE) && defined(DOK_RENDER_HALF_COLUMNS)
+static void coverage_sync(dok_renderer_workspace *w,unsigned x) {
+    if(!(COVER_COUNT(w,x)&128)) return;
+    unsigned count=0,y=0;
+    const uint32_t *bits=coverage_bits[x>>1];
+    while((y=coverage_edge(bits,y,0))<144) {
+        unsigned lo=y;
+        y=coverage_edge(bits,y,UINT32_MAX);
+        COVER(w,x,count)[0]=(uint8_t)lo;COVER(w,x,count)[1]=(uint8_t)(y-1);++count;
+    }
+    COVER_COUNT(w,x)=(uint8_t)count;
+}
+#else
+#define coverage_sync(w,x) ((void)0)
 #endif
 static void zero(void *p,size_t n) {uint8_t *b=p;while(n--) *b++=0;}
 static int32_t bits(uint32_t v) {return v<=INT32_MAX?(int32_t)v:-1-(int32_t)~v;}
@@ -335,6 +409,7 @@ static unsigned draw_run(uint8_t *dst,const uint8_t *pixels,unsigned v,unsigned 
     return strip?strip_column(dst,strip,count):mapped_column(dst,pixels,v,step,count,0);
 }
 static void cover(dok_renderer_workspace *w,unsigned x,unsigned lo,unsigned hi) {
+    COVER_MARK(x,lo,hi);
     unsigned count=COVER_COUNT(w,x),a=0,b;
     while(a<count && (unsigned)COVER(w,x,a)[1]+1<lo) ++a;
     b=a;
@@ -362,11 +437,13 @@ static DOK_NOINLINE unsigned visible_column(dok_renderer_workspace *w,unsigned x
     if(!masked) {
         if(!count) {
             draw_run(w->frame+begin*240+x,pixels,v,step,end-begin+1,strip);
+            COVER_MARK(x,begin,end);
             COVER(w,x,0)[0]=(uint8_t)begin;COVER(w,x,0)[1]=(uint8_t)end;
             COVER_COUNT(w,x)=1;return end-begin+1;
         }
         unsigned lo=COVER(w,x,0)[0],hi=COVER(w,x,0)[1];
         if(count==1 && begin<=hi+1 && end+1>=lo) {
+            COVER_MARK(x,begin,end);
             if(begin<lo) {
                 unsigned last=end<lo?end:lo-1;
                 written+=draw_run(w->frame+begin*240+x,pixels,v,step,last-begin+1,strip);
@@ -462,10 +539,15 @@ static void raster(dok_renderer_workspace *w,const dok_runtime *r,const dok_rend
 
         if(bottom<top || bottom<0 || top>=DOK_RENDER_SCENE_HEIGHT) continue;
         begin=clamp(top,0,DOK_RENDER_SCENE_HEIGHT-1);end=clamp(bottom,0,DOK_RENDER_SCENE_HEIGHT-1);
+#if defined(DOK_RENDERER_PROBE) && defined(DOK_RENDER_HALF_COLUMNS)
+        if(coverage_contains((unsigned)x,(unsigned)begin,(unsigned)end)) continue;
+        coverage_sync(w,(unsigned)x);
+#else
         unsigned occluded=0;
         for(unsigned k=0;k<COVER_COUNT(w,x);++k)
             if(COVER(w,x,k)[0]<=begin && COVER(w,x,k)[1]>=end) {occluded=1;break;}
         if(occluded) continue;
+#endif
         denom=q0*(span-i)+q1*i;
         numerator=f.u0*q0*(span-i)+f.u1*q1*i;u=denom?numerator/denom:0;
         u=clamp(u,0,im->width-1);
@@ -473,7 +555,7 @@ static void raster(dok_renderer_workspace *w,const dok_runtime *r,const dok_rend
          * LEVEL door sprites shift right (0x48) or down (0x108). Integer
          * division precedes multiplication, as native crop transform. */
         int crop_y=0;
-        if(r->level->definitions[f.image_index].class_id==7) {
+        if(f.image_index<r->object_count && r->level->definitions[f.image_index].class_id==7) {
             const dok_runtime_object *o=&r->objects[f.image_index];
             int divisor=o->state.door.extent;
             if(divisor<1) divisor=1;
@@ -571,6 +653,7 @@ static void background_gaps(dok_renderer_workspace *w,const dok_runtime_level *l
         ++x
 #endif
     ) {
+        coverage_sync(w,x);
         unsigned begin=0,count=COVER_COUNT(w,x);
         for(unsigned k=0;k<=count;++k) {
             unsigned end=k<count?COVER(w,x,k)[0]:144;
@@ -598,6 +681,9 @@ dok_renderer_status dok_renderer_draw(dok_renderer_workspace *w,const dok_runtim
     zero(w->surface_known,sizeof(w->surface_known));
     if(dok_rom_binding(&id,a,level,language,DOK_ROM_GLOBAL_OBJECT,DOK_ROM_SLOT_LIGHT)!=DOK_ROM_OK ||
        dok_rom_resource_at(&light,a,id,language)!=DOK_ROM_OK || light.size!=4096) {status=DOK_RENDER_RESOURCE;goto done;}
+#ifdef DOK_RENDERER_PROBE
+    if(++surface_epoch==0x80000) {surface_epoch=1;zero(surface_vertices,sizeof(surface_vertices));}
+#endif
     STAGE(1);status=build(w,r,a,level,language,c,&s);if(status) goto done;
     if(w->sprite_count>DOK_RENDER_SPRITE_CAPACITY) {status=DOK_RENDER_CAPACITY;goto done;}
     for(i=0;i<w->sprite_count;++i) {
@@ -626,11 +712,20 @@ dok_renderer_status dok_renderer_draw(dok_renderer_workspace *w,const dok_runtim
     for(i=0;i<4096;++i) w->lights[i]=light.data[i];
 #ifdef DOK_RENDERER_PROBE
     zero(coverage_count,sizeof(coverage_count));
+#ifdef DOK_RENDER_HALF_COLUMNS
+    zero(coverage_bits,sizeof(coverage_bits));
+#endif
 #else
     zero(w->covered_count,sizeof(w->covered_count));
 #endif
     unsigned walls=w->face_count,surfaces=w->surface_count;
+#ifdef DOK_RENDERER_PROBE
+    for(unsigned k=1;k<5;++k) g_render_work[k]=0;
+#endif
     while(walls || surfaces) {
+#ifdef DOK_RENDERER_PROBE
+        uint32_t stamp=g_render_work[0]?render_ticks():0;
+#endif
 #ifdef DOK_RENDERER_PROBE
         unsigned index=walls?face_order[walls-1]:0;
 #else
@@ -639,7 +734,15 @@ dok_renderer_status dok_renderer_draw(dok_renderer_workspace *w,const dok_runtim
         const dok_renderer_surface *f=surfaces?&w->surfaces[w->surface_order[surfaces-1]]:0;
         if(f && (!walls || f->key<=w->faces[index].key)) {
             surface_raster(w,r,f,&s);--surfaces;
-        } else {raster(w,r,&w->faces[index],w->lights,&s);--walls;}
+#ifdef DOK_RENDERER_PROBE
+            if(g_render_work[0]) {g_render_work[2]+=render_ticks()-stamp;++g_render_work[4];}
+#endif
+        } else {
+            raster(w,r,&w->faces[index],w->lights,&s);--walls;
+#ifdef DOK_RENDERER_PROBE
+            if(g_render_work[0]) {g_render_work[1]+=render_ticks()-stamp;++g_render_work[3];}
+#endif
+        }
     }
 #ifdef DOK_RENDERER_PROBE
     if(deferred) background_gaps(w,r->level);

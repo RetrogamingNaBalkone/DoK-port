@@ -32,6 +32,8 @@ __aeabi_idivmod:
     bx lr
 .size __aeabi_idivmod,.-__aeabi_idivmod
 
+/* Startup-only vectors do not consume the renderer's IWRAM budget. */
+.section .rom.text.divmod_selftest,"ax",%progbits
 .global gba_divmod_selftest
 .type gba_divmod_selftest,%function
 gba_divmod_selftest:

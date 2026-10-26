@@ -1,4 +1,5 @@
 #include "dok/collision.h"
+#include "dok/cell_coordinate.h"
 static const dok_runtime *overlay_world;
 static dok_collision_overlay_fn overlay_blocked;
 static void *overlay_context;
@@ -8,17 +9,13 @@ void dok_collision_overlay(const dok_runtime *w,dok_collision_overlay_fn f,void 
 static unsigned cell(const dok_runtime *w,int32_t x,int32_t z)
 {
     int32_t side=w->level->settings[DOK_LEVEL_CELL_SIDE];
-    int32_t col=x/side,row=z/side;
     int32_t width=w->level->settings[DOK_LEVEL_WIDTH],length=w->level->settings[DOK_LEVEL_LENGTH];
-    if(col<0) col=0;
-    if(col>=width) col=width-1;
-    if(row<0) row=0;
-    if(row>=length) row=length-1;
+    int32_t col=dok_cell_coordinate(x,side,width),row=dok_cell_coordinate(z,side,length);
     return (unsigned)(row*width+col);
 }
-static int pass(const dok_runtime *w,unsigned plane,int32_t x,int32_t z)
+static int pass_at(const dok_runtime *w,unsigned plane,unsigned at)
 {
-    unsigned glyph=w->maps[plane*w->level->cells+cell(w,x,z)];
+    unsigned glyph=w->maps[plane*w->level->cells+at];
     unsigned id=w->level->glyph_index[glyph];
     return id && id<=w->object_count && (w->objects[id-1].flags&0x10)!=0;
 }
@@ -29,10 +26,16 @@ int dok_collision_clear(const dok_runtime *w,int32_t x,int32_t z,int16_t r)
         overlay_blocked(overlay_context,x+r,z-r) || overlay_blocked(overlay_context,x+r,z+r)))return 0;
     /* Native order: MMap --,+-,-+,++; then the same four TMap corners.
      * The footprint is an axis-aligned square, not a circle. */
-    for(unsigned p=0;p<2;++p) {
-        if(!pass(w,p,x-r,z-r) || !pass(w,p,x-r,z+r) ||
-           !pass(w,p,x+r,z-r) || !pass(w,p,x+r,z+r)) return 0;
-    }
+    /* Both maps use the same four indices. Divide/clamp each coordinate
+     * once, preserving native --,+-,-+,++ order and short-circuit reads. */
+    int32_t side=w->level->settings[DOK_LEVEL_CELL_SIDE];
+    int32_t width=w->level->settings[DOK_LEVEL_WIDTH],height=w->level->settings[DOK_LEVEL_LENGTH];
+    int32_t col[2]={dok_cell_coordinate(x-r,side,width),dok_cell_coordinate(x+r,side,width)};
+    int32_t row[2]={dok_cell_coordinate(z-r,side,height),dok_cell_coordinate(z+r,side,height)};
+    unsigned at[4]={(unsigned)(row[0]*width+col[0]),(unsigned)(row[1]*width+col[0]),
+                    (unsigned)(row[0]*width+col[1]),(unsigned)(row[1]*width+col[1])};
+    for(unsigned p=0;p<2;++p)
+        for(unsigned k=0;k<4;++k)if(!pass_at(w,p,at[k]))return 0;
     return 1;
 }
 static int32_t edge(int32_t n,int32_t side,int32_t radius,int negative)

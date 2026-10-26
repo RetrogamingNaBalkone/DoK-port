@@ -44,6 +44,11 @@ try {
     if ($LASTEXITCODE -ne 0) { throw 'GBA startup assembly failed' }
     $taskObjects = @("$OutDir/startup.o", "$OutDir/main.o")
     if ($RendererProbe) {
+        & $PythonExe scripts/pack_animation_index.py --assets $AssetsBin --output "$OutDir/animation-index.S"
+        if ($LASTEXITCODE -ne 0) { throw 'Animation index validation failed' }
+        & $ZigExe @taskStartupArgs "$OutDir/animation-index.S" -o "$OutDir/animation-index.o"
+        if ($LASTEXITCODE -ne 0) { throw 'Animation index assembly failed' }
+        $taskObjects += "$OutDir/animation-index.o"
         & $PythonExe scripts/render_tables.py --output "$OutDir/render-tables.S"
         if ($LASTEXITCODE -ne 0) { throw 'Renderer tables failed' }
         & $ZigExe @taskStartupArgs "$OutDir/render-tables.S" -o "$OutDir/render-tables.o"

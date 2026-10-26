@@ -1,6 +1,7 @@
 /originals/
 /mqa/
 /build/
+/artifacts/gba/*.gba
 /decompiled/
 __pycache__/
 *.pyc

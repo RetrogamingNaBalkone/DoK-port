@@ -1,6 +1,10 @@
 #ifndef DOK_UI_H
 #define DOK_UI_H
 #include "dok/runtime.h"
+#include "dok/image.h"
+/* Borrowed original RES images, validated once at level load. */
+typedef struct {dok_image_view panel,health,energy,keys[3];} dok_ui_art;
+void dok_ui_set_art(const dok_ui_art *);
 /* Presentation only. No mutable world pointer, allocator, native far pointer,
  * or dependency on GBA video. CP866 glyphs always occupy 8 columns. */
 #define DOK_UI_TEXT_LIMIT 240u

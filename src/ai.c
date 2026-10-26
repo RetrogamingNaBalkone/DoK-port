@@ -1,9 +1,31 @@
 ﻿#include "dok/ai.h"
 #include "dok/animation.h"
 #include "ai_atan.inc"
+#include "dok/cell_coordinate.h"
+#ifdef DOK_RENDERER_PROBE
+volatile uint32_t g_ai_work[4]; /* lookup calls, sight calls, longest ray, capped rays */
+#endif
 static uint32_t now(void *p){return ((dok_ai *)p)->now;}
 static void emit(dok_ai *a,dok_ai_kind k,uint16_t id){if(a->sink)a->sink(a->context,k,id);}
-static int32_t field(dok_ai *a,uint16_t id,unsigned off){int32_t n=0;dok_runtime_read_s(a->world,id,off,off==0xba?4:(off==0xe7?1:2),&n);return n;}
+static int32_t field(dok_ai *a,uint16_t id,unsigned off){
+ /* These five class9 constructor parameters never have a mutable byte-adapter
+  * override. Read their typed LEVEL record once rather than reconstructing
+  * each byte through all actor/player/state cases. Keep signed byte/word
+  * truncation identical to dok_runtime_read_s, including unusual test values. */
+ const dok_runtime_level *l=a->world->level;
+ const dok_runtime_definition *d=&l->definitions[id];
+ unsigned kind=off==0xba?DOK_LEVEL_I32:off==0xe7?DOK_LEVEL_CHAR:DOK_LEVEL_I16;
+ if(d->class_id==9 && (off==0xba || off==0xe7 || off==0xa6 || off==0xa8 || off==0xae)){
+  for(unsigned i=0;i<d->field_count;++i){const dok_runtime_field *f=&l->fields[d->field_begin+i];
+   if(f->native_offset==off && f->kind==kind){
+    if(kind==DOK_LEVEL_I32)return f->value.number;
+    unsigned mask=kind==DOK_LEVEL_CHAR?255:65535,v=(uint32_t)f->value.number&mask;
+    return v<=mask/2?(int32_t)v:-1-(int32_t)(mask-v);
+   }
+  }
+ }
+ int32_t n=0;dok_runtime_read_s(a->world,id,off,off==0xba?4:(off==0xe7?1:2),&n);return n;
+}
 static dok_runtime_actor *actor(dok_ai *a,uint16_t id){const dok_runtime_actor *p=dok_runtime_actor_at(a->world,id);return (dok_runtime_actor *)p;}
 int dok_ai_near(int32_t dx,int32_t dz,int32_t distance){
  /* Valid maps fit signed32 subtraction/abs; use unsigned magnitude for diagnostics. */
@@ -41,9 +63,12 @@ void dok_ai_consider(dok_ai *a,uint16_t id){
 }
 static unsigned cell(dok_ai *a,int32_t x,int32_t z){
  const dok_runtime_level *l=a->world->level;int side=l->settings[DOK_LEVEL_CELL_SIDE],w=l->settings[DOK_LEVEL_WIDTH],h=l->settings[DOK_LEVEL_LENGTH];
- int cx=x/side,cz=z/side;if(cx<0)cx=0;if(cx>=w)cx=w-1;if(cz<0)cz=0;if(cz>=h)cz=h-1;return (unsigned)(cz*w+cx);
+ int cx=dok_cell_coordinate(x,side,w),cz=dok_cell_coordinate(z,side,h);return (unsigned)(cz*w+cx);
 }
 static unsigned lookup(dok_ai *a,dok_runtime_actor *p,unsigned plane,int side){
+#ifdef DOK_RENDERER_PROBE
+ ++g_ai_work[0];
+#endif
  dok_motion_free(p,(int16_t)-side,0,0);
  unsigned pos=cell(a,p->x,p->z);
  if(!plane && a->combat && a->combat->world==a->world){
@@ -74,14 +99,23 @@ static int show(dok_ai *a,uint16_t id,unsigned slot,unsigned frame){
 static int sight(dok_ai *a,uint16_t id,uint16_t target){
  dok_runtime *w=a->world;dok_runtime_actor probe=*actor(a,id);
  unsigned pos=cell(a,probe.x,probe.z);uint8_t saved=w->maps[pos];w->maps[pos]=' ';int result=0;
- for(unsigned i=0;i<5000;i++){
+#ifdef DOK_RENDERER_PROBE
+ ++g_ai_work[1];
+#endif
+ unsigned i;
+ for(i=0;i<5000;i++){
   unsigned front=lookup(a,&probe,0,100);
   if(front==id)continue;
   if(front==target){result=1;break;}
   if(front==DOK_RUNTIME_NONE || !(w->objects[front].flags&0x18))break;
   front=lookup(a,&probe,1,100);
   if(front==DOK_RUNTIME_NONE || !(w->objects[front].flags&0x18))break;
- }w->maps[pos]=saved;return result;
+ }
+#ifdef DOK_RENDERER_PROBE
+ if(i>g_ai_work[2])g_ai_work[2]=i;
+ if(i==5000)++g_ai_work[3];
+#endif
+ w->maps[pos]=saved;return result;
 }
 static void dispatch(dok_scheduler *s,uint16_t index,uint16_t cb,uint32_t parameter,void *context){
  (void)cb;dok_ai *a=context;dok_runtime *w=a->world;

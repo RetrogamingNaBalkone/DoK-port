@@ -1,0 +1,13 @@
+{
+  "task": "G20",
+  "status": "reviewed",
+  "reviewer": "root assistant",
+  "rom_sha256": "a56330bf11dc6f3e5906d71b8d2dbb20b2c36a55c9f3e63c8c8eb5baa44c5c94",
+  "files": {
+    "build/g20/renderer-ru.png": "1c254bb83274b1019fa6c5d9ac5ec6ea7adfdc51411472aec095da284af4212b",
+    "build/g20/ui-check/bintro1-0-page0.png": "b7200d1598f4dd344f322750e7eb405020c9a1acc96653d714e351cc1de86b12",
+    "build/g20/sprite-check/projectile-1-67-4-640.png": "398c7a8f922f2f78e1da39d5e66481b0214790fc1da159fedfce763dd3240e85"
+  },
+  "finding": "Viewed at 240x160: geometry/textures, CP866 text and projectile appearance preserved; 488 paired full-frame pixel checks are the primary regression evidence.",
+  "new_user_listening": false
+}

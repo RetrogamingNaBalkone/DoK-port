@@ -3,6 +3,7 @@
 #include "dok/flow.h"
 #include "dok/combat.h"
 #include "dok/collision.h"
+#include "dok/ui.h"
 extern dok_combat g_combat;
 extern unsigned gba_flow_active(void);
 extern void gba_flow_update(void);
@@ -139,6 +140,7 @@ static unsigned white,black;
  * views/resources at level load, then switch only already checked views. */
 static dok_runtime_level localized_views[2];
 static struct {const uint8_t *font,*font16;uint16_t colors[256];unsigned white,black;} localized_ui[2];
+static dok_ui_art localized_art[2];
 static volatile uint32_t data_probe=0x1234abcd;
 extern const uint8_t dok_gba_assets[],dok_gba_assets_end[];
 extern void gba_irq(void);
@@ -172,6 +174,9 @@ static void timer_start(void){timer_base=0;timer_base=timer_sample()/64u;}
 static uint32_t timer_stop(void){return timer_sample();}
 
 volatile uint32_t g_render_stages[7];
+/* Completed frame snapshot stays valid while the next frame is rasterized.
+ * Consumers measuring normal cadence must not require a capture-only hold. */
+volatile uint32_t g_render_completed_stages[7];
 void gba_render_stage(unsigned stage) {
     g_render_stages[stage]=timer_sample();
 }
@@ -187,16 +192,28 @@ static void prepare_level(unsigned level)
         if(dok_rom_find(&id,&package,(const uint8_t *)"FONT16",6)!=DOK_ROM_OK ||
            dok_rom_resource_at(&resource,&package,id,language)!=DOK_ROM_OK || resource.size!=4096) panic(0x91);
         localized_ui[language].font16=resource.data;
+        /* Original CP866 resource names: panel, life, magic, copper/iron/gold. */
+        static const uint8_t art_names[6][7]={
+            "\217\200\215\205\213\234","\217\206\210\207\215\234","\217\214\200\203\210\237",
+            "\217\212\213\236\227\214","\217\212\213\236\227\206","\217\212\213\236\227\207"};
+        static const unsigned widths[6]={320,25,17,26,26,26},heights[6]={39,17,18,30,30,30};
+        dok_ui_art *a=&localized_art[language];
+        dok_image_view *images[6]={&a->panel,&a->health,&a->energy,&a->keys[0],&a->keys[1],&a->keys[2]};
+        for(unsigned i=0;i<6;i++){
+            if(dok_rom_find(&id,&package,art_names[i],6)!=DOK_ROM_OK ||
+               dok_rom_resource_at(&resource,&package,id,language)!=DOK_ROM_OK ||
+               dok_image_open(resource.data,resource.size,images[i])!=DOK_ASSET_OK ||
+               images[i]->width!=widths[i] || images[i]->height!=heights[i])panic(0x91);
+        }
         if (dok_renderer_palette(palette,&package,level,language)!=DOK_RENDER_OK) panic(0x92);
-        unsigned darkest=~0u,brightest=0;
         for (unsigned i=0;i<256;++i) {
             unsigned r=palette[3*i],g=palette[3*i+1],b=palette[3*i+2];
             if (r>63 || g>63 || b>63) panic(0x93);
             localized_ui[language].colors[i]=(uint16_t)((r>>1)|((g>>1)<<5)|((b>>1)<<10));
-            unsigned brightness=r+g+b;
-            if (brightness<darkest) {darkest=brightness;localized_ui[language].black=i;}
-            if (brightness>brightest) {brightest=brightness;localized_ui[language].white=i;}
         }
+        /* Original green palette entry and the panel's own plain interior. */
+        localized_ui[language].white=2;
+        localized_ui[language].black=a->panel.pixels[5*320+10];
     }
     /* dok_rom_open already verified the full numeric/common profile. These
      * identities additionally guard the cached pair used by this probe. */
@@ -208,6 +225,7 @@ static void prepare_level(unsigned level)
 static __attribute__((section(".iwram"),target("arm"))) void load_ui(unsigned language)
 {
     font=localized_ui[language].font;font16=localized_ui[language].font16;white=localized_ui[language].white;black=localized_ui[language].black;
+    dok_ui_set_art(&localized_art[language]);
     for(unsigned i=0;i<256;++i) PAL[i]=localized_ui[language].colors[i];
     g_render_diag.font_ready=1;
     g_render_diag.palette_ready=1;
@@ -271,7 +289,9 @@ __attribute__((noreturn)) void gba_main(void)
     gba_ui_start();
     unsigned visible=0;
     for (;;) {
+        unsigned camera_changed=0;
         if(g_camera_probe.request!=g_camera_probe.ack) {
+            camera_changed=1;
             test_camera=1;
             unsigned level=g_camera_probe.level;
             if(level>=3) panic(0x94);
@@ -330,13 +350,14 @@ __attribute__((noreturn)) void gba_main(void)
             __asm__ volatile("nop" ::: "memory");
         }
         gba_render_stage(6);uint32_t cycles=timer_stop();
+        for(unsigned i=0;i<7;++i) g_render_completed_stages[i]=g_render_stages[i];
         g_render_diag.last_cycles=cycles;
         if (cycles<g_render_diag.min_cycles) g_render_diag.min_cycles=cycles;
         if (cycles>g_render_diag.max_cycles) g_render_diag.max_cycles=cycles;
         if (cycles>CYCLE_BUDGET) g_render_diag.over_budget++;
         g_render_diag.faces=g_render_stats.faces_drawn;g_render_diag.pixels=g_render_stats.pixels_written;
         g_render_diag.reserved1=g_render_frame.face_count;
-        if (!g_render_diag.draws || switched || g_camera_probe.request)
+        if (!g_render_diag.draws || switched || camera_changed)
             g_render_diag.reserved2=hash_bytes(g_render_frame.faces,
                 (size_t)g_render_frame.face_count*sizeof(g_render_frame.faces[0]));
         g_render_diag.guard_ok=g_render_frame.frame_guard_before==FRAME_GUARD &&

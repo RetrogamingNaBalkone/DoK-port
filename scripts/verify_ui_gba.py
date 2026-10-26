@@ -46,6 +46,22 @@ def palette_extremes(palette):
     return min(range(256), key=luminosity.__getitem__), max(range(256), key=luminosity.__getitem__)
 
 
+def ui_colors(palette):
+    colors = struct.unpack('<256H', palette)
+    green = colors[2]
+    assert (green >> 5) & 31 >= 30 and green & 31 == 0 and green >> 10 == 0
+    return 86, 2
+
+
+def source_icon(frame, payload, x, y, width, height):
+    sw, sh = struct.unpack_from('<HH', payload)
+    for row in range(height):
+        for col in range(width):
+            expected = payload[18+(row*sh//height)*sw+col*sw//width]
+            if expected:
+                assert frame[(y+row)*240+x+col] == expected, ('original icon', x, y, row, col)
+
+
 class UIProbe(AICombatProbe):
     preserve_title = True
 
@@ -131,7 +147,7 @@ def main():
         assert p.ui()['state'] == 1 and p.ui()['language'] == 0, p.ui()
         screens = {'title_ru': p.screen('title-ru')}
         raw, palette = p.frame()
-        _, white = palette_extremes(palette)
+        _, white = ui_colors(palette)
         resources, _ = original_animations(0)
         glyph_mask(raw, resources[b'FONT16'.hex()], 16, 20,
                    'ПОДЗЕМЕЛЬЯ КРЕМЛЯ'.encode('cp866'), white, height=16)
@@ -143,7 +159,7 @@ def main():
         assert p.ui()['language'] == 1 and p.world_sha() == before
         screens['title_en'] = p.screen('title-en')
         raw, palette = p.frame()
-        _, white = palette_extremes(palette)
+        _, white = ui_colors(palette)
         resources, _ = original_animations(1)
         glyph_mask(raw, resources[b'FONT16'.hex()], 16, 20, b'KREMLIN DUNGEONS', white, height=16)
         p.press(5)
@@ -221,19 +237,64 @@ def main():
         assert p.ui()['state'] == 1 and p.world_sha() == snapshot
         p.press(3)
         assert p.ui()['state'] == 0 and p.world_sha() == snapshot
-        # Extreme signed16 values prove six glyph digits do not clip or overlap.
+        # Exact original icon pixels and every combination of acquired keys.
         player = p.symbols['g_render_world'] + 17412
+        p.command(1, 0)
+        key_checks = []
+        for language in (0, 1):
+            p.command(2, language)
+            resources, _ = original_animations(language)
+            for mask in range(8):
+                p.write(player+20, struct.pack('<H', mask))
+                p.command(1, 0)
+                raw, palette = p.frame()
+                ui_colors(palette)
+                source_icon(raw, resources['8f8688878d9c'], 3, 2, 15, 10)
+                energy = struct.unpack('<h', p.frontend.read(player+2, 2))[0]
+                ew = 18+8*len(str(energy))
+                source_icon(raw, resources['8f8c8083889f'], 240-ew+3, 2, 10, 11)
+                # Inspect all key slots, including transparent pixels and absent
+                # slots, against the already rendered scene in the work buffer.
+                if mask == 0:
+                    empty = raw[128*240:144*240]
+                x = 240
+                panel = resources['8f808d858b9c'][18:]
+                for bit, name in enumerate(('8f8a8b9e978c','8f8a8b9e9786','8f8a8b9e9787')):
+                    if not mask & (1 << bit):
+                        continue
+                    x -= 16
+                    payload = resources[name]
+                    sw, sh = struct.unpack_from('<HH', payload)
+                    for row in range(16):
+                        for col in range(16):
+                            sx = col if col < 3 else 320-(16-col) if col >= 13 else 10
+                            sy = row if row < 3 else 39-(16-row) if row >= 13 else 5
+                            expected = panel[sy*320+sx]
+                            if 2 <= col < 14 and 1 <= row < 15:
+                                pixel = payload[18+((row-1)*sh//14)*sw+(col-2)*sw//12]
+                                if pixel:
+                                    expected = pixel
+                            assert raw[(128+row)*240+x+col] == expected
+                for row in range(16):
+                    assert raw[(128+row)*240: (128+row)*240+x] == empty[row*240:row*240+x]
+                key_checks.append(dict(language=language, mask=mask, original_pixels=True))
+            p.write(player+20, struct.pack('<H', 0))
+            p.command(1, 0)
+            screens[f'game_{language}'] = p.screen(f'game-{language}')
+            p.write(player+20, struct.pack('<H', 7))
+            p.command(1, 0)
+            screens[f'keys_{language}'] = p.screen(f'keys-{language}')
+        p.command(2, 0)
+        # Extreme signed16 values prove six glyph digits do not clip or overlap.
         p.write(player, struct.pack('<hh', 32767, -32768))
         p.write(player + 20, struct.pack('<H', 0xffff))
         p.write(player + 32, struct.pack('<hh', -32768, 32767))
         p.command(1, 0)
         raw, palette = p.frame()
-        _, white = palette_extremes(palette)
+        _, white = ui_colors(palette)
         font, origin = font8(0)
-        glyph_mask(raw, font, 2, 2, b'HP', white)
-        glyph_mask(raw, font, 26, 2, b'32767', white)
-        glyph_mask(raw, font, 178, 2, b'-32768', white)
-        glyph_mask(raw, font, 202, 134, b'FFFF', white)
+        glyph_mask(raw, font, 20, 3, b'32767', white)
+        glyph_mask(raw, font, 189, 3, b'-32768', white)
         screens['hud_ru'] = p.screen('hud-ru')
         p.command(1, 2)
         # Original message identity is re-resolved after localization changes.
@@ -255,7 +316,7 @@ def main():
             value = next(v for kind, off, v in obj['fields'] if kind == T and off == slot)
             text = bytes.fromhex(value)
             raw, palette = p.frame()
-            _, white = palette_extremes(palette)
+            _, white = ui_colors(palette)
             bitmap, _ = font8(language)
             glyph_mask(raw, bitmap, 0, 144, text[:30], white)
             if len(text) > 30:
@@ -265,7 +326,7 @@ def main():
         p.command(4, 0xffffffff)
         assert p.ui()['length'] == 240 and p.ui()['pages'] == 4 and p.ui()['errors'] == 0, p.ui()
         raw, palette = p.frame()
-        _, white = palette_extremes(palette)
+        _, white = ui_colors(palette)
         bitmap, _ = font8(1)
         pattern = bytes(65+i % 26 for i in range(60))
         glyph_mask(raw, bitmap, 0, 144, pattern[:30], white)
@@ -306,7 +367,7 @@ def main():
             death_case(p, runtime, initial, index, 0, animations['death'], resource_ids[fields[0xec]])
             assert p.ui()['object'] == index and p.ui()['slot'] == 0xbe and p.ui()['length'] > 0, p.ui()
             raw, palette = p.frame()
-            _, white = palette_extremes(palette)
+            _, white = ui_colors(palette)
             bitmap, _ = font8(language)
             text = bytes.fromhex(fields[0xbe])
             glyph_mask(raw, bitmap, 0, 144, text[:30], white)
@@ -329,7 +390,7 @@ def main():
                                   exact_original_font8_pixels=True, exact_original_font16_pixels=True,
                                   signed16_hud_extremes=True,
                                   bounded_240byte_stress=True, viewport_240x144_messages_240x16=True),
-                      messages=message_checks, pages=page_checks, notifications=notifications,
+                      messages=message_checks, pages=page_checks, notifications=notifications, keys=key_checks,
                       final=p.ui(), stack=stack,
                       physical_gba_tested=False, full_dos_session_tested=False)
         args.report.write_text(json.dumps(report, indent=2)+'\n', encoding='utf-8')
