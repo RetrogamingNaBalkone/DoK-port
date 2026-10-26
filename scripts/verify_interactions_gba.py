@@ -3,7 +3,7 @@ import argparse,ctypes as ct,hashlib,json,os,struct,subprocess
 from pathlib import Path
 from gba_rom import elf_info
 from verify_gba import Frontend,sha
-from verify_renderer_gba import NAMES,stack_usage
+from verify_renderer_gba import NAMES,stack_usage,freeze_visual
 
 def main():
  p=argparse.ArgumentParser(description=__doc__)
@@ -18,7 +18,7 @@ def main():
  def interaction():return struct.unpack('<10I',f.read(syms['g_interaction_diag'],40))
  def until(pred,buttons=(),limit=2000):
   for _ in range(limit):
-   f.run(1,buttons);r=render();basic=f.diag(syms['g_diag'])
+   f.run(1,buttons);r=render();basic=f.diag(syms['g_diag']);freeze_visual(f,syms,r['magic'])
    if basic['magic']==0x444f4b31:assert not basic['fault'],basic
    if r['draws'] and r['magic']==0x524e4435:
     assert r['status']==0 and r['guard_ok'],r;cycles.append((r['last_cycles'],struct.unpack('<I',f.read(motion,4))[0]))

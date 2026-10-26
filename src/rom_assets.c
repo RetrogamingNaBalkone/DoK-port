@@ -125,7 +125,7 @@ dok_rom_status dok_rom_level(dok_runtime_level *out,const dok_rom_assets *a,unsi
     for(i=0;i<l.field_count;++i) if(l.fields[i].reserved) return DOK_ROM_FORMAT;
     for(i=0;i<l.object_count;++i) {
         const dok_runtime_object *o=&l.initial_objects[i];
-        if(o->reserved || (o->known&~7u)) return DOK_ROM_FORMAT;
+        if(o->visual_resource || (o->known&~7u)) return DOK_ROM_FORMAT;
         if(l.definitions[i].class_id==9 && o->state.monster.course_counter_known>1) return DOK_ROM_FORMAT;
     }
     for(i=0;i<l.actor_count;++i) if((l.initial_actors[i].known&~15u) || !zero(l.initial_actors[i].reserved,2)) return DOK_ROM_FORMAT;

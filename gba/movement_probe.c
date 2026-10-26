@@ -2,6 +2,7 @@
 #include "dok/clock.h"
 #include "dok/interactions.h"
 extern uint32_t gba_time_ticks(void);
+extern void gba_visual_poll(uint32_t tick);
 extern unsigned dok_movement_cases(void);
 extern unsigned dok_collision_cases(dok_runtime *);
 extern unsigned dok_interactions_cases(dok_runtime *,dok_interactions *);
@@ -21,6 +22,7 @@ static void interaction_start(dok_runtime *w)
 }
 static void interaction_advance(uint32_t tick)
 {
+    gba_visual_poll(tick);
     for(unsigned i=0;i<128 && (int32_t)(tick-visual_next)>=0;i++) {
         dok_interactions_poll(&interactions,visual_next);
         visual_phase=(visual_phase+1)%3;visual_next+=visual_phase==2?334:333;

@@ -1,0 +1,515 @@
+{
+  "task": "G11",
+  "status": "passed",
+  "next": "G12",
+  "rom_sha256": "231069467bf90b2021956ce0d5a00552424019b1dd3c2721dbce785236d3e493",
+  "rom_bytes": 32850956,
+  "package_sha256": "3efa5d3027d63ffd65e0ae8c0b45be23ee8394b3c5151c8e9f10e76fa8674351",
+  "ewram_static_bytes": 218348,
+  "ewram_remaining_bytes": 43796,
+  "iwram_static_bytes": 23684,
+  "iwram_remaining_before_stack_reserve": 892,
+  "stack_reserve_bytes": 8192,
+  "sources": {
+    "CMakeLists.txt": "041c6bb92fbaff69573041ef06b5e59bb257569f594cb677ee38372f503f57ce",
+    "gba/assets_probe.c": "2e412592dcd4402f86317845abd39f63b15c6298189e20064dfd95898203dca9",
+    "gba/clock.c": "9259214ecd6d4d5bbb860f58e7983a1bd6f2d0986b6ffc09c24da2c4f4618c28",
+    "gba/columns.S": "93dffc48919f1e8a6dba3be5a80ef425ca4b316763d937b43e3888c9c73f6686",
+    "gba/divmod.S": "d6d8437c0aebc65d133ff6ada61c9aed6c99cce4d4a70eec997927816eaa8c7c",
+    "gba/gba.ld": "653de1ab2403b9fb234e2e97fa68c5c2e54ee081e8c9d6e8661694675ce2c661",
+    "gba/main.c": "724be23c0141dfc80ad4e8ba8e8d569f274d2bee41fdce8f0e0db42a823c04c3",
+    "gba/memory.c": "893a7f22e4427b3c298ee7d4b606f739d32fb6a1dcb4a90f1550db194db75e88",
+    "gba/memory_probe.c": "a6298954e7d948a16b78ac9657d6073923b393823e06228284904be8d54dcf40",
+    "gba/movement_probe.c": "6354017b287f75540b675a93f399db25ba55d5e9c7bd970f5c407aaa76cfad4a",
+    "gba/renderer_probe.c": "619d654f29af56cc46febbe14a064c02c348fd2d7790a717dbc644c2a2b8761c",
+    "gba/startup.S": "ec9f95b3969692d236b1d5b2f9393802421f8b4f8faef8f6c61bfe40e2b15131",
+    "gba/time_probe.c": "53f4aa865fe0273f42d8fa56d5a1f3d42697d72222d330b77dd278145054121b",
+    "include/dok/animation.h": "54d0dc6599a7eca9cda958c2d4746d3034d5a75b8eb358cdfbd9d72e619d0d1d",
+    "include/dok/clock.h": "a338e61dad6947cd5b771dff1c805c479da8b4dd48c537abea4e08d2f3107204",
+    "include/dok/collision.h": "ef46080ff3b29b8bbcd1576d09eef602501e2325a1cf4a4e012bcf3ce3510347",
+    "include/dok/image.h": "18d89e8b480599a2d68916c747449675ee3cf59df6ff10c56ac5493dfab1af92",
+    "include/dok/interactions.h": "83ef8c9b1223e8533d5233ff32c80a995cf6416c65a03d1c5b0300b12c235e4d",
+    "include/dok/level.h": "7677c5beaf85bd7980a9fb2c2c4db470b6be49a76267fb59941a9ce64e22cd3d",
+    "include/dok/movement.h": "42a9bd8c333de79a985bb6e351eff3798b5d0c4b76716aad6e09ac812f097655",
+    "include/dok/native_state.h": "d8afd13d9e55b1c5c16ed3252910862940a8f02056d12a685b3294f537407898",
+    "include/dok/projection.h": "bb6c518d58cbb2cf2a7f40f596b20525decdfd05e99ed27cd3f164c972a3d15f",
+    "include/dok/renderer.h": "73fd494fdae4f363d8e1def531a77a22c2061243fda8f9891224c3cf04d7a400",
+    "include/dok/res.h": "4b37a74aeebe027231ae7290b5383e39647833f8b7351d98e0067c60a0cc3d11",
+    "include/dok/rom_assets.h": "6fac1b8e0a2e03eeb7d3e568d6d4ad76aa9831ae27e6ecc8f00be8abbe470d1d",
+    "include/dok/runtime.h": "dda5096f9a507a3ac7d554639154a58885c416a83993e2fd0f78d62b158170f4",
+    "include/dok/scheduler.h": "2a5e22df11b869a59569c0c24b13fcf28e07ad983a1d610ae84ea86bba496e22",
+    "include/dok/sound.h": "d1b794189b779fe13c853c7c35651b4052b0a7c54599d38e6c359831045a6745",
+    "include/dok/visual.h": "e286d1fd4c0c86bbd856f47ca393b1471e8f7b4eeda72361ebb1acaaa69ef3d3",
+    "include/dok/world.h": "27b18f98a7d7aba61a7caab21e81de5a54eefd778c103057e65f40860b1cd725",
+    "scripts/analyze-sprites.ps1": "72e73f63e4b2d40b2cb5c69dcbeb9ffae2a9666e32065e9c2cc266e19d22ee76",
+    "scripts/build-gba-sprites.ps1": "067617477700d19b9057cf33cc4dd6d0d9bbb576cd93980eac7713002e279b8e",
+    "scripts/build-gba.ps1": "5105975b6056f6fe98e2f01660924dae32e92c6ec418422567b52b96377d7e1b",
+    "scripts/build-native.ps1": "94b9d14c4180b424c9e4498bf2146cb32e1b5721f17e28e7fb0b50300eec18b5",
+    "scripts/InspectSprites.java": "13874415467f26aaf6a183eb26d56128c7550f4e3c24c16beca20ebd7e43f69a",
+    "scripts/report_sprites.py": "fc669a6011063bf266ead0a53657a7125f4eefbecf7349efca223e53c6066f55",
+    "scripts/verify_interactions_gba.py": "7fac03cfd656530c2838ec50d75aaaada561d82270e4997b2d74e7d7dd54ede0",
+    "scripts/verify_renderer_early.py": "48d4b6e205034136039e5d831e01d5dfa5ecca5ab684214965ed1a0615e56708",
+    "scripts/verify_renderer_gba.py": "1c2c8adcfc50e9c07a0d9aecfa796670ce1045071904fc24b581498fd41f6079",
+    "scripts/verify_sprites_gba.py": "ce3c8d264a0170c573004cba762616b09f390e07801d7d4f0623e942dbbd869d",
+    "scripts/verify_sprites_host.py": "779790308d2bf7809bd909cddd6939a97e0c25bf564f3c7e3540e96f170b4d74",
+    "scripts/verify_sprites_original.py": "9f03295e8284479ad122dfe8f67e0bbdad9f311447461f04cb4f0aa563fd4b36",
+    "scripts/verify_surfaces.py": "b7bda7691aa55a03ce459ab3ae7d38f222c03a8b11c54b4dae3b9cd2f1f82bf8",
+    "scripts/verify_time_gba.py": "213d3b5da0f47830cf2f217d083711d96bfeb998e11a70b57358895aac7954c0",
+    "src/animation.c": "39c1ddf934dd3cb48f9ac165e7ead7b6aa00be26505c7c1faadcd584895d085b",
+    "src/clock.c": "9a8f4d4eb390f55e5988160338b9042c665c2616b4965f1f1616f849b4e7a121",
+    "src/collision.c": "893a3b80b6a06bd1f0374918bcfadf793de598396928a831775a9a131e1dd846",
+    "src/image.c": "88e9445e256cc771f2f243e9ee2940b21a7eeeca5b43175e34c0d06c35de7dc7",
+    "src/interactions.c": "65544869f81160855d778649a3b205b2344b87773bfc873c84d5aca4d7e1d6e3",
+    "src/level.c": "36827fedd08d3d457686f11723401983b3e6467a72164b9dc070a4450472ba54",
+    "src/movement.c": "6bdb1b0990d9cbd5403f98868692026e092a34b2ed3a9cf4a18a4333d91fba08",
+    "src/native_state.c": "8ebe41f87bc8975b8456526667e8d59e62a30a09b4728204b80a82992152e4f7",
+    "src/projection.c": "300cedf7fe914a90e7be0f55faf476922f54366122a61f767ec20f69c87b707a",
+    "src/renderer.c": "1e701dd7b4a097624c47bbecc2d500b639b78eb36e2d6b99e5c5f11b8ef05d05",
+    "src/renderer_sprites.inc": "8c8c6bb990fce0d0c60ca9fc92a50849e313ed70af26118ca3011e7cfe34281a",
+    "src/renderer_surface_raster.inc": "9965c06934012f335c32b590da6fdb14bd75da6c4eecd03efe5d8f0835722053",
+    "src/renderer_surface_sides.inc": "7afa6db6513b9d9a3b771b2d9a146eabefb67343350f85c4b755366bbbd8be47",
+    "src/renderer_surfaces.inc": "f5bd7002cb4a14d5da062d75fe92a549c2213f2f8ba257faa8fa1dbd6f5af6df",
+    "src/renderer_trig.inc": "3fc1acca3c6c7053ce9ce05e6179833e943195a24ce47a780187e3261b6762b1",
+    "src/res.c": "679043c637b9db432da020cc7ee5024b54089a33dfec8a2022634f1327c8fa86",
+    "src/rom_assets.c": "420cd6e4182e12346603ee84fd1eda24a9832607990ae64679957aa842ab46f8",
+    "src/runtime.c": "75c59d66d4bc281af1fbff8a3252a13bfaebc41201b8029fe78441c51ba6ae57",
+    "src/scheduler.c": "4406fb6fbf04efd26e3e31e6e8c0f16ed2bbb7ec287aabefdd8f07ac3f4b9d31",
+    "src/sound.c": "c2905e19b49d3e2aed2afd49d5c769c21ec82d846b093b218a1a9d6f5b72eee2",
+    "src/visual.c": "6c11a65e419e81469f0b413eed2c6ac07f82a725c57e0d12695c20f419dee5f8",
+    "src/world.c": "721c5e402c4b43dfdc7f300ef46ab2fdafc5b481a14624884941d4bcfe6a70f4",
+    "tests/collision_cases.c": "cb0f0d929e1707214515cb08fc690b3d350a14d3b4922cbbe6f65683c4b30b15",
+    "tests/interactions_cases.c": "55d69be2fb8e61dd729eb228a625ac6d0d490964581cfd94b90bd0fc8f8b3e33",
+    "tests/movement_cases.c": "c2430813252e98e4384eca8518039cd81303ad969c118662026b7db6768c4994",
+    "tests/test_animation.c": "c4eda79214050ae57773b9e19205863c46b2997c50cca3cb6c06e58951edc678",
+    "tests/test_collision.c": "ea19102d741538e7187b9016414f9d0485e878323e90812fd2236a99353679ae",
+    "tests/test_gba_helpers.c": "291c8cfade331ef5a5f2848126a7643ac47276f93572243ab5b5bf872e146fa3",
+    "tests/test_interactions.c": "936211d5f62d2a6fd373f24b92adaae7c15fe32d04c90c4661a0e477381f70bc",
+    "tests/test_level.c": "1dddca60e7a31ecb0cad30105b3e862b85fc959bd3fb49f94add624ca8c635f5",
+    "tests/test_movement.c": "13d464aa5daac17f11f2ecd5230b593d231bbdf7328333c6dfcd1c3d82583396",
+    "tests/test_native_state.c": "6a62bb63e3e5589dbe80d23a680106c67fc6b78129bc36589266595d63613cbe",
+    "tests/test_res.c": "16ac30a827a5e3d35849da0c6210282b47bf18843d6f7ae46d55cad5b2bfb126",
+    "tests/test_rom_assets.c": "f0a855dd188cd8b2549c4e85115fb097bc3da6a6cb985f3ff2bb8bf6190ce90c",
+    "tests/test_runtime.c": "e9a7b0ea0d549e08025a06927205b90072097372b43526779f1beb4a53af1826",
+    "tests/test_sound.c": "2e28cf31df59c71d6506a9dbe9617927cadf3f796c6ffec8b327ca99aa3973ae",
+    "tests/test_time.c": "eb365902150989098da7248a822ca5d038dc1d46d035daebdd9792704ed42888",
+    "tests/test_world.c": "9b91e51518a48d8524ad4c6c204428079e4c566b613435fafa453a671f7d7cbb",
+    "tests/time_cases.c": "f3c7c48ff39a3af9677e18a143e1ce3d35cf5fc4076a7073b9d61cedb00e7c57",
+    "tools/render_tool.c": "5a2aad99a0e7d4fbf38a1e46cdb89cea0b61a079464dcc0b7e3be21cda756730",
+    "tools/visual_probe.c": "e645f791e8dc80f2577d9e6268ece94864d5ddf485a2d634e5aa7d45e323d0cb"
+  },
+  "reports": {
+    "analysis/g11-playback-host.json": "cc0d2eeaf90bfdd76ac246448462cb4a14c46e1132bd89e340cf639e0994c7fa",
+    "analysis/g11-sprites-host.json": "2863837cc3a7aabaeed370d6af97212c18ab45aaf1db411524d809ac5fa31ebe",
+    "analysis/g11-original-verification.json": "f33ab39ef8860c9e8e2ee63a9d97a3be969c8ff082e16296c6388144e46315cf",
+    "analysis/g11-sprites-gba.json": "abeafa052893ecae8acb9e592b96c6c925cdcac72866fd5c10e88167397e7b79",
+    "analysis/g11-renderer-regression.json": "d7067f224ff92d1e735ce50b6914d9b9107bbdba49a272540498ce4a711a87b6",
+    "analysis/g11-interactions-regression.json": "cc0800346ef7919eb289fb9cb87f8a4ca20be50aa414f0273d6505a525ad5ddf",
+    "analysis/g11-time-regression.json": "07160b994221d2e1b4ee3a7930f01df103ddf7c1801b174b6aae983dd8b439d1",
+    "analysis/g11-camera-regression.json": "9a2c36d35e7bb7e9cca0ed6b9d7d370b9f6162eda1295f075e3b8b3ecdcabdf9"
+  },
+  "artifacts": {
+    "build/g11/dok-diagnostic.elf": "d74459348bdcc4e846fdbf14d07aa90ce79b7f75e0f0fd334a1546bc07c7f39d",
+    "build/g11/dok-diagnostic.gba": "231069467bf90b2021956ce0d5a00552424019b1dd3c2721dbce785236d3e493",
+    "build/g11/dok-diagnostic.map": "8624e5d66da5aeaf576980a01731be19a9edae83f26809a1ceac86a638b5c425",
+    "build/native/dok-visual-probe.exe": "f2ea8e16f64eca90481973e3569e2c64bfaee9f2709fee560b161ea29e978552",
+    "build/native/dok-render.exe": "77a9f56f5dac377aa0f9c861e5f34178d42389ce34f9fc1127436c97a2105bd9"
+  },
+  "checks": {
+    "real_rom_playback": {
+      "sequences": 1750,
+      "frame_deadlines": 9714,
+      "negative_intervals": 322,
+      "frame_events": 21178,
+      "completion_events": 1750,
+      "water_crop_then_increment": true,
+      "coarse_fine_timelines": 9,
+      "status": "passed"
+    },
+    "native_billboard_vectors": 900,
+    "static_scene_sprite_faces": 20,
+    "arm_playback_sequences": 8,
+    "arm_captures": 18,
+    "full_camera_regression": 1455,
+    "doors_sensors_conveyor_finish_regression": true,
+    "rational_clock_regression": true,
+    "poisoned_reset_and_language_switch_regression": true
+  },
+  "performance": {
+    "startup": {
+      "cpu_hz": 16777216,
+      "hardware_frame_cycles": 280896,
+      "target_cycles": 561792,
+      "target_hardware_frames": 2,
+      "scope": "Timer0/1 cascade: time-poll + input/language switch + renderer + HUD + halfword VRAM back-page copy; excludes presentation wait",
+      "min_cycles": 4651246,
+      "max_cycles": 4668836,
+      "worst_render_budget_ratio": 8.31061318067897,
+      "nominal_target_fps": 29.863750284802915,
+      "over_budget_draws": 45,
+      "all_observed_draws_fit_target": false,
+      "min_present_interval_vblanks": 17,
+      "max_present_interval_vblanks": 17,
+      "cadence_intervals_vblanks": [
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17
+      ],
+      "cadence_warmup_excluded_draws": 8,
+      "observed_steady_presentation_fps": 3.513382386447402,
+      "sampled_draws": 44,
+      "samples": [
+        {
+          "draws": 1,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4668836,
+          "present_vblank": 244
+        },
+        {
+          "draws": 2,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4652372,
+          "present_vblank": 261
+        },
+        {
+          "draws": 3,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4653851,
+          "present_vblank": 278
+        },
+        {
+          "draws": 4,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4654511,
+          "present_vblank": 295
+        },
+        {
+          "draws": 5,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4653515,
+          "present_vblank": 312
+        },
+        {
+          "draws": 6,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4654511,
+          "present_vblank": 329
+        },
+        {
+          "draws": 7,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4654513,
+          "present_vblank": 346
+        },
+        {
+          "draws": 8,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4653849,
+          "present_vblank": 363
+        },
+        {
+          "draws": 9,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4652172,
+          "present_vblank": 380
+        },
+        {
+          "draws": 10,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4653849,
+          "present_vblank": 397
+        },
+        {
+          "draws": 11,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4654513,
+          "present_vblank": 414
+        },
+        {
+          "draws": 12,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4653513,
+          "present_vblank": 431
+        },
+        {
+          "draws": 13,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4654513,
+          "present_vblank": 448
+        },
+        {
+          "draws": 14,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4653849,
+          "present_vblank": 465
+        },
+        {
+          "draws": 15,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4654513,
+          "present_vblank": 482
+        },
+        {
+          "draws": 16,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4656755,
+          "present_vblank": 499
+        },
+        {
+          "draws": 17,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4653247,
+          "present_vblank": 516
+        },
+        {
+          "draws": 18,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4652583,
+          "present_vblank": 533
+        },
+        {
+          "draws": 19,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4652911,
+          "present_vblank": 550
+        },
+        {
+          "draws": 20,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4653245,
+          "present_vblank": 567
+        },
+        {
+          "draws": 21,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4652585,
+          "present_vblank": 584
+        },
+        {
+          "draws": 22,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4652911,
+          "present_vblank": 601
+        },
+        {
+          "draws": 23,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4652585,
+          "present_vblank": 618
+        },
+        {
+          "draws": 24,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4651246,
+          "present_vblank": 635
+        },
+        {
+          "draws": 25,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4652249,
+          "present_vblank": 652
+        },
+        {
+          "draws": 26,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4653245,
+          "present_vblank": 669
+        },
+        {
+          "draws": 27,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4652585,
+          "present_vblank": 686
+        },
+        {
+          "draws": 28,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4653245,
+          "present_vblank": 703
+        },
+        {
+          "draws": 29,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4652251,
+          "present_vblank": 720
+        },
+        {
+          "draws": 30,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4653245,
+          "present_vblank": 737
+        },
+        {
+          "draws": 31,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4658365,
+          "present_vblank": 754
+        },
+        {
+          "draws": 32,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4654175,
+          "present_vblank": 771
+        },
+        {
+          "draws": 33,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4654513,
+          "present_vblank": 788
+        },
+        {
+          "draws": 34,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4653849,
+          "present_vblank": 805
+        },
+        {
+          "draws": 35,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4654513,
+          "present_vblank": 822
+        },
+        {
+          "draws": 36,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4653515,
+          "present_vblank": 839
+        },
+        {
+          "draws": 37,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4654513,
+          "present_vblank": 856
+        },
+        {
+          "draws": 38,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4651514,
+          "present_vblank": 873
+        },
+        {
+          "draws": 39,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4654513,
+          "present_vblank": 890
+        },
+        {
+          "draws": 40,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4653849,
+          "present_vblank": 907
+        },
+        {
+          "draws": 41,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4654513,
+          "present_vblank": 924
+        },
+        {
+          "draws": 42,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4653515,
+          "present_vblank": 941
+        },
+        {
+          "draws": 43,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4654513,
+          "present_vblank": 958
+        },
+        {
+          "draws": 44,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4653849,
+          "present_vblank": 975
+        }
+      ]
+    },
+    "camera_worst": {
+      "level": 1,
+      "pose": "initial",
+      "camera": [
+        15120,
+        -300,
+        22800,
+        198
+      ],
+      "cycles": 6251069,
+      "stages": {
+        "clear_resources": 11116,
+        "geometry": 932948,
+        "sort": 8138,
+        "raster": 5127356,
+        "hud": 24684,
+        "copy": 77027
+      },
+      "faces": 40,
+      "near_clipped": 2,
+      "reference_pixel_writes": 34541,
+      "visible_pixel_writes": 17271,
+      "reference_transparent": 378,
+      "framebuffer_sha256": "e3810c165c68c28f4606be4ae369d4a3e56ff33687a5b70a1b15d58660b9df4f"
+    },
+    "target30fps_verified": false
+  },
+  "limits": [
+    "GBA physical hardware untested",
+    "whole DOS session and complete raster equivalence untested",
+    "Linux execution and CMake/MSVC execution untested",
+    "positive intervals quantized to333/333/334-tick visual timeline",
+    "gameplay attack/death/projectile creation and consequences remain G13/G15",
+    "G20 performance optimization remains required"
+  ]
+}

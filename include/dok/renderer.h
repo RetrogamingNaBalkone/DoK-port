@@ -28,6 +28,8 @@ typedef struct {
     uint16_t object,plane,cell_x,cell_z;
     int16_t u0,u1,v0,reserved;
 } dok_renderer_surface;
+#define DOK_RENDER_SPRITE_CAPACITY 16
+typedef struct {int32_t x,y,z;uint16_t object,reserved;} dok_renderer_sprite;
 typedef struct {
     uint32_t frame_guard_before; /* caller-owned; renderer never writes guards */
     union {
@@ -46,6 +48,10 @@ typedef struct {
     uint8_t surface_known[DOK_RUNTIME_MAX_OBJECTS][3];
     uint16_t surface_order[DOK_RENDER_SURFACE_CAPACITY],surface_count;
     uint8_t lights[4096];
+    /* Caller-owned positioned instances (projectiles/effects). Borrow object
+     * descriptors and ROM resources; no allocation and no gameplay mutation. */
+    dok_renderer_sprite sprites[DOK_RENDER_SPRITE_CAPACITY];
+    uint16_t sprite_count;
 } dok_renderer_workspace;
 typedef struct {
     uint32_t cells_considered,wall_cells,center_cells,faces_built,faces_drawn;

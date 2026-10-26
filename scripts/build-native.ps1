@@ -14,6 +14,8 @@ if ($Compiler -eq 'zig') {
     try {
         $env:ZIG_GLOBAL_CACHE_DIR = Join-Path $taskRoot 'build/zig-cache'
         $taskCommon = @('cc','-std=c11','-Wall','-Wextra','-Werror','-O2','-I','include')
+        & $ZigExe @taskCommon -DDOK_RUNTIME_ROM_ONLY src/runtime.c src/rom_assets.c src/image.c src/animation.c src/scheduler.c src/visual.c tools/visual_probe.c -o build/native/dok-visual-probe.exe
+        if ($LASTEXITCODE -ne 0) { throw 'Visual probe build failed' }
         & $ZigExe @taskCommon src/interactions.c src/scheduler.c src/movement.c src/collision.c tests/interactions_cases.c tests/test_interactions.c -o build/native/dok-interactions-tests.exe
         if ($LASTEXITCODE -ne 0) { throw 'Interactions suite build failed' }
         & ./build/native/dok-interactions-tests.exe
@@ -42,11 +44,11 @@ if ($Compiler -eq 'zig') {
         if ($LASTEXITCODE -ne 0) { throw 'Time/scheduler tests failed' }
         & $ZigExe @taskCommon src/projection.c tools/projection_probe.c -o build/native/dok-projection-probe.exe
         if ($LASTEXITCODE -ne 0) { throw 'Projection probe build failed' }
-        & $ZigExe @taskCommon -DDOK_RUNTIME_ROM_ONLY src/runtime.c src/rom_assets.c src/image.c src/projection.c src/renderer.c tools/render_tool.c -o build/native/dok-render.exe
+        & $ZigExe @taskCommon -DDOK_RUNTIME_ROM_ONLY src/runtime.c src/rom_assets.c src/image.c src/animation.c src/projection.c src/renderer.c tools/render_tool.c -o build/native/dok-render.exe
         if ($LASTEXITCODE -ne 0) { throw 'Static renderer tool build failed' }
-        & $ZigExe @taskCommon -DDOK_RUNTIME_ROM_ONLY -DDOK_RENDER_REFERENCE src/runtime.c src/rom_assets.c src/image.c src/projection.c src/renderer.c tools/render_tool.c -o build/native/dok-render-reference.exe
+        & $ZigExe @taskCommon -DDOK_RUNTIME_ROM_ONLY -DDOK_RENDER_REFERENCE src/runtime.c src/rom_assets.c src/image.c src/animation.c src/projection.c src/renderer.c tools/render_tool.c -o build/native/dok-render-reference.exe
         if ($LASTEXITCODE -ne 0) { throw 'Reference renderer build failed' }
-        & $ZigExe @taskCommon -DDOK_RUNTIME_ROM_ONLY -DDOK_RENDER_FACE_CAPACITY=1 src/runtime.c src/rom_assets.c src/image.c src/projection.c src/renderer.c tools/render_tool.c -o build/native/dok-render-one-face.exe
+        & $ZigExe @taskCommon -DDOK_RUNTIME_ROM_ONLY -DDOK_RENDER_FACE_CAPACITY=1 src/runtime.c src/rom_assets.c src/image.c src/animation.c src/projection.c src/renderer.c tools/render_tool.c -o build/native/dok-render-one-face.exe
         if ($LASTEXITCODE -ne 0) { throw 'Renderer capacity probe build failed' }
         & $ZigExe @taskCommon src/res.c tools/res_tool.c -o build/native/dok-res.exe
         if ($LASTEXITCODE -ne 0) { throw 'Resource tool build failed' }
@@ -145,7 +147,7 @@ if ($Compiler -eq 'zig') {
             if ($LASTEXITCODE -ne 0) { throw 'Linux ROM assets tool build failed' }
             & $ZigExe cc -target thumb-freestanding-eabi -mcpu=arm7tdmi -ffreestanding -std=c11 -Wall -Wextra -Werror -O2 -I include -c src/rom_assets.c -o build/native/rom-assets-arm7tdmi.o
             if ($LASTEXITCODE -ne 0) { throw 'ARM ROM reader compile failed' }
-            & $ZigExe cc -target x86_64-linux-musl -static -std=c11 -Wall -Wextra -Werror -O2 -I include -DDOK_RUNTIME_ROM_ONLY src/runtime.c src/rom_assets.c src/image.c src/projection.c src/renderer.c tools/render_tool.c -o build/native/dok-render-linux
+            & $ZigExe cc -target x86_64-linux-musl -static -std=c11 -Wall -Wextra -Werror -O2 -I include -DDOK_RUNTIME_ROM_ONLY src/runtime.c src/rom_assets.c src/image.c src/animation.c src/projection.c src/renderer.c tools/render_tool.c -o build/native/dok-render-linux
             if ($LASTEXITCODE -ne 0) { throw 'Linux static renderer build failed' }
             & $ZigExe cc -target thumb-freestanding-eabi -mcpu=arm7tdmi -ffreestanding -std=c11 -Wall -Wextra -Werror -O2 -I include -c src/renderer.c -o build/native/renderer-arm7tdmi.o
             if ($LASTEXITCODE -ne 0) { throw 'ARM renderer compile failed' }
@@ -176,9 +178,9 @@ build\native\dok-movement-tests.exe
 if errorlevel 1 exit /b 1
 cl /nologo /std:c11 /W4 /WX /O2 /D_CRT_SECURE_NO_WARNINGS /I include src/movement.c tools/movement_probe.c /Fo:build/native/ /Fe:build/native/dok-movement-probe.exe
 if errorlevel 1 exit /b 1
-cl /nologo /std:c11 /W4 /WX /O2 /D_CRT_SECURE_NO_WARNINGS /DDOK_RUNTIME_ROM_ONLY /I include src/runtime.c src/rom_assets.c src/image.c src/projection.c src/renderer.c tools/render_tool.c /Fo:build/native/ /Fe:build/native/dok-render.exe
+cl /nologo /std:c11 /W4 /WX /O2 /D_CRT_SECURE_NO_WARNINGS /DDOK_RUNTIME_ROM_ONLY /I include src/runtime.c src/rom_assets.c src/image.c src/animation.c src/projection.c src/renderer.c tools/render_tool.c /Fo:build/native/ /Fe:build/native/dok-render.exe
 if errorlevel 1 exit /b 1
-cl /nologo /std:c11 /W4 /WX /O2 /D_CRT_SECURE_NO_WARNINGS /DDOK_RUNTIME_ROM_ONLY /DDOK_RENDER_FACE_CAPACITY=1 /I include src/runtime.c src/rom_assets.c src/image.c src/projection.c src/renderer.c tools/render_tool.c /Fo:build/native/ /Fe:build/native/dok-render-one-face.exe
+cl /nologo /std:c11 /W4 /WX /O2 /D_CRT_SECURE_NO_WARNINGS /DDOK_RUNTIME_ROM_ONLY /DDOK_RENDER_FACE_CAPACITY=1 /I include src/runtime.c src/rom_assets.c src/image.c src/animation.c src/projection.c src/renderer.c tools/render_tool.c /Fo:build/native/ /Fe:build/native/dok-render-one-face.exe
 if errorlevel 1 exit /b 1
 cl /nologo /std:c11 /W4 /WX /O2 /D_CRT_SECURE_NO_WARNINGS /I include src/projection.c tools/projection_probe.c /Fo:build/native/ /Fe:build/native/dok-projection-probe.exe
 if errorlevel 1 exit /b 1

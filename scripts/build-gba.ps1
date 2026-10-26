@@ -119,7 +119,7 @@ $taskColumnSource
         & $ZigExe @taskArgs "$OutDir/assets-data.S" -o "$OutDir/assets-data.o"
         if ($LASTEXITCODE -ne 0) { throw 'Asset payload assembly failed' }
         $taskAssetSources = if ($RendererProbe) {
-            @('gba/memory.c','src/runtime.c','src/rom_assets.c','src/projection.c','src/image.c','src/renderer.c')
+            @('gba/memory.c','src/runtime.c','src/rom_assets.c','src/projection.c','src/image.c','src/animation.c','src/visual.c','src/renderer.c')
         } else {@('gba/assets_probe.c','gba/memory.c','src/runtime.c','src/rom_assets.c')}
         foreach ($taskSource in $taskAssetSources) {
             $taskObject = "$OutDir/" + [IO.Path]::GetFileNameWithoutExtension($taskSource) + '.o'
@@ -153,7 +153,7 @@ $taskColumnSource
         } elseif ($MemoryProbe) {
             & $PythonExe scripts/verify_gba.py --core $CorePath --build-dir $OutDir --task G02-memory --report analysis/g02-memory-run.json
         } elseif ($RendererProbe) {
-            & $PythonExe scripts/verify_renderer_gba.py --core $CorePath --build-dir $OutDir --assets-bin $AssetsBin
+            & $PythonExe scripts/verify_sprites_gba.py --core $CorePath --build-dir $OutDir --assets-bin $AssetsBin
             if ($LASTEXITCODE -ne 0) { throw 'mGBA renderer verification failed' }
             & $PythonExe scripts/verify_time_gba.py --core $CorePath --build-dir $OutDir --report analysis/g06-renderer-time.json
         } elseif ($AssetsProbe) {

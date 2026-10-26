@@ -4,12 +4,66 @@
 и её паспорт — сохранение/загрузка игры не входят в объём порта. Пользователь
 указал, что оригинал их не поддерживал; прежнее требование не было обосновано
 исследованием. Убраны связанные требования G17, G18, G20 и G21; G20 теперь
-зависит от G18. Остальные ID сохранены, следующая задача — G11.
-Изменена только документация.
+зависит от G18. Остальные ID сохранены. В этом уточнении менялась только
+документация; актуальная граница реализации приведена ниже.
 
-Обновлено 25 октября 2026 года: G00–G10 готовы по уточнённым критериям.
+Обновлено 26 октября 2026 года: G00–G11 готовы по уточнённым критериям.
 
-## Текущая граница G10
+## Текущая граница G11
+
+**Следующая задача — G12.** Спрайты предметов/врагов, software billboard,
+перекрытия и визуальный scheduler включены в общий GBA-ROM. Есть16 positioned
+instances для изображений снарядов/эффектов; их создание/движение/урон — G13.
+Логика здоровья, атаки, смерти и удаления не заменяется completion анимации.
+Движение без поступательной инерции, двери/сенсоры/conveyor/FINISH сохранены.
+
+Спецификация/адреса/ABI/границы: [sprite-rendering.md](sprite-rendering.md).
+Новые `src/renderer_sprites.inc`, `src/visual.c`, `include/dok/visual.h`;
+renderer/runtime header, ROM source loader, GBA motion/render adapters,
+tools/build/CMake и static-regression freeze обновлены. `visual_resource`
+занимает прежний резерв **compact** word+14, Object36/ARM runtime33864
+не изменились. Native+14 имеет другое значение — адресацию не смешивать.
+Текущий crop class12/13 хранится отдельно под known bit8 в compact animation_a;
+native counter+50 увеличивается только после конфигурации старого crop.
+Known animation A bit1 этим не устанавливается; crop не выдаётся за native+20.
+
+Visual production clock333/333/334 догоняет simulation ticks через416-tick
+motion catch-up, с сохранением долга. Видимость для lease берётся из последней
+рассмотренной сцены и сбрасывается при переходе уровня. Interval0 — один шаг
+за visual quantum; положительные интервалы округляются до следующего quantum.
+Raw scheduler сохраняет signed interval/unsigned deadline semantics, включая
+−31072. `dok_visual_play` выбирает binding slot, публикует frame0, затем
+loop или one-shot completion; native gameplay state не меняется.
+
+Ghidra EXE hashes до/после совпали; проекты/логи/экспорты:
+`build/sprites/{ru,en}/`, скрипты `InspectSprites.java`/`analyze-sprites.ps1`.
+900 оригинальных x86 billboard-векторов прошли в Unicorn. Host1750
+последовательностей/9714 deadline переходов/322 прохода отрицательных
+интервалов,9 coarse/fine timelines и точные water crop/end/rearm прошли.
+20 item/enemy faces и8 projectile projections сверены с независимым oracle
+по исходным RES; ближние masked pixels и полная дальняя occlusion проверены.
+mGBA:8 playback-последовательностей RU/EN,24 projectile views, видимые pixels,
+automatic multi-step per draw, exact water crop-before-INC/end, guards/stack,
+embedded package, язык/poison reset прошли. Все1455 камер без отказов;
+door/sensor/conveyor/FINISH и rational time regression прошли. Static suites
+замораживают visual timeline явно; её ход проверяет отдельный ARM-тест.
+
+ROM/ELF/map/PNG — `build/g11/`. ROM32 850 956 байт, SHA-256
+`231069467bf90b2021956ce0d5a00552424019b1dd3c2721dbce785236d3e493`.
+EWRAM218 348, свободно43 796; IWRAM23 684, до8KiB stack reserve892 байта.
+Новые функции размещать и измерять осознанно. Main stack2376, нетронутый
+запас5560 в измеренных ARM-сценариях. ROM slack703 476 байт не резерв всей игры.
+Startup4 651 246…4 668 836, worst camera6 251 069 cycles: цель30FPS не достигнута.
+
+Команда: `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-gba-sprites.ps1 -CrossChecks -OriginalEvidence`.
+Части выполнены отдельно; финальный sweep —1455 камер. Acceptance
+`analysis/g11-review.json` связывает текущие source/ROM/evidence hashes,
+остальные отчёты `analysis/g11-*.json`. Windows suites прошли; CrossChecks
+скомпилированы. Физическая GBA/оригинальный BIOS, полная DOS-сессия,
+Linux execution и CMake/MSVC execution не проверялись. Ниже — история G10
+и предыдущих границ, её ограничения не заменяют текущий результат G11.
+
+## Предыдущая граница G10
 
 **Следующая задача — G11.** G10 подключил текстурные пол/потолок, перепады
 потолка, LIGHT16 и три GAMEP к общей сцене G09. Движение без поступательной

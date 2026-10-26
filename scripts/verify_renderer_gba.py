@@ -19,6 +19,11 @@ BUDGET = 2 * 280896
 STACK_LOW, STACK_TOP = 0x03006000, 0x03007f00
 GUARD = 0xd04fcafe
 
+def freeze_visual(frontend,symbols,magic):
+    """Static-scene regression freezes G11 visual time; playback has its own probe."""
+    if magic==0x524e4435 and 'g_visual_probe' in symbols:
+        ct.memmove(frontend.pointer(symbols['g_visual_probe'],4),struct.pack('<I',1),4)
+
 
 def digest(data):
     return hashlib.sha256(data).hexdigest()
@@ -61,6 +66,7 @@ def main():
 
     def check():
         basic, diag = frontend.diag(symbols['g_diag']), render_diag()
+        freeze_visual(frontend,symbols,diag['magic'])
         # After retro_reset the deliberately poisoned RAM is observable while
         # mGBA's replacement BIOS is still reaching cartridge startup. A5 bytes
         # are not initialized diagnostics and must not be interpreted as panic.
@@ -191,6 +197,7 @@ def main():
                               observed_steady_presentation_fps=16777216/(280896*sum(cadence)/len(cadence)),
                               sampled_draws=len(benchmark_samples), samples=benchmark_samples),
                   physical_gba_tested=False, full_game_performance_verified=False,
+                  visual_playback_frozen='g_visual_probe' in symbols,
                   screenshots={p.name:sha(p) for p in (build/'renderer-ru.png',build/'renderer-en.png',build/'renderer-ru-return.png')})
     args.report.parent.mkdir(parents=True, exist_ok=True)
     serialized = json.dumps(result, indent=2)+'\n'

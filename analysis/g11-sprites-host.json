@@ -1,0 +1,271 @@
+{
+  "task": "G11",
+  "status": "passed",
+  "static_scene_sprite_faces": [
+    {
+      "language": "ru",
+      "object": 103,
+      "class_id": 3,
+      "glyph": 56,
+      "geometry_verified": true
+    },
+    {
+      "language": "ru",
+      "object": 104,
+      "class_id": 3,
+      "glyph": 41,
+      "geometry_verified": true
+    },
+    {
+      "language": "ru",
+      "object": 105,
+      "class_id": 3,
+      "glyph": 42,
+      "geometry_verified": true
+    },
+    {
+      "language": "ru",
+      "object": 105,
+      "class_id": 3,
+      "glyph": 42,
+      "geometry_verified": true
+    },
+    {
+      "language": "ru",
+      "object": 105,
+      "class_id": 3,
+      "glyph": 42,
+      "geometry_verified": true
+    },
+    {
+      "language": "ru",
+      "object": 96,
+      "class_id": 6,
+      "glyph": 71,
+      "geometry_verified": true
+    },
+    {
+      "language": "ru",
+      "object": 97,
+      "class_id": 6,
+      "glyph": 72,
+      "geometry_verified": true
+    },
+    {
+      "language": "ru",
+      "object": 3,
+      "class_id": 9,
+      "glyph": 130,
+      "geometry_verified": true
+    },
+    {
+      "language": "ru",
+      "object": 104,
+      "class_id": 3,
+      "glyph": 41,
+      "geometry_verified": true
+    },
+    {
+      "language": "ru",
+      "object": 104,
+      "class_id": 3,
+      "glyph": 41,
+      "geometry_verified": true
+    },
+    {
+      "language": "en",
+      "object": 103,
+      "class_id": 3,
+      "glyph": 56,
+      "geometry_verified": true
+    },
+    {
+      "language": "en",
+      "object": 104,
+      "class_id": 3,
+      "glyph": 41,
+      "geometry_verified": true
+    },
+    {
+      "language": "en",
+      "object": 105,
+      "class_id": 3,
+      "glyph": 42,
+      "geometry_verified": true
+    },
+    {
+      "language": "en",
+      "object": 105,
+      "class_id": 3,
+      "glyph": 42,
+      "geometry_verified": true
+    },
+    {
+      "language": "en",
+      "object": 105,
+      "class_id": 3,
+      "glyph": 42,
+      "geometry_verified": true
+    },
+    {
+      "language": "en",
+      "object": 96,
+      "class_id": 6,
+      "glyph": 71,
+      "geometry_verified": true
+    },
+    {
+      "language": "en",
+      "object": 97,
+      "class_id": 6,
+      "glyph": 72,
+      "geometry_verified": true
+    },
+    {
+      "language": "en",
+      "object": 3,
+      "class_id": 9,
+      "glyph": 130,
+      "geometry_verified": true
+    },
+    {
+      "language": "en",
+      "object": 104,
+      "class_id": 3,
+      "glyph": 41,
+      "geometry_verified": true
+    },
+    {
+      "language": "en",
+      "object": 104,
+      "class_id": 3,
+      "glyph": 41,
+      "geometry_verified": true
+    }
+  ],
+  "geometry_and_pixels": [
+    {
+      "language": "ru",
+      "depth": 300,
+      "object": 65,
+      "geometry": {
+        "x0": 116,
+        "x1": 121,
+        "top0": 81,
+        "bottom0": 88,
+        "key": 296
+      },
+      "changed_pixels": 32,
+      "frame_sha256": "288fedc3e9d384f9460e6b98836175c7ead44159bfc2e56f7a11b488202e4b56"
+    },
+    {
+      "language": "ru",
+      "depth": 600,
+      "object": 65,
+      "geometry": {
+        "x0": 117,
+        "x1": 120,
+        "top0": 78,
+        "bottom0": 81,
+        "key": 596
+      },
+      "changed_pixels": 10,
+      "frame_sha256": "6d13355ea3ddc87f2d1f3f951f372ae73ac782cd6f61623ceb2d3f50dc5e92c1"
+    },
+    {
+      "language": "ru",
+      "depth": 1200,
+      "object": 65,
+      "geometry": {
+        "x0": 117,
+        "x1": 120,
+        "top0": 74,
+        "bottom0": 77,
+        "key": 1196
+      },
+      "changed_pixels": 10,
+      "frame_sha256": "942745a8e44ec8fa19f027fa520e9545c156f0b1fe627228bb928110628beaf1"
+    },
+    {
+      "language": "ru",
+      "depth": 6000,
+      "object": 65,
+      "geometry": {
+        "x0": 118,
+        "x1": 119,
+        "top0": 72,
+        "bottom0": 72,
+        "key": 5996
+      },
+      "changed_pixels": 0,
+      "frame_sha256": "61e2b074a4ee2aa0088ad4830c64ba81ec61329700f66159c6c6098ef8e7a3ec"
+    },
+    {
+      "language": "en",
+      "depth": 300,
+      "object": 65,
+      "geometry": {
+        "x0": 116,
+        "x1": 121,
+        "top0": 81,
+        "bottom0": 88,
+        "key": 296
+      },
+      "changed_pixels": 32,
+      "frame_sha256": "288fedc3e9d384f9460e6b98836175c7ead44159bfc2e56f7a11b488202e4b56"
+    },
+    {
+      "language": "en",
+      "depth": 600,
+      "object": 65,
+      "geometry": {
+        "x0": 117,
+        "x1": 120,
+        "top0": 78,
+        "bottom0": 81,
+        "key": 596
+      },
+      "changed_pixels": 10,
+      "frame_sha256": "6d13355ea3ddc87f2d1f3f951f372ae73ac782cd6f61623ceb2d3f50dc5e92c1"
+    },
+    {
+      "language": "en",
+      "depth": 1200,
+      "object": 65,
+      "geometry": {
+        "x0": 117,
+        "x1": 120,
+        "top0": 74,
+        "bottom0": 77,
+        "key": 1196
+      },
+      "changed_pixels": 10,
+      "frame_sha256": "942745a8e44ec8fa19f027fa520e9545c156f0b1fe627228bb928110628beaf1"
+    },
+    {
+      "language": "en",
+      "depth": 6000,
+      "object": 65,
+      "geometry": {
+        "x0": 118,
+        "x1": 119,
+        "top0": 72,
+        "bottom0": 72,
+        "key": 5996
+      },
+      "changed_pixels": 0,
+      "frame_sha256": "61e2b074a4ee2aa0088ad4830c64ba81ec61329700f66159c6c6098ef8e7a3ec"
+    }
+  ],
+  "source": {
+    "ru": {
+      "exe": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+      "res": "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816"
+    },
+    "en": {
+      "exe": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b",
+      "res": "865da340621fa6f90548a84e9ae9bf0a85071befb32a40ca1d359e488f74d458"
+    }
+  },
+  "scope": "Independent original dimensions, native billboard projection, nearest masked texels and far wall occlusion; no whole-DOS raster equivalence"
+}

@@ -1,14 +1,14 @@
 # Сборка первых модулей и VS Code
 
-Актуальный общий GBA-ROM после G10:
+Актуальный общий GBA-ROM после G11:
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-gba-surfaces.ps1 -CrossChecks
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-gba-sprites.ps1 -CrossChecks -OriginalEvidence
 ```
 
-Артефакты — `build/g10/`, методика/границы — [surfaces-lighting.md](surfaces-lighting.md),
-проверка и измерения — `analysis/g10-review.json`. Старые описания первых
-статичных проб далее не обозначают текущее отсутствие движения/поверхностей.
+Артефакты — `build/g11/`, методика/границы — [sprite-rendering.md](sprite-rendering.md),
+проверка и измерения — `analysis/g11-review.json`. Старые описания первых
+статичных проб далее не обозначают текущее отсутствие движения/поверхностей/спрайтов.
 
 Сейчас собираются читалка RES, декодеры изображений/анимаций/звука,
 загрузчик LEVEL, подготовка мира, компактный runtime, адаптер native-состояния и тесты.

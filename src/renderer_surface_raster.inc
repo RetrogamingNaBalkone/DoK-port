@@ -21,7 +21,9 @@ static void surface_raster(dok_renderer_workspace *w,const dok_runtime *r,const 
     int shift_x=0,shift_y=0,wrap=0;
     const dok_runtime_definition *definition=&r->level->definitions[f->object];
     if(!f->plane && (definition->class_id==12 || definition->class_id==13)) {
-        unsigned flags=definition->sprite_flags,phase=r->objects[f->object].frame%18u;
+        const dok_runtime_object *object=&r->objects[f->object];
+        unsigned flags=definition->sprite_flags,phase=(object->known&DOK_RUNTIME_CROP_PHASE)?
+            (uint16_t)object->animation_a%18u:object->frame%18u;
         int dx=(im->width/18)*(int)phase,dy=(im->height/18)*(int)phase;
         if(flags&0x440) {shift_x=-dx;wrap=(flags&0x400)!=0;}
         else if(flags&0x880) {shift_x=dx;wrap=(flags&0x800)!=0;}

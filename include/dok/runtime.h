@@ -29,7 +29,9 @@ typedef struct {
 
 enum {
     DOK_RUNTIME_ANIMATION_A=1u, DOK_RUNTIME_ANIMATION_B=2u,
-    DOK_RUNTIME_INTERVAL=4u
+    DOK_RUNTIME_INTERVAL=4u,
+    DOK_RUNTIME_CROP_PHASE=8u /* class12/13: animation_a holds displayed crop,
+                              not native animation parameter +20 */
 };
 enum {
     DOK_RUNTIME_X=1u, DOK_RUNTIME_Y=2u, DOK_RUNTIME_Z=4u,
@@ -55,7 +57,7 @@ typedef struct {
 typedef struct {
     uint16_t flags, frame, animation_budget, interval;
     int16_t animation_a, animation_b;
-    uint16_t known, reserved;
+    uint16_t known, visual_resource; /* 0=definition default; ROM resource ID while playing */
     union {
         dok_runtime_door door;
         dok_runtime_switch toggle;

@@ -1,4 +1,5 @@
 #include "dok/renderer.h"
+#include "dok/visual.h"
 #include <stdint.h>
 extern unsigned gba_time_start(void);
 extern void gba_time_poll(void);
@@ -46,6 +47,40 @@ dok_runtime_level g_render_view;
 dok_renderer_workspace g_render_frame;
 dok_renderer_stats g_render_stats;
 static dok_rom_assets package;
+static dok_visual visual;
+static uint8_t visual_visible[DOK_RUNTIME_MAX_OBJECTS];
+extern uint32_t gba_time_ticks(void);
+volatile struct {uint32_t freeze,request,ack,tick,object,slot,loop;} g_visual_probe;
+volatile struct {uint32_t magic,error,steps,completed,now,object,frame,active,deadline,resource,budget;} g_visual_diag;
+static void visual_start(void) {
+    dok_visual_init(&visual,&g_render_world,&package,g_render_diag.level,g_render_diag.language,gba_time_ticks(),0,0);
+    for(unsigned id=0;id<DOK_RUNTIME_MAX_OBJECTS;++id) {
+        g_render_frame.image_known[id]=0;
+        for(unsigned plane=0;plane<3;++plane) g_render_frame.surface_known[id][plane]=0;
+    }
+    g_visual_diag.magic=0x56495331;
+}
+void gba_visual_poll(uint32_t tick) {
+    if(g_visual_probe.freeze || !visual.world) return;
+    visual.language=g_render_diag.language;
+    /* The previous scene's visibility lease is sampled in simulation time.
+     * Catch-up never depends on how many frames were presented meanwhile. */
+    for(unsigned id=0;id<g_render_world.object_count;++id)
+        visual_visible[id]=(uint8_t)(g_render_frame.image_known[id] || g_render_frame.surface_known[id][0]);
+    dok_visual_advance(&visual,tick,visual_visible);
+}
+static void visual_update(void) {
+    visual.language=g_render_diag.language;
+    if(g_visual_probe.request!=g_visual_probe.ack) {
+        if(g_visual_probe.slot && !dok_visual_play(&visual,(uint16_t)g_visual_probe.object,(uint16_t)g_visual_probe.slot,(int)g_visual_probe.loop)) ++visual.errors;
+        dok_visual_poll(&visual,g_visual_probe.tick);g_visual_probe.ack=g_visual_probe.request;
+    }
+    unsigned id=g_visual_probe.object;if(id>=g_render_world.object_count) id=0;
+    g_visual_diag.error=visual.errors;g_visual_diag.steps=visual.steps;g_visual_diag.completed=visual.completed;
+    g_visual_diag.now=visual.now;g_visual_diag.object=id;g_visual_diag.frame=g_render_world.objects[id].frame;
+    g_visual_diag.active=visual.owners[id].count;g_visual_diag.deadline=visual.owners[id].events[0].deadline;
+    g_visual_diag.resource=visual.resource[id];g_visual_diag.budget=g_render_world.objects[id].animation_budget;
+}
 static dok_projection_camera camera;
 /* Host harness command mailbox: commit request last, acknowledge after setup.
  * This drives a test camera only; it never moves the runtime player. */
@@ -53,6 +88,7 @@ volatile struct {uint32_t request,ack,level;int32_t x,y,z,heading;} g_camera_pro
 /* Test-only capture aid: hold a committed frame for one extra VBlank.
  * Default zero; excluded from the CPU timer and ordinary cadence tests. */
 volatile uint32_t g_camera_capture_hold;
+volatile struct {uint32_t enable,object;int32_t x,y,z;} g_sprite_probe;
 static unsigned test_camera;
 static const uint8_t *font;
 static uint8_t palette[768];
@@ -224,6 +260,7 @@ __attribute__((noreturn)) void gba_main(void)
     R16(0x03007ff8)=0;IF=0x3fff;IE=1;DISPSTAT=8;IME=1;
     if (gba_time_start()) panic(0x90);
     if (gba_motion_start(&g_render_world)) panic(0x97);
+    visual_start();
     unsigned visible=0;
     for (;;) {
         if(g_camera_probe.request!=g_camera_probe.ack) {
@@ -235,6 +272,7 @@ __attribute__((noreturn)) void gba_main(void)
                 if(dok_runtime_reset(&g_render_world,&g_render_view)!=DOK_RUNTIME_OK) panic(0x95);
                 g_render_diag.level=level;load_ui(g_render_diag.language);
                 gba_motion_level(&g_render_world);
+                visual_start();
             }
             camera.x=g_camera_probe.x;camera.y=g_camera_probe.y;camera.z=g_camera_probe.z;
             dok_renderer_camera_heading(&camera,g_camera_probe.heading);
@@ -261,7 +299,10 @@ __attribute__((noreturn)) void gba_main(void)
             switched=1;
         }
         g_render_diag.last_keys=g_diag.keys;
+        visual_update();
         g_render_diag.reserved3=1;
+        g_render_frame.sprite_count=g_sprite_probe.enable?1:0;
+        g_render_frame.sprites[0]=(dok_renderer_sprite){g_sprite_probe.x,g_sprite_probe.y,g_sprite_probe.z,(uint16_t)g_sprite_probe.object,0};
         dok_renderer_status status=dok_renderer_draw(&g_render_frame,&g_render_world,&package,g_render_diag.level,
             g_render_diag.language,&camera,&g_render_stats);
         g_render_diag.status=status;

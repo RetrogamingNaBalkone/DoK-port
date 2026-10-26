@@ -16,7 +16,7 @@ int main(int argc,char **argv) {
         while(scanf("%ld %d",&depth,&near)==2) printf("%u\n",dok_renderer_light_row((int32_t)depth,(int16_t)near));
         return ferror(stdin) || ferror(stdout);
     }
-    if(argc!=6 && argc!=10 && argc!=13) {fprintf(stderr,"Usage: dok-render assets.bin level(1..3) ru|en output.idx output.pal [x y z heading [door-glyph frame extent]]\n");return 2;}
+    if(argc!=6 && argc!=10 && argc!=13 && argc!=14) {fprintf(stderr,"Usage: dok-render assets.bin level(1..3) ru|en output.idx output.pal [x y z heading [door-glyph frame extent | sprite-object x y z]]\n");return 2;}
     number=(unsigned)strtoul(argv[2],0,10);language=!strcmp(argv[3],"en");
     if(number<1 || number>3 || (strcmp(argv[3],"ru") && strcmp(argv[3],"en"))) return 2;
     file=fopen(argv[1],"rb");if(!file) {perror(argv[1]);return 1;}
@@ -41,6 +41,11 @@ int main(int argc,char **argv) {
         unsigned object=view.glyph_index[glyph]-1;
         if(view.definitions[object].class_id!=7 && view.definitions[object].class_id!=12 && view.definitions[object].class_id!=13) goto done;
         runtime->objects[object].frame=(uint16_t)frame;runtime->objects[object].state.door.extent=(int16_t)extent;
+    }
+    if(argc==14) {
+        unsigned object=(unsigned)strtoul(argv[10],0,10);if(object>=view.object_count) goto done;
+        work->sprite_count=1;work->sprites[0]=(dok_renderer_sprite){(int32_t)strtol(argv[11],0,10),
+            (int32_t)strtol(argv[12],0,10),(int32_t)strtol(argv[13],0,10),(uint16_t)object,0};
     }
     *saved=*runtime;work->frame_guard_before=UINT32_C(0xd04fcafe);work->frame_guard_after=UINT32_C(0xd04fcafe);
     probe_camera=camera;probe_camera.sine=32769;

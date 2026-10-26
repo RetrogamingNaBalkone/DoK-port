@@ -7,7 +7,7 @@ import argparse,ctypes as ct,hashlib,json,os,struct,subprocess
 from pathlib import Path
 from gba_rom import elf_info
 from verify_gba import Frontend,sha
-from verify_renderer_gba import NAMES,stack_usage
+from verify_renderer_gba import NAMES,stack_usage,freeze_visual
 from verify_renderer_host import write_frame_png,palette555
 from analyze_resources import parse
 
@@ -20,7 +20,7 @@ def main():
  def diag():return dict(zip(NAMES,struct.unpack('<32I',f.read(syms['g_render_diag'],128))))
  def until(predicate):
   for _ in range(6000):
-   f.run(1);d=diag();basic=f.diag(syms['g_diag'])
+   f.run(1);d=diag();basic=f.diag(syms['g_diag']);freeze_visual(f,syms,d['magic'])
    if basic['magic']==0x444f4b31:assert basic['fault']==0,basic
    if d['draws']:assert d['status']==0 and d['guard_ok']==1,d
    if predicate(d):return d

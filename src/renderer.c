@@ -1,5 +1,6 @@
 #include "dok/renderer.h"
 #include "dok/image.h"
+#include "dok/animation.h"
 #include <limits.h>
 #include "renderer_trig.inc"
 #if defined(_MSC_VER)
@@ -66,26 +67,35 @@ static int object_at(const dok_runtime *r,unsigned plane,int x,int z,uint16_t *o
 static int neighbor_class(const dok_runtime *r,int x,int z,unsigned *out) {
     uint16_t n;if(!object_at(r,DOK_WORLD_TMAP,x,z,&n)) return 0;*out=r->level->definitions[n].class_id;return 1;
 }
-static dok_renderer_status image(dok_renderer_workspace *w,const dok_runtime *r,const dok_rom_assets *a,
+static DOK_COLD dok_renderer_status image(dok_renderer_workspace *w,const dok_runtime *r,const dok_rom_assets *a,
     unsigned level,unsigned language,uint16_t object) {
     uint16_t id;dok_rom_resource resource;dok_image_view v;const dok_runtime_definition *d=&r->level->definitions[object];
     if(w->image_known[object]) return DOK_RENDER_OK;
-    if(dok_rom_binding(&id,a,level,language,object,DOK_ROM_SLOT_SPRITE)!=DOK_ROM_OK ||
-       dok_rom_resource_at(&resource,a,id,language)!=DOK_ROM_OK ||
-       dok_image_open(resource.data,resource.size,&v)!=DOK_ASSET_OK) return DOK_RENDER_RESOURCE;
+    int animated=(r->objects[object].flags&0x800)!=0 || d->class_id==8 || r->objects[object].visual_resource;
+    id=r->objects[object].visual_resource;
+    if((!id && dok_rom_binding(&id,a,level,language,object,animated?DOK_ROM_SLOT_ANIMATION:DOK_ROM_SLOT_SPRITE)!=DOK_ROM_OK) ||
+       dok_rom_resource_at(&resource,a,id,language)!=DOK_ROM_OK) return DOK_RENDER_RESOURCE;
+    if(animated) {
+        dok_animation_view av;dok_animation_frame frame;
+        if(dok_animation_open(resource.data,resource.size,&av)!=DOK_ASSET_OK ||
+           dok_animation_frame_at(&av,r->objects[object].frame,&frame)!=DOK_ASSET_OK) return DOK_RENDER_RESOURCE;
+        v=frame.image;
+    } else if(dok_image_open(resource.data,resource.size,&v)!=DOK_ASSET_OK) return DOK_RENDER_RESOURCE;
     /* G05 never mutates shared resource images. Initial crop index0 produces
      * the raw pixels for the checked Sprite shift modes; animated/static-state
      * updates are deliberately outside this renderer's contract. */
     if(v.width>256 || v.height>512 || !v.width || !v.height) PROFILE_FAIL();
     w->images[object].pixels=v.pixels;w->images[object].width=v.width;w->images[object].height=v.height;
-    w->images[object].flags=(uint16_t)(v.stored_flags|d->sprite_flags);w->images[object].resource_id=id;
+    w->images[object].flags=animated?8:(uint16_t)(v.stored_flags|d->sprite_flags);w->images[object].resource_id=id;
     w->images[object].columns=0;w->images[object].scales=0;
 #ifdef DOK_RENDERER_PROBE
+    if(!animated) {
     extern const uint8_t dok_render_bank[],dok_render_bank_end[];
     unsigned entry=((level*2+language)*(a->resource_count+1)+id)*8;
     const uint8_t *bp=dok_render_bank+entry;
     uint32_t off=(uint32_t)bp[0]|((uint32_t)bp[1]<<8)|((uint32_t)bp[2]<<16)|((uint32_t)bp[3]<<24);
-    if(!off || off>(size_t)(dok_render_bank_end-dok_render_bank) ||
+    if(off) {
+    if(off>(size_t)(dok_render_bank_end-dok_render_bank) ||
        (size_t)v.width*v.height>(size_t)(dok_render_bank_end-dok_render_bank)-off) return DOK_RENDER_RESOURCE;
     w->images[object].columns=dok_render_bank+off;
     uint32_t table=(uint32_t)bp[4]|((uint32_t)bp[5]<<8)|((uint32_t)bp[6]<<16)|((uint32_t)bp[7]<<24);
@@ -93,6 +103,8 @@ static dok_renderer_status image(dok_renderer_workspace *w,const dok_runtime *r,
         if((table&3) || table>(size_t)(dok_render_bank_end-dok_render_bank) ||
            v.height*4u>(size_t)(dok_render_bank_end-dok_render_bank)-table) return DOK_RENDER_RESOURCE;
         w->images[object].scales=(const uint32_t *)(const void *)(dok_render_bank+table);
+    }
+    }
     }
 #endif
     w->image_known[object]=1;return DOK_RENDER_OK;
@@ -167,6 +179,7 @@ static dok_renderer_status plane(dok_renderer_workspace *w,const dok_projection_
 }
 #include "renderer_surfaces.inc"
 #include "renderer_surface_sides.inc"
+#include "renderer_sprites.inc"
 static dok_renderer_status build(dok_renderer_workspace *w,const dok_runtime *r,const dok_rom_assets *a,
     unsigned level,unsigned language,const dok_projection_camera *c,dok_renderer_stats *s) {
     const dok_runtime_level *l=r->level;int side=l->settings[DOK_LEVEL_WIDTH],cell=l->settings[DOK_LEVEL_CELL_SIDE];
@@ -191,11 +204,10 @@ static dok_renderer_status build(dok_renderer_workspace *w,const dok_runtime *r,
         if(d->class_id!=2) {
             status=surfaces_build(w,r,a,level,language,c,x,z,fc);if(status) return status;
         }
+        status=cell_sprites(w,r,a,level,language,c,s,x,z,fc,object);if(status) return status;
         if(d->class_id!=2 && d->class_id!=4 && d->class_id!=7) {
-            if(d->class_id==3 || d->class_id==9 || d->class_id==10 || d->class_id==6) ++s->skipped_billboards;
             continue;
         }
-        if(d->flags&0x800) PROFILE_FAIL(); /* animated geometry is G11 */
         if(d->class_id==7 && r->objects[object].state.door.parameter_5c!=l->initial_objects[object].state.door.parameter_5c) PROFILE_FAIL();
         status=image(w,r,a,level,language,object);if(status) return status;
         width=word((int32_t)w->images[object].width*d->width_parameter);
@@ -584,6 +596,12 @@ dok_renderer_status dok_renderer_draw(dok_renderer_workspace *w,const dok_runtim
     if(dok_rom_binding(&id,a,level,language,DOK_ROM_GLOBAL_OBJECT,DOK_ROM_SLOT_LIGHT)!=DOK_ROM_OK ||
        dok_rom_resource_at(&light,a,id,language)!=DOK_ROM_OK || light.size!=4096) {status=DOK_RENDER_RESOURCE;goto done;}
     STAGE(1);status=build(w,r,a,level,language,c,&s);if(status) goto done;
+    if(w->sprite_count>DOK_RENDER_SPRITE_CAPACITY) {status=DOK_RENDER_CAPACITY;goto done;}
+    for(i=0;i<w->sprite_count;++i) {
+        const dok_renderer_sprite *sp=&w->sprites[i];
+        if(sp->object>=r->object_count) {status=DOK_RENDER_ARGUMENT;goto done;}
+        status=billboard(w,r,a,level,language,c,&s,sp->object,sp->x,sp->y,sp->z);if(status) goto done;
+    }
     STAGE(2);sort_faces(w);STAGE(3);
 #ifdef DOK_RENDERER_PROBE
     int deferred=defer_background(w);

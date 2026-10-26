@@ -15,7 +15,7 @@ import subprocess
 
 from gba_rom import elf_info
 from verify_gba import Frontend, sha
-from verify_renderer_gba import NAMES, stack_usage
+from verify_renderer_gba import NAMES, stack_usage, freeze_visual
 from verify_renderer_host import write_frame_png
 
 p = argparse.ArgumentParser(description=__doc__)
@@ -47,6 +47,7 @@ def until(predicate, limit=6000):
         if basic['magic'] == 0x444f4b31:
             assert not basic['fault'], ('ARM panic', basic, diag())
         d = diag()
+        freeze_visual(f,symbols,d['magic'])
         if predicate(d):
             return d
     raise AssertionError(('Timeout', d))
