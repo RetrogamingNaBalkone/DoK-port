@@ -19,6 +19,26 @@ BUDGET = 2 * 280896
 STACK_LOW, STACK_TOP = 0x03006000, 0x03007f00
 GUARD = 0xd04fcafe
 
+def start_gameplay(frontend, symbols):
+    """Explicit test setup for pre-G17 scenarios; the real UI starts at title.
+
+    Called only by legacy harnesses. UIProbe opts out and drives real buttons.
+    Commit request last, using the same public test mailbox as other scenarios.
+    """
+    if 'g_ui_probe' not in symbols:
+        return True
+    magic,state = struct.unpack('<2I', frontend.read(symbols['g_ui_diag'],8))
+    if magic != 0x55493137:
+        return False
+    address = symbols['g_ui_probe']
+    request,ack = struct.unpack('<2I',frontend.read(address,8))
+    if state == 1 and request == ack:
+        payload=struct.pack('<4I',1,0,0,0)
+        ct.memmove(frontend.pointer(address+8,16),payload,16)
+        ct.memmove(frontend.pointer(address,4),struct.pack('<I',ack+1),4)
+        return False
+    return state == 0 and request == ack
+
 def freeze_visual(frontend,symbols,magic):
     """Static-scene regression freezes G11 visual time; playback has its own probe."""
     if magic==0x524e4435 and 'g_visual_probe' in symbols:
@@ -67,6 +87,8 @@ def main():
     def check():
         basic, diag = frontend.diag(symbols['g_diag']), render_diag()
         freeze_visual(frontend,symbols,diag['magic'])
+        if diag['magic']==0x524e4435 and diag['draws']:
+            start_gameplay(frontend,symbols)
         # After retro_reset the deliberately poisoned RAM is observable while
         # mGBA's replacement BIOS is still reaching cartridge startup. A5 bytes
         # are not initialized diagnostics and must not be interpreted as panic.
@@ -92,7 +114,9 @@ def main():
         raise AssertionError(('Renderer timed out', current))
 
     def ready():
-        diag = until(lambda d: d['magic'] == 0x524e4435 and d['draws'] >= 2)
+        diag = until(lambda d: d['magic'] == 0x524e4435 and d['draws'] >= 2 and
+                     ('g_ui_probe' not in symbols or (start_gameplay(frontend,symbols) and
+                      struct.unpack('<I',frontend.read(symbols['g_motion_diag']+8,4))[0]>0)))
         assert (diag['player_x'], diag['player_y'], diag['player_z']) == (15120, -300, 22800), diag
         assert (diag['scene_height'], diag['message_height'], diag['frame_bytes'], diag['world_bytes']) == (144,16,38400,33864)
         assert diag['cycle_budget'] == BUDGET
@@ -139,7 +163,8 @@ def main():
         pressed = until(lambda d: d['switches'] > previous, [2])
         assert pressed['switches'] == previous+1 and pressed['language'] == language, pressed
         until(lambda d: d['last_keys'] == 0 and d['draws'] >= pressed['draws']+2)
-        assert frontend.read(symbols['g_render_world'], 33864) == world, 'Language switch changed mutable world'
+        current_world=frontend.read(symbols['g_render_world'],33864)
+        assert current_world == world, ('Language switch changed mutable world',[(i,a,b) for i,(a,b) in enumerate(zip(world,current_world)) if a!=b][:24])
         start = check()['draws']
         warmup_cutoffs[previous+1] = start+8
         until(lambda d: d['draws'] >= start+args.sample_draws)
@@ -151,7 +176,12 @@ def main():
     assert ru['geometry_faces'] == en['geometry_faces'] == ru_return['geometry_faces']
     assert ru_geometry == en_geometry == return_geometry, 'Completed scene geometry bytes changed across languages'
     assert ru_pixels[:240*144] == en_pixels[:240*144] == return_pixels[:240*144], 'Common scene changed across languages'
-    assert ru_pixels[240*144:] != en_pixels[240*144:], 'Localized message did not change'
+    if 'g_ui_probe' in symbols:
+        # G17 reserves the entire band for actual events. Its idle band is
+        # blank in either locale; exact original event text is tested by G17.
+        assert ru_pixels[240*144:] == en_pixels[240*144:]
+    else:
+        assert ru_pixels[240*144:] != en_pixels[240*144:], 'Localized message did not change'
     assert ru_pixels == return_pixels, 'RU return framebuffer differs'
     before_reset_stack = stack_usage(frontend)
     assert before_reset_stack['untouched_margin_bytes'] >= 512, before_reset_stack

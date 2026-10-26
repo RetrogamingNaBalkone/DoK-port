@@ -1,5 +1,10 @@
 #include "dok/renderer.h"
 #include "dok/visual.h"
+extern void gba_ui_start(void);
+extern unsigned gba_ui_input(uint16_t);
+extern unsigned gba_ui_language(void);
+extern uint16_t gba_ui_keys(uint16_t);
+extern void gba_ui_draw(uint8_t *,const uint8_t *,const uint8_t *,unsigned,unsigned);
 #include <stdint.h>
 extern unsigned gba_time_start(void);
 extern void gba_audio_start(const dok_rom_assets *,unsigned,unsigned);
@@ -115,13 +120,13 @@ static void items_update(void) {
     g_items_probe.result=(uint32_t)result;g_items_probe.ack=g_items_probe.request;
 }
 static unsigned test_camera;
-static const uint8_t *font;
+static const uint8_t *font,*font16;
 static uint8_t palette[768];
 static unsigned white,black;
 /* ROM is immutable for the life of this cartridge. Validate both localized
  * views/resources at level load, then switch only already checked views. */
 static dok_runtime_level localized_views[2];
-static struct {const uint8_t *font;uint16_t colors[256];unsigned white,black;} localized_ui[2];
+static struct {const uint8_t *font,*font16;uint16_t colors[256];unsigned white,black;} localized_ui[2];
 static volatile uint32_t data_probe=0x1234abcd;
 extern const uint8_t dok_gba_assets[],dok_gba_assets_end[];
 extern void gba_irq(void);
@@ -158,56 +163,6 @@ volatile uint32_t g_render_stages[7];
 void gba_render_stage(unsigned stage) {
     g_render_stages[stage]=timer_sample();
 }
-static __attribute__((section(".iwram"),target("arm"))) void pixel(unsigned x,unsigned y,unsigned color)
-{
-    if (x < 240 && y < 160) g_render_frame.frame[y*240+x]=(uint8_t)color;
-}
-static __attribute__((section(".iwram"),target("arm"))) void box(unsigned x,unsigned y,unsigned width,unsigned height,unsigned color)
-{
-    unsigned right=x+width<240?x+width:240,bottom=y+height<160?y+height:160;
-    for(unsigned row=y;row<bottom;++row) {
-        unsigned col=x;
-        for(;col<right && (col&3);++col) g_render_frame.frame[row*240+col]=(uint8_t)color;
-        for(;col+4<=right;col+=4) g_render_frame.frame_words[row*60+col/4]=color*0x01010101u;
-        for(;col<right;++col) g_render_frame.frame[row*240+col]=(uint8_t)color;
-    }
-}
-static __attribute__((section(".iwram"),target("arm"))) void label(unsigned x,unsigned y,const uint8_t *text)
-{
-    for (;*text && x+8<=240;++text,x+=8)
-        for (unsigned row=0;row<8 && y+row<160;++row) {
-            unsigned bits=font[(unsigned)*text*8+row];
-            for (unsigned col=0;col<8;++col)
-                if (bits & (128u>>col)) pixel(x+col,y+row,white);
-        }
-}
-static __attribute__((section(".iwram"),target("arm"))) unsigned number(unsigned x,unsigned y,int value)
-{
-    uint8_t digits[8];unsigned count=0,n;
-    if (value<0) {label(x,y,(const uint8_t *)"-");x+=8;n=0u-(unsigned)value;}
-    else n=(unsigned)value;
-    do {digits[count++]=(uint8_t)('0'+n%10);n/=10;} while(n && count<7);
-    unsigned length=count;
-    while(count) {uint8_t one[2]={digits[--count],0};label(x,y,one);x+=8;}
-    return length*8;
-}
-static __attribute__((section(".iwram"),target("arm"))) void hud(void)
-{
-    /* Compact G05 HUD, backed by actual player values. Full menus are G17. */
-    box(0,0,56,12,black);label(2,2,(const uint8_t *)"HP");
-    number(18,2,g_render_world.player.health);
-    box(192,0,48,12,black);label(194,2,(const uint8_t *)"E");
-    number(202,2,g_render_world.player.energy);
-    if (g_render_world.player.keys) {
-        box(192,132,48,12,black);label(194,134,(const uint8_t *)"K");
-        number(202,134,g_render_world.player.keys);
-    }
-    box(0,144,240,16,black);
-    static const uint8_t russian[]={0x93,0xe0,0xae,0xa2,0xa5,0xad,0xec,' ','1',0};
-    uint8_t text[10];const uint8_t *base=g_render_diag.language?(const uint8_t *)"Level 1":russian;
-    unsigned n=0;do {text[n]=base[n];} while(base[n++]);
-    text[n-2]=(uint8_t)('1'+g_render_diag.level);label(0,148,text);
-}
 static void prepare_level(unsigned level)
 {
     dok_rom_resource resource;uint16_t id;
@@ -217,6 +172,9 @@ static void prepare_level(unsigned level)
         if (dok_rom_find(&id,&package,name,5)!=DOK_ROM_OK ||
             dok_rom_resource_at(&resource,&package,id,language)!=DOK_ROM_OK || resource.size!=2048) panic(0x91);
         localized_ui[language].font=resource.data;
+        if(dok_rom_find(&id,&package,(const uint8_t *)"FONT16",6)!=DOK_ROM_OK ||
+           dok_rom_resource_at(&resource,&package,id,language)!=DOK_ROM_OK || resource.size!=4096) panic(0x91);
+        localized_ui[language].font16=resource.data;
         if (dok_renderer_palette(palette,&package,level,language)!=DOK_RENDER_OK) panic(0x92);
         unsigned darkest=~0u,brightest=0;
         for (unsigned i=0;i<256;++i) {
@@ -237,7 +195,7 @@ static void prepare_level(unsigned level)
 }
 static __attribute__((section(".iwram"),target("arm"))) void load_ui(unsigned language)
 {
-    font=localized_ui[language].font;white=localized_ui[language].white;black=localized_ui[language].black;
+    font=localized_ui[language].font;font16=localized_ui[language].font16;white=localized_ui[language].white;black=localized_ui[language].black;
     for(unsigned i=0;i<256;++i) PAL[i]=localized_ui[language].colors[i];
     g_render_diag.font_ready=1;
     g_render_diag.palette_ready=1;
@@ -278,6 +236,7 @@ __attribute__((noreturn)) void gba_main(void)
     if (gba_time_start()) panic(0x90);
     if (gba_motion_start(&g_render_world)) panic(0x97);
     visual_start();
+    gba_ui_start();
     unsigned visible=0;
     for (;;) {
         if(g_camera_probe.request!=g_camera_probe.ack) {
@@ -297,20 +256,19 @@ __attribute__((noreturn)) void gba_main(void)
         }
         uint32_t start_vblank=g_vblanks;
         timer_start();
-        gba_time_poll();
-        unsigned switched=0;
         g_diag.keys=(uint32_t)(~KEYINPUT)&0x3ff;g_diag.seen|=g_diag.keys;
+        unsigned switched=gba_ui_input((uint16_t)g_diag.keys);
+        gba_time_poll();
         uint32_t motion_start=timer_sample();
-        gba_motion_poll((uint16_t)g_diag.keys);
+        gba_motion_poll(gba_ui_keys((uint16_t)g_diag.keys));
         if(!test_camera && dok_renderer_camera_from_runtime(&camera,&g_render_world)!=DOK_RENDER_OK) panic(0x98);
         gba_motion_cost(timer_sample()-motion_start);
         if(!test_camera) {
             g_render_diag.player_x=(uint32_t)camera.x;g_render_diag.player_y=(uint32_t)camera.y;
             g_render_diag.player_z=(uint32_t)camera.z;
         }
-        if ((g_diag.keys&12)==12) panic(0x10);
-        if ((g_diag.keys&4) && !(g_render_diag.last_keys&4)) {
-            unsigned language=g_render_diag.language^1;
+        if (switched) {
+            unsigned language=gba_ui_language();
             g_render_view=localized_views[language];
             g_render_diag.language=language;g_render_diag.switches++;load_ui(language);
             switched=1;
@@ -331,7 +289,7 @@ __attribute__((noreturn)) void gba_main(void)
             g_render_diag.language,&camera,&g_render_stats);
         g_render_diag.status=status;
         if (status!=DOK_RENDER_OK) panic(0xa0+(unsigned)status);
-        gba_combat_overlay(&g_render_frame);hud();gba_render_stage(5);
+        gba_combat_overlay(&g_render_frame);gba_ui_draw(g_render_frame.frame,font,font16,white,black);gba_render_stage(5);
         volatile uint16_t *page=visible ? PAGE0 : PAGE1;
         /* DMA3 pauses the CPU, including audio IRQ refills. Bound each pause
          * while preserving every Mode4 pixel. DMA1 has higher bus priority. */

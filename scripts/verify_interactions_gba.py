@@ -3,7 +3,7 @@ import argparse,ctypes as ct,hashlib,json,os,struct,subprocess
 from pathlib import Path
 from gba_rom import elf_info
 from verify_gba import Frontend,sha
-from verify_renderer_gba import NAMES,stack_usage,freeze_visual
+from verify_renderer_gba import NAMES,stack_usage,freeze_visual,start_gameplay
 
 def main():
  p=argparse.ArgumentParser(description=__doc__)
@@ -19,6 +19,7 @@ def main():
  def until(pred,buttons=(),limit=2000):
   for _ in range(limit):
    f.run(1,buttons);r=render();basic=f.diag(syms['g_diag']);freeze_visual(f,syms,r['magic'])
+   if r['magic']==0x524e4435 and r['draws']:start_gameplay(f,syms)
    if basic['magic']==0x444f4b31:assert not basic['fault'],basic
    if r['draws'] and r['magic']==0x524e4435:
     assert r['status']==0 and r['guard_ok'],r;cycles.append((r['last_cycles'],struct.unpack('<I',f.read(motion,4))[0]))
@@ -53,7 +54,7 @@ def main():
   reference=idx.read_bytes();actual=f.read(syms['g_render_frame']+4,38400);compared=0
   for y in range(144):
    for x in range(240):
-    if y<12 and (x<56 or x>=192) or y>=132 and x>=192:continue
+    if y<12 and (x<80 or x>=160) or y>=132 and (x<128 or x>=184):continue
     assert actual[y*240+x]==reference[y*240+(x&~1)],(name,x,y,actual[y*240+x],reference[y*240+(x&~1)])
     compared+=1
   f.screenshot(build/f'interaction-{name}.png');captures.append(dict(name=name,rgb_sha256=hashlib.sha256(f.rgb).hexdigest(),cycles=render()['last_cycles'],dynamic_scene_pixels_compared=compared))

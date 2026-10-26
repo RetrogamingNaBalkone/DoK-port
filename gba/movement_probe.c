@@ -13,13 +13,15 @@ static dok_items items;
 extern void gba_combat_poll(uint32_t tick,uint32_t commands);
 extern void gba_combat_cycle(void);
 extern void gba_audio_event(uint16_t,uint16_t,unsigned);
+extern void gba_ui_notify(uint16_t,uint16_t);
+extern void gba_ui_system(unsigned);
 dok_items *gba_items_context(void) {return &items;}
 volatile struct {uint32_t magic,error,events,kind,object,category,value,pickups;} g_items_diag;
 static void item_notice(void *p,dok_item_kind kind,uint16_t id,int16_t category,int16_t value)
 {
  (void)p;++g_items_diag.events;g_items_diag.kind=kind;g_items_diag.object=id;
  g_items_diag.category=(uint32_t)(int32_t)category;g_items_diag.value=(uint32_t)(int32_t)value;
- if(kind==DOK_ITEM_PICKUP){++g_items_diag.pickups;gba_audio_event(id,DOK_ROM_SLOT_SOUND,4);}
+ if(kind==DOK_ITEM_PICKUP){++g_items_diag.pickups;gba_audio_event(id,DOK_ROM_SLOT_SOUND,4);gba_ui_notify(id,0x58);}
 }
 int gba_items_stat(int16_t category,int16_t value) {return dok_items_stat(&items,category,value);}
 int gba_items_pickup(void) {return dok_items_pickup(&items);}
@@ -30,8 +32,8 @@ static void notice(void *p,dok_interaction_kind kind,uint16_t id,int32_t a,int32
     (void)p;g_interaction_diag.events++;g_interaction_diag.kind=kind;
     g_interaction_diag.object=id;g_interaction_diag.a=(uint32_t)a;g_interaction_diag.b=(uint32_t)b;
     if(kind==DOK_INTERACTION_MOVING)gba_audio_event(id,DOK_ROM_SLOT_SOUND,2);
-    else if(kind==DOK_INTERACTION_LOCKED)gba_audio_event(id,DOK_ROM_SLOT_SOUND,0);
-    else if(kind==DOK_INTERACTION_OPENED || kind==DOK_INTERACTION_CLOSED)gba_audio_event(id,DOK_ROM_SLOT_SOUND,3);
+    else if(kind==DOK_INTERACTION_LOCKED){gba_audio_event(id,DOK_ROM_SLOT_SOUND,0);gba_ui_system(a==1?2:a==2?3:a==4?4:a==8?5:6);}
+    else if(kind==DOK_INTERACTION_OPENED || kind==DOK_INTERACTION_CLOSED){gba_audio_event(id,DOK_ROM_SLOT_SOUND,3);gba_ui_system(kind==DOK_INTERACTION_OPENED?0:1);}
 }
 static void interaction_start(dok_runtime *w)
 {
@@ -142,6 +144,7 @@ void gba_motion_poll(uint16_t keys)
     }
     g_motion_diag.debt=steps.debt;
 }
+void gba_motion_hold(uint16_t keys){dok_input_sample(&input,keys);pending_pressed=0;}
 void gba_motion_cost(uint32_t cycles)
 {
     g_motion_diag.last_cycles=cycles;g_motion_diag.total_cycles+=cycles;

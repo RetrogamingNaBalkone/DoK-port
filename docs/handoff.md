@@ -1,5 +1,50 @@
 # Передача контекста между чатами
 
+## Текущая граница G17
+
+Обновлено 26 октября 2026 года: **G00–G17 готовы, следующий ID — G18**.
+См. [ui-localization.md](ui-localization.md), [tasks/G17.md](tasks/G17.md),
+`analysis/g17-review.json`. `src/ui.c` и `gba/ui_backend.c` реализуют original
+CP866 FONT8/FONT16, HUD, title/pause/help/statistics, очередь уведомлений
+предметов+58, дверей и завершённой смерти монстров+BE. Сцена240×144/120колонок,
+UI240wide, полоса сообщений240×16. HP/E — signed числа; W/L и Khex — в углах.
+Ключи/максимумы/очки/карта объяснены на экране показателей.
+
+Start=Use, Select=язык, **Start+Select=пауза** (прежний panic удалён).
+Up/Down выбирают пункт, A/Start выполняют; B/Select закрывают паузу/подэкран.
+Menu-closing held key блокируется до отпускания. Title Continue и возврат
+через главное меню **сохраняют существующий мир**. G18 должен добавить
+настоящий new game/reset и полный game flow; не считать их уже реализованными.
+Пауза сохраняет ticks/remainder/deadlines без catch-up; hardware Timer2/3
+и текущий PCM-голос продолжаются. Язык меняет только presentation view:
+mutable world33864bytes, карты и общий balance сохраняются.
+
+Frozen `build/g17/dok-diagnostic.gba`:32876132bytes,
+SHA `b63ae8087b6f4cff5f121bd919b982ecbf750a2d786c581ae85166c2f7b7aefb`.
+EWRAM248564/free13580; IWRAM20684/free3892 до8KiB stack reserve.
+Старый HUD из IWRAM удалён, новый UI исполняется из ROM.
+Main stack2360/margin5576, IRQ80/margin80. ROM32MiB remaining678300bytes.
+Host UI и Linux static/Thumb compile прошли; fresh Ghidra RU/EN SHA совпали,
+original x862048 glyph vectors/18 message-copy vectors прошли. Независимый
+ARM проверил кнопки, pause/fraction/input, исходные FONT8/FONT16 pixels,
+границы,4 страницы, real pickup+death+BE обоих языков. Root проверил PNG.
+Renderer/interactions/time/28AI/23PCM regressions прошли; audio underruns0.
+Команда `scripts/build-gba-ui.ps1 -CrossChecks -OriginalEvidence` (PowerShell);
+pipeline выполнен отдельными шагами, весь driver одним вызовом не повторялся.
+
+Legacy `Probe` явно пропускает title через UI mailbox; UIProbe использует
+`preserve_title=True`. Прямые renderer/time/interactions harnesses адаптированы.
+Renderer snapshot ждёт первый simulation step (startup parameter98:1→-1).
+Idle message band теперь пустая; локализация текста проверяется отдельным UI
+тестом. `DOK_PROBE_FAST_VIDEO=1` откладывает Python RGB conversion до PNG,
+не отключая ARM rasterization/raw callback. UI mailbox/diag ABI — в тематическом
+документе. `g_render_world`/object36/player60 и старые mailboxes сохранены.
+
+Renderer regression4735552…5222592cycles;30FPS остаются G20.
+Физическая GBA/оригинальный BIOS/целая DOS-сессия и Linux/MSVC/CMake execution
+не проверены. Слуховая оценка относится к принятой записи G16, не новому
+пользовательскому прослушиванию G17. Далее исторические передачи.
+
 ## Текущая граница G16
 
 Обновлено 26 октября 2026 года: **G00–G16 готовы, следующий ID — G17**.

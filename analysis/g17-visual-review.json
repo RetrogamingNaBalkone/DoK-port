@@ -1,0 +1,58 @@
+{
+  "task": "G17",
+  "status": "passed",
+  "rom_sha256": "b63ae8087b6f4cff5f121bd919b982ecbf750a2d786c581ae85166c2f7b7aefb",
+  "method": "Root visually inspected actual indexed GBA framebuffer PNGs via view_image",
+  "screens": {
+    "title_ru": {
+      "path": "build/g17/ui-check/title-ru.png",
+      "sha256": "35be84ba453e24cbf36502222ee677ce49ab50f1ae41efd4ea842137e14ef797",
+      "framebuffer_sha256": "a9d9e74321a147f1fa3aa64ad385a74f2ceec913271570ff8bcf6442c4c16c61"
+    },
+    "title_en": {
+      "path": "build/g17/ui-check/title-en.png",
+      "sha256": "227a30d4402a21020f511c901d6baed46a5d9dc5201c224bdcf91947dd9a4b07",
+      "framebuffer_sha256": "5169c51e6cc2afb0b5e0a20ef5eca030e50921215bc2e644fd5f0a6f092080c7"
+    },
+    "help_en": {
+      "path": "build/g17/ui-check/help-en.png",
+      "sha256": "2ff2579ec8cd77133b52185ec98c285db35cc001934d3233e54230d9c537cbcd",
+      "framebuffer_sha256": "e9bcf54656167ea3366174f5a336182bf0cff20791c986e71d09308537fdc196"
+    },
+    "statistics_en": {
+      "path": "build/g17/ui-check/statistics-en.png",
+      "sha256": "474170c1b0ea4cf783e4cf4aab4bccdaca25123fd3f5f5041fe0765fe8606cae",
+      "framebuffer_sha256": "5c18085dcf8deecb39019ea41e944bb87c8632a695a4ecf48f44b8a36314fc71"
+    },
+    "hud_ru": {
+      "path": "build/g17/ui-check/hud-ru.png",
+      "sha256": "8c05a0e854bf9c5c90e8a2e78db6a271042498229b46579227e689f0502ccb6d",
+      "framebuffer_sha256": "8e52ea455c9a1a80ba3b338cd13299974bf86cb87c1522ddf6aa4b508db27358"
+    },
+    "message_0": {
+      "path": "build/g17/ui-check/message-0.png",
+      "sha256": "41908697ca8736d34c1a10000aebb6ac7f41a071b9c0c88cf357c7977cde29ef",
+      "framebuffer_sha256": "6d7e6b2de207855bc7b44f9ff81b0bd3cad64aa31597fe4c351a8b53e7a8a73e"
+    },
+    "death_0": {
+      "path": "build/g17/ui-check/death-0.png",
+      "sha256": "cc5656d91e72b1b715f19ccd14e34cea8e60592fb039cb6b521f2f2e91dfe478",
+      "framebuffer_sha256": "36a48a5f161d1dc6c025dae59051c89aa4521ae9d12cbb6d884d105c3369a2e8"
+    },
+    "pickup_1": {
+      "path": "build/g17/ui-check/pickup-1.png",
+      "sha256": "6b6d7f18456d5271941b48dd55e47582fa5c3bcee7c60205caa370cb9741ae28",
+      "framebuffer_sha256": "232c87dbe1f895a5863fa820ed890ff237913245d964ff0208970d2605bb4f6d"
+    }
+  },
+  "findings": [
+    "Russian and English original fonts readable at 240x160",
+    "Menu focus visibly inverted and hint fully inside screen after fix",
+    "Numerical HP and energy, keys and lives visible over world corners",
+    "Original messages occupy two FONT8 rows below the 240x144 scene",
+    "Statistics key-bit legend visible; no separate bottom stats panel"
+  ],
+  "limitations": [
+    "Inspected PNGs on host display; physical GBA screen untested"
+  ]
+}

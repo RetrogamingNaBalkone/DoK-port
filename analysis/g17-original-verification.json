@@ -1,0 +1,83 @@
+{
+  "task": "G17",
+  "status": "passed",
+  "whole_DOS_session": false,
+  "intercepted": "virtual pixel callback only",
+  "languages": {
+    "ru": {
+      "sample": "originals/pkr/RUS/PKR.EXE",
+      "sha256": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+      "manifest_sha256": "99f1e39e03d1d7355a221ff90143253acd071913ecdb32107e6ae2994b9f4477",
+      "glyph_vectors": 1024,
+      "message_vectors": 9,
+      "exports": {
+        "1058.bin": "93aa05969077f8683ea9a41a53bbdec72fa3e78aa32ca5fc3bf2c1d4e1376484",
+        "10c0.bin": "e43eda5be67307b3094640950cf24a8601091e656f413264e30c776582ccf209",
+        "1190.bin": "41798541072753bac97187e163550003606dfba91ec2cc413bbb4096c165af24",
+        "automatic.c": "2132a5de37e5173fdeee0789250efef85427539bf465af33604350f4d809d8ea",
+        "evidence.asm": "778eca1e0af82a6afb0a2427e4f6b36fe5235b92fe34b13316c2a5906ee0137f"
+      },
+      "data_segment": "1190",
+      "native_text_offsets": [
+        "0x58c",
+        "0x59d",
+        "0x5ae",
+        "0x5c1",
+        "0x5d6",
+        "0x5ea",
+        "0x5fb"
+      ],
+      "native_text_cp866_hex": [
+        "20848285909c208e928a909b8b80919c",
+        "20848285909c2087808a909b8b80919c",
+        "208d9386858d208c85848d9b89208a8b9e97",
+        "208d9386858d2086858b85878d9b89208a8b9e97",
+        "208d9386858d20878e8b8e928e89208a8b9e97",
+        "2091858a9085928d809f20848285909c",
+        "208d858887828591928d9b89208a8b9e97"
+      ],
+      "font_source": {
+        "path": "originals/pkr/RUS/PKR.RES",
+        "sha256": "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816"
+      }
+    },
+    "en": {
+      "sample": "originals/pkr/ENG/PKE.EXE",
+      "sha256": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b",
+      "manifest_sha256": "3826b4a9d1d2fe1af5e4065b5053a299a9cc655507749dc3791fd3060d9f94e4",
+      "glyph_vectors": 1024,
+      "message_vectors": 9,
+      "exports": {
+        "1018.bin": "ce67227e513665eea94c7161d4e584766a2935f57202e84f58199504f00385b8",
+        "1050.bin": "4523e2555d62748da050533fa014b0cc3e21a5c4aa117f5530649a3b853085c3",
+        "10d0.bin": "8813e7d0510e391cc31f59d73789b7e103b4af4d75ee426819d555362ff6c0fb",
+        "automatic.c": "87919273b2b1daf18177a8876003d77079d0f518d8f187a6a906ddbfeb6b4d4b",
+        "evidence.asm": "6875d2b1845bee918ed08da34df58c4a8ffbf6f2dc2cebd6402b640d02c1019a"
+      },
+      "data_segment": "10d0",
+      "native_text_offsets": [
+        "0x59c",
+        "0x5a7",
+        "0x5b4",
+        "0x5ca",
+        "0x5de",
+        "0x5f4",
+        "0x601"
+      ],
+      "native_text_cp866_hex": [
+        "20444f4f52204f50454e",
+        "20444f4f5220434c4f534544",
+        "20434f4f504552204b4559204953204e4545444544",
+        "2049524f4e204b4559204953204e4545444544",
+        "20474f4c44454e204b4559204953204e4545444544",
+        "2053454352455420444f4f52",
+        "20554e4b4e4f574e204b4559"
+      ],
+      "font_source": {
+        "path": "originals/pkr/ENG/PKE.RES",
+        "sha256": "865da340621fa6f90548a84e9ae9bf0a85071befb32a40ca1d359e488f74d458"
+      }
+    }
+  },
+  "script_sha256": "35e01431fdbcfe305abeca30d41e964af4b159ded804a79f6e8c61081df6ef43"
+}

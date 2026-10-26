@@ -7,6 +7,7 @@ from pathlib import Path
 import struct
 from gba_rom import elf_info
 from verify_gba import Frontend, sha
+from verify_renderer_gba import start_gameplay
 
 NAMES = 'magic error ticks counter remainder step_now debt steps callbacks polls max_debt last_callback'.split()
 
@@ -26,19 +27,26 @@ def main():
     def diag():
         return dict(zip(NAMES, struct.unpack('<12I', frontend.read(symbols['g_time_diag'], 48))))
 
+    excluded_counter = 0
     def check(d):
         assert d['error'] == 0 and d['magic'] == 0x54494d36, d
-        assert d['ticks'] == d['counter']*1193182//31195136, d
-        assert d['remainder'] == d['counter']*1193182 % 31195136, d
+        active_counter=d['counter']-excluded_counter
+        assert d['ticks'] == active_counter*1193182//31195136, d
+        assert d['remainder'] == active_counter*1193182 % 31195136, d
         assert d['step_now'] == d['steps']*100 and d['debt'] == d['ticks']-d['step_now'], d
         assert d['callbacks'] == d['steps'] and d['last_callback'] == d['step_now'], d
         assert frontend.diag(symbols['g_diag'])['fault'] == 0
 
     def ready():
+        nonlocal excluded_counter
         for _ in range(1200):
             frontend.run(1)
             d = diag()
-            if d['magic'] == 0x54494d36 and d['polls'] >= 3:
+            active=start_gameplay(frontend,symbols) if d['magic']==0x54494d36 else False
+            if active and d['magic'] == 0x54494d36 and d['polls'] >= 3:
+                excluded_numerator=d['counter']*1193182-d['ticks']*31195136-d['remainder']
+                assert excluded_numerator%1193182==0
+                excluded_counter=excluded_numerator//1193182
                 check(d)
                 return d
         raise AssertionError(('time probe did not start', diag()))
@@ -65,6 +73,7 @@ def main():
                   ewram_static_bytes=metadata['ewram_static_bytes'],
                   start=start, after_600_vblanks=end, restart_after_poison=restart,
                   exact_rational_samples=True, hardware_low_word_rollover=True,
+                  title_pause_excluded_counter=excluded_counter,
                   physical_gba_tested=False, original_bios_tested=False)
     args.report.write_text(json.dumps(report, indent=2)+'\n', encoding='utf-8')
     frontend.core.retro_unload_game()

@@ -1,4 +1,4 @@
-param(
+﻿param(
     [string]$ZigExe = "$env:LOCALAPPDATA/Programs/Zig/0.13.0/zig.exe",
     [string]$PythonExe = 'C:/Source/wasdify/.venv/Scripts/python.exe',
     [string]$OutDir = 'build/gba',
@@ -68,7 +68,7 @@ try {
     }
     $taskLinkArgs = @()
     if ($RendererProbe) {
-        foreach ($taskSource in @('src/audio.c','src/sound.c','gba/audio_backend.c','src/ai.c','gba/ai_probe.c','src/combat.c','gba/combat_probe.c','src/items.c','src/movement.c','src/collision.c','src/interactions.c','gba/movement_probe.c','tests/movement_cases.c','tests/collision_cases.c','tests/interactions_cases.c')) {
+        foreach ($taskSource in @('src/ui.c','gba/ui_backend.c','src/audio.c','src/sound.c','gba/audio_backend.c','src/ai.c','gba/ai_probe.c','src/combat.c','gba/combat_probe.c','src/items.c','src/movement.c','src/collision.c','src/interactions.c','gba/movement_probe.c','tests/movement_cases.c','tests/collision_cases.c','tests/interactions_cases.c')) {
             $taskObject="$OutDir/motion-"+[IO.Path]::GetFileNameWithoutExtension($taskSource)+'.o'
             & $ZigExe @taskArgs $taskSource -o $taskObject
             if ($LASTEXITCODE -ne 0) { throw "Movement compile failed: $taskSource" }

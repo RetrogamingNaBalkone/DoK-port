@@ -65,6 +65,7 @@ class Frontend:
         self.buttons = set()
         self.pixel_format = 0
         self.rgb = b''
+        self.deferred_video = None
         self.video_frames = 0
         self.callback_errors = []
         self.width = self.height = 0
@@ -141,21 +142,29 @@ class Frontend:
         try:
             bpp = 4 if self.pixel_format == 1 else 2
             raw = b''.join(ct.string_at(data + y*pitch, width*bpp) for y in range(height))
-            rgb = bytearray()
-            if self.pixel_format == 1:
-                for (v,) in struct.iter_unpack('<I', raw):
-                    rgb.extend(((v >> 16) & 255, (v >> 8) & 255, v & 255))
+            if os.environ.get('DOK_PROBE_FAST_VIDEO')=='1':
+                # Console rasterization is unchanged. Defer only Python RGB
+                # conversion until an actual screenshot needs those bytes.
+                self.deferred_video=raw
             else:
-                green_bits = 6 if self.pixel_format == 2 else 5
-                for (v,) in struct.iter_unpack('<H', raw):
-                    rgb.extend((((v >> (5+green_bits)) & 31)*255//31,
-                                ((v >> 5) & ((1 << green_bits)-1))*255//((1 << green_bits)-1),
-                                (v & 31)*255//31))
-            self.rgb = bytes(rgb)
+                self.decode_video(raw)
             self.width, self.height = width, height
             self.video_frames += 1
         except Exception as error:
             self.callback_errors.append(str(error))
+
+    def decode_video(self,raw):
+        rgb=bytearray()
+        if self.pixel_format==1:
+            for (v,) in struct.iter_unpack('<I',raw):
+                rgb.extend(((v>>16)&255,(v>>8)&255,v&255))
+        else:
+            green_bits=6 if self.pixel_format==2 else 5
+            for (v,) in struct.iter_unpack('<H',raw):
+                rgb.extend((((v>>(5+green_bits))&31)*255//31,
+                            ((v>>5)&((1<<green_bits)-1))*255//((1<<green_bits)-1),
+                            (v&31)*255//31))
+        self.rgb=bytes(rgb)
 
     def load(self, rom):
         self.rom_buffer = ct.create_string_buffer(rom.read_bytes())
@@ -183,6 +192,8 @@ class Frontend:
 
     def screenshot(self, path):
         assert (self.width, self.height) == (240, 160)
+        if self.deferred_video is not None:
+            self.decode_video(self.deferred_video)
         png(path, self.width, self.height, self.rgb)
 
     def indicator(self, index):

@@ -1,0 +1,21 @@
+{
+  "task": "G17",
+  "status": "passed",
+  "stdout": "G17 UI: keypad/chord/held-edge, localization, queue, 240-byte clamp, wraparound deadlines, all states framebuffer guards passed",
+  "linux_execution": false,
+  "msvc_execution": false,
+  "cmake_execution": false,
+  "cross_compiled": true,
+  "sources": {
+    "include/dok/ui.h": "740389fcbc37000129ba57515d73b0386ce92ae5984e8d16f736f3a1f7817190",
+    "src/ui.c": "a87a1f993862798780f2c7076bcec489e32199f43304c40bf5a9d6f70272b862",
+    "src/ui_text.inc": "fc1ef715b4c89bade71d474048488eaa42e4e7aaa7bd4d2059c870281aa02a3f",
+    "src/ui_native_text.inc": "f557a4965b8716972d8c5870de5743df260beb0328caf73c6efe06ec93e80ceb",
+    "tests/test_ui.c": "dc3a48132f7f1f2c02ca600e1c6456deee51fe8eb13e01b3acf54306394a692f"
+  },
+  "artifacts": {
+    "build/native/dok-ui-tests.exe": "54ba70a3373e1cccade0ed6782ae0826fe84552c0e2224d8bc25aa06ec78c2f9",
+    "build/native/dok-ui-tests-linux": "3c28067ec711d3675949a3b11a43cd50b2aa65868ccb8c8aea632483a098f458",
+    "build/native/ui-arm7tdmi.o": "4b101d16cbe87e5637164edd6e0a92d6b82a41e77eac91ddebc46380e7d692ce"
+  }
+}

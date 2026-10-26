@@ -1,15 +1,25 @@
 # Сборка первых модулей и VS Code
 
-Актуальный общий GBA-ROM после G16:
+Актуальный общий GBA-ROM после G17:
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-gba-audio.ps1 -CrossChecks -OriginalEvidence
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-gba-ui.ps1 -CrossChecks -OriginalEvidence
 ```
 
-Артефакты — `build/g16/`, методика/границы — [gba-audio.md](gba-audio.md),
-проверка и измерения — `analysis/g16-review.json`. Части pipeline выполнены отдельно,
+Артефакты — `build/g17/`, методика/границы — [ui-localization.md](ui-localization.md),
+проверка и измерения — `analysis/g17-review.json`. Части pipeline выполнены отдельно,
 aggregate проверен; полный вызов воспроизводит тот же порядок. Старые описания первых
 статичных проб далее не обозначают текущее отсутствие движения/поверхностей/спрайтов.
+
+Driver G17 собирает отдельные host UI tests, Linux static/Thumb compile checks,
+общий ROM и запускает original x86/ARM UI, renderer/interactions/time/28AI/23PCM
+регрессии. `-RegressionOnly -CrossChecks` использует уже готовые build artifacts.
+`DOK_PROBE_FAST_VIDEO=1` откладывает Python RGB conversion до PNG; консоль
+продолжает настоящий rasterization. Actual UI PNG и их визуальное заключение
+привязаны к ROM/SHA. Полный driver одним вызовом не повторялся.
+Титульное меню требует A/Start; Start+Select ставит паузу, Start сохраняет Use.
+G17 Continue сохраняет мир, полноценный new game/переходы/финал — G18.
+ROM32876132bytes, EWRAM248564, IWRAM20684;30FPS остаются G20.
 
 Сейчас собираются читалка RES, декодеры изображений/анимаций/звука,
 загрузчик LEVEL, подготовка мира, компактный runtime, адаптер native-состояния и тесты.

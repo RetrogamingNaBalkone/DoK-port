@@ -4,11 +4,12 @@ extern uint32_t gba_time_ticks(void);
 dok_ai g_ai;
 extern dok_combat g_combat;
 extern void gba_audio_event(uint16_t,uint16_t,unsigned);
+extern void gba_ui_notify(uint16_t,uint16_t);
 static void audio_notice(void *p,dok_ai_kind k,uint16_t id){
  (void)p;if(k==DOK_AI_WAKE)gba_audio_event(id,DOK_ROM_SLOT_SOUND,1);
  else if(k==DOK_AI_CONTACT || k==DOK_AI_RANGED)gba_audio_event(id,0xf0,1);
  else if(k==DOK_AI_DYING)gba_audio_event(id,0xf4,4);
- else if(k==DOK_AI_DEAD)gba_audio_event(id,0xf4,3);
+ else if(k==DOK_AI_DEAD){gba_audio_event(id,0xf4,3);gba_ui_notify(id,0xbe);}
 }
 /* Commit request last. op1 consider(object),2 wake(object),3 poll tick/count/stride,
  * 4 remove(object),5 restart. freeze gates only live polling/consideration. */

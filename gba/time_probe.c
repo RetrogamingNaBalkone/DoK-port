@@ -9,6 +9,15 @@ volatile struct {
     uint32_t steps, callbacks, polls, max_debt, last_callback;
 } g_time_diag;
 static dok_clock clock_state;
+static unsigned paused;
+/* Hardware counter and rational sub-tick remainder stay valid across menus.
+ * Timer2/3 continue for profiling; simulation observes no paused debt. */
+void gba_time_pause(unsigned value){
+    if(paused==value)return;
+    uint32_t ticks=clock_state.ticks,remainder=clock_state.remainder;
+    (void)gba_clock_sample(&clock_state);
+    clock_state.ticks=ticks;clock_state.remainder=remainder;paused=value;
+}
 static dok_steps steps;
 static dok_scheduler scheduler;
 static dok_event_owner owners[1];
@@ -32,7 +41,9 @@ unsigned gba_time_start(void)
 }
 void gba_time_poll(void)
 {
+    uint32_t saved_ticks=clock_state.ticks,saved_remainder=clock_state.remainder;
     uint32_t now=gba_clock_sample(&clock_state);
+    if(paused){clock_state.ticks=now=saved_ticks;clock_state.remainder=saved_remainder;}
     dok_steps_sample(&steps,now);
     if (steps.debt>g_time_diag.max_debt) g_time_diag.max_debt=steps.debt;
     /* Bound work without discarding debt; no dependency on displayed frames. */

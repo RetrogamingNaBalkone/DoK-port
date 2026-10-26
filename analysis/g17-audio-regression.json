@@ -1,0 +1,777 @@
+{
+  "task": "G16",
+  "status": "passed",
+  "rom_sha256": "b63ae8087b6f4cff5f121bd919b982ecbf750a2d786c581ae85166c2f7b7aefb",
+  "script_sha256": "eb6bfe8c5e156d7d5e3172ec3937672a9b2fc50c67ffad00322c2d1a3089e862",
+  "core_sample_rate": 65536.0,
+  "core_fps": 59.727500915527344,
+  "once": {
+    "path": "build/g17/audio-check/short-once.wav",
+    "sha256": "574d6185b30113fc07a8c481df446e267ec4b211290388ea696f5f212864db39",
+    "frames": 41696,
+    "seconds": 0.63623046875,
+    "peak": 24000,
+    "rms": 3679.9797723759207,
+    "channel_difference_samples": 0
+  },
+  "loop": {
+    "path": "build/g17/audio-check/short-loop.wav",
+    "sha256": "bb9dd6e607f8e877715841be8dbb9731fc2ff5ee04e2ab184439926c44621eee",
+    "frames": 120696,
+    "seconds": 1.8416748046875,
+    "peak": 24000,
+    "rms": 4647.38724485264,
+    "channel_difference_samples": 0
+  },
+  "final": {
+    "magic": 1096107057,
+    "active": 0,
+    "resource": 62,
+    "rate": 11025,
+    "period": 1522,
+    "position": 19008,
+    "loops": 0,
+    "starts": 33,
+    "rejected": 4,
+    "stops": 7,
+    "completed": 26,
+    "irqs": 82052,
+    "underruns": 0,
+    "max_gap": 412,
+    "refill_cycles": 1280,
+    "ram_bytes": 128,
+    "level_resets": 3,
+    "requests": 1,
+    "identity": 2147483710
+  },
+  "source": {
+    "path": "originals/pkr/RUS/PKR.RES",
+    "sha256": "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816"
+  },
+  "all_sounds": [
+    {
+      "id": 126,
+      "name_hex": "a7818e9f905f80",
+      "nominal_rate": 22050,
+      "source_samples": 7888,
+      "expected_hardware_seconds": 0.35779285430908203,
+      "observed_seconds": 0.3515968302390605,
+      "renderer_frames": 1,
+      "pcm": {
+        "path": "build/g17/audio-check/sound-126.wav",
+        "sha256": "3f17b8d76210c140758488bae8dbe2dcb0f87ba7df52b171be8c329a9e5e4c46",
+        "frames": 44988,
+        "seconds": 0.68646240234375,
+        "peak": 24000,
+        "rms": 3541.6602659370296,
+        "channel_difference_samples": 0
+      },
+      "correlation": {
+        "coefficient": 0.999802709332295,
+        "delay_output_frames": 20950,
+        "delay_seconds": 0.319671630859375,
+        "compared_source_samples": 134,
+        "clock_period": 761,
+        "whole_recording_coefficient": 0.9991995996030341,
+        "whole_source_samples": 7888
+      }
+    },
+    {
+      "id": 141,
+      "name_hex": "a7908087909b825f8f938b88",
+      "nominal_rate": 22050,
+      "source_samples": 8136,
+      "expected_hardware_seconds": 0.36904191970825195,
+      "observed_seconds": 0.36833953644092055,
+      "renderer_frames": 1,
+      "pcm": {
+        "path": "build/g17/audio-check/sound-141.wav",
+        "sha256": "9f71f26ce456d8313b1b37940ffba4024c4a4079ba9628221d5120c1192d74b9",
+        "frames": 46084,
+        "seconds": 0.70318603515625,
+        "peak": 24384,
+        "rms": 3145.9032583383287,
+        "channel_difference_samples": 0
+      },
+      "correlation": {
+        "coefficient": 0.9992617713365148,
+        "delay_output_frames": 20950,
+        "delay_seconds": 0.319671630859375,
+        "compared_source_samples": 134,
+        "clock_period": 761,
+        "whole_recording_coefficient": 0.9960433774460372,
+        "whole_source_samples": 8136
+      }
+    },
+    {
+      "id": 138,
+      "name_hex": "a78c9b989c5f80",
+      "nominal_rate": 22050,
+      "source_samples": 9800,
+      "expected_hardware_seconds": 0.4445195198059082,
+      "observed_seconds": 0.43531036124836064,
+      "renderer_frames": 2,
+      "pcm": {
+        "path": "build/g17/audio-check/sound-138.wav",
+        "sha256": "e235659cc1464b5fca5794c8f5ca4e6d5a245905f5096b2d1bb57d31fe5e1f92",
+        "frames": 50476,
+        "seconds": 0.77020263671875,
+        "peak": 24000,
+        "rms": 4398.101802366889,
+        "channel_difference_samples": 0
+      },
+      "correlation": {
+        "coefficient": 0.9911420047719943,
+        "delay_output_frames": 20949,
+        "delay_seconds": 0.3196563720703125,
+        "compared_source_samples": 134,
+        "clock_period": 761,
+        "whole_recording_coefficient": 0.9855839448208644,
+        "whole_source_samples": 9800
+      }
+    },
+    {
+      "id": 143,
+      "name_hex": "a79093869c855f829b919290858b",
+      "nominal_rate": 22050,
+      "source_samples": 10567,
+      "expected_hardware_seconds": 0.47930997610092163,
+      "observed_seconds": 0.4687957736520807,
+      "renderer_frames": 2,
+      "pcm": {
+        "path": "build/g17/audio-check/sound-143.wav",
+        "sha256": "5f8f96882cc8d280330df635fff6b172c956d41ba17f7de300bc7d2501530a6e",
+        "frames": 52668,
+        "seconds": 0.80364990234375,
+        "peak": 24576,
+        "rms": 3801.247659335132,
+        "channel_difference_samples": 0
+      },
+      "correlation": {
+        "coefficient": 0.9991719858784073,
+        "delay_output_frames": 20951,
+        "delay_seconds": 0.3196868896484375,
+        "compared_source_samples": 134,
+        "clock_period": 761,
+        "whole_recording_coefficient": 0.9970146071040354,
+        "whole_source_samples": 10567
+      }
+    },
+    {
+      "id": 142,
+      "name_hex": "a79093869c85",
+      "nominal_rate": 22050,
+      "source_samples": 10567,
+      "expected_hardware_seconds": 0.47930997610092163,
+      "observed_seconds": 0.4687957736520807,
+      "renderer_frames": 2,
+      "pcm": {
+        "path": "build/g17/audio-check/sound-142.wav",
+        "sha256": "309a65c8029c54d8985e47360b156acb3acf250cbc1d433231ec690e7237fbcc",
+        "frames": 52668,
+        "seconds": 0.80364990234375,
+        "peak": 24576,
+        "rms": 3802.2863446015126,
+        "channel_difference_samples": 0
+      },
+      "correlation": {
+        "coefficient": 0.9950777828845677,
+        "delay_output_frames": 20949,
+        "delay_seconds": 0.3196563720703125,
+        "compared_source_samples": 134,
+        "clock_period": 761,
+        "whole_recording_coefficient": 0.9978139627735935,
+        "whole_source_samples": 10567
+      }
+    },
+    {
+      "id": 132,
+      "name_hex": "a782879f929c5f8c9395",
+      "nominal_rate": 22050,
+      "source_samples": 12912,
+      "expected_hardware_seconds": 0.5856771469116211,
+      "observed_seconds": 0.5859947170651009,
+      "renderer_frames": 2,
+      "pcm": {
+        "path": "build/g17/audio-check/sound-132.wav",
+        "sha256": "c58e915dc1517fa9b31d44acc258b0f5b54c20fbda4738d4a7ba4850451400ae",
+        "frames": 60352,
+        "seconds": 0.9208984375,
+        "peak": 24384,
+        "rms": 4050.840468936293,
+        "channel_difference_samples": 0
+      },
+      "correlation": {
+        "coefficient": 0.9999113037307791,
+        "delay_output_frames": 20955,
+        "delay_seconds": 0.3197479248046875,
+        "compared_source_samples": 134,
+        "clock_period": 761,
+        "whole_recording_coefficient": 0.9969936604654588,
+        "whole_source_samples": 12912
+      }
+    },
+    {
+      "id": 139,
+      "name_hex": "a78c9b989c5f88",
+      "nominal_rate": 22050,
+      "source_samples": 15706,
+      "expected_hardware_seconds": 0.712410569190979,
+      "observed_seconds": 0.703193660478121,
+      "renderer_frames": 2,
+      "pcm": {
+        "path": "build/g17/audio-check/sound-139.wav",
+        "sha256": "62e87e4d18dedcfe61da1d53bf1d54b8f2cf0d92b78868f08c2a9882d1c58f44",
+        "frames": 68032,
+        "seconds": 1.0380859375,
+        "peak": 24000,
+        "rms": 4357.603850184848,
+        "channel_difference_samples": 0
+      },
+      "correlation": {
+        "coefficient": 0.9981220838191047,
+        "delay_output_frames": 20958,
+        "delay_seconds": 0.319793701171875,
+        "compared_source_samples": 134,
+        "clock_period": 761,
+        "whole_recording_coefficient": 0.9973404226794437,
+        "whole_source_samples": 15706
+      }
+    },
+    {
+      "id": 120,
+      "name_hex": "97858b875f93818892",
+      "nominal_rate": 22050,
+      "source_samples": 16330,
+      "expected_hardware_seconds": 0.7407146692276001,
+      "observed_seconds": 0.7366790728818411,
+      "renderer_frames": 2,
+      "pcm": {
+        "path": "build/g17/audio-check/sound-120.wav",
+        "sha256": "de0f2a4ecbfb04404d7a5dbc629dbb38a9e4d9671731beda0dd75516f147bb17",
+        "frames": 70224,
+        "seconds": 1.071533203125,
+        "peak": 23808,
+        "rms": 6748.470827926824,
+        "channel_difference_samples": 0
+      },
+      "correlation": {
+        "coefficient": 0.9979933536233802,
+        "delay_output_frames": 20950,
+        "delay_seconds": 0.319671630859375,
+        "compared_source_samples": 134,
+        "clock_period": 761,
+        "whole_recording_coefficient": 0.9980504727144976,
+        "whole_source_samples": 8165
+      }
+    },
+    {
+      "id": 137,
+      "name_hex": "a78b808785905f829b919290858b",
+      "nominal_rate": 22050,
+      "source_samples": 17318,
+      "expected_hardware_seconds": 0.7855294942855835,
+      "observed_seconds": 0.7869071914874212,
+      "renderer_frames": 3,
+      "pcm": {
+        "path": "build/g17/audio-check/sound-137.wav",
+        "sha256": "bb885daa2b96475b28193c26632878d7770e53af34516f598e74ce2f36c826bc",
+        "frames": 73516,
+        "seconds": 1.12176513671875,
+        "peak": 24384,
+        "rms": 7249.231525628872,
+        "channel_difference_samples": 0
+      },
+      "correlation": {
+        "coefficient": 0.9990116396659696,
+        "delay_output_frames": 20954,
+        "delay_seconds": 0.319732666015625,
+        "compared_source_samples": 134,
+        "clock_period": 761,
+        "whole_recording_coefficient": 0.9990175199940361,
+        "whole_source_samples": 8659
+      }
+    },
+    {
+      "id": 127,
+      "name_hex": "a7818e9f905f88",
+      "nominal_rate": 22050,
+      "source_samples": 18075,
+      "expected_hardware_seconds": 0.8198663592338562,
+      "observed_seconds": 0.8203926038911412,
+      "renderer_frames": 3,
+      "pcm": {
+        "path": "build/g17/audio-check/sound-127.wav",
+        "sha256": "b61be3ea85f6e3f2f9f91ab1f318f80d825587e1345ec595d7cd11f2b250afc2",
+        "frames": 75712,
+        "seconds": 1.1552734375,
+        "peak": 24384,
+        "rms": 5314.004853920387,
+        "channel_difference_samples": 0
+      },
+      "correlation": {
+        "coefficient": 0.9990053160126914,
+        "delay_output_frames": 20948,
+        "delay_seconds": 0.31964111328125,
+        "compared_source_samples": 134,
+        "clock_period": 761,
+        "whole_recording_coefficient": 0.9992254645531835,
+        "whole_source_samples": 9038
+      }
+    },
+    {
+      "id": 123,
+      "name_hex": "a7818081805f80",
+      "nominal_rate": 22050,
+      "source_samples": 21400,
+      "expected_hardware_seconds": 0.9706854820251465,
+      "observed_seconds": 0.9710769597078814,
+      "renderer_frames": 3,
+      "pcm": {
+        "path": "build/g17/audio-check/sound-123.wav",
+        "sha256": "e973a5a6fa60954556a6c77157973d032820562bdb404260830d564a76bafa1d",
+        "frames": 85584,
+        "seconds": 1.305908203125,
+        "peak": 24192,
+        "rms": 4405.724224296118,
+        "channel_difference_samples": 0
+      },
+      "correlation": {
+        "coefficient": 0.9842934066410476,
+        "delay_output_frames": 20953,
+        "delay_seconds": 0.3197174072265625,
+        "compared_source_samples": 134,
+        "clock_period": 761,
+        "whole_recording_coefficient": 0.991883474814193,
+        "whole_source_samples": 10700
+      }
+    },
+    {
+      "id": 125,
+      "name_hex": "a7818081805f93",
+      "nominal_rate": 22050,
+      "source_samples": 21444,
+      "expected_hardware_seconds": 0.9726812839508057,
+      "observed_seconds": 0.9710769597078814,
+      "renderer_frames": 3,
+      "pcm": {
+        "path": "build/g17/audio-check/sound-125.wav",
+        "sha256": "d04a80a0aa3eec42a77ffbd9600f736551a5503a129e507e857352739cab84bf",
+        "frames": 85584,
+        "seconds": 1.305908203125,
+        "peak": 24384,
+        "rms": 4603.358337106651,
+        "channel_difference_samples": 0
+      },
+      "correlation": {
+        "coefficient": 0.9825900885046797,
+        "delay_output_frames": 20954,
+        "delay_seconds": 0.319732666015625,
+        "compared_source_samples": 134,
+        "clock_period": 761,
+        "whole_recording_coefficient": 0.9918456078368406,
+        "whole_source_samples": 10722
+      }
+    },
+    {
+      "id": 140,
+      "name_hex": "a78c9b989c5f93",
+      "nominal_rate": 22050,
+      "source_samples": 21900,
+      "expected_hardware_seconds": 0.9933650493621826,
+      "observed_seconds": 0.9878196659097415,
+      "renderer_frames": 3,
+      "pcm": {
+        "path": "build/g17/audio-check/sound-140.wav",
+        "sha256": "6a925dc213ee4a356382faa9f2bef0078ee1f46e22eb7085c48c8b828719421a",
+        "frames": 86684,
+        "seconds": 1.32269287109375,
+        "peak": 24192,
+        "rms": 4818.087046867834,
+        "channel_difference_samples": 0
+      },
+      "correlation": {
+        "coefficient": 0.9945667812309353,
+        "delay_output_frames": 20955,
+        "delay_seconds": 0.3197479248046875,
+        "compared_source_samples": 134,
+        "clock_period": 761,
+        "whole_recording_coefficient": 0.9911328321076972,
+        "whole_source_samples": 10950
+      }
+    },
+    {
+      "id": 136,
+      "name_hex": "a7848285909c8a",
+      "nominal_rate": 22050,
+      "source_samples": 23800,
+      "expected_hardware_seconds": 1.07954740524292,
+      "observed_seconds": 1.0715331969190416,
+      "renderer_frames": 3,
+      "pcm": {
+        "path": "build/g17/audio-check/sound-136.wav",
+        "sha256": "11abc4c8c13a7764e53a47dbd2f560a42e85ef2d1aa5f0b76cb616c5223bd550",
+        "frames": 92172,
+        "seconds": 1.40643310546875,
+        "peak": 24384,
+        "rms": 3422.0206064715244,
+        "channel_difference_samples": 0
+      },
+      "correlation": {
+        "coefficient": 0.9983908422243214,
+        "delay_output_frames": 20952,
+        "delay_seconds": 0.3197021484375,
+        "compared_source_samples": 134,
+        "clock_period": 761,
+        "whole_recording_coefficient": 0.9969562424603092,
+        "whole_source_samples": 11900
+      }
+    },
+    {
+      "id": 128,
+      "name_hex": "a7818e9f905f93",
+      "nominal_rate": 22050,
+      "source_samples": 26800,
+      "expected_hardware_seconds": 1.2156248092651367,
+      "observed_seconds": 1.2054748465339218,
+      "renderer_frames": 4,
+      "pcm": {
+        "path": "build/g17/audio-check/sound-128.wav",
+        "sha256": "d0a94b683f5286bb6082d362bea05b3a9631a266164ed4aba79a454bd392c811",
+        "frames": 100948,
+        "seconds": 1.54034423828125,
+        "peak": 24576,
+        "rms": 7676.944639295584,
+        "channel_difference_samples": 0
+      },
+      "correlation": {
+        "coefficient": 0.9991993166672636,
+        "delay_output_frames": 20953,
+        "delay_seconds": 0.3197174072265625,
+        "compared_source_samples": 134,
+        "clock_period": 761,
+        "whole_recording_coefficient": 0.9996431918061311,
+        "whole_source_samples": 8934
+      }
+    },
+    {
+      "id": 129,
+      "name_hex": "a782879f929c5f8688878d9c",
+      "nominal_rate": 22050,
+      "source_samples": 28800,
+      "expected_hardware_seconds": 1.3063430786132812,
+      "observed_seconds": 1.305931083745082,
+      "renderer_frames": 4,
+      "pcm": {
+        "path": "build/g17/audio-check/sound-129.wav",
+        "sha256": "8012dead8142003b2df92e3ea3a5e2f3ea70182b9e98c070250a27bd886c8c39",
+        "frames": 107532,
+        "seconds": 1.64080810546875,
+        "peak": 24384,
+        "rms": 5481.077937768525,
+        "channel_difference_samples": 0
+      },
+      "correlation": {
+        "coefficient": 0.999008957363323,
+        "delay_output_frames": 20953,
+        "delay_seconds": 0.3197174072265625,
+        "compared_source_samples": 134,
+        "clock_period": 761,
+        "whole_recording_coefficient": 0.9979763294892326,
+        "whole_source_samples": 9600
+      }
+    },
+    {
+      "id": 130,
+      "name_hex": "a782879f929c5f8a80909293",
+      "nominal_rate": 22050,
+      "source_samples": 30968,
+      "expected_hardware_seconds": 1.40468168258667,
+      "observed_seconds": 1.406387320956242,
+      "renderer_frames": 4,
+      "pcm": {
+        "path": "build/g17/audio-check/sound-130.wav",
+        "sha256": "09e5f3c34ff488c081b9283cb1928bade613741cd723e6236eacb5611567e47b",
+        "frames": 114116,
+        "seconds": 1.74127197265625,
+        "peak": 24384,
+        "rms": 5376.249619898946,
+        "channel_difference_samples": 0
+      },
+      "correlation": {
+        "coefficient": 0.9989526280894041,
+        "delay_output_frames": 20952,
+        "delay_seconds": 0.3197021484375,
+        "compared_source_samples": 134,
+        "clock_period": 761,
+        "whole_recording_coefficient": 0.9990439518948387,
+        "whole_source_samples": 10323
+      }
+    },
+    {
+      "id": 124,
+      "name_hex": "a7818081805f88",
+      "nominal_rate": 22050,
+      "source_samples": 32420,
+      "expected_hardware_seconds": 1.4705431461334229,
+      "observed_seconds": 1.4733581457636822,
+      "renderer_frames": 4,
+      "pcm": {
+        "path": "build/g17/audio-check/sound-124.wav",
+        "sha256": "a5de85e2295fad7d071882c7b698f4f317c692916d5c5440a7774b93e71c0c13",
+        "frames": 118504,
+        "seconds": 1.8082275390625,
+        "peak": 24384,
+        "rms": 6551.66553917428,
+        "channel_difference_samples": 0
+      },
+      "correlation": {
+        "coefficient": 0.9903129184468764,
+        "delay_output_frames": 20954,
+        "delay_seconds": 0.319732666015625,
+        "compared_source_samples": 134,
+        "clock_period": 761,
+        "whole_recording_coefficient": 0.9927120398980868,
+        "whole_source_samples": 8105
+      }
+    },
+    {
+      "id": 133,
+      "name_hex": "a782879f929c5f8f938b9e",
+      "nominal_rate": 22050,
+      "source_samples": 32670,
+      "expected_hardware_seconds": 1.481882929801941,
+      "observed_seconds": 1.4733581457636822,
+      "renderer_frames": 4,
+      "pcm": {
+        "path": "build/g17/audio-check/sound-133.wav",
+        "sha256": "da9aa5912fce7658c1f43c790f099d9fb54edda2ef22f389a9184a19e8f3f0fa",
+        "frames": 118504,
+        "seconds": 1.8082275390625,
+        "peak": 24576,
+        "rms": 3464.402531075152,
+        "channel_difference_samples": 0
+      },
+      "correlation": {
+        "coefficient": 0.9815874850558345,
+        "delay_output_frames": 20952,
+        "delay_seconds": 0.3197021484375,
+        "compared_source_samples": 134,
+        "clock_period": 761,
+        "whole_recording_coefficient": 0.9906309983164485,
+        "whole_source_samples": 8168
+      }
+    },
+    {
+      "id": 134,
+      "name_hex": "a782879f929c5f9093869c85",
+      "nominal_rate": 22050,
+      "source_samples": 33954,
+      "expected_hardware_seconds": 1.5401240587234497,
+      "observed_seconds": 1.5403289705711223,
+      "renderer_frames": 5,
+      "pcm": {
+        "path": "build/g17/audio-check/sound-134.wav",
+        "sha256": "a9de050c25382379b69134a4ef3123a8a81e015e42504353eb22df2861dd4207",
+        "frames": 122892,
+        "seconds": 1.87518310546875,
+        "peak": 24576,
+        "rms": 3522.856885411928,
+        "channel_difference_samples": 0
+      },
+      "correlation": {
+        "coefficient": 0.9890720542573318,
+        "delay_output_frames": 20950,
+        "delay_seconds": 0.319671630859375,
+        "compared_source_samples": 134,
+        "clock_period": 761,
+        "whole_recording_coefficient": 0.9932517167397522,
+        "whole_source_samples": 8489
+      }
+    },
+    {
+      "id": 131,
+      "name_hex": "a782879f929c5f8a8b9e97",
+      "nominal_rate": 22050,
+      "source_samples": 39448,
+      "expected_hardware_seconds": 1.7893271446228027,
+      "observed_seconds": 1.7914695635990228,
+      "renderer_frames": 5,
+      "pcm": {
+        "path": "build/g17/audio-check/sound-131.wav",
+        "sha256": "ca7ecbecda72cdfc0257ba36043c195290c4b915a35d0b4e8cfa5a6981c9b97e",
+        "frames": 139348,
+        "seconds": 2.12628173828125,
+        "peak": 24576,
+        "rms": 4448.475332915027,
+        "channel_difference_samples": 0
+      },
+      "correlation": {
+        "coefficient": 0.997661064009714,
+        "delay_output_frames": 20955,
+        "delay_seconds": 0.3197479248046875,
+        "compared_source_samples": 134,
+        "clock_period": 761,
+        "whole_recording_coefficient": 0.9990161273739635,
+        "whole_source_samples": 9862
+      }
+    },
+    {
+      "id": 135,
+      "name_hex": "a7848285909c84",
+      "nominal_rate": 22050,
+      "source_samples": 46262,
+      "expected_hardware_seconds": 2.098404288291931,
+      "observed_seconds": 2.092838275232503,
+      "renderer_frames": 6,
+      "pcm": {
+        "path": "build/g17/audio-check/sound-135.wav",
+        "sha256": "8885402a64b7a9e0dff37ced8f72c82f511ec6402c8a7f6b43f4a459c42bd7ea",
+        "frames": 159100,
+        "seconds": 2.42767333984375,
+        "peak": 24384,
+        "rms": 3039.563081639509,
+        "channel_difference_samples": 0
+      },
+      "correlation": {
+        "coefficient": 0.9862394920518837,
+        "delay_output_frames": 20955,
+        "delay_seconds": 0.3197479248046875,
+        "compared_source_samples": 134,
+        "clock_period": 761,
+        "whole_recording_coefficient": 0.9918028792352132,
+        "whole_source_samples": 9253
+      }
+    },
+    {
+      "id": 62,
+      "name_hex": "8780919280828a805f8782938a",
+      "nominal_rate": 11025,
+      "source_samples": 474361,
+      "expected_hardware_seconds": 43.03320896625519,
+      "observed_seconds": 43.02875493878027,
+      "renderer_frames": 123,
+      "pcm": {
+        "path": "build/g17/audio-check/sound-062.wav",
+        "sha256": "0cf0a0cb54de44d3aec53a5f5a5ea6b7e6850812aee81bb3a51dd92e09095ac1",
+        "frames": 2841880,
+        "seconds": 43.3636474609375,
+        "peak": 24576,
+        "rms": 12737.125616819609,
+        "channel_difference_samples": 0
+      },
+      "correlation": {
+        "coefficient": 1.0,
+        "delay_output_frames": 20865,
+        "delay_seconds": 0.3183746337890625,
+        "compared_source_samples": 137,
+        "clock_period": 1522,
+        "whole_recording_coefficient": 0.9999116939081072,
+        "whole_source_samples": 8041
+      }
+    }
+  ],
+  "identity": {
+    "same_pcm_distinct_sound_objects": true,
+    "other_owner_query_false": true,
+    "other_owner_stop_preserved_current": true,
+    "other_owner_start_rejected": true,
+    "correct_owner_stop": true
+  },
+  "projectile_identity": {
+    "actual_projectile_impact": true,
+    "prepared_other_effect_completion": true,
+    "same_pcm_distinct_clone_identities": true,
+    "removal_of_other_clone_preserved_voice": true,
+    "playing_slot": 1,
+    "removed_slot": 0
+  },
+  "integrated_cost": {
+    "silent": {
+      "minimum": 5477440,
+      "maximum": 5478144,
+      "mean": 5477840.0,
+      "values": [
+        5478080,
+        5478080,
+        5477440,
+        5478080,
+        5477504,
+        5478144,
+        5477504,
+        5478144,
+        5478080,
+        5477504,
+        5478080,
+        5477440
+      ],
+      "framebuffer_sha256": "d3f17c4d1dd0a52f1b9fc9ec25fe3320c3262df2cba007cdebd05e3e7dbafc7f"
+    },
+    "active22050": {
+      "minimum": 6271424,
+      "maximum": 6273664,
+      "mean": 6271989.333333333,
+      "values": [
+        6271552,
+        6272128,
+        6272192,
+        6271488,
+        6272128,
+        6271424,
+        6272128,
+        6272000,
+        6271488,
+        6273664,
+        6272192,
+        6271488
+      ],
+      "framebuffer_sha256": "d3f17c4d1dd0a52f1b9fc9ec25fe3320c3262df2cba007cdebd05e3e7dbafc7f"
+    },
+    "active11025": {
+      "minimum": 5846656,
+      "maximum": 5848960,
+      "mean": 5847173.333333333,
+      "values": [
+        5847360,
+        5846656,
+        5846784,
+        5846784,
+        5848960,
+        5846784,
+        5846784,
+        5846784,
+        5848960,
+        5846720,
+        5846720,
+        5846784
+      ],
+      "framebuffer_sha256": "d3f17c4d1dd0a52f1b9fc9ec25fe3320c3262df2cba007cdebd05e3e7dbafc7f"
+    },
+    "overhead22050": 0.1449749049503697,
+    "overhead11025": 0.06742316922972069,
+    "timer_quantum_cycles": 64,
+    "scope": "Whole renderer elapsed cycles including audio IRQs and DMA"
+  },
+  "rejected_loop_preserved_once": true,
+  "language_preserved_active_voice": true,
+  "level_change_stopped_voice": true,
+  "irq_stack": {
+    "low": 50364160,
+    "top": 50364320,
+    "untouched_margin_bytes": 80,
+    "high_water_bytes": 80,
+    "includes_bios_irq_saves": true
+  },
+  "stack": {
+    "main_stack_low": 50356224,
+    "main_stack_top": 50364160,
+    "sentinel_word": 219540062,
+    "untouched_margin_bytes": 5576,
+    "high_water_bytes": 2360,
+    "irq_and_bios_excluded": true,
+    "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+  },
+  "human_listening_verified": true,
+  "listening_evidence_sha256": "e148f038ec3354faaeb2d3d83ae243cc54521cb333dc60e0b9772f303dbcb7e5",
+  "physical_gba_tested": false
+}

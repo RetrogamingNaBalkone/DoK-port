@@ -15,7 +15,7 @@ from analyze_resources import parse
 from gba_rom import elf_info
 from probe_render_layout import frames
 from verify_gba import Frontend, sha
-from verify_renderer_gba import NAMES, stack_usage
+from verify_renderer_gba import NAMES, stack_usage, start_gameplay
 
 
 def load_json(path):
@@ -31,6 +31,7 @@ def original_animations(language):
 
 
 class Probe:
+    preserve_title = False
     def __init__(self, core, build):
         self.build = build
         self.metadata = load_json(build / 'build-report.json')
@@ -57,6 +58,8 @@ class Probe:
             if basic['magic'] == 0x444f4b31:
                 assert basic['fault'] == 0, basic
             diag = self.diag()
+            if not self.preserve_title and diag['magic']==0x524e4435 and diag['draws']:
+                start_gameplay(self.frontend,self.symbols)
             if diag['magic'] == 0x524e4435 and diag['draws']:
                 assert diag['status'] == 0 and diag['guard_ok'] == 1, diag
                 assert self.words('g_render_frame', 1)[0] == 0xd04fcafe
