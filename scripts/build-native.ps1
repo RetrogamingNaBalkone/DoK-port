@@ -16,6 +16,10 @@ if ($Compiler -eq 'zig') {
         $taskCommon = @('cc','-std=c11','-Wall','-Wextra','-Werror','-O2','-I','include')
         & $ZigExe @taskCommon src/ai.c src/combat.c src/items.c src/runtime.c src/rom_assets.c src/movement.c src/collision.c src/scheduler.c src/image.c src/animation.c src/level.c src/world.c src/res.c tests/test_ai.c -o build/native/dok-ai-tests.exe
         if ($LASTEXITCODE -ne 0) { throw 'AI suite build failed' }
+        & $ZigExe @taskCommon src/ai.c src/combat.c src/items.c src/runtime.c src/rom_assets.c src/movement.c src/collision.c src/scheduler.c src/image.c src/animation.c src/level.c src/world.c src/res.c tests/test_ai_combat.c -o build/native/dok-ai-combat-tests.exe
+        if($LASTEXITCODE -ne 0){throw 'G15 host build failed'}
+        & ./build/native/dok-ai-combat-tests.exe
+        if($LASTEXITCODE -ne 0){throw 'G15 host failed'}
         & ./build/native/dok-ai-tests.exe
         if ($LASTEXITCODE -ne 0) { throw 'AI suite failed' }
         & $ZigExe @taskCommon -DDOK_RUNTIME_ROM_ONLY src/combat.c src/items.c src/runtime.c src/rom_assets.c src/image.c src/animation.c src/movement.c src/collision.c tests/test_combat.c -o build/native/dok-combat-tests.exe
@@ -119,6 +123,8 @@ if ($Compiler -eq 'zig') {
         if ($CrossChecks) {
             & $ZigExe cc -target x86_64-linux-musl -static -std=c11 -Wall -Wextra -Werror -O2 -I include src/ai.c src/combat.c src/items.c src/runtime.c src/rom_assets.c src/movement.c src/collision.c src/scheduler.c src/image.c src/animation.c src/level.c src/world.c src/res.c tests/test_ai.c -o build/native/dok-ai-tests-linux
             if ($LASTEXITCODE -ne 0) { throw 'Linux AI build failed' }
+            & $ZigExe cc -target x86_64-linux-musl -static -std=c11 -Wall -Wextra -Werror -O2 -I include src/ai.c src/combat.c src/items.c src/runtime.c src/rom_assets.c src/movement.c src/collision.c src/scheduler.c src/image.c src/animation.c src/level.c src/world.c src/res.c tests/test_ai_combat.c -o build/native/dok-ai-combat-tests-linux
+            if($LASTEXITCODE -ne 0){throw 'G15 Linux compile failed'}
             & $ZigExe cc -target thumb-freestanding-eabi -mcpu=arm7tdmi -ffreestanding -std=c11 -Wall -Wextra -Werror -O2 -I include -c src/ai.c -o build/native/ai-arm7tdmi.o
             if ($LASTEXITCODE -ne 0) { throw 'Thumb AI compile failed' }
             & $ZigExe cc -target x86_64-linux-musl -static -std=c11 -Wall -Wextra -Werror -O2 -I include -DDOK_RUNTIME_ROM_ONLY src/combat.c src/items.c src/runtime.c src/rom_assets.c src/image.c src/animation.c src/movement.c src/collision.c tests/test_combat.c -o build/native/dok-combat-tests-linux

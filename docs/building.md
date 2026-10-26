@@ -174,3 +174,25 @@ ARM-векторы, аппаратные таймеры и fixed steps:
 кнопки, графику и время. По указанию пользователя поступательная инерция удалена;
 коллизии ещё не подключены. Отдельные команды Ghidra/Unicorn, управление,
 измерения и ограничения — [movement.md](movement.md).
+
+
+## AI combat G15
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-gba-ai-combat.ps1 -CrossChecks -OriginalEvidence
+```
+
+Общий ROM/ELF/map и кадры — `build/g15/`. Driver собирает Windows host,
+Linux static/Thumb checks, общий renderer ROM, при `-OriginalEvidence`
+повторяет read-only Ghidra export с SHA до/после и native x86 slices,
+затем ARM28 enemy variants и renderer/interactions/time regressions.
+Части этого полного workflow выполнены отдельно с теми же аргументами;
+`scripts/report_ai_combat.py` связывает результаты с итоговым ROM/source.
+`-RegressionOnly` пропускает сборку; нужны готовые host/cross артефакты и
+native evidence. Общие Zig/Python/mGBA остаются по путям, указанным выше;
+копий toolchain в проекте нет.
+
+Acceptance: `analysis/g15-review.json`; source/ABI/матрица и ограничения:
+[ai-combat.md](ai-combat.md). EWRAM247872/free14272, IWRAM23980,
+до8KiB stack reserve596 байт.30FPS остаются G20. Физическая GBA,
+оригинальный BIOS и полный DOS gameplay не проверены.

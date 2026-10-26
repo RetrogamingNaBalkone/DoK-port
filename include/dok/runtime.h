@@ -53,6 +53,9 @@ typedef struct {
 typedef struct {
     int16_t health, state, course_counter;
     uint8_t auxiliary_e6, course_counter_known;
+    uint32_t burst_started;
+    int16_t shot_count;
+    uint8_t corpse, reserved;
 } dok_runtime_monster;
 typedef struct {
     uint16_t flags, frame, animation_budget, interval;

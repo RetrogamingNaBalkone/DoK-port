@@ -192,3 +192,12 @@ Sleeping wake ветка проверена листингом, не испол�
 ARM-сценарии, final ROM/hash, фактическая память и ограничения фиксируются
 в `analysis/g13-combat-gba.json` и `analysis/g13-review.json`. Полная
 DOS-сессия и физическая GBA не проверены. Цель 30 FPS остаётся G20.
+
+
+## Подключение G15
+
+G15 реализует прежние AI seams: [ai-combat.md](ai-combat.md). DAMAGE переводит
+живого врага в state3; health<=0 запускает последовательную death animation
+и persistent corpse cleanup. Контактная атака наносит герою5 HP после полного
+attack cycle; снаряды используют `dok_combat_spawn` и native glyph3/4.
+Corpse не получает bit0x400 и не освобождает свой glyph slot.

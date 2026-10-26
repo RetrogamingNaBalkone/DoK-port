@@ -140,3 +140,11 @@ ARM проверяет proximity edges, повторные movement traces, за
 `analysis/g14-{ai-gba,host-verification,original-verification,review}.json`.
 Полная DOS-сессия, физическая GBA, оригинальный BIOS и Linux/MSVC/CMake
 execution не проверялись. Цель 30 FPS остаётся G20.
+
+
+## Продолжение G15
+
+Ветка CONTACT завершена в [ai-combat.md](ai-combat.md): attack cycles,
+серии снарядов, hurt/death и corpse placement. Display frame по-прежнему
+отделён от nextcounter. Scalar adapter +50 активного class9 возвращает unknown,
+потому что o.frame не представляет native счётчик.

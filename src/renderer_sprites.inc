@@ -44,7 +44,7 @@ static DOK_COLD dok_renderer_status cell_sprites(dok_renderer_workspace *w,const
   int32_t wx=x*480+240,wz=z*480+240;
   if(cls==9) {const dok_runtime_actor *actor=dok_runtime_actor_at(r,(uint16_t)id);
    if(!actor) return DOK_RENDER_PROFILE;wx=actor->x;wz=actor->z;}
-  int32_t y=word(-r->level->definitions[fc].height_parameter-d->height_parameter);
+  int32_t y=word(-r->level->definitions[fc].height_parameter-(cls==9 && r->objects[id].state.monster.corpse?0:d->height_parameter));
   dok_renderer_status status=billboard(w,r,a,level,language,c,s,(uint16_t)id,wx,y,wz);
   if(status) return status;
  }

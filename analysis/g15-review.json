@@ -1,0 +1,3446 @@
+{
+  "task": "G15",
+  "status": "passed",
+  "next": "G16",
+  "rom_sha256": "a7d0dc7d938a4e076ba8f2be0d863bdd56c1600e0e2dd712828cf7d5e3e2fa3f",
+  "rom_bytes": 32864108,
+  "ewram_static_bytes": 247872,
+  "ewram_remaining_bytes": 14272,
+  "iwram_static_bytes": 23980,
+  "iwram_remaining_before_stack_reserve": 596,
+  "stack_reserve_bytes": 8192,
+  "sources": {
+    "CMakeLists.txt": "a300dd3fa11193a96dcfe43f9999ef7b27baca736aecf482f976dfdd2c31563e",
+    "gba/ai_probe.c": "dbbd3e19383c3bd5a22ae1740b6c2e2a297e1ef83afca5f33c0cf5eefa586baa",
+    "gba/assets_probe.c": "2e412592dcd4402f86317845abd39f63b15c6298189e20064dfd95898203dca9",
+    "gba/clock.c": "9259214ecd6d4d5bbb860f58e7983a1bd6f2d0986b6ffc09c24da2c4f4618c28",
+    "gba/columns.S": "93dffc48919f1e8a6dba3be5a80ef425ca4b316763d937b43e3888c9c73f6686",
+    "gba/combat_probe.c": "5f719917fb1088b72f998cd2bed16e0bbeaf2dc78f1c5e4fb6aafc0cfc778a4c",
+    "gba/divmod.S": "d6d8437c0aebc65d133ff6ada61c9aed6c99cce4d4a70eec997927816eaa8c7c",
+    "gba/gba.ld": "653de1ab2403b9fb234e2e97fa68c5c2e54ee081e8c9d6e8661694675ce2c661",
+    "gba/main.c": "724be23c0141dfc80ad4e8ba8e8d569f274d2bee41fdce8f0e0db42a823c04c3",
+    "gba/memory.c": "893a7f22e4427b3c298ee7d4b606f739d32fb6a1dcb4a90f1550db194db75e88",
+    "gba/memory_probe.c": "a6298954e7d948a16b78ac9657d6073923b393823e06228284904be8d54dcf40",
+    "gba/movement_probe.c": "5614fac829566c06e5120aa4cd8384a98bc737731469e96c0701ec465023b711",
+    "gba/renderer_probe.c": "d06bebe94ccde419073aa5211599f8dbdc9113feacbd6f00a5e186cc8666a542",
+    "gba/startup.S": "ec9f95b3969692d236b1d5b2f9393802421f8b4f8faef8f6c61bfe40e2b15131",
+    "gba/time_probe.c": "53f4aa865fe0273f42d8fa56d5a1f3d42697d72222d330b77dd278145054121b",
+    "include/dok/ai.h": "70772afbfcb6792e815cd5f963304a93cee75895b690b2108f5c4de4c8f0e4ed",
+    "include/dok/animation.h": "54d0dc6599a7eca9cda958c2d4746d3034d5a75b8eb358cdfbd9d72e619d0d1d",
+    "include/dok/clock.h": "a338e61dad6947cd5b771dff1c805c479da8b4dd48c537abea4e08d2f3107204",
+    "include/dok/collision.h": "f8eafb9cff3a478c1d494c7a32d953c6f21cb5c2ec34faa611b46924ddcf5874",
+    "include/dok/combat.h": "c4388d2c56bc5c585b42d882c02284c3197b97cac2c8e47c13fb2d3a15e425ac",
+    "include/dok/image.h": "18d89e8b480599a2d68916c747449675ee3cf59df6ff10c56ac5493dfab1af92",
+    "include/dok/interactions.h": "83ef8c9b1223e8533d5233ff32c80a995cf6416c65a03d1c5b0300b12c235e4d",
+    "include/dok/items.h": "54ea8669a1472da66db7effe5dce2bfe7021d66264006f799252e00d3f1ff15f",
+    "include/dok/level.h": "7677c5beaf85bd7980a9fb2c2c4db470b6be49a76267fb59941a9ce64e22cd3d",
+    "include/dok/movement.h": "42a9bd8c333de79a985bb6e351eff3798b5d0c4b76716aad6e09ac812f097655",
+    "include/dok/native_state.h": "d8afd13d9e55b1c5c16ed3252910862940a8f02056d12a685b3294f537407898",
+    "include/dok/projection.h": "bb6c518d58cbb2cf2a7f40f596b20525decdfd05e99ed27cd3f164c972a3d15f",
+    "include/dok/renderer.h": "34e4f8140d7a82b359a25c347f7b9b7858b65ad6b54e0857b8edf4eb8c12b7be",
+    "include/dok/res.h": "4b37a74aeebe027231ae7290b5383e39647833f8b7351d98e0067c60a0cc3d11",
+    "include/dok/rom_assets.h": "6fac1b8e0a2e03eeb7d3e568d6d4ad76aa9831ae27e6ecc8f00be8abbe470d1d",
+    "include/dok/runtime.h": "b4c10752d39b8215c42073487a030939fa24a2df14b45b8d4cd0c6279697d6bd",
+    "include/dok/scheduler.h": "2a5e22df11b869a59569c0c24b13fcf28e07ad983a1d610ae84ea86bba496e22",
+    "include/dok/sound.h": "d1b794189b779fe13c853c7c35651b4052b0a7c54599d38e6c359831045a6745",
+    "include/dok/visual.h": "e286d1fd4c0c86bbd856f47ca393b1471e8f7b4eeda72361ebb1acaaa69ef3d3",
+    "include/dok/world.h": "27b18f98a7d7aba61a7caab21e81de5a54eefd778c103057e65f40860b1cd725",
+    "scripts/analyze-ai.ps1": "abc3984fc530e31a6e6f631c56a80947719e7629d39c385f444d897e9e54b1aa",
+    "scripts/build-gba-ai-combat.ps1": "5adb1dde7b064932233a219405fc084e26f48b01b93bcdf211808033817174a9",
+    "scripts/build-gba.ps1": "e73fd361ee6eab0764a2442931aba310fb24d8d617590cc2409b2ab3ad7dbe13",
+    "scripts/build-native.ps1": "f8403ca007b447ecdc0648a570f4e4465e9256b0ce64792ddaead315e9ea110a",
+    "scripts/InspectAI.java": "27db9db72950dbe5be88bf64974a4a913ef7282ab3516b30fc4e420e3c322534",
+    "scripts/report_ai_combat.py": "da84a2a0d6ac257ea89e3a7a4cce776d687d1e432adafa39485de87a4242a288",
+    "scripts/verify_ai_combat_gba.py": "b9b185787c145ee149c9dc0f2318c1f74e9f5d9037ef666ec8043926579eec9e",
+    "scripts/verify_ai_combat_host.py": "b08d337b262724a70c91273e7d0e8c51e3ea50ba8e24f4dab748e257526e87a8",
+    "scripts/verify_ai_combat_original.py": "8945af160aaacba3bde7d3181911a022226b4bdda5c81842c263dd301397a9fb",
+    "scripts/verify_interactions_gba.py": "7fac03cfd656530c2838ec50d75aaaada561d82270e4997b2d74e7d7dd54ede0",
+    "scripts/verify_renderer_gba.py": "1c2c8adcfc50e9c07a0d9aecfa796670ce1045071904fc24b581498fd41f6079",
+    "scripts/verify_time_gba.py": "213d3b5da0f47830cf2f217d083711d96bfeb998e11a70b57358895aac7954c0",
+    "src/ai.c": "774e31dbc04201848615aaeb6ddcbf27dd5325c548f2b973beffbc68199bcd60",
+    "src/ai_atan.inc": "b97121ae473a9a9921acb76e596ba2696315371528c734d377d1a35cfddf405d",
+    "src/animation.c": "39c1ddf934dd3cb48f9ac165e7ead7b6aa00be26505c7c1faadcd584895d085b",
+    "src/clock.c": "9a8f4d4eb390f55e5988160338b9042c665c2616b4965f1f1616f849b4e7a121",
+    "src/collision.c": "0a978c5a10a4fa642b45130c3b8dcc3b5950f0963a020b90106534ca46f02129",
+    "src/combat.c": "14042da9191d6368af8620dbcedd4ae308d81112b9e8406e75ab3a5d0dc9ee67",
+    "src/image.c": "88e9445e256cc771f2f243e9ee2940b21a7eeeca5b43175e34c0d06c35de7dc7",
+    "src/interactions.c": "65544869f81160855d778649a3b205b2344b87773bfc873c84d5aca4d7e1d6e3",
+    "src/items.c": "301de7b050fb15b662d1602be1e28c5fc59fdd19e3aefa143fd563fe402289de",
+    "src/level.c": "36827fedd08d3d457686f11723401983b3e6467a72164b9dc070a4450472ba54",
+    "src/movement.c": "6bdb1b0990d9cbd5403f98868692026e092a34b2ed3a9cf4a18a4333d91fba08",
+    "src/native_state.c": "8ebe41f87bc8975b8456526667e8d59e62a30a09b4728204b80a82992152e4f7",
+    "src/projection.c": "300cedf7fe914a90e7be0f55faf476922f54366122a61f767ec20f69c87b707a",
+    "src/renderer.c": "5c0530a9774aed383a0f380bd0a02949797cc826bc3f53b817236017e5440e9f",
+    "src/renderer_sprites.inc": "9dc432eee3020640642e4613d608dc7fbda7c7559656d89f989aeb09248e03fa",
+    "src/renderer_surface_raster.inc": "9965c06934012f335c32b590da6fdb14bd75da6c4eecd03efe5d8f0835722053",
+    "src/renderer_surface_sides.inc": "7afa6db6513b9d9a3b771b2d9a146eabefb67343350f85c4b755366bbbd8be47",
+    "src/renderer_surfaces.inc": "f5bd7002cb4a14d5da062d75fe92a549c2213f2f8ba257faa8fa1dbd6f5af6df",
+    "src/renderer_trig.inc": "3fc1acca3c6c7053ce9ce05e6179833e943195a24ce47a780187e3261b6762b1",
+    "src/res.c": "679043c637b9db432da020cc7ee5024b54089a33dfec8a2022634f1327c8fa86",
+    "src/rom_assets.c": "783fb0337292ba214f64da6f7d8c2a36014280113993f47de3c9f17063406204",
+    "src/runtime.c": "e8a66fc5707965d5577c3548eac63206ea5b239457ef09aa5fa46dadc6414d68",
+    "src/scheduler.c": "4406fb6fbf04efd26e3e31e6e8c0f16ed2bbb7ec287aabefdd8f07ac3f4b9d31",
+    "src/sound.c": "c2905e19b49d3e2aed2afd49d5c769c21ec82d846b093b218a1a9d6f5b72eee2",
+    "src/visual.c": "6c11a65e419e81469f0b413eed2c6ac07f82a725c57e0d12695c20f419dee5f8",
+    "src/world.c": "721c5e402c4b43dfdc7f300ef46ab2fdafc5b481a14624884941d4bcfe6a70f4",
+    "tests/collision_cases.c": "cb0f0d929e1707214515cb08fc690b3d350a14d3b4922cbbe6f65683c4b30b15",
+    "tests/interactions_cases.c": "55d69be2fb8e61dd729eb228a625ac6d0d490964581cfd94b90bd0fc8f8b3e33",
+    "tests/movement_cases.c": "c2430813252e98e4384eca8518039cd81303ad969c118662026b7db6768c4994",
+    "tests/test_ai.c": "ef6cf2d6842b9677feeedc26b529a85a6989287a45f69e3ecd67aa52860a0b47",
+    "tests/test_ai_combat.c": "90247abecc31793a80aad1bf4da9b125585e4d62f622f0e27d50c8ce944eeb44",
+    "tests/test_animation.c": "c4eda79214050ae57773b9e19205863c46b2997c50cca3cb6c06e58951edc678",
+    "tests/test_collision.c": "ea19102d741538e7187b9016414f9d0485e878323e90812fd2236a99353679ae",
+    "tests/test_combat.c": "184c218b3275931e66ce3be00794d4dfd16897d68c62fece8383022ac20179af",
+    "tests/test_gba_helpers.c": "291c8cfade331ef5a5f2848126a7643ac47276f93572243ab5b5bf872e146fa3",
+    "tests/test_interactions.c": "936211d5f62d2a6fd373f24b92adaae7c15fe32d04c90c4661a0e477381f70bc",
+    "tests/test_items.c": "1118f05cccb55648ac7db51267e7eefdcb900a2e288d547af671d24861256e18",
+    "tests/test_level.c": "1dddca60e7a31ecb0cad30105b3e862b85fc959bd3fb49f94add624ca8c635f5",
+    "tests/test_movement.c": "13d464aa5daac17f11f2ecd5230b593d231bbdf7328333c6dfcd1c3d82583396",
+    "tests/test_native_state.c": "6a62bb63e3e5589dbe80d23a680106c67fc6b78129bc36589266595d63613cbe",
+    "tests/test_res.c": "16ac30a827a5e3d35849da0c6210282b47bf18843d6f7ae46d55cad5b2bfb126",
+    "tests/test_rom_assets.c": "f0a855dd188cd8b2549c4e85115fb097bc3da6a6cb985f3ff2bb8bf6190ce90c",
+    "tests/test_runtime.c": "e9a7b0ea0d549e08025a06927205b90072097372b43526779f1beb4a53af1826",
+    "tests/test_sound.c": "2e28cf31df59c71d6506a9dbe9617927cadf3f796c6ffec8b327ca99aa3973ae",
+    "tests/test_time.c": "eb365902150989098da7248a822ca5d038dc1d46d035daebdd9792704ed42888",
+    "tests/test_world.c": "9b91e51518a48d8524ad4c6c204428079e4c566b613435fafa453a671f7d7cbb",
+    "tests/time_cases.c": "f3c7c48ff39a3af9677e18a143e1ce3d35cf5fc4076a7073b9d61cedb00e7c57"
+  },
+  "reports": {
+    "analysis/g15-host-verification.json": "dd0c31c5ea41201e5a30fe7502ef0ddb567c454c666891fcdf475e0027722946",
+    "analysis/g15-original-verification.json": "ae78d9d56b5bbf0ef14de5f78655b260b269f619286f2ee890d9e4f31f8ba721",
+    "analysis/g15-ai-combat-gba.json": "5637caa4c213dd25154ea79499bd9e81038192996dfcfd353ea6a4c0de6342a8",
+    "analysis/g15-renderer-regression.json": "51141e44a753d49c17854b4a7b8aa0ac4f6254631f04881f1d0954f8181c2f60",
+    "analysis/g15-interactions-regression.json": "024a4a3db5c7c0dcd29ec8e33234e91c76d9926b7d026448f6a3d228afb0ed77",
+    "analysis/g15-time-regression.json": "9bef2e6482a9844fc970d5251092a222d852d922ce9d077eb4a2e09ac41a4e9f"
+  },
+  "artifacts": {
+    "build/g15/dok-diagnostic.elf": "f678dcae425feb85c09d48cb3fe3eedf09d52cc003eb6f444888df125ab0d07f",
+    "build/g15/dok-diagnostic.gba": "a7d0dc7d938a4e076ba8f2be0d863bdd56c1600e0e2dd712828cf7d5e3e2fa3f",
+    "build/g15/dok-diagnostic.map": "6cacfc9d998fb6d1c01a114adc652e77e8813c534dd2f7eb3081aa5171872b98"
+  },
+  "checks": {
+    "original_burst": 1296,
+    "original_melee_hurt": 12,
+    "original_player_damage": 24,
+    "original_corpse": 8,
+    "host_original_parameter_groups": 28,
+    "arm": {
+      "task": "G15",
+      "status": "passed",
+      "rom_sha256": "a7d0dc7d938a4e076ba8f2be0d863bdd56c1600e0e2dd712828cf7d5e3e2fa3f",
+      "script_sha256": "b9b185787c145ee149c9dc0f2318c1f74e9f5d9037ef666ec8043926579eec9e",
+      "groups": [
+        {
+          "group": "E01",
+          "language": 0,
+          "level": 1,
+          "glyph": 128,
+          "melee": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 12916
+              },
+              {
+                "frame": 1,
+                "deadline": 15416
+              },
+              {
+                "frame": 2,
+                "deadline": 17916
+              },
+              {
+                "frame": 3,
+                "deadline": 20416
+              },
+              {
+                "frame": 4,
+                "deadline": 22916
+              },
+              {
+                "frame": 5,
+                "deadline": 25416
+              }
+            ],
+            "damage": 5,
+            "hit_only_after_animation": true
+          },
+          "hurt": {
+            "sleeping_first_hit_only_wakes": true,
+            "second_hit_subtracts_one": true,
+            "hurt_state_three": true,
+            "contact_hurt_resumes_state_two": true
+          },
+          "death": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 11416
+              },
+              {
+                "frame": 1,
+                "deadline": 12416
+              },
+              {
+                "frame": 2,
+                "deadline": 13416
+              },
+              {
+                "frame": 3,
+                "deadline": 14416
+              },
+              {
+                "frame": 4,
+                "deadline": 15416
+              },
+              {
+                "frame": 5,
+                "deadline": 16416
+              },
+              {
+                "frame": 6,
+                "deadline": 17416
+              },
+              {
+                "frame": 7,
+                "deadline": 4294953640
+              }
+            ],
+            "completed_once": true,
+            "passable_persistent_corpse": true,
+            "destination_plane": 1,
+            "mmap": 32,
+            "tmap": 128,
+            "capture": {
+              "path": "build/g15/sprite-check/corpse-0-E01.png",
+              "framebuffer_sha256": "9b82f38b4dd1589bcafc3cd90030c9db1da7f5105f7b135ca636c00086e8016b",
+              "cycles": 5490167,
+              "faces": 1
+            }
+          },
+          "ranged": {
+            "delay": 3,
+            "limit": 4,
+            "threshold_strict": true,
+            "glyph": 51,
+            "projectile_deadline_from_current_ai_time": true,
+            "series": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "reset_after_limit": true
+          }
+        },
+        {
+          "group": "E02",
+          "language": 0,
+          "level": 1,
+          "glyph": 129,
+          "melee": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 12916
+              },
+              {
+                "frame": 1,
+                "deadline": 15416
+              },
+              {
+                "frame": 2,
+                "deadline": 17916
+              },
+              {
+                "frame": 3,
+                "deadline": 20416
+              },
+              {
+                "frame": 4,
+                "deadline": 22916
+              },
+              {
+                "frame": 5,
+                "deadline": 25416
+              }
+            ],
+            "damage": 5,
+            "hit_only_after_animation": true
+          },
+          "hurt": {
+            "sleeping_first_hit_only_wakes": true,
+            "second_hit_subtracts_one": true,
+            "hurt_state_three": true,
+            "contact_hurt_resumes_state_two": true
+          },
+          "death": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 11416
+              },
+              {
+                "frame": 1,
+                "deadline": 12416
+              },
+              {
+                "frame": 2,
+                "deadline": 13416
+              },
+              {
+                "frame": 3,
+                "deadline": 14416
+              },
+              {
+                "frame": 4,
+                "deadline": 15416
+              },
+              {
+                "frame": 5,
+                "deadline": 16416
+              },
+              {
+                "frame": 6,
+                "deadline": 17416
+              },
+              {
+                "frame": 7,
+                "deadline": 4294953640
+              }
+            ],
+            "completed_once": true,
+            "passable_persistent_corpse": true,
+            "destination_plane": 1,
+            "mmap": 32,
+            "tmap": 129
+          },
+          "ranged": {
+            "delay": 3,
+            "limit": 4,
+            "threshold_strict": true,
+            "glyph": 51,
+            "projectile_deadline_from_current_ai_time": true,
+            "series": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "reset_after_limit": true
+          }
+        },
+        {
+          "group": "E03",
+          "language": 0,
+          "level": 1,
+          "glyph": 140,
+          "melee": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 12916
+              },
+              {
+                "frame": 1,
+                "deadline": 15416
+              },
+              {
+                "frame": 2,
+                "deadline": 17916
+              },
+              {
+                "frame": 3,
+                "deadline": 20416
+              },
+              {
+                "frame": 4,
+                "deadline": 22916
+              },
+              {
+                "frame": 5,
+                "deadline": 25416
+              }
+            ],
+            "damage": 5,
+            "hit_only_after_animation": true
+          },
+          "hurt": {
+            "sleeping_first_hit_only_wakes": true,
+            "second_hit_subtracts_one": true,
+            "hurt_state_three": true,
+            "contact_hurt_resumes_state_two": true
+          },
+          "death": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 11416
+              },
+              {
+                "frame": 1,
+                "deadline": 12416
+              },
+              {
+                "frame": 2,
+                "deadline": 13416
+              },
+              {
+                "frame": 3,
+                "deadline": 14416
+              },
+              {
+                "frame": 4,
+                "deadline": 15416
+              },
+              {
+                "frame": 5,
+                "deadline": 16416
+              },
+              {
+                "frame": 6,
+                "deadline": 17416
+              },
+              {
+                "frame": 7,
+                "deadline": 4294953640
+              }
+            ],
+            "completed_once": true,
+            "passable_persistent_corpse": true,
+            "destination_plane": 1,
+            "mmap": 32,
+            "tmap": 140
+          },
+          "ranged": {
+            "delay": 3,
+            "limit": 4,
+            "threshold_strict": true,
+            "glyph": 51,
+            "projectile_deadline_from_current_ai_time": true,
+            "series": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "reset_after_limit": true
+          }
+        },
+        {
+          "group": "E04",
+          "language": 0,
+          "level": 1,
+          "glyph": 160,
+          "melee": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 12916
+              },
+              {
+                "frame": 1,
+                "deadline": 15416
+              },
+              {
+                "frame": 2,
+                "deadline": 17916
+              }
+            ],
+            "damage": 5,
+            "hit_only_after_animation": true
+          },
+          "hurt": {
+            "sleeping_first_hit_only_wakes": true,
+            "second_hit_subtracts_one": true,
+            "hurt_state_three": true,
+            "contact_hurt_resumes_state_two": true
+          },
+          "death": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 11916
+              },
+              {
+                "frame": 1,
+                "deadline": 13416
+              },
+              {
+                "frame": 2,
+                "deadline": 14916
+              },
+              {
+                "frame": 3,
+                "deadline": 16416
+              },
+              {
+                "frame": 4,
+                "deadline": 17916
+              },
+              {
+                "frame": 5,
+                "deadline": 19416
+              },
+              {
+                "frame": 6,
+                "deadline": 20916
+              },
+              {
+                "frame": 7,
+                "deadline": 22416
+              }
+            ],
+            "completed_once": true,
+            "passable_persistent_corpse": true,
+            "destination_plane": 1,
+            "mmap": 32,
+            "tmap": 160,
+            "capture": {
+              "path": "build/g15/sprite-check/corpse-0-E04.png",
+              "framebuffer_sha256": "ad9a5c755149c2832778512a43ee7e32bc2fcd8ebd604f5c67fff9b213642d98",
+              "cycles": 5501633,
+              "faces": 1
+            }
+          },
+          "ranged": {
+            "delay": 99,
+            "limit": 0,
+            "threshold_strict": true,
+            "zero_burst_disabled": true
+          }
+        },
+        {
+          "group": "E05",
+          "language": 0,
+          "level": 1,
+          "glyph": 161,
+          "melee": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 12916
+              },
+              {
+                "frame": 1,
+                "deadline": 15416
+              },
+              {
+                "frame": 2,
+                "deadline": 17916
+              },
+              {
+                "frame": 3,
+                "deadline": 20416
+              },
+              {
+                "frame": 4,
+                "deadline": 22916
+              }
+            ],
+            "damage": 5,
+            "hit_only_after_animation": true
+          },
+          "hurt": {
+            "sleeping_first_hit_only_wakes": true,
+            "second_hit_subtracts_one": true,
+            "hurt_state_three": true,
+            "contact_hurt_resumes_state_two": true
+          },
+          "death": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 12416
+              },
+              {
+                "frame": 1,
+                "deadline": 14416
+              },
+              {
+                "frame": 2,
+                "deadline": 16416
+              },
+              {
+                "frame": 3,
+                "deadline": 18416
+              },
+              {
+                "frame": 4,
+                "deadline": 20416
+              },
+              {
+                "frame": 5,
+                "deadline": 4294956640
+              }
+            ],
+            "completed_once": true,
+            "passable_persistent_corpse": true,
+            "destination_plane": 1,
+            "mmap": 32,
+            "tmap": 161,
+            "capture": {
+              "path": "build/g15/sprite-check/corpse-0-E05.png",
+              "framebuffer_sha256": "9b82f38b4dd1589bcafc3cd90030c9db1da7f5105f7b135ca636c00086e8016b",
+              "cycles": 5486798,
+              "faces": 1
+            }
+          },
+          "ranged": {
+            "delay": 99,
+            "limit": 0,
+            "threshold_strict": true,
+            "zero_burst_disabled": true
+          }
+        },
+        {
+          "group": "E06",
+          "language": 0,
+          "level": 2,
+          "glyph": 128,
+          "melee": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 12916
+              },
+              {
+                "frame": 1,
+                "deadline": 15416
+              },
+              {
+                "frame": 2,
+                "deadline": 17916
+              },
+              {
+                "frame": 3,
+                "deadline": 20416
+              },
+              {
+                "frame": 4,
+                "deadline": 22916
+              }
+            ],
+            "damage": 5,
+            "hit_only_after_animation": true
+          },
+          "hurt": {
+            "sleeping_first_hit_only_wakes": true,
+            "second_hit_subtracts_one": true,
+            "hurt_state_three": true,
+            "contact_hurt_resumes_state_two": true
+          },
+          "death": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 11416
+              },
+              {
+                "frame": 1,
+                "deadline": 12416
+              },
+              {
+                "frame": 2,
+                "deadline": 13416
+              },
+              {
+                "frame": 3,
+                "deadline": 14416
+              },
+              {
+                "frame": 4,
+                "deadline": 15416
+              },
+              {
+                "frame": 5,
+                "deadline": 16416
+              },
+              {
+                "frame": 6,
+                "deadline": 17416
+              },
+              {
+                "frame": 7,
+                "deadline": 4294953640
+              }
+            ],
+            "completed_once": true,
+            "passable_persistent_corpse": true,
+            "destination_plane": 1,
+            "mmap": 32,
+            "tmap": 128
+          },
+          "ranged": {
+            "delay": 3,
+            "limit": 0,
+            "threshold_strict": true,
+            "zero_burst_disabled": true
+          }
+        },
+        {
+          "group": "E07",
+          "language": 0,
+          "level": 2,
+          "glyph": 161,
+          "melee": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 12916
+              },
+              {
+                "frame": 1,
+                "deadline": 15416
+              },
+              {
+                "frame": 2,
+                "deadline": 17916
+              },
+              {
+                "frame": 3,
+                "deadline": 20416
+              },
+              {
+                "frame": 4,
+                "deadline": 22916
+              }
+            ],
+            "damage": 5,
+            "hit_only_after_animation": true
+          },
+          "hurt": {
+            "sleeping_first_hit_only_wakes": true,
+            "second_hit_subtracts_one": true,
+            "hurt_state_three": true,
+            "contact_hurt_resumes_state_two": true
+          },
+          "death": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 12416
+              },
+              {
+                "frame": 1,
+                "deadline": 14416
+              },
+              {
+                "frame": 2,
+                "deadline": 16416
+              },
+              {
+                "frame": 3,
+                "deadline": 18416
+              },
+              {
+                "frame": 4,
+                "deadline": 20416
+              },
+              {
+                "frame": 5,
+                "deadline": 4294956640
+              }
+            ],
+            "completed_once": true,
+            "passable_persistent_corpse": true,
+            "destination_plane": 1,
+            "mmap": 32,
+            "tmap": 161
+          },
+          "ranged": {
+            "delay": 99,
+            "limit": 0,
+            "threshold_strict": true,
+            "zero_burst_disabled": true
+          }
+        },
+        {
+          "group": "E08",
+          "language": 0,
+          "level": 2,
+          "glyph": 160,
+          "melee": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 12916
+              },
+              {
+                "frame": 1,
+                "deadline": 15416
+              },
+              {
+                "frame": 2,
+                "deadline": 17916
+              }
+            ],
+            "damage": 5,
+            "hit_only_after_animation": true
+          },
+          "hurt": {
+            "sleeping_first_hit_only_wakes": true,
+            "second_hit_subtracts_one": true,
+            "hurt_state_three": true,
+            "contact_hurt_resumes_state_two": true
+          },
+          "death": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 11916
+              },
+              {
+                "frame": 1,
+                "deadline": 13416
+              },
+              {
+                "frame": 2,
+                "deadline": 14916
+              },
+              {
+                "frame": 3,
+                "deadline": 16416
+              },
+              {
+                "frame": 4,
+                "deadline": 17916
+              },
+              {
+                "frame": 5,
+                "deadline": 19416
+              },
+              {
+                "frame": 6,
+                "deadline": 20916
+              },
+              {
+                "frame": 7,
+                "deadline": 22416
+              }
+            ],
+            "completed_once": true,
+            "passable_persistent_corpse": true,
+            "destination_plane": 1,
+            "mmap": 32,
+            "tmap": 160
+          },
+          "ranged": {
+            "delay": 3,
+            "limit": 4,
+            "threshold_strict": true,
+            "glyph": 52,
+            "projectile_deadline_from_current_ai_time": true,
+            "series": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "reset_after_limit": true
+          }
+        },
+        {
+          "group": "E09",
+          "language": 0,
+          "level": 3,
+          "glyph": 128,
+          "melee": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 12916
+              },
+              {
+                "frame": 1,
+                "deadline": 15416
+              },
+              {
+                "frame": 2,
+                "deadline": 17916
+              },
+              {
+                "frame": 3,
+                "deadline": 20416
+              },
+              {
+                "frame": 4,
+                "deadline": 22916
+              },
+              {
+                "frame": 5,
+                "deadline": 25416
+              }
+            ],
+            "damage": 5,
+            "hit_only_after_animation": true
+          },
+          "hurt": {
+            "sleeping_first_hit_only_wakes": true,
+            "second_hit_subtracts_one": true,
+            "hurt_state_three": true,
+            "contact_hurt_resumes_state_two": true
+          },
+          "death": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 11416
+              },
+              {
+                "frame": 1,
+                "deadline": 12416
+              },
+              {
+                "frame": 2,
+                "deadline": 13416
+              },
+              {
+                "frame": 3,
+                "deadline": 14416
+              },
+              {
+                "frame": 4,
+                "deadline": 15416
+              },
+              {
+                "frame": 5,
+                "deadline": 16416
+              },
+              {
+                "frame": 6,
+                "deadline": 17416
+              },
+              {
+                "frame": 7,
+                "deadline": 4294953640
+              }
+            ],
+            "completed_once": true,
+            "passable_persistent_corpse": true,
+            "destination_plane": 1,
+            "mmap": 32,
+            "tmap": 128
+          },
+          "ranged": {
+            "delay": 3,
+            "limit": 4,
+            "threshold_strict": true,
+            "glyph": 51,
+            "projectile_deadline_from_current_ai_time": true,
+            "series": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "reset_after_limit": true
+          }
+        },
+        {
+          "group": "E10",
+          "language": 0,
+          "level": 3,
+          "glyph": 179,
+          "melee": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 11916
+              },
+              {
+                "frame": 1,
+                "deadline": 13416
+              },
+              {
+                "frame": 2,
+                "deadline": 14916
+              },
+              {
+                "frame": 3,
+                "deadline": 16416
+              }
+            ],
+            "damage": 5,
+            "hit_only_after_animation": true
+          },
+          "hurt": {
+            "sleeping_first_hit_only_wakes": true,
+            "second_hit_subtracts_one": true,
+            "hurt_state_three": true,
+            "contact_hurt_resumes_state_two": true
+          },
+          "death": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 11916
+              },
+              {
+                "frame": 1,
+                "deadline": 13416
+              },
+              {
+                "frame": 2,
+                "deadline": 14916
+              },
+              {
+                "frame": 3,
+                "deadline": 16416
+              },
+              {
+                "frame": 4,
+                "deadline": 17916
+              },
+              {
+                "frame": 5,
+                "deadline": 19416
+              },
+              {
+                "frame": 6,
+                "deadline": 20916
+              },
+              {
+                "frame": 7,
+                "deadline": 22416
+              },
+              {
+                "frame": 8,
+                "deadline": 23916
+              }
+            ],
+            "completed_once": true,
+            "passable_persistent_corpse": true,
+            "destination_plane": 1,
+            "mmap": 32,
+            "tmap": 179,
+            "capture": {
+              "path": "build/g15/sprite-check/corpse-0-E10.png",
+              "framebuffer_sha256": "b62e124e08b9427804d25920428e14bffa822e5f98468e56db3b3536f8df1a76",
+              "cycles": 5510899,
+              "faces": 1
+            }
+          },
+          "ranged": {
+            "delay": 3,
+            "limit": 0,
+            "threshold_strict": true,
+            "zero_burst_disabled": true
+          }
+        },
+        {
+          "group": "E11",
+          "language": 0,
+          "level": 3,
+          "glyph": 160,
+          "melee": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 12916
+              },
+              {
+                "frame": 1,
+                "deadline": 15416
+              },
+              {
+                "frame": 2,
+                "deadline": 17916
+              }
+            ],
+            "damage": 5,
+            "hit_only_after_animation": true
+          },
+          "hurt": {
+            "sleeping_first_hit_only_wakes": true,
+            "second_hit_subtracts_one": true,
+            "hurt_state_three": true,
+            "contact_hurt_resumes_state_two": true
+          },
+          "death": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 11916
+              },
+              {
+                "frame": 1,
+                "deadline": 13416
+              },
+              {
+                "frame": 2,
+                "deadline": 14916
+              },
+              {
+                "frame": 3,
+                "deadline": 16416
+              },
+              {
+                "frame": 4,
+                "deadline": 17916
+              },
+              {
+                "frame": 5,
+                "deadline": 19416
+              },
+              {
+                "frame": 6,
+                "deadline": 20916
+              },
+              {
+                "frame": 7,
+                "deadline": 22416
+              }
+            ],
+            "completed_once": true,
+            "passable_persistent_corpse": true,
+            "destination_plane": 1,
+            "mmap": 32,
+            "tmap": 160
+          },
+          "ranged": {
+            "delay": 99,
+            "limit": 4,
+            "threshold_strict": true,
+            "glyph": 52,
+            "projectile_deadline_from_current_ai_time": true,
+            "series": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "reset_after_limit": true
+          }
+        },
+        {
+          "group": "E12",
+          "language": 0,
+          "level": 3,
+          "glyph": 198,
+          "melee": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 12916
+              },
+              {
+                "frame": 1,
+                "deadline": 15416
+              },
+              {
+                "frame": 2,
+                "deadline": 17916
+              }
+            ],
+            "damage": 5,
+            "hit_only_after_animation": true
+          },
+          "hurt": {
+            "sleeping_first_hit_only_wakes": true,
+            "second_hit_subtracts_one": true,
+            "hurt_state_three": true,
+            "contact_hurt_resumes_state_two": true
+          },
+          "death": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 11916
+              },
+              {
+                "frame": 1,
+                "deadline": 13416
+              },
+              {
+                "frame": 2,
+                "deadline": 14916
+              },
+              {
+                "frame": 3,
+                "deadline": 16416
+              },
+              {
+                "frame": 4,
+                "deadline": 17916
+              },
+              {
+                "frame": 5,
+                "deadline": 19416
+              },
+              {
+                "frame": 6,
+                "deadline": 20916
+              },
+              {
+                "frame": 7,
+                "deadline": 22416
+              }
+            ],
+            "completed_once": true,
+            "passable_persistent_corpse": true,
+            "destination_plane": 1,
+            "mmap": 32,
+            "tmap": 198
+          },
+          "ranged": {
+            "delay": 3,
+            "limit": 4,
+            "threshold_strict": true,
+            "glyph": 52,
+            "projectile_deadline_from_current_ai_time": true,
+            "series": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "reset_after_limit": true
+          }
+        },
+        {
+          "group": "E13",
+          "language": 0,
+          "level": 3,
+          "glyph": 214,
+          "melee": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 12916
+              },
+              {
+                "frame": 1,
+                "deadline": 15416
+              },
+              {
+                "frame": 2,
+                "deadline": 17916
+              }
+            ],
+            "damage": 5,
+            "hit_only_after_animation": true
+          },
+          "hurt": {
+            "sleeping_first_hit_only_wakes": true,
+            "second_hit_subtracts_one": true,
+            "hurt_state_three": true,
+            "contact_hurt_resumes_state_two": true
+          },
+          "death": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 11916
+              },
+              {
+                "frame": 1,
+                "deadline": 13416
+              },
+              {
+                "frame": 2,
+                "deadline": 14916
+              },
+              {
+                "frame": 3,
+                "deadline": 16416
+              },
+              {
+                "frame": 4,
+                "deadline": 17916
+              },
+              {
+                "frame": 5,
+                "deadline": 19416
+              },
+              {
+                "frame": 6,
+                "deadline": 20916
+              },
+              {
+                "frame": 7,
+                "deadline": 22416
+              }
+            ],
+            "completed_once": true,
+            "passable_persistent_corpse": true,
+            "destination_plane": 1,
+            "mmap": 32,
+            "tmap": 214
+          },
+          "ranged": {
+            "delay": 3,
+            "limit": 4,
+            "threshold_strict": true,
+            "glyph": 51,
+            "projectile_deadline_from_current_ai_time": true,
+            "series": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "reset_after_limit": true
+          }
+        },
+        {
+          "group": "E14",
+          "language": 0,
+          "level": 3,
+          "glyph": 161,
+          "melee": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 12916
+              },
+              {
+                "frame": 1,
+                "deadline": 15416
+              },
+              {
+                "frame": 2,
+                "deadline": 17916
+              },
+              {
+                "frame": 3,
+                "deadline": 20416
+              },
+              {
+                "frame": 4,
+                "deadline": 22916
+              }
+            ],
+            "damage": 5,
+            "hit_only_after_animation": true
+          },
+          "hurt": {
+            "sleeping_first_hit_only_wakes": true,
+            "second_hit_subtracts_one": true,
+            "hurt_state_three": true,
+            "contact_hurt_resumes_state_two": true
+          },
+          "death": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 12416
+              },
+              {
+                "frame": 1,
+                "deadline": 14416
+              },
+              {
+                "frame": 2,
+                "deadline": 16416
+              },
+              {
+                "frame": 3,
+                "deadline": 18416
+              },
+              {
+                "frame": 4,
+                "deadline": 20416
+              },
+              {
+                "frame": 5,
+                "deadline": 4294956640
+              }
+            ],
+            "completed_once": true,
+            "passable_persistent_corpse": true,
+            "destination_plane": 1,
+            "mmap": 32,
+            "tmap": 161
+          },
+          "ranged": {
+            "delay": 99,
+            "limit": 0,
+            "threshold_strict": true,
+            "zero_burst_disabled": true
+          }
+        },
+        {
+          "group": "E01",
+          "language": 1,
+          "level": 1,
+          "glyph": 128,
+          "melee": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 12916
+              },
+              {
+                "frame": 1,
+                "deadline": 15416
+              },
+              {
+                "frame": 2,
+                "deadline": 17916
+              },
+              {
+                "frame": 3,
+                "deadline": 20416
+              },
+              {
+                "frame": 4,
+                "deadline": 22916
+              },
+              {
+                "frame": 5,
+                "deadline": 25416
+              }
+            ],
+            "damage": 5,
+            "hit_only_after_animation": true
+          },
+          "hurt": {
+            "sleeping_first_hit_only_wakes": true,
+            "second_hit_subtracts_one": true,
+            "hurt_state_three": true,
+            "contact_hurt_resumes_state_two": true
+          },
+          "death": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 11416
+              },
+              {
+                "frame": 1,
+                "deadline": 12416
+              },
+              {
+                "frame": 2,
+                "deadline": 13416
+              },
+              {
+                "frame": 3,
+                "deadline": 14416
+              },
+              {
+                "frame": 4,
+                "deadline": 15416
+              },
+              {
+                "frame": 5,
+                "deadline": 16416
+              },
+              {
+                "frame": 6,
+                "deadline": 17416
+              },
+              {
+                "frame": 7,
+                "deadline": 4294953640
+              }
+            ],
+            "completed_once": true,
+            "passable_persistent_corpse": true,
+            "destination_plane": 1,
+            "mmap": 32,
+            "tmap": 128,
+            "capture": {
+              "path": "build/g15/sprite-check/corpse-1-E01.png",
+              "framebuffer_sha256": "a4ac2502053f37c15ec4bbef4ecaa35a48957cac3523a8535addaeb821cd9300",
+              "cycles": 5489555,
+              "faces": 1
+            }
+          },
+          "ranged": {
+            "delay": 3,
+            "limit": 4,
+            "threshold_strict": true,
+            "glyph": 51,
+            "projectile_deadline_from_current_ai_time": true,
+            "series": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "reset_after_limit": true
+          }
+        },
+        {
+          "group": "E02",
+          "language": 1,
+          "level": 1,
+          "glyph": 129,
+          "melee": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 12916
+              },
+              {
+                "frame": 1,
+                "deadline": 15416
+              },
+              {
+                "frame": 2,
+                "deadline": 17916
+              },
+              {
+                "frame": 3,
+                "deadline": 20416
+              },
+              {
+                "frame": 4,
+                "deadline": 22916
+              },
+              {
+                "frame": 5,
+                "deadline": 25416
+              }
+            ],
+            "damage": 5,
+            "hit_only_after_animation": true
+          },
+          "hurt": {
+            "sleeping_first_hit_only_wakes": true,
+            "second_hit_subtracts_one": true,
+            "hurt_state_three": true,
+            "contact_hurt_resumes_state_two": true
+          },
+          "death": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 11416
+              },
+              {
+                "frame": 1,
+                "deadline": 12416
+              },
+              {
+                "frame": 2,
+                "deadline": 13416
+              },
+              {
+                "frame": 3,
+                "deadline": 14416
+              },
+              {
+                "frame": 4,
+                "deadline": 15416
+              },
+              {
+                "frame": 5,
+                "deadline": 16416
+              },
+              {
+                "frame": 6,
+                "deadline": 17416
+              },
+              {
+                "frame": 7,
+                "deadline": 4294953640
+              }
+            ],
+            "completed_once": true,
+            "passable_persistent_corpse": true,
+            "destination_plane": 1,
+            "mmap": 32,
+            "tmap": 129
+          },
+          "ranged": {
+            "delay": 3,
+            "limit": 4,
+            "threshold_strict": true,
+            "glyph": 51,
+            "projectile_deadline_from_current_ai_time": true,
+            "series": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "reset_after_limit": true
+          }
+        },
+        {
+          "group": "E03",
+          "language": 1,
+          "level": 1,
+          "glyph": 140,
+          "melee": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 12916
+              },
+              {
+                "frame": 1,
+                "deadline": 15416
+              },
+              {
+                "frame": 2,
+                "deadline": 17916
+              },
+              {
+                "frame": 3,
+                "deadline": 20416
+              },
+              {
+                "frame": 4,
+                "deadline": 22916
+              },
+              {
+                "frame": 5,
+                "deadline": 25416
+              }
+            ],
+            "damage": 5,
+            "hit_only_after_animation": true
+          },
+          "hurt": {
+            "sleeping_first_hit_only_wakes": true,
+            "second_hit_subtracts_one": true,
+            "hurt_state_three": true,
+            "contact_hurt_resumes_state_two": true
+          },
+          "death": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 11416
+              },
+              {
+                "frame": 1,
+                "deadline": 12416
+              },
+              {
+                "frame": 2,
+                "deadline": 13416
+              },
+              {
+                "frame": 3,
+                "deadline": 14416
+              },
+              {
+                "frame": 4,
+                "deadline": 15416
+              },
+              {
+                "frame": 5,
+                "deadline": 16416
+              },
+              {
+                "frame": 6,
+                "deadline": 17416
+              },
+              {
+                "frame": 7,
+                "deadline": 4294953640
+              }
+            ],
+            "completed_once": true,
+            "passable_persistent_corpse": true,
+            "destination_plane": 1,
+            "mmap": 32,
+            "tmap": 140
+          },
+          "ranged": {
+            "delay": 3,
+            "limit": 4,
+            "threshold_strict": true,
+            "glyph": 51,
+            "projectile_deadline_from_current_ai_time": true,
+            "series": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "reset_after_limit": true
+          }
+        },
+        {
+          "group": "E04",
+          "language": 1,
+          "level": 1,
+          "glyph": 160,
+          "melee": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 12916
+              },
+              {
+                "frame": 1,
+                "deadline": 15416
+              },
+              {
+                "frame": 2,
+                "deadline": 17916
+              }
+            ],
+            "damage": 5,
+            "hit_only_after_animation": true
+          },
+          "hurt": {
+            "sleeping_first_hit_only_wakes": true,
+            "second_hit_subtracts_one": true,
+            "hurt_state_three": true,
+            "contact_hurt_resumes_state_two": true
+          },
+          "death": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 11916
+              },
+              {
+                "frame": 1,
+                "deadline": 13416
+              },
+              {
+                "frame": 2,
+                "deadline": 14916
+              },
+              {
+                "frame": 3,
+                "deadline": 16416
+              },
+              {
+                "frame": 4,
+                "deadline": 17916
+              },
+              {
+                "frame": 5,
+                "deadline": 19416
+              },
+              {
+                "frame": 6,
+                "deadline": 20916
+              },
+              {
+                "frame": 7,
+                "deadline": 22416
+              }
+            ],
+            "completed_once": true,
+            "passable_persistent_corpse": true,
+            "destination_plane": 1,
+            "mmap": 32,
+            "tmap": 160,
+            "capture": {
+              "path": "build/g15/sprite-check/corpse-1-E04.png",
+              "framebuffer_sha256": "c0e9ca683438d5ee55186aeac739959035bd9437383d1cc564ff2994a60b1d01",
+              "cycles": 5499696,
+              "faces": 1
+            }
+          },
+          "ranged": {
+            "delay": 99,
+            "limit": 0,
+            "threshold_strict": true,
+            "zero_burst_disabled": true
+          }
+        },
+        {
+          "group": "E05",
+          "language": 1,
+          "level": 1,
+          "glyph": 161,
+          "melee": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 12916
+              },
+              {
+                "frame": 1,
+                "deadline": 15416
+              },
+              {
+                "frame": 2,
+                "deadline": 17916
+              },
+              {
+                "frame": 3,
+                "deadline": 20416
+              },
+              {
+                "frame": 4,
+                "deadline": 22916
+              }
+            ],
+            "damage": 5,
+            "hit_only_after_animation": true
+          },
+          "hurt": {
+            "sleeping_first_hit_only_wakes": true,
+            "second_hit_subtracts_one": true,
+            "hurt_state_three": true,
+            "contact_hurt_resumes_state_two": true
+          },
+          "death": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 12416
+              },
+              {
+                "frame": 1,
+                "deadline": 14416
+              },
+              {
+                "frame": 2,
+                "deadline": 16416
+              },
+              {
+                "frame": 3,
+                "deadline": 18416
+              },
+              {
+                "frame": 4,
+                "deadline": 20416
+              },
+              {
+                "frame": 5,
+                "deadline": 4294956640
+              }
+            ],
+            "completed_once": true,
+            "passable_persistent_corpse": true,
+            "destination_plane": 1,
+            "mmap": 32,
+            "tmap": 161,
+            "capture": {
+              "path": "build/g15/sprite-check/corpse-1-E05.png",
+              "framebuffer_sha256": "a4ac2502053f37c15ec4bbef4ecaa35a48957cac3523a8535addaeb821cd9300",
+              "cycles": 5485534,
+              "faces": 1
+            }
+          },
+          "ranged": {
+            "delay": 99,
+            "limit": 0,
+            "threshold_strict": true,
+            "zero_burst_disabled": true
+          }
+        },
+        {
+          "group": "E06",
+          "language": 1,
+          "level": 2,
+          "glyph": 128,
+          "melee": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 12916
+              },
+              {
+                "frame": 1,
+                "deadline": 15416
+              },
+              {
+                "frame": 2,
+                "deadline": 17916
+              },
+              {
+                "frame": 3,
+                "deadline": 20416
+              },
+              {
+                "frame": 4,
+                "deadline": 22916
+              }
+            ],
+            "damage": 5,
+            "hit_only_after_animation": true
+          },
+          "hurt": {
+            "sleeping_first_hit_only_wakes": true,
+            "second_hit_subtracts_one": true,
+            "hurt_state_three": true,
+            "contact_hurt_resumes_state_two": true
+          },
+          "death": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 11416
+              },
+              {
+                "frame": 1,
+                "deadline": 12416
+              },
+              {
+                "frame": 2,
+                "deadline": 13416
+              },
+              {
+                "frame": 3,
+                "deadline": 14416
+              },
+              {
+                "frame": 4,
+                "deadline": 15416
+              },
+              {
+                "frame": 5,
+                "deadline": 16416
+              },
+              {
+                "frame": 6,
+                "deadline": 17416
+              },
+              {
+                "frame": 7,
+                "deadline": 4294953640
+              }
+            ],
+            "completed_once": true,
+            "passable_persistent_corpse": true,
+            "destination_plane": 1,
+            "mmap": 32,
+            "tmap": 128
+          },
+          "ranged": {
+            "delay": 3,
+            "limit": 0,
+            "threshold_strict": true,
+            "zero_burst_disabled": true
+          }
+        },
+        {
+          "group": "E07",
+          "language": 1,
+          "level": 2,
+          "glyph": 161,
+          "melee": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 12916
+              },
+              {
+                "frame": 1,
+                "deadline": 15416
+              },
+              {
+                "frame": 2,
+                "deadline": 17916
+              },
+              {
+                "frame": 3,
+                "deadline": 20416
+              },
+              {
+                "frame": 4,
+                "deadline": 22916
+              }
+            ],
+            "damage": 5,
+            "hit_only_after_animation": true
+          },
+          "hurt": {
+            "sleeping_first_hit_only_wakes": true,
+            "second_hit_subtracts_one": true,
+            "hurt_state_three": true,
+            "contact_hurt_resumes_state_two": true
+          },
+          "death": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 12416
+              },
+              {
+                "frame": 1,
+                "deadline": 14416
+              },
+              {
+                "frame": 2,
+                "deadline": 16416
+              },
+              {
+                "frame": 3,
+                "deadline": 18416
+              },
+              {
+                "frame": 4,
+                "deadline": 20416
+              },
+              {
+                "frame": 5,
+                "deadline": 4294956640
+              }
+            ],
+            "completed_once": true,
+            "passable_persistent_corpse": true,
+            "destination_plane": 1,
+            "mmap": 32,
+            "tmap": 161
+          },
+          "ranged": {
+            "delay": 99,
+            "limit": 0,
+            "threshold_strict": true,
+            "zero_burst_disabled": true
+          }
+        },
+        {
+          "group": "E08",
+          "language": 1,
+          "level": 2,
+          "glyph": 160,
+          "melee": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 12916
+              },
+              {
+                "frame": 1,
+                "deadline": 15416
+              },
+              {
+                "frame": 2,
+                "deadline": 17916
+              }
+            ],
+            "damage": 5,
+            "hit_only_after_animation": true
+          },
+          "hurt": {
+            "sleeping_first_hit_only_wakes": true,
+            "second_hit_subtracts_one": true,
+            "hurt_state_three": true,
+            "contact_hurt_resumes_state_two": true
+          },
+          "death": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 11916
+              },
+              {
+                "frame": 1,
+                "deadline": 13416
+              },
+              {
+                "frame": 2,
+                "deadline": 14916
+              },
+              {
+                "frame": 3,
+                "deadline": 16416
+              },
+              {
+                "frame": 4,
+                "deadline": 17916
+              },
+              {
+                "frame": 5,
+                "deadline": 19416
+              },
+              {
+                "frame": 6,
+                "deadline": 20916
+              },
+              {
+                "frame": 7,
+                "deadline": 22416
+              }
+            ],
+            "completed_once": true,
+            "passable_persistent_corpse": true,
+            "destination_plane": 1,
+            "mmap": 32,
+            "tmap": 160
+          },
+          "ranged": {
+            "delay": 3,
+            "limit": 4,
+            "threshold_strict": true,
+            "glyph": 52,
+            "projectile_deadline_from_current_ai_time": true,
+            "series": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "reset_after_limit": true
+          }
+        },
+        {
+          "group": "E09",
+          "language": 1,
+          "level": 3,
+          "glyph": 128,
+          "melee": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 12916
+              },
+              {
+                "frame": 1,
+                "deadline": 15416
+              },
+              {
+                "frame": 2,
+                "deadline": 17916
+              },
+              {
+                "frame": 3,
+                "deadline": 20416
+              },
+              {
+                "frame": 4,
+                "deadline": 22916
+              },
+              {
+                "frame": 5,
+                "deadline": 25416
+              }
+            ],
+            "damage": 5,
+            "hit_only_after_animation": true
+          },
+          "hurt": {
+            "sleeping_first_hit_only_wakes": true,
+            "second_hit_subtracts_one": true,
+            "hurt_state_three": true,
+            "contact_hurt_resumes_state_two": true
+          },
+          "death": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 11416
+              },
+              {
+                "frame": 1,
+                "deadline": 12416
+              },
+              {
+                "frame": 2,
+                "deadline": 13416
+              },
+              {
+                "frame": 3,
+                "deadline": 14416
+              },
+              {
+                "frame": 4,
+                "deadline": 15416
+              },
+              {
+                "frame": 5,
+                "deadline": 16416
+              },
+              {
+                "frame": 6,
+                "deadline": 17416
+              },
+              {
+                "frame": 7,
+                "deadline": 4294953640
+              }
+            ],
+            "completed_once": true,
+            "passable_persistent_corpse": true,
+            "destination_plane": 1,
+            "mmap": 32,
+            "tmap": 128
+          },
+          "ranged": {
+            "delay": 3,
+            "limit": 4,
+            "threshold_strict": true,
+            "glyph": 51,
+            "projectile_deadline_from_current_ai_time": true,
+            "series": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "reset_after_limit": true
+          }
+        },
+        {
+          "group": "E10",
+          "language": 1,
+          "level": 3,
+          "glyph": 179,
+          "melee": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 11916
+              },
+              {
+                "frame": 1,
+                "deadline": 13416
+              },
+              {
+                "frame": 2,
+                "deadline": 14916
+              },
+              {
+                "frame": 3,
+                "deadline": 16416
+              }
+            ],
+            "damage": 5,
+            "hit_only_after_animation": true
+          },
+          "hurt": {
+            "sleeping_first_hit_only_wakes": true,
+            "second_hit_subtracts_one": true,
+            "hurt_state_three": true,
+            "contact_hurt_resumes_state_two": true
+          },
+          "death": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 11916
+              },
+              {
+                "frame": 1,
+                "deadline": 13416
+              },
+              {
+                "frame": 2,
+                "deadline": 14916
+              },
+              {
+                "frame": 3,
+                "deadline": 16416
+              },
+              {
+                "frame": 4,
+                "deadline": 17916
+              },
+              {
+                "frame": 5,
+                "deadline": 19416
+              },
+              {
+                "frame": 6,
+                "deadline": 20916
+              },
+              {
+                "frame": 7,
+                "deadline": 22416
+              },
+              {
+                "frame": 8,
+                "deadline": 23916
+              }
+            ],
+            "completed_once": true,
+            "passable_persistent_corpse": true,
+            "destination_plane": 1,
+            "mmap": 32,
+            "tmap": 179,
+            "capture": {
+              "path": "build/g15/sprite-check/corpse-1-E10.png",
+              "framebuffer_sha256": "2fa984bb249d349faa3a58f222520ec2890affc999e127e0413d64db172842fd",
+              "cycles": 5509635,
+              "faces": 1
+            }
+          },
+          "ranged": {
+            "delay": 3,
+            "limit": 0,
+            "threshold_strict": true,
+            "zero_burst_disabled": true
+          }
+        },
+        {
+          "group": "E11",
+          "language": 1,
+          "level": 3,
+          "glyph": 160,
+          "melee": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 12916
+              },
+              {
+                "frame": 1,
+                "deadline": 15416
+              },
+              {
+                "frame": 2,
+                "deadline": 17916
+              }
+            ],
+            "damage": 5,
+            "hit_only_after_animation": true
+          },
+          "hurt": {
+            "sleeping_first_hit_only_wakes": true,
+            "second_hit_subtracts_one": true,
+            "hurt_state_three": true,
+            "contact_hurt_resumes_state_two": true
+          },
+          "death": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 11916
+              },
+              {
+                "frame": 1,
+                "deadline": 13416
+              },
+              {
+                "frame": 2,
+                "deadline": 14916
+              },
+              {
+                "frame": 3,
+                "deadline": 16416
+              },
+              {
+                "frame": 4,
+                "deadline": 17916
+              },
+              {
+                "frame": 5,
+                "deadline": 19416
+              },
+              {
+                "frame": 6,
+                "deadline": 20916
+              },
+              {
+                "frame": 7,
+                "deadline": 22416
+              }
+            ],
+            "completed_once": true,
+            "passable_persistent_corpse": true,
+            "destination_plane": 1,
+            "mmap": 32,
+            "tmap": 160
+          },
+          "ranged": {
+            "delay": 99,
+            "limit": 4,
+            "threshold_strict": true,
+            "glyph": 52,
+            "projectile_deadline_from_current_ai_time": true,
+            "series": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "reset_after_limit": true
+          }
+        },
+        {
+          "group": "E12",
+          "language": 1,
+          "level": 3,
+          "glyph": 198,
+          "melee": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 12916
+              },
+              {
+                "frame": 1,
+                "deadline": 15416
+              },
+              {
+                "frame": 2,
+                "deadline": 17916
+              }
+            ],
+            "damage": 5,
+            "hit_only_after_animation": true
+          },
+          "hurt": {
+            "sleeping_first_hit_only_wakes": true,
+            "second_hit_subtracts_one": true,
+            "hurt_state_three": true,
+            "contact_hurt_resumes_state_two": true
+          },
+          "death": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 11916
+              },
+              {
+                "frame": 1,
+                "deadline": 13416
+              },
+              {
+                "frame": 2,
+                "deadline": 14916
+              },
+              {
+                "frame": 3,
+                "deadline": 16416
+              },
+              {
+                "frame": 4,
+                "deadline": 17916
+              },
+              {
+                "frame": 5,
+                "deadline": 19416
+              },
+              {
+                "frame": 6,
+                "deadline": 20916
+              },
+              {
+                "frame": 7,
+                "deadline": 22416
+              }
+            ],
+            "completed_once": true,
+            "passable_persistent_corpse": true,
+            "destination_plane": 1,
+            "mmap": 32,
+            "tmap": 198
+          },
+          "ranged": {
+            "delay": 3,
+            "limit": 4,
+            "threshold_strict": true,
+            "glyph": 52,
+            "projectile_deadline_from_current_ai_time": true,
+            "series": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "reset_after_limit": true
+          }
+        },
+        {
+          "group": "E13",
+          "language": 1,
+          "level": 3,
+          "glyph": 214,
+          "melee": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 12916
+              },
+              {
+                "frame": 1,
+                "deadline": 15416
+              },
+              {
+                "frame": 2,
+                "deadline": 17916
+              }
+            ],
+            "damage": 5,
+            "hit_only_after_animation": true
+          },
+          "hurt": {
+            "sleeping_first_hit_only_wakes": true,
+            "second_hit_subtracts_one": true,
+            "hurt_state_three": true,
+            "contact_hurt_resumes_state_two": true
+          },
+          "death": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 11916
+              },
+              {
+                "frame": 1,
+                "deadline": 13416
+              },
+              {
+                "frame": 2,
+                "deadline": 14916
+              },
+              {
+                "frame": 3,
+                "deadline": 16416
+              },
+              {
+                "frame": 4,
+                "deadline": 17916
+              },
+              {
+                "frame": 5,
+                "deadline": 19416
+              },
+              {
+                "frame": 6,
+                "deadline": 20916
+              },
+              {
+                "frame": 7,
+                "deadline": 22416
+              }
+            ],
+            "completed_once": true,
+            "passable_persistent_corpse": true,
+            "destination_plane": 1,
+            "mmap": 32,
+            "tmap": 214
+          },
+          "ranged": {
+            "delay": 3,
+            "limit": 4,
+            "threshold_strict": true,
+            "glyph": 51,
+            "projectile_deadline_from_current_ai_time": true,
+            "series": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "reset_after_limit": true
+          }
+        },
+        {
+          "group": "E14",
+          "language": 1,
+          "level": 3,
+          "glyph": 161,
+          "melee": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 12916
+              },
+              {
+                "frame": 1,
+                "deadline": 15416
+              },
+              {
+                "frame": 2,
+                "deadline": 17916
+              },
+              {
+                "frame": 3,
+                "deadline": 20416
+              },
+              {
+                "frame": 4,
+                "deadline": 22916
+              }
+            ],
+            "damage": 5,
+            "hit_only_after_animation": true
+          },
+          "hurt": {
+            "sleeping_first_hit_only_wakes": true,
+            "second_hit_subtracts_one": true,
+            "hurt_state_three": true,
+            "contact_hurt_resumes_state_two": true
+          },
+          "death": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 12416
+              },
+              {
+                "frame": 1,
+                "deadline": 14416
+              },
+              {
+                "frame": 2,
+                "deadline": 16416
+              },
+              {
+                "frame": 3,
+                "deadline": 18416
+              },
+              {
+                "frame": 4,
+                "deadline": 20416
+              },
+              {
+                "frame": 5,
+                "deadline": 4294956640
+              }
+            ],
+            "completed_once": true,
+            "passable_persistent_corpse": true,
+            "destination_plane": 1,
+            "mmap": 32,
+            "tmap": 161
+          },
+          "ranged": {
+            "delay": 99,
+            "limit": 0,
+            "threshold_strict": true,
+            "zero_burst_disabled": true
+          }
+        }
+      ],
+      "extra": {
+        "ranged": {
+          "solid_wall_blocks_sight": true,
+          "front_monster_suppresses_shot": true,
+          "failed_allocation_still_counts_attempt": true,
+          "pool_capacity": 141,
+          "published_projectile_front_suppresses_shot": true
+        },
+        "occupied_corpse": {
+          "frames": [
+            {
+              "frame": 0,
+              "deadline": 11416
+            },
+            {
+              "frame": 1,
+              "deadline": 12416
+            },
+            {
+              "frame": 2,
+              "deadline": 13416
+            },
+            {
+              "frame": 3,
+              "deadline": 14416
+            },
+            {
+              "frame": 4,
+              "deadline": 15416
+            },
+            {
+              "frame": 5,
+              "deadline": 16416
+            },
+            {
+              "frame": 6,
+              "deadline": 17416
+            },
+            {
+              "frame": 7,
+              "deadline": 4294953640
+            }
+          ],
+          "completed_once": true,
+          "passable_persistent_corpse": true,
+          "destination_plane": 0,
+          "mmap": 128,
+          "tmap": 108
+        }
+      },
+      "stack": {
+        "main_stack_low": 50356224,
+        "main_stack_top": 50364160,
+        "sentinel_word": 219540062,
+        "untouched_margin_bytes": 5576,
+        "high_water_bytes": 2360,
+        "irq_and_bios_excluded": true,
+        "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+      },
+      "physical_gba_tested": false,
+      "whole_dos_session_equivalence": false
+    },
+    "renderer_guards_reset_language": true,
+    "door_sensor_conveyor_finish": true,
+    "rational_clock": true
+  },
+  "performance": {
+    "renderer_timing": {
+      "cpu_hz": 16777216,
+      "hardware_frame_cycles": 280896,
+      "target_cycles": 561792,
+      "target_hardware_frames": 2,
+      "scope": "Timer0/1 cascade: time-poll + input/language switch + renderer + HUD + halfword VRAM back-page copy; excludes presentation wait",
+      "min_cycles": 4668642,
+      "max_cycles": 4690694,
+      "worst_render_budget_ratio": 8.349520819093188,
+      "nominal_target_fps": 29.863750284802915,
+      "over_budget_draws": 99,
+      "all_observed_draws_fit_target": false,
+      "min_present_interval_vblanks": 17,
+      "max_present_interval_vblanks": 17,
+      "cadence_intervals_vblanks": [
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17
+      ],
+      "cadence_warmup_excluded_draws": 8,
+      "observed_steady_presentation_fps": 3.513382386447402,
+      "sampled_draws": 98,
+      "samples": [
+        {
+          "draws": 1,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4690694,
+          "present_vblank": 244
+        },
+        {
+          "draws": 2,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4673313,
+          "present_vblank": 261
+        },
+        {
+          "draws": 3,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4670255,
+          "present_vblank": 278
+        },
+        {
+          "draws": 4,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4673675,
+          "present_vblank": 295
+        },
+        {
+          "draws": 5,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4672674,
+          "present_vblank": 312
+        },
+        {
+          "draws": 6,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4673675,
+          "present_vblank": 329
+        },
+        {
+          "draws": 7,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4673015,
+          "present_vblank": 346
+        },
+        {
+          "draws": 8,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4673675,
+          "present_vblank": 363
+        },
+        {
+          "draws": 9,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4672676,
+          "present_vblank": 380
+        },
+        {
+          "draws": 10,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4673675,
+          "present_vblank": 397
+        },
+        {
+          "draws": 11,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4670255,
+          "present_vblank": 414
+        },
+        {
+          "draws": 12,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4673326,
+          "present_vblank": 431
+        },
+        {
+          "draws": 13,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4673015,
+          "present_vblank": 448
+        },
+        {
+          "draws": 14,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4673675,
+          "present_vblank": 465
+        },
+        {
+          "draws": 15,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4673677,
+          "present_vblank": 482
+        },
+        {
+          "draws": 16,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4672674,
+          "present_vblank": 499
+        },
+        {
+          "draws": 17,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4673677,
+          "present_vblank": 516
+        },
+        {
+          "draws": 18,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4670245,
+          "present_vblank": 533
+        },
+        {
+          "draws": 19,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4673328,
+          "present_vblank": 550
+        },
+        {
+          "draws": 20,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4673013,
+          "present_vblank": 567
+        },
+        {
+          "draws": 21,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4673677,
+          "present_vblank": 584
+        },
+        {
+          "draws": 22,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4672674,
+          "present_vblank": 601
+        },
+        {
+          "draws": 23,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4673677,
+          "present_vblank": 618
+        },
+        {
+          "draws": 24,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4673013,
+          "present_vblank": 635
+        },
+        {
+          "draws": 25,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4670560,
+          "present_vblank": 652
+        },
+        {
+          "draws": 26,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4673013,
+          "present_vblank": 669
+        },
+        {
+          "draws": 27,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4673677,
+          "present_vblank": 686
+        },
+        {
+          "draws": 28,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4673675,
+          "present_vblank": 703
+        },
+        {
+          "draws": 29,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4672676,
+          "present_vblank": 720
+        },
+        {
+          "draws": 30,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4673675,
+          "present_vblank": 737
+        },
+        {
+          "draws": 31,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4673015,
+          "present_vblank": 754
+        },
+        {
+          "draws": 32,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4670558,
+          "present_vblank": 771
+        },
+        {
+          "draws": 33,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4673015,
+          "present_vblank": 788
+        },
+        {
+          "draws": 34,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4678895,
+          "present_vblank": 805
+        },
+        {
+          "draws": 35,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4671749,
+          "present_vblank": 822
+        },
+        {
+          "draws": 36,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4672062,
+          "present_vblank": 839
+        },
+        {
+          "draws": 37,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4671749,
+          "present_vblank": 856
+        },
+        {
+          "draws": 38,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4672409,
+          "present_vblank": 873
+        },
+        {
+          "draws": 39,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4668644,
+          "present_vblank": 890
+        },
+        {
+          "draws": 40,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4672409,
+          "present_vblank": 907
+        },
+        {
+          "draws": 41,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4672411,
+          "present_vblank": 924
+        },
+        {
+          "draws": 42,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4671408,
+          "present_vblank": 941
+        },
+        {
+          "draws": 43,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4672411,
+          "present_vblank": 958
+        },
+        {
+          "draws": 44,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4671747,
+          "present_vblank": 975
+        },
+        {
+          "draws": 45,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4672411,
+          "present_vblank": 992
+        },
+        {
+          "draws": 46,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4668642,
+          "present_vblank": 1009
+        },
+        {
+          "draws": 47,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4672411,
+          "present_vblank": 1026
+        },
+        {
+          "draws": 48,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4671747,
+          "present_vblank": 1043
+        },
+        {
+          "draws": 49,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4672064,
+          "present_vblank": 1060
+        },
+        {
+          "draws": 50,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4671747,
+          "present_vblank": 1077
+        },
+        {
+          "draws": 51,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4672411,
+          "present_vblank": 1094
+        },
+        {
+          "draws": 52,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4672409,
+          "present_vblank": 1111
+        },
+        {
+          "draws": 53,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4668644,
+          "present_vblank": 1128
+        },
+        {
+          "draws": 54,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4672409,
+          "present_vblank": 1145
+        },
+        {
+          "draws": 55,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4671410,
+          "present_vblank": 1162
+        },
+        {
+          "draws": 56,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4672409,
+          "present_vblank": 1179
+        },
+        {
+          "draws": 57,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4671749,
+          "present_vblank": 1196
+        },
+        {
+          "draws": 58,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4672409,
+          "present_vblank": 1213
+        },
+        {
+          "draws": 59,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4671408,
+          "present_vblank": 1230
+        },
+        {
+          "draws": 60,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4672409,
+          "present_vblank": 1247
+        },
+        {
+          "draws": 61,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4668981,
+          "present_vblank": 1264
+        },
+        {
+          "draws": 62,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4672062,
+          "present_vblank": 1281
+        },
+        {
+          "draws": 63,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4671749,
+          "present_vblank": 1298
+        },
+        {
+          "draws": 64,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4672409,
+          "present_vblank": 1315
+        },
+        {
+          "draws": 65,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4672411,
+          "present_vblank": 1332
+        },
+        {
+          "draws": 66,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4671406,
+          "present_vblank": 1349
+        },
+        {
+          "draws": 67,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4680163,
+          "present_vblank": 1366
+        },
+        {
+          "draws": 68,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4670253,
+          "present_vblank": 1383
+        },
+        {
+          "draws": 69,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4673330,
+          "present_vblank": 1400
+        },
+        {
+          "draws": 70,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4673013,
+          "present_vblank": 1417
+        },
+        {
+          "draws": 71,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4673677,
+          "present_vblank": 1434
+        },
+        {
+          "draws": 72,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4673013,
+          "present_vblank": 1451
+        },
+        {
+          "draws": 73,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4673328,
+          "present_vblank": 1468
+        },
+        {
+          "draws": 74,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4673013,
+          "present_vblank": 1485
+        },
+        {
+          "draws": 75,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4670562,
+          "present_vblank": 1502
+        },
+        {
+          "draws": 76,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4673013,
+          "present_vblank": 1519
+        },
+        {
+          "draws": 77,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4673677,
+          "present_vblank": 1536
+        },
+        {
+          "draws": 78,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4673675,
+          "present_vblank": 1553
+        },
+        {
+          "draws": 79,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4672674,
+          "present_vblank": 1570
+        },
+        {
+          "draws": 80,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4673675,
+          "present_vblank": 1587
+        },
+        {
+          "draws": 81,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4673015,
+          "present_vblank": 1604
+        },
+        {
+          "draws": 82,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4670560,
+          "present_vblank": 1621
+        },
+        {
+          "draws": 83,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4673015,
+          "present_vblank": 1638
+        },
+        {
+          "draws": 84,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4673675,
+          "present_vblank": 1655
+        },
+        {
+          "draws": 85,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4673015,
+          "present_vblank": 1672
+        },
+        {
+          "draws": 86,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4673326,
+          "present_vblank": 1689
+        },
+        {
+          "draws": 87,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4673015,
+          "present_vblank": 1706
+        },
+        {
+          "draws": 88,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4673675,
+          "present_vblank": 1723
+        },
+        {
+          "draws": 89,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4669912,
+          "present_vblank": 1740
+        },
+        {
+          "draws": 90,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4673675,
+          "present_vblank": 1757
+        },
+        {
+          "draws": 91,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4673677,
+          "present_vblank": 1774
+        },
+        {
+          "draws": 92,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4672672,
+          "present_vblank": 1791
+        },
+        {
+          "draws": 93,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4673677,
+          "present_vblank": 1808
+        },
+        {
+          "draws": 94,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4673013,
+          "present_vblank": 1825
+        },
+        {
+          "draws": 95,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4673677,
+          "present_vblank": 1842
+        },
+        {
+          "draws": 96,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4669910,
+          "present_vblank": 1859
+        },
+        {
+          "draws": 97,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4673677,
+          "present_vblank": 1876
+        },
+        {
+          "draws": 98,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4673013,
+          "present_vblank": 1893
+        }
+      ]
+    },
+    "target30fps_verified": false
+  },
+  "limits": [
+    "Physical GBA/original BIOS untested",
+    "Full DOS gameplay untested; isolated original branch instructions executed with explicit external boundaries",
+    "Exact global DOS visual/AI/projectile owner interleaving not claimed",
+    "Linux/CMake/MSVC execution untested; Linux static and Thumb compilation passed",
+    "Full1455camera sweep not repeated; targeted static/AI corpse scenarios used",
+    "Sound G16 and text UI G17 consumers deferred; gameplay cleanup implemented",
+    "Complete game flow G18; 30FPS G20"
+  ]
+}

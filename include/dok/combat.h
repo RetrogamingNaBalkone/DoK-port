@@ -33,5 +33,8 @@ int dok_combat_damage(dok_combat *,uint16_t target,uint16_t source,int16_t damag
 void dok_combat_poll(dok_combat *,uint32_t tick);
 void dok_combat_clear(dok_combat *);
 void dok_combat_remove(dok_combat *,uint16_t slot);
+/* Occupied dynamic MMap entry: immutable template object ID (class/flags),
+ * not a dynamic slot ID. NONE when no projectile owns the cell. */
+uint16_t dok_combat_object_at(const dok_combat *,int32_t,int32_t);
 int dok_combat_blocked(void *,int32_t x,int32_t z);
 #endif

@@ -112,6 +112,16 @@ static int cell(dok_combat *c,int32_t x,int32_t z) {
 int dok_combat_blocked(void *context,int32_t x,int32_t z) {
  dok_combat *c=context;int pos=cell(c,x,z);return pos>=0 && (c->occupied[pos>>3]&(1u<<(pos&7)))!=0;
 }
+uint16_t dok_combat_object_at(const dok_combat *c,int32_t x,int32_t z) {
+ if(!c || !c->world)return DOK_RUNTIME_NONE;
+ int pos=cell((dok_combat *)c,x,z);
+ if(pos<0 || !(c->occupied[pos>>3]&(1u<<(pos&7))))return DOK_RUNTIME_NONE;
+ for(unsigned i=0;i<256;i++){
+  const dok_combat_projectile *p=&c->slots[i];
+  if((p->state&0x40) && cell((dok_combat *)c,p->x,p->z)==pos)return p->object;
+ }
+ return DOK_RUNTIME_NONE;
+}
 static void occupy(dok_combat *c,dok_combat_projectile *p) {
  int pos=cell(c,p->x,p->z);if(pos<0 || c->world->maps[pos]!=' ' || dok_combat_blocked(c,p->x,p->z))return;
  c->occupied[pos>>3]|=(uint8_t)(1u<<(pos&7));p->state|=0x40;

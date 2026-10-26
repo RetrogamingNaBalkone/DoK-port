@@ -1,0 +1,58 @@
+{
+  "task": "G15",
+  "status": "passed",
+  "stdout": "E01 ru: wake melee hurt death corpse timer projectile passed\nE02 ru: wake melee hurt death corpse timer projectile passed\nE03 ru: wake melee hurt death corpse timer projectile passed\nE04 ru: wake melee hurt death corpse timer projectile passed\nE05 ru: wake melee hurt death corpse timer projectile passed\nE06 ru: wake melee hurt death corpse timer projectile passed\nE07 ru: wake melee hurt death corpse timer projectile passed\nE08 ru: wake melee hurt death corpse timer projectile passed\nE09 ru: wake melee hurt death corpse timer projectile passed\nE10 ru: wake melee hurt death corpse timer projectile passed\nE11 ru: wake melee hurt death corpse timer projectile passed\nE12 ru: wake melee hurt death corpse timer projectile passed\nE13 ru: wake melee hurt death corpse timer projectile passed\nE14 ru: wake melee hurt death corpse timer projectile passed\nE01 en: wake melee hurt death corpse timer projectile passed\nE02 en: wake melee hurt death corpse timer projectile passed\nE03 en: wake melee hurt death corpse timer projectile passed\nE04 en: wake melee hurt death corpse timer projectile passed\nE05 en: wake melee hurt death corpse timer projectile passed\nE06 en: wake melee hurt death corpse timer projectile passed\nE07 en: wake melee hurt death corpse timer projectile passed\nE08 en: wake melee hurt death corpse timer projectile passed\nE09 en: wake melee hurt death corpse timer projectile passed\nE10 en: wake melee hurt death corpse timer projectile passed\nE11 en: wake melee hurt death corpse timer projectile passed\nE12 en: wake melee hurt death corpse timer projectile passed\nE13 en: wake melee hurt death corpse timer projectile passed\nE14 en: wake melee hurt death corpse timer projectile passed\nG15 host: 14 groups x RU/EN passed",
+  "groups": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14
+  ],
+  "languages": [
+    "ru",
+    "en"
+  ],
+  "actual_projectile_front_class8": true,
+  "sources": {
+    "src/ai.c": "774e31dbc04201848615aaeb6ddcbf27dd5325c548f2b973beffbc68199bcd60",
+    "src/combat.c": "14042da9191d6368af8620dbcedd4ae308d81112b9e8406e75ab3a5d0dc9ee67",
+    "include/dok/combat.h": "c4388d2c56bc5c585b42d882c02284c3197b97cac2c8e47c13fb2d3a15e425ac",
+    "include/dok/ai.h": "70772afbfcb6792e815cd5f963304a93cee75895b690b2108f5c4de4c8f0e4ed",
+    "include/dok/runtime.h": "b4c10752d39b8215c42073487a030939fa24a2df14b45b8d4cd0c6279697d6bd",
+    "src/runtime.c": "e8a66fc5707965d5577c3548eac63206ea5b239457ef09aa5fa46dadc6414d68",
+    "src/renderer_sprites.inc": "9dc432eee3020640642e4613d608dc7fbda7c7559656d89f989aeb09248e03fa",
+    "tests/test_ai_combat.c": "90247abecc31793a80aad1bf4da9b125585e4d62f622f0e27d50c8ce944eeb44",
+    "gba/ai_probe.c": "dbbd3e19383c3bd5a22ae1740b6c2e2a297e1ef83afca5f33c0cf5eefa586baa",
+    "scripts/build-native.ps1": "f8403ca007b447ecdc0648a570f4e4465e9256b0ce64792ddaead315e9ea110a",
+    "CMakeLists.txt": "a300dd3fa11193a96dcfe43f9999ef7b27baca736aecf482f976dfdd2c31563e"
+  },
+  "original_sha256_before": {
+    "originals/pkr/RUS/PKR.EXE": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+    "originals/pkr/ENG/PKE.EXE": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b",
+    "originals/pkr/RUS/PKR.RES": "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816",
+    "originals/pkr/ENG/PKE.RES": "865da340621fa6f90548a84e9ae9bf0a85071befb32a40ca1d359e488f74d458"
+  },
+  "original_sha256_after": {
+    "originals/pkr/RUS/PKR.EXE": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+    "originals/pkr/ENG/PKE.EXE": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b",
+    "originals/pkr/RUS/PKR.RES": "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816",
+    "originals/pkr/ENG/PKE.RES": "865da340621fa6f90548a84e9ae9bf0a85071befb32a40ca1d359e488f74d458"
+  },
+  "package_sha256": "3efa5d3027d63ffd65e0ae8c0b45be23ee8394b3c5151c8e9f10e76fa8674351",
+  "artifacts": {
+    "build/native/dok-ai-combat-tests.exe": "6de83af6282e3fad62132c83b4be7c8b98dbcc6e9e775defb914a3cb6db37395",
+    "build/native/dok-ai-combat-tests-linux": "5f64bb77a0604e7574b035916bed6f5235d561b665ed0e97200cc87f5a351078",
+    "build/native/ai-arm7tdmi.o": "6521cf31c574771da0c7c81daede3b8c30a943ffe893b01d22bcc544ead16a73"
+  },
+  "limits": "Windows host executed. Linux static and Thumb cross compiled, not executed. Tests rebuild original RU/EN LEVELs from RES; shared release profile checked separately on ARM. Full DOS gameplay and physical GBA untested."
+}

@@ -1,5 +1,71 @@
 # Передача контекста между чатами
 
+## Текущая граница G15
+
+Обновлено 26 октября 2026 года: **G00–G15 готовы, следующий ID — G16**.
+`src/ai.c` и `gba/ai_probe.c` подключены к общему GBA-ROM: состояния0–4,
+контактная attack animation, melee5 HP только после полного цикла, strict
+burst timer, лимит серии/reset, native glyph3/4 projectile, hurt и death.
+Подробные адреса/ABI/политики и матрица — [ai-combat.md](ai-combat.md).
+Табличный release balance общий для языков; исходные RU/EN проверены отдельно.
+
+Wake по consideration или первому sleeping hit сохраняет HP и создаёт owner.
+DAMAGE ставит state3, callback при HP<=0 запускает death frame0. Каждый кадр,
+включая последний, выдерживает свой interval; следующий callback завершает
+смерть. Corpse получает visual height0 и flags|0x10 **без0x400**: slot и
+последний кадр сохраняются, owner удалён, projectile hits проходят сквозь него.
+БОЯР_У/МЫШЬ_У заканчиваются прозрачным кадром4×3; БАБА_У оставляет видимое
+тело. Empty TMap class0 получает corpse в TMap, иначе corpse остаётся в MMap
+при сохранённой TMap. FCMap/visited не удаляются. RECLAIM остаётся отдельным
+переходом перед reuse flagged slots.
+
+Native burst условие: unsigned elapsed/10000 строго больше signed delay,
+shot_count<limit и front class не8/9, затем native 100-unit sight march.
+Успешная попытка расходует место серии до allocation; неуспешные guards
+перезапускают timer и shot_count=0. AI синхронизирует combat.now перед spawn,
+первый projectile deadline=ai.now+416. Dynamic MMap front lookup использует
+реальный combat.occupied и slot template ID; static/dynamic lookup смотрят
+одну clamped клетку. Реальный летящий front projectile подавляет выстрел.
+
+Scheduler AI по actor_index имеет128 owners. Display o.frame и native
+nextcounter раздельны: event.parameter хранит следующий кадр; scalar+50
+активного class9 теперь unknown. Старые scalar+B0/+B6 сохраняют G02
+startup constants, не активный DOS clock; engine использует compact timer.
+Native clock storage equivalence не заявляется. Object36/player60/ARM world33864 сохранены;
+burst timer/count/corpse используют запас существующего union. AI connect и
+collision overlay заимствуют context одного активного world. Перед выходом
+context снять `dok_collision_overlay(0,0,0)`; production context статический.
+
+Ghidra exports/manifests — `build/ai/{ru,en}/`, EXE SHA до/после совпали.
+Native x86 на язык:648 burst,6 melee/hurt,12 player damage,4 corpse случая.
+Перехвачены внешние sight/animation/sound/allocation/stats/text/owner boundaries;
+полный callback с DOS scheduler closure и целая DOS-сессия не эмулировались.
+Windows host прошёл14 исходных групп×RU/EN; Linux static/Thumb скомпилированы.
+Root ARM проверил28 вариантов: wake, каждый melee/death frame и deadline,
+hurt, strict timer, нулевые/полные серии/reset, projectile selection/deadline,
+оба corpse planes, owner cleanup, wall/monster/front-projectile guards и
+allocation failure. Renderer RU/EN/guards/reset/stack, interactions и rational
+clock ARM-регрессии прошли; полный1455-camera sweep не повторялся.
+
+ROM/ELF/map/PNG — `build/g15/`; ROM32864108 байт, SHA-256
+`a7d0dc7d938a4e076ba8f2be0d863bdd56c1600e0e2dd712828cf7d5e3e2fa3f`.
+EWRAM247872/free14272; IWRAM23980, до8KiB stack reserve596 байт.
+ARM AI stack high-water2360/margin5576.
+Static renderer4668642…4690694 cycles;30FPS не достигнуты, G20.
+
+Команда: `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-gba-ai-combat.ps1 -CrossChecks -OriginalEvidence`.
+Части выполнены отдельно; `analysis/g15-review.json` связывает source/ROM,
+Ghidra evidence и host/ARM проверки. Физическая GBA/оригинальный BIOS,
+полный DOS и Linux/CMake/MSVC execution не проверялись.
+
+Следующий **G16** должен подключить звуковой consumer к existing AI events:
+WAKE — idle sound; CONTACT/RANGED — attack sound с native is_playing guard;
+DYING — restart death sound; DEAD — stop и death_text для будущего G17 UI.
+Sound bindings +F0/+F4 и text field+BE разрешаются по object ID; DOS handles
+не переносить. Сейчас эти уведомления доступны через sink, audio/UI не
+исполняются, игровые transitions/cleanup от consumer не зависят. G17 — HUD,
+G18 — game flow/hero death. Язык не меняет баланс/геометрию.
+
 ## Текущая граница G14
 
 Обновлено 26 октября 2026 года: **G00–G14 готовы, следующий ID — G15**.

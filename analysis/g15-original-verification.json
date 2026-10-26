@@ -1,0 +1,429 @@
+{
+  "task": "G15",
+  "status": "passed",
+  "whole_DOS_session": false,
+  "script_sha256": "8945af160aaacba3bde7d3181911a022226b4bdda5c81842c263dd301397a9fb",
+  "languages": {
+    "ru": {
+      "burst_vectors": 648,
+      "attack_vectors": [
+        {
+          "state": 1,
+          "ended": false,
+          "animation_calls": 1
+        },
+        {
+          "state": 1,
+          "ended": true,
+          "animation_calls": 2,
+          "mask": 262144,
+          "source": [
+            0,
+            16384
+          ]
+        },
+        {
+          "state": 2,
+          "ended": false,
+          "animation_calls": 1
+        },
+        {
+          "state": 2,
+          "ended": true,
+          "animation_calls": 2,
+          "mask": 262144,
+          "source": [
+            0,
+            16384
+          ]
+        },
+        {
+          "state": 3,
+          "ended": false,
+          "animation_calls": 2
+        },
+        {
+          "state": 3,
+          "ended": true,
+          "animation_calls": 3,
+          "mask": 262144,
+          "source": [
+            0,
+            16384
+          ]
+        }
+      ],
+      "player_melee_vectors": [
+        {
+          "source_class": 8,
+          "health": 0,
+          "damage_field": -123
+        },
+        {
+          "source_class": 8,
+          "health": 0,
+          "damage_field": 0
+        },
+        {
+          "source_class": 8,
+          "health": 0,
+          "damage_field": 999
+        },
+        {
+          "source_class": 8,
+          "health": 1,
+          "damage_field": -123,
+          "stat": 0,
+          "damage_delta": 123
+        },
+        {
+          "source_class": 8,
+          "health": 1,
+          "damage_field": 0,
+          "stat": 0,
+          "damage_delta": 0
+        },
+        {
+          "source_class": 8,
+          "health": 1,
+          "damage_field": 999,
+          "stat": 0,
+          "damage_delta": -999
+        },
+        {
+          "source_class": 9,
+          "health": 0,
+          "damage_field": -123
+        },
+        {
+          "source_class": 9,
+          "health": 0,
+          "damage_field": 0
+        },
+        {
+          "source_class": 9,
+          "health": 0,
+          "damage_field": 999
+        },
+        {
+          "source_class": 9,
+          "health": 1,
+          "damage_field": -123,
+          "stat": 0,
+          "damage_delta": -5
+        },
+        {
+          "source_class": 9,
+          "health": 1,
+          "damage_field": 0,
+          "stat": 0,
+          "damage_delta": -5
+        },
+        {
+          "source_class": 9,
+          "health": 1,
+          "damage_field": 999,
+          "stat": 0,
+          "damage_delta": -5
+        }
+      ],
+      "corpse_vectors": [
+        {
+          "tmap_class": 0,
+          "maps": [
+            [
+              32,
+              0
+            ],
+            [
+              128,
+              1
+            ]
+          ],
+          "external": [
+            "10c0:1278",
+            "1108:026d",
+            "1038:0214"
+          ]
+        },
+        {
+          "tmap_class": 2,
+          "maps": [
+            [
+              32,
+              0
+            ],
+            [
+              128,
+              0
+            ]
+          ],
+          "external": [
+            "10c0:1278",
+            "1108:026d",
+            "1038:0214"
+          ]
+        },
+        {
+          "tmap_class": 7,
+          "maps": [
+            [
+              32,
+              0
+            ],
+            [
+              128,
+              0
+            ]
+          ],
+          "external": [
+            "10c0:1278",
+            "1108:026d",
+            "1038:0214"
+          ]
+        },
+        {
+          "tmap_class": 9,
+          "maps": [
+            [
+              32,
+              0
+            ],
+            [
+              128,
+              0
+            ]
+          ],
+          "external": [
+            "10c0:1278",
+            "1108:026d",
+            "1038:0214"
+          ]
+        }
+      ],
+      "manifest": {
+        "language": "ru",
+        "sample": "originals/pkr/RUS/PKR.EXE",
+        "sha256_before": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+        "sha256_after": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+        "project": "build/ghidra/ru/Kremlin.gpr",
+        "script": "scripts/InspectAI.java",
+        "script_sha256": "27db9db72950dbe5be88bf64974a4a913ef7282ab3516b30fc4e420e3c322534",
+        "driver_sha256": "abc3984fc530e31a6e6f631c56a80947719e7629d39c385f444d897e9e54b1aa",
+        "address_system": "Ghidra NE loader; not file offset or runtime DPMI selector"
+      },
+      "manifest_sha256": "1612723f7b587c5f292321cdcc461f321ed5abb544ac013fceb206ed5333cbe7"
+    },
+    "en": {
+      "burst_vectors": 648,
+      "attack_vectors": [
+        {
+          "state": 1,
+          "ended": false,
+          "animation_calls": 1
+        },
+        {
+          "state": 1,
+          "ended": true,
+          "animation_calls": 2,
+          "mask": 262144,
+          "source": [
+            0,
+            16384
+          ]
+        },
+        {
+          "state": 2,
+          "ended": false,
+          "animation_calls": 1
+        },
+        {
+          "state": 2,
+          "ended": true,
+          "animation_calls": 2,
+          "mask": 262144,
+          "source": [
+            0,
+            16384
+          ]
+        },
+        {
+          "state": 3,
+          "ended": false,
+          "animation_calls": 2
+        },
+        {
+          "state": 3,
+          "ended": true,
+          "animation_calls": 3,
+          "mask": 262144,
+          "source": [
+            0,
+            16384
+          ]
+        }
+      ],
+      "player_melee_vectors": [
+        {
+          "source_class": 8,
+          "health": 0,
+          "damage_field": -123
+        },
+        {
+          "source_class": 8,
+          "health": 0,
+          "damage_field": 0
+        },
+        {
+          "source_class": 8,
+          "health": 0,
+          "damage_field": 999
+        },
+        {
+          "source_class": 8,
+          "health": 1,
+          "damage_field": -123,
+          "stat": 0,
+          "damage_delta": 123
+        },
+        {
+          "source_class": 8,
+          "health": 1,
+          "damage_field": 0,
+          "stat": 0,
+          "damage_delta": 0
+        },
+        {
+          "source_class": 8,
+          "health": 1,
+          "damage_field": 999,
+          "stat": 0,
+          "damage_delta": -999
+        },
+        {
+          "source_class": 9,
+          "health": 0,
+          "damage_field": -123
+        },
+        {
+          "source_class": 9,
+          "health": 0,
+          "damage_field": 0
+        },
+        {
+          "source_class": 9,
+          "health": 0,
+          "damage_field": 999
+        },
+        {
+          "source_class": 9,
+          "health": 1,
+          "damage_field": -123,
+          "stat": 0,
+          "damage_delta": -5
+        },
+        {
+          "source_class": 9,
+          "health": 1,
+          "damage_field": 0,
+          "stat": 0,
+          "damage_delta": -5
+        },
+        {
+          "source_class": 9,
+          "health": 1,
+          "damage_field": 999,
+          "stat": 0,
+          "damage_delta": -5
+        }
+      ],
+      "corpse_vectors": [
+        {
+          "tmap_class": 0,
+          "maps": [
+            [
+              32,
+              0
+            ],
+            [
+              128,
+              1
+            ]
+          ],
+          "external": [
+            "1050:15db",
+            "1060:17b3",
+            "1010:15ca"
+          ]
+        },
+        {
+          "tmap_class": 2,
+          "maps": [
+            [
+              32,
+              0
+            ],
+            [
+              128,
+              0
+            ]
+          ],
+          "external": [
+            "1050:15db",
+            "1060:17b3",
+            "1010:15ca"
+          ]
+        },
+        {
+          "tmap_class": 7,
+          "maps": [
+            [
+              32,
+              0
+            ],
+            [
+              128,
+              0
+            ]
+          ],
+          "external": [
+            "1050:15db",
+            "1060:17b3",
+            "1010:15ca"
+          ]
+        },
+        {
+          "tmap_class": 9,
+          "maps": [
+            [
+              32,
+              0
+            ],
+            [
+              128,
+              0
+            ]
+          ],
+          "external": [
+            "1050:15db",
+            "1060:17b3",
+            "1010:15ca"
+          ]
+        }
+      ],
+      "manifest": {
+        "language": "en",
+        "sample": "originals/pkr/ENG/PKE.EXE",
+        "sha256_before": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b",
+        "sha256_after": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b",
+        "project": "build/ghidra/en/Kremlin.gpr",
+        "script": "scripts/InspectAI.java",
+        "script_sha256": "27db9db72950dbe5be88bf64974a4a913ef7282ab3516b30fc4e420e3c322534",
+        "driver_sha256": "abc3984fc530e31a6e6f631c56a80947719e7629d39c385f444d897e9e54b1aa",
+        "address_system": "Ghidra NE loader; not file offset or runtime DPMI selector"
+      },
+      "manifest_sha256": "04dfc2cef0eb85094056d2931cd81fb460da1ae87ae8a03cef00169b515a8fd1"
+    }
+  },
+  "limits": "Native melee/hurt control flow and event mask/source, timer extraction, unsigned DIV/threshold, signed burst limit, front-class guard, counter increment/reset, projectile glyph, course reset, and death map/flags/height executed. Sight, animation, sound, spawn allocation, timer reset/start, text, stat-update and owner boundaries intercepted. Player stat0 delta checked before the stat updater (G12/G13 cover its arithmetic). No full DOS session or physical GBA."
+}

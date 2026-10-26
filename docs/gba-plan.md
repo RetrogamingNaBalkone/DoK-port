@@ -94,7 +94,7 @@ docs/handoff.md: изменения, проверки, ограничения и
 | [G12](tasks/G12.md) | Предметы, характеристики и инвентарь | G11 | готово |
 | [G13](tasks/G13.md) | Оружие, снаряды, попадания и урон | G12 | готово |
 | [G14](tasks/G14.md) | Обнаружение героя и перемещение монстров | G13 | готово; perception/wake, курс N+1, исходный разгон/collision, ARM и original x86 vectors |
-| [G15](tasks/G15.md) | Полный бой AI, смерть и состояния врагов | G14 | ожидает |
+| [G15](tasks/G15.md) | Полный бой AI, смерть и состояния врагов | G14 | готово |
 | [G16](tasks/G16.md) | Звук и воспроизведение на GBA | G15 | ожидает |
 | [G17](tasks/G17.md) | HUD, меню и русская/английская локализация | G16 | ожидает |
 | [G18](tasks/G18.md) | Полный игровой цикл и прохождение трёх уровней | G17 | ожидает |
@@ -176,6 +176,17 @@ AI-разгон/collision работают; CONTACT передаёт боеву�
 и regressions. EWRAM247800/free14344, IWRAM23980, до stack reserve596 байт;
 main stack2360/margin5576. Static4668231…4690291 cycles;30FPS остаётся G20.
 Acceptance — `analysis/g14-review.json`. Следующий шаг — G15.
+G15 завершён: [атаки, урон и смерть AI](ai-combat.md), общий ROM `build/g15/`.
+Все14 parameter groups×RU/EN прошли host и ARM: melee5 после attack cycle,
+strict timer/burst/reset, projectiles3/4, hurt/death/lastframe, persistent corpse
+с exact MMap/TMap flags и снятием owner. Native executed1296 burst,12
+attack/hurt,24 player damage и8 corpse vectors. Dynamic front projectile
+учитывает published occupancy и native clamp. EWRAM247872/free14272,
+IWRAM23980, до stack reserve596 байт; ARM AI stack
+2360/margin5576. Regressions renderer/guards/reset/interactions/time прошли.
+Static4668642…4690694 cycles,30FPS остаются G20.
+Acceptance — `analysis/g15-review.json`. Следующий шаг — G16.
+
 Оценка приоритета после дополнительного прохода поддерживает этот порядок:
 [основания и контрольные точки](gba-renderer-review.md#оценка-приоритета-после-дополнительного-прохода).
 Сама прежняя оценка приоритета не меняла статусы; G07/G08 завершены позднее.

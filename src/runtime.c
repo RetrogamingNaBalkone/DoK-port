@@ -90,8 +90,10 @@ static int read_byte(const dok_runtime *r,uint16_t index,size_t off,uint8_t *out
     if(off>=native_sizes[d->class_id]) return 0;
 #define B(offset,width,value) do {if(byte_of(off,offset,width,(uint32_t)(value),out)) return 1;} while(0)
     B(0,2,0);B(2,2,4);B(0x12,2,d->class_id);B(0x14,1,d->glyph);
-    B(0x15,2,o->flags);B(0x17,2,d->width_parameter);B(0x19,2,d->height_parameter);B(0x1b,1,d->marker);
-    B(0x24,2,o->animation_budget);B(0x50,2,o->frame);
+    B(0x15,2,o->flags);B(0x17,2,d->width_parameter);B(0x19,2,d->class_id==9 && o->state.monster.corpse?0:d->height_parameter);B(0x1b,1,d->marker);
+    B(0x24,2,o->animation_budget);
+    /* Active AI stores native nextcounter in its scheduler, not displayed frame. */
+    if(d->class_id!=9 || !o->state.monster.state) {B(0x50,2,o->frame);}
     if(o->known&DOK_RUNTIME_INTERVAL) {B(0x52,2,o->interval);}
     if(d->flags&0x800) {
         if(o->known&DOK_RUNTIME_ANIMATION_A) {B(0x20,2,o->animation_a);}
