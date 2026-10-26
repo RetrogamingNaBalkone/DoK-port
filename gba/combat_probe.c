@@ -7,6 +7,8 @@ extern dok_items *gba_items_context(void);
 extern uint32_t gba_time_ticks(void);
 extern void gba_visual_remove(uint16_t);
 extern void gba_ai_notice(unsigned,uint16_t);
+extern void gba_audio_event(uint16_t,uint16_t,unsigned);
+extern void gba_audio_projectile(uint16_t,uint16_t,unsigned);
 dok_combat g_combat;
 /* Commit request last. op:1 equip,2 request,3 fire,4 poll count quanta,
  * 5 spawn(owner=a,glyph=b),6 clear,7 damage(target=a,source=b,value=c),
@@ -17,6 +19,10 @@ volatile struct {uint32_t magic,error,active,shots,removed,hits,misses,events,ki
 static void notice(void *context,dok_combat_kind k,uint16_t slot,uint16_t target,int16_t n) {
  (void)context;++g_combat_diag.events;g_combat_diag.kind=k;g_combat_diag.slot=slot;g_combat_diag.target=target;g_combat_diag.value=(uint32_t)(int32_t)n;
  if(k==DOK_COMBAT_RECLAIM)gba_visual_remove(target);
+ if(k==DOK_COMBAT_SHOT)gba_audio_event(target,DOK_ROM_SLOT_SOUND,0);
+ if(k==DOK_COMBAT_DAMAGE && target<g_combat.world->object_count && g_combat.world->level->definitions[target].class_id==1)gba_audio_event(target,0xa6,0);
+ if((k==DOK_COMBAT_IMPACT || k==DOK_COMBAT_MISS) && slot<256)gba_audio_projectile(slot,g_combat.slots[slot].object,0);
+ if(k==DOK_COMBAT_REMOVED && slot<256)gba_audio_projectile(slot,g_combat.slots[slot].object,3);
  gba_ai_notice(k,target);
 }
 void gba_combat_start(dok_runtime *w,const dok_rom_assets *a,unsigned level,unsigned language) {

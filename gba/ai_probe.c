@@ -3,11 +3,18 @@
 extern uint32_t gba_time_ticks(void);
 dok_ai g_ai;
 extern dok_combat g_combat;
+extern void gba_audio_event(uint16_t,uint16_t,unsigned);
+static void audio_notice(void *p,dok_ai_kind k,uint16_t id){
+ (void)p;if(k==DOK_AI_WAKE)gba_audio_event(id,DOK_ROM_SLOT_SOUND,1);
+ else if(k==DOK_AI_CONTACT || k==DOK_AI_RANGED)gba_audio_event(id,0xf0,1);
+ else if(k==DOK_AI_DYING)gba_audio_event(id,0xf4,4);
+ else if(k==DOK_AI_DEAD)gba_audio_event(id,0xf4,3);
+}
 /* Commit request last. op1 consider(object),2 wake(object),3 poll tick/count/stride,
  * 4 remove(object),5 restart. freeze gates only live polling/consideration. */
 volatile struct {uint32_t freeze,request,ack,op,object,tick,count,stride;} g_ai_probe;
 volatile struct {uint32_t magic,error,steps,wakes,courses,blocked,contacts,now,owners,object,state,counter,x,z,heading,frame,deadline,active,result,attacks,hurts,deaths,completed,melee,ranged,burst,timer,resource,health,flags;} g_ai_diag;
-void gba_ai_start(dok_runtime *w,const dok_rom_assets *a,unsigned level,unsigned language){dok_ai_init(&g_ai,w,a,level,language,gba_time_ticks(),0,0);dok_ai_connect_combat(&g_ai,&g_combat);g_ai_diag.magic=0x41493134;}
+void gba_ai_start(dok_runtime *w,const dok_rom_assets *a,unsigned level,unsigned language){dok_ai_init(&g_ai,w,a,level,language,gba_time_ticks(),audio_notice,0);dok_ai_connect_combat(&g_ai,&g_combat);g_ai_diag.magic=0x41493134;}
 void gba_ai_notice(unsigned kind,uint16_t id){dok_ai_notice(&g_ai,kind,id);}
 void gba_ai_poll(uint32_t tick,const uint8_t *considered){
  if(g_ai_probe.freeze || !g_ai.world)return;
@@ -23,7 +30,7 @@ void gba_ai_update(unsigned language){
    case 2:result=dok_ai_wake(a,(uint16_t)id);break;
    case 3:for(unsigned i=0;i<g_ai_probe.count && i<4096;i++)dok_ai_poll(a,g_ai_probe.tick+i*g_ai_probe.stride);break;
    case 4:dok_ai_remove(a,(uint16_t)id);break;
-   case 5:dok_ai_init(a,a->world,a->assets,a->level,a->language,g_ai_probe.tick,0,0);dok_ai_connect_combat(a,&g_combat);break;
+   case 5:dok_ai_init(a,a->world,a->assets,a->level,a->language,g_ai_probe.tick,audio_notice,0);dok_ai_connect_combat(a,&g_combat);break;
    case 6:dok_ai_notice(a,g_ai_probe.tick,(uint16_t)id);break;
    default:result=0;break;
   }g_ai_diag.result=(uint32_t)result;g_ai_probe.ack=g_ai_probe.request;

@@ -1,5 +1,57 @@
 # Передача контекста между чатами
 
+## Текущая граница G16
+
+Обновлено 26 октября 2026 года: **G00–G16 готовы, следующий ID — G17**.
+Спецификация — [gba-audio.md](gba-audio.md), результат — [tasks/G16.md](tasks/G16.md).
+`src/audio.c` хранит один заимствованный PCM-голос; `gba/audio_backend.c`
+стримит original unsigned PCM8 из ROM с signed conversion в два16-byte буфера.
+DMA1/FIFO A и Timer0/1 обслуживают аудио; Timer2/3 сохраняют rational clock.
+Renderer profiler теперь использует его квант64cycles. Present DMA3 ограничен
+256word transfers: большой transfer блокировал C refill, хотя DMA1 продолжала
+читать. Разрешение/число передаваемых пикселей не уменьшены.
+
+Native mono admission/stop/query/global stop и loop latching восстановлены:
+rejected same-object play меняет object flag, но не текущий hardware latch.
+Sound36 выделяется отдельно от cached PCM; definition identity=(object<<16)|slot,
+dynamic projectile identity=40000000|(slot+1), standalone test voice=80000000|PCM ID.
+Нельзя заменять identity одним resource ID: другая дверь/clone с тем же PCM
+не имеет права останавливать текущий звук. Source proof RU `1060:0145`,
+`1068:2368`, EN bind `1018:1965`, clone`1020:2960`; complete fresh Ghidra
+exports/manifests — `build/audio/{ru,en}/`, оригинальные SHA до/после совпали.
+
+AI WAKE/default, CONTACT/RANGED/F0, DYING/globalstop+F4, DEAD/stopF4;
+player damage/A6, shot/weapon default, projectile impact/removal, item accepted
+force/default и door moving/loop/stop/locked consumers подключены. AI HURT звук
+не придуман. Death text+BE и остальной UI — **G17**, hero death/game flow — **G18**.
+Bindings разрешаются по текущему language/level. Смена языка сохраняет звучащий
+ROM view; level reset останавливает голос. C=255/D=128 не объявлены volume/pan.
+
+Frozen ROM `build/g16/dok-diagnostic.gba`,32867908bytes,
+SHA-256 `99b4e21fabba12543bffa9217adf7e2a4d78655a45b7b0e57de1b0a0a022273e`.
+EWRAM248136/free14008; IWRAM23980/free596 до8KiB stack reserve. ARM world33864,
+object36/player60 сохранены. Voice/cursor/staging128bytes. IRQ stack80used/80margin,
+main2360used/5576margin. Actual mGBA65536Hz stereo capture всех23 звуков:
+whole correlation0.98793..0.999947, underruns0/81888DMA IRQ, max gap26368cycles,
+C refill/rearm max1280cycles (не весь ISR). Long474361samples:43.028755s при
+ожидании43.033209s, renderer123frames. Paired fixed-scene CPU elapsed overhead
+14.48% для22050 nominal,6.77% для11025; framebuffer одинаков.
+
+Пользователь прослушал actual short-loop excerpt и ответил «Звучит нормально»;
+provenance/WAV SHA — `analysis/g16-listening.json`. Прослушанный файл сохранён
+от ROM5f65... после DMA3 fix; последующие правки меняли identity, не PCM.
+Это не physical GBA/Sound Blaster equivalence и не слуховой аудит всех23 звуков.
+
+`analysis/g16-review.json` связывает source/ROM/ELF/map, host/native/ARM/listening
+и renderer/interactions/time/28enemy regression отчёты. Все прошли на99b4... .
+Команда: `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-gba-audio.ps1 -CrossChecks -OriginalEvidence`.
+Части pipeline выполнены отдельно. Windows host исполнен; Linux static/Thumb
+cross compiled, Linux/CMake/MSVC execution и физическая консоль не проверены.
+Silent renderer regression4671616..4693696cycles; **30FPS остаются G20**.
+
+Далее исторические передачи предыдущих границ; их указания «audio/UI не
+исполняются» относятся к состоянию до G16.
+
 ## Текущая граница G15
 
 Обновлено 26 октября 2026 года: **G00–G15 готовы, следующий ID — G16**.

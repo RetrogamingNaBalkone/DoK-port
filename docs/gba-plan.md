@@ -95,7 +95,7 @@ docs/handoff.md: изменения, проверки, ограничения и
 | [G13](tasks/G13.md) | Оружие, снаряды, попадания и урон | G12 | готово |
 | [G14](tasks/G14.md) | Обнаружение героя и перемещение монстров | G13 | готово; perception/wake, курс N+1, исходный разгон/collision, ARM и original x86 vectors |
 | [G15](tasks/G15.md) | Полный бой AI, смерть и состояния врагов | G14 | готово |
-| [G16](tasks/G16.md) | Звук и воспроизведение на GBA | G15 | ожидает |
+| [G16](tasks/G16.md) | Звук и воспроизведение на GBA | G15 | готово; mono/native identity, DMA stream23 sounds, actual capture/listening, underruns0 |
 | [G17](tasks/G17.md) | HUD, меню и русская/английская локализация | G16 | ожидает |
 | [G18](tasks/G18.md) | Полный игровой цикл и прохождение трёх уровней | G17 | ожидает |
 | [G20](tasks/G20.md) | Общая интеграция и оптимизация под GBA | G18 | ожидает |
@@ -186,6 +186,13 @@ IWRAM23980, до stack reserve596 байт; ARM AI stack
 2360/margin5576. Regressions renderer/guards/reset/interactions/time прошли.
 Static4668642…4690694 cycles,30FPS остаются G20.
 Acceptance — `analysis/g15-review.json`. Следующий шаг — G16.
+G16 завершён: [GBA audio](gba-audio.md), frozen ROM `build/g16/`,
+mono admission/identity/latched loop и DMA stream23 original sounds.
+Actual mGBA capture всех23 ресурсов,43s long sound, пользовательское short-loop
+прослушивание, underruns0, IRQ/main stack и paired CPU overhead проверены;
+renderer/interactions/time/28enemy regression прошли. Identity Sound36 отделена
+от shared PCM, включая projectile clones. Acceptance — `analysis/g16-review.json`.
+Физическая GBA/DOS Sound Blaster equivalence не заявляется. Следующий шаг — G17.
 
 Оценка приоритета после дополнительного прохода поддерживает этот порядок:
 [основания и контрольные точки](gba-renderer-review.md#оценка-приоритета-после-дополнительного-прохода).

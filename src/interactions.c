@@ -25,6 +25,7 @@ static void dispatch(dok_scheduler *scheduler,uint16_t id,uint16_t callback,uint
   if(d->parameter_54==2 && (int16_t)o->frame<d->extent-1) {
    o->flags|=8;d->parameter_55=0;dok_scheduler_interval(scheduler,(uint32_t)(int32_t)(int16_t)o->interval);
    ++o->frame;
+   emit(s,DOK_INTERACTION_MOVING,id,0,0);
    if((int16_t)o->frame>d->extent/4) o->flags|=0x10;
   } else {
    d->parameter_54=1;o->flags|=0x10;d->parameter_55=1;
@@ -34,6 +35,7 @@ static void dispatch(dok_scheduler *scheduler,uint16_t id,uint16_t callback,uint
   if(d->state_56<1) {
    if(d->parameter_54==1 && (int16_t)o->frame>0) {
     --o->frame;d->parameter_55=0;dok_scheduler_interval(scheduler,(uint32_t)(int32_t)(int16_t)o->interval);
+    emit(s,DOK_INTERACTION_MOVING,id,0,0);
    } else {
     d->parameter_54=2;o->frame=0;o->flags=d->original_flags;d->parameter_55=1;
     emit(s,DOK_INTERACTION_CLOSED,id,0,0);dok_scheduler_cancel(scheduler);

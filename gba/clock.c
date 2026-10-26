@@ -1,6 +1,7 @@
 #include "dok/clock.h"
 #define R16(a) (*(volatile uint16_t *)(a))
-/* Timers 2/3 reserved for the game clock; timers 0/1 remain renderer probes. */
+/* Timers 2/3 reserved for the game clock. Audio owns 0/1; renderer profiling
+ * samples this free-running pair with a 64-cycle quantum. */
 void gba_clock_start(dok_clock *c)
 {
     R16(0x0400010a)=0;R16(0x0400010e)=0;

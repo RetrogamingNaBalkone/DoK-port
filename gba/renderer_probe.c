@@ -2,6 +2,8 @@
 #include "dok/visual.h"
 #include <stdint.h>
 extern unsigned gba_time_start(void);
+extern void gba_audio_start(const dok_rom_assets *,unsigned,unsigned);
+extern void gba_audio_update(unsigned);
 extern void gba_time_poll(void);
 extern unsigned gba_motion_start(dok_runtime *);
 extern void gba_motion_level(dok_runtime *);
@@ -62,6 +64,7 @@ extern uint32_t gba_time_ticks(void);
 volatile struct {uint32_t freeze,request,ack,tick,object,slot,loop;} g_visual_probe;
 volatile struct {uint32_t magic,error,steps,completed,now,object,frame,active,deadline,resource,budget;} g_visual_diag;
 static void visual_start(void) {
+    gba_audio_start(&package,g_render_diag.level,g_render_diag.language);
     gba_combat_start(&g_render_world,&package,g_render_diag.level,g_render_diag.language);
     gba_ai_start(&g_render_world,&package,g_render_diag.level,g_render_diag.language);
     dok_visual_init(&visual,&g_render_world,&package,g_render_diag.level,g_render_diag.language,gba_time_ticks(),0,0);
@@ -141,27 +144,19 @@ static __attribute__((noreturn)) void panic(unsigned code)
     for (;;) __asm__ volatile("nop");
 }
 
-static void timer_start(void)
-{
-    T0C=0;T1C=0;T0D=0;T1D=0;T1C=0x84;T0C=0x80;
-}
-static uint32_t timer_stop(void)
-{
-    T0C=0;T1C=0;
-    return (uint32_t)T0D | ((uint32_t)T1D << 16);
-}
+static uint32_t timer_base;
 static uint32_t timer_sample(void)
 {
     uint16_t hi,lo,next;
-    do {hi=T1D;lo=T0D;next=T1D;} while(hi!=next);
-    return (uint32_t)lo|((uint32_t)hi<<16);
+    do {hi=R16(0x0400010c);lo=R16(0x04000108);next=R16(0x0400010c);} while(hi!=next);
+    return ((((uint32_t)hi<<16)|lo)-timer_base)*64u;
 }
+static void timer_start(void){timer_base=0;timer_base=timer_sample()/64u;}
+static uint32_t timer_stop(void){return timer_sample();}
 
 volatile uint32_t g_render_stages[7];
 void gba_render_stage(unsigned stage) {
-    uint16_t hi,lo,next;
-    do {hi=T1D;lo=T0D;next=T1D;} while(hi!=next);
-    g_render_stages[stage]=(uint32_t)lo|((uint32_t)hi<<16);
+    g_render_stages[stage]=timer_sample();
 }
 static __attribute__((section(".iwram"),target("arm"))) void pixel(unsigned x,unsigned y,unsigned color)
 {
@@ -321,6 +316,7 @@ __attribute__((noreturn)) void gba_main(void)
             switched=1;
         }
         g_render_diag.last_keys=g_diag.keys;
+        gba_audio_update(g_render_diag.language);
         items_update();
         visual_update();
         gba_ai_update(g_render_diag.language);
@@ -337,9 +333,15 @@ __attribute__((noreturn)) void gba_main(void)
         if (status!=DOK_RENDER_OK) panic(0xa0+(unsigned)status);
         gba_combat_overlay(&g_render_frame);hud();gba_render_stage(5);
         volatile uint16_t *page=visible ? PAGE0 : PAGE1;
-        *(volatile uint32_t *)0x040000d4=(uintptr_t)g_render_frame.frame;
-        *(volatile uint32_t *)0x040000d8=(uintptr_t)page;
-        *(volatile uint32_t *)0x040000dc=0x84000000u|9600u; /* DMA3 immediate32 */
+        /* DMA3 pauses the CPU, including audio IRQ refills. Bound each pause
+         * while preserving every Mode4 pixel. DMA1 has higher bus priority. */
+        for(unsigned offset=0;offset<9600;offset+=256){
+            unsigned count=9600-offset;if(count>256)count=256;
+            *(volatile uint32_t *)0x040000d4=(uintptr_t)g_render_frame.frame+offset*4;
+            *(volatile uint32_t *)0x040000d8=(uintptr_t)page+offset*4;
+            *(volatile uint32_t *)0x040000dc=0x84000000u|count;
+            __asm__ volatile("nop" ::: "memory");
+        }
         gba_render_stage(6);uint32_t cycles=timer_stop();
         g_render_diag.last_cycles=cycles;
         if (cycles<g_render_diag.min_cycles) g_render_diag.min_cycles=cycles;

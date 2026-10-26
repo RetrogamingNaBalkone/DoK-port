@@ -14,6 +14,10 @@ if ($Compiler -eq 'zig') {
     try {
         $env:ZIG_GLOBAL_CACHE_DIR = Join-Path $taskRoot 'build/zig-cache'
         $taskCommon = @('cc','-std=c11','-Wall','-Wextra','-Werror','-O2','-I','include')
+        & $ZigExe @taskCommon src/audio.c tests/test_audio.c -o build/native/dok-audio-tests.exe
+        if($LASTEXITCODE -ne 0){throw 'G16 host build failed'}
+        & ./build/native/dok-audio-tests.exe
+        if($LASTEXITCODE -ne 0){throw 'G16 host failed'}
         & $ZigExe @taskCommon src/ai.c src/combat.c src/items.c src/runtime.c src/rom_assets.c src/movement.c src/collision.c src/scheduler.c src/image.c src/animation.c src/level.c src/world.c src/res.c tests/test_ai.c -o build/native/dok-ai-tests.exe
         if ($LASTEXITCODE -ne 0) { throw 'AI suite build failed' }
         & $ZigExe @taskCommon src/ai.c src/combat.c src/items.c src/runtime.c src/rom_assets.c src/movement.c src/collision.c src/scheduler.c src/image.c src/animation.c src/level.c src/world.c src/res.c tests/test_ai_combat.c -o build/native/dok-ai-combat-tests.exe

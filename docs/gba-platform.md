@@ -1,5 +1,12 @@
 # G01: диагностическая платформа GBA
 
+Текущая платформа G16: Timer0/FIFO A/DMA1 обслуживают PCM, Timer1 считает
+sample length, Timer2/3 сохраняют rational game clock. Renderer profiler теперь
+снимает эту пару с квантом64cycles, framebuffer DMA3 работает частями256words
+для доступности audio IRQ. Две16-byte staging области заимствуют PCM из ROM;
+IRQ stack имеет отдельный watermark. [Backend и измерения](gba-audio.md).
+Далее — историческая платформа G01, не перечень возможностей текущего ROM.
+
 24 октября 2026 года получен и выполнен в mGBA настоящий cartridge ROM без
 ресурсов PKR/PKE. Исходники — `gba/`, сборка — `scripts/build-gba.ps1`.
 Это платформенная диагностика; игровой цикл и восстановленные модули движка

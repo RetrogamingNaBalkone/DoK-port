@@ -1,0 +1,4225 @@
+{
+  "task": "G16",
+  "status": "passed",
+  "next": "G17",
+  "rom_sha256": "99b4e21fabba12543bffa9217adf7e2a4d78655a45b7b0e57de1b0a0a022273e",
+  "rom_bytes": 32867908,
+  "ewram_static_bytes": 248136,
+  "ewram_remaining_bytes": 14008,
+  "iwram_static_bytes": 23980,
+  "iwram_remaining_before_stack_reserve": 596,
+  "stack_reserve_bytes": 8192,
+  "sources": {
+    "CMakeLists.txt": "31f81167f49ac27839133146c2977342f677ae2ca721b1dbab6ca699f68562fe",
+    "gba/ai_probe.c": "c51c35e8395a4ff512bb852f14e9182d84709309e27d677d1a1f9d6f82a7791e",
+    "gba/assets_probe.c": "2e412592dcd4402f86317845abd39f63b15c6298189e20064dfd95898203dca9",
+    "gba/audio_backend.c": "c9a629316e74f4f38efb5737e54f73cf9564836c7378744ad4a84c30da30c63a",
+    "gba/clock.c": "67f87c0f6ad6b3cf982d8ec819f4d1919955c3977c9e05bbbfb435938401ce4f",
+    "gba/columns.S": "93dffc48919f1e8a6dba3be5a80ef425ca4b316763d937b43e3888c9c73f6686",
+    "gba/combat_probe.c": "028bbb04ceb2b2b7f58f58a427ca170eb18bcede313c099fb9c93f4a229e8a82",
+    "gba/divmod.S": "d6d8437c0aebc65d133ff6ada61c9aed6c99cce4d4a70eec997927816eaa8c7c",
+    "gba/gba.ld": "653de1ab2403b9fb234e2e97fa68c5c2e54ee081e8c9d6e8661694675ce2c661",
+    "gba/main.c": "724be23c0141dfc80ad4e8ba8e8d569f274d2bee41fdce8f0e0db42a823c04c3",
+    "gba/memory.c": "893a7f22e4427b3c298ee7d4b606f739d32fb6a1dcb4a90f1550db194db75e88",
+    "gba/memory_probe.c": "a6298954e7d948a16b78ac9657d6073923b393823e06228284904be8d54dcf40",
+    "gba/movement_probe.c": "318347968d0e1c08e70fc30c40fd055954e40df896d02bb7b1c80ebbf99c07f9",
+    "gba/renderer_probe.c": "b74aac1bfe717b08ad028db5323717725cddedf3c270ea5ab608ba70001de7a9",
+    "gba/startup.S": "9f47c81d8891a82d74ac5d8c40826a879ca8e664dffd295d1e65be61f78d22cb",
+    "gba/time_probe.c": "53f4aa865fe0273f42d8fa56d5a1f3d42697d72222d330b77dd278145054121b",
+    "include/dok/ai.h": "70772afbfcb6792e815cd5f963304a93cee75895b690b2108f5c4de4c8f0e4ed",
+    "include/dok/animation.h": "54d0dc6599a7eca9cda958c2d4746d3034d5a75b8eb358cdfbd9d72e619d0d1d",
+    "include/dok/audio.h": "3027b916c54f40822a5231d282f3cbeeb307ad3c1992e2ac5527a9f961a9cb1e",
+    "include/dok/clock.h": "a338e61dad6947cd5b771dff1c805c479da8b4dd48c537abea4e08d2f3107204",
+    "include/dok/collision.h": "f8eafb9cff3a478c1d494c7a32d953c6f21cb5c2ec34faa611b46924ddcf5874",
+    "include/dok/combat.h": "c4388d2c56bc5c585b42d882c02284c3197b97cac2c8e47c13fb2d3a15e425ac",
+    "include/dok/image.h": "18d89e8b480599a2d68916c747449675ee3cf59df6ff10c56ac5493dfab1af92",
+    "include/dok/interactions.h": "223fb2377aa4127268797f67e5d8b5cca2c88172fe4fee3bae47eac974080ee0",
+    "include/dok/items.h": "54ea8669a1472da66db7effe5dce2bfe7021d66264006f799252e00d3f1ff15f",
+    "include/dok/level.h": "7677c5beaf85bd7980a9fb2c2c4db470b6be49a76267fb59941a9ce64e22cd3d",
+    "include/dok/movement.h": "42a9bd8c333de79a985bb6e351eff3798b5d0c4b76716aad6e09ac812f097655",
+    "include/dok/native_state.h": "d8afd13d9e55b1c5c16ed3252910862940a8f02056d12a685b3294f537407898",
+    "include/dok/projection.h": "bb6c518d58cbb2cf2a7f40f596b20525decdfd05e99ed27cd3f164c972a3d15f",
+    "include/dok/renderer.h": "34e4f8140d7a82b359a25c347f7b9b7858b65ad6b54e0857b8edf4eb8c12b7be",
+    "include/dok/res.h": "4b37a74aeebe027231ae7290b5383e39647833f8b7351d98e0067c60a0cc3d11",
+    "include/dok/rom_assets.h": "6fac1b8e0a2e03eeb7d3e568d6d4ad76aa9831ae27e6ecc8f00be8abbe470d1d",
+    "include/dok/runtime.h": "b4c10752d39b8215c42073487a030939fa24a2df14b45b8d4cd0c6279697d6bd",
+    "include/dok/scheduler.h": "2a5e22df11b869a59569c0c24b13fcf28e07ad983a1d610ae84ea86bba496e22",
+    "include/dok/sound.h": "d1b794189b779fe13c853c7c35651b4052b0a7c54599d38e6c359831045a6745",
+    "include/dok/visual.h": "e286d1fd4c0c86bbd856f47ca393b1471e8f7b4eeda72361ebb1acaaa69ef3d3",
+    "include/dok/world.h": "27b18f98a7d7aba61a7caab21e81de5a54eefd778c103057e65f40860b1cd725",
+    "scripts/analyze-audio.ps1": "ce5b8ee5ca2666fbbf1faa75da323597d0f4a620b301a44b1d5bd6bfe5538a49",
+    "scripts/build-gba-audio.ps1": "3c156e63c3708d7eff982fe7e078408574eb2f125ac5292384878f90004f479c",
+    "scripts/build-gba.ps1": "367c712e6ae5212ef22a2c3c7bd00aaed9246a24120c7194e7c60edb9a71b077",
+    "scripts/build-native.ps1": "ca48e5ee30859580b17601e3aadb781aa8a69aacab0e116cc2f72a112f03cbc2",
+    "scripts/InspectAudio.java": "73e21dea305a7c3c2105d4b0499e984bf52a8d9dd45cd4afa0b5c934d93405ef",
+    "scripts/report_audio.py": "98b13e96125ee81f6aafb1215fd3dc3e367220a8b1126cdd79fc4b5fa9d7a90c",
+    "scripts/verify_ai_combat_gba.py": "b9b185787c145ee149c9dc0f2318c1f74e9f5d9037ef666ec8043926579eec9e",
+    "scripts/verify_audio_gba.py": "eb6bfe8c5e156d7d5e3172ec3937672a9b2fc50c67ffad00322c2d1a3089e862",
+    "scripts/verify_audio_host.py": "a5b2610fd1d9676e8162e09327e9df7724cf6fdafacd56e5df03474c8d38cf7b",
+    "scripts/verify_audio_original.py": "a4c18f0e98b390f06556adf9cf0e05a522009945b0ce3573b193e75cc2a9fabe",
+    "scripts/verify_interactions_gba.py": "7fac03cfd656530c2838ec50d75aaaada561d82270e4997b2d74e7d7dd54ede0",
+    "scripts/verify_renderer_gba.py": "1c2c8adcfc50e9c07a0d9aecfa796670ce1045071904fc24b581498fd41f6079",
+    "scripts/verify_time_gba.py": "213d3b5da0f47830cf2f217d083711d96bfeb998e11a70b57358895aac7954c0",
+    "src/ai.c": "774e31dbc04201848615aaeb6ddcbf27dd5325c548f2b973beffbc68199bcd60",
+    "src/ai_atan.inc": "b97121ae473a9a9921acb76e596ba2696315371528c734d377d1a35cfddf405d",
+    "src/animation.c": "39c1ddf934dd3cb48f9ac165e7ead7b6aa00be26505c7c1faadcd584895d085b",
+    "src/audio.c": "e422dab40753bf618e5b0f31f50335c754032dd154256a6703f79ff97453319f",
+    "src/clock.c": "9a8f4d4eb390f55e5988160338b9042c665c2616b4965f1f1616f849b4e7a121",
+    "src/collision.c": "0a978c5a10a4fa642b45130c3b8dcc3b5950f0963a020b90106534ca46f02129",
+    "src/combat.c": "14042da9191d6368af8620dbcedd4ae308d81112b9e8406e75ab3a5d0dc9ee67",
+    "src/image.c": "88e9445e256cc771f2f243e9ee2940b21a7eeeca5b43175e34c0d06c35de7dc7",
+    "src/interactions.c": "207492215929d9267f67179528bcd2d8b265c2e8511274a5be3c9896b7b04c3c",
+    "src/items.c": "301de7b050fb15b662d1602be1e28c5fc59fdd19e3aefa143fd563fe402289de",
+    "src/level.c": "36827fedd08d3d457686f11723401983b3e6467a72164b9dc070a4450472ba54",
+    "src/movement.c": "6bdb1b0990d9cbd5403f98868692026e092a34b2ed3a9cf4a18a4333d91fba08",
+    "src/native_state.c": "8ebe41f87bc8975b8456526667e8d59e62a30a09b4728204b80a82992152e4f7",
+    "src/projection.c": "300cedf7fe914a90e7be0f55faf476922f54366122a61f767ec20f69c87b707a",
+    "src/renderer.c": "5c0530a9774aed383a0f380bd0a02949797cc826bc3f53b817236017e5440e9f",
+    "src/renderer_sprites.inc": "9dc432eee3020640642e4613d608dc7fbda7c7559656d89f989aeb09248e03fa",
+    "src/renderer_surface_raster.inc": "9965c06934012f335c32b590da6fdb14bd75da6c4eecd03efe5d8f0835722053",
+    "src/renderer_surface_sides.inc": "7afa6db6513b9d9a3b771b2d9a146eabefb67343350f85c4b755366bbbd8be47",
+    "src/renderer_surfaces.inc": "f5bd7002cb4a14d5da062d75fe92a549c2213f2f8ba257faa8fa1dbd6f5af6df",
+    "src/renderer_trig.inc": "3fc1acca3c6c7053ce9ce05e6179833e943195a24ce47a780187e3261b6762b1",
+    "src/res.c": "679043c637b9db432da020cc7ee5024b54089a33dfec8a2022634f1327c8fa86",
+    "src/rom_assets.c": "783fb0337292ba214f64da6f7d8c2a36014280113993f47de3c9f17063406204",
+    "src/runtime.c": "e8a66fc5707965d5577c3548eac63206ea5b239457ef09aa5fa46dadc6414d68",
+    "src/scheduler.c": "4406fb6fbf04efd26e3e31e6e8c0f16ed2bbb7ec287aabefdd8f07ac3f4b9d31",
+    "src/sound.c": "c2905e19b49d3e2aed2afd49d5c769c21ec82d846b093b218a1a9d6f5b72eee2",
+    "src/visual.c": "6c11a65e419e81469f0b413eed2c6ac07f82a725c57e0d12695c20f419dee5f8",
+    "src/world.c": "721c5e402c4b43dfdc7f300ef46ab2fdafc5b481a14624884941d4bcfe6a70f4",
+    "tests/collision_cases.c": "cb0f0d929e1707214515cb08fc690b3d350a14d3b4922cbbe6f65683c4b30b15",
+    "tests/interactions_cases.c": "55d69be2fb8e61dd729eb228a625ac6d0d490964581cfd94b90bd0fc8f8b3e33",
+    "tests/movement_cases.c": "c2430813252e98e4384eca8518039cd81303ad969c118662026b7db6768c4994",
+    "tests/test_ai.c": "ef6cf2d6842b9677feeedc26b529a85a6989287a45f69e3ecd67aa52860a0b47",
+    "tests/test_ai_combat.c": "90247abecc31793a80aad1bf4da9b125585e4d62f622f0e27d50c8ce944eeb44",
+    "tests/test_animation.c": "c4eda79214050ae57773b9e19205863c46b2997c50cca3cb6c06e58951edc678",
+    "tests/test_audio.c": "f5aed83fa17fe469bab5626918ad7ac388cf574924180ddecb94fb508b0f5cf8",
+    "tests/test_collision.c": "ea19102d741538e7187b9016414f9d0485e878323e90812fd2236a99353679ae",
+    "tests/test_combat.c": "184c218b3275931e66ce3be00794d4dfd16897d68c62fece8383022ac20179af",
+    "tests/test_gba_helpers.c": "291c8cfade331ef5a5f2848126a7643ac47276f93572243ab5b5bf872e146fa3",
+    "tests/test_interactions.c": "936211d5f62d2a6fd373f24b92adaae7c15fe32d04c90c4661a0e477381f70bc",
+    "tests/test_items.c": "1118f05cccb55648ac7db51267e7eefdcb900a2e288d547af671d24861256e18",
+    "tests/test_level.c": "1dddca60e7a31ecb0cad30105b3e862b85fc959bd3fb49f94add624ca8c635f5",
+    "tests/test_movement.c": "13d464aa5daac17f11f2ecd5230b593d231bbdf7328333c6dfcd1c3d82583396",
+    "tests/test_native_state.c": "6a62bb63e3e5589dbe80d23a680106c67fc6b78129bc36589266595d63613cbe",
+    "tests/test_res.c": "16ac30a827a5e3d35849da0c6210282b47bf18843d6f7ae46d55cad5b2bfb126",
+    "tests/test_rom_assets.c": "f0a855dd188cd8b2549c4e85115fb097bc3da6a6cb985f3ff2bb8bf6190ce90c",
+    "tests/test_runtime.c": "e9a7b0ea0d549e08025a06927205b90072097372b43526779f1beb4a53af1826",
+    "tests/test_sound.c": "2e28cf31df59c71d6506a9dbe9617927cadf3f796c6ffec8b327ca99aa3973ae",
+    "tests/test_time.c": "eb365902150989098da7248a822ca5d038dc1d46d035daebdd9792704ed42888",
+    "tests/test_world.c": "9b91e51518a48d8524ad4c6c204428079e4c566b613435fafa453a671f7d7cbb",
+    "tests/time_cases.c": "f3c7c48ff39a3af9677e18a143e1ce3d35cf5fc4076a7073b9d61cedb00e7c57"
+  },
+  "reports": {
+    "analysis/g16-host-verification.json": "4c88554e67c91a7e4a07710f274f1419d1998dd344cd47e6eb59e805a7b18acb",
+    "analysis/g16-original-verification.json": "e757035b27611f38ddba36aff44b92184c2fe8e4e13d539c0d4efaf4f7619e92",
+    "analysis/g16-audio-gba.json": "f59a537c7ef3eb58c6d725538412bc9696169f7f3649a466fa22dce12d0328c1",
+    "analysis/g16-renderer-regression.json": "5c9066ae1899f8037c3e9d50afd904e9eccf845a8c58394bd63130805b7ff4cf",
+    "analysis/g16-interactions-regression.json": "0103f40ca1db2a3526e34c55b8a679c07c59443c22098b979a31f17ba77f2eff",
+    "analysis/g16-time-regression.json": "f12611d887c02b9d8b942ec3cf9ccd19a5f53413df3bf3641ab021e1a92900e3",
+    "analysis/g16-ai-combat-regression.json": "e39096cb75d397602d36b67883850c456459db5625726afcf5727d3770df0456",
+    "analysis/g16-listening.json": "e148f038ec3354faaeb2d3d83ae243cc54521cb333dc60e0b9772f303dbcb7e5"
+  },
+  "artifacts": {
+    "build/g16/dok-diagnostic.elf": "957179b6db39669b42d072f4b09d718243b41035073883ec03b3ddf448bc9874",
+    "build/g16/dok-diagnostic.gba": "99b4e21fabba12543bffa9217adf7e2a4d78655a45b7b0e57de1b0a0a022273e",
+    "build/g16/dok-diagnostic.map": "434cb61483552eb0aa790fc5c4365c800efa257ee77581b2cf59aa939e34edaa"
+  },
+  "checks": {
+    "native_policy_cases": 26,
+    "host_policy": "G16 host: mono reject, latched loop, identity stop, odd loop continuity, EOF silence, restart passed; dok_audio=56",
+    "arm_audio": {
+      "task": "G16",
+      "status": "passed",
+      "rom_sha256": "99b4e21fabba12543bffa9217adf7e2a4d78655a45b7b0e57de1b0a0a022273e",
+      "script_sha256": "eb6bfe8c5e156d7d5e3172ec3937672a9b2fc50c67ffad00322c2d1a3089e862",
+      "core_sample_rate": 65536.0,
+      "core_fps": 59.727500915527344,
+      "once": {
+        "path": "build/g16/audio-check/short-once.wav",
+        "sha256": "23d1a3fadd276c19af542bed36c57661cfe0092f0cbe42a8900f4e88cd2345a3",
+        "frames": 41696,
+        "seconds": 0.63623046875,
+        "peak": 24000,
+        "rms": 3677.7980799395946,
+        "channel_difference_samples": 0
+      },
+      "loop": {
+        "path": "build/g16/audio-check/short-loop.wav",
+        "sha256": "0da97f698205328e9694362aa807548d3bd642d6973ec607fb8dcf2f3f876a95",
+        "frames": 119600,
+        "seconds": 1.824951171875,
+        "peak": 24000,
+        "rms": 4674.258327146278,
+        "channel_difference_samples": 0
+      },
+      "final": {
+        "magic": 1096107057,
+        "active": 0,
+        "resource": 62,
+        "rate": 11025,
+        "period": 1522,
+        "position": 18976,
+        "loops": 0,
+        "starts": 33,
+        "rejected": 4,
+        "stops": 7,
+        "completed": 26,
+        "irqs": 81888,
+        "underruns": 0,
+        "max_gap": 412,
+        "refill_cycles": 1280,
+        "ram_bytes": 128,
+        "level_resets": 3,
+        "requests": 1,
+        "identity": 2147483710
+      },
+      "source": {
+        "path": "originals/pkr/RUS/PKR.RES",
+        "sha256": "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816"
+      },
+      "all_sounds": [
+        {
+          "id": 126,
+          "name_hex": "a7818e9f905f80",
+          "nominal_rate": 22050,
+          "source_samples": 7888,
+          "expected_hardware_seconds": 0.35779285430908203,
+          "observed_seconds": 0.3515968302390605,
+          "renderer_frames": 1,
+          "pcm": {
+            "path": "build/g16/audio-check/sound-126.wav",
+            "sha256": "212e56046aa1acec38b7215138fb568529ac8ae1dbb03df543bb109e13fa0fcd",
+            "frames": 43888,
+            "seconds": 0.669677734375,
+            "peak": 24000,
+            "rms": 3585.770258341574,
+            "channel_difference_samples": 0
+          },
+          "correlation": {
+            "coefficient": 0.999912189756073,
+            "delay_output_frames": 20057,
+            "delay_seconds": 0.3060455322265625,
+            "compared_source_samples": 134,
+            "clock_period": 761,
+            "whole_recording_coefficient": 0.9995287603867872,
+            "whole_source_samples": 7888
+          }
+        },
+        {
+          "id": 141,
+          "name_hex": "a7908087909b825f8f938b88",
+          "nominal_rate": 22050,
+          "source_samples": 8136,
+          "expected_hardware_seconds": 0.36904191970825195,
+          "observed_seconds": 0.36833953644092055,
+          "renderer_frames": 2,
+          "pcm": {
+            "path": "build/g16/audio-check/sound-141.wav",
+            "sha256": "8128f065d376e3d8b564837977a99cba9c0539586b7d9075ae15dd7b10df9ed9",
+            "frames": 44988,
+            "seconds": 0.68646240234375,
+            "peak": 24384,
+            "rms": 3183.7812514076954,
+            "channel_difference_samples": 0
+          },
+          "correlation": {
+            "coefficient": 0.9991474025423024,
+            "delay_output_frames": 20162,
+            "delay_seconds": 0.307647705078125,
+            "compared_source_samples": 134,
+            "clock_period": 761,
+            "whole_recording_coefficient": 0.995411831561678,
+            "whole_source_samples": 8136
+          }
+        },
+        {
+          "id": 138,
+          "name_hex": "a78c9b989c5f80",
+          "nominal_rate": 22050,
+          "source_samples": 9800,
+          "expected_hardware_seconds": 0.4445195198059082,
+          "observed_seconds": 0.43531036124836064,
+          "renderer_frames": 2,
+          "pcm": {
+            "path": "build/g16/audio-check/sound-138.wav",
+            "sha256": "0585a08ff51e5925f5b690da30c7569dde19d84ecf866f5f6c6e6b0ae4e0932e",
+            "frames": 49376,
+            "seconds": 0.75341796875,
+            "peak": 24000,
+            "rms": 4450.700276517549,
+            "channel_difference_samples": 0
+          },
+          "correlation": {
+            "coefficient": 0.9976838558956406,
+            "delay_output_frames": 20054,
+            "delay_seconds": 0.305999755859375,
+            "compared_source_samples": 134,
+            "clock_period": 761,
+            "whole_recording_coefficient": 0.9965307630548198,
+            "whole_source_samples": 9800
+          }
+        },
+        {
+          "id": 143,
+          "name_hex": "a79093869c855f829b919290858b",
+          "nominal_rate": 22050,
+          "source_samples": 10567,
+          "expected_hardware_seconds": 0.47930997610092163,
+          "observed_seconds": 0.4687957736520807,
+          "renderer_frames": 2,
+          "pcm": {
+            "path": "build/g16/audio-check/sound-143.wav",
+            "sha256": "f3b85b8b6623e90851a8092619b5c890ec2716201dde82d665679d532bd84cd0",
+            "frames": 51572,
+            "seconds": 0.78692626953125,
+            "peak": 24576,
+            "rms": 3843.3787663839416,
+            "channel_difference_samples": 0
+          },
+          "correlation": {
+            "coefficient": 0.9936588027173376,
+            "delay_output_frames": 20055,
+            "delay_seconds": 0.3060150146484375,
+            "compared_source_samples": 134,
+            "clock_period": 761,
+            "whole_recording_coefficient": 0.9979480797186713,
+            "whole_source_samples": 10567
+          }
+        },
+        {
+          "id": 142,
+          "name_hex": "a79093869c85",
+          "nominal_rate": 22050,
+          "source_samples": 10567,
+          "expected_hardware_seconds": 0.47930997610092163,
+          "observed_seconds": 0.4687957736520807,
+          "renderer_frames": 2,
+          "pcm": {
+            "path": "build/g16/audio-check/sound-142.wav",
+            "sha256": "674f310c19adf510169b0ea0a47446250d384b250ff7b1d664992ecadea1756e",
+            "frames": 52668,
+            "seconds": 0.80364990234375,
+            "peak": 24576,
+            "rms": 3806.904177268045,
+            "channel_difference_samples": 0
+          },
+          "correlation": {
+            "coefficient": 0.9938869041014098,
+            "delay_output_frames": 20949,
+            "delay_seconds": 0.3196563720703125,
+            "compared_source_samples": 134,
+            "clock_period": 761,
+            "whole_recording_coefficient": 0.9920377506216359,
+            "whole_source_samples": 10567
+          }
+        },
+        {
+          "id": 132,
+          "name_hex": "a782879f929c5f8c9395",
+          "nominal_rate": 22050,
+          "source_samples": 12912,
+          "expected_hardware_seconds": 0.5856771469116211,
+          "observed_seconds": 0.5859947170651009,
+          "renderer_frames": 2,
+          "pcm": {
+            "path": "build/g16/audio-check/sound-132.wav",
+            "sha256": "982130eacef435578a39da088bca271958147d4bd971205e6bcc6ba6bc552fcc",
+            "frames": 59252,
+            "seconds": 0.90411376953125,
+            "peak": 24384,
+            "rms": 4087.530271345473,
+            "channel_difference_samples": 0
+          },
+          "correlation": {
+            "coefficient": 0.9995618747680277,
+            "delay_output_frames": 20123,
+            "delay_seconds": 0.3070526123046875,
+            "compared_source_samples": 134,
+            "clock_period": 761,
+            "whole_recording_coefficient": 0.9965024865835611,
+            "whole_source_samples": 12912
+          }
+        },
+        {
+          "id": 139,
+          "name_hex": "a78c9b989c5f88",
+          "nominal_rate": 22050,
+          "source_samples": 15706,
+          "expected_hardware_seconds": 0.712410569190979,
+          "observed_seconds": 0.703193660478121,
+          "renderer_frames": 2,
+          "pcm": {
+            "path": "build/g16/audio-check/sound-139.wav",
+            "sha256": "4aa6c86e106de582360dd31348ee1d381e3650dd8cd902aef7bbd93fdcfd1749",
+            "frames": 66932,
+            "seconds": 1.02130126953125,
+            "peak": 24000,
+            "rms": 4394.720842942833,
+            "channel_difference_samples": 0
+          },
+          "correlation": {
+            "coefficient": 0.9962666237889614,
+            "delay_output_frames": 20127,
+            "delay_seconds": 0.3071136474609375,
+            "compared_source_samples": 134,
+            "clock_period": 761,
+            "whole_recording_coefficient": 0.9955979561248881,
+            "whole_source_samples": 15706
+          }
+        },
+        {
+          "id": 120,
+          "name_hex": "97858b875f93818892",
+          "nominal_rate": 22050,
+          "source_samples": 16330,
+          "expected_hardware_seconds": 0.7407146692276001,
+          "observed_seconds": 0.7366790728818411,
+          "renderer_frames": 3,
+          "pcm": {
+            "path": "build/g16/audio-check/sound-120.wav",
+            "sha256": "1c5d55939d55fbdde5815b64a803fa1452a1904e0352f1b1e9835b40ac135c24",
+            "frames": 69128,
+            "seconds": 1.0548095703125,
+            "peak": 23808,
+            "rms": 6801.673434803651,
+            "channel_difference_samples": 0
+          },
+          "correlation": {
+            "coefficient": 0.997825211133404,
+            "delay_output_frames": 20086,
+            "delay_seconds": 0.306488037109375,
+            "compared_source_samples": 134,
+            "clock_period": 761,
+            "whole_recording_coefficient": 0.9978529633234974,
+            "whole_source_samples": 8165
+          }
+        },
+        {
+          "id": 137,
+          "name_hex": "a78b808785905f829b919290858b",
+          "nominal_rate": 22050,
+          "source_samples": 17318,
+          "expected_hardware_seconds": 0.7855294942855835,
+          "observed_seconds": 0.7869071914874212,
+          "renderer_frames": 3,
+          "pcm": {
+            "path": "build/g16/audio-check/sound-137.wav",
+            "sha256": "dda97794fc1c8ccfe850f02e49e540bc103b193338df9c5d698d26fddac87a38",
+            "frames": 72420,
+            "seconds": 1.10504150390625,
+            "peak": 24384,
+            "rms": 7304.157790509877,
+            "channel_difference_samples": 0
+          },
+          "correlation": {
+            "coefficient": 0.9990005718450468,
+            "delay_output_frames": 20066,
+            "delay_seconds": 0.306182861328125,
+            "compared_source_samples": 134,
+            "clock_period": 761,
+            "whole_recording_coefficient": 0.9988441771483373,
+            "whole_source_samples": 8659
+          }
+        },
+        {
+          "id": 127,
+          "name_hex": "a7818e9f905f88",
+          "nominal_rate": 22050,
+          "source_samples": 18075,
+          "expected_hardware_seconds": 0.8198663592338562,
+          "observed_seconds": 0.8203926038911412,
+          "renderer_frames": 3,
+          "pcm": {
+            "path": "build/g16/audio-check/sound-127.wav",
+            "sha256": "b5e585b31dd74b9b899907db014b23456e577c905b722e20b5000b68185b1cb7",
+            "frames": 74616,
+            "seconds": 1.1385498046875,
+            "peak": 24384,
+            "rms": 5349.899259865031,
+            "channel_difference_samples": 0
+          },
+          "correlation": {
+            "coefficient": 0.9981521323802773,
+            "delay_output_frames": 20057,
+            "delay_seconds": 0.3060455322265625,
+            "compared_source_samples": 134,
+            "clock_period": 761,
+            "whole_recording_coefficient": 0.9986578885892476,
+            "whole_source_samples": 9038
+          }
+        },
+        {
+          "id": 123,
+          "name_hex": "a7818081805f80",
+          "nominal_rate": 22050,
+          "source_samples": 21400,
+          "expected_hardware_seconds": 0.9706854820251465,
+          "observed_seconds": 0.9710769597078814,
+          "renderer_frames": 3,
+          "pcm": {
+            "path": "build/g16/audio-check/sound-123.wav",
+            "sha256": "5ccf3450607ceaadefb685f9139ade0c843941e9804199eeef1a1a83fa05e39b",
+            "frames": 84488,
+            "seconds": 1.2891845703125,
+            "peak": 24192,
+            "rms": 4429.323991457929,
+            "channel_difference_samples": 0
+          },
+          "correlation": {
+            "coefficient": 0.983823097577203,
+            "delay_output_frames": 20062,
+            "delay_seconds": 0.306121826171875,
+            "compared_source_samples": 134,
+            "clock_period": 761,
+            "whole_recording_coefficient": 0.9920115458095359,
+            "whole_source_samples": 10700
+          }
+        },
+        {
+          "id": 125,
+          "name_hex": "a7818081805f93",
+          "nominal_rate": 22050,
+          "source_samples": 21444,
+          "expected_hardware_seconds": 0.9726812839508057,
+          "observed_seconds": 0.9710769597078814,
+          "renderer_frames": 3,
+          "pcm": {
+            "path": "build/g16/audio-check/sound-125.wav",
+            "sha256": "33ba65d75999dea3b7226283403842cbce3531a2d93d51ecc18875b7774c0376",
+            "frames": 85588,
+            "seconds": 1.30596923828125,
+            "peak": 24384,
+            "rms": 4599.934007016498,
+            "channel_difference_samples": 0
+          },
+          "correlation": {
+            "coefficient": 0.9854827158951195,
+            "delay_output_frames": 20951,
+            "delay_seconds": 0.3196868896484375,
+            "compared_source_samples": 134,
+            "clock_period": 761,
+            "whole_recording_coefficient": 0.9976313124070507,
+            "whole_source_samples": 10722
+          }
+        },
+        {
+          "id": 140,
+          "name_hex": "a78c9b989c5f93",
+          "nominal_rate": 22050,
+          "source_samples": 21900,
+          "expected_hardware_seconds": 0.9933650493621826,
+          "observed_seconds": 0.9878196659097415,
+          "renderer_frames": 3,
+          "pcm": {
+            "path": "build/g16/audio-check/sound-140.wav",
+            "sha256": "bc7a8b5ab1d9e94417f632e6e713514e7665ddea43379fd71bc7439bab9500b1",
+            "frames": 85584,
+            "seconds": 1.305908203125,
+            "peak": 24192,
+            "rms": 4848.350958793086,
+            "channel_difference_samples": 0
+          },
+          "correlation": {
+            "coefficient": 0.9944791552294205,
+            "delay_output_frames": 20068,
+            "delay_seconds": 0.30621337890625,
+            "compared_source_samples": 134,
+            "clock_period": 761,
+            "whole_recording_coefficient": 0.994685919131576,
+            "whole_source_samples": 10950
+          }
+        },
+        {
+          "id": 136,
+          "name_hex": "a7848285909c8a",
+          "nominal_rate": 22050,
+          "source_samples": 23800,
+          "expected_hardware_seconds": 1.07954740524292,
+          "observed_seconds": 1.0715331969190416,
+          "renderer_frames": 3,
+          "pcm": {
+            "path": "build/g16/audio-check/sound-136.wav",
+            "sha256": "643007495e019cef7d46e36b02b5da40ab5da3c3c564d326feeffe28e4893e68",
+            "frames": 92172,
+            "seconds": 1.40643310546875,
+            "peak": 24384,
+            "rms": 3420.7251841260813,
+            "channel_difference_samples": 0
+          },
+          "correlation": {
+            "coefficient": 0.9966093529476878,
+            "delay_output_frames": 20950,
+            "delay_seconds": 0.319671630859375,
+            "compared_source_samples": 134,
+            "clock_period": 761,
+            "whole_recording_coefficient": 0.9939147034683049,
+            "whole_source_samples": 11900
+          }
+        },
+        {
+          "id": 128,
+          "name_hex": "a7818e9f905f93",
+          "nominal_rate": 22050,
+          "source_samples": 26800,
+          "expected_hardware_seconds": 1.2156248092651367,
+          "observed_seconds": 1.2054748465339218,
+          "renderer_frames": 4,
+          "pcm": {
+            "path": "build/g16/audio-check/sound-128.wav",
+            "sha256": "1096967fd4e83689240b86c488f7398d36c262731484d83d4edff0c4927b97b4",
+            "frames": 99852,
+            "seconds": 1.52362060546875,
+            "peak": 24576,
+            "rms": 7719.474480806613,
+            "channel_difference_samples": 0
+          },
+          "correlation": {
+            "coefficient": 0.9987081856843185,
+            "delay_output_frames": 20077,
+            "delay_seconds": 0.3063507080078125,
+            "compared_source_samples": 134,
+            "clock_period": 761,
+            "whole_recording_coefficient": 0.999737502235139,
+            "whole_source_samples": 8934
+          }
+        },
+        {
+          "id": 129,
+          "name_hex": "a782879f929c5f8688878d9c",
+          "nominal_rate": 22050,
+          "source_samples": 28800,
+          "expected_hardware_seconds": 1.3063430786132812,
+          "observed_seconds": 1.305931083745082,
+          "renderer_frames": 4,
+          "pcm": {
+            "path": "build/g16/audio-check/sound-129.wav",
+            "sha256": "662d8ae3fb38e9175126b338329d244b9203ec725cc5952de82fecaf1dbd88b9",
+            "frames": 107532,
+            "seconds": 1.64080810546875,
+            "peak": 24384,
+            "rms": 5480.544973989203,
+            "channel_difference_samples": 0
+          },
+          "correlation": {
+            "coefficient": 0.9998775346819688,
+            "delay_output_frames": 20949,
+            "delay_seconds": 0.3196563720703125,
+            "compared_source_samples": 134,
+            "clock_period": 761,
+            "whole_recording_coefficient": 0.9995187106836019,
+            "whole_source_samples": 9600
+          }
+        },
+        {
+          "id": 130,
+          "name_hex": "a782879f929c5f8a80909293",
+          "nominal_rate": 22050,
+          "source_samples": 30968,
+          "expected_hardware_seconds": 1.40468168258667,
+          "observed_seconds": 1.406387320956242,
+          "renderer_frames": 4,
+          "pcm": {
+            "path": "build/g16/audio-check/sound-130.wav",
+            "sha256": "9cb6604923e85ac7eaeca4914e0eb0f8aa0c0c2202ae277ba91acd283f5607ab",
+            "frames": 113020,
+            "seconds": 1.72454833984375,
+            "peak": 24384,
+            "rms": 5401.619899305911,
+            "channel_difference_samples": 0
+          },
+          "correlation": {
+            "coefficient": 0.9995127298279421,
+            "delay_output_frames": 20072,
+            "delay_seconds": 0.3062744140625,
+            "compared_source_samples": 134,
+            "clock_period": 761,
+            "whole_recording_coefficient": 0.999148700992194,
+            "whole_source_samples": 10323
+          }
+        },
+        {
+          "id": 124,
+          "name_hex": "a7818081805f88",
+          "nominal_rate": 22050,
+          "source_samples": 32420,
+          "expected_hardware_seconds": 1.4705431461334229,
+          "observed_seconds": 1.4733581457636822,
+          "renderer_frames": 5,
+          "pcm": {
+            "path": "build/g16/audio-check/sound-124.wav",
+            "sha256": "b01eb8c8de36f32a6c23f09c87187597616c95e09b6fe790cffadb3f132d9212",
+            "frames": 117404,
+            "seconds": 1.79144287109375,
+            "peak": 24384,
+            "rms": 6580.570244308727,
+            "channel_difference_samples": 0
+          },
+          "correlation": {
+            "coefficient": 0.998109958961409,
+            "delay_output_frames": 20075,
+            "delay_seconds": 0.3063201904296875,
+            "compared_source_samples": 134,
+            "clock_period": 761,
+            "whole_recording_coefficient": 0.9971908752338134,
+            "whole_source_samples": 8105
+          }
+        },
+        {
+          "id": 133,
+          "name_hex": "a782879f929c5f8f938b9e",
+          "nominal_rate": 22050,
+          "source_samples": 32670,
+          "expected_hardware_seconds": 1.481882929801941,
+          "observed_seconds": 1.4733581457636822,
+          "renderer_frames": 5,
+          "pcm": {
+            "path": "build/g16/audio-check/sound-133.wav",
+            "sha256": "56261de3d9bf67aecc694d5d2636699af93cdc1e33331ce62798e7c1c78bbfaa",
+            "frames": 118504,
+            "seconds": 1.8082275390625,
+            "peak": 24576,
+            "rms": 3465.0508187130663,
+            "channel_difference_samples": 0
+          },
+          "correlation": {
+            "coefficient": 0.9857958146215186,
+            "delay_output_frames": 20949,
+            "delay_seconds": 0.3196563720703125,
+            "compared_source_samples": 134,
+            "clock_period": 761,
+            "whole_recording_coefficient": 0.9950893872512147,
+            "whole_source_samples": 8168
+          }
+        },
+        {
+          "id": 134,
+          "name_hex": "a782879f929c5f9093869c85",
+          "nominal_rate": 22050,
+          "source_samples": 33954,
+          "expected_hardware_seconds": 1.5401240587234497,
+          "observed_seconds": 1.5403289705711223,
+          "renderer_frames": 5,
+          "pcm": {
+            "path": "build/g16/audio-check/sound-134.wav",
+            "sha256": "c381aff45f361bae82639029b194496ac5bd5aeba2be2e844d55f1f471b2df7c",
+            "frames": 122892,
+            "seconds": 1.87518310546875,
+            "peak": 24576,
+            "rms": 3523.2762234244688,
+            "channel_difference_samples": 0
+          },
+          "correlation": {
+            "coefficient": 0.998503741500443,
+            "delay_output_frames": 20945,
+            "delay_seconds": 0.3195953369140625,
+            "compared_source_samples": 134,
+            "clock_period": 761,
+            "whole_recording_coefficient": 0.9992705220130274,
+            "whole_source_samples": 8489
+          }
+        },
+        {
+          "id": 131,
+          "name_hex": "a782879f929c5f8a8b9e97",
+          "nominal_rate": 22050,
+          "source_samples": 39448,
+          "expected_hardware_seconds": 1.7893271446228027,
+          "observed_seconds": 1.7914695635990228,
+          "renderer_frames": 5,
+          "pcm": {
+            "path": "build/g16/audio-check/sound-131.wav",
+            "sha256": "29442015a62225004f18365c297300732a8b50e87c8b1af684e72a994365dcd4",
+            "frames": 138252,
+            "seconds": 2.10955810546875,
+            "peak": 24576,
+            "rms": 4464.0351894589785,
+            "channel_difference_samples": 0
+          },
+          "correlation": {
+            "coefficient": 0.9986749438882025,
+            "delay_output_frames": 20064,
+            "delay_seconds": 0.30615234375,
+            "compared_source_samples": 134,
+            "clock_period": 761,
+            "whole_recording_coefficient": 0.9980835046464831,
+            "whole_source_samples": 9862
+          }
+        },
+        {
+          "id": 135,
+          "name_hex": "a7848285909c84",
+          "nominal_rate": 22050,
+          "source_samples": 46262,
+          "expected_hardware_seconds": 2.098404288291931,
+          "observed_seconds": 2.092838275232503,
+          "renderer_frames": 6,
+          "pcm": {
+            "path": "build/g16/audio-check/sound-135.wav",
+            "sha256": "114e127fca7b7c008137bc3d9713227b75d8851b7c6d643574f7554283f1249b",
+            "frames": 158004,
+            "seconds": 2.41094970703125,
+            "peak": 24384,
+            "rms": 3051.277356832093,
+            "channel_difference_samples": 0
+          },
+          "correlation": {
+            "coefficient": 0.9816763254150688,
+            "delay_output_frames": 20083,
+            "delay_seconds": 0.3064422607421875,
+            "compared_source_samples": 134,
+            "clock_period": 761,
+            "whole_recording_coefficient": 0.9879300075796053,
+            "whole_source_samples": 9253
+          }
+        },
+        {
+          "id": 62,
+          "name_hex": "8780919280828a805f8782938a",
+          "nominal_rate": 11025,
+          "source_samples": 474361,
+          "expected_hardware_seconds": 43.03320896625519,
+          "observed_seconds": 43.02875493878027,
+          "renderer_frames": 123,
+          "pcm": {
+            "path": "build/g16/audio-check/sound-062.wav",
+            "sha256": "46392e712005eefb3cb960705d4dc504026d196ddc5a47f5c4328d1d5aba7ed4",
+            "frames": 2841876,
+            "seconds": 43.36358642578125,
+            "peak": 24576,
+            "rms": 12736.734045042742,
+            "channel_difference_samples": 0
+          },
+          "correlation": {
+            "coefficient": 1.0,
+            "delay_output_frames": 20862,
+            "delay_seconds": 0.318328857421875,
+            "compared_source_samples": 137,
+            "clock_period": 1522,
+            "whole_recording_coefficient": 0.9999471655697781,
+            "whole_source_samples": 8041
+          }
+        }
+      ],
+      "identity": {
+        "same_pcm_distinct_sound_objects": true,
+        "other_owner_query_false": true,
+        "other_owner_stop_preserved_current": true,
+        "other_owner_start_rejected": true,
+        "correct_owner_stop": true
+      },
+      "projectile_identity": {
+        "actual_projectile_impact": true,
+        "prepared_other_effect_completion": true,
+        "same_pcm_distinct_clone_identities": true,
+        "removal_of_other_clone_preserved_voice": true,
+        "playing_slot": 1,
+        "removed_slot": 0
+      },
+      "integrated_cost": {
+        "silent": {
+          "minimum": 5383680,
+          "maximum": 5384320,
+          "mean": 5383840.0,
+          "values": [
+            5383680,
+            5383680,
+            5383680,
+            5383680,
+            5383680,
+            5383680,
+            5383680,
+            5384320,
+            5383680,
+            5384320,
+            5383680,
+            5384320
+          ],
+          "framebuffer_sha256": "4613daee9e338a5ff1efac6c1a95fadffaa5ee452f096812a8fbc3886ae6dd0d"
+        },
+        "active22050": {
+          "minimum": 6162880,
+          "maximum": 6164992,
+          "mean": 6163621.333333333,
+          "values": [
+            6163584,
+            6163520,
+            6163584,
+            6163584,
+            6162880,
+            6163584,
+            6163648,
+            6163584,
+            6163456,
+            6163520,
+            6164992,
+            6163520
+          ],
+          "framebuffer_sha256": "4613daee9e338a5ff1efac6c1a95fadffaa5ee452f096812a8fbc3886ae6dd0d"
+        },
+        "active11025": {
+          "minimum": 5747840,
+          "maximum": 5749632,
+          "mean": 5748458.666666667,
+          "values": [
+            5747840,
+            5748224,
+            5748864,
+            5748224,
+            5748224,
+            5748096,
+            5748864,
+            5749632,
+            5748224,
+            5748224,
+            5748864,
+            5748224
+          ],
+          "framebuffer_sha256": "4613daee9e338a5ff1efac6c1a95fadffaa5ee452f096812a8fbc3886ae6dd0d"
+        },
+        "overhead22050": 0.1448373899174813,
+        "overhead11025": 0.06772464758734786,
+        "timer_quantum_cycles": 64,
+        "scope": "Whole renderer elapsed cycles including audio IRQs and DMA"
+      },
+      "rejected_loop_preserved_once": true,
+      "language_preserved_active_voice": true,
+      "level_change_stopped_voice": true,
+      "irq_stack": {
+        "low": 50364160,
+        "top": 50364320,
+        "untouched_margin_bytes": 80,
+        "high_water_bytes": 80,
+        "includes_bios_irq_saves": true
+      },
+      "stack": {
+        "main_stack_low": 50356224,
+        "main_stack_top": 50364160,
+        "sentinel_word": 219540062,
+        "untouched_margin_bytes": 5576,
+        "high_water_bytes": 2360,
+        "irq_and_bios_excluded": true,
+        "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+      },
+      "human_listening_verified": true,
+      "listening_evidence_sha256": "e148f038ec3354faaeb2d3d83ae243cc54521cb333dc60e0b9772f303dbcb7e5",
+      "physical_gba_tested": false
+    },
+    "rational_clock": true,
+    "door_sensor_conveyor_finish": true,
+    "ai_combat": {
+      "task": "G15",
+      "status": "passed",
+      "rom_sha256": "99b4e21fabba12543bffa9217adf7e2a4d78655a45b7b0e57de1b0a0a022273e",
+      "script_sha256": "b9b185787c145ee149c9dc0f2318c1f74e9f5d9037ef666ec8043926579eec9e",
+      "groups": [
+        {
+          "group": "E01",
+          "language": 0,
+          "level": 1,
+          "glyph": 128,
+          "melee": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 12916
+              },
+              {
+                "frame": 1,
+                "deadline": 15416
+              },
+              {
+                "frame": 2,
+                "deadline": 17916
+              },
+              {
+                "frame": 3,
+                "deadline": 20416
+              },
+              {
+                "frame": 4,
+                "deadline": 22916
+              },
+              {
+                "frame": 5,
+                "deadline": 25416
+              }
+            ],
+            "damage": 5,
+            "hit_only_after_animation": true
+          },
+          "hurt": {
+            "sleeping_first_hit_only_wakes": true,
+            "second_hit_subtracts_one": true,
+            "hurt_state_three": true,
+            "contact_hurt_resumes_state_two": true
+          },
+          "death": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 11416
+              },
+              {
+                "frame": 1,
+                "deadline": 12416
+              },
+              {
+                "frame": 2,
+                "deadline": 13416
+              },
+              {
+                "frame": 3,
+                "deadline": 14416
+              },
+              {
+                "frame": 4,
+                "deadline": 15416
+              },
+              {
+                "frame": 5,
+                "deadline": 16416
+              },
+              {
+                "frame": 6,
+                "deadline": 17416
+              },
+              {
+                "frame": 7,
+                "deadline": 4294953640
+              }
+            ],
+            "completed_once": true,
+            "passable_persistent_corpse": true,
+            "destination_plane": 1,
+            "mmap": 32,
+            "tmap": 128,
+            "capture": {
+              "path": "build/g16/sprite-check/corpse-0-E01.png",
+              "framebuffer_sha256": "9b82f38b4dd1589bcafc3cd90030c9db1da7f5105f7b135ca636c00086e8016b",
+              "cycles": 5493248,
+              "faces": 1
+            }
+          },
+          "ranged": {
+            "delay": 3,
+            "limit": 4,
+            "threshold_strict": true,
+            "glyph": 51,
+            "projectile_deadline_from_current_ai_time": true,
+            "series": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "reset_after_limit": true
+          }
+        },
+        {
+          "group": "E02",
+          "language": 0,
+          "level": 1,
+          "glyph": 129,
+          "melee": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 12916
+              },
+              {
+                "frame": 1,
+                "deadline": 15416
+              },
+              {
+                "frame": 2,
+                "deadline": 17916
+              },
+              {
+                "frame": 3,
+                "deadline": 20416
+              },
+              {
+                "frame": 4,
+                "deadline": 22916
+              },
+              {
+                "frame": 5,
+                "deadline": 25416
+              }
+            ],
+            "damage": 5,
+            "hit_only_after_animation": true
+          },
+          "hurt": {
+            "sleeping_first_hit_only_wakes": true,
+            "second_hit_subtracts_one": true,
+            "hurt_state_three": true,
+            "contact_hurt_resumes_state_two": true
+          },
+          "death": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 11416
+              },
+              {
+                "frame": 1,
+                "deadline": 12416
+              },
+              {
+                "frame": 2,
+                "deadline": 13416
+              },
+              {
+                "frame": 3,
+                "deadline": 14416
+              },
+              {
+                "frame": 4,
+                "deadline": 15416
+              },
+              {
+                "frame": 5,
+                "deadline": 16416
+              },
+              {
+                "frame": 6,
+                "deadline": 17416
+              },
+              {
+                "frame": 7,
+                "deadline": 4294953640
+              }
+            ],
+            "completed_once": true,
+            "passable_persistent_corpse": true,
+            "destination_plane": 1,
+            "mmap": 32,
+            "tmap": 129
+          },
+          "ranged": {
+            "delay": 3,
+            "limit": 4,
+            "threshold_strict": true,
+            "glyph": 51,
+            "projectile_deadline_from_current_ai_time": true,
+            "series": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "reset_after_limit": true
+          }
+        },
+        {
+          "group": "E03",
+          "language": 0,
+          "level": 1,
+          "glyph": 140,
+          "melee": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 12916
+              },
+              {
+                "frame": 1,
+                "deadline": 15416
+              },
+              {
+                "frame": 2,
+                "deadline": 17916
+              },
+              {
+                "frame": 3,
+                "deadline": 20416
+              },
+              {
+                "frame": 4,
+                "deadline": 22916
+              },
+              {
+                "frame": 5,
+                "deadline": 25416
+              }
+            ],
+            "damage": 5,
+            "hit_only_after_animation": true
+          },
+          "hurt": {
+            "sleeping_first_hit_only_wakes": true,
+            "second_hit_subtracts_one": true,
+            "hurt_state_three": true,
+            "contact_hurt_resumes_state_two": true
+          },
+          "death": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 11416
+              },
+              {
+                "frame": 1,
+                "deadline": 12416
+              },
+              {
+                "frame": 2,
+                "deadline": 13416
+              },
+              {
+                "frame": 3,
+                "deadline": 14416
+              },
+              {
+                "frame": 4,
+                "deadline": 15416
+              },
+              {
+                "frame": 5,
+                "deadline": 16416
+              },
+              {
+                "frame": 6,
+                "deadline": 17416
+              },
+              {
+                "frame": 7,
+                "deadline": 4294953640
+              }
+            ],
+            "completed_once": true,
+            "passable_persistent_corpse": true,
+            "destination_plane": 1,
+            "mmap": 32,
+            "tmap": 140
+          },
+          "ranged": {
+            "delay": 3,
+            "limit": 4,
+            "threshold_strict": true,
+            "glyph": 51,
+            "projectile_deadline_from_current_ai_time": true,
+            "series": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "reset_after_limit": true
+          }
+        },
+        {
+          "group": "E04",
+          "language": 0,
+          "level": 1,
+          "glyph": 160,
+          "melee": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 12916
+              },
+              {
+                "frame": 1,
+                "deadline": 15416
+              },
+              {
+                "frame": 2,
+                "deadline": 17916
+              }
+            ],
+            "damage": 5,
+            "hit_only_after_animation": true
+          },
+          "hurt": {
+            "sleeping_first_hit_only_wakes": true,
+            "second_hit_subtracts_one": true,
+            "hurt_state_three": true,
+            "contact_hurt_resumes_state_two": true
+          },
+          "death": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 11916
+              },
+              {
+                "frame": 1,
+                "deadline": 13416
+              },
+              {
+                "frame": 2,
+                "deadline": 14916
+              },
+              {
+                "frame": 3,
+                "deadline": 16416
+              },
+              {
+                "frame": 4,
+                "deadline": 17916
+              },
+              {
+                "frame": 5,
+                "deadline": 19416
+              },
+              {
+                "frame": 6,
+                "deadline": 20916
+              },
+              {
+                "frame": 7,
+                "deadline": 22416
+              }
+            ],
+            "completed_once": true,
+            "passable_persistent_corpse": true,
+            "destination_plane": 1,
+            "mmap": 32,
+            "tmap": 160,
+            "capture": {
+              "path": "build/g16/sprite-check/corpse-0-E04.png",
+              "framebuffer_sha256": "ad9a5c755149c2832778512a43ee7e32bc2fcd8ebd604f5c67fff9b213642d98",
+              "cycles": 5504064,
+              "faces": 1
+            }
+          },
+          "ranged": {
+            "delay": 99,
+            "limit": 0,
+            "threshold_strict": true,
+            "zero_burst_disabled": true
+          }
+        },
+        {
+          "group": "E05",
+          "language": 0,
+          "level": 1,
+          "glyph": 161,
+          "melee": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 12916
+              },
+              {
+                "frame": 1,
+                "deadline": 15416
+              },
+              {
+                "frame": 2,
+                "deadline": 17916
+              },
+              {
+                "frame": 3,
+                "deadline": 20416
+              },
+              {
+                "frame": 4,
+                "deadline": 22916
+              }
+            ],
+            "damage": 5,
+            "hit_only_after_animation": true
+          },
+          "hurt": {
+            "sleeping_first_hit_only_wakes": true,
+            "second_hit_subtracts_one": true,
+            "hurt_state_three": true,
+            "contact_hurt_resumes_state_two": true
+          },
+          "death": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 12416
+              },
+              {
+                "frame": 1,
+                "deadline": 14416
+              },
+              {
+                "frame": 2,
+                "deadline": 16416
+              },
+              {
+                "frame": 3,
+                "deadline": 18416
+              },
+              {
+                "frame": 4,
+                "deadline": 20416
+              },
+              {
+                "frame": 5,
+                "deadline": 4294956640
+              }
+            ],
+            "completed_once": true,
+            "passable_persistent_corpse": true,
+            "destination_plane": 1,
+            "mmap": 32,
+            "tmap": 161,
+            "capture": {
+              "path": "build/g16/sprite-check/corpse-0-E05.png",
+              "framebuffer_sha256": "9b82f38b4dd1589bcafc3cd90030c9db1da7f5105f7b135ca636c00086e8016b",
+              "cycles": 5489856,
+              "faces": 1
+            }
+          },
+          "ranged": {
+            "delay": 99,
+            "limit": 0,
+            "threshold_strict": true,
+            "zero_burst_disabled": true
+          }
+        },
+        {
+          "group": "E06",
+          "language": 0,
+          "level": 2,
+          "glyph": 128,
+          "melee": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 12916
+              },
+              {
+                "frame": 1,
+                "deadline": 15416
+              },
+              {
+                "frame": 2,
+                "deadline": 17916
+              },
+              {
+                "frame": 3,
+                "deadline": 20416
+              },
+              {
+                "frame": 4,
+                "deadline": 22916
+              }
+            ],
+            "damage": 5,
+            "hit_only_after_animation": true
+          },
+          "hurt": {
+            "sleeping_first_hit_only_wakes": true,
+            "second_hit_subtracts_one": true,
+            "hurt_state_three": true,
+            "contact_hurt_resumes_state_two": true
+          },
+          "death": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 11416
+              },
+              {
+                "frame": 1,
+                "deadline": 12416
+              },
+              {
+                "frame": 2,
+                "deadline": 13416
+              },
+              {
+                "frame": 3,
+                "deadline": 14416
+              },
+              {
+                "frame": 4,
+                "deadline": 15416
+              },
+              {
+                "frame": 5,
+                "deadline": 16416
+              },
+              {
+                "frame": 6,
+                "deadline": 17416
+              },
+              {
+                "frame": 7,
+                "deadline": 4294953640
+              }
+            ],
+            "completed_once": true,
+            "passable_persistent_corpse": true,
+            "destination_plane": 1,
+            "mmap": 32,
+            "tmap": 128
+          },
+          "ranged": {
+            "delay": 3,
+            "limit": 0,
+            "threshold_strict": true,
+            "zero_burst_disabled": true
+          }
+        },
+        {
+          "group": "E07",
+          "language": 0,
+          "level": 2,
+          "glyph": 161,
+          "melee": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 12916
+              },
+              {
+                "frame": 1,
+                "deadline": 15416
+              },
+              {
+                "frame": 2,
+                "deadline": 17916
+              },
+              {
+                "frame": 3,
+                "deadline": 20416
+              },
+              {
+                "frame": 4,
+                "deadline": 22916
+              }
+            ],
+            "damage": 5,
+            "hit_only_after_animation": true
+          },
+          "hurt": {
+            "sleeping_first_hit_only_wakes": true,
+            "second_hit_subtracts_one": true,
+            "hurt_state_three": true,
+            "contact_hurt_resumes_state_two": true
+          },
+          "death": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 12416
+              },
+              {
+                "frame": 1,
+                "deadline": 14416
+              },
+              {
+                "frame": 2,
+                "deadline": 16416
+              },
+              {
+                "frame": 3,
+                "deadline": 18416
+              },
+              {
+                "frame": 4,
+                "deadline": 20416
+              },
+              {
+                "frame": 5,
+                "deadline": 4294956640
+              }
+            ],
+            "completed_once": true,
+            "passable_persistent_corpse": true,
+            "destination_plane": 1,
+            "mmap": 32,
+            "tmap": 161
+          },
+          "ranged": {
+            "delay": 99,
+            "limit": 0,
+            "threshold_strict": true,
+            "zero_burst_disabled": true
+          }
+        },
+        {
+          "group": "E08",
+          "language": 0,
+          "level": 2,
+          "glyph": 160,
+          "melee": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 12916
+              },
+              {
+                "frame": 1,
+                "deadline": 15416
+              },
+              {
+                "frame": 2,
+                "deadline": 17916
+              }
+            ],
+            "damage": 5,
+            "hit_only_after_animation": true
+          },
+          "hurt": {
+            "sleeping_first_hit_only_wakes": true,
+            "second_hit_subtracts_one": true,
+            "hurt_state_three": true,
+            "contact_hurt_resumes_state_two": true
+          },
+          "death": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 11916
+              },
+              {
+                "frame": 1,
+                "deadline": 13416
+              },
+              {
+                "frame": 2,
+                "deadline": 14916
+              },
+              {
+                "frame": 3,
+                "deadline": 16416
+              },
+              {
+                "frame": 4,
+                "deadline": 17916
+              },
+              {
+                "frame": 5,
+                "deadline": 19416
+              },
+              {
+                "frame": 6,
+                "deadline": 20916
+              },
+              {
+                "frame": 7,
+                "deadline": 22416
+              }
+            ],
+            "completed_once": true,
+            "passable_persistent_corpse": true,
+            "destination_plane": 1,
+            "mmap": 32,
+            "tmap": 160
+          },
+          "ranged": {
+            "delay": 3,
+            "limit": 4,
+            "threshold_strict": true,
+            "glyph": 52,
+            "projectile_deadline_from_current_ai_time": true,
+            "series": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "reset_after_limit": true
+          }
+        },
+        {
+          "group": "E09",
+          "language": 0,
+          "level": 3,
+          "glyph": 128,
+          "melee": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 12916
+              },
+              {
+                "frame": 1,
+                "deadline": 15416
+              },
+              {
+                "frame": 2,
+                "deadline": 17916
+              },
+              {
+                "frame": 3,
+                "deadline": 20416
+              },
+              {
+                "frame": 4,
+                "deadline": 22916
+              },
+              {
+                "frame": 5,
+                "deadline": 25416
+              }
+            ],
+            "damage": 5,
+            "hit_only_after_animation": true
+          },
+          "hurt": {
+            "sleeping_first_hit_only_wakes": true,
+            "second_hit_subtracts_one": true,
+            "hurt_state_three": true,
+            "contact_hurt_resumes_state_two": true
+          },
+          "death": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 11416
+              },
+              {
+                "frame": 1,
+                "deadline": 12416
+              },
+              {
+                "frame": 2,
+                "deadline": 13416
+              },
+              {
+                "frame": 3,
+                "deadline": 14416
+              },
+              {
+                "frame": 4,
+                "deadline": 15416
+              },
+              {
+                "frame": 5,
+                "deadline": 16416
+              },
+              {
+                "frame": 6,
+                "deadline": 17416
+              },
+              {
+                "frame": 7,
+                "deadline": 4294953640
+              }
+            ],
+            "completed_once": true,
+            "passable_persistent_corpse": true,
+            "destination_plane": 1,
+            "mmap": 32,
+            "tmap": 128
+          },
+          "ranged": {
+            "delay": 3,
+            "limit": 4,
+            "threshold_strict": true,
+            "glyph": 51,
+            "projectile_deadline_from_current_ai_time": true,
+            "series": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "reset_after_limit": true
+          }
+        },
+        {
+          "group": "E10",
+          "language": 0,
+          "level": 3,
+          "glyph": 179,
+          "melee": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 11916
+              },
+              {
+                "frame": 1,
+                "deadline": 13416
+              },
+              {
+                "frame": 2,
+                "deadline": 14916
+              },
+              {
+                "frame": 3,
+                "deadline": 16416
+              }
+            ],
+            "damage": 5,
+            "hit_only_after_animation": true
+          },
+          "hurt": {
+            "sleeping_first_hit_only_wakes": true,
+            "second_hit_subtracts_one": true,
+            "hurt_state_three": true,
+            "contact_hurt_resumes_state_two": true
+          },
+          "death": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 11916
+              },
+              {
+                "frame": 1,
+                "deadline": 13416
+              },
+              {
+                "frame": 2,
+                "deadline": 14916
+              },
+              {
+                "frame": 3,
+                "deadline": 16416
+              },
+              {
+                "frame": 4,
+                "deadline": 17916
+              },
+              {
+                "frame": 5,
+                "deadline": 19416
+              },
+              {
+                "frame": 6,
+                "deadline": 20916
+              },
+              {
+                "frame": 7,
+                "deadline": 22416
+              },
+              {
+                "frame": 8,
+                "deadline": 23916
+              }
+            ],
+            "completed_once": true,
+            "passable_persistent_corpse": true,
+            "destination_plane": 1,
+            "mmap": 32,
+            "tmap": 179,
+            "capture": {
+              "path": "build/g16/sprite-check/corpse-0-E10.png",
+              "framebuffer_sha256": "b62e124e08b9427804d25920428e14bffa822e5f98468e56db3b3536f8df1a76",
+              "cycles": 5513856,
+              "faces": 1
+            }
+          },
+          "ranged": {
+            "delay": 3,
+            "limit": 0,
+            "threshold_strict": true,
+            "zero_burst_disabled": true
+          }
+        },
+        {
+          "group": "E11",
+          "language": 0,
+          "level": 3,
+          "glyph": 160,
+          "melee": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 12916
+              },
+              {
+                "frame": 1,
+                "deadline": 15416
+              },
+              {
+                "frame": 2,
+                "deadline": 17916
+              }
+            ],
+            "damage": 5,
+            "hit_only_after_animation": true
+          },
+          "hurt": {
+            "sleeping_first_hit_only_wakes": true,
+            "second_hit_subtracts_one": true,
+            "hurt_state_three": true,
+            "contact_hurt_resumes_state_two": true
+          },
+          "death": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 11916
+              },
+              {
+                "frame": 1,
+                "deadline": 13416
+              },
+              {
+                "frame": 2,
+                "deadline": 14916
+              },
+              {
+                "frame": 3,
+                "deadline": 16416
+              },
+              {
+                "frame": 4,
+                "deadline": 17916
+              },
+              {
+                "frame": 5,
+                "deadline": 19416
+              },
+              {
+                "frame": 6,
+                "deadline": 20916
+              },
+              {
+                "frame": 7,
+                "deadline": 22416
+              }
+            ],
+            "completed_once": true,
+            "passable_persistent_corpse": true,
+            "destination_plane": 1,
+            "mmap": 32,
+            "tmap": 160
+          },
+          "ranged": {
+            "delay": 99,
+            "limit": 4,
+            "threshold_strict": true,
+            "glyph": 52,
+            "projectile_deadline_from_current_ai_time": true,
+            "series": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "reset_after_limit": true
+          }
+        },
+        {
+          "group": "E12",
+          "language": 0,
+          "level": 3,
+          "glyph": 198,
+          "melee": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 12916
+              },
+              {
+                "frame": 1,
+                "deadline": 15416
+              },
+              {
+                "frame": 2,
+                "deadline": 17916
+              }
+            ],
+            "damage": 5,
+            "hit_only_after_animation": true
+          },
+          "hurt": {
+            "sleeping_first_hit_only_wakes": true,
+            "second_hit_subtracts_one": true,
+            "hurt_state_three": true,
+            "contact_hurt_resumes_state_two": true
+          },
+          "death": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 11916
+              },
+              {
+                "frame": 1,
+                "deadline": 13416
+              },
+              {
+                "frame": 2,
+                "deadline": 14916
+              },
+              {
+                "frame": 3,
+                "deadline": 16416
+              },
+              {
+                "frame": 4,
+                "deadline": 17916
+              },
+              {
+                "frame": 5,
+                "deadline": 19416
+              },
+              {
+                "frame": 6,
+                "deadline": 20916
+              },
+              {
+                "frame": 7,
+                "deadline": 22416
+              }
+            ],
+            "completed_once": true,
+            "passable_persistent_corpse": true,
+            "destination_plane": 1,
+            "mmap": 32,
+            "tmap": 198
+          },
+          "ranged": {
+            "delay": 3,
+            "limit": 4,
+            "threshold_strict": true,
+            "glyph": 52,
+            "projectile_deadline_from_current_ai_time": true,
+            "series": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "reset_after_limit": true
+          }
+        },
+        {
+          "group": "E13",
+          "language": 0,
+          "level": 3,
+          "glyph": 214,
+          "melee": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 12916
+              },
+              {
+                "frame": 1,
+                "deadline": 15416
+              },
+              {
+                "frame": 2,
+                "deadline": 17916
+              }
+            ],
+            "damage": 5,
+            "hit_only_after_animation": true
+          },
+          "hurt": {
+            "sleeping_first_hit_only_wakes": true,
+            "second_hit_subtracts_one": true,
+            "hurt_state_three": true,
+            "contact_hurt_resumes_state_two": true
+          },
+          "death": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 11916
+              },
+              {
+                "frame": 1,
+                "deadline": 13416
+              },
+              {
+                "frame": 2,
+                "deadline": 14916
+              },
+              {
+                "frame": 3,
+                "deadline": 16416
+              },
+              {
+                "frame": 4,
+                "deadline": 17916
+              },
+              {
+                "frame": 5,
+                "deadline": 19416
+              },
+              {
+                "frame": 6,
+                "deadline": 20916
+              },
+              {
+                "frame": 7,
+                "deadline": 22416
+              }
+            ],
+            "completed_once": true,
+            "passable_persistent_corpse": true,
+            "destination_plane": 1,
+            "mmap": 32,
+            "tmap": 214
+          },
+          "ranged": {
+            "delay": 3,
+            "limit": 4,
+            "threshold_strict": true,
+            "glyph": 51,
+            "projectile_deadline_from_current_ai_time": true,
+            "series": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "reset_after_limit": true
+          }
+        },
+        {
+          "group": "E14",
+          "language": 0,
+          "level": 3,
+          "glyph": 161,
+          "melee": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 12916
+              },
+              {
+                "frame": 1,
+                "deadline": 15416
+              },
+              {
+                "frame": 2,
+                "deadline": 17916
+              },
+              {
+                "frame": 3,
+                "deadline": 20416
+              },
+              {
+                "frame": 4,
+                "deadline": 22916
+              }
+            ],
+            "damage": 5,
+            "hit_only_after_animation": true
+          },
+          "hurt": {
+            "sleeping_first_hit_only_wakes": true,
+            "second_hit_subtracts_one": true,
+            "hurt_state_three": true,
+            "contact_hurt_resumes_state_two": true
+          },
+          "death": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 12416
+              },
+              {
+                "frame": 1,
+                "deadline": 14416
+              },
+              {
+                "frame": 2,
+                "deadline": 16416
+              },
+              {
+                "frame": 3,
+                "deadline": 18416
+              },
+              {
+                "frame": 4,
+                "deadline": 20416
+              },
+              {
+                "frame": 5,
+                "deadline": 4294956640
+              }
+            ],
+            "completed_once": true,
+            "passable_persistent_corpse": true,
+            "destination_plane": 1,
+            "mmap": 32,
+            "tmap": 161
+          },
+          "ranged": {
+            "delay": 99,
+            "limit": 0,
+            "threshold_strict": true,
+            "zero_burst_disabled": true
+          }
+        },
+        {
+          "group": "E01",
+          "language": 1,
+          "level": 1,
+          "glyph": 128,
+          "melee": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 12916
+              },
+              {
+                "frame": 1,
+                "deadline": 15416
+              },
+              {
+                "frame": 2,
+                "deadline": 17916
+              },
+              {
+                "frame": 3,
+                "deadline": 20416
+              },
+              {
+                "frame": 4,
+                "deadline": 22916
+              },
+              {
+                "frame": 5,
+                "deadline": 25416
+              }
+            ],
+            "damage": 5,
+            "hit_only_after_animation": true
+          },
+          "hurt": {
+            "sleeping_first_hit_only_wakes": true,
+            "second_hit_subtracts_one": true,
+            "hurt_state_three": true,
+            "contact_hurt_resumes_state_two": true
+          },
+          "death": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 11416
+              },
+              {
+                "frame": 1,
+                "deadline": 12416
+              },
+              {
+                "frame": 2,
+                "deadline": 13416
+              },
+              {
+                "frame": 3,
+                "deadline": 14416
+              },
+              {
+                "frame": 4,
+                "deadline": 15416
+              },
+              {
+                "frame": 5,
+                "deadline": 16416
+              },
+              {
+                "frame": 6,
+                "deadline": 17416
+              },
+              {
+                "frame": 7,
+                "deadline": 4294953640
+              }
+            ],
+            "completed_once": true,
+            "passable_persistent_corpse": true,
+            "destination_plane": 1,
+            "mmap": 32,
+            "tmap": 128,
+            "capture": {
+              "path": "build/g16/sprite-check/corpse-1-E01.png",
+              "framebuffer_sha256": "a4ac2502053f37c15ec4bbef4ecaa35a48957cac3523a8535addaeb821cd9300",
+              "cycles": 5492608,
+              "faces": 1
+            }
+          },
+          "ranged": {
+            "delay": 3,
+            "limit": 4,
+            "threshold_strict": true,
+            "glyph": 51,
+            "projectile_deadline_from_current_ai_time": true,
+            "series": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "reset_after_limit": true
+          }
+        },
+        {
+          "group": "E02",
+          "language": 1,
+          "level": 1,
+          "glyph": 129,
+          "melee": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 12916
+              },
+              {
+                "frame": 1,
+                "deadline": 15416
+              },
+              {
+                "frame": 2,
+                "deadline": 17916
+              },
+              {
+                "frame": 3,
+                "deadline": 20416
+              },
+              {
+                "frame": 4,
+                "deadline": 22916
+              },
+              {
+                "frame": 5,
+                "deadline": 25416
+              }
+            ],
+            "damage": 5,
+            "hit_only_after_animation": true
+          },
+          "hurt": {
+            "sleeping_first_hit_only_wakes": true,
+            "second_hit_subtracts_one": true,
+            "hurt_state_three": true,
+            "contact_hurt_resumes_state_two": true
+          },
+          "death": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 11416
+              },
+              {
+                "frame": 1,
+                "deadline": 12416
+              },
+              {
+                "frame": 2,
+                "deadline": 13416
+              },
+              {
+                "frame": 3,
+                "deadline": 14416
+              },
+              {
+                "frame": 4,
+                "deadline": 15416
+              },
+              {
+                "frame": 5,
+                "deadline": 16416
+              },
+              {
+                "frame": 6,
+                "deadline": 17416
+              },
+              {
+                "frame": 7,
+                "deadline": 4294953640
+              }
+            ],
+            "completed_once": true,
+            "passable_persistent_corpse": true,
+            "destination_plane": 1,
+            "mmap": 32,
+            "tmap": 129
+          },
+          "ranged": {
+            "delay": 3,
+            "limit": 4,
+            "threshold_strict": true,
+            "glyph": 51,
+            "projectile_deadline_from_current_ai_time": true,
+            "series": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "reset_after_limit": true
+          }
+        },
+        {
+          "group": "E03",
+          "language": 1,
+          "level": 1,
+          "glyph": 140,
+          "melee": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 12916
+              },
+              {
+                "frame": 1,
+                "deadline": 15416
+              },
+              {
+                "frame": 2,
+                "deadline": 17916
+              },
+              {
+                "frame": 3,
+                "deadline": 20416
+              },
+              {
+                "frame": 4,
+                "deadline": 22916
+              },
+              {
+                "frame": 5,
+                "deadline": 25416
+              }
+            ],
+            "damage": 5,
+            "hit_only_after_animation": true
+          },
+          "hurt": {
+            "sleeping_first_hit_only_wakes": true,
+            "second_hit_subtracts_one": true,
+            "hurt_state_three": true,
+            "contact_hurt_resumes_state_two": true
+          },
+          "death": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 11416
+              },
+              {
+                "frame": 1,
+                "deadline": 12416
+              },
+              {
+                "frame": 2,
+                "deadline": 13416
+              },
+              {
+                "frame": 3,
+                "deadline": 14416
+              },
+              {
+                "frame": 4,
+                "deadline": 15416
+              },
+              {
+                "frame": 5,
+                "deadline": 16416
+              },
+              {
+                "frame": 6,
+                "deadline": 17416
+              },
+              {
+                "frame": 7,
+                "deadline": 4294953640
+              }
+            ],
+            "completed_once": true,
+            "passable_persistent_corpse": true,
+            "destination_plane": 1,
+            "mmap": 32,
+            "tmap": 140
+          },
+          "ranged": {
+            "delay": 3,
+            "limit": 4,
+            "threshold_strict": true,
+            "glyph": 51,
+            "projectile_deadline_from_current_ai_time": true,
+            "series": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "reset_after_limit": true
+          }
+        },
+        {
+          "group": "E04",
+          "language": 1,
+          "level": 1,
+          "glyph": 160,
+          "melee": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 12916
+              },
+              {
+                "frame": 1,
+                "deadline": 15416
+              },
+              {
+                "frame": 2,
+                "deadline": 17916
+              }
+            ],
+            "damage": 5,
+            "hit_only_after_animation": true
+          },
+          "hurt": {
+            "sleeping_first_hit_only_wakes": true,
+            "second_hit_subtracts_one": true,
+            "hurt_state_three": true,
+            "contact_hurt_resumes_state_two": true
+          },
+          "death": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 11916
+              },
+              {
+                "frame": 1,
+                "deadline": 13416
+              },
+              {
+                "frame": 2,
+                "deadline": 14916
+              },
+              {
+                "frame": 3,
+                "deadline": 16416
+              },
+              {
+                "frame": 4,
+                "deadline": 17916
+              },
+              {
+                "frame": 5,
+                "deadline": 19416
+              },
+              {
+                "frame": 6,
+                "deadline": 20916
+              },
+              {
+                "frame": 7,
+                "deadline": 22416
+              }
+            ],
+            "completed_once": true,
+            "passable_persistent_corpse": true,
+            "destination_plane": 1,
+            "mmap": 32,
+            "tmap": 160,
+            "capture": {
+              "path": "build/g16/sprite-check/corpse-1-E04.png",
+              "framebuffer_sha256": "c0e9ca683438d5ee55186aeac739959035bd9437383d1cc564ff2994a60b1d01",
+              "cycles": 5502848,
+              "faces": 1
+            }
+          },
+          "ranged": {
+            "delay": 99,
+            "limit": 0,
+            "threshold_strict": true,
+            "zero_burst_disabled": true
+          }
+        },
+        {
+          "group": "E05",
+          "language": 1,
+          "level": 1,
+          "glyph": 161,
+          "melee": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 12916
+              },
+              {
+                "frame": 1,
+                "deadline": 15416
+              },
+              {
+                "frame": 2,
+                "deadline": 17916
+              },
+              {
+                "frame": 3,
+                "deadline": 20416
+              },
+              {
+                "frame": 4,
+                "deadline": 22916
+              }
+            ],
+            "damage": 5,
+            "hit_only_after_animation": true
+          },
+          "hurt": {
+            "sleeping_first_hit_only_wakes": true,
+            "second_hit_subtracts_one": true,
+            "hurt_state_three": true,
+            "contact_hurt_resumes_state_two": true
+          },
+          "death": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 12416
+              },
+              {
+                "frame": 1,
+                "deadline": 14416
+              },
+              {
+                "frame": 2,
+                "deadline": 16416
+              },
+              {
+                "frame": 3,
+                "deadline": 18416
+              },
+              {
+                "frame": 4,
+                "deadline": 20416
+              },
+              {
+                "frame": 5,
+                "deadline": 4294956640
+              }
+            ],
+            "completed_once": true,
+            "passable_persistent_corpse": true,
+            "destination_plane": 1,
+            "mmap": 32,
+            "tmap": 161,
+            "capture": {
+              "path": "build/g16/sprite-check/corpse-1-E05.png",
+              "framebuffer_sha256": "a4ac2502053f37c15ec4bbef4ecaa35a48957cac3523a8535addaeb821cd9300",
+              "cycles": 5489280,
+              "faces": 1
+            }
+          },
+          "ranged": {
+            "delay": 99,
+            "limit": 0,
+            "threshold_strict": true,
+            "zero_burst_disabled": true
+          }
+        },
+        {
+          "group": "E06",
+          "language": 1,
+          "level": 2,
+          "glyph": 128,
+          "melee": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 12916
+              },
+              {
+                "frame": 1,
+                "deadline": 15416
+              },
+              {
+                "frame": 2,
+                "deadline": 17916
+              },
+              {
+                "frame": 3,
+                "deadline": 20416
+              },
+              {
+                "frame": 4,
+                "deadline": 22916
+              }
+            ],
+            "damage": 5,
+            "hit_only_after_animation": true
+          },
+          "hurt": {
+            "sleeping_first_hit_only_wakes": true,
+            "second_hit_subtracts_one": true,
+            "hurt_state_three": true,
+            "contact_hurt_resumes_state_two": true
+          },
+          "death": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 11416
+              },
+              {
+                "frame": 1,
+                "deadline": 12416
+              },
+              {
+                "frame": 2,
+                "deadline": 13416
+              },
+              {
+                "frame": 3,
+                "deadline": 14416
+              },
+              {
+                "frame": 4,
+                "deadline": 15416
+              },
+              {
+                "frame": 5,
+                "deadline": 16416
+              },
+              {
+                "frame": 6,
+                "deadline": 17416
+              },
+              {
+                "frame": 7,
+                "deadline": 4294953640
+              }
+            ],
+            "completed_once": true,
+            "passable_persistent_corpse": true,
+            "destination_plane": 1,
+            "mmap": 32,
+            "tmap": 128
+          },
+          "ranged": {
+            "delay": 3,
+            "limit": 0,
+            "threshold_strict": true,
+            "zero_burst_disabled": true
+          }
+        },
+        {
+          "group": "E07",
+          "language": 1,
+          "level": 2,
+          "glyph": 161,
+          "melee": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 12916
+              },
+              {
+                "frame": 1,
+                "deadline": 15416
+              },
+              {
+                "frame": 2,
+                "deadline": 17916
+              },
+              {
+                "frame": 3,
+                "deadline": 20416
+              },
+              {
+                "frame": 4,
+                "deadline": 22916
+              }
+            ],
+            "damage": 5,
+            "hit_only_after_animation": true
+          },
+          "hurt": {
+            "sleeping_first_hit_only_wakes": true,
+            "second_hit_subtracts_one": true,
+            "hurt_state_three": true,
+            "contact_hurt_resumes_state_two": true
+          },
+          "death": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 12416
+              },
+              {
+                "frame": 1,
+                "deadline": 14416
+              },
+              {
+                "frame": 2,
+                "deadline": 16416
+              },
+              {
+                "frame": 3,
+                "deadline": 18416
+              },
+              {
+                "frame": 4,
+                "deadline": 20416
+              },
+              {
+                "frame": 5,
+                "deadline": 4294956640
+              }
+            ],
+            "completed_once": true,
+            "passable_persistent_corpse": true,
+            "destination_plane": 1,
+            "mmap": 32,
+            "tmap": 161
+          },
+          "ranged": {
+            "delay": 99,
+            "limit": 0,
+            "threshold_strict": true,
+            "zero_burst_disabled": true
+          }
+        },
+        {
+          "group": "E08",
+          "language": 1,
+          "level": 2,
+          "glyph": 160,
+          "melee": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 12916
+              },
+              {
+                "frame": 1,
+                "deadline": 15416
+              },
+              {
+                "frame": 2,
+                "deadline": 17916
+              }
+            ],
+            "damage": 5,
+            "hit_only_after_animation": true
+          },
+          "hurt": {
+            "sleeping_first_hit_only_wakes": true,
+            "second_hit_subtracts_one": true,
+            "hurt_state_three": true,
+            "contact_hurt_resumes_state_two": true
+          },
+          "death": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 11916
+              },
+              {
+                "frame": 1,
+                "deadline": 13416
+              },
+              {
+                "frame": 2,
+                "deadline": 14916
+              },
+              {
+                "frame": 3,
+                "deadline": 16416
+              },
+              {
+                "frame": 4,
+                "deadline": 17916
+              },
+              {
+                "frame": 5,
+                "deadline": 19416
+              },
+              {
+                "frame": 6,
+                "deadline": 20916
+              },
+              {
+                "frame": 7,
+                "deadline": 22416
+              }
+            ],
+            "completed_once": true,
+            "passable_persistent_corpse": true,
+            "destination_plane": 1,
+            "mmap": 32,
+            "tmap": 160
+          },
+          "ranged": {
+            "delay": 3,
+            "limit": 4,
+            "threshold_strict": true,
+            "glyph": 52,
+            "projectile_deadline_from_current_ai_time": true,
+            "series": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "reset_after_limit": true
+          }
+        },
+        {
+          "group": "E09",
+          "language": 1,
+          "level": 3,
+          "glyph": 128,
+          "melee": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 12916
+              },
+              {
+                "frame": 1,
+                "deadline": 15416
+              },
+              {
+                "frame": 2,
+                "deadline": 17916
+              },
+              {
+                "frame": 3,
+                "deadline": 20416
+              },
+              {
+                "frame": 4,
+                "deadline": 22916
+              },
+              {
+                "frame": 5,
+                "deadline": 25416
+              }
+            ],
+            "damage": 5,
+            "hit_only_after_animation": true
+          },
+          "hurt": {
+            "sleeping_first_hit_only_wakes": true,
+            "second_hit_subtracts_one": true,
+            "hurt_state_three": true,
+            "contact_hurt_resumes_state_two": true
+          },
+          "death": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 11416
+              },
+              {
+                "frame": 1,
+                "deadline": 12416
+              },
+              {
+                "frame": 2,
+                "deadline": 13416
+              },
+              {
+                "frame": 3,
+                "deadline": 14416
+              },
+              {
+                "frame": 4,
+                "deadline": 15416
+              },
+              {
+                "frame": 5,
+                "deadline": 16416
+              },
+              {
+                "frame": 6,
+                "deadline": 17416
+              },
+              {
+                "frame": 7,
+                "deadline": 4294953640
+              }
+            ],
+            "completed_once": true,
+            "passable_persistent_corpse": true,
+            "destination_plane": 1,
+            "mmap": 32,
+            "tmap": 128
+          },
+          "ranged": {
+            "delay": 3,
+            "limit": 4,
+            "threshold_strict": true,
+            "glyph": 51,
+            "projectile_deadline_from_current_ai_time": true,
+            "series": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "reset_after_limit": true
+          }
+        },
+        {
+          "group": "E10",
+          "language": 1,
+          "level": 3,
+          "glyph": 179,
+          "melee": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 11916
+              },
+              {
+                "frame": 1,
+                "deadline": 13416
+              },
+              {
+                "frame": 2,
+                "deadline": 14916
+              },
+              {
+                "frame": 3,
+                "deadline": 16416
+              }
+            ],
+            "damage": 5,
+            "hit_only_after_animation": true
+          },
+          "hurt": {
+            "sleeping_first_hit_only_wakes": true,
+            "second_hit_subtracts_one": true,
+            "hurt_state_three": true,
+            "contact_hurt_resumes_state_two": true
+          },
+          "death": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 11916
+              },
+              {
+                "frame": 1,
+                "deadline": 13416
+              },
+              {
+                "frame": 2,
+                "deadline": 14916
+              },
+              {
+                "frame": 3,
+                "deadline": 16416
+              },
+              {
+                "frame": 4,
+                "deadline": 17916
+              },
+              {
+                "frame": 5,
+                "deadline": 19416
+              },
+              {
+                "frame": 6,
+                "deadline": 20916
+              },
+              {
+                "frame": 7,
+                "deadline": 22416
+              },
+              {
+                "frame": 8,
+                "deadline": 23916
+              }
+            ],
+            "completed_once": true,
+            "passable_persistent_corpse": true,
+            "destination_plane": 1,
+            "mmap": 32,
+            "tmap": 179,
+            "capture": {
+              "path": "build/g16/sprite-check/corpse-1-E10.png",
+              "framebuffer_sha256": "2fa984bb249d349faa3a58f222520ec2890affc999e127e0413d64db172842fd",
+              "cycles": 5512640,
+              "faces": 1
+            }
+          },
+          "ranged": {
+            "delay": 3,
+            "limit": 0,
+            "threshold_strict": true,
+            "zero_burst_disabled": true
+          }
+        },
+        {
+          "group": "E11",
+          "language": 1,
+          "level": 3,
+          "glyph": 160,
+          "melee": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 12916
+              },
+              {
+                "frame": 1,
+                "deadline": 15416
+              },
+              {
+                "frame": 2,
+                "deadline": 17916
+              }
+            ],
+            "damage": 5,
+            "hit_only_after_animation": true
+          },
+          "hurt": {
+            "sleeping_first_hit_only_wakes": true,
+            "second_hit_subtracts_one": true,
+            "hurt_state_three": true,
+            "contact_hurt_resumes_state_two": true
+          },
+          "death": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 11916
+              },
+              {
+                "frame": 1,
+                "deadline": 13416
+              },
+              {
+                "frame": 2,
+                "deadline": 14916
+              },
+              {
+                "frame": 3,
+                "deadline": 16416
+              },
+              {
+                "frame": 4,
+                "deadline": 17916
+              },
+              {
+                "frame": 5,
+                "deadline": 19416
+              },
+              {
+                "frame": 6,
+                "deadline": 20916
+              },
+              {
+                "frame": 7,
+                "deadline": 22416
+              }
+            ],
+            "completed_once": true,
+            "passable_persistent_corpse": true,
+            "destination_plane": 1,
+            "mmap": 32,
+            "tmap": 160
+          },
+          "ranged": {
+            "delay": 99,
+            "limit": 4,
+            "threshold_strict": true,
+            "glyph": 52,
+            "projectile_deadline_from_current_ai_time": true,
+            "series": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "reset_after_limit": true
+          }
+        },
+        {
+          "group": "E12",
+          "language": 1,
+          "level": 3,
+          "glyph": 198,
+          "melee": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 12916
+              },
+              {
+                "frame": 1,
+                "deadline": 15416
+              },
+              {
+                "frame": 2,
+                "deadline": 17916
+              }
+            ],
+            "damage": 5,
+            "hit_only_after_animation": true
+          },
+          "hurt": {
+            "sleeping_first_hit_only_wakes": true,
+            "second_hit_subtracts_one": true,
+            "hurt_state_three": true,
+            "contact_hurt_resumes_state_two": true
+          },
+          "death": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 11916
+              },
+              {
+                "frame": 1,
+                "deadline": 13416
+              },
+              {
+                "frame": 2,
+                "deadline": 14916
+              },
+              {
+                "frame": 3,
+                "deadline": 16416
+              },
+              {
+                "frame": 4,
+                "deadline": 17916
+              },
+              {
+                "frame": 5,
+                "deadline": 19416
+              },
+              {
+                "frame": 6,
+                "deadline": 20916
+              },
+              {
+                "frame": 7,
+                "deadline": 22416
+              }
+            ],
+            "completed_once": true,
+            "passable_persistent_corpse": true,
+            "destination_plane": 1,
+            "mmap": 32,
+            "tmap": 198
+          },
+          "ranged": {
+            "delay": 3,
+            "limit": 4,
+            "threshold_strict": true,
+            "glyph": 52,
+            "projectile_deadline_from_current_ai_time": true,
+            "series": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "reset_after_limit": true
+          }
+        },
+        {
+          "group": "E13",
+          "language": 1,
+          "level": 3,
+          "glyph": 214,
+          "melee": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 12916
+              },
+              {
+                "frame": 1,
+                "deadline": 15416
+              },
+              {
+                "frame": 2,
+                "deadline": 17916
+              }
+            ],
+            "damage": 5,
+            "hit_only_after_animation": true
+          },
+          "hurt": {
+            "sleeping_first_hit_only_wakes": true,
+            "second_hit_subtracts_one": true,
+            "hurt_state_three": true,
+            "contact_hurt_resumes_state_two": true
+          },
+          "death": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 11916
+              },
+              {
+                "frame": 1,
+                "deadline": 13416
+              },
+              {
+                "frame": 2,
+                "deadline": 14916
+              },
+              {
+                "frame": 3,
+                "deadline": 16416
+              },
+              {
+                "frame": 4,
+                "deadline": 17916
+              },
+              {
+                "frame": 5,
+                "deadline": 19416
+              },
+              {
+                "frame": 6,
+                "deadline": 20916
+              },
+              {
+                "frame": 7,
+                "deadline": 22416
+              }
+            ],
+            "completed_once": true,
+            "passable_persistent_corpse": true,
+            "destination_plane": 1,
+            "mmap": 32,
+            "tmap": 214
+          },
+          "ranged": {
+            "delay": 3,
+            "limit": 4,
+            "threshold_strict": true,
+            "glyph": 51,
+            "projectile_deadline_from_current_ai_time": true,
+            "series": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "reset_after_limit": true
+          }
+        },
+        {
+          "group": "E14",
+          "language": 1,
+          "level": 3,
+          "glyph": 161,
+          "melee": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 12916
+              },
+              {
+                "frame": 1,
+                "deadline": 15416
+              },
+              {
+                "frame": 2,
+                "deadline": 17916
+              },
+              {
+                "frame": 3,
+                "deadline": 20416
+              },
+              {
+                "frame": 4,
+                "deadline": 22916
+              }
+            ],
+            "damage": 5,
+            "hit_only_after_animation": true
+          },
+          "hurt": {
+            "sleeping_first_hit_only_wakes": true,
+            "second_hit_subtracts_one": true,
+            "hurt_state_three": true,
+            "contact_hurt_resumes_state_two": true
+          },
+          "death": {
+            "frames": [
+              {
+                "frame": 0,
+                "deadline": 12416
+              },
+              {
+                "frame": 1,
+                "deadline": 14416
+              },
+              {
+                "frame": 2,
+                "deadline": 16416
+              },
+              {
+                "frame": 3,
+                "deadline": 18416
+              },
+              {
+                "frame": 4,
+                "deadline": 20416
+              },
+              {
+                "frame": 5,
+                "deadline": 4294956640
+              }
+            ],
+            "completed_once": true,
+            "passable_persistent_corpse": true,
+            "destination_plane": 1,
+            "mmap": 32,
+            "tmap": 161
+          },
+          "ranged": {
+            "delay": 99,
+            "limit": 0,
+            "threshold_strict": true,
+            "zero_burst_disabled": true
+          }
+        }
+      ],
+      "extra": {
+        "ranged": {
+          "solid_wall_blocks_sight": true,
+          "front_monster_suppresses_shot": true,
+          "failed_allocation_still_counts_attempt": true,
+          "pool_capacity": 141,
+          "published_projectile_front_suppresses_shot": true
+        },
+        "occupied_corpse": {
+          "frames": [
+            {
+              "frame": 0,
+              "deadline": 11416
+            },
+            {
+              "frame": 1,
+              "deadline": 12416
+            },
+            {
+              "frame": 2,
+              "deadline": 13416
+            },
+            {
+              "frame": 3,
+              "deadline": 14416
+            },
+            {
+              "frame": 4,
+              "deadline": 15416
+            },
+            {
+              "frame": 5,
+              "deadline": 16416
+            },
+            {
+              "frame": 6,
+              "deadline": 17416
+            },
+            {
+              "frame": 7,
+              "deadline": 4294953640
+            }
+          ],
+          "completed_once": true,
+          "passable_persistent_corpse": true,
+          "destination_plane": 0,
+          "mmap": 128,
+          "tmap": 108
+        }
+      },
+      "stack": {
+        "main_stack_low": 50356224,
+        "main_stack_top": 50364160,
+        "sentinel_word": 219540062,
+        "untouched_margin_bytes": 5576,
+        "high_water_bytes": 2360,
+        "irq_and_bios_excluded": true,
+        "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+      },
+      "physical_gba_tested": false,
+      "whole_dos_session_equivalence": false
+    }
+  },
+  "performance": {
+    "renderer_timing": {
+      "cpu_hz": 16777216,
+      "hardware_frame_cycles": 280896,
+      "target_cycles": 561792,
+      "target_hardware_frames": 2,
+      "scope": "Timer0/1 cascade: time-poll + input/language switch + renderer + HUD + halfword VRAM back-page copy; excludes presentation wait",
+      "min_cycles": 4671616,
+      "max_cycles": 4693696,
+      "worst_render_budget_ratio": 8.354864433811802,
+      "nominal_target_fps": 29.863750284802915,
+      "over_budget_draws": 99,
+      "all_observed_draws_fit_target": false,
+      "min_present_interval_vblanks": 17,
+      "max_present_interval_vblanks": 17,
+      "cadence_intervals_vblanks": [
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17
+      ],
+      "cadence_warmup_excluded_draws": 8,
+      "observed_steady_presentation_fps": 3.513382386447402,
+      "sampled_draws": 98,
+      "samples": [
+        {
+          "draws": 1,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4693696,
+          "present_vblank": 244
+        },
+        {
+          "draws": 2,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4676352,
+          "present_vblank": 261
+        },
+        {
+          "draws": 3,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4673280,
+          "present_vblank": 278
+        },
+        {
+          "draws": 4,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4676672,
+          "present_vblank": 295
+        },
+        {
+          "draws": 5,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4675648,
+          "present_vblank": 312
+        },
+        {
+          "draws": 6,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4676672,
+          "present_vblank": 329
+        },
+        {
+          "draws": 7,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4676032,
+          "present_vblank": 346
+        },
+        {
+          "draws": 8,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4676672,
+          "present_vblank": 363
+        },
+        {
+          "draws": 9,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4675712,
+          "present_vblank": 380
+        },
+        {
+          "draws": 10,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4673920,
+          "present_vblank": 397
+        },
+        {
+          "draws": 11,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4676032,
+          "present_vblank": 414
+        },
+        {
+          "draws": 12,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4676352,
+          "present_vblank": 431
+        },
+        {
+          "draws": 13,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4676032,
+          "present_vblank": 448
+        },
+        {
+          "draws": 14,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4676672,
+          "present_vblank": 465
+        },
+        {
+          "draws": 15,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4676672,
+          "present_vblank": 482
+        },
+        {
+          "draws": 16,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4675648,
+          "present_vblank": 499
+        },
+        {
+          "draws": 17,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4676672,
+          "present_vblank": 516
+        },
+        {
+          "draws": 18,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4673280,
+          "present_vblank": 533
+        },
+        {
+          "draws": 19,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4676352,
+          "present_vblank": 550
+        },
+        {
+          "draws": 20,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4676032,
+          "present_vblank": 567
+        },
+        {
+          "draws": 21,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4676672,
+          "present_vblank": 584
+        },
+        {
+          "draws": 22,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4675648,
+          "present_vblank": 601
+        },
+        {
+          "draws": 23,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4676672,
+          "present_vblank": 618
+        },
+        {
+          "draws": 24,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4676032,
+          "present_vblank": 635
+        },
+        {
+          "draws": 25,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4673536,
+          "present_vblank": 652
+        },
+        {
+          "draws": 26,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4676032,
+          "present_vblank": 669
+        },
+        {
+          "draws": 27,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4676672,
+          "present_vblank": 686
+        },
+        {
+          "draws": 28,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4676672,
+          "present_vblank": 703
+        },
+        {
+          "draws": 29,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4675712,
+          "present_vblank": 720
+        },
+        {
+          "draws": 30,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4676672,
+          "present_vblank": 737
+        },
+        {
+          "draws": 31,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4676032,
+          "present_vblank": 754
+        },
+        {
+          "draws": 32,
+          "language": 0,
+          "switches": 0,
+          "last_cycles": 4673536,
+          "present_vblank": 771
+        },
+        {
+          "draws": 33,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4676032,
+          "present_vblank": 788
+        },
+        {
+          "draws": 34,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4681920,
+          "present_vblank": 805
+        },
+        {
+          "draws": 35,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4674752,
+          "present_vblank": 822
+        },
+        {
+          "draws": 36,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4675072,
+          "present_vblank": 839
+        },
+        {
+          "draws": 37,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4674752,
+          "present_vblank": 856
+        },
+        {
+          "draws": 38,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4675392,
+          "present_vblank": 873
+        },
+        {
+          "draws": 39,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4671616,
+          "present_vblank": 890
+        },
+        {
+          "draws": 40,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4675392,
+          "present_vblank": 907
+        },
+        {
+          "draws": 41,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4675392,
+          "present_vblank": 924
+        },
+        {
+          "draws": 42,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4674432,
+          "present_vblank": 941
+        },
+        {
+          "draws": 43,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4675392,
+          "present_vblank": 958
+        },
+        {
+          "draws": 44,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4674752,
+          "present_vblank": 975
+        },
+        {
+          "draws": 45,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4675392,
+          "present_vblank": 992
+        },
+        {
+          "draws": 46,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4671616,
+          "present_vblank": 1009
+        },
+        {
+          "draws": 47,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4675392,
+          "present_vblank": 1026
+        },
+        {
+          "draws": 48,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4674752,
+          "present_vblank": 1043
+        },
+        {
+          "draws": 49,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4675072,
+          "present_vblank": 1060
+        },
+        {
+          "draws": 50,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4674752,
+          "present_vblank": 1077
+        },
+        {
+          "draws": 51,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4675392,
+          "present_vblank": 1094
+        },
+        {
+          "draws": 52,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4674752,
+          "present_vblank": 1111
+        },
+        {
+          "draws": 53,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4672256,
+          "present_vblank": 1128
+        },
+        {
+          "draws": 54,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4675392,
+          "present_vblank": 1145
+        },
+        {
+          "draws": 55,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4674432,
+          "present_vblank": 1162
+        },
+        {
+          "draws": 56,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4675392,
+          "present_vblank": 1179
+        },
+        {
+          "draws": 57,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4674752,
+          "present_vblank": 1196
+        },
+        {
+          "draws": 58,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4675392,
+          "present_vblank": 1213
+        },
+        {
+          "draws": 59,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4674432,
+          "present_vblank": 1230
+        },
+        {
+          "draws": 60,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4675392,
+          "present_vblank": 1247
+        },
+        {
+          "draws": 61,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4672000,
+          "present_vblank": 1264
+        },
+        {
+          "draws": 62,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4675072,
+          "present_vblank": 1281
+        },
+        {
+          "draws": 63,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4674752,
+          "present_vblank": 1298
+        },
+        {
+          "draws": 64,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4675392,
+          "present_vblank": 1315
+        },
+        {
+          "draws": 65,
+          "language": 1,
+          "switches": 1,
+          "last_cycles": 4674752,
+          "present_vblank": 1332
+        },
+        {
+          "draws": 66,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4675072,
+          "present_vblank": 1349
+        },
+        {
+          "draws": 67,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4683136,
+          "present_vblank": 1366
+        },
+        {
+          "draws": 68,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4673280,
+          "present_vblank": 1383
+        },
+        {
+          "draws": 69,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4676352,
+          "present_vblank": 1400
+        },
+        {
+          "draws": 70,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4676032,
+          "present_vblank": 1417
+        },
+        {
+          "draws": 71,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4676672,
+          "present_vblank": 1434
+        },
+        {
+          "draws": 72,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4676032,
+          "present_vblank": 1451
+        },
+        {
+          "draws": 73,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4676352,
+          "present_vblank": 1468
+        },
+        {
+          "draws": 74,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4676032,
+          "present_vblank": 1485
+        },
+        {
+          "draws": 75,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4673536,
+          "present_vblank": 1502
+        },
+        {
+          "draws": 76,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4676032,
+          "present_vblank": 1519
+        },
+        {
+          "draws": 77,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4676672,
+          "present_vblank": 1536
+        },
+        {
+          "draws": 78,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4676032,
+          "present_vblank": 1553
+        },
+        {
+          "draws": 79,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4676352,
+          "present_vblank": 1570
+        },
+        {
+          "draws": 80,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4676672,
+          "present_vblank": 1587
+        },
+        {
+          "draws": 81,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4676032,
+          "present_vblank": 1604
+        },
+        {
+          "draws": 82,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4673536,
+          "present_vblank": 1621
+        },
+        {
+          "draws": 83,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4676032,
+          "present_vblank": 1638
+        },
+        {
+          "draws": 84,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4676672,
+          "present_vblank": 1655
+        },
+        {
+          "draws": 85,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4676032,
+          "present_vblank": 1672
+        },
+        {
+          "draws": 86,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4676352,
+          "present_vblank": 1689
+        },
+        {
+          "draws": 87,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4676032,
+          "present_vblank": 1706
+        },
+        {
+          "draws": 88,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4676672,
+          "present_vblank": 1723
+        },
+        {
+          "draws": 89,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4672896,
+          "present_vblank": 1740
+        },
+        {
+          "draws": 90,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4676672,
+          "present_vblank": 1757
+        },
+        {
+          "draws": 91,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4676032,
+          "present_vblank": 1774
+        },
+        {
+          "draws": 92,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4676352,
+          "present_vblank": 1791
+        },
+        {
+          "draws": 93,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4676672,
+          "present_vblank": 1808
+        },
+        {
+          "draws": 94,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4676032,
+          "present_vblank": 1825
+        },
+        {
+          "draws": 95,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4676672,
+          "present_vblank": 1842
+        },
+        {
+          "draws": 96,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4672896,
+          "present_vblank": 1859
+        },
+        {
+          "draws": 97,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4676672,
+          "present_vblank": 1876
+        },
+        {
+          "draws": 98,
+          "language": 0,
+          "switches": 2,
+          "last_cycles": 4676032,
+          "present_vblank": 1893
+        }
+      ]
+    },
+    "target30fps_verified": false
+  },
+  "limits": [
+    "Physical GBA/original BIOS and full DOS playback untested",
+    "User listened to short-loop mGBA output, not all23 resources; exact listened artifact predates identity-only fix",
+    "Numerical output comparison is not Sound Blaster hardware equivalence",
+    "Refill cycles cover C fill/rearm only; complete IRQ cost is not directly instrumented",
+    "Linux/ARM policy cross compilation passed; Linux/MSVC/CMake execution untested",
+    "Full game flow G18 and 30FPS G20 remain separate tasks"
+  ]
+}

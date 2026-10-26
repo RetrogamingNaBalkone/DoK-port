@@ -1,0 +1,41 @@
+{
+  "task": "G16",
+  "status": "passed",
+  "stdout": "G16 host: mono reject, latched loop, identity stop, odd loop continuity, EOF silence, restart passed; dok_audio=56",
+  "sources": {
+    "include/dok/audio.h": "3027b916c54f40822a5231d282f3cbeeb307ad3c1992e2ac5527a9f961a9cb1e",
+    "src/audio.c": "e422dab40753bf618e5b0f31f50335c754032dd154256a6703f79ff97453319f",
+    "tests/test_audio.c": "f5aed83fa17fe469bab5626918ad7ac388cf574924180ddecb94fb508b0f5cf8",
+    "gba/audio_backend.c": "c9a629316e74f4f38efb5737e54f73cf9564836c7378744ad4a84c30da30c63a",
+    "gba/startup.S": "9f47c81d8891a82d74ac5d8c40826a879ca8e664dffd295d1e65be61f78d22cb",
+    "gba/renderer_probe.c": "b74aac1bfe717b08ad028db5323717725cddedf3c270ea5ab608ba70001de7a9",
+    "gba/ai_probe.c": "c51c35e8395a4ff512bb852f14e9182d84709309e27d677d1a1f9d6f82a7791e",
+    "gba/combat_probe.c": "028bbb04ceb2b2b7f58f58a427ca170eb18bcede313c099fb9c93f4a229e8a82",
+    "gba/movement_probe.c": "318347968d0e1c08e70fc30c40fd055954e40df896d02bb7b1c80ebbf99c07f9",
+    "src/interactions.c": "207492215929d9267f67179528bcd2d8b265c2e8511274a5be3c9896b7b04c3c",
+    "include/dok/interactions.h": "223fb2377aa4127268797f67e5d8b5cca2c88172fe4fee3bae47eac974080ee0",
+    "scripts/verify_audio_host.py": "a5b2610fd1d9676e8162e09327e9df7724cf6fdafacd56e5df03474c8d38cf7b",
+    "scripts/build-native.ps1": "ca48e5ee30859580b17601e3aadb781aa8a69aacab0e116cc2f72a112f03cbc2",
+    "scripts/build-gba.ps1": "367c712e6ae5212ef22a2c3c7bd00aaed9246a24120c7194e7c60edb9a71b077",
+    "CMakeLists.txt": "31f81167f49ac27839133146c2977342f677ae2ca721b1dbab6ca699f68562fe"
+  },
+  "original_sha256_before": {
+    "originals/pkr/RUS/PKR.EXE": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+    "originals/pkr/ENG/PKE.EXE": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b",
+    "originals/pkr/RUS/PKR.RES": "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816",
+    "originals/pkr/ENG/PKE.RES": "865da340621fa6f90548a84e9ae9bf0a85071befb32a40ca1d359e488f74d458"
+  },
+  "original_sha256_after": {
+    "originals/pkr/RUS/PKR.EXE": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+    "originals/pkr/ENG/PKE.EXE": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b",
+    "originals/pkr/RUS/PKR.RES": "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816",
+    "originals/pkr/ENG/PKE.RES": "865da340621fa6f90548a84e9ae9bf0a85071befb32a40ca1d359e488f74d458"
+  },
+  "package_sha256": "3efa5d3027d63ffd65e0ae8c0b45be23ee8394b3c5151c8e9f10e76fa8674351",
+  "artifacts": {
+    "build/native/dok-audio-tests.exe": "5c412b46ae59c954396349f0aa0e209d20ed86495cee6ca2141bcfd9d8e12f93",
+    "build/native/dok-audio-tests-linux": "05e1489962c3f6aa028d139edb94dad49a4e47821d428aa1b2ee64b33cacf985",
+    "build/native/audio-arm7tdmi.o": "923ac99f7e53127a39529635e191df7efc16660ab3becdf68339b85c8a184f19"
+  },
+  "limits": "Windows executed, Linux/ARM cross compiled only. Native object loop flags and backend latched loop separated. GBA/DOS audio quality and timing require independent capture; no hardware/listening claim."
+}

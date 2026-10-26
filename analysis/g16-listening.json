@@ -1,0 +1,12 @@
+{
+  "task": "G16",
+  "status": "confirmed_by_user",
+  "date": "2026-10-26",
+  "source_rom_sha256": "5f65b9c4d9a64e1b006f2d83ee512cafb11302e8b31d65161ae78ec561e09238",
+  "wav_path": "build/g16/audio-check/listened-short-loop.wav",
+  "wav_sha256": "81d9ab296af0ce1fa91a9afa75ad2b931a3c88184dc87b4837812906efeda94b",
+  "presented_excerpt": "One second from 0.5s, mono PCM8 at 8000 Hz; full stereo WAV also linked",
+  "question": "В повторённом фрагменте звук воспроизводится без щелчков и обрывов?",
+  "user_reply": "Звучит нормально",
+  "scope": "User auditory review of an actual mGBA capture; the assistant has no audio input. This is not a physical GBA or Sound Blaster equivalence claim."
+}

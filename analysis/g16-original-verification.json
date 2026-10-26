@@ -1,0 +1,47 @@
+{
+  "task": "G16",
+  "status": "passed",
+  "whole_DOS_session": false,
+  "script_sha256": "a4c18f0e98b390f06556adf9cf0e05a522009945b0ce3573b193e75cc2a9fabe",
+  "languages": {
+    "ru": {
+      "base_policy_cases": 7,
+      "wrapper_mutations": 2,
+      "backend_latch_cases": 4,
+      "hardware_calls": 4,
+      "manifest": {
+        "language": "ru",
+        "sample": "originals/pkr/RUS/PKR.EXE",
+        "sha256_before": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+        "sha256_after": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+        "project": "build/ghidra/ru/Kremlin.gpr",
+        "script": "scripts/InspectAudio.java",
+        "script_sha256": "73e21dea305a7c3c2105d4b0499e984bf52a8d9dd45cd4afa0b5c934d93405ef",
+        "driver_sha256": "ce5b8ee5ca2666fbbf1faa75da323597d0f4a620b301a44b1d5bd6bfe5538a49",
+        "address_system": "Ghidra NE loader; not file offset or runtime DPMI selector"
+      },
+      "manifest_sha256": "fb5d18887668191d65e7786b8e3bc9fa647e5ea01b5c9db20cb3b395db037bc9",
+      "evidence_sha256": "7fc4ec06b272857f2f427790631d178c3f173855f197a6992f4632f3e98a0cd0"
+    },
+    "en": {
+      "base_policy_cases": 7,
+      "wrapper_mutations": 2,
+      "backend_latch_cases": 4,
+      "hardware_calls": 4,
+      "manifest": {
+        "language": "en",
+        "sample": "originals/pkr/ENG/PKE.EXE",
+        "sha256_before": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b",
+        "sha256_after": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b",
+        "project": "build/ghidra/en/Kremlin.gpr",
+        "script": "scripts/InspectAudio.java",
+        "script_sha256": "73e21dea305a7c3c2105d4b0499e984bf52a8d9dd45cd4afa0b5c934d93405ef",
+        "driver_sha256": "ce5b8ee5ca2666fbbf1faa75da323597d0f4a620b301a44b1d5bd6bfe5538a49",
+        "address_system": "Ghidra NE loader; not file offset or runtime DPMI selector"
+      },
+      "manifest_sha256": "d5f4a0e4a8c0726731065ffcea97e94543258cd67aa1b3cd8b96b5d38939e691",
+      "evidence_sha256": "1f3f8434a430631cf1c09b3e37f5fdb579bd596035fa10f462bab0999c7ab182"
+    }
+  },
+  "limits": "Native base mono admission, same/different busy rejection, identity flag stop, global stop, wrapper loop flag mutations and DMA-begin loop latch execute. DMA fill and callsites reviewed in Ghidra ASM; DOS DSP/IRQ and whole DOS playback not executed. Ghidra selectors are separate from this isolated Unicorn real-mode load address."
+}

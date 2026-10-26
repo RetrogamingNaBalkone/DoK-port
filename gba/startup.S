@@ -37,6 +37,12 @@ _start:
 4:  cmp r0, r1
     strlo r2, [r0], #4
     blo 4b
+    /* Separate IRQ stack watermark. BIOS-owned 7FA0..7FFF is untouched. */
+    ldr r0, =0x03007f00
+    ldr r1, =0x03007fa0
+7:  cmp r0, r1
+    strlo r2, [r0], #4
+    blo 7b
 #endif
 
     ldr r0, =__iwram_load
@@ -91,6 +97,17 @@ gba_irq:
     ldrne r2, [r0]
     addne r2, r2, #1
     strne r2, [r0]
+#ifdef DOK_RENDERER_PROBE
+    tst r1, #0x210
+    beq 6f
+    push {r4,lr}
+    mov r0, r1
+    ldr r3, =gba_audio_irq
+    mov lr, pc
+    bx r3
+    pop {r4,lr}
+6:
+#endif
     bx lr
 .size gba_irq, .-gba_irq
 .ltorg
