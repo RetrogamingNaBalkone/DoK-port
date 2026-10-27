@@ -12,7 +12,7 @@ void dok_ui_set_art(const dok_ui_art *);
  * condenses them horizontally when needed to fit the panel. */
 #define DOK_UI_TEXT_LIMIT 240u
 enum {DOK_UI_PLAY,DOK_UI_TITLE,DOK_UI_PAUSE,DOK_UI_HELP,DOK_UI_STATUS,DOK_UI_SPLASH,DOK_UI_LEVELS,DOK_UI_MAP};
-enum {DOK_UI_RESUME=1,DOK_UI_NEW_GAME,DOK_UI_CREDITS};
+enum {DOK_UI_RESUME=1,DOK_UI_NEW_GAME,DOK_UI_CREDITS,DOK_UI_STORY};
 typedef struct {uint16_t object,slot;} dok_ui_message;
 typedef struct {
  uint32_t state,focus,language,last_keys,blocked,return_state;
@@ -21,6 +21,7 @@ typedef struct {
  dok_ui_message queue[4];uint32_t read,count;
  uint16_t object,slot;
  uint8_t literal[DOK_UI_TEXT_LIMIT];uint16_t literal_size;
+ int16_t map_x,map_y;uint16_t map_centered,map_repeat;
 } dok_ui;
 void dok_ui_screen(uint8_t *,const uint8_t *,const uint8_t *,unsigned,unsigned,const uint8_t *,size_t,unsigned,const char *,unsigned);
 unsigned dok_ui_screen_pages(const uint8_t *,size_t);

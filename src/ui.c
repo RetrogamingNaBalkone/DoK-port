@@ -7,10 +7,18 @@ unsigned dok_ui_input(dok_ui *u,uint16_t keys){
  unsigned pressed=keys&~u->last_keys,changed=0;u->last_keys=keys;
  if(u->state==DOK_UI_PLAY){
   if((keys&12)==12 && (pressed&12)){u->state=DOK_UI_PAUSE;u->focus=0;u->blocked|=keys;}
-  else if(pressed&4){u->state=DOK_UI_MAP;u->blocked|=keys;}
+  else if(pressed&4){u->state=DOK_UI_MAP;u->map_centered=0;u->map_repeat=0;u->blocked|=keys;}
  }else if(u->state==DOK_UI_MAP){
   if((keys&12)==12 && (pressed&12)){u->state=DOK_UI_PAUSE;u->focus=0;u->blocked|=keys;}
   else if(pressed&(2|4)){u->state=DOK_UI_PLAY;u->blocked|=keys;}
+  else if(pressed&1)u->map_centered=0;
+  else if(keys&240){
+   if((pressed&240) || ++u->map_repeat>=12){
+    if(u->map_repeat>=12)u->map_repeat=9;
+    u->map_x+=(keys&16?6:0)-(keys&32?6:0);
+    u->map_y+=(keys&128?6:0)-(keys&64?6:0);
+   }
+  }else u->map_repeat=0;
  }else if(u->state==DOK_UI_SPLASH){
   if(pressed&(1|8)){u->state=DOK_UI_TITLE;u->focus=0;u->blocked|=keys;}
  }else if(u->state==DOK_UI_LEVELS){
@@ -22,7 +30,7 @@ unsigned dok_ui_input(dok_ui *u,uint16_t keys){
  }else if(u->state==DOK_UI_HELP || u->state==DOK_UI_STATUS){
   if(pressed&(2|4|8)){u->state=u->return_state;u->blocked|=keys;}
  }else{
-  unsigned rows=4;
+  unsigned rows=u->state==DOK_UI_TITLE?5:4;
   if(pressed&64)u->focus=(u->focus+rows-1)%rows;
   if(pressed&128)u->focus=(u->focus+1)%rows;
   if(pressed&4){if(u->state==DOK_UI_PAUSE){u->state=0;u->blocked|=keys;}else {u->language^=1;changed=1;}}
@@ -31,7 +39,7 @@ unsigned dok_ui_input(dok_ui *u,uint16_t keys){
    if(u->focus==0){if(u->state==DOK_UI_TITLE){u->state=DOK_UI_LEVELS;u->focus=u->start_level;}else {u->action=DOK_UI_RESUME;u->state=0;}u->blocked|=keys;}
    else if(u->focus==1){u->language^=1;changed=1;}
    else if(u->focus==2){u->return_state=u->state;u->state=DOK_UI_HELP;}
-   else if(u->state==DOK_UI_TITLE){u->action=DOK_UI_CREDITS;u->blocked|=keys;}else {u->state=DOK_UI_TITLE;u->focus=0;u->blocked|=keys;}
+   else if(u->state==DOK_UI_TITLE){u->action=u->focus==3?DOK_UI_STORY:DOK_UI_CREDITS;u->blocked|=keys;}else {u->state=DOK_UI_TITLE;u->focus=0;u->blocked|=keys;}
   }
  }
  return changed;
@@ -113,7 +121,7 @@ static void screen_copy(uint8_t *dst,const uint8_t *src){
   for(unsigned i=0;i<9600;++i)d[i]=s[i];
  }else for(unsigned i=0;i<38400;++i)dst[i]=src[i];
 }
-const uint8_t *dok_ui_palette(const dok_ui *u){return art && dok_ui_frontend(u)?(u->state==DOK_UI_SPLASH?art->splash_palette:art->menu_palette):0;}
+const uint8_t *dok_ui_palette(const dok_ui *u){return art && dok_ui_frontend(u) && u->state!=DOK_UI_MAP?(u->state==DOK_UI_SPLASH?art->splash_palette:art->menu_palette):0;}
 static void box(canvas *c,unsigned x,unsigned y,unsigned w,unsigned h,unsigned color){
  if(x>=240 || y>=160)return;
  if(w>240-x)w=240-x;if(h>160-y)h=160-y;
@@ -240,33 +248,7 @@ void dok_ui_explore(dok_runtime *w){
   }
  }
 }
-static void map_draw(canvas *c,const dok_runtime *w,unsigned en){
- panel(c,52,12,136,136);box(c,56,16,128,128,c->bg);
- if(!w->level || !w->player_index)return;
- const dok_runtime_level *l=w->level;unsigned width=l->settings[DOK_LEVEL_WIDTH],height=l->settings[DOK_LEVEL_LENGTH];
- for(unsigned z=0;z<height && z<64;++z)for(unsigned x=0;x<width && x<64;++x){
-  unsigned cell=z*width+x;if(!w->player.map_revealed && !w->maps[3*l->cells+cell])continue;
-  unsigned token=l->glyph_index[w->maps[l->cells+cell]];if(!token)continue;
-  unsigned id=token-1,cls=l->definitions[id].class_id;
-  if(cls==2)box(c,56+x*2,16+(height-1-z)*2,2,2,c->fg);
-  else if(cls==7){if(!(w->objects[id].flags&16))box(c,56+x*2,16+(height-1-z)*2,2,2,c->fg);}
-  else box(c,56+x*2,16+(height-1-z)*2,1,1,c->fg);
- }
- const dok_runtime_actor *a=map_player(w);
- int side=l->settings[DOK_LEVEL_CELL_SIDE];
- if(a && side){int x=a->x/side,z=a->z/side;
-  if(x>=0 && x<(int)width && z>=0 && z<(int)height){
-   unsigned sx=56+(unsigned)x*2,sy=16+(height-1-(unsigned)z)*2;
-   box(c,sx-1,sy-1,4,4,c->bg);box(c,sx,sy,2,2,c->fg);
-   int heading=(a->heading+360)%360;
-   int dx=heading>=45 && heading<135?-1:heading>=225 && heading<315?1:0;
-   int dy=heading<45 || heading>=315?-1:heading>=135 && heading<225?1:0;
-   box(c,(unsigned)((int)sx+dx*3),(unsigned)((int)sy+dy*3),2,2,c->fg);
-  }
- }
- label(c,8,2,en?"MAP":"\212\200\220\222\200",8);
- label(c,8,150,en?"B / SELECT: BACK":"B / SELECT: \215\200\207\200\204",8);
-}
+#include "ui_map.inc"
 #include "ui_text.inc"
 static const char *const ui_end[2]={"\202\233\225\216\204", "END / CREDITS"};
 #ifdef DOK_RENDER_HW_UI_REUSE_PROTOTYPE
@@ -336,7 +318,7 @@ void dok_ui_draw(dok_ui *u,uint8_t *frame,const dok_runtime *w,const uint8_t *f8
   panel(&c,0,144,240,16);uint8_t message[60];size_t n=dok_ui_text(u,w->level,message);message_line(&c,message,n);
  }
  if(!u->state)return;
- if(u->state==DOK_UI_MAP){map_draw(&c,w,en);return;}
+ if(u->state==DOK_UI_MAP){map_draw(&c,w,u,en);return;}
  panel(&c,8,14,224,116);
  if(u->state==DOK_UI_HELP){
   label(&c,16,20,ui_help[en][0],16);for(unsigned i=1;i<9;i++)label(&c,16,34+i*10,ui_help[en][i],8);
@@ -356,10 +338,10 @@ void dok_ui_draw(dok_ui *u,uint8_t *frame,const dok_runtime *w,const uint8_t *f8
   label(&c,16,116,ui_level_hint[en],8);
  }else{
   label(&c,16,20,u->state==DOK_UI_TITLE?ui_title[en]:ui_pause[en],16);
-  unsigned rows=4,spacing=17;
+  unsigned rows=u->state==DOK_UI_TITLE?5:4,spacing=u->state==DOK_UI_TITLE?14:17;
   for(unsigned i=0;i<rows;i++){
    if(i==u->focus){box(&c,14,44+i*spacing,212,12,fg);c.fg=bg;}
-   label(&c,18,46+i*spacing,(i==0 && u->state==DOK_UI_TITLE)?ui_start[en]:(i==3 && u->state==DOK_UI_TITLE)?ui_end[en]:ui_menu[en][i],8);
+   label(&c,18,46+i*spacing,(i==0 && u->state==DOK_UI_TITLE)?ui_start[en]:(i==3 && u->state==DOK_UI_TITLE)?ui_story[en]:(i==4 && u->state==DOK_UI_TITLE)?ui_end[en]:ui_menu[en][i],8);
    if(i==1)label(&c,184,46+i*spacing,en?"ENG":"RUS",8);
    c.fg=fg;
   }

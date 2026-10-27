@@ -25,7 +25,7 @@ int main(void){
  dok_ui_input(&u,2);release(&u);assert(u.state==2 && u.focus==2);
  dok_ui_input(&u,128);release(&u);dok_ui_input(&u,1);release(&u);assert(u.state==1);
  dok_ui_input(&u,8);assert(u.state==DOK_UI_LEVELS && !dok_ui_game_keys(&u,8));release(&u);
- dok_ui_init(&u);u.state=DOK_UI_TITLE;dok_ui_input(&u,64);assert(u.focus==3);release(&u);
+ dok_ui_init(&u);u.state=DOK_UI_TITLE;dok_ui_input(&u,64);assert(u.focus==4);release(&u);
  dok_ui_input(&u,128);assert(u.focus==0);release(&u);
  uint8_t long_text[1024];for(unsigned i=0;i<sizeof(long_text);i++)long_text[i]=(uint8_t)i;
  dok_ui_literal(&u,long_text,sizeof(long_text),0xfffff000u);assert(u.literal_size==240);
@@ -78,5 +78,27 @@ int main(void){
   for(unsigned z=0;z<5;++z)for(unsigned x=0;x<5;++x)assert((world.maps[75+z*5+x]!=0)==(x<=2));
   memset(world.maps+75,0,25);
  }
+ /* The map item gates object symbols; scrolling never supplies game keys. */
+ dok_runtime_definition symbols[4]={{0},{0},{0},{0}};
+ symbols[0].class_id=1;symbols[0].actor_index=0;symbols[0].marker=7;
+ symbols[1].class_id=0;symbols[2].class_id=3;symbols[2].marker=12;
+ symbols[3].class_id=9;symbols[3].marker=10;
+ map_level.definitions=symbols;map_level.object_count=4;world.object_count=4;
+ map_level.glyph_index[' ']=2;map_level.glyph_index['i']=3;map_level.glyph_index['m']=4;
+ memset(world.maps,' ',75);memset(world.maps+75,1,25);
+ world.maps[25+1*5+3]='i';world.maps[25+1*5+4]='m';
+ memset(font8,0,sizeof(font8));dok_ui_init(&u);u.state=DOK_UI_MAP;u.map_centered=1;u.map_x=6;u.map_y=6;
+ world.player.map_revealed=0;dok_ui_draw(&u,framebuffer+1,&world,font8,font16,255,0);
+ assert(framebuffer[1+70*240+118]==0 && framebuffer[1+70*240+115]==0);
+ world.player.map_revealed=1;dok_ui_draw(&u,framebuffer+1,&world,font8,font16,255,0);
+ assert(framebuffer[1+70*240+118]==12 && framebuffer[1+70*240+115]==10);
+ world.objects[3].state.monster.state=4;dok_ui_draw(&u,framebuffer+1,&world,font8,font16,255,0);
+ assert(framebuffer[1+70*240+115]==0);
+ world.maps[75+1*5+3]=0;dok_ui_draw(&u,framebuffer+1,&world,font8,font16,255,0);
+ assert(framebuffer[1+70*240+118]==0); /* item does not bypass exploration */
+ int initial_x=u.map_x;dok_ui_input(&u,16);assert(u.map_x==initial_x+6 && !dok_ui_game_keys(&u,16));
+ for(unsigned i=0;i<30;++i)dok_ui_input(&u,16);assert(u.map_x>initial_x+6);
+ dok_ui_input(&u,18);assert(u.state==DOK_UI_PLAY && !dok_ui_game_keys(&u,18));release(&u);
+ assert(dok_ui_game_keys(&u,16)==16);
  puts("G17 UI: keypad/chord/held-edge, localization, queue, 240-byte clamp, wraparound deadlines, all states framebuffer guards passed");return 0;
 }

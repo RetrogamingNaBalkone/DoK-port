@@ -308,7 +308,7 @@ def main():
                                    retired_world_event_projectile_audio_cleanup=True))
             # Original ENDTXT belongs to leaving the title menu, not a newly
             # invented campaign after LEVEL3.
-            p.menu_focus(3)
+            p.menu_focus(4)
             p.press(8)
             p.wait_flow(5)
             p.source_screens('ENDTXT', language, screens)
@@ -348,7 +348,7 @@ def main():
         assert p.frontend.read(p.symbols['g_combat']+12,10240+512)==slots_before
         assert p.words('g_audio_diag',2)[1]==1
         # END means close the run even when entered from a suspended session.
-        p.to_title();p.menu_focus(3);p.press(8);p.wait_flow(5)
+        p.to_title();p.menu_focus(4);p.press(8);p.wait_flow(5)
         assert p.flow()['session']==0
         assert p.owner_counts()==dict(ai=0,visual=0,interactions=0),p.owner_counts()
         assert not p.active_slots() and p.words('g_audio_diag',2)[1]==0

@@ -4,6 +4,7 @@ from pathlib import Path
 COPY = {
  "ui_title": ["ПОДЗЕМЕЛЬЯ КРЕМЛЯ", "KREMLIN DUNGEONS"],
  "ui_start": ["НАЧАТЬ ИГРУ", "START GAME"],
+ "ui_story": ["ПРЕДЫСТОРИЯ", "STORY"],
  "ui_choose": ["ВЫБОР УРОВНЯ", "SELECT LEVEL"],
  "ui_level_hint": ["B: НАЗАД  SELECT: ЯЗЫК", "B: BACK  SELECT: LANG"],
  "ui_levels": [["ХОРОМЫ НЕЧИСТИ", "ПОДЗЕМНАЯ РЕКА", "ПОДВАЛЫ КРЕМЛЯ"],

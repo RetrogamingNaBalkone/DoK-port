@@ -634,7 +634,7 @@ def build(base,out,variants,unreflected_control=False):
             command([zig,*startup,*tiled_flags,ROOT/'gba/tiled_scene.S','-o',dest/'tiled-columns.o'])
             objects.append(dest/'tiled-columns.o')
         if 'UI_CACHE' in defines or 'UI_CONTROL' in defines:
-            for name in ('ui.c','ui_text.inc','ui_native_text.inc','ui_panel_cache.inc','ui_tiled.inc'):
+            for name in ('ui.c','ui_map.inc','ui_text.inc','ui_native_text.inc','ui_panel_cache.inc','ui_tiled.inc'):
                 (private/name).write_bytes((ROOT/'src'/name).read_bytes())
             p=private/'ui.c';s=p.read_text(encoding='utf-8')
             if 'UI_CACHE' in defines:
@@ -724,7 +724,7 @@ def build(base,out,variants,unreflected_control=False):
     manifest=dict(tables=metadata,stream_tables=stream_metadata,sector_tables=sector_metadata,sector_gpu_tables=sector_gpu_metadata,world_obj_tables=world_obj_metadata,variants=result,base_rom_sha256=digest(base/'dok-diagnostic.gba'),
                   base_objects={n:digest(base/(n+'.o')) for n in names},
                   sources={p.as_posix():digest(p) for p in [*Path('src').glob('renderer*'),Path('src/projection.c'),
-                           *[Path('src')/name for name in ('ui.c','ui_text.inc','ui_native_text.inc','ui_panel_cache.inc','ui_tiled.inc')],
+                           *[Path('src')/name for name in ('ui.c','ui_map.inc','ui_text.inc','ui_native_text.inc','ui_panel_cache.inc','ui_tiled.inc')],
                            *[Path('gba')/name for name in ('columns.S','column_cache.S','geometry_cache.S','planes.S','procedural.S','world_spans.S','ui_panels.S','masked_columns.S','world_lookup.S','renderer_probe.c','hardware_obj.inc','hardware_direct.inc','hardware_bg.inc','hardware_ui_obj.inc','hw_obj_pack.S','combat_probe.c','tiled_scene.S','startup.S','opaque_tiled.S')],
                            Path('gba/hardware_world_obj_probe.inc'),Path('gba/hardware_world_obj.inc'),Path('include/dok/gba_world_obj.h'),
                            Path('scripts/gba_world_obj_assets.py'),Path('scripts/gba_sector_scene.py'),Path('gba/sector_planes.S'),Path('gba/sector_bitmap.S'),Path('gba/hardware_sector_bitmap.inc'),Path(__file__),Path('scripts/gba_hw_bg_assets.py'),Path('scripts/compile_gba_render_scene.py'),

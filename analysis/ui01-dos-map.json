@@ -1,0 +1,89 @@
+{
+  "task": "G20B/UI01 DOS automap playtest",
+  "status": "passed",
+  "date": "2026-10-27",
+  "rom": "artifacts/gba/DoK-port_UI01.gba",
+  "rom_bytes": 16014848,
+  "rom_sha256": "f6473b2b5688b363ed1b9ad95186713f22283cb36ab89fc6644fbcf3ecb8b54b",
+  "build_dir": "build/ui01-dos-map/hardware/hw_v128_entity_rect",
+  "original_execution_cases": 12,
+  "viewports_per_case": 2,
+  "original_pixel_differences": 0,
+  "gba_world_cases": 6,
+  "unfrozen_probes_during_pause": true,
+  "map_item_gates_objects": true,
+  "visited_required": true,
+  "host_executed": true,
+  "linux_thumb_compiled": true,
+  "ewram_static_bytes": 261444,
+  "ewram_free": 700,
+  "iwram_static_bytes": 24424,
+  "iwram_free_before_stacks": 152,
+  "main_stack": {
+    "main_stack_low": 50356224,
+    "main_stack_top": 50364160,
+    "sentinel_word": 219540062,
+    "untouched_margin_bytes": 5352,
+    "high_water_bytes": 2584,
+    "irq_and_bios_excluded": true,
+    "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+  },
+  "originals": {
+    "ru": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+    "en": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b"
+  },
+  "limits": [
+    "GBA sight fan retained; exact DOS render-record discovery not restored",
+    "Original stale-stack arrow artefacts intentionally excluded",
+    "No physical GBA, new full audio/performance run or clean repeat"
+  ],
+  "sources": {
+    "src/ui.c": "b1dd3611de3687af9472611e556d26cb0ac7aa008860a40658c3e238ea1ef712",
+    "src/ui_map.inc": "36df5911e9ca0848db66ffca2276f371d5248a73ac04a4555ec64168f6033289",
+    "include/dok/ui.h": "aa281878e3958019954621fcbf73695ee161662901349a314c126fe3b612121c",
+    "gba/renderer_probe.c": "77c9f333d5419f46096433ccf7f47466032d67e7912f79592f0326d249250035",
+    "scripts/InspectAutomap.java": "d31a5938da4b67a88e86d5c86f6bfae953b76dea298ef0b4022c7f02890e1819",
+    "scripts/analyze_automap.py": "322574b9ccb41e779e57adfecef55bb56eda52743245ea95695fdc32866c532a",
+    "scripts/verify_automap_original.py": "2159706536c797174f617075f16b4c73396b52dbbb0f47d40891d689d473de27",
+    "scripts/verify_automap_gba.py": "b9661de97b1c90aed92beea20f3d5f99fe191c2690c2bd700de17b46f0277be2",
+    "tests/test_ui.c": "e440ea4c7bcc9996283a433d6b34cf8a9ae6be2fc99c51020ac869d364efe5ad",
+    "tests/automap_dump.c": "e2b5722d65768cf4d1c8591d8c66417a9dbd8155f8f877c96ff6acc4890ded36"
+  },
+  "previous_validation": {
+    "rom_sha256": "22812bc8bb9dfc5ecf77d9856765f36590a9a36f4241897fbffbdb6a686d810d",
+    "reports": {
+      "automap-gba": {
+        "path": "build/ui01-dos-map/automap-gba.json",
+        "sha256": "b26dc26e9b13203ec0025a4d92c0d48397e74a8be636ba860fc521485fb5f8f9"
+      },
+      "playtest": {
+        "path": "build/ui01-dos-map/playtest.json",
+        "sha256": "dc17d2257cc8259e03cf95161c0e3df437f7e9d1d02b884acf1d96201ca20cfc"
+      },
+      "verify_ui_gba": {
+        "path": "build/ui01-dos-map/verify_ui_gba.json",
+        "sha256": "9657543938152481599ea1c13272d09e707e930f19f529799e26858a22d1d8a4"
+      },
+      "verify_flow_gba": {
+        "path": "build/ui01-dos-map/verify_flow_gba.json",
+        "sha256": "a809592e4ebec49db06c70c717266133bc9d72f9039fa2ab0c67c7b95e175659"
+      },
+      "verify_gba_hardware_transitions": {
+        "path": "build/ui01-dos-map/verify_gba_hardware_transitions.json",
+        "sha256": "da61d0f627d9f9dc1972d38be94d379dabff1abeb9aad7cb0caf5ce4131c8c72"
+      },
+      "verify_frontend_latency": {
+        "path": "build/ui01-dos-map/verify_frontend_latency.json",
+        "sha256": "0a0b26a4cc7cc3043280dcf12659967d1dc8729c59730e9db7b2f4b53cf6fed9"
+      }
+    }
+  },
+  "scroll_pixels_per_step": 6,
+  "scroll_speed_multiplier": 2,
+  "reports": {
+    "automap-scroll-gba": {
+      "path": "build/ui01-dos-map/automap-scroll-gba.json",
+      "sha256": "35ba11d98842f6372983542af6ab87217036af3505cfe9eae950f79c26991c8b"
+    }
+  }
+}

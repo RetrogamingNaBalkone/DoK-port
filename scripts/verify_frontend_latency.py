@@ -26,7 +26,7 @@ def main():
                 p.frontend.run(phase)
                 def pulse(button,expected):
                     before=p.frontend.video_frames
-                    focus=(p.ui()['focus']+1)%4 if button==5 else None
+                    focus=(p.ui()['focus']+1)%5 if button==5 else None
                     def ready():return p.ui()['state']==expected and (focus is None or p.ui()['focus']==focus)
                     p.frontend.run(1,(button,))
                     for _ in range(6):
@@ -45,6 +45,7 @@ def main():
                 help_lag=pulse(button,3)
                 help_back=pulse(0,1)
                 pulse(5,1);assert p.ui()['focus']==3
+                pulse(5,1);assert p.ui()['focus']==4
                 pulse(5,1);assert p.ui()['focus']==0,'Removed statistics row is still reachable'
                 rows.append(dict(button='A' if button==8 else 'Start',phase=phase,splash=splash,levels=level,
                                  cancel=back,down=down,help=help_lag,help_back=help_back))

@@ -1,0 +1,41 @@
+{
+  "task": "G20B/UI01 story",
+  "status": "passed",
+  "rom_sha256": "f16dfa824a5761796554aa3d205d35f6ad2123ba70dfb15354b1b1e605714f21",
+  "rom_bytes": 16015068,
+  "build_root": "build\\ui01-story",
+  "source_resource": "README",
+  "source_indices": {
+    "ru": 0,
+    "en": 0
+  },
+  "pages": {
+    "ru": 2,
+    "en": 2
+  },
+  "original_text_pixels": true,
+  "world_unchanged": true,
+  "music_uninterrupted": true,
+  "host_passed": true,
+  "linux_thumb_compiled": true,
+  "reports": {
+    "story": {
+      "path": "build\\ui01-story\\story.json",
+      "sha256": "51cdc66fd201fc5ec6c14b93874a39ab30fc43321e525219d195d4e09e7501a1"
+    },
+    "flow": {
+      "path": "build\\ui01-story\\flow.json",
+      "sha256": "8f9e3ef80de6445b90288ffb3edda2ef3c33fdbafdcdc822aa5190bc67a26b53"
+    },
+    "ui": {
+      "path": "build\\ui01-story\\ui.json",
+      "sha256": "3ee5bff9c2e4c9b474792e796b28984828e442461d737f5b6c104c57292992f3"
+    },
+    "latency": {
+      "path": "build\\ui01-story\\latency.json",
+      "sha256": "b12fa20d32dff183ad14622e47a197a71c8c57474079e735340efd7414f515fb"
+    }
+  },
+  "physical_gba_tested": false,
+  "clean_repeat": false
+}

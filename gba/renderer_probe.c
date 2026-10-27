@@ -417,7 +417,7 @@ __attribute__((noreturn)) void gba_main(void)
         dok_ui_tick(&g_ui,g_render_world.level,gba_time_ticks());
         uint32_t key=g_ui.state|(g_ui.focus<<4)|(g_ui.language<<8)|(g_ui.return_state<<12);
         uint32_t page_key=g_ui.page|(g_ui.active<<31);
-        if(frontend && g_ui.state!=DOK_UI_STATUS && key==ui_key &&
+        if(frontend && !text_screen && g_ui.state!=DOK_UI_STATUS && g_ui.state!=DOK_UI_MAP && key==ui_key &&
            g_ui.messages==ui_messages && page_key==ui_page){
             /* Static screens stay in VRAM. Poll every VBlank instead of
              * repainting and uploading the same38400 pixels between taps. */
