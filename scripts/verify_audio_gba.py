@@ -291,6 +291,9 @@ def main():
     args = parser.parse_args()
     probe = AudioProbe(args.core, args.build_dir)
     try:
+        probe.until(lambda d:d['draws']>=1)
+        if 'g_camera_capture_hold' in probe.symbols:
+            probe.write(probe.symbols['g_camera_capture_hold'],struct.pack('<I',1))
         probe.until(lambda d: d['draws'] >= 3 and d['phase'] == 2)
         for symbol in ('g_motion_probe', 'g_visual_probe', 'g_combat_probe', 'g_ai_probe'):
             probe.write(probe.symbols[symbol], struct.pack('<I', 1))

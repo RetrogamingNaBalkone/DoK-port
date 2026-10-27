@@ -8,6 +8,7 @@
     [switch]$RendererProbe,
     [switch]$HalfColumns,
     [switch]$TimeProbe,
+    [switch]$BootSelfTests,
     [string]$AssetsBin = 'build/gba/assets/assets.bin',
     [string]$CorePath = "$env:LOCALAPPDATA/Programs/mGBA/libretro-20261024/mgba_libretro.dll"
 )
@@ -32,6 +33,7 @@ try {
     if ($MemoryProbe) { $taskArgs += '-DDOK_RUNTIME_PROBE' }
     if ($AssetsProbe) { $taskArgs += '-DDOK_ASSETS_PROBE' }
     if ($RendererProbe) { $taskArgs += '-DDOK_RENDERER_PROBE' }
+    if ($BootSelfTests) { $taskArgs += '-DDOK_BOOT_SELFTEST' }
     if ($HalfColumns -and -not $RendererProbe) { throw 'HalfColumns requires RendererProbe' }
     if ($HalfColumns) { $taskArgs += '-DDOK_RENDER_HALF_COLUMNS' }
     $taskMain = if ($RendererProbe) {'gba/renderer_probe.c'} else {'gba/main.c'}

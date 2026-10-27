@@ -108,6 +108,14 @@ gba_irq:
 7:
 #endif
 #ifdef DOK_RENDERER_PROBE
+    tst r1,#1
+    beq 8f
+    push {r1,r4,r5,lr}
+    ldr r3,=gba_ui_vblank
+    mov lr,pc
+    bx r3
+    pop {r1,r4,r5,lr}
+8:
     tst r1, #0x210
     beq 6f
     push {r4,lr}

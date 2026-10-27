@@ -381,7 +381,7 @@ static void hw_bg_upload(void) {
 #endif
     hw_bg_cold_frame=cold;
     if(cold) {
-        DISPCNT=0x80;++g_hw_bg_diag[1];
+        DISPCNT=R16(0x04000050)==0xff?0:0x80;++g_hw_bg_diag[1];
         for(unsigned i=0;i<32;++i) {((volatile uint16_t *)0x06000000)[i]=0;((volatile uint16_t *)0x06004000)[i]=0;}
 #ifndef DOK_RENDER_HW_BG_STREAM_PROTOTYPE
         for(int z=hw_bg_z;z<hw_bg_z+16;++z)for(int x=hw_bg_x;x<hw_bg_x+16;++x)hw_bg_cell((unsigned)x,(unsigned)z);

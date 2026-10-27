@@ -435,7 +435,7 @@ def tables(out, assets, include_sides=False, include_zero_spans=False, include_e
 
 
 @clean_objects_after_build
-def build(base,out,variants):
+def build(base,out,variants,unreflected_control=False):
     zig=Path(os.environ['LOCALAPPDATA'])/'Programs/Zig/0.13.0/zig.exe'
     out.mkdir(parents=True,exist_ok=True)
     streamed_rows={96 if 'HW_ROWS96' in VARIANTS[v] else 72 if 'HW_ROWS72' in VARIANTS[v] else 128 for v in variants if 'HW_UI_OBJ' in VARIANTS[v]}
@@ -495,6 +495,13 @@ def build(base,out,variants):
         (private/'dok/gba_sector_gpu.h').write_bytes((ROOT/'include/dok/gba_sector_gpu.h').read_bytes())
         for p in (ROOT/'src').glob('renderer*'):
             (private/p.name).write_bytes(p.read_bytes())
+        if unreflected_control:
+            # Isolated regression control only: prove all other UI01 changes
+            # retain the old396 PPU images. Never modify the production source.
+            p=private/'renderer.c';s=p.read_text(encoding='utf-8')
+            needle='if(reflected) {u0=u1;u1=0;}'
+            assert needle in s
+            p.write_text(s.replace(needle,'if(0 && reflected) {u0=u1;u1=0;}'),encoding='utf-8')
         if 'EXACT_LIGHT' in defines:
             p=private/'renderer.c'
             p.write_text(p.read_text(encoding='utf-8').replace('dok_prelit_offsets','dok_exact_prelit_offsets'),encoding='utf-8')
@@ -711,6 +718,7 @@ def build(base,out,variants):
                  '--rom',dest/'dok-diagnostic.gba','--out',dest/'build-report.json'])
         result[variant]=json.loads((dest/'build-report.json').read_text(encoding='utf-8'))
         result[variant]['prototype_defines']=list(defines)
+        result[variant]['unreflected_control']=unreflected_control
         print('Built '+variant,flush=True)
     digest=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
     manifest=dict(tables=metadata,stream_tables=stream_metadata,sector_tables=sector_metadata,sector_gpu_tables=sector_gpu_metadata,world_obj_tables=world_obj_metadata,variants=result,base_rom_sha256=digest(base/'dok-diagnostic.gba'),
@@ -732,9 +740,10 @@ def main():
     p.add_argument('--out',type=Path,default=Path('build/g20a-prototypes'))
     p.add_argument('--variants',nargs='+',choices=VARIANTS,default=list(VARIANTS))
     p.add_argument('--keep-objects',action='store_true',help='Retain experiment object files for manual relinking')
+    p.add_argument('--unreflected-control',action='store_true',help='Diagnostic only: disable native central-plane reflection in the private source snapshot')
     a=p.parse_args();os.chdir(ROOT)
     os.environ['ZIG_GLOBAL_CACHE_DIR']=str(ROOT/'build/zig-cache')
-    build(a.base,a.out,a.variants,keep_objects=a.keep_objects)
+    build(a.base,a.out,a.variants,keep_objects=a.keep_objects,unreflected_control=a.unreflected_control)
 
 
 if __name__=='__main__':main()

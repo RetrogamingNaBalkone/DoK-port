@@ -86,3 +86,15 @@ void gba_audio_update(unsigned lang){language=lang;
 
 void gba_audio_quiet(void){uint16_t old=R16(0x04000208);R16(0x04000208)=0;
  if(voice.active)dok_audio_stop(&voice,voice.resource);hardware_stop();voice=(dok_audio){0};cursor=(dok_audio){0};remaining=chunk=0;sync();R16(0x04000208)=old;}
+
+/* Frontend music has its own logical identity, independent of level bindings.
+ * Language/menu navigation never restarts an admitted loop. */
+void gba_audio_menu(unsigned enabled){
+ const uint32_t identity=0x20000001u;
+ if(enabled && assets){
+  if(dok_audio_playing(&voice,identity))return;
+  uint16_t id;static const uint8_t name[]="\207\200\221\222\200\202\212\200_\207\202\223\212";
+  if(dok_rom_find(&id,assets,name,sizeof(name)-1)!=DOK_ROM_OK)return;
+  gba_audio_quiet();play(id,1,identity);
+ }else if(dok_audio_playing(&voice,identity))gba_audio_quiet();
+}

@@ -63,6 +63,16 @@ static int actual_package(const char *path) {
 int main(int argc,char **argv) {
     dok_rom_assets a,old;dok_runtime_level view;dok_rom_resource resource;uint16_t id=123;uint32_t n,offset;dok_rom_status status;
     fixture();CHECK(dok_rom_open(&a,blob,used)==DOK_ROM_OK);old=a;
+    /* Frontend boot validates only the catalog. A corrupt unchosen level
+     * must still fail when selected, and full open must keep rejecting it. */
+    dok_rom_assets catalog;dok_runtime_level pair[2];
+    CHECK(dok_rom_open_catalog(&catalog,blob,used)==DOK_ROM_OK);
+    CHECK(dok_rom_level_pair(pair,&catalog,0)==DOK_ROM_OK);
+    CHECK(pair[0].maps==pair[1].maps);
+    memcpy(bad,blob,used);offset=load32(blob+96+4*80+36);word(bad+offset+12,0);
+    CHECK(dok_rom_open_catalog(&catalog,bad,used)==DOK_ROM_OK);
+    CHECK(dok_rom_level_pair(pair,&catalog,2)!=DOK_ROM_OK);
+    CHECK(dok_rom_open(&catalog,bad,used)!=DOK_ROM_OK);
     CHECK(dok_rom_level(&view,&a,0,0)==DOK_ROM_OK && view.object_count==1 && view.actor_count==0);
     CHECK(dok_runtime_reset(&runtime,&view)==DOK_RUNTIME_OK);
     CHECK(dok_rom_find(&id,&a,(const uint8_t *)"A",1)==DOK_ROM_OK && id==1);

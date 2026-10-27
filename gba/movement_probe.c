@@ -91,6 +91,7 @@ static void snapshot(void)
 }
 unsigned gba_motion_start(dok_runtime *world)
 {
+#ifdef DOK_BOOT_SELFTEST
     g_motion_diag.error=dok_movement_cases();
     if(g_motion_diag.error) return g_motion_diag.error;
     const dok_runtime_level *level=world->level;
@@ -98,6 +99,7 @@ unsigned gba_motion_start(dok_runtime *world)
     if(!g_motion_diag.error) g_motion_diag.error=dok_interactions_cases(world,&interactions);
     if(dok_runtime_reset(world,level)!=DOK_RUNTIME_OK) return 3;
     if(g_motion_diag.error) return g_motion_diag.error;
+#endif
     collision_world=world;player=player_actor(world);if(!player) return 1;
     motion.remembered_flags=0;input=(dok_input){0};pending_pressed=0;
     dok_steps_init(&steps,gba_time_ticks(),416);

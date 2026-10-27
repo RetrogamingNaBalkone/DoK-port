@@ -27,7 +27,7 @@ def screen_lines(data):
         if value == 10:
             rows.append(bytearray())
         else:
-            if len(rows[-1]) == 30:
+            if len(rows[-1]) == 28:
                 rows.append(bytearray())
             rows[-1].append(value if value >= 32 else 32)
     return [bytes(row) for row in rows]
@@ -68,6 +68,7 @@ class FlowProbe(UIProbe):
         self.write(address+4, struct.pack('<iii', cell%64*480+240, -300, cell//64*480+240))
 
     def menu_focus(self, focus):
+        if self.ui()['state']==6:self.press(0)
         assert self.flow()['state'] == 0 and self.ui()['state'] == 1, (self.flow(), self.ui())
         for _ in range(6):
             if self.ui()['focus'] == focus:
@@ -76,11 +77,13 @@ class FlowProbe(UIProbe):
         raise AssertionError(('Title focus unavailable', focus, self.ui()))
 
     def new_game(self, level, language):
-        self.menu_focus(4)
+        self.menu_focus(0)
         if self.ui()['language'] != language:
             self.press(2)
-        for _ in range((level-self.selected_level) % 3):
-            self.press(7)
+        self.press(8)
+        assert self.ui()['state']==6,self.ui()
+        for _ in range((level-self.ui()['focus']) % 3):
+            self.press(5)
         self.selected_level = level
         self.press(8)
         f = self.wait_flow(1)
@@ -155,7 +158,7 @@ class FlowProbe(UIProbe):
             for row in range(14):
                 index = page*14+row
                 line = rows[index] if index < len(rows) else b''
-                glyph_mask(raw, font, 0, 20+row*8, line.ljust(30, b' '), white)
+                glyph_mask(raw, font, 8, 24+row*8, line.ljust(28, b' '), white)
             hint = 'A/START: OK B: BACK' if language else 'A/START: OK B: НАЗАД'
             footer = f'{hint} {page+1}/{expected_pages}'.encode('cp866')
             message_mask(raw, font, footer, white)
@@ -180,7 +183,7 @@ class FlowProbe(UIProbe):
     def to_title(self):
         self.press(2, 3)
         assert self.ui()['state'] == 2
-        for _ in range(4):
+        for _ in range(3):
             self.press(5)
         self.press(8)
         self.wait_flow(0)
@@ -207,6 +210,8 @@ def main():
     p = FlowProbe(args.core, args.build)
     try:
         p.until(lambda d: d['draws'] >= 2 and d['phase'] == 2)
+        assert p.ui()['state']==5,p.ui()
+        p.press(8)
         assert p.flow()['state'] == 0 and p.ui()['state'] == 1
         p.selected_level = 0
         p.freeze()
@@ -268,7 +273,9 @@ def main():
                     expected[0] = 150
                     expected[16] = 2
                     assert after == expected, (after, expected)
-                    assert p.frontend.read(world+MAP_OFFSET, 16384) == map_before
+                    map_after=p.frontend.read(world+MAP_OFFSET,16384)
+                    assert map_after[:12288] == map_before[:12288]
+                    assert all(a==b or (a==1 and b==0) for a,b in zip(map_after[12288:],map_before[12288:])), 'Retry erased explored cells'
                     assert p.owners_snapshot() == events_before, 'Retry reset original live scheduler events'
                     assert p.frontend.read(p.symbols['g_combat']+12,10240+512)==projectiles_before
                     assert p.words('g_audio_diag',19)[18]==sound_identity and p.words('g_audio_diag',2)[1]==1
@@ -301,7 +308,7 @@ def main():
                                    retired_world_event_projectile_audio_cleanup=True))
             # Original ENDTXT belongs to leaving the title menu, not a newly
             # invented campaign after LEVEL3.
-            p.menu_focus(5)
+            p.menu_focus(3)
             p.press(8)
             p.wait_flow(5)
             p.source_screens('ENDTXT', language, screens)
@@ -325,7 +332,7 @@ def main():
         p.source_screens('BINTRO3',0,screens)
         p.wait_flow(2)
         assert p.player()[16] == 3
-        # GBA suspended-session Continue preserves an existing live world.
+        # Continue belongs only to Pause and preserves the existing live world.
         model=p.runtime(2,0)
         fresh=p.frontend.read(p.symbols['g_render_world'],33864)
         values=p.player();values[10]=15;p.set_player(values)
@@ -333,14 +340,15 @@ def main():
         world_before=p.world_sha()
         owners_before=p.owners_snapshot()
         slots_before=p.frontend.read(p.symbols['g_combat']+12,10240+512)
-        p.to_title()
-        ui_screens['suspended_title_ru']=p.screen('flow-suspended-title-ru')
-        p.menu_focus(0);p.press(8);p.wait_flow(2)
+        p.press(2,3)
+        ui_screens['pause_ru']=p.screen('flow-pause-ru')
+        assert p.ui()['state']==2 and p.ui()['focus']==0
+        p.press(8);p.wait_flow(2)
         assert p.world_sha()==world_before and p.owners_snapshot()==owners_before
         assert p.frontend.read(p.symbols['g_combat']+12,10240+512)==slots_before
         assert p.words('g_audio_diag',2)[1]==1
         # END means close the run even when entered from a suspended session.
-        p.to_title();p.menu_focus(5);p.press(8);p.wait_flow(5)
+        p.to_title();p.menu_focus(3);p.press(8);p.wait_flow(5)
         assert p.flow()['session']==0
         assert p.owner_counts()==dict(ai=0,visual=0,interactions=0),p.owner_counts()
         assert not p.active_slots() and p.words('g_audio_diag',2)[1]==0
@@ -365,7 +373,7 @@ def main():
         report = dict(task='G18',status='passed',rom_sha256=sha(p.rom),script_sha256=sha(__file__),
                       levels=levels,retries=retries,screens=screens,ui_screens=ui_screens,gameover_three_lives=True,
                       new_game_after_gameover=True,ending_from_title=True,
-                      suspended_continue_preserved_world_events_projectiles=True,
+                      pause_continue_preserved_world_events_projectiles=True,
                       ending_discarded_suspended_world_streams=True,
                       new_game_replaced_live_world_without_old_owners=True,
                       negative_hp_native_finish_sentinel=True,

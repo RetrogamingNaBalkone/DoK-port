@@ -1,0 +1,242 @@
+{
+  "task": "G20B/UI01",
+  "date": "2026-10-27",
+  "status": "passed",
+  "artifact": "artifacts/gba/DoK-port_UI01.gba",
+  "rom_sha256": "1a2950bc792c515fee17ddc4b680d7ae44873beb84ad1c3f4e789b96e14b6da2",
+  "rom_bytes": 15939308,
+  "clean_repeat_byte_exact": true,
+  "build_dir": "build/g20b/hardware/hw_v128_entity_rect",
+  "source_control_sha256": "2775bdd0caaac64b4fd99e4c6d675587fad2da9c795468dc52efacb5d53edaab",
+  "ram": {
+    "ewram": 261404,
+    "ewram_free": 740,
+    "iwram_before_stacks": 24376,
+    "iwram_free_before_stacks": 200,
+    "stack_reserve": 8192
+  },
+  "stack": {
+    "main_stack_low": 50356224,
+    "main_stack_top": 50364160,
+    "sentinel_word": 219540062,
+    "untouched_margin_bytes": 5392,
+    "high_water_bytes": 2544,
+    "irq_and_bios_excluded": true,
+    "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+  },
+  "irq_stack": {
+    "low": 50364160,
+    "top": 50364320,
+    "untouched_margin_bytes": 80,
+    "high_water_bytes": 80,
+    "includes_bios_irq_saves": true
+  },
+  "music": {
+    "wav": "build/g20b/hardware/hw_v128_entity_rect/audio-check/ui01-menu-two-loops.wav",
+    "sha256": "077ef97a0117c8e219d669c51f6fac1b724454f7e83eaca10b7bf64c405f79b0",
+    "seconds": 92.32177734375,
+    "loops": 2,
+    "starts": 1,
+    "underruns": 0,
+    "max_irq_gap": 413,
+    "repeat_correlation": 0.9946382361268775,
+    "stereo_channels_equal": true,
+    "stop_before_intro": true,
+    "no_menu_music_in_pause": true,
+    "restart_on_return": true
+  },
+  "screens": {
+    "splash_0": {
+      "path": "build/g20b/hardware/hw_v128_entity_rect/ui-check/ui01-splash-0.png",
+      "sha256": "a8c359d679c1a3792d111c33320952cb5620d1b44a236f87636ab3f25525f803",
+      "framebuffer_sha256": "bd8c28355855ba6dcbee775eeb38e8c19a931e54ae032fc3f9cf6b83796c4861"
+    },
+    "menu_0": {
+      "path": "build/g20b/hardware/hw_v128_entity_rect/ui-check/ui01-menu-0.png",
+      "sha256": "cd5d470042cd1875ec9f0660fb4c06b83e2341de3acfbc260d20c9a29cc10cc2",
+      "framebuffer_sha256": "4427dceaef4dddb87981ae6a8f359864d2948789c1e2a8817f816e69ecc22434"
+    },
+    "levels_0": {
+      "path": "build/g20b/hardware/hw_v128_entity_rect/ui-check/ui01-levels-0.png",
+      "sha256": "7a325c314e1bc240fc0a6e7bac97c6fbdb1a8d902bef2e78542ebc4799b8cc66",
+      "framebuffer_sha256": "70d151adf06aa5181a8a2bd77a57b1cd449be3fa0bbb84405c26d09c7ed83b06"
+    },
+    "stats_0": {
+      "path": "build/g20b/hardware/hw_v128_entity_rect/ui-check/ui01-stats-0.png",
+      "sha256": "652c2b3d05a3d0c16fd3bb32f761f5fb273d5f07c1bd1ce96a1c8b58b8f9ad01",
+      "framebuffer_sha256": "027fa0993961bf52f7b244cdcaf499a21f909c81e5ac3b7d014dc5daeb63bbde"
+    },
+    "splash_1": {
+      "path": "build/g20b/hardware/hw_v128_entity_rect/ui-check/ui01-splash-1.png",
+      "sha256": "a8c359d679c1a3792d111c33320952cb5620d1b44a236f87636ab3f25525f803",
+      "framebuffer_sha256": "bd8c28355855ba6dcbee775eeb38e8c19a931e54ae032fc3f9cf6b83796c4861"
+    },
+    "menu_1": {
+      "path": "build/g20b/hardware/hw_v128_entity_rect/ui-check/ui01-menu-1.png",
+      "sha256": "204df7bee7d94bd374ad64acbebaa0e0ddf077860b9018981682313386a322a3",
+      "framebuffer_sha256": "827abd4b0a0fa4ec0d52a5b248cb057401d3897060a0246b7c41ac231f19d7a1"
+    },
+    "levels_1": {
+      "path": "build/g20b/hardware/hw_v128_entity_rect/ui-check/ui01-levels-1.png",
+      "sha256": "8842abdece3d288f3b31b4976bf1afa6e9838e9dc5614972da6551e6b38f150b",
+      "framebuffer_sha256": "3070df0b185a04292344e89534e58db2fb139935b63d85eae291e31ad6a50ca8"
+    },
+    "stats_1": {
+      "path": "build/g20b/hardware/hw_v128_entity_rect/ui-check/ui01-stats-1.png",
+      "sha256": "ff3b4b8e6db1f7ca13e2dc108a2111749f69105dbb7f710cb1bda9e326608d25",
+      "framebuffer_sha256": "c58162fdeca80ef04377686ad5e3b8e25545a5c434d06141e2d449977c654e9e"
+    }
+  },
+  "validation": {
+    "host_windows": true,
+    "linux_and_thumb_compile_only": true,
+    "flow_world_language_views": 6,
+    "original_sound_resources": 23,
+    "water_phases": 144,
+    "gameplay_ppu_exact_cases": 396,
+    "transitions": 294,
+    "video_callbacks": 5305,
+    "mixed_frames": 0,
+    "intentional_black_frames": 12,
+    "old_pause_resume_issue_fixed": true,
+    "clock_edges_on_arm": true,
+    "arm_rectangle_vectors": 512
+  },
+  "original_evidence": {
+    "task": "UI01/G20B",
+    "status": "passed",
+    "script_sha256": "a51acce8af12fd676e780edeb2213033238ff04792dc95a929604766666d293a",
+    "samples": [
+      {
+        "language": "ru",
+        "manifest": {
+          "language": "ru",
+          "sample": "originals/pkr/RUS/PKR.EXE",
+          "sha256_before": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+          "sha256_after": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+          "project": "build/ghidra/ru/Kremlin.gpr",
+          "script": "scripts/InspectUI.java",
+          "script_sha256": "9f7ca0b2a68ed871a2c512414973fc03e3907c8b6bce5124dc4e0ebadfeaaad6",
+          "driver_sha256": "0d2ff56c85348c87fb4a38f8e92a9dd4d4fd967b8e2b5eefdd83f7bf957fe61f",
+          "address_system": "Ghidra NE loader; not file offset or runtime DPMI selector"
+        },
+        "dos_report_sha256": "d85da395de0fc974a59eca498944c17eaffcff349a6f3bafcdc6de33dcbc16a6",
+        "splash_dos_indices_equal_resource": [
+          "boot.idx"
+        ],
+        "res": {
+          "path": "originals/pkr/RUS/PKR.RES",
+          "sha256": "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816"
+        },
+        "original_names": [
+          "\u0425\u041e\u0420\u041e\u041c\u042b \u041d\u0415\u0427\u0418\u0421\u0422\u0418",
+          "\u041f\u041e\u0414\u0417\u0415\u041c\u041d\u0410\u042f \u0420\u0415\u041a\u0410",
+          "\u041f\u041e\u0414\u0412\u0410\u041b\u042b \u041a\u0420\u0415\u041c\u041b\u042f"
+        ],
+        "name_addresses": [
+          "1190:0191",
+          "1190:01a0",
+          "1190:01af"
+        ],
+        "address_system": "Ghidra NE loader, not file offset or DPMI selector",
+        "splash_function": "1008:01ba",
+        "play_once_and_stop_asm": true,
+        "cdecl16far_caller_cleanup": true,
+        "source_palette_used_for_preview": true,
+        "dos_dac_capture": false
+      },
+      {
+        "language": "en",
+        "manifest": {
+          "language": "en",
+          "sample": "originals/pkr/ENG/PKE.EXE",
+          "sha256_before": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b",
+          "sha256_after": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b",
+          "project": "build/ghidra/en/Kremlin.gpr",
+          "script": "scripts/InspectUI.java",
+          "script_sha256": "9f7ca0b2a68ed871a2c512414973fc03e3907c8b6bce5124dc4e0ebadfeaaad6",
+          "driver_sha256": "0d2ff56c85348c87fb4a38f8e92a9dd4d4fd967b8e2b5eefdd83f7bf957fe61f",
+          "address_system": "Ghidra NE loader; not file offset or runtime DPMI selector"
+        },
+        "dos_report_sha256": "0f6c6f86515052cdede77cb896c6cd77802aa180cbaca345bffae9761442c778",
+        "splash_dos_indices_equal_resource": [
+          "boot.idx"
+        ],
+        "res": {
+          "path": "originals/pkr/ENG/PKE.RES",
+          "sha256": "865da340621fa6f90548a84e9ae9bf0a85071befb32a40ca1d359e488f74d458"
+        },
+        "original_names": [
+          "PALACE OF EVIL",
+          "SACRED RIVER",
+          "UNDERGROUND KREMLIN"
+        ],
+        "name_addresses": [
+          "10d0:0192",
+          "10d0:01a1",
+          "10d0:01ae"
+        ],
+        "address_system": "Ghidra NE loader, not file offset or DPMI selector",
+        "splash_function": "1008:023e",
+        "play_once_and_stop_asm": true,
+        "cdecl16far_caller_cleanup": true,
+        "source_palette_used_for_preview": true,
+        "dos_dac_capture": false
+      }
+    ],
+    "adaptations": [
+      "320x200 resized to240x160 without letterboxing",
+      "GBA music loops and continues through menus; DOS splash calls once then stop",
+      "GBA main menu, language switch and start-to-level-selector hierarchy"
+    ],
+    "limits": [
+      "DOS input is the researched game keyboard state, not IRQ1",
+      "No new Sound Blaster waveform capture or full DOS playthrough"
+    ]
+  },
+  "input_reports": {
+    "build/g20b/frontend.json": "6d7094f04081ce404962d044371da7735b127c8c706fc9f6dfe53dc9dfb11166",
+    "build/g20b/ui.json": "dceb6ecf024a6d8af9fa2a0be05224d0b09a55a723746ee479fa3506847445e0",
+    "build/g20b/flow.json": "727af6b3c63c072981d25ca7c81f11f827a27e7539af2e26d2ee61baf5728fc9",
+    "build/g20b/audio.json": "cf93c567bf271c4b157b4186fc0e6d873be6c4ac0b210bab8e962355196abeda",
+    "build/g20b/arm.json": "04bdb4c027ce12b021b4420f553f81c4f734856e21317695f98aba4639c59481",
+    "build/g20b/water.json": "6623c1d6046df32c8406d3ff843e19570b2c4d487bc790f2839fe96ff75d4439",
+    "build/g20b/sprites.json": "f45abe055f0bc7c8ff26df00961e01fe67ac5b9d0175d2f7c0af31ef7f2fc9e1",
+    "build/g20b/transitions.json": "a580c66c1ca775089e18ac2b570ba3cfd5bc1b28ba23cc92bea282ecf860b481",
+    "build/g20b/time.json": "9788d3b55d03fb1e67f9f64956c2467826cdafc93965153b4bf397ebedb2e7ae",
+    "build/g20b/exact396.json": "e2dfc334a5b712c376b8ac4bcbc59b1af770ac06118789ff89209b402ca46adb",
+    "build/g20b/original-evidence.json": "e5b6e8102f587a33085a53ca2f5e19ec82f3d9ef6569765fde993c9269322f2f",
+    "build/g20b/frontend-build.json": "28fbfbd61a8e7683b5919709bf03d50a5f1dbc3e5fa81c91d887ac4cd77367da"
+  },
+  "source_hashes": {
+    "src/ui.c": "cfe4a505666539f62a8f48013cf5240e2ec756b3eca2355c4c2753df68e8fe8b",
+    "src/ui_native_text.inc": "f557a4965b8716972d8c5870de5743df260beb0328caf73c6efe06ec93e80ceb",
+    "src/ui_panel_cache.inc": "29f45d5cf00b3e9dbb41d95fd5d9a3e199ced5ea2d451e66450bdf572d29d5e8",
+    "src/ui_text.inc": "47d42db5b1d4c0e4fce2dc152fdc650aac80be1562182a78f27a784babd1a912",
+    "src/ui_tiled.inc": "87aeaad03b998f933661a59911a623af7cbc93ff874e72666ff16e5cbd8f1527",
+    "include/dok/ui.h": "598c18363f5228fabd3393fb2d9d40d3271f5a452d5c7aa52839890c726d4933",
+    "gba/ui_backend.c": "2dfb51a92d2192618dd0cef641db5abd8a4aa331d90659be92bff0b88ffde393",
+    "gba/flow_backend.c": "e40a5e16bfcdb911f0d89810a3b4bbe03f19848cf187d393c36e40b45b107d4e",
+    "gba/audio_backend.c": "0754a6fb09d62194c412047733c96d6130025c80b7c403d832c34149123ce252",
+    "gba/renderer_probe.c": "180615bdcf348ec16b3607ef2415187cc9107b5d84aac758fc99cbd8f36c64d3",
+    "gba/hardware_bg.inc": "771fc9b7b80401540055dd64742018c2dcfaf58553c7a34c3246fffedb52f6be",
+    "scripts/verify_frontend_gba.py": "e9fe2b6aa0c69ce52f567af726417d00281e0e576ed6b51435916aaa9548e8a9",
+    "scripts/verify_ui_gba.py": "4c927d9268efdc99b444947feae3390cdf6d4db9b03d7bcca3be53fa84638da4",
+    "scripts/verify_flow_gba.py": "fde0bc426c2816f8d8c7086bc93137c0b8875e424b31db50f4a11a385e03857c",
+    "scripts/verify_audio_gba.py": "f3166b0537b6e229c3efd6aee72584b7711be96079f3221ee0a4e826975d9a81",
+    "scripts/verify_performance_arm.py": "d67d9dd66a0e6f448ad656e82be3535647719e561c88b474e8474c937ebdac3e",
+    "scripts/verify_gba_hardware_water.py": "8c9b4f4e2af51c4e7aa61f0d988b54ea74883696ff2a6eb38a3f2f0b9e4c7a84",
+    "scripts/verify_sprites_gba.py": "b07cdd4ce6b38c79f5b9dd728e5b5d39f4227844ec70f75b9923e499f3a7d479",
+    "scripts/verify_gba_hardware_transitions.py": "15d066f53016438d1c8a686be7e29b3e0e324317833eee380007a731573fa1c2",
+    "scripts/build_gba_frontend.py": "43296757ff7fccd1ddd7821bbbd21f1bb844e4b29ad86dc5a2b1f15cb86f7b55",
+    "scripts/report_frontend.py": "99535941d3669fc8319ad8d2aa8cee21a3a02ae9d4170f740b9fcf7ce2d2cd2f",
+    "scripts/ui_copy.py": "f2c41dda04e97e91b1b6687d796801c516498760b35d11502c70b0894328cf23",
+    "scripts/verify_frontend_original.py": "a51acce8af12fd676e780edeb2213033238ff04792dc95a929604766666d293a"
+  },
+  "limitations": [
+    "No physical GBA/original BIOS test",
+    "No whole DOS playthrough or new DOS Sound Blaster waveform capture",
+    "No new human listening claim",
+    "G20 frame budget remains open; G21 playtest is next"
+  ]
+}

@@ -30,8 +30,10 @@ static void callback(dok_scheduler *s,uint16_t owner,uint16_t id,uint32_t parame
 }
 unsigned gba_time_start(void)
 {
+#if !defined(DOK_RENDERER_PROBE) || defined(DOK_BOOT_SELFTEST)
     g_time_diag.error=dok_time_cases();
     if (g_time_diag.error) return g_time_diag.error;
+#endif
     gba_clock_start(&clock_state);
     (void)dok_steps_init(&steps,0,100);
     dok_scheduler_init(&scheduler,owners,1,fixed_now,&steps);

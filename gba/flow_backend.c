@@ -9,6 +9,7 @@ extern void gba_motion_hold(uint16_t);
 extern void gba_flow_load(unsigned,unsigned);
 extern void gba_flow_quiet(void);
 extern void gba_audio_event(uint16_t,uint16_t,unsigned);
+extern void gba_audio_menu(unsigned);
 extern const dok_rom_assets *gba_flow_assets(void);
 extern unsigned gba_flow_level(void);
 enum {TITLE,INTRO,PLAY,DEATH,OUTRO,FINAL,GAMEOVER};
@@ -35,8 +36,8 @@ void gba_flow_menu(void){
  previous=(uint16_t)g_ui.last_keys;blocked&=previous;
  if(legacy){g_ui.action=0;return;}
  if(g_ui.action){unsigned action=g_ui.action;g_ui.action=0;
-  if(action==3){session=0;pending=5;resume=FINAL;change(FINAL);g_ui.state=DOK_UI_PLAY;select_text();}
-  else if(action==2 || !session){pending=1;g_ui.state=DOK_UI_TITLE;}
+  if(action==DOK_UI_CREDITS){session=0;pending=5;resume=FINAL;change(FINAL);g_ui.state=DOK_UI_PLAY;select_text();}
+  else if(action==DOK_UI_NEW_GAME){pending=1;g_ui.state=DOK_UI_TITLE;}
   else {change(resume);g_ui.state=DOK_UI_PLAY;select_text();}
  }
  if(state==PLAY && g_ui.state==DOK_UI_TITLE){resume=PLAY;change(TITLE);}
@@ -52,14 +53,14 @@ unsigned gba_flow_input(uint16_t keys){
   if(page+1<pages)++page;
   else if(state==INTRO){change(PLAY);g_ui.state=DOK_UI_PLAY;g_ui.blocked|=keys;}
   else if(state==DEATH){pending=3;}
-  else if(state==OUTRO){session=0;resume=PLAY;change(TITLE);g_ui.state=DOK_UI_TITLE;g_ui.focus=4;g_ui.blocked|=keys;select_text();}
-  else {session=0;resume=PLAY;change(TITLE);g_ui.state=DOK_UI_TITLE;g_ui.focus=4;g_ui.blocked|=keys;}
+  else if(state==OUTRO){session=0;resume=PLAY;change(TITLE);g_ui.state=DOK_UI_LEVELS;g_ui.focus=g_ui.start_level;g_ui.blocked|=keys;select_text();}
+  else {session=0;resume=PLAY;change(TITLE);g_ui.state=DOK_UI_TITLE;g_ui.focus=0;g_ui.blocked|=keys;}
  }
  return changed;
 }
 void gba_flow_update(void){
  if(g_flow_probe.request!=g_flow_probe.ack){
-  if(g_flow_probe.op==3){legacy=1;state=PLAY;session=1;pending=0;g_ui.state=DOK_UI_PLAY;g_ui.action=0;}
+  if(g_flow_probe.op==3){if(!g_render_world.level)gba_flow_load(0,0);legacy=1;state=PLAY;session=1;pending=0;g_ui.state=DOK_UI_PLAY;g_ui.action=0;}
   else ++g_flow_diag.errors;
   g_flow_probe.ack=g_flow_probe.request;
  }
@@ -75,6 +76,7 @@ void gba_flow_update(void){
    gba_audio_event((uint16_t)(g_render_world.player_index-1),0xa6,0);change(g_render_world.player.lives!=0?DEATH:GAMEOVER);resume=state;if(state==GAMEOVER){session=0;gba_flow_quiet();}select_text();
   }
  }
+ gba_audio_menu(!legacy && state==TITLE && dok_ui_frontend(&g_ui));
  gba_time_pause(!gba_flow_active());
  if(!gba_flow_active())gba_motion_hold(previous);
  g_flow_diag.state=state;g_flow_diag.level=gba_flow_level();g_flow_diag.session=session;

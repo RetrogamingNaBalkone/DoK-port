@@ -396,7 +396,7 @@ static int clip_endpoint(dok_camera_point *a,const dok_camera_point *b,int32_t *
 #endif
 static dok_renderer_status plane(dok_renderer_workspace *w,const dok_projection_camera *c,dok_renderer_stats *s,
     uint16_t object,int32_t x0,int32_t z0,int32_t x1,int32_t z1,int32_t y,int32_t height,
-    int16_t v0,int centered) {
+    int16_t v0,int centered,int reflected) {
     dok_camera_point a,b;dok_screen_point at,ab,bt,bb;dok_renderer_face f;int32_t u0=0,u1=w->images[object].width-1;
 #ifdef DOK_RENDER_GEOMETRY_CACHE_PROTOTYPE
     const geometry_vertex *va=geometry_transform(c,x0,y-height,z0,&a),*vb=geometry_transform(c,x1,y-height,z1,&b);
@@ -407,6 +407,10 @@ static dok_renderer_status plane(dok_renderer_workspace *w,const dok_projection_
 #ifdef DOK_RENDER_STREAM_BSP_PROTOTYPE
     int original_a=a.depth,original_b=b.depth;
 #endif
+    /* Native central-plane argument BP+1C reflects the texture when the
+     * west (theta0) / north (theta90) neighbour is a wall. Each adjacent
+     * leaf owns a plane, while the door object and crop phase are shared. */
+    if(reflected) {u0=u1;u1=0;}
     if(a.depth<=0 && b.depth<=0) {++s->faces_rejected;return DOK_RENDER_OK;}
     if(a.depth<0) {if(!clip_endpoint(&a,&b,&u0,u1)) return DOK_RENDER_PROJECTION;++s->near_clipped;
 #ifdef DOK_RENDER_GEOMETRY_CACHE_PROTOTYPE
@@ -680,7 +684,7 @@ static dok_renderer_status build(dok_renderer_workspace *w,const dok_runtime *r,
                 else if(k==1) az+=width; /* orientation90 */
                 else if(k==2) {ax+=width;az+=width;bz+=width;} /*180*/
                 else {ax+=width;bx+=width;bz+=width;} /*270*/
-                status=plane(w,c,s,object,ax,az,bx,bz,y,h,(int16_t)v,0);if(status) return status;
+                status=plane(w,c,s,object,ax,az,bx,bz,y,h,(int16_t)v,0,0);if(status) return status;
             }
 #ifdef DOK_RENDER_HW_STATIC_GEOMETRY_PROTOTYPE
             if(hw_static_mode==HW_STATIC_CAPTURE)hw_static_wall_end(w,(unsigned)((z-zmin)*(xmax-xmin+1)+x-xmin),s);
@@ -690,10 +694,10 @@ static dok_renderer_status build(dok_renderer_workspace *w,const dok_runtime *r,
             int ew_open=(west!=2 && west!=4 && west!=7 && east!=2 && east!=4 && east!=7);
             ++s->center_cells;
             if(ns_open) {
-                status=plane(w,c,s,object,x0,z0+width/2,x0+width,z0+width/2,y,height,0,width);if(status) return status;
+                status=plane(w,c,s,object,x0,z0+width/2,x0+width,z0+width/2,y,height,0,width,west==2);if(status) return status;
             }
             if(ew_open) {
-                status=plane(w,c,s,object,x0+width/2,z0,x0+width/2,z0+width,y,height,0,width);if(status) return status;
+                status=plane(w,c,s,object,x0+width/2,z0,x0+width/2,z0+width,y,height,0,width,north==2);if(status) return status;
             }
         }
     }

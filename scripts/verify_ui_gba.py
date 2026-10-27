@@ -215,8 +215,17 @@ def main():
     p = UIProbe(args.core, args.build)
     try:
         p.wait_ui(lambda u: u['draws'] >= 2)
+        assert p.ui()['state']==5,p.ui()
+        screens = {'splash_ru':p.screen('splash-ru')}
+        resources,_=original_animations(0)
+        source=resources['ЗАСТАВКА_СПР'.encode('cp866').hex()]
+        raw,palette=p.frame()
+        expected=bytes(source[18+(y+40)*320+x] if y>=149 and x<81 else source[18+(y*200//160)*320+x*320//240] for y in range(160) for x in range(240))
+        expected=bytes(0 if y>=149 and 58<=x<81 and expected[y*240+x]!=196 else expected[y*240+x] for y in range(160) for x in range(240))
+        assert raw==expected
+        p.press(8)
         assert p.ui()['state'] == 1 and p.ui()['language'] == 0, p.ui()
-        screens = {'title_ru': p.screen('title-ru')}
+        screens['title_ru']=p.screen('title-ru')
         raw, palette = p.frame()
         _, white = ui_colors(palette)
         resources, _ = original_animations(0)
@@ -239,20 +248,17 @@ def main():
         screens['help_en'] = p.screen('help-en')
         p.press(0)
         assert p.ui()['state'] == 1 and p.ui()['focus'] == 2
-        p.press(5)
-        p.press(8)
-        assert p.ui()['state'] == 4
-        screens['statistics_en'] = p.screen('statistics-en')
-        p.press(0)
-        for _ in range(3):
+        for _ in range(2):
             p.press(4)
         p.press(8)
+        assert p.ui()['state']==6,p.ui()
         if 'g_flow_probe' in p.symbols:
             # G17-only regression resumes its old fixture explicitly. Full G18
             # boot/intro/death/exit is independently verified in flow harness.
             address=p.symbols['g_flow_probe'];request=p.words('g_flow_probe',2)[1]+1
             p.write(address+8,struct.pack('<2I',3,0));p.write(address,struct.pack('<I',request))
             p.until(lambda d:p.words('g_flow_probe',2)[1]==request)
+            p.wait_ui(lambda u:u['state']==0)
         assert p.ui()['state'] == 0
         # Chord is pause, without a simultaneous Use or language switch.
         language = p.ui()['language']
@@ -295,7 +301,9 @@ def main():
         assert p.world_sha() == snapshot
         p.command(1, 0)
         p.press(2)
-        assert p.ui()['state'] == 0 and p.ui()['language'] == 0 and p.world_sha() == snapshot
+        assert p.ui()['state'] == 7 and p.ui()['language'] == 0 and p.world_sha() == snapshot
+        p.press(2)
+        assert p.ui()['state'] == 0 and p.world_sha() == snapshot
         p.press(2)
         assert p.ui()['language'] == 0 and p.world_sha() == snapshot
         # Language changes only in a menu, including the pause menu row.
@@ -309,12 +317,12 @@ def main():
         p.press(2)
         assert p.ui()['state'] == 0 and p.ui()['language'] == 0
         p.command(1, 2)
-        for _ in range(4):
+        for _ in range(3):
             p.press(5)
         p.press(8)
         assert p.ui()['state'] == 1 and p.world_sha() == snapshot
         p.press(3)
-        assert p.ui()['state'] == 0 and p.world_sha() == snapshot
+        assert p.ui()['state'] == 6 and p.world_sha() == snapshot
         # Exact original icon pixels and every combination of acquired keys.
         player = p.symbols['g_render_world'] + 17412
         p.command(1, 0)
@@ -337,7 +345,7 @@ def main():
                 assert 0x08000000 <= address < 0x0a000000
                 assert struct.unpack('<HH', p.frontend.read(address, 4)) == (width, height)
                 assert p.frontend.read(address+18, width*height) == expected
-                view = p.frontend.read(p.symbols['localized_art']+language*144+(icon_index+1)*24, 8)
+                view = p.frontend.read(p.symbols['localized_art']+language*208+(icon_index+1)*24, 8)
                 assert struct.unpack('<IHH', view) == (address+18, width, height)
                 offset += 18+width*height
             assert offset == 610
@@ -515,7 +523,7 @@ def main():
         report = dict(task='G17', status='passed', rom_sha256=sha(p.rom),
                       hardware_ppu_frames=p.hardware_ppu_frames,
                       script_sha256=sha(__file__), source=origin, screens=screens,
-                      checks=dict(real_keypad_menu=True, title_help_statistics=True,
+                      checks=dict(real_keypad_menu=True, title_help_controls=True,statistics_removed_from_both_menus=True,
                                   chord_suppressed_use_and_language=True, paused_world_and_clock=True,
                                   pause_preserved_fraction_and_raw_timer_continued=True,
                                   resume_excluded_paused_time=True,

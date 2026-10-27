@@ -43,11 +43,41 @@ def main():
     assembly = ['.section .rodata.ui_icons,"a",%progbits', f'.ascii "{digest}"',
                 '.balign 4', '.global dok_ui_icons', 'dok_ui_icons:']
     assembly += ['.byte '+','.join(map(str, bank[i:i+24])) for i in range(0, len(bank), 24)]
+    # Static GUI screens are prepared offline. ARM7 must never resize or
+    # modulo-tile38400 pixels on each input poll. Original payloads stay exact.
+    frontend=[]
+    for language in (0,1):
+        def resource(name):
+            at,size=struct.unpack_from('<II',package,records[name.encode('cp866')]+16+language*8)
+            return package[at:at+size]
+        splash=resource('ЗАСТАВКА_СПР');background=resource('FON')
+        assert struct.unpack_from('<HH',splash)==(320,200)
+        assert struct.unpack_from('<HH',background)==(46,46)
+        pixels=bytearray(splash[18+(y+40)*320+x] if y>=149 and x<81 else splash[18+(y*200//160)*320+x*320//240]
+                         for y in range(160) for x in range(240))
+        # Source1995 contains shaded outlines, unlike the adjacent single-ink
+        # NewCom. Keep its original light196 glyph core at1:1, clear the halo.
+        for y in range(149,160):
+            for x in range(58,81):
+                if pixels[y*240+x]!=196:pixels[y*240+x]=0
+        pixels=bytes(pixels)
+        tiled=bytes(background[18+(y%46)*46+x%46] for y in range(160) for x in range(240))
+        frontend.extend((pixels,tiled))
+    assembly+=['.balign 4','.global dok_ui_frontend_pixels','dok_ui_frontend_pixels:']
+    unique={}
+    for pixels in frontend:
+        key=hashlib.sha256(pixels).hexdigest()
+        unique.setdefault(key,(f'.Lui_frontend_{len(unique)}',pixels))
+        assembly+=['.word '+unique[key][0]]
+    for symbol,pixels in unique.values():
+        assembly+=['.balign 4',symbol+':']
+        assembly+=['.byte '+','.join(map(str,pixels[i:i+24])) for i in range(0,len(pixels),24)]
     args.output.write_text('\n'.join(assembly)+'\n', encoding='ascii')
     report = dict(package_sha256=digest, bytes=len(bank), icons=manifest,
                   script_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
                   source_sha256=hashlib.sha256(args.output.read_bytes()).hexdigest(),
-                  filter='nearest neighbour, index0 transparent', runtime_resize=False)
+                  filter='nearest neighbour, index0 transparent', runtime_resize=False,
+                  frontend_unique_bytes=sum(len(v[1]) for v in unique.values()),copyright_source_rectangle=[0,189,81,11],copyright_destination=[0,149],year_single_ink=196)
     args.output.with_suffix('.json').write_text(json.dumps(report, indent=2)+'\n', encoding='utf-8')
     print(f'UI icons: {len(manifest)} pre-sized ROM images, {len(bank)} bytes; no runtime resize')
 

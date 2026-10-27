@@ -1,0 +1,347 @@
+{
+  "task": "G20B/UI01/playtest2",
+  "date": "2026-10-27",
+  "status": "passed",
+  "artifact": "artifacts/gba/DoK-port_UI01.gba",
+  "rom_sha256": "ca27ff500f799d2391eba1f8e4ed1550184a07bda2a38ca66a501d482e0a3a4a",
+  "rom_bytes": 16012100,
+  "repeat_byte_exact": true,
+  "build_dir": "build/g20b-playtest2/hardware/hw_v128_entity_rect",
+  "ram": {
+    "ewram": 261436,
+    "ewram_free": 708,
+    "iwram_before_stacks": 24424,
+    "iwram_free_before_stacks": 152
+  },
+  "stack": {
+    "main_stack_low": 50356224,
+    "main_stack_top": 50364160,
+    "sentinel_word": 219540062,
+    "untouched_margin_bytes": 5352,
+    "high_water_bytes": 2584,
+    "irq_and_bios_excluded": true,
+    "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+  },
+  "irq_stack": {
+    "low": 50364160,
+    "top": 50364320,
+    "untouched_margin_bytes": 80,
+    "high_water_bytes": 80,
+    "includes_bios_irq_saves": true
+  },
+  "native_reflection_cases": 16,
+  "map_world_language_cases": 6,
+  "renderer_unaffected_control_ppu_exact": 396,
+  "renderer_reflection_changes": 260,
+  "hardware_transitions": 294,
+  "video_callbacks": 5008,
+  "mixed_frames": 0,
+  "intentional_black_frames": 18,
+  "music": {
+    "wav": "build/g20b-playtest2/hardware/hw_v128_entity_rect/audio-check/ui01-menu-two-loops.wav",
+    "sha256": "0826ab5c4cdfadf497d4f5b4971f5367ecef45692421ce4f30ca9f8703e10290",
+    "seconds": 86.17718505859375,
+    "loops": 2,
+    "starts": 1,
+    "underruns": 0,
+    "max_irq_gap": 411,
+    "repeat_correlation": 0.9922015624651537,
+    "stereo_channels_equal": true,
+    "stop_before_intro": true,
+    "no_menu_music_in_pause": true,
+    "restart_on_return": true
+  },
+  "screens": {
+    "splash_0": {
+      "path": "build/g20b-playtest2/hardware/hw_v128_entity_rect/ui-check/ui01-splash-0.png",
+      "sha256": "6a66c6839899625f691b6ffa199346907ca92b220a2de36e87d230f9c79532e1",
+      "framebuffer_sha256": "c757488e2720578265bf433e57ad88abaf521a23f9e33ce8cb47776e82716f80"
+    },
+    "menu_0": {
+      "path": "build/g20b-playtest2/hardware/hw_v128_entity_rect/ui-check/ui01-menu-0.png",
+      "sha256": "18f2b5ca9de84cb05530abc458b19e42b9f7412a80b7a2e43e0f3c79ae115e9e",
+      "framebuffer_sha256": "94057d72d4a5db6d3b5132bf36346dcd694acb1d6f0e4b6f613db91c89bcf57a"
+    },
+    "levels_0": {
+      "path": "build/g20b-playtest2/hardware/hw_v128_entity_rect/ui-check/ui01-levels-0.png",
+      "sha256": "7a325c314e1bc240fc0a6e7bac97c6fbdb1a8d902bef2e78542ebc4799b8cc66",
+      "framebuffer_sha256": "70d151adf06aa5181a8a2bd77a57b1cd449be3fa0bbb84405c26d09c7ed83b06"
+    },
+    "splash_1": {
+      "path": "build/g20b-playtest2/hardware/hw_v128_entity_rect/ui-check/ui01-splash-1.png",
+      "sha256": "6a66c6839899625f691b6ffa199346907ca92b220a2de36e87d230f9c79532e1",
+      "framebuffer_sha256": "c757488e2720578265bf433e57ad88abaf521a23f9e33ce8cb47776e82716f80"
+    },
+    "menu_1": {
+      "path": "build/g20b-playtest2/hardware/hw_v128_entity_rect/ui-check/ui01-menu-1.png",
+      "sha256": "6a70c08b2e480f7218282127103ee472d8a5e012b0f90f2be3778084966fc0af",
+      "framebuffer_sha256": "5acd0a1c82f818248b65d15104e2ee30cd882c33467313f2fca5356b957e5a04"
+    },
+    "levels_1": {
+      "path": "build/g20b-playtest2/hardware/hw_v128_entity_rect/ui-check/ui01-levels-1.png",
+      "sha256": "8842abdece3d288f3b31b4976bf1afa6e9838e9dc5614972da6551e6b38f150b",
+      "framebuffer_sha256": "3070df0b185a04292344e89534e58db2fb139935b63d85eae291e31ad6a50ca8"
+    },
+    "intro_0_0": {
+      "path": "build/g20b-playtest2/hardware/hw_v128_entity_rect/ui-check/playtest-intro-0-0.png",
+      "sha256": "c15f7069c6d7fdcf292058f2e61a8c798682284320d74a2a849813783afb88af",
+      "framebuffer_sha256": "d9c605ca4343252ab0459481974c88514575dbcec4292bd3ff6d7d00c76b88f3"
+    },
+    "map_0_0": {
+      "path": "build/g20b-playtest2/hardware/hw_v128_entity_rect/ui-check/playtest-map-0-0.png",
+      "sha256": "1296d6c3e0ae07abaa413ebddaf1ea9c919c41febc0eb5aa690e1d6279b7ce75",
+      "framebuffer_sha256": "91993fc5686323552fbf60711922ba9b7e1e95db356d0522bbd1d8537c03131f"
+    },
+    "full_map_0_0": {
+      "path": "build/g20b-playtest2/hardware/hw_v128_entity_rect/ui-check/playtest-full-map-0-0.png",
+      "sha256": "51275785194d90f9c6c9f7e39342f129c51aa65e43545f6d7174d0c8e5928da0",
+      "framebuffer_sha256": "f3a4f81f0e1796669b7ecebdd11af599db62e29f6dad1fcc154e8c97915ee3ea"
+    },
+    "intro_0_1": {
+      "path": "build/g20b-playtest2/hardware/hw_v128_entity_rect/ui-check/playtest-intro-0-1.png",
+      "sha256": "869f7ee8131b2ed97acff676e17ba3984689bb9e9afef6fd1d7e8ecb1a3c4328",
+      "framebuffer_sha256": "3666f001516ef1cd1a14f3ca89636d2a3a78d2510509402c7f2787ac5227d1b5"
+    },
+    "map_0_1": {
+      "path": "build/g20b-playtest2/hardware/hw_v128_entity_rect/ui-check/playtest-map-0-1.png",
+      "sha256": "79390dcc7aa7bd2740afa642629f3f67618bd64e870951b24b362de92eff7923",
+      "framebuffer_sha256": "f148ad044ecbff18028f0ab5050f0f6a81d5ef180fddc936599050f593f164a1"
+    },
+    "full_map_0_1": {
+      "path": "build/g20b-playtest2/hardware/hw_v128_entity_rect/ui-check/playtest-full-map-0-1.png",
+      "sha256": "c049eaca009b37deba59bf0bdaaa34bbc7051de2cfff5d478cda74a702064fc1",
+      "framebuffer_sha256": "35fcb1bf6eedf8cde26c199fbdc0638c8dd0ef08794ed535a1e59a4632518bae"
+    },
+    "intro_0_2": {
+      "path": "build/g20b-playtest2/hardware/hw_v128_entity_rect/ui-check/playtest-intro-0-2.png",
+      "sha256": "106b08b058c4a88f1a5156269d878f5d2bb9b9ef3d73e5833e0beb23082bd3a4",
+      "framebuffer_sha256": "55e3edabea93e1a36e332a3b565467995896c00b8f89848dd2b972df349cbd97"
+    },
+    "map_0_2": {
+      "path": "build/g20b-playtest2/hardware/hw_v128_entity_rect/ui-check/playtest-map-0-2.png",
+      "sha256": "0bbee0f5f7c39551c156506aa09e60b98841e3cc39605e5ff9f91a21e4de8554",
+      "framebuffer_sha256": "01d495ff48de1917caf9ac016a1f1bf61192cf73b180773bf2301a5c21e18172"
+    },
+    "full_map_0_2": {
+      "path": "build/g20b-playtest2/hardware/hw_v128_entity_rect/ui-check/playtest-full-map-0-2.png",
+      "sha256": "ec1214b7e87013f81baef4cc26bef7940b16c443d689f3eec0552d6d4601be6e",
+      "framebuffer_sha256": "136fb80c94d720b1ec441ca19b4be17e96be33a0687014794ca2ae47827497b9"
+    },
+    "intro_1_0": {
+      "path": "build/g20b-playtest2/hardware/hw_v128_entity_rect/ui-check/playtest-intro-1-0.png",
+      "sha256": "b056e517fe1ccaa9205aa22f31cf9142344e4224fd89941263ee77bee8d9b4b5",
+      "framebuffer_sha256": "ec0e3f9b703e4d24b4ada3985e3b6ac6bba5be61c90fdb55bf5f4741a02b3d5a"
+    },
+    "map_1_0": {
+      "path": "build/g20b-playtest2/hardware/hw_v128_entity_rect/ui-check/playtest-map-1-0.png",
+      "sha256": "d45dcc174ec44e317504832994434430b9fe3a460f98a6c7e7117e4ccfa67d28",
+      "framebuffer_sha256": "0b1e9d7cab12c64b40958eb1613582e85c7f49e018d22218b449d3bf9e24c5fe"
+    },
+    "full_map_1_0": {
+      "path": "build/g20b-playtest2/hardware/hw_v128_entity_rect/ui-check/playtest-full-map-1-0.png",
+      "sha256": "01b2a029fdb40ee63c7e0d5db9418cfbe6308c6eb60a9efe76d95f5142b8619d",
+      "framebuffer_sha256": "9c417b66ea6829d39988f23d6195aeb5b561d183f8359f3613853b0b57601997"
+    },
+    "intro_1_1": {
+      "path": "build/g20b-playtest2/hardware/hw_v128_entity_rect/ui-check/playtest-intro-1-1.png",
+      "sha256": "5d0a9de4429df389ff32853edade3e53ea45f71ce52819b1477b04e5d40fdf33",
+      "framebuffer_sha256": "d1f39d463a6c56acdc4c82e930fdfed8738b43d126785193cdfbc3b3526ed431"
+    },
+    "map_1_1": {
+      "path": "build/g20b-playtest2/hardware/hw_v128_entity_rect/ui-check/playtest-map-1-1.png",
+      "sha256": "4ae2e23b7593f3e6ab959a43fb51456a811fc511e8e059cde0bfc74e227f588f",
+      "framebuffer_sha256": "009510f47f7fef4292717f3976ce74fbf073e3774eaea2160123d57bdb7bbe39"
+    },
+    "full_map_1_1": {
+      "path": "build/g20b-playtest2/hardware/hw_v128_entity_rect/ui-check/playtest-full-map-1-1.png",
+      "sha256": "73f1eaeffaa1a443d7110eadc0c4c88abaa1275784f256530cb56e31d30d3cea",
+      "framebuffer_sha256": "88ed893403e90692bb1652541f78fc93b97812f33938d17d8eae4c51ae56428b"
+    },
+    "intro_1_2": {
+      "path": "build/g20b-playtest2/hardware/hw_v128_entity_rect/ui-check/playtest-intro-1-2.png",
+      "sha256": "17583b2258a8af4d571cc691cdd2973145fee73b759e9e5ff31a2ffcc34d6e2a",
+      "framebuffer_sha256": "9d7cc8f004b292385302853166ceeb9a7cdfb61778fdff3b32f56b8730de749c"
+    },
+    "map_1_2": {
+      "path": "build/g20b-playtest2/hardware/hw_v128_entity_rect/ui-check/playtest-map-1-2.png",
+      "sha256": "a03c00550e5b73716c160fbae655d81e35da1f93759b7b0434a6f58816fa3c2e",
+      "framebuffer_sha256": "26e27667bf31a291f714a8b6cd421a0b1eb4d13bc70ba5c95b0d7faae8f068cd"
+    },
+    "full_map_1_2": {
+      "path": "build/g20b-playtest2/hardware/hw_v128_entity_rect/ui-check/playtest-full-map-1-2.png",
+      "sha256": "e74001651d6b62c75fe616221f42c355bdc82680496973e8066a0d3ee48a77ff",
+      "framebuffer_sha256": "d56dca9ca5a02fde473faa08828b07ac5cb65613440c2c9171378f8798fa5822"
+    },
+    "door_0": {
+      "path": "build/g20b-playtest2/hardware/hw_v128_entity_rect/ui-check/playtest-door-0.png",
+      "sha256": "850a2d6fec9ec4c37f1944f53938db5e7bf19767b6257f6e42e084baeb8c7550",
+      "framebuffer_sha256": "246734e2dc25ef8a19ff78c161990cac9409b0759e4646481b11f82dd7992a46"
+    },
+    "door_7": {
+      "path": "build/g20b-playtest2/hardware/hw_v128_entity_rect/ui-check/playtest-door-7.png",
+      "sha256": "233dcc9c9bacdbb7b54e7604504ad0454a17f660caca7eaa3f5be0a95fd39106",
+      "framebuffer_sha256": "4aef2aa3ab6fa886fa391d6386fc6f02adce2482a9f8275ca3f754f197b32f30"
+    },
+    "door_13": {
+      "path": "build/g20b-playtest2/hardware/hw_v128_entity_rect/ui-check/playtest-door-13.png",
+      "sha256": "4ae3e0ec1c6af1ca0284069834e90e56f733f35953676438c0d8f29dd651337e",
+      "framebuffer_sha256": "2d102cb70f452883493c82af8fe96191368d3b0849ef596d7d13e4a3b1b2220f"
+    },
+    "door_20": {
+      "path": "build/g20b-playtest2/hardware/hw_v128_entity_rect/ui-check/playtest-door-20.png",
+      "sha256": "cd9320bc7deb39a34b93095c4c9ff1911be79fe23ca0b7f892d97ca6dde5450c",
+      "framebuffer_sha256": "72ac3089c715a5b3b82e9ac4ae46360eef1f8fbe7a26e3db1dfcfb7531b13b34"
+    },
+    "door_29": {
+      "path": "build/g20b-playtest2/hardware/hw_v128_entity_rect/ui-check/playtest-door-29.png",
+      "sha256": "e35df8bc01f9d7c0c81ee9fe7e9cbca3f7f1733035979c82e078d2987300474f",
+      "framebuffer_sha256": "3eb35a0a102b2912257217023b3806eedf8ba2f5a0997d27dcc8e259f4114cb4"
+    }
+  },
+  "input_reports": {
+    "build/g20b-playtest2/frontend.json": "d707bc6189101f04f270436d076c84a5acca7640bf14cfe0c8140c1b69498602",
+    "build/g20b-playtest2/ui.json": "a501aac0e724d9376d587a0e34c7853f3997151266023943ebc2ccf3b95e80c0",
+    "build/g20b-playtest2/flow.json": "1ba59ecd1453578a007767cf32dffe1ff34a9f6b60854131692220ef110fc7fd",
+    "build/g20b-playtest2/audio.json": "440efaceeb58c680e82cc161fe6b138de4fc0e5832f926ec4be4688aef4dd3ec",
+    "build/g20b-playtest2/time.json": "70ad7f4bb2464df8921537c30500efaaf13e86023440d2002c908d4938031e36",
+    "build/g20b-playtest2/arm.json": "bd1a962cc84f97438241374f3c2f0d24cdfa5168e765be1a67e38c39ea73b96a",
+    "build/g20b-playtest2/water.json": "64a51feb885112a7081ae009521943fa9a7cf7fa49c693fb1886263cb18d6d68",
+    "build/g20b-playtest2/sprites.json": "ad558952c8927f5a973016ec10d92ec3aee6ce9632b94af2522f11086cd00630",
+    "build/g20b-playtest2/transitions.json": "a66ea371419d1fb5c92e43d4d9b87d762560663e587edf617c167002e13c329d",
+    "build/g20b-playtest2/latency.json": "0238b79bcda3381412f29564a8c03c3a442cef9248b376410820aed5c5c9a0e9",
+    "build/g20b-playtest2/playtest.json": "a83e61b707dca0440ad1c44d1099e6858ba11fca4018e6956392051a1fa7d1c9",
+    "build/g20b-playtest2/door-original.json": "11c8436b0eac87a2cb6867f59197076030bd2c6c817be5d507d771f5c6c18bf8",
+    "build/g20b-playtest2/control396.json": "bbbec3a91555496487a12b380fe7e654c0ba59bc837f37ba63734b27497a64bf",
+    "build/g20b-playtest2/render396.json": "38009010dba3fcb4bff29cba85a1a2c5a96ef9b0d097c38ad9c85cd123b4fcf3"
+  },
+  "sources": {
+    "src/ai.c": "2337027a9ef54b3010761c8649f938ec79e6cdb129e65c8263b039fc9ea214ac",
+    "src/ai_atan.inc": "b97121ae473a9a9921acb76e596ba2696315371528c734d377d1a35cfddf405d",
+    "src/animation.c": "7662acdd72a5e68214e55b9371d82641f5be24b8b983e205827bc903163eaab1",
+    "src/audio.c": "e422dab40753bf618e5b0f31f50335c754032dd154256a6703f79ff97453319f",
+    "src/clock.c": "9a8f4d4eb390f55e5988160338b9042c665c2616b4965f1f1616f849b4e7a121",
+    "src/collision.c": "ff134790300a9947e8e28d14b488ce3cc37a556d1fdc211f058c1a39314334ed",
+    "src/combat.c": "31aa9ce06a25aca6ad10503601b146b63799e3ff9cf633cb92909533867c5013",
+    "src/flow.c": "b46f68f3cdea4c64b698ab47e3a9dabda4a790ac10fda8bf595126fac991594b",
+    "src/image.c": "88e9445e256cc771f2f243e9ee2940b21a7eeeca5b43175e34c0d06c35de7dc7",
+    "src/interactions.c": "207492215929d9267f67179528bcd2d8b265c2e8511274a5be3c9896b7b04c3c",
+    "src/items.c": "301de7b050fb15b662d1602be1e28c5fc59fdd19e3aefa143fd563fe402289de",
+    "src/level.c": "36827fedd08d3d457686f11723401983b3e6467a72164b9dc070a4450472ba54",
+    "src/movement.c": "6bdb1b0990d9cbd5403f98868692026e092a34b2ed3a9cf4a18a4333d91fba08",
+    "src/native_state.c": "8ebe41f87bc8975b8456526667e8d59e62a30a09b4728204b80a82992152e4f7",
+    "src/projection.c": "a39b7a3ec6c2f2abeb104a9b65b7a74680b91c2dd6dbb6e78986c185eb92751f",
+    "src/renderer.c": "b1264f5e2394554c553a3db41977ae890c749747abeb4779ab4e72bab4e74bff",
+    "src/renderer_alpha.inc": "a75c154a50d6aebf178032792b77efd5d0b9634172f8fa535fdbf5cde6596a27",
+    "src/renderer_bsp.inc": "ec4e1900f81f33b626e167a027ebb595540fa68b8c8dad8bc1e4edc652936eff",
+    "src/renderer_columns.inc": "6ebad7b5dc9b10b2848618516af796305fedda684bf06d2024f45fdfde87c4a0",
+    "src/renderer_columns_state.inc": "7069196d85c1d0cb05fb4b3b59d5b507652c13adaf566c932a1d434ebdb8245f",
+    "src/renderer_geometry_cache.inc": "50c2f2bc108c898a22b88edc6144ba91e1f84b2b2ce236d365d732cd7af6a528",
+    "src/renderer_low_choice.inc": "76db818798f147bb7043dda0e67caae641307dfe3cfa6f64f92e1f23e6b96701",
+    "src/renderer_opaque.inc": "f894dc8f3880024def3f9184b016e25d2bdb627261236f5527ce76fd66b4522b",
+    "src/renderer_opaque_arm.inc": "8abd69a782e3c0bb6cbea368594700f5ed8141f1b27d56117085b7557b6fa864",
+    "src/renderer_ray_walls.inc": "a95bca2244aba0fca1953c840f8c672599d415cb1c691f75d2051e887dee5e98",
+    "src/renderer_rect.inc": "71177c76e0bd4a9e2c2870051d1ae54b06c0ade87e7bd0aacc1573f9de09f774",
+    "src/renderer_sector.inc": "aa2806bccd1bcc4e078213cc93229b73eb09996d7a1af8d3438cbcc9f041ea60",
+    "src/renderer_sector_bitmap.inc": "a5534ba69b9c6639c3b85cbee647475213feef2bad25235cb6d41d7a8f01d39f",
+    "src/renderer_sector_gpu.inc": "01b020ff99d84709c736c8217bed8c8882e7000c73a765642fb9fe1ca5be8924",
+    "src/renderer_sector_gpu_shear.inc": "e16023fce61211572e23e6da3b9c3646f2a26158da7ffb74dadbec7820051ba8",
+    "src/renderer_sector_state.inc": "a6cffc8f091c23bdc54b8a1c675ecbcd56c0f8df5b1ff92917ed5f101c1dce22",
+    "src/renderer_sparse_posts.inc": "6a03f9b428f6bc0383ec4a661e9149ce8a00d2f7b10d085bcdafd7b715ae1c5a",
+    "src/renderer_sprites.inc": "f86aaf333ed473e258da8873504c4bf4f1c0f7b0f667ac6b322c9110d7d5e56e",
+    "src/renderer_static_cache.inc": "bdc5ba9e838311c8fe66cc0c4ed47079ac8928087837f2f39422cbcbb941f0ef",
+    "src/renderer_stream.inc": "b478fc15282eb17921b4f6e59349255583ef3a7588863f99ea5368755915f2c7",
+    "src/renderer_stream_state.inc": "6c9731cbf9feebdb1a5a54bb5fb419d845e78d06d9ad9bbc4d9137cc6a95a372",
+    "src/renderer_surfaces.inc": "41255263fc89197a52682b79943566afc3930e2d418b997e85dfce9c339d99f4",
+    "src/renderer_surface_mask.inc": "09b8f5436a98cd6912ce5dd15e6f3cc011f6c07c5a47df9d93a1f65d134a370e",
+    "src/renderer_surface_raster.inc": "0bac7b669e7efe3b9c6da7c627f6cec81a9a494424d5e88f80744deaac49ba9a",
+    "src/renderer_surface_raster_body.inc": "525da82e8d314c27c0cf2331bd7073cbc62921fe8489d358a41f4e8e29ede482",
+    "src/renderer_surface_sides.inc": "744b9c2b157d1ba962c9603f73c6ef39edf4f05140be66ad3d161c986862722a",
+    "src/renderer_trig.inc": "3fc1acca3c6c7053ce9ce05e6179833e943195a24ce47a780187e3261b6762b1",
+    "src/renderer_world_obj.inc": "046c8fc776dac0a8a1eb47f52c42ecab55eb1521aed74831a0fe3b80be4f9734",
+    "src/renderer_world_planes.inc": "c60d2a98c02b9c2f448c6d1924a5836f5ceee96003944da0916926cf52087b7b",
+    "src/res.c": "679043c637b9db432da020cc7ee5024b54089a33dfec8a2022634f1327c8fa86",
+    "src/rom_assets.c": "00cfdd4ce3c84c2d6a7d77b6340770829afac7d6a6d04c776787b87ed151b884",
+    "src/runtime.c": "e8a66fc5707965d5577c3548eac63206ea5b239457ef09aa5fa46dadc6414d68",
+    "src/scheduler.c": "4406fb6fbf04efd26e3e31e6e8c0f16ed2bbb7ec287aabefdd8f07ac3f4b9d31",
+    "src/sound.c": "c2905e19b49d3e2aed2afd49d5c769c21ec82d846b093b218a1a9d6f5b72eee2",
+    "src/ui.c": "baf51c3cdc9828d5fdc5b417d1dfe82a0fa40913ca409030f4c4ff6511712d03",
+    "src/ui_native_text.inc": "f557a4965b8716972d8c5870de5743df260beb0328caf73c6efe06ec93e80ceb",
+    "src/ui_panel_cache.inc": "29f45d5cf00b3e9dbb41d95fd5d9a3e199ced5ea2d451e66450bdf572d29d5e8",
+    "src/ui_text.inc": "4c01578e8dd69370fca6ddc4ab20864839fba768127c5dc73bb04953078b7404",
+    "src/ui_tiled.inc": "87aeaad03b998f933661a59911a623af7cbc93ff874e72666ff16e5cbd8f1527",
+    "src/visual.c": "6c11a65e419e81469f0b413eed2c6ac07f82a725c57e0d12695c20f419dee5f8",
+    "src/world.c": "721c5e402c4b43dfdc7f300ef46ab2fdafc5b481a14624884941d4bcfe6a70f4",
+    "gba/ai_probe.c": "2860cfbfc1afd3d7282d9f766e86e3acad4aaea561fef32b92978ea602cb3bfd",
+    "gba/assets_probe.c": "2e412592dcd4402f86317845abd39f63b15c6298189e20064dfd95898203dca9",
+    "gba/audio_backend.c": "0754a6fb09d62194c412047733c96d6130025c80b7c403d832c34149123ce252",
+    "gba/clock.c": "67f87c0f6ad6b3cf982d8ec819f4d1919955c3977c9e05bbbfb435938401ce4f",
+    "gba/columns.S": "31271ee7257d919a5afbd8ed1f2626906540b03935e17c750997e7ba1635dfd7",
+    "gba/column_cache.S": "df6edd1dee32c64320ce8963eae3548d1eaf69fe38c32549ef826aef17a10a13",
+    "gba/combat_probe.c": "1f83e0853b178686da07b4ae0b8c60e8623cf84944e622a90bd308f4850380b2",
+    "gba/divmod.S": "fffa3908dc50351d50ab335e3fb44c60326088deb51dea4491aca5dd8b76ea15",
+    "gba/flow_backend.c": "1d43a7e441fa185eb9120a2646fc2ca3035c0a9fa70dccdecf6696a5b1d729c7",
+    "gba/gba.ld": "653de1ab2403b9fb234e2e97fa68c5c2e54ee081e8c9d6e8661694675ce2c661",
+    "gba/geometry_cache.S": "5f13f9c9136ccf8fde18d3158a37f0d3e333bbe5e7c39b1ac542acf0a5ff2f36",
+    "gba/hardware_bg.inc": "771fc9b7b80401540055dd64742018c2dcfaf58553c7a34c3246fffedb52f6be",
+    "gba/hardware_direct.inc": "721ae0af5c81eaf6b94cd63ec1bd381c1e14f7895f4d7d22a2b67db30f16596d",
+    "gba/hardware_obj.inc": "ee515edb2cbeff514de60b15204fbd1dc11dbaf5dd4bf5b3ea6d6878e89f644a",
+    "gba/hardware_sector_bitmap.inc": "ba7d272a4758cac820b2970863a24fe65015584f1a457b844a89deae25d11e8a",
+    "gba/hardware_sector_gpu.inc": "32475a047a2a8a1c3d9417ce6e373edf5a4f0b26e850f49d958ce5b058518ccd",
+    "gba/hardware_ui_obj.inc": "34fdca4d92348ba74203e68eb7ed9e3110251c810179cfe7dce0610105f3bb7d",
+    "gba/hardware_world_obj.inc": "55206dbff632c3a1dad57274ae9eceaea3579f58df415075d9b1c77863bc7521",
+    "gba/hardware_world_obj_probe.inc": "e89534a21888661842f9b14a9cc00641b986809acd0a783c3186dc1ff9187220",
+    "gba/hw_obj_pack.S": "51f7013a6348b0fe61e0e9725974b3527d86a305a27e1d71f40d874fbb27891a",
+    "gba/main.c": "724be23c0141dfc80ad4e8ba8e8d569f274d2bee41fdce8f0e0db42a823c04c3",
+    "gba/masked_columns.S": "b4d9e19a9c020296eb18aade47f8d3bc4bacf2e1674a6e7e83bba0a9677fbb23",
+    "gba/memory.c": "893a7f22e4427b3c298ee7d4b606f739d32fb6a1dcb4a90f1550db194db75e88",
+    "gba/memory_probe.c": "a6298954e7d948a16b78ac9657d6073923b393823e06228284904be8d54dcf40",
+    "gba/movement_probe.c": "d50f064c1221ea41c5a903ded8cf444e0189a632392c830f5c6fa497a3010c67",
+    "gba/opaque_tiled.S": "2c413e57a37a85477e631f38f4680a404d2f6154df7c126e2ce6529ce2087b22",
+    "gba/planes.S": "9a0edc44fb3f096da5c4c184f603b83ad1e213b616f9abc669ecc3f8691e9dd9",
+    "gba/procedural.S": "5b97354c2e2b58f19faabfcd924eaefb621e99c8fc0c8d1099cfb1389028368b",
+    "gba/renderer_probe.c": "991ce657d17d7e773b9d09781353b402c92081ecaeeeed07867f212c24c4b91b",
+    "gba/sector_bitmap.S": "5c7b27687dff140b8a0cc5a53ec56ed155996f170deb3ff3b8fb7bb6a16b3957",
+    "gba/sector_gpu.S": "0530513104986625245dc415c5332d2d4817304bc36d682a7c85d7942f07dc63",
+    "gba/sector_planes.S": "e5fc42bcfa5644b800c1e9fc07a99c6838631ffab6c251f1b8c77193d2c49f2d",
+    "gba/startup.S": "7dcecbf364b20bf1670a21d7b98587cd4e2db5c73a883e38f352329045869f59",
+    "gba/tiled_scene.S": "0b1855558a24d90569304043c3979ef65ebc0fd6383f7255720015a44afc9b6c",
+    "gba/time_probe.c": "afa62f8552db865b0e204f8061ae97df533b78132293503ca9d5d0105d1ab65e",
+    "gba/ui_backend.c": "ce970ce5df0af0a90b33fdbf1ae9f9ebd964a6819c5871b1c1fbd7d75169c581",
+    "gba/ui_panels.S": "958f4967f2d448ba13b31651ec8cc636ed02b784172bfa26ad21dd59d58639be",
+    "gba/world_lookup.S": "e88c65d8cb8da5d9cbc231e171d7540fc8441ca2cafffe82aea12fc9ecb4f3ce",
+    "gba/world_spans.S": "290ec3f9be0b31314c43e2be940da9294aa6864ba7ccc8f3fb789e3e1e2ad4ab",
+    "include/dok/ai.h": "70772afbfcb6792e815cd5f963304a93cee75895b690b2108f5c4de4c8f0e4ed",
+    "include/dok/animation.h": "711273012a15a9ad8d7c3abb2a3b3c58bfcfac133b7fabc6ac8144ac695fe562",
+    "include/dok/audio.h": "3027b916c54f40822a5231d282f3cbeeb307ad3c1992e2ac5527a9f961a9cb1e",
+    "include/dok/cell_coordinate.h": "4bb40ebb0e3043cf223d1021d853192206b9b9014480286582d809297c4c703b",
+    "include/dok/clock.h": "a338e61dad6947cd5b771dff1c805c479da8b4dd48c537abea4e08d2f3107204",
+    "include/dok/collision.h": "f8eafb9cff3a478c1d494c7a32d953c6f21cb5c2ec34faa611b46924ddcf5874",
+    "include/dok/combat.h": "c4388d2c56bc5c585b42d882c02284c3197b97cac2c8e47c13fb2d3a15e425ac",
+    "include/dok/flow.h": "320c4e67f4197e12b5e2fe0d43653d16763207dc66953eda2a43bd6e579aa8d0",
+    "include/dok/gba_hw_scratch.h": "d1f3797644e8551517130e0a614c025712bd55e9da8abf6a5c849e60f6a7b497",
+    "include/dok/gba_sector_gpu.h": "6af289be07a3f5c8b07a86093b55cc9d80946acbac976061c4bb98782614120e",
+    "include/dok/gba_world_obj.h": "2554599e56026156194d21eec29a9e5e0a5d2328dce948bab7ec044c69c7f030",
+    "include/dok/image.h": "18d89e8b480599a2d68916c747449675ee3cf59df6ff10c56ac5493dfab1af92",
+    "include/dok/interactions.h": "223fb2377aa4127268797f67e5d8b5cca2c88172fe4fee3bae47eac974080ee0",
+    "include/dok/items.h": "54ea8669a1472da66db7effe5dce2bfe7021d66264006f799252e00d3f1ff15f",
+    "include/dok/level.h": "7677c5beaf85bd7980a9fb2c2c4db470b6be49a76267fb59941a9ce64e22cd3d",
+    "include/dok/movement.h": "42a9bd8c333de79a985bb6e351eff3798b5d0c4b76716aad6e09ac812f097655",
+    "include/dok/native_state.h": "d8afd13d9e55b1c5c16ed3252910862940a8f02056d12a685b3294f537407898",
+    "include/dok/projection.h": "bb6c518d58cbb2cf2a7f40f596b20525decdfd05e99ed27cd3f164c972a3d15f",
+    "include/dok/renderer.h": "34e4f8140d7a82b359a25c347f7b9b7858b65ad6b54e0857b8edf4eb8c12b7be",
+    "include/dok/res.h": "4b37a74aeebe027231ae7290b5383e39647833f8b7351d98e0067c60a0cc3d11",
+    "include/dok/rom_assets.h": "9357b2a35e1ad06f7efe726af7c49e109bc9f9ed69ac96618fb2ce243eb7deca",
+    "include/dok/runtime.h": "b4c10752d39b8215c42073487a030939fa24a2df14b45b8d4cd0c6279697d6bd",
+    "include/dok/scheduler.h": "2a5e22df11b869a59569c0c24b13fcf28e07ad983a1d610ae84ea86bba496e22",
+    "include/dok/sound.h": "d1b794189b779fe13c853c7c35651b4052b0a7c54599d38e6c359831045a6745",
+    "include/dok/ui.h": "925757c6f9f4d26ab74daf1ed954b42667c60c143b8113486cf25bf60d5ea4dd",
+    "include/dok/visual.h": "e286d1fd4c0c86bbd856f47ca393b1471e8f7b4eeda72361ebb1acaaa69ef3d3",
+    "include/dok/world.h": "27b18f98a7d7aba61a7caab21e81de5a54eefd778c103057e65f40860b1cd725"
+  },
+  "limitations": [
+    "No physical GBA/original BIOS run",
+    "No complete DOS playthrough",
+    "GBA map sight fan and full-screen layout are adaptations, not a pixel-exact native automap reconstruction",
+    "Frame budget remains open"
+  ]
+}

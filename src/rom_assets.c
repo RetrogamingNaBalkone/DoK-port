@@ -177,8 +177,16 @@ static int common_profile(const dok_runtime_level *a,const dok_runtime_level *b)
     }
     return 1;
 }
-dok_rom_status dok_rom_open(dok_rom_assets *out,const void *data,size_t size) {
-    const uint8_t *p=data;dok_rom_assets a;dok_rom_status status;size_t i;unsigned level;const uint16_t endian=1;
+dok_rom_status dok_rom_level_pair(dok_runtime_level out[2],const dok_rom_assets *a,unsigned level){
+    dok_runtime_level ru,en;dok_rom_status status;
+    if(!out)return DOK_ROM_ARGUMENT;
+    status=dok_rom_level(&ru,a,level,0);if(status)return status;
+    status=dok_rom_level(&en,a,level,1);if(status)return status;
+    if(!common_profile(&ru,&en))return DOK_ROM_PROFILE;
+    out[0]=ru;out[1]=en;return DOK_ROM_OK;
+}
+dok_rom_status dok_rom_open_catalog(dok_rom_assets *out,const void *data,size_t size) {
+    const uint8_t *p=data;dok_rom_assets a;dok_rom_status status;size_t i;const uint16_t endian=1;
     static const uint8_t magic[8]={'D','O','K','G','B','A','1',0};
     if(!out || !data) return DOK_ROM_ARGUMENT;
     if((uintptr_t)data&3u) return DOK_ROM_ALIGNMENT;
@@ -202,6 +210,11 @@ dok_rom_status dok_rom_open(dok_rom_assets *out,const void *data,size_t size) {
             status=range(&a,off,length,1);if(status) return status;
         }
     }
+    *out=a;return DOK_ROM_OK;
+}
+dok_rom_status dok_rom_open(dok_rom_assets *out,const void *data,size_t size) {
+    dok_rom_assets a;dok_rom_status status=dok_rom_open_catalog(&a,data,size);unsigned level;
+    if(status)return status;
     for(level=0;level<3;++level) {
         dok_runtime_level ru,en;
         status=dok_rom_level(&ru,&a,level,0);if(status) return status;

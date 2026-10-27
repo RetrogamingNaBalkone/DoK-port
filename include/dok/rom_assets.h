@@ -38,6 +38,11 @@ typedef enum {
  * The supplied base must be aligned4, including on machines allowing unaligned
  * reads. CRC/SHA are verified offline; runtime verifies structure and links. */
 dok_rom_status dok_rom_open(dok_rom_assets *out,const void *data,size_t size);
+/* Validates header and resource catalog only, for frontend boot. Each level
+ * still passes dok_rom_level before use; open above validates all six views. */
+dok_rom_status dok_rom_open_catalog(dok_rom_assets *out,const void *data,size_t size);
+/* Validate the chosen RU/EN views and their shared numeric profile. */
+dok_rom_status dok_rom_level_pair(dok_runtime_level out[2],const dok_rom_assets *,unsigned level);
 /* level is zero-based0..2; language RU0/EN1. The small caller-owned view borrows
  * all arrays from ROM; no LEVEL parsing or RES/archive copy occurs. */
 dok_rom_status dok_rom_level(dok_runtime_level *out,const dok_rom_assets *assets,unsigned level,unsigned language);

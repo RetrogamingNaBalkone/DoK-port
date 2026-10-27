@@ -5,7 +5,9 @@
 #include "dok/collision.h"
 #include "dok/ui.h"
 extern dok_combat g_combat;
+extern dok_ui g_ui;
 extern unsigned gba_flow_active(void);
+extern unsigned gba_flow_screen(void);
 extern void gba_flow_update(void);
 extern void gba_flow_draw(uint8_t *,const uint8_t *,const uint8_t *,unsigned,unsigned);
 extern void gba_audio_quiet(void);
@@ -18,6 +20,7 @@ extern unsigned gba_ui_input(uint16_t);
 extern unsigned gba_ui_language(void);
 extern uint16_t gba_ui_keys(uint16_t);
 extern void gba_ui_draw(uint8_t *,const uint8_t *,const uint8_t *,unsigned,unsigned);
+extern void gba_ui_snapshot(const uint8_t *,const uint8_t *);
 #include <stdint.h>
 extern unsigned gba_time_start(void);
 extern void gba_audio_start(const dok_rom_assets *,unsigned,unsigned);
@@ -190,12 +193,11 @@ extern volatile uint32_t g_time_diag[],g_motion_diag[],g_ai_diag[],g_combat_diag
 void gba_render_stage(unsigned stage) {
     g_render_stages[stage]=timer_sample();
 }
-static void prepare_level(unsigned level)
+static void prepare_ui(void)
 {
     dok_rom_resource resource;uint16_t id;
     static const uint8_t name[]="FONT8";
     for(unsigned language=0;language<2;++language) {
-        if(dok_rom_level(&localized_views[language],&package,level,language)!=DOK_ROM_OK) panic(0x95);
         if (dok_rom_find(&id,&package,name,5)!=DOK_ROM_OK ||
             dok_rom_resource_at(&resource,&package,id,language)!=DOK_ROM_OK || resource.size!=2048) panic(0x91);
         localized_ui[language].font=resource.data;
@@ -227,6 +229,32 @@ static void prepare_level(unsigned level)
             icon_offset+=size;
         }
         if(icon_offset!=610)panic(0x91);
+        static const uint8_t splash_name[]="\207\200\221\222\200\202\212\200_\221\217\220";
+        static const uint8_t splash_pal[]="\207\200\221\222\200\202\212\200_\217\200\213";
+        static const uint8_t menu_pal[]="\214\205\215\236_\217\200\213";
+        if(dok_rom_find(&id,&package,splash_name,sizeof(splash_name)-1)!=DOK_ROM_OK ||
+           dok_rom_resource_at(&resource,&package,id,language)!=DOK_ROM_OK ||
+           dok_image_open(resource.data,resource.size,&a->splash)!=DOK_ASSET_OK || a->splash.width!=320 || a->splash.height!=200)panic(0x91);
+        if(dok_rom_find(&id,&package,(const uint8_t *)"FON",3)!=DOK_ROM_OK ||
+           dok_rom_resource_at(&resource,&package,id,language)!=DOK_ROM_OK ||
+           dok_image_open(resource.data,resource.size,&a->background)!=DOK_ASSET_OK || a->background.width!=46 || a->background.height!=46)panic(0x91);
+        if(dok_rom_find(&id,&package,splash_pal,sizeof(splash_pal)-1)!=DOK_ROM_OK ||
+           dok_rom_resource_at(&resource,&package,id,language)!=DOK_ROM_OK || resource.size!=768)panic(0x91);
+        a->splash_palette=resource.data;
+        if(dok_rom_find(&id,&package,menu_pal,sizeof(menu_pal)-1)!=DOK_ROM_OK ||
+           dok_rom_resource_at(&resource,&package,id,language)!=DOK_ROM_OK || resource.size!=768)panic(0x91);
+        a->menu_palette=resource.data;
+        extern const uint8_t *const dok_ui_frontend_pixels[2][2];
+        a->splash_frame=dok_ui_frontend_pixels[language][0];
+        a->menu_frame=dok_ui_frontend_pixels[language][1];
+        localized_ui[language].white=2;
+        localized_ui[language].black=a->panel.pixels[5*320+10];
+    }
+}
+static void prepare_level(unsigned level)
+{
+    if(dok_rom_level_pair(localized_views,&package,level)!=DOK_ROM_OK)panic(0x95);
+    for(unsigned language=0;language<2;++language) {
         if (dok_renderer_palette(palette,&package,level,language)!=DOK_RENDER_OK) panic(0x92);
         for (unsigned i=0;i<256;++i) {
             unsigned r=palette[3*i],g=palette[3*i+1],b=palette[3*i+2];
@@ -235,10 +263,10 @@ static void prepare_level(unsigned level)
         }
         /* Original green palette entry and the panel's own plain interior. */
         localized_ui[language].white=2;
-        localized_ui[language].black=a->panel.pixels[5*320+10];
+        localized_ui[language].black=localized_art[language].panel.pixels[5*320+10];
     }
-    /* dok_rom_open already verified the full numeric/common profile. These
-     * identities additionally guard the cached pair used by this probe. */
+    /* Selected-pair validation above checks the shared numeric profile.
+     * These identities additionally guard the cached pair used here. */
     if(localized_views[0].maps!=localized_views[1].maps ||
        localized_views[0].initial_objects!=localized_views[1].initial_objects ||
        localized_views[0].initial_actors!=localized_views[1].initial_actors ||
@@ -248,7 +276,6 @@ static __attribute__((section(".iwram"),target("arm"))) void load_ui(unsigned la
 {
     font=localized_ui[language].font;font16=localized_ui[language].font16;white=localized_ui[language].white;black=localized_ui[language].black;
     dok_ui_set_art(&localized_art[language]);
-    for(unsigned i=0;i<256;++i) PAL[i]=localized_ui[language].colors[i];
     g_render_diag.font_ready=1;
     g_render_diag.palette_ready=1;
 }
@@ -263,18 +290,27 @@ void gba_flow_quiet(void){
  for(unsigned i=0;i<DOK_RUNTIME_MAX_OBJECTS;i++){dok_scheduler_destroy(&visual.scheduler,(uint16_t)i);visual.resource[i]=0;visual.loop[i]=0;visual_visible[i]=0;}
  g_visual_diag.active=0;g_visual_diag.deadline=0;gba_ui_reset();
 }
+static unsigned world_started;
 void gba_flow_load(unsigned level,unsigned carry){
  (void)carry;
  dok_collision_overlay(0,0,0);gba_flow_quiet();
  prepare_level(level);g_render_view=localized_views[g_render_diag.language];
  if(dok_runtime_reset(&g_render_world,&g_render_view)!=DOK_RUNTIME_OK)panic(0x95);
  g_render_diag.level=level;load_ui(g_render_diag.language);test_camera=0;
- gba_motion_level(&g_render_world);visual_start();gba_ui_reset();
+ if(!world_started){if(gba_motion_start(&g_render_world))panic(0x97);world_started=1;}
+ else gba_motion_level(&g_render_world);
+ visual_start();gba_ui_reset();
  if(dok_renderer_camera_from_runtime(&camera,&g_render_world)!=DOK_RENDER_OK)panic(0x98);
 }
 
 #ifdef DOK_RENDER_HW_OBJ_PROTOTYPE
 #include "hardware_obj.inc"
+/* Bitmap and tiled layouts overlap in VRAM. A complete black transition,
+ * entered at a fresh VBlank, keeps uploads and palette changes off screen. */
+static void video_layout_transition(void){
+    while(VCOUNT>=160){}while(VCOUNT<160){}
+    R16(0x04000054)=16;R16(0x04000050)=0xff;DISPCNT=0;
+}
 #ifdef DOK_RENDER_HW_WORLD_OBJ_PROBE_PROTOTYPE
 #include "hardware_world_obj_probe.inc"
 #endif
@@ -299,12 +335,8 @@ __attribute__((noreturn)) void gba_main(void)
     g_render_diag.frame_bytes=38400;g_render_diag.world_bytes=sizeof(g_render_world);
     g_render_diag.workspace_bytes=sizeof(g_render_frame);g_render_diag.cycle_budget=CYCLE_BUDGET;
     size_t size=(size_t)((uintptr_t)dok_gba_assets_end-(uintptr_t)dok_gba_assets);
-    if (dok_rom_open(&package,dok_gba_assets,size)!=DOK_ROM_OK) panic(0x80);
-    prepare_level(0);g_render_view=localized_views[0];
-    if (dok_runtime_reset(&g_render_world,&g_render_view)!=DOK_RUNTIME_OK) panic(0x80);
-    if (dok_renderer_camera_from_runtime(&camera,&g_render_world)!=DOK_RENDER_OK) panic(0x81);
-    g_render_diag.player_x=(uint32_t)camera.x;g_render_diag.player_y=(uint32_t)camera.y;
-    g_render_diag.player_z=(uint32_t)camera.z;
+    if (dok_rom_open_catalog(&package,dok_gba_assets,size)!=DOK_ROM_OK) panic(0x80);
+    prepare_ui();
     g_render_frame.frame_guard_before=FRAME_GUARD;g_render_frame.frame_guard_after=FRAME_GUARD;
     load_ui(0);
     /* Identity affine transform for the Mode4 background. */
@@ -313,10 +345,10 @@ __attribute__((noreturn)) void gba_main(void)
     *(void (** volatile)(void))0x03007ffc=gba_irq;
     R16(0x03007ff8)=0;IF=0x3fff;IE=1;DISPSTAT=8;IME=1;
     if (gba_time_start()) panic(0x90);
-    if (gba_motion_start(&g_render_world)) panic(0x97);
-    visual_start();
+    gba_audio_start(&package,0,0);
     gba_ui_start();
     unsigned visible=0;
+    uint32_t ui_key=UINT32_MAX,ui_messages=0,ui_page=0;
     for (;;) {
 #ifdef DOK_RENDER_HW_OBJ_ROWS_PROBE_PROTOTYPE
         hw_obj_test_rows();
@@ -344,7 +376,8 @@ __attribute__((noreturn)) void gba_main(void)
         gba_time_poll();
         uint32_t motion_start=timer_sample();
         if(gba_flow_active())gba_motion_poll(gba_ui_keys((uint16_t)g_diag.keys));
-        if(!test_camera && dok_renderer_camera_from_runtime(&camera,&g_render_world)!=DOK_RENDER_OK) panic(0x98);
+        if(!test_camera && gba_flow_active())dok_ui_explore(&g_render_world);
+        if(g_render_world.level && !test_camera && dok_renderer_camera_from_runtime(&camera,&g_render_world)!=DOK_RENDER_OK) panic(0x98);
         gba_motion_cost(timer_sample()-motion_start);
         if(!test_camera) {
             g_render_diag.player_x=(uint32_t)camera.x;g_render_diag.player_y=(uint32_t)camera.y;
@@ -379,7 +412,25 @@ __attribute__((noreturn)) void gba_main(void)
 #ifdef DOK_RENDER_SECTOR_GPU_PROTOTYPE
         if(g_hw_tile_active)gba_combat_overlay(&g_render_frame);
 #endif
-        dok_renderer_status status=dok_renderer_draw(&g_render_frame,&g_render_world,&package,g_render_diag.level,
+        unsigned frontend=dok_ui_frontend(&g_ui);
+        unsigned text_screen=gba_flow_screen();
+        dok_ui_tick(&g_ui,g_render_world.level,gba_time_ticks());
+        uint32_t key=g_ui.state|(g_ui.focus<<4)|(g_ui.language<<8)|(g_ui.return_state<<12);
+        uint32_t page_key=g_ui.page|(g_ui.active<<31);
+        if(frontend && g_ui.state!=DOK_UI_STATUS && key==ui_key &&
+           g_ui.messages==ui_messages && page_key==ui_page){
+            /* Static screens stay in VRAM. Poll every VBlank instead of
+             * repainting and uploading the same38400 pixels between taps. */
+            gba_ui_snapshot(font,font16);
+            g_render_diag.last_cycles=timer_stop();g_render_diag.reserved3=2;
+            while(VCOUNT>=160){}while(VCOUNT<160){}
+            g_render_diag.present_vblank=g_vblanks;++g_render_diag.draws;
+            ++g_diag.frames;g_diag.vblanks=g_vblanks;
+            if(g_camera_capture_hold){uint32_t held=g_vblanks;while(g_vblanks==held){}}
+            continue;
+        }
+        ui_key=frontend?key:UINT32_MAX;ui_messages=g_ui.messages;ui_page=page_key;
+        dok_renderer_status status=(frontend || text_screen)?DOK_RENDER_OK:dok_renderer_draw(&g_render_frame,&g_render_world,&package,g_render_diag.level,
             g_render_diag.language,&camera,&g_render_stats);
         g_render_diag.status=status;
         if (status!=DOK_RENDER_OK) panic(0xa0+(unsigned)status);
@@ -396,7 +447,7 @@ __attribute__((noreturn)) void gba_main(void)
 #ifdef DOK_RENDER_SECTOR_GPU_PROTOTYPE
         if(!g_hw_tile_active)gba_combat_overlay(&g_render_frame);
 #else
-        gba_combat_overlay(&g_render_frame);
+        if(!frontend && !text_screen)gba_combat_overlay(&g_render_frame);
 #endif
 #ifdef DOK_RENDER_HW_DIRECT_PROTOTYPE
         if(g_hw_tile_active) hw_direct_ui_begin();
@@ -467,22 +518,24 @@ __attribute__((noreturn)) void gba_main(void)
 #endif
 #endif
             hw_wait_cycles=timer_sample()-wait_stamp;
+            if(!hw_video_ready && (DISPCNT&7)==4)video_layout_transition();
             hw_obj_upload();
 #ifdef DOK_RENDER_HW_BG_PROTOTYPE
             hw_wait_cycles+=g_hw_bg_diag[7];
             if(VCOUNT<160) {uint32_t stamp=timer_sample();while(VCOUNT<160){}hw_wait_cycles+=timer_sample()-stamp;}
 #endif
         } else {
+            if((DISPCNT&7)==1 || (DISPCNT&7)==2)video_layout_transition();
             hw_video_ready=0;
 #ifdef DOK_RENDER_HW_BG_PROTOTYPE
-            hw_bg_disable();
+            if(hw_bg_enabled)hw_bg_disable();
 #endif
 #ifdef DOK_RENDER_HW_UI_OBJ_PROTOTYPE
             if((DISPCNT&7)==1 || (DISPCNT&7)==2)
 #else
             if((DISPCNT&7)==1)
 #endif
-            {DISPCNT=0x80;for(unsigned i=0;i<256;++i) PAL[i]=localized_ui[g_render_diag.language].colors[i];}
+            {DISPCNT=0;}
 #endif
         for(unsigned offset=0;offset<9600;offset+=256){
             unsigned count=9600-offset;if(count>256)count=256;
@@ -515,7 +568,7 @@ __attribute__((noreturn)) void gba_main(void)
         /* Present only a complete frame, at most once per two VBlanks.
          * Wait for a fresh VBlank when work has already exceeded its budget. */
 #ifdef DOK_RENDER_HW_OBJ_PROTOTYPE
-        if(hw_enabled) {visible=0;DISPCNT=
+        if(hw_enabled) {visible=0;R16(0x04000050)=0;R16(0x04000054)=0;DISPCNT=
 #ifdef DOK_RENDER_SECTOR_BITMAP_PROTOTYPE
             (uint16_t)(0x1444|(hw_bitmap_page<<4));
 #else
@@ -552,9 +605,12 @@ __attribute__((noreturn)) void gba_main(void)
         }
         else {
 #endif
-        while ((uint32_t)(g_vblanks-start_vblank)<2) __asm__ volatile("nop");
+        while ((uint32_t)(g_vblanks-start_vblank)<(frontend || text_screen?1u:2u)) __asm__ volatile("nop");
+        while (VCOUNT>=160) {}
         while (VCOUNT<160) {}
-        visible^=1;DISPCNT=(uint16_t)(0x0404|(visible<<4));
+        const uint8_t *ui_pal=dok_ui_palette(&g_ui);
+        for(unsigned i=0;i<256;++i)PAL[i]=ui_pal?(uint16_t)((ui_pal[i*3]>>1)|((ui_pal[i*3+1]>>1)<<5)|((ui_pal[i*3+2]>>1)<<10)):localized_ui[g_render_diag.language].colors[i];
+        visible^=1;R16(0x04000050)=0;R16(0x04000054)=0;DISPCNT=(uint16_t)(0x0404|(visible<<4));
 #ifdef DOK_RENDER_HW_OBJ_PROTOTYPE
         }
 #endif

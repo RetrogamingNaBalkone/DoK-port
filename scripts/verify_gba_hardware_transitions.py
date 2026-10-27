@@ -37,9 +37,14 @@ def main():
             old=frames[-1];frames.clear();before=list(p.words('g_hw_bg_diag',8))
             p.present();operation();p.present();p.present();p.frontend.run(2);new=frames[-1]
             assert len(old)==len(new)==240*160*(4 if p.frontend.pixel_format==1 else 2)
-            mixed=[n for n,frame in enumerate(frames) if frame!=old and frame!=new]
+            # UI01 explicitly blanks to black at VBlank while overlapping
+            # Mode4/tiled VRAM is replaced. Never allow partial/white frames.
+            def black(frame):
+                return not any(v for i,v in enumerate(frame) if p.frontend.pixel_format!=1 or i%4!=3)
+            blanks=[n for n,frame in enumerate(frames) if name in ('pause-mode4','resume-hardware') and black(frame)]
+            mixed=[n for n,frame in enumerate(frames) if frame!=old and frame!=new and n not in blanks]
             after=list(p.words('g_hw_bg_diag',8))
-            row=dict(level=level+1,language=language,action=name,video_frames=len(frames),mixed_frames=mixed,
+            row=dict(level=level+1,language=language,action=name,video_frames=len(frames),mixed_frames=mixed,black_transition_frames=blanks,
                      cold_loads=after[1]-before[1],overflows=after[4]-before[4],
                      old_sha256=hashlib.sha256(old).hexdigest(),new_sha256=hashlib.sha256(new).hexdigest())
             rows.append(row)

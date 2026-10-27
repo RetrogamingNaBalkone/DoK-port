@@ -67,7 +67,8 @@ def main():
     restart = ready()
     frontend.run(120)
     check(diag())
-    report = dict(task='G06', integrated_renderer=slow, edge_vectors_on_arm='passed',
+    report = dict(task='G06', integrated_renderer=slow, clock_runtime_passed=True,
+                  edge_vectors_on_arm='passed' if 'dok_time_cases' in symbols else 'separate diagnostic ROM',
                   core_version=frontend.version, core_sha256=sha(args.core),
                   rom_sha256=sha(build/'dok-diagnostic.gba'), rom_bytes=(build/'dok-diagnostic.gba').stat().st_size,
                   ewram_static_bytes=metadata['ewram_static_bytes'],
