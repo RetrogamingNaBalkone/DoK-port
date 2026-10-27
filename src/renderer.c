@@ -173,6 +173,19 @@ static const dok_renderer_image *face_image(const dok_renderer_workspace *w,unsi
 }
 #ifdef DOK_RENDER_PRELIT_PROTOTYPE
 static const uint32_t *prelit_view;
+#ifdef DOK_RENDER_HW_SPARSE_POSTS_PROTOTYPE
+static const uint32_t *sparse_view;
+static const uint16_t *hw_column_posts;
+extern const uint32_t dok_sparse_image_offsets[];
+extern const uint8_t dok_sparse_posts[];
+#define SET_COLUMN_POSTS(im,prelit,u) do { \
+    if((im)->flags&8u) { \
+        unsigned table=sparse_view[(im)->resource_id*16+row]; \
+        hw_column_posts=(const uint16_t *)(const void *)(dok_sparse_posts+ \
+            ((const uint32_t *)(const void *)(dok_sparse_posts+table))[u]); \
+    } \
+} while(0)
+#endif
 #endif
 #ifdef DOK_RENDER_HW_SURFACE_PRELIT_PROTOTYPE
 extern const uint8_t dok_ceiling_bank[];
@@ -870,8 +883,11 @@ static void cover(dok_renderer_workspace *w,unsigned x,unsigned lo,unsigned hi) 
 #else
 #define VISIBLE_COLUMN_NAME visible_column
 #endif
-#ifdef DOK_RENDER_HW_ALPHA_EMPTY_PROTOTYPE
+#if defined(DOK_RENDER_HW_ALPHA_EMPTY_PROTOTYPE) || defined(DOK_RENDER_HW_SPARSE_POSTS_PROTOTYPE)
 #include "renderer_alpha.inc"
+#endif
+#ifdef DOK_RENDER_HW_SPARSE_POSTS_PROTOTYPE
+#include "renderer_sparse_posts.inc"
 #endif
 #ifdef DOK_RENDER_HW_VISIBLE_SPLIT_PROTOTYPE
 static DOK_COLD unsigned visible_column_legacy(dok_renderer_workspace *,unsigned,unsigned,unsigned,
@@ -928,6 +944,12 @@ static DOK_NOINLINE unsigned VISIBLE_COLUMN_NAME(dok_renderer_workspace *w,unsig
 #endif
 #ifdef DOK_RENDER_HW_MASKED_PROTOTYPE
     if(g_hw_tile_active && masked && !record) {
+#ifdef DOK_RENDER_HW_SPARSE_POSTS_PROTOTYPE
+        if(hw_column_posts) {
+            unsigned result=sparse_column(w,x,begin,end,pixels,v,step,hw_column_posts);
+            COVER_COUNT(w,x)|=128;return result;
+        }
+#endif
         struct {uint8_t *dst;const uint8_t *pixels;unsigned v,step,count;uint32_t *bits;unsigned mask,tile_y;} span={
             scene_pointer(w->frame,x,begin),pixels,v,step,end-begin+1,&coverage_bits[x>>1][begin>>5],1u<<(begin&31),begin&7};
         extern unsigned dok_gba_tiled_masked_column(const void *);
@@ -1315,6 +1337,9 @@ static void raster(dok_renderer_workspace *w,const dok_runtime *r,const dok_rend
 #endif
         if(im->columns && prelit) {
             unsigned mode=PRELIT_COLUMN_MODE(im->flags,prelit,(unsigned)u);
+#ifdef DOK_RENDER_HW_SPARSE_POSTS_PROTOTYPE
+            SET_COLUMN_POSTS(im,prelit,(unsigned)u);
+#endif
 #ifdef DOK_RENDER_HW_SPAN_SOLID_PROTOTYPE
             hw_column_zero_bits=((const uint32_t *)(const void *)(dok_prelit_bank+prelit-256-im->width*4))[(unsigned)u];
             mode|=0x40000000u;
@@ -1328,6 +1353,9 @@ static void raster(dok_renderer_workspace *w,const dok_runtime *r,const dok_rend
         }
 #endif
         unsigned n;
+#ifdef DOK_RENDER_HW_SPARSE_POSTS_PROTOTYPE
+        hw_column_posts=0;
+#endif
 #ifdef DOK_RENDERER_PROBE
         if(!row && im->columns) n=visible_column(w,(unsigned)x,(unsigned)begin,(unsigned)end,im->columns+(unsigned)u*im->height,
             (unsigned)vstart,(unsigned)vstep,COLUMN_MODE(im->flags,im->columns[(int)u-256]),strip,(unsigned)(begin-top));
@@ -1469,6 +1497,10 @@ dok_renderer_status dok_renderer_draw(dok_renderer_workspace *w,const dok_runtim
     extern const uint32_t dok_prelit_offsets[];
 #ifdef DOK_RENDER_EXACT_LIGHT_PROTOTYPE
     prelit_view=dok_prelit_offsets+(level*2+language)*(a->resource_count+1)*16;
+#ifdef DOK_RENDER_HW_SPARSE_POSTS_PROTOTYPE
+    sparse_view=dok_sparse_image_offsets+(level*2+language)*(a->resource_count+1)*16;
+    hw_column_posts=0;
+#endif
 #else
     prelit_view=dok_prelit_offsets+(level*2+language)*(a->resource_count+1)*5;
 #endif

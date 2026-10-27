@@ -159,6 +159,56 @@ def main():
             assert bytes(cpu.mem_read(desc-4,1928))==b'HEAD'+expected+b'TAIL'
             coverage_span_vectors+=1
     rectangle_vectors=0
+    sparse_vectors=0
+    def sparse_records(colors,width,height):
+        blob=bytearray(4+width*4)
+        for x in range(width):
+            runs=[];first=None
+            for y,color in enumerate(colors[x*height:(x+1)*height]+b'\0'):
+                if color and first is None:first=y
+                elif not color and first is not None:runs.append((first,y));first=None
+            struct.pack_into('<I',blob,4+x*4,len(blob))
+            blob.extend(struct.pack('<H',len(runs))+b''.join(struct.pack('<HH',*r) for r in runs))
+        return bytes(blob)
+    if 'sparse_column' in symbols:
+        cpu.mem_write(symbols['g_hw_tile_active'],struct.pack('<I',1))
+        cpu.mem_write(symbols['hw_tile_frame'],struct.pack('<I',frame_addr+4))
+        for case in range(4096):
+            height=rng.choice((1,2,17,64,96,192,256,512))
+            colors=bytearray(rng.randbytes(height))
+            if case%6==0:colors[:]=bytes(height)
+            elif case%6==1:colors[:]=bytes([223])*height
+            else:
+                for y in range(height):
+                    if (y//(case%13+1))%2:colors[y]=0
+            x=rng.randrange(120)*2;begin=rng.randrange(scene_rows);end=rng.randrange(begin,scene_rows)
+            count=end-begin+1;v=rng.randrange(height<<16)
+            step=0 if count==1 or case%7==0 else rng.randrange(((height<<16)-1-v)//(count-1)+1)
+            bits=list(struct.unpack(cover_format,rng.randbytes(cover_bytes)))
+            if case%4==0:bits=[0]*cover_count
+            elif case%4==1:bits=[0xffffffff]*cover_count
+            before_bits=struct.pack(cover_format,*bits)
+            initial=rng.randbytes(38400);expected=bytearray(initial);written=transparent=0
+            for y in range(begin,end+1):
+                b=x//2*cover_words+y//32;mask=1<<(y&31)
+                if bits[b]&mask:continue
+                color=colors[(v+(y-begin)*step)>>16]
+                if not color:transparent+=1;continue
+                at=y//8*1024+x//16*64+(y%8)*8+(x//2)%8
+                expected[at]=color;bits[b]|=mask;written+=1
+            blob=sparse_records(colors,1,height)
+            record=struct.unpack_from('<I',blob,4)[0]
+            cpu.mem_write(pixel_addr,bytes(colors));cpu.mem_write(lut_addr,blob)
+            cpu.mem_write(frame_addr,b'HEAD'+initial+b'TAIL')
+            cpu.mem_write(symbols['coverage_bits'],before_bits)
+            result=call('sparse_column',frame_addr,x,begin,end,pixel_addr,v,step,lut_addr+record)
+            assert result==written|(transparent<<16),('sparse stats',case,result,written,transparent)
+            actual=bytes(cpu.mem_read(frame_addr,38408));want=b'HEAD'+expected+b'TAIL'
+            assert actual==want,('sparse frame',case,x,begin,end,height,v,step,
+                                [(i,a,want[i]) for i,a in enumerate(actual) if a!=want[i]][:12])
+            assert bytes(cpu.mem_read(symbols['coverage_bits'],cover_bytes))==struct.pack(cover_format,*bits),('sparse coverage',case)
+            assert bytes(cpu.mem_read(pixel_addr,height))==colors and bytes(cpu.mem_read(lut_addr,len(blob)))==blob
+            sparse_vectors+=1
     if 'raster_rect' in symbols:
         # Synthetic post-LIGHT columns isolate the rectangle algorithm from
         # asset generation. The oracle evaluates the original Q7 fraction,
@@ -180,6 +230,11 @@ def main():
                 empty=bytes(int(not any(colors[x*height:(x+1)*height])) for x in range(width))+bytes(256-width)
                 cpu.mem_write(bank+offset-512,empty)
             cpu.mem_write(bank+offset-256,prefix+bytes(colors))
+            if 'HW_SPARSE_POSTS' in defines:
+                sparse_table=0x09f10000
+                cpu.mem_write(sparse_table,struct.pack('<32I',*([0]*16+[4]*16)))
+                cpu.mem_write(symbols['sparse_view'],struct.pack('<I',sparse_table))
+                cpu.mem_write(symbols['dok_sparse_posts'],sparse_records(colors,width,height))
             x0=rng.randrange(-128,230);x1=rng.randrange(max(x0+1,0),641)
             top=rng.randrange(-256,scene_rows+64);bottom=top+rng.randrange(513)
             depth=rng.choice((0,1,1920,2040,3720,32767,32768,65535))
@@ -542,6 +597,7 @@ def main():
                 exact_plane_division_vectors=plane_division_vectors,
                 scalar_projection_vectors=projection_vectors,
                 rectangle_raster_vectors=rectangle_vectors,
+                sparse_post_vectors=sparse_vectors,
                 coverage_span_vectors=coverage_span_vectors,
                 unsigned_texture_division_vectors=unsigned_division_vectors,
                 positive_texture_division_vectors=positive_division_vectors,

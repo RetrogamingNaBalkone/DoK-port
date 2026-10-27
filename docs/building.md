@@ -1,5 +1,10 @@
 # Сборка первых модулей и VS Code
 
+27 октября [G20C sparse posts](gba-sparse-posts-trial.md) завершена отрицательно:
+опытный ROM `artifacts/gba/DoK-port_sparse_posts_trial.gba` сохранён для сравнения,
+основным остаётся2775. Сборки/ROM/ELF/map — `build/g20c-sparse-posts/` и
+`build/g20c-sparse-repeat/`; команды измерения и collector — в документе опыта.
+
 После [очистки 27 октября](tasks/CLEANUP.md) промежуточные `.o` опытов G20A
 и кэш Zig удалены. Их ROM/ELF/map, снимки исходников и отчёты сохранены.
 `prototype_gba_bsp.py` и `research_gba_fps.py` теперь удаляют собственные

@@ -14,7 +14,12 @@ static DOK_NOINLINE unsigned raster_rect(dok_renderer_workspace *w,const dok_ren
     extern const uint8_t dok_prelit_bank[];
     if(f->depth0!=f->depth1 || f->depth0<0 || f->top0!=f->top1 || f->bottom0!=f->bottom1 ||
        f->u0<0 || f->u1<0 || f->u0>255 || f->u1>255 || !im->columns || !im->resource_id)return 0;
+#ifdef DOK_RENDER_HW_SPARSE_POSTS_PROTOTYPE
+    unsigned row=light_index(f->depth0);
+    unsigned prelit=prelit_view[im->resource_id*16+row];
+#else
     unsigned prelit=prelit_view[im->resource_id*16+light_index(f->depth0)];
+#endif
     if(!prelit)return 0;
     int span=f->x1-f->x0;
     if(span<=0 || span>16384)return 0;
@@ -50,6 +55,9 @@ static DOK_NOINLINE unsigned raster_rect(dok_renderer_workspace *w,const dok_ren
         unsigned u=(unsigned)((f->u0*(span-i)+f->u1*i)/span);
         if(u>=im->width)u=im->width-1;
         unsigned mode=PRELIT_COLUMN_MODE(im->flags,prelit,u);
+#ifdef DOK_RENDER_HW_SPARSE_POSTS_PROTOTYPE
+        SET_COLUMN_POSTS(im,prelit,u);
+#endif
         unsigned n=visible_column(w,(unsigned)x,begin,end,dok_prelit_bank+prelit+u*im->height,v,step,mode,0,0);
         transparent+=n>>16;pixels+=n&65535u;
     }

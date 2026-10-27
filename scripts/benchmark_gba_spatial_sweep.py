@@ -37,6 +37,8 @@ def main():
     parser.add_argument('--heading-step',type=int,default=45)
     parser.add_argument('--cases',nargs='+',help='Restrict to level:cell:heading triples for profiling.')
     parser.add_argument('--profile',action='store_true',help='Enable instrumented face/surface timers; timing includes their overhead.')
+    parser.add_argument('--language',type=int,choices=(0,1),default=0)
+    parser.add_argument('--verify-output',action='store_true',help='After timing, hold a completed draw and hash actual PPU/coverage/stats.')
     parser.add_argument('--force-low-mode',type=int,choices=(0,1,2),default=0,help='Feedback prototype only:0 auto,1 CPU ceiling,2 BG3 ceiling')
     a=parser.parse_args();assert a.samples>=6 and a.heading_step in (45,90)
     os.chdir(ROOT);os.environ['DOK_PROBE_FAST_VIDEO']='1'
@@ -47,6 +49,7 @@ def main():
         p.frontend.core.retro_set_video_refresh(p.video_callback)
         p.until(lambda d:d['draws']>=1);p.write(p.symbols['g_camera_capture_hold'],struct.pack('<I',1))
         p.until(lambda d:d['draws']>=4 and d['phase']==2);freeze(p,True)
+        p.language(a.language)
         if a.force_low_mode:
             assert 'g_hw_low_force' in p.symbols,'This ROM has no mode-force test mailbox'
             p.write(p.symbols['g_hw_low_force'],struct.pack('<I',a.force_low_mode))
@@ -68,10 +71,19 @@ def main():
                     r=collect(p,a.samples)
                     assert r['audio']['underruns']==0 and r['sound_active_frames']==a.samples
                     assert all(s['flow_state']==2 and s['ui_state']==0 for s in r['samples'])
-                    r.update(level=level+1,language=0,cell=cell,label=label,heading=heading)
+                    r.update(level=level+1,language=a.language,cell=cell,label=label,heading=heading)
                     r['stage_medians']={key:statistics.median(s['stages'][key] for s in r['samples']) for key in r['samples'][0]['stages']}
                     r['renderer_stats']=list(p.words('g_render_stats',11))
                     r['ppu_sha256']=hashlib.sha256(p.frontend.last_video_raw).hexdigest()
+                    if a.verify_output:
+                        p.write(p.symbols['g_camera_capture_hold'],struct.pack('<I',1))
+                        completed=p.present();assert completed['phase']==2 and completed['guard_ok']==1
+                        r['completed_renderer_stats']=list(p.words('g_render_stats',11))
+                        r['coverage_sha256']=hashlib.sha256(p.frontend.read(p.symbols['coverage_bits'],120*4*4)).hexdigest()
+                        p.frontend.run(2)
+                        r['completed_ppu_sha256']=hashlib.sha256(p.frontend.rgb).hexdigest()
+                        r['foreground_sha256']=hashlib.sha256(p.frontend.read(0x06010000,128*128)).hexdigest()
+                        p.write(p.symbols['g_camera_capture_hold'],struct.pack('<I',0))
                     if a.profile:
                         # collect() observes completed published stage timings,
                         # while live per-primitive counters can already belong
@@ -98,7 +110,8 @@ def main():
         result=dict(rom_sha256=sha(p.rom),core_sha256=sha(core),script_sha256=sha(__file__),rows=rows,
             capture_hold_during_samples=False,simulation_frozen=True,warmup_presentations=6,heading_step=a.heading_step,instrumented=a.profile,
             forced_low_mode=a.force_low_mode,
-            scope='Steady renderer with PCM, original maps, distributed walkable sector/start/water cells, RU. No live AI cost or whole-level/playthrough minimum claimed.')
+            language=a.language,held_output_verification_after_timing=a.verify_output,
+            scope='Steady renderer with PCM, original maps, distributed walkable sector/start/water cells. No live AI cost or whole-level/playthrough minimum claimed.')
         a.report.write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8')
     finally:p.close()
 

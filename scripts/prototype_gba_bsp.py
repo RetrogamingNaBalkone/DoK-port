@@ -156,6 +156,8 @@ VARIANTS['hw_v128_entity_batch']=VARIANTS['hw_v128_entity_prelit']+('HW_MASKED_B
 VARIANTS['hw_v128_entity_affine']=tuple(d for d in VARIANTS['hw_v128_entity_batch'] if d!='HW_HOT_IMAGE')+('HW_AFFINE_U',)
 VARIANTS['hw_v128_entity_wide']=tuple(d for d in VARIANTS['hw_v128_entity_batch'] if d!='HW_HOT_IMAGE')+('HW_U_WIDE',)
 VARIANTS['hw_v128_entity_rect']=tuple(d for d in VARIANTS['hw_v128_entity_batch'] if d!='HW_HOT_IMAGE')+('HW_RECT_RASTER',)
+VARIANTS['hw_v128_sparse_control']=tuple(d for d in VARIANTS['hw_v128_entity_rect'] if d!='HW_EDGE_RAM_CALL')
+VARIANTS['hw_v128_sparse_posts']=VARIANTS['hw_v128_sparse_control']+('HW_SPARSE_POSTS',)
 VARIANTS['hw_v128_world_obj_probe']=VARIANTS['hw_v128_entity_rect']+('HW_WORLD_OBJ_PROBE',)
 VARIANTS['hw_v128_world_obj']=tuple(d for d in VARIANTS['hw_v128_entity_rect'] if d!='HW_EDGE_RAM_CALL')+('HW_VISIBLE_SPLIT','HW_WORLD_OBJ')
 VARIANTS['hw_v128_surface_clip']=tuple(d for d in VARIANTS['hw_v128_entity_rect'] if d!='HW_EDGE_RAM_CALL')+('HW_SURFACE_CLIP',)
@@ -446,6 +448,10 @@ def build(base,out,variants):
     startup=['cc','-target','arm-freestanding-eabi','-mcpu=arm7tdmi',
              '-DDOK_RENDERER_PROBE','-DDOK_RENDER_HALF_COLUMNS','-c']
     command([zig,*startup,out/'tables.S','-o',out/'tables.o'])
+    if any('HW_SPARSE_POSTS' in VARIANTS[v] for v in variants):
+        from gba_sparse_posts import build_posts
+        metadata['sparse_posts']=build_posts(out,ROOT/'build/gba/assets/assets.bin')
+        command([zig,*startup,out/'sparse-posts.S','-o',out/'sparse-posts.o'])
     stream_metadata=None
     sector_metadata=None
     if any('SECTOR_CLIP' in VARIANTS[v] for v in variants):
@@ -645,6 +651,7 @@ def build(base,out,variants):
             objects[names.index('assets-data')]=dest/'assets-data.o'
         if variant not in ('baseline','no_scales'):
             objects.append(out/'tables.o')
+        if 'HW_SPARSE_POSTS' in defines:objects.append(out/'sparse-posts.o')
         if 'STREAM_BSP' in defines:objects.append(out/'stream-tables.o')
         if 'SECTOR_CLIP' in defines:
             objects.append(out/'sector-tables.o')
@@ -714,7 +721,8 @@ def build(base,out,variants):
                            Path('gba/hardware_world_obj_probe.inc'),Path('gba/hardware_world_obj.inc'),Path('include/dok/gba_world_obj.h'),
                            Path('scripts/gba_world_obj_assets.py'),Path('scripts/gba_sector_scene.py'),Path('gba/sector_planes.S'),Path('gba/sector_bitmap.S'),Path('gba/hardware_sector_bitmap.inc'),Path(__file__),Path('scripts/gba_hw_bg_assets.py'),Path('scripts/compile_gba_render_scene.py'),
                            Path('scripts/gba_sector_gpu_assets.py'),Path('gba/sector_gpu.S'),Path('gba/hardware_sector_gpu.inc'),Path('include/dok/gba_sector_gpu.h'),
-                           Path('scripts/gba_stream_scene.py'),Path('include/dok/gba_hw_scratch.h')]})
+                           Path('scripts/gba_stream_scene.py'),Path('include/dok/gba_hw_scratch.h'),
+                           Path('scripts/gba_sparse_posts.py')]})
     (out/'prototype-build.json').write_text(json.dumps(manifest,indent=2)+'\n',encoding='utf-8')
 
 
