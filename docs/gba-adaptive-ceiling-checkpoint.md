@@ -3,7 +3,7 @@
 27 октября 2026. Исследовательская ветка, **не выбранный игровой ROM**.
 Основной кандидат остаётся2775; G20/G20A/goal открыты.
 
-`build/g20a-hw-adaptive-v2/hw_v128_low_adaptive/`, ROM
+`research/experiments/g20a-hw-adaptive-v2/hw_v128_low_adaptive/`, ROM
 eacf37cdf67c051baca11e47b79f93e537f2b972eb506634432826292c5ae55c,
 16 572 192B. Ветка использует coarse16×16 visibility estimate для выбора
 Mode1/Mode2; geometry/coverage не урезаются. Mode1 сохраняет горячий CPU shader
@@ -30,14 +30,14 @@ EWRAM261332/free812; IWRAM24476/free100 до прежнего stack reserve8192.
   Оба выбираютMode2; L2cell1592135°:1 537 152cycles, Mode1;
   L2cell2871225°:1 602 464cycles, Mode1; L3cell1544315°:929 536cycles, Mode1.
 
-Отчёты: `build/g20a-hw-adaptive-v2/{exact18-live,target,spatial}.json`.
+Отчёты: `research/experiments/g20a-hw-adaptive-v2/{exact18-live,target,spatial}.json`.
 Coarse estimator добавляет заметную геометрию; его цена пока съедает часть
 целевого выигрыша. Допустим один ограниченный опыт более дешёвого выбора,
 после чего при отсутствии общего выигрыша ветку откладывать. Не продвигать
 этот ROM в artifacts по локальному улучшению двух L1-видов.
 
 Продолжение: ограниченный опыт выполнен, **адаптивная ветка отложена**.
-`build/g20a-hw-adaptive-grid4/hw_v128_low_grid4/` использует16 center samples
+`research/experiments/g20a-hw-adaptive-grid4/hw_v128_low_grid4/` использует16 center samples
 вместо256 visibility cells. Spatial440:15 видов быстрее,62 медленнее,363 равны
 по FPS относительно2775; минимумы9,954583/9,954583/14,931875. Медианные отношения
 CPU trial/control:1,0206/1,0293/1,0095 по мирам. Mode2 выбран в21 виде; все419
@@ -52,7 +52,7 @@ L1cell520225° и не дал общего выигрыша. Отчёты `{spat
 источник96×192 и/или crop; большинство остальных прямоугольников masked.
 Это отвергает только самый простой односоставной путь без разбиения исходников,
 не hardware OBJ-архитектуру вообще. Воспроизводимый отчёт:
-`build/g20a-hw-obj-candidates.json`; площади bounding boxes — верхние оценки,
+`research/experiments/g20a-hw-obj-candidates.json`; площади bounding boxes — верхние оценки,
 перекрытия/невидимость не вычитались, прогноз FPS по ним не делается.
 
 Текущие проверки не заменяют396 detail, warm Mode1/Mode2 transitions, water,

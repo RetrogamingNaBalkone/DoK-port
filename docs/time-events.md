@@ -11,8 +11,8 @@
 `scripts/InspectTime.java` экспортирует адресные листинги, вызывающие функции,
 статические данные и отдельно автоматический, непроверенный C-псевдокод.
 Он также дизассемблирует ранее пропущенные IRQ-entry и clear-events.
-Проекты сохранены в `build/ghidra/{ru,en}/Kremlin.gpr`, экспорты/журналы/
-манифесты — `build/time/{ru,en}/`. Общий Ghidra используется без новой установки.
+Проекты сохранены в `research/ghidra/projects/{ru,en}/Kremlin.gpr`, экспорты/журналы/
+манифесты — `research/evidence/time/{ru,en}/`. Общий Ghidra используется без новой установки.
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/analyze-time.ps1
@@ -32,8 +32,8 @@ C:/Source/wasdify/.venv/Scripts/python.exe scripts/verify_time_gba.py --build-di
 Новые DOS-запуски (каталог результата должен ещё не существовать):
 
 ```powershell
-C:/Source/wasdify/.venv/Scripts/python.exe scripts/dos_reference.py ru --output build/time/dos-ru --time-probe
-C:/Source/wasdify/.venv/Scripts/python.exe scripts/dos_reference.py en --output build/time/dos-en --time-probe --port 8138
+C:/Source/wasdify/.venv/Scripts/python.exe scripts/dos_reference.py ru --output research/evidence/time/dos-ru --time-probe
+C:/Source/wasdify/.venv/Scripts/python.exe scripts/dos_reference.py en --output research/evidence/time/dos-en --time-probe --port 8138
 ```
 
 Копируются исходные файлы в изолированный `build/`; EXE не патчится.

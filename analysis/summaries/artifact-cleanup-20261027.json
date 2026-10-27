@@ -1,0 +1,30 @@
+{
+  "summary_schema": 1,
+  "full_report": {
+    "path": "analysis/artifact-cleanup-20261027.json",
+    "sha256": "e584bd038574b2de6a870de660509b060e58696ed50a2f51a69eba04cb6a0538",
+    "bytes": 692244
+  },
+  "scope": "Summary of a recorded run; not a new verification. Full report is local and ignored by Git.",
+  "result": {
+    "applied": true,
+    "files": 16168,
+    "bytes": 7151123190,
+    "removed": {
+      "detail_pointer": "/removed",
+      "items": 4698
+    },
+    "preserved_sha256": {
+      "detail_pointer": "/preserved_sha256",
+      "items": 429
+    },
+    "verification": {
+      "preserved_files": 429,
+      "all_hashes_unchanged": true,
+      "control_ROM_byte_exact": true,
+      "production_C_reader_corruptions_rejected": 23,
+      "cleanup_success_failure_keep_and_bounds": "passed",
+      "scope": "No gameplay/renderer changes; original binaries not analyzed"
+    }
+  }
+}

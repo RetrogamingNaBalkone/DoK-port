@@ -29,10 +29,10 @@
 Стенд сравнил SHA-256 всех исходных файлов каждого каталога до/после:
 `originals_unchanged=true`. Полные карты этих хешей в отчёты не включены;
 отдельно там записаны EXE. В `originals/` ничего не записывалось;
-игра запускалась из приватной рабочей копии под `build/reference/`.
+игра запускалась из приватной рабочей копии под `research/evidence/reference/`.
 После серии выполнена дополнительная сверка EXE/RES с инвентаризацией
 и всех файлов пяти рабочих копий с оригиналами:
-[source-verification.json](../build/reference/source-verification.json).
+[source-verification.json](../research/evidence/reference/source-verification.json).
 Её время явно указано как проверка после запусков. Финальный скрипт сохраняет
 полные хеши до/после и копий для будущих серий; исторические отчёты не
 дополнялись измерениями, которых при их создании ещё не записывали.
@@ -54,8 +54,8 @@
 
 Предварительный запуск RUS без аргументов действительно выбрал VGA 320×200,
 256 цветов, mode `13h` (строка `DISPLAY` в
-`build/reference/ru-probe2/stderr.log`). Проба с `-r0` выбрала VESA 640×480,
-mode `101h` (`build/reference/ru-probe/stderr.log`); VGA-стенд её не использует.
+`research/evidence/reference/ru-probe2/stderr.log`). Проба с `-r0` выбрала VESA 640×480,
+mode `101h` (`research/evidence/reference/ru-probe/stderr.log`); VGA-стенд её не использует.
 Нельзя называть `-r0` способом выбора VGA оригинала.
 
 API этой сборки не предоставляет отдельного keyboard endpoint. Стенд
@@ -137,11 +137,11 @@ RUS/ENG эквивалентными по совпадению числа вра
 
 ## Наблюдения текущей серии
 
-Основная серия: [RU01](../build/reference/ru-01/report.json),
-[RU02](../build/reference/ru-02/report.json),
-[EN01](../build/reference/en-01/report.json),
-[EN02](../build/reference/en-02/report.json). Дополнительная проверка
-с изолированными конфигами: [RU03](../build/reference/ru-03/report.json).
+Основная серия: [RU01](../research/evidence/reference/ru-01/report.json),
+[RU02](../research/evidence/reference/ru-02/report.json),
+[EN01](../research/evidence/reference/en-01/report.json),
+[EN02](../research/evidence/reference/en-02/report.json). Дополнительная проверка
+с изолированными конфигами: [RU03](../research/evidence/reference/ru-03/report.json).
 В каждом каталоге сохранены `dosbox.conf`, `stdout.log`, `stderr.log`,
 индексные кадры `*.idx`, PNG и приватный `level1-memory.bin` (16 MiB).
 Индексные кадры начинаются с физического `0xA0000`, длина 64000 байт.
@@ -183,10 +183,10 @@ Space/Ctrl оставлены как `use-attempt`/`fire-attempt`: соотве�
 Повторение (выбрать новые, ещё не существующие каталоги):
 
 ```powershell
-C:/Source/wasdify/.venv/Scripts/python.exe scripts/dos_reference.py ru --output build/reference/ru-new-01 --actions
-C:/Source/wasdify/.venv/Scripts/python.exe scripts/dos_reference.py ru --output build/reference/ru-new-02 --actions
-C:/Source/wasdify/.venv/Scripts/python.exe scripts/dos_reference.py en --output build/reference/en-new-01 --actions
-C:/Source/wasdify/.venv/Scripts/python.exe scripts/dos_reference.py en --output build/reference/en-new-02 --actions
+C:/Source/wasdify/.venv/Scripts/python.exe scripts/dos_reference.py ru --output research/evidence/reference/ru-new-01 --actions
+C:/Source/wasdify/.venv/Scripts/python.exe scripts/dos_reference.py ru --output research/evidence/reference/ru-new-02 --actions
+C:/Source/wasdify/.venv/Scripts/python.exe scripts/dos_reference.py en --output research/evidence/reference/en-new-01 --actions
+C:/Source/wasdify/.venv/Scripts/python.exe scripts/dos_reference.py en --output research/evidence/reference/en-new-02 --actions
 ```
 
 Запуски последовательны, HTTP по умолчанию `127.0.0.1:8137`. Занятый порт
@@ -212,4 +212,4 @@ DOSBox с `--noprimaryconf --nolocalconf`, чтобы не наследоват�
   известные изменения WASDify к оригиналам G00 не применяются.
 
 Приватные кадры, состояния, игровые копии и дампы остаются под
-`build/reference/` и не включаются в Git или поставку GBA-порта.
+`research/evidence/reference/` и не включаются в Git или поставку GBA-порта.

@@ -238,7 +238,7 @@ def main():
     artifacts = [p for p in EXPORT.iterdir() if p.is_file()]
     after = {p.name: sha(p.read_bytes()) for p in original.iterdir() if p.is_file()}
     assert before == after
-    recheck_dir = ROOT / "build/old-gold/recheck-export"
+    recheck_dir = ROOT / "research/evidence/old-gold/recheck-export"
     repeat = None
     if (recheck_dir / "manifest.json").exists():
         other = json.loads((recheck_dir / "manifest.json").read_text(encoding="utf-8-sig"))

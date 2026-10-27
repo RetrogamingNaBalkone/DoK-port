@@ -439,7 +439,7 @@ def main():
         if 'g_ai_probe' in probe.symbols:
             probe.write(probe.symbols['g_ai_probe'],struct.pack('<I',1))
         probe.write(probe.symbols['g_camera_capture_hold'], struct.pack('<I', 1))
-        model = load_json('build/runtime/ru/LEVEL1-runtime.json')
+        model = load_json('research/evidence/runtime/ru/LEVEL1-runtime.json')
         flights = []
         for language in (0, 1):
             probe.language(language)

@@ -1,9 +1,17 @@
 # Сборка первых модулей и VS Code
 
+27 октября: хранение исследований вынесено в `research/`; после уточнения
+пользователя промежуточные сборки и повторы удаляются. Паспорт и границы —
+[tasks/RESEARCH-STORAGE.md](tasks/RESEARCH-STORAGE.md), итоговый учёт —
+`analysis/storage-cleanup-20261027.json`. Старые отчёты могут ссылаться на
+удалённые выходы; для повторных проверок нужна новая сборка. Игровые статусы
+не меняются; текущая UI01 и необходимые контрольные образцы сохраняются.
+
+
 27 октября [G20C sparse posts](gba-sparse-posts-trial.md) завершена отрицательно:
 опытный ROM `artifacts/gba/DoK-port_sparse_posts_trial.gba` сохранён для сравнения,
-основным остаётся2775. Сборки/ROM/ELF/map — `build/g20c-sparse-posts/` и
-`build/g20c-sparse-repeat/`; команды измерения и collector — в документе опыта.
+основным остаётся2775. Сборки/ROM/ELF/map — `research/experiments/g20c-sparse-posts/` и
+`research/experiments/g20c-sparse-repeat/`; команды измерения и collector — в документе опыта.
 
 После [очистки 27 октября](tasks/CLEANUP.md) промежуточные `.o` опытов G20A
 и кэш Zig удалены. Их ROM/ELF/map, снимки исходников и отчёты сохранены.
@@ -28,14 +36,14 @@ runtime turn12019,85/16,86/21,79 FPS, ходьба17,96/17,92/20,54 RU
 (EN L1 18,10). Spatial440 minimum9,954583/9,954583/14,931875; общая цель открыта.
 CPU128 строк растянуты в144;396+440 PPU кадров совпали с предыдущим e803 ROM,
 полные suites/512 rectangle ARM/48cache cases прошли. Прежние ROM сохранены.
-Воспроизведение: `scripts/prototype_gba_bsp.py --out build/g20a-hw-entity-final
+Воспроизведение: `scripts/prototype_gba_bsp.py --out research/experiments/g20a-hw-entity-final
 --variants hw_v128_entity_rect source_control`; collector —
 `scripts/report_gba_hardware_cache.py --copy-rom` после описанных QA-запусков.
 Прежний [быстрый128](gba-hardware-fast.md) остаётся отдельным артефактом.
 
 Следующий [Mode2 ceiling experiment](gba-lowered-ceiling-trial.md) оставлен в
-`build/g20a-hw-lowered-v6/hw_v128_lowered/`, SHA4f96b7…44d80; он не выбран.
-Сборка: `scripts/prototype_gba_bsp.py --out build/g20a-hw-lowered-final
+`research/experiments/g20a-hw-lowered-v6/hw_v128_lowered/`, SHA4f96b7…44d80; он не выбран.
+Сборка: `scripts/prototype_gba_bsp.py --out research/experiments/g20a-hw-lowered-final
 --variants hw_v128_lowered source_control`. Статус/контроль —
 `scripts/report_gba_lowered_trial.py`. Не подменять им рекомендованный ROM.
 
@@ -50,7 +58,7 @@ SHA `b36472a0…eb42501`, 9 954 008 B, 488 точных кадров, live7,17/7
 Пол/потолок4×2 — `DoK-port_floor_4x2_prototype.gba`, SHA `04dfe358…1b5d11`,
 9 888 624 B, live11,95/9,95/14,93. BSP первого прохода —
 `artifacts/gba/DoK-port_BSP_prototype.gba`. Изолированная повторная сборка:
-`C:/Source/wasdify/.venv/Scripts/python.exe scripts/prototype_gba_bsp.py --out build/g20a-sides-rebuild --variants baseline sides_exact sides_coarse`.
+`C:/Source/wasdify/.venv/Scripts/python.exe scripts/prototype_gba_bsp.py --out research/experiments/g20a-sides-rebuild --variants baseline sides_exact sides_coarse`.
 Она выполнена, ROM воспроизведены побайтно. Замеры:
 `scripts/benchmark_gba_prototypes.py`, aggregate — `scripts/report_gba_spans.py`;
 все команды/ограничения в документе. Прежние готовые ROM не заменены;
@@ -181,7 +189,7 @@ C:/Source/wasdify/.venv/Scripts/python.exe scripts/prepare_levels.py
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/annotate-stage5.ps1
 C:/Source/wasdify/.venv/Scripts/python.exe scripts/analyze_levels.py
 # Вывести модель уровня (строки CP866 представлены в hex):
-./build/native/dok-level.exe build/resources/ru/0018.bin
+./build/native/dok-level.exe research/evidence/resources/ru/0018.bin
 # Создать начальный мир из оригинального архива:
 C:/Source/wasdify/.venv/Scripts/python.exe scripts/prepare_world.py
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/annotate-stage6.ps1

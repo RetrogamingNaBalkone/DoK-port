@@ -27,7 +27,7 @@ ROLES = {
 def main():
     for lang, (relative, expected) in EXPECTED.items():
         assert sha((ROOT / "originals/pkr" / relative).read_bytes()) == expected
-        directory = ROOT / f"build/stage6/{lang}"
+        directory = ROOT / f"research/evidence/stage6/{lang}"
         directory.mkdir(parents=True, exist_ok=True)
         (directory / "requested-roles.tsv").write_text("address\trole\n" +
             "".join(f"{address}\t{role}\n" for address, role in ROLES[lang].items()), encoding="utf-8")

@@ -13,7 +13,7 @@ def sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
 def main():
  report=dict(task='G18',status='passed',whole_DOS_session=False,languages={},external_hooks='sound/HUD no-op; world restore helper copies audited 30 bytes; helper memcpy external runtime recording/copy')
  for lang in ('ru','en'):
-  ru=lang=='ru';directory=Path('build/flow')/lang;seg=0x1068 if ru else 0x1020
+  ru=lang=='ru';directory=Path('research/evidence/flow')/lang;seg=0x1068 if ru else 0x1020
   worldseg=0x1098 if ru else 0x1030;global_world=0x266a if ru else 0x271a
   entry_stat=0x1cc2 if ru else 0x2276;entry_death=0x193e if ru else 0x1efc
   c=Uc(UC_ARCH_X86,UC_MODE_16);c.mem_map(0,0x100000)

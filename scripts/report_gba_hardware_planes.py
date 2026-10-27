@@ -13,7 +13,7 @@ def read(path):return json.loads((ROOT/path).read_text(encoding='utf-8-sig'))
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--copy-rom',action='store_true');args=parser.parse_args()
-    final='build/g20a-hw-final';ready='build/g20a-hw-ready'
+    final='research/experiments/g20a-hw-final';ready='research/experiments/g20a-hw-ready'
     control=read(final+'/source_control/build-report.json')
     assert control['rom_sha256']==BASE
     arm=read(final+'/arm.json');assert arm['status']=='passed'
@@ -23,7 +23,7 @@ def main():
         assert all(r['different_rgb_pixels']==0 for r in result['after']['rows'])
     build=read(final+'/hw_hud_cache/build-report.json');rom=ROOT/final/'hw_hud_cache/dok-diagnostic.gba'
     assert sha(rom)==build['rom_sha256']==arm['rom_sha256']==cache['after']['rom_sha256']==relink['after']['rom_sha256']
-    repeat='build/g20a-hw-repeat'
+    repeat='research/experiments/g20a-hw-repeat'
     assert read(repeat+'/hw_hud_cache/build-report.json')['rom_sha256']==sha(rom)
     assert read(repeat+'/source_control/build-report.json')['rom_sha256']==BASE
     live={}

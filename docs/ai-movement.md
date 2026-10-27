@@ -9,9 +9,9 @@
 
 Оригинальные PKR.EXE/PKE.EXE из `analysis/inventory-{ru,en}.json`; SHA-256 до
 и после анализа совпали. `scripts/analyze-ai.ps1` открывает сохранённые проекты
-`build/ghidra/{ru,en}/Kremlin.gpr` с `-readOnly -noanalysis`. `InspectAI.java`
+`research/ghidra/projects/{ru,en}/Kremlin.gpr` с `-readOnly -noanalysis`. `InspectAI.java`
 сохраняет actor/world/math сегменты, инструкции, автоматический C, vtable и
-manifest в `build/ai/{ru,en}/`. Автоматический C не компилируется и не входит
+manifest в `research/evidence/ai/{ru,en}/`. Автоматический C не компилируется и не входит
 в поставку. Адреса ниже — Ghidra NE loader, не файловые смещения, индексы
 NE-сегментов или runtime DPMI-селекторы.
 

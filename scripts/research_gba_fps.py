@@ -195,7 +195,7 @@ def live_measure(build,core,disable_ai=False,follow_camera=False,samples=24,butt
                 freeze(p,True)
                 p.write(p.symbols['g_camera_capture_hold'],struct.pack('<I',1))
                 p.language(language)
-                hero=load_json(f'build/runtime/ru/LEVEL{level+1}-runtime.json')
+                hero=load_json(f'research/evidence/runtime/ru/LEVEL{level+1}-runtime.json')
                 hero=hero['objects'][hero['player_index']-1]['actor']
                 p.camera((level+1)%3,15120,-300,22800,90)
                 p.camera(level,hero['x'],hero['y'],hero['z'],hero['heading'])
@@ -227,7 +227,7 @@ def live_measure(build,core,disable_ai=False,follow_camera=False,samples=24,butt
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--base',type=Path,default=Path('build/level1-fixes'))
-    parser.add_argument('--out',type=Path,default=Path('build/g20a-audit'))
+    parser.add_argument('--out',type=Path,default=Path('research/experiments/g20a-audit'))
     parser.add_argument('--report',type=Path,default=Path('analysis/g20a-fps-audit.json'))
     parser.add_argument('--skip-build',action='store_true')
     parser.add_argument('--keep-objects',action='store_true',help='Retain experiment object files for manual relinking')

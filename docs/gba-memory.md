@@ -38,7 +38,7 @@ Native-снимок `dok_world_object` с `bytes/known` служит инстр�
 ## Измеренный объём исходных уровней
 
 Источники — `analysis/levels-{ru,en}.json`, `analysis/worlds-{ru,en}.json`
-и проверенные `build/worlds/{ru,en}/0018..0020.json`. Все карты 64×64,
+и проверенные `research/evidence/worlds/{ru,en}/0018..0020.json`. Все карты 64×64,
 4096 клеток. Число объектов считается по определениям glyph, число размещений
 — по проходу MMap; повторный glyph не создаёт новый объект.
 

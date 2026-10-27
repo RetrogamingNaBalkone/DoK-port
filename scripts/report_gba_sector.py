@@ -9,22 +9,22 @@ ROOT=Path(__file__).resolve().parents[1]
 def main():
     read=lambda p:json.loads((ROOT/p).read_text(encoding='utf-8-sig'))
     sha=lambda p:hashlib.sha256((ROOT/p).read_bytes()).hexdigest()
-    measured=Path('build/g20a-sector-clip-v4');final=Path('build/g20a-sector-clip-final')
+    measured=Path('research/experiments/g20a-sector-clip-v4');final=Path('research/experiments/g20a-sector-clip-final')
     manifest=read(final/'prototype-build.json');prior=read(measured/'prototype-build.json')
-    repeated=read(Path('build/g20a-sector-clip-repeat/prototype-build.json'))
+    repeated=read(Path('research/experiments/g20a-sector-clip-repeat/prototype-build.json'))
     control='2775bdd0caaac64b4fd99e4c6d675587fad2da9c795468dc52efacb5d53edaab'
     assert manifest['variants']['hw_v128_entity_rect']['rom_sha256']==control
     for name,entry in manifest['variants'].items():
         expected=entry['rom_sha256']
         assert expected==prior['variants'][name]['rom_sha256']==repeated['variants'][name]['rom_sha256']
-        for folder in (measured,final,Path('build/g20a-sector-clip-repeat')):
+        for folder in (measured,final,Path('research/experiments/g20a-sector-clip-repeat')):
             assert sha(folder/name/'dok-diagnostic.gba')==expected
     assert all(sha(Path(p))==v for p,v in manifest['sources'].items()),'Current prototype source hashes'
     base=read(measured/'control-target.json');live_base=read(measured/'hw_v128_entity_rect-live24.json')
     assert base['rom_sha256']==live_base['rom_sha256']==control
     key=lambda r:(r['level'],r['cell'],r['heading']);base_rows={key(r):r for r in base['rows']}
     paths=[final/'prototype-build.json',measured/'prototype-build.json',
-        Path('build/g20a-sector-clip-repeat/prototype-build.json'),measured/'control-target.json',
+        Path('research/experiments/g20a-sector-clip-repeat/prototype-build.json'),measured/'control-target.json',
         measured/'hw_v128_entity_rect-live24.json',final/'image-cache-eligibility.json',measured/'ppu18.json']
     results={}
     for name,prefix in (('hw_v128_sector_clip_hot',''),('hw_v128_sector_bitmap_hot','bitmap-')):

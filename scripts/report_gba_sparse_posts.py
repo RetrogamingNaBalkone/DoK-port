@@ -65,8 +65,8 @@ def paired(before,after):
 
 def main():
     p=argparse.ArgumentParser(description=__doc__)
-    p.add_argument('--out',type=Path,default=Path('build/g20c-sparse-posts'))
-    p.add_argument('--repeat',type=Path,default=Path('build/g20c-sparse-repeat'))
+    p.add_argument('--out',type=Path,default=Path('research/experiments/g20c-sparse-posts'))
+    p.add_argument('--repeat',type=Path,default=Path('research/experiments/g20c-sparse-repeat'))
     p.add_argument('--report',type=Path,default=Path('analysis/g20c-sparse-posts.json'))
     p.add_argument('--copy-rom',action='store_true')
     a=p.parse_args();out=a.out

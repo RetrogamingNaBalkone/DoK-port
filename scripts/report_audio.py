@@ -14,7 +14,7 @@ def main():
  for p,h in reports['host-verification']['artifacts'].items():assert sha(p)==h,p
  assert reports['original-verification']['script_sha256']==sha('scripts/verify_audio_original.py')
  for lang in ('ru','en'):
-  path=f'build/audio/{lang}/analysis-manifest.json';m=read(path)
+  path=f'research/evidence/audio/{lang}/analysis-manifest.json';m=read(path)
   assert m['sha256_before']==m['sha256_after']==sha(m['sample'])
   assert m['script_sha256']==sha('scripts/InspectAudio.java') and m['driver_sha256']==sha('scripts/analyze-audio.ps1')
   o=reports['original-verification']['languages'][lang];assert o['manifest_sha256']==sha(path)

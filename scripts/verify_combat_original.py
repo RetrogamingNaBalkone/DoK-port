@@ -11,7 +11,7 @@ def word(v):return (v+32768)%65536-32768
 class Original:
  def __init__(self,lang):
   self.ru=lang=='ru';self.actor=0x1068 if self.ru else 0x1020;self.world=0x1098 if self.ru else 0x1030
-  self.path=Path('build/combat')/lang;self.c=c=Uc(UC_ARCH_X86,UC_MODE_16);c.mem_map(0,0x100000)
+  self.path=Path('research/evidence/combat')/lang;self.c=c=Uc(UC_ARCH_X86,UC_MODE_16);c.mem_map(0,0x100000)
   # NE loader segment numbers are not DOS selectors: their physical bases
   # overlap in a real-mode emulator. Load only the segment under test.
   c.mem_write(self.actor*16,(self.path/'actor.bin').read_bytes())

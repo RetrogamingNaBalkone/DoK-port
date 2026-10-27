@@ -74,7 +74,7 @@ coverage exact только в2/18. Мировые UV и округление н
 отличаются от старого affine/Q7 пути. Число разных пикселей само по себе не
 доказывает заметного ухудшения: проверены парные240×160 PNG, но физическая GBA
 и визуальная приёмка движения не выполнены. Full gameplay/water/transitions
-нового пути не приняты. Изображения находятся в `build/g20a-columns-v6/`,
+нового пути не приняты. Изображения находятся в `research/experiments/g20a-columns-v6/`,
 например `hw_v128_columns/column-qa-0-L2-1592-135.png` и парный контроль.
 
 Для межархитектурных frozen сравнений исправлена подготовка harness: после
@@ -93,15 +93,15 @@ ROM V6 `e9bae2d9268db5c74674c7dd2eab8e8511d1ea2d84d039122c745e5b54804b22`,
 column events переиспользует surfaces; edges/masks/depth переиспользуют covered
 с явным выравниванием. Это не новый runtime heap.
 
-Чистая повторная сборка `build/g20a-columns-repeat-final/` воспроизвела V6,
+Чистая повторная сборка `research/experiments/g20a-columns-repeat-final/` воспроизвела V6,
 контроль2775 и прежний streaming-BSP bfdba7…25184 побайтно. Опубликованные
 контрольный128 и quality96/72 ROM сохранены. Источники данных — GBA asset package
 SHA3efa5d…4351, мировые координаты порта, offsets относительно package;
 это не адреса оригинальных EXE. Оригиналы не изменялись и не анализировались.
 
 ```powershell
-& C:/Source/wasdify/.venv/Scripts/python.exe scripts/prototype_gba_bsp.py --out build/g20a-columns-repeat-final --variants hw_v128_columns hw_v128_entity_rect hw_v128_stream_bsp
-& C:/Source/wasdify/.venv/Scripts/python.exe scripts/verify_gba_columns.py --build-dir build/g20a-columns-v6/hw_v128_columns --reference-build build/g20a-columns-v6/hw_v128_entity_rect --report build/g20a-columns-v6/visibility.json
+& C:/Source/wasdify/.venv/Scripts/python.exe scripts/prototype_gba_bsp.py --out research/experiments/g20a-columns-repeat-final --variants hw_v128_columns hw_v128_entity_rect hw_v128_stream_bsp
+& C:/Source/wasdify/.venv/Scripts/python.exe scripts/verify_gba_columns.py --build-dir research/experiments/g20a-columns-v6/hw_v128_columns --reference-build research/experiments/g20a-columns-v6/hw_v128_entity_rect --report research/experiments/g20a-columns-v6/visibility.json
 & C:/Source/wasdify/.venv/Scripts/python.exe scripts/report_gba_columns.py
 ```
 

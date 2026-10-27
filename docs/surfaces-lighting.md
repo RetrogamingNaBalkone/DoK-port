@@ -12,8 +12,8 @@ G10 подключает пол, потолок, полосы перепада �
 `12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28`
 и `cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b`.
 `scripts/analyze-surfaces.ps1` проверяет их до и после Ghidra, сохраняет
-проекты `build/ghidra/{ru,en}/Kremlin.gpr`, журналы, ASM, сегменты и отдельный
-автоматический C в `build/surfaces/{ru,en}/`. Последний не входит в движок.
+проекты `research/ghidra/projects/{ru,en}/Kremlin.gpr`, журналы, ASM, сегменты и отдельный
+автоматический C в `research/evidence/surfaces/{ru,en}/`. Последний не входит в движок.
 
 Все следующие адреса — **Ghidra NE-loader**, не файловые смещения и не
 runtime-селекторы DPMI. Тело ASM-цикла `1010` — оригинал, не вставка WASDify.

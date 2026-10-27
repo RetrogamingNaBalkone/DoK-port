@@ -12,7 +12,7 @@ def sha(path):return hashlib.sha256(path.read_bytes()).hexdigest()
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--copy-rom',action='store_true');args=parser.parse_args()
-    final='build/g20a-hw-early-qa';repeat='build/g20a-hw-early-qa-repeat';variant='hw_early_present'
+    final='research/experiments/g20a-hw-early-qa';repeat='research/experiments/g20a-hw-early-qa-repeat';variant='hw_early_present'
     build=read(final+'/'+variant+'/build-report.json');rom=ROOT/final/variant/'dok-diagnostic.gba';digest=sha(rom)
     assert digest==build['rom_sha256']==read(repeat+'/'+variant+'/build-report.json')['rom_sha256']
     for folder in (final,repeat):assert read(folder+'/source_control/build-report.json')['rom_sha256']==BASE
@@ -36,7 +36,7 @@ def main():
             rows.append({**{k:v for k,v in row.items() if k!='samples'},'minimum_upload_budget_margin_cycles':margin,
                 'upload_started_in_hidden_scene_rows':sum(144<=s['hardware_present'][1]<160 for s in samples)})
         summaries[name]={**result,'rows':rows}
-    bface=read('build/g20a-hw-backface/ppu.json');side=read('build/g20a-hw-side-setup/ppu.json');masked=read('build/g20a-hw-masked/ppu.json')
+    bface=read('research/experiments/g20a-hw-backface/ppu.json');side=read('research/experiments/g20a-hw-side-setup/ppu.json');masked=read('research/experiments/g20a-hw-masked/ppu.json')
     assert all(r['different_rgb_pixels']==0 for result in (side,masked) for r in result['after']['rows'])
     originals=[]
     for entry in read('analysis/artifact-cleanup-20261026.json')['preserved_sha256']:
@@ -49,7 +49,7 @@ def main():
     artifact=ROOT/'artifacts/gba/DoK-port_hardware_culling_prototype.gba'
     if args.copy_rom:shutil.copyfile(rom,artifact)
     paths=[final+'/'+n+'.json' for n in ('ppu','transitions','arm','ai','ai-combat','interactions','time','live')]
-    paths += ['build/g20a-hw-backface/ppu.json','build/g20a-hw-side-setup/ppu.json','build/g20a-hw-masked/ppu.json','build/g20a-hw-masked/arm.json','build/g20a-hw-column-profile/attribution.json']
+    paths += ['research/experiments/g20a-hw-backface/ppu.json','research/experiments/g20a-hw-side-setup/ppu.json','research/experiments/g20a-hw-masked/ppu.json','research/experiments/g20a-hw-masked/arm.json','research/experiments/g20a-hw-column-profile/attribution.json']
     s=build['symbols'];ewram=s['__bss_end']-s['__data_start'];iwram=s['__iwram_end']-s['__iwram_start']
     result=dict(task='G20A',date='2026-10-27',status='measured-culling-presentation-prototype-partial-acceptance',targets_met=False,
         artifact=artifact.relative_to(ROOT).as_posix(),artifact_copied=args.copy_rom,rom_sha256=digest,rom_bytes=rom.stat().st_size,

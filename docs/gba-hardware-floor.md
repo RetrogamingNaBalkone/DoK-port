@@ -12,7 +12,7 @@ bring-up; его ограничения «пол ещё на CPU» не отно
 
 ## Проверенный результат
 
-Собран `build/g20a-hw-pack-ready/hw_obj_arm/dok-diagnostic.gba`, SHA-256
+Собран `research/experiments/g20a-hw-pack-ready/hw_obj_arm/dok-diagnostic.gba`, SHA-256
 `cb35b35c3eadac987a8f6487e0a7a96912778f97d0272cf0eaea1f1caee2386e`.
 Программная сцена120×144 передаётся как72 affine OBJ размером32×8 исходных
 пикселей с горизонтальным растяжением2×; интерфейс240×160 остаётся отдельным
@@ -37,7 +37,7 @@ ROM побайтно, SHA `7babd40f…7ea8`. Аппаратный путь не 
 
 Доказательства: `analysis/g20a-hardware-ppu.json`,
 `analysis/g20a-hardware-bringup.json`, private `hw-arm.json` и
-`prototype-build.json` в `build/g20a-hw-pack-ready/`. Aggregate проверяет SHA,
+`prototype-build.json` в `research/experiments/g20a-hw-pack-ready/`. Aggregate проверяет SHA,
 18 сравнений,768 ARM-векторов, контрольную сборку и22 неизменённых originals.
 Внешняя документация использована только для GBA PPU; EXE не анализировались.
 Все указанные0x04/0x05/0x06/0x07 адреса — GBA MMIO/palette/VRAM/OAM,
@@ -144,9 +144,9 @@ suite, UI/flow/stress и физическая GBA для этого протот
 ## Воспроизведение
 
 ```powershell
-C:/Source/wasdify/.venv/Scripts/python.exe scripts/prototype_gba_bsp.py --out build/g20a-hw-pack-ready --variants baseline main_control hw_obj_arm
-C:/Source/wasdify/.venv/Scripts/python.exe scripts/benchmark_gba_hardware.py --build-dir build/g20a-hw-pack-ready/hw_obj_arm --report build/g20a-hw-pack-ready/ppu-comparison.json --languages 0 1 --live
-C:/Source/wasdify/.venv/Scripts/python.exe scripts/verify_performance_arm.py --build-dir build/g20a-hw-pack-ready/hw_obj_arm --report build/g20a-hw-pack-ready/hw-arm.json
+C:/Source/wasdify/.venv/Scripts/python.exe scripts/prototype_gba_bsp.py --out research/experiments/g20a-hw-pack-ready --variants baseline main_control hw_obj_arm
+C:/Source/wasdify/.venv/Scripts/python.exe scripts/benchmark_gba_hardware.py --build-dir research/experiments/g20a-hw-pack-ready/hw_obj_arm --report research/experiments/g20a-hw-pack-ready/ppu-comparison.json --languages 0 1 --live
+C:/Source/wasdify/.venv/Scripts/python.exe scripts/verify_performance_arm.py --build-dir research/experiments/g20a-hw-pack-ready/hw_obj_arm --report research/experiments/g20a-hw-pack-ready/hw-arm.json
 C:/Source/wasdify/.venv/Scripts/python.exe scripts/report_gba_hardware_bringup.py
 ```
 

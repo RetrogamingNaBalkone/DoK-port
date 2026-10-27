@@ -1,0 +1,124 @@
+{
+  "summary_schema": 1,
+  "full_report": {
+    "path": "analysis/g20a-lookup-trial.json",
+    "sha256": "8b386001f89dd4bfbf720b717d005b26aaa9d528fbfc92c2317cebd022ce7f37",
+    "bytes": 208903
+  },
+  "scope": "Summary of a recorded run; not a new verification. Full report is local and ignored by Git.",
+  "result": {
+    "task": "G20A",
+    "status": "prototype-comparison",
+    "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+    "script_sha256": "d3762515bff5c717697cb17c79236ecc7589ed1a80881be67ab7000608abbb53",
+    "targets_fps": [
+      30,
+      24.1,
+      15
+    ],
+    "cpu_hz": 16777216,
+    "selection": "Nine RU start cameras ranked by the older G20 sweep; not a new extrema search.",
+    "frozen": {
+      "baseline": {
+        "rom_sha256": "7babd40f913eb12f77c93c9df917cea432b0cbe3bd83e11da45ba08dec917ea8",
+        "rows": {
+          "detail_pointer": "/frozen/baseline/rows",
+          "items": 9
+        },
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5568,
+          "high_water_bytes": 2368,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        },
+        "defines": [],
+        "cpu_speedup_median": 1.0,
+        "cpu_speedup_range": [
+          1.0,
+          1.0
+        ]
+      },
+      "lookup_world": {
+        "rom_sha256": "ed435104e009adea447a263f564fe6832555e5d50a5866da95e70c265b1a31bf",
+        "rows": {
+          "detail_pointer": "/frozen/lookup_world/rows",
+          "items": 9
+        },
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5568,
+          "high_water_bytes": 2368,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        },
+        "defines": [
+          "NO_SCALES",
+          "STATIC_SETUP",
+          "WORLD_PLANES",
+          "PRELIT",
+          "EXACT_LIGHT",
+          "WORLD_SPANS",
+          "UI_CACHE",
+          "WATER_SPANS",
+          "SIDES_PRELIT",
+          "WORLD_LOOKUP"
+        ],
+        "cpu_speedup_median": 1.45089304654024,
+        "cpu_speedup_range": [
+          1.2354934784841327,
+          1.557273160189018
+        ]
+      }
+    },
+    "live": {
+      "baseline": {
+        "rom_sha256": "7babd40f913eb12f77c93c9df917cea432b0cbe3bd83e11da45ba08dec917ea8",
+        "rows": {
+          "detail_pointer": "/live/baseline/rows",
+          "items": 6
+        },
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5568,
+          "high_water_bytes": 2368,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        }
+      },
+      "lookup_world": {
+        "rom_sha256": "ed435104e009adea447a263f564fe6832555e5d50a5866da95e70c265b1a31bf",
+        "rows": {
+          "detail_pointer": "/live/lookup_world/rows",
+          "items": 6
+        },
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5568,
+          "high_water_bytes": 2368,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        }
+      }
+    },
+    "limitations": [
+      "mGBA replacement BIOS; physical GBA not tested.",
+      "Frozen samples include full frame CPU and exclude presentation wait.",
+      "Live FPS includes VBlank; fixtures turn/fire with PCM22050, not a whole-level playthrough.",
+      "Dynamic states differ with elapsed emulated time; only frozen frames form a pixel oracle.",
+      "Procedural and low-resolution experiments are quality comparisons, not defaults."
+    ],
+    "zero_difference_frozen_candidates": [
+      "baseline"
+    ],
+    "targets_met": false
+  }
+}

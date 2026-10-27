@@ -22,7 +22,7 @@
 
 `dok_motion_original` — отдельно названная ручная реконструкция исходной
 арифметики для проверки доказательств. В игровом цикле вызывается исправленный
-`dok_motion_update`. Автоматический псевдокод остаётся в `build/movement/*/automatic.c`;
+`dok_motion_update`. Автоматический псевдокод остаётся в `research/evidence/movement/*/automatic.c`;
 он не включён в движок и не считается собираемым C.
 
 ## Образцы и адресация
@@ -33,8 +33,8 @@
 | `originals/pkr/ENG/PKE.EXE` | `cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b` |
 
 Ниже **адреса NE-loader Ghidra**, не файловые смещения и не runtime-селекторы
-DPMI. Проекты `build/ghidra/{ru,en}/Kremlin.gpr`, ASM, автоматический C,
-байты кода, журналы и manifests — `build/movement/{ru,en}/`.
+DPMI. Проекты `research/ghidra/projects/{ru,en}/Kremlin.gpr`, ASM, автоматический C,
+байты кода, журналы и manifests — `research/evidence/movement/{ru,en}/`.
 `InspectMovement.java` выполняется по исходным программам без WASDify-вставок.
 SHA EXE до/после совпали для обоих образцов.
 
@@ -161,7 +161,7 @@ Shift — Run, Ctrl — Fire, Space/Enter — Use. WASD и прямая мышь
   и воспроизведена по ASM; её occupancy/door эффекты не проверяются.
   Покрыты signed wrap, большие elapsed, накопители, отрицательные скорости,
   границы угла, совместные flags. Reference-векторы —
-  `build/movement/reference-vectors.json`.
+  `research/evidence/movement/reference-vectors.json`.
 - Native: исполнены11 Windows-наборов, включая новый movement suite;
   Linux static test binary и ARM7TDMI Thumb module скомпилированы.
   Linux binary и CMake/MSVC в этом проходе не запускались.

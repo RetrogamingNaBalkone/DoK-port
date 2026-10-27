@@ -37,7 +37,7 @@ class Original:
     def __init__(self,language,f):
         self.ru=language=='ru';self.cpu=Uc(UC_ARCH_X86,UC_MODE_16)
         c=self.cpu;c.mem_map(0,0x100000)
-        c.mem_write(0x60000,(ROOT/'build/collision'/language/'world-segment.bin').read_bytes())
+        c.mem_write(0x60000,(ROOT/'research/evidence/collision'/language/'world-segment.bin').read_bytes())
         h,flags,classes,maps=f;self.h=h
         header=bytearray(0x750)
         struct.pack_into('<3h',header,0,h[0],1,h[1]);struct.pack_into('<h',header,10,h[3])
@@ -75,7 +75,7 @@ class Wrapper(Original):
         self.cpu.mem_write((0x1180 if self.ru else 0x10c0)*16,struct.pack('<722i',*trig))
         self.actor=Uc(UC_ARCH_X86,UC_MODE_16);self.actor.mem_map(0,0x100000)
         self.actor.mem_write(0,bytes(self.cpu.mem_read(0,0x100000)))
-        self.actor.mem_write(0x50000,(ROOT/'build/collision'/language/'actor-segment.bin').read_bytes())
+        self.actor.mem_write(0x50000,(ROOT/'research/evidence/collision'/language/'actor-segment.bin').read_bytes())
         self.actor.mem_write(0x30000+(0x266a if self.ru else 0x271a),struct.pack('<HH',0,0x4000))
         self.actor.hook_add(UC_HOOK_CODE,self.hook)
     def hook(self,c,address,size,context):
@@ -111,10 +111,10 @@ class Wrapper(Original):
 def main():
     rng=random.Random(808);reports=[]
     for language in ('ru','en'):
-        manifest=json.loads((ROOT/'build/collision'/language/'analysis-manifest.json').read_text(encoding='utf-8-sig'))
+        manifest=json.loads((ROOT/'research/evidence/collision'/language/'analysis-manifest.json').read_text(encoding='utf-8-sig'))
         assert manifest['sha256_before']==manifest['sha256_after']==hashlib.sha256((ROOT/manifest['sample']).read_bytes()).hexdigest()
         for level in ('LEVEL1','LEVEL2','LEVEL3'):
-            model=json.loads((ROOT/'build/runtime'/language/f'{level}-runtime.json').read_text());f=fixture(model)
+            model=json.loads((ROOT/'research/evidence/runtime'/language/f'{level}-runtime.json').read_text());f=fixture(model)
             h,flags,classes,maps=f;native=Original(language,f)
             vectors=[]
             # Every cell center, plus random near-edge positions and signed steps.
@@ -144,7 +144,7 @@ def main():
         cases=reports,script_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
         artifacts={str(p.relative_to(ROOT)):hashlib.sha256(p.read_bytes()).hexdigest()
             for language in ('ru','en') for name in ('evidence.asm','automatic.c','actor-segment.bin','world-segment.bin')
-            for p in [ROOT/'build/collision'/language/name]},
+            for p in [ROOT/'research/evidence/collision'/language/name]},
         scope='Ghidra x86 footprint/resolver without intercepted callees; wrapper bridges original far world-move call to second CPU; valid real-mode substitute for DPMI pointers',
         whole_dos_session=False),indent=2)+'\n')
 

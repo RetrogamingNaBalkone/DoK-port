@@ -29,12 +29,12 @@ def main():
         p.until(lambda d:d['draws']>=4 and d['phase']==2);freeze(p,True)
         cases=[(1,520,225),(1,3640,225),(2,1592,135),(2,2871,225),(3,1544,315)]
         for level in (1,2,3):
-            model=load_json(f'build/runtime/ru/LEVEL{level}-runtime.json')
+            model=load_json(f'research/evidence/runtime/ru/LEVEL{level}-runtime.json')
             hero=model['objects'][model['player_index']-1]['actor']
             cell=hero['z']//480*64+hero['x']//480
             cases.extend((level,cell,h) for h in (0,45,90,135))
         for level,cell,heading in cases:
-            model=load_json(f'build/runtime/ru/LEVEL{level}-runtime.json')
+            model=load_json(f'research/evidence/runtime/ru/LEVEL{level}-runtime.json')
             p.camera(level-1,cell%64*480+240,-300,cell//64*480+240,heading)
             for _ in range(8):p.present()
             w=Workspace.from_buffer_copy(p.frontend.read(p.symbols['g_render_frame'],ct.sizeof(Workspace)))

@@ -53,7 +53,7 @@ def main():
         for entry in entries[18:21]:
             payload = archive[entry["offset"]:entry["offset"] + entry["size"]]
             model = reference(payload)
-            extracted = ROOT / f"build/resources/{lang}/{entry['index']:04d}.bin"
+            extracted = ROOT / f"research/evidence/resources/{lang}/{entry['index']:04d}.bin"
             assert extracted.read_bytes() == payload
             actual = json.loads(subprocess.check_output([str(ROOT / "build/native/dok-level.exe"), str(extracted)]))
             assert actual == model
@@ -182,8 +182,8 @@ C:/Source/wasdify/.venv/Scripts/python.exe scripts/summarize_balance.py
     generated += table(["Ур.", "Glyph", "Flic", "Скорость", "Нач. урон", "+0x5A", "Масштаб", "Height", "Flags", "Marker", "Попадание", "Промах"], prows)
     generated += "\n## Предметы оружия из LEVEL\n\nЧисловые отличия RUS/ENG ограничены масштабом; перевод сообщений исключён из сравнения.\n\n"
     generated += table(["Ур.", "Glyph", "Слот", "Flic", "Масштаб RU", "Масштаб EN", "Стат", "Величина", "Flags", "Height", "Marker", "Sprite flags"], wrows)
-    (ROOT / "build/weapon-fields").mkdir(parents=True, exist_ok=True)
-    (ROOT / "build/weapon-fields/tables.md").write_text(generated, encoding="utf-8")
+    (ROOT / "research/evidence/weapon-fields").mkdir(parents=True, exist_ok=True)
+    (ROOT / "research/evidence/weapon-fields/tables.md").write_text(generated, encoding="utf-8")
     weapon_doc = ROOT / "docs/weapon-parameters.md"
     text = weapon_doc.read_text(encoding="utf-8")
     start, end = "<!-- BALANCE_TABLES_START -->", "<!-- BALANCE_TABLES_END -->"

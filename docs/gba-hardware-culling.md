@@ -8,7 +8,7 @@
 Отдельный ROM: `artifacts/gba/DoK-port_hardware_culling_prototype.gba`,
 10 843 464 B, SHA-256
 `240669c13508acba18fa08a68dd0bc793c02366561ee0b617d7c1e62d976f014`.
-ELF/map/private sources: `build/g20a-hw-early-qa/hw_early_present/`.
+ELF/map/private sources: `research/experiments/g20a-hw-early-qa/hw_early_present/`.
 Сводка: `analysis/g20a-hardware-culling.json`. Прежний hardware ROM4dfb…581d,
 pre-alpha и прочие варианты сохранены. Это кандидат для сравнения, не release.
 
@@ -48,7 +48,7 @@ audio underruns0, ошибка сохранения motion ticks0. Время л
 отсечением не заменяются. В18 frozen видах RU/EN изменилось максимум176 RGB
 пикселей; в большинстве видов0. Это небольшое изменение стыков/окклюзии,
 не native pixel-exact результат. Пример:
-[LEVEL2 после отсечения](../build/g20a-hw-early-qa/hw_early_present/L2-worst-ppu.png).
+[LEVEL2 после отсечения](../research/experiments/g20a-hw-early-qa/hw_early_present/L2-worst-ppu.png).
 
 **Подготовка уступов.** Используется уже производная offline side mask каждой
 клетки. Повторное чтение четырёх соседей исключено. Это опирается на текущую
@@ -126,7 +126,7 @@ commands, изменённые water blocks и запас для ранней з
 
 ## Невыбранные опыты и следующий шаг
 
-Инструментированный профиль `build/g20a-hw-column-profile/attribution.json`
+Инструментированный профиль `research/experiments/g20a-hw-column-profile/attribution.json`
 разделяет visible-column и mapped-column время; timestamps добавляют накладные
 расходы, поэтому это не FPS измерение. Он подтвердил значительную стоимость
 вывода колонок. Новая ARM opaque-версия объединяет uncovered pixels в интервалы
@@ -143,9 +143,9 @@ commands, изменённые water blocks и запас для ранней з
 ## Воспроизведение
 
 ```powershell
-C:/Source/wasdify/.venv/Scripts/python.exe scripts/prototype_gba_bsp.py --out build/g20a-hw-early-qa --variants hw_early_present source_control
-C:/Source/wasdify/.venv/Scripts/python.exe scripts/verify_performance_arm.py --build-dir build/g20a-hw-early-qa/hw_early_present --report build/g20a-hw-early-qa/arm.json
-C:/Source/wasdify/.venv/Scripts/python.exe scripts/verify_gba_hardware_transitions.py --build-dir build/g20a-hw-early-qa/hw_early_present --report build/g20a-hw-early-qa/transitions.json
+C:/Source/wasdify/.venv/Scripts/python.exe scripts/prototype_gba_bsp.py --out research/experiments/g20a-hw-early-qa --variants hw_early_present source_control
+C:/Source/wasdify/.venv/Scripts/python.exe scripts/verify_performance_arm.py --build-dir research/experiments/g20a-hw-early-qa/hw_early_present --report research/experiments/g20a-hw-early-qa/arm.json
+C:/Source/wasdify/.venv/Scripts/python.exe scripts/verify_gba_hardware_transitions.py --build-dir research/experiments/g20a-hw-early-qa/hw_early_present --report research/experiments/g20a-hw-early-qa/transitions.json
 C:/Source/wasdify/.venv/Scripts/python.exe scripts/report_gba_hardware_culling.py --copy-rom
 ```
 
@@ -153,5 +153,5 @@ C:/Source/wasdify/.venv/Scripts/python.exe scripts/report_gba_hardware_culling.p
 private JSON, проверяет их хеши/критерии и не запускает сами тесты. FPS получен
 через прежний `live_measure(..., follow_camera=True)` с24 turn/PCM и120 walking
 presentations; sample hold отключён. Предыдущие промежуточные опыты сохранены
-в `build/g20a-hw-{backface,side-setup,gaps,masked,present,early}/` и соседних
+в `research/experiments/g20a-hw-{backface,side-setup,gaps,masked,present,early}/` и соседних
 каталогах; исходники/flags каждого зафиксированы в собственном manifest.

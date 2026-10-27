@@ -25,7 +25,7 @@ def main():
     native_rows = []
     for language in ('ru', 'en'):
         ru = language == 'ru'
-        directory = Path('build/ui') / language
+        directory = Path('research/evidence/ui') / language
         data_seg, font_seg, hud_seg = (0x1190, 0x1058, 0x10c0) if ru else (0x10d0, 0x1018, 0x1050)
         data=(directory/f'{data_seg:04x}.bin').read_bytes()
         c = Uc(UC_ARCH_X86, UC_MODE_16)

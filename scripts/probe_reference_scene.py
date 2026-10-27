@@ -2,7 +2,7 @@
 
 Does not execute, disassemble or modify an original EXE. Data offsets are tags
 from the project's Ghidra-derived research; raw candidates remain labelled.
-Only reports and grayscale visualizations under build/render-reference are
+Only reports and grayscale visualizations under research/evidence/render-reference are
 written. A saved CPU report was taken after input trials, not simultaneously
 with the earlier initial-scene memory snapshot.
 """
@@ -224,7 +224,7 @@ def door_geometry(memory, pixels, camera, language, output):
 
 
 def scene(language, output):
-    directory = ROOT / 'build/reference' / RUNS[language]
+    directory = ROOT / 'research/evidence/reference' / RUNS[language]
     report = json.loads((directory/'report.json').read_text(encoding='utf-8'))
     memory = (directory/'level1-memory.bin').read_bytes()
     pixels = (directory/'level1-start.idx').read_bytes()
@@ -312,7 +312,7 @@ def scene(language, output):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--output', type=Path, default=ROOT/'build/render-reference')
+    parser.add_argument('--output', type=Path, default=ROOT/'research/evidence/render-reference')
     parser.add_argument('--report', type=Path, default=ROOT/'analysis/render-reference.json')
     args = parser.parse_args()
     inventory = {lang: json.loads((ROOT/f'analysis/inventory-{lang}.json').read_text(encoding='utf-8'))
@@ -324,7 +324,7 @@ def main():
         assert before[lang] == {'exe': item['sha256'], 'resource': item['resource']['sha256']}
     result = {'task': 'G04', 'kind': 'read-only saved DOS snapshots and VGA index frames',
               'scenes': [scene(language, args.output) for language in RUNS], 'originals': before,
-              'ghidra_evidence': [artifact(ROOT/'build/rendering'/lang/name)
+              'ghidra_evidence': [artifact(ROOT/'research/evidence/rendering'/lang/name)
                                   for lang in RUNS for name in ('evidence.asm','analysis-manifest.json')],
               'exe_analysis': 'No original EXE decoding/disassembly; only hashes and prior Ghidra-derived offset tags',
               'status': 'passed_saved_scene_probe',
@@ -333,7 +333,7 @@ def main():
     assert [bounds[1][0]-bounds[0][0],bounds[1][1]-bounds[0][1]] == [-27,0]
     crops = []
     for language,extent in zip(RUNS,bounds):
-        pixels = (ROOT/'build/reference'/RUNS[language]/'level1-start.idx').read_bytes()
+        pixels = (ROOT/'research/evidence/reference'/RUNS[language]/'level1-start.idx').read_bytes()
         x0,y0,x1,y1 = extent
         crops.append(b''.join(pixels[y*320+x0:y*320+x1+1] for y in range(y0,y1+1)))
     result['cross_scene_door_comparison'] = {

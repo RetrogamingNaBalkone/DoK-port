@@ -13,7 +13,7 @@ def sha(path):
 def main():
     report = dict(task='G06', address_system='Ghidra NE loader addresses; not file offsets or runtime selectors', samples={})
     for lang in ('ru', 'en'):
-        folder = ROOT/'build/time'/lang
+        folder = ROOT/'research/evidence/time'/lang
         manifest = json.loads((folder/'analysis-manifest.json').read_text(encoding='utf-8-sig'))
         assert sha(ROOT/manifest['sample']) == manifest['sha256_before'] == manifest['sha256_after']
         assert sha(ROOT/manifest['script']) == manifest['script_sha256']
@@ -45,7 +45,7 @@ def main():
         }
         for address, expected in needles.items():
             assert instructions.get(address) == expected, (lang, address, instructions.get(address), expected)
-        dos = json.loads((ROOT/'build/time'/f'dos-{lang}'/'report.json').read_text())
+        dos = json.loads((ROOT/'research/evidence/time'/f'dos-{lang}'/'report.json').read_text())
         assert dos['status'] == 'complete' and dos['originals_unchanged'] and dos['runtime_copies_unchanged']
         assert dos['exe_before'] == dos['exe_after'] == manifest['sha256_before']
         samples = dos['time_probe']
@@ -55,8 +55,8 @@ def main():
         irq = samples[-1]['irq_count']-samples[0]['irq_count']
         assert 7000 < ticks/seconds < 13000 and 12 < irq/seconds < 25
         report['samples'][lang] = dict(ghidra=manifest, asm_sha256=sha(folder/'evidence.asm'),
-            instruction_checks=needles, dos_report=f'build/time/dos-{lang}/report.json',
-            dos_report_sha256=sha(ROOT/'build/time'/f'dos-{lang}'/'report.json'),
+            instruction_checks=needles, dos_report=f'research/evidence/time/dos-{lang}/report.json',
+            dos_report_sha256=sha(ROOT/'research/evidence/time'/f'dos-{lang}'/'report.json'),
             runtime_linear_data_base=dos['runtime_linear_data_base'], samples=samples,
             ticks_delta=ticks, irq_delta=irq, wall_seconds=seconds,
             observed_ticks_per_wall_second=ticks/seconds, observed_irq_per_wall_second=irq/seconds,

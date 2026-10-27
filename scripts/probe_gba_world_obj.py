@@ -33,7 +33,7 @@ def capture(build, core):
             p.language(language)
             p.camera(2, 15120, -300, 22800, 90)
             for level in (1, 2, 3):
-                model = load_json(f'build/runtime/ru/LEVEL{level}-runtime.json')
+                model = load_json(f'research/evidence/runtime/ru/LEVEL{level}-runtime.json')
                 hero = model['objects'][model['player_index'] - 1]['actor']
                 cell = hero['z'] // 480 * 64 + hero['x'] // 480
                 cases = [(cell, h) for h in (0, 45, 90, 135)]
@@ -215,9 +215,9 @@ def ppu_proof(build, core, examples, out):
 
 def main():
     a = argparse.ArgumentParser(description=__doc__)
-    a.add_argument('--build-dir',type=Path,default=Path('build/g20a-columns-v6/hw_v128_entity_rect'))
-    a.add_argument('--ppu-build',type=Path,default=Path('build/g20a-world-obj-probe/hw_v128_world_obj_probe'))
-    a.add_argument('--out',type=Path,default=Path('build/g20a-world-obj-bringup'))
+    a.add_argument('--build-dir',type=Path,default=Path('research/experiments/g20a-columns-v6/hw_v128_entity_rect'))
+    a.add_argument('--ppu-build',type=Path,default=Path('research/experiments/g20a-world-obj-probe/hw_v128_world_obj_probe'))
+    a.add_argument('--out',type=Path,default=Path('research/experiments/g20a-world-obj-bringup'))
     a = a.parse_args()
     os.chdir(ROOT)
     os.environ['DOK_PROBE_FAST_VIDEO'] = '1'

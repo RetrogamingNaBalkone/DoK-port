@@ -1,0 +1,130 @@
+{
+  "summary_schema": 1,
+  "full_report": {
+    "path": "analysis/packing-report.json",
+    "sha256": "94ddaaaf94bc8f88fd921b410064d06e8162b25664f489c166013670a9003d24",
+    "bytes": 79363
+  },
+  "scope": "Summary of a recorded run; not a new verification. Full report is local and ignored by Git.",
+  "result": {
+    "task": "G03",
+    "format_version": 1,
+    "profile_id": 1,
+    "status": "passed",
+    "verification_kind": "independent_explicit_little_endian_parser_and_profile_oracle",
+    "not_a_game": true,
+    "fps_measured": false,
+    "checker_sha256": "c01aa2e2c97e98e56a5dcd4b8d7b934bc9e710759b3260de044fe8d2f5554775",
+    "packer_sha256": "1dd0dc55cb09240eeac5af916233c694eaae1c326280bf9db17b470b752256d2",
+    "tool_sha256": "522193e7f180f2c7cd8ebd523da91e9940b2877a9dfda4359be8605506da8ebb",
+    "commands": [
+      {
+        "command": [
+          "C:\\Source\\wasdify\\.venv\\Scripts\\python.exe",
+          "C:\\Source\\DoK-port\\scripts\\pack_gba_assets.py",
+          "--output",
+          "C:\\Source\\DoK-port\\build\\gba\\assets-check\\repeat-a"
+        ],
+        "exit_code": 0
+      },
+      {
+        "command": [
+          "C:\\Source\\wasdify\\.venv\\Scripts\\python.exe",
+          "C:\\Source\\DoK-port\\scripts\\pack_gba_assets.py",
+          "--output",
+          "C:\\Source\\DoK-port\\build\\gba\\assets-check\\repeat-b"
+        ],
+        "exit_code": 0
+      }
+    ],
+    "determinism": {
+      "assets.bin": {
+        "identical": true,
+        "size": 2763046,
+        "sha256": "3efa5d3027d63ffd65e0ae8c0b45be23ee8394b3c5151c8e9f10e76fa8674351"
+      },
+      "manifest.json": {
+        "identical": true,
+        "size": 179074,
+        "sha256": "34ae5636fcfc857773753ab146fe09616dd1e404ca1a487e39f9ab12944a06d1"
+      }
+    },
+    "originals": {
+      "ru": {
+        "exe_sha256": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+        "res_sha256": "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816"
+      },
+      "en": {
+        "exe_sha256": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b",
+        "res_sha256": "865da340621fa6f90548a84e9ae9bf0a85071befb32a40ca1d359e488f74d458"
+      }
+    },
+    "resources": {
+      "directory_entries": 143,
+      "original_language_variants_checked": 286,
+      "source_LEVEL_plaintext_excluded": 6,
+      "payloads": {
+        "detail_pointer": "/resources/payloads",
+        "items": 143
+      }
+    },
+    "views": {
+      "detail_pointer": "/views",
+      "items": 6
+    },
+    "manifest_checks": {
+      "source_fingerprints": 2,
+      "runtime_input_fingerprints": 6,
+      "profile_changes": 39,
+      "resource_records": 143,
+      "source_numeric_differences_verified": 85,
+      "source_runtime_oriented_map_differences_verified": 87
+    },
+    "policy_origins": {
+      "source": "docs/gba-balance-proposal.md",
+      "unresolved_geometry_and_numeric": "RUS",
+      "boyar_course24": "ENG LEVEL1, all 33 definitions",
+      "boyars81_86_speed20_wake9000_health42": "ENG LEVEL1",
+      "boyar8c_health12": "ENG LEVEL1",
+      "first_witch": "hybrid: HP54/speed60/width7/wake3400",
+      "mouse_course8": "RUS LEVEL1, all 30 definitions",
+      "localization": "original TEXT fields matched by class/glyph/native_offset; resource variants selected by language"
+    },
+    "ranges": {
+      "ranges_including_shared": 343,
+      "unique_ranges": 178,
+      "alignment": 4,
+      "partial_overlaps": 0
+    },
+    "real_package_corruption_checks": {
+      "detail_pointer": "/real_package_corruption_checks",
+      "items": 23
+    },
+    "reader_tests": {
+      "path": "C:\\Source\\DoK-port\\build\\native\\dok-rom-assets-tests.exe",
+      "sha256": "cd2f65b8b604d15493074318f044a5889e9cc48d9a7fb28f30c68d3432dfa660",
+      "source_sha256": "f0a855dd188cd8b2549c4e85115fb097bc3da6a6cb985f3ff2bb8bf6190ce90c",
+      "synthetic": {
+        "exit_code": 0,
+        "stdout": "rom assets: explicit LE views, stable IDs/bindings, corruption rejection and state-preserving language switch passed",
+        "stderr": ""
+      },
+      "actual_package_language_switch": {
+        "exit_code": 0,
+        "stdout": "rom assets: explicit LE views, stable IDs/bindings, corruption rejection and state-preserving language switch passed",
+        "stderr": ""
+      },
+      "coverage": [
+        "explicit LE fixture, stable ID/name lookup, semantic resource bindings",
+        "localized text changes while mutable runtime remains byte-identical",
+        "failed lookups/open preserve caller outputs",
+        "misaligned base, truncated header, version, size, reserved-byte, range and binding corruption rejection",
+        "different RU/EN common geometry rejected even when replacement bytes are equal",
+        "all three real levels switch RU/EN both directions while preserving health, inventory, maps and reserved state",
+        "all six real language views resolve a 768-byte palette resource"
+      ]
+    },
+    "originals_unchanged": true,
+    "source_authentic_modes": "not included; original language-specific geometry remains in private G02 controls"
+  }
+}

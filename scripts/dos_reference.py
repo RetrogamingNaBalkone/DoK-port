@@ -3,7 +3,7 @@
 Input is explicitly injected into the game's researched keyboard-event state;
 it does not exercise the emulated keyboard controller or original IRQ handler.
 Frames are VGA mode-13 palette indices, displayed as grayscale, not true color.
-Only isolated build/reference copies are writable by the emulated DOS machine.
+Only isolated research/evidence/reference copies are writable by the emulated DOS machine.
 """
 import argparse
 import hashlib

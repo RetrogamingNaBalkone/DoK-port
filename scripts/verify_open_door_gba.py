@@ -28,7 +28,7 @@ def captures(core, build, baseline):
         p.wait_ui(lambda u: u['draws'] >= 2)
         p.freeze()
         p.command(1, 0)
-        model = load_json('build/runtime/ru/LEVEL1-runtime.json')
+        model = load_json('research/evidence/runtime/ru/LEVEL1-runtime.json')
         definitions = {o['glyph']: o for o in model['objects']}
         world = p.symbols['g_render_world']
         maps = p.frontend.read(world+17472, 8192)

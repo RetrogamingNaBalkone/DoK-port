@@ -160,7 +160,7 @@ RUS `1068:1C0B` прибавляет ASCII `0` к слоту, затем соз�
 C:/Source/wasdify/.venv/Scripts/python.exe scripts/summarize_balance.py
 ```
 
-Свежие C/ASM, журналы и хеши: `build/weapon-fields/`.
+Свежие C/ASM, журналы и хеши: `research/evidence/weapon-fields/`.
 Скрипт Ghidra использует `-readOnly -noanalysis`, сохраняет существующие проекты
 без изменений и не перезаписывает полный экспорт `decompiled/`.
 Полный набор таблиц врагов: [enemy-tables.md](enemy-tables.md).

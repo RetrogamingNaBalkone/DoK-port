@@ -102,7 +102,7 @@ def main():
                 probe.write(probe.symbols['g_camera_capture_hold'], struct.pack('<I', 1))
                 freeze(probe, True)
                 probe.language(language)
-                model = load_json(f'build/runtime/ru/LEVEL{level+1}-runtime.json')
+                model = load_json(f'research/evidence/runtime/ru/LEVEL{level+1}-runtime.json')
                 hero = model['objects'][model['player_index']-1]['actor']
                 # Real start camera, fresh original maps and shared release balance.
                 probe.camera((level+1)%3, 15120, -300, 22800, 90)

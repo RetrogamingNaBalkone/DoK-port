@@ -56,7 +56,7 @@ def main():
         if a.profile:p.write(p.symbols['g_render_work'],struct.pack('<I',1))
         rate=max(sounds()[0],key=lambda r:r['rate'])
         for level in range(3):
-            model=load_json(f'build/runtime/ru/LEVEL{level+1}-runtime.json')
+            model=load_json(f'research/evidence/runtime/ru/LEVEL{level+1}-runtime.json')
             p.write(p.symbols['g_camera_capture_hold'],struct.pack('<I',1));p.present()
             p.camera((level+1)%3,15120,-300,22800,90)
             p.camera(level,model['objects'][model['player_index']-1]['actor']['x'],-300,model['objects'][model['player_index']-1]['actor']['z'],0)

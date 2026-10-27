@@ -62,8 +62,8 @@ SDL2 и оригинальные EXE в этом проходе не менял�
 Новый отдельный прототип:
 `artifacts/gba/DoK-port_hardware_cached_prototype.gba`, 15 938 936 байт,
 SHA-256 `2775bdd0caaac64b4fd99e4c6d675587fad2da9c795468dc52efacb5d53edaab`.
-Build/ELF/map/private source: `build/g20a-hw-entity-rect-v2/hw_v128_entity_rect/`;
-чистое повторение — `build/g20a-hw-entity-final/`. Реестр с проверками исходных
+Build/ELF/map/private source: `research/experiments/g20a-hw-entity-rect-v2/hw_v128_entity_rect/`;
+чистое повторение — `research/experiments/g20a-hw-entity-final/`. Реестр с проверками исходных
 JSON — [g20a-hardware-cache.json](../analysis/g20a-hardware-cache.json),
 collector — `scripts/report_gba_hardware_cache.py --copy-rom`.
 Прежние готовые ROM, включая e803f8…4308c, сохранены.

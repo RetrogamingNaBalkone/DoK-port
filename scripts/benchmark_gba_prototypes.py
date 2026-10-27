@@ -12,7 +12,7 @@ from verify_gba import sha
 
 def main():
     p=argparse.ArgumentParser(description=__doc__)
-    p.add_argument('--build-root',type=Path,default=Path('build/g20a-prototypes'))
+    p.add_argument('--build-root',type=Path,default=Path('research/experiments/g20a-prototypes'))
     p.add_argument('--report',type=Path,default=Path('analysis/g20a-prototypes.json'))
     p.add_argument('--variants',nargs='+',choices=VARIANTS,
                    default=['baseline','no_scales','no_scales_runtime','planes','light','bsp_setup','setup',

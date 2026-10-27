@@ -222,10 +222,10 @@ Runtime visibility, пиксели, двери/акторы, изменяема�
 Воспроизведение:
 
 ```powershell
-& C:/Source/wasdify/.venv/Scripts/python.exe scripts/compile_gba_render_scene.py --out build/g20a-scene-compiler-v1
+& C:/Source/wasdify/.venv/Scripts/python.exe scripts/compile_gba_render_scene.py --out research/experiments/g20a-scene-compiler-v1
 ```
 
-Полные частные данные — `build/g20a-scene-compiler-v1/view-*-scene.json`;
+Полные частные данные — `research/experiments/g20a-scene-compiler-v1/view-*-scene.json`;
 сводка и SHA — `analysis/g20a-architecture-checkpoint.json`.
 
 ## Как сравнивать и когда вернуться к деталям

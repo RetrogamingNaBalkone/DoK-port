@@ -125,7 +125,7 @@ def profile(folder):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--build', action='store_true')
-    parser.add_argument('--out', type=Path, default=Path('build/g20a-final-costs'))
+    parser.add_argument('--out', type=Path, default=Path('research/experiments/g20a-final-costs'))
     parser.add_argument('--report', type=Path, default=Path('analysis/g20a-final-costs.json'))
     a = parser.parse_args(); os.chdir(ROOT)
     os.environ['DOK_PROBE_FAST_VIDEO'] = '1'

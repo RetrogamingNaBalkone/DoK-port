@@ -56,11 +56,11 @@ def run(tool):
             if entry["kind"]!="sound_signature_unparsed":
                 continue
             raw=archive[entry["offset"]:entry["offset"]+entry["size"]]
-            source=ROOT/"build/resources"/lang/f"{entry['index']:04d}.bin"
+            source=ROOT/"research/evidence/resources"/lang/f"{entry['index']:04d}.bin"
             if sha(raw)!=entry["sha256"] or sha(source.read_bytes())!=entry["sha256"]:
                 raise ValueError("Sound source bytes differ")
             expected,pcm,s8,s16=decode(raw)
-            output=ROOT/"build/sounds"/lang/f"{entry['index']:04d}"
+            output=ROOT/"research/evidence/sounds"/lang/f"{entry['index']:04d}"
             output.mkdir(parents=True,exist_ok=True)
             completed=subprocess.run([str(tool),"--export",str(source),str(output)],check=True,capture_output=True,text=True)
             actual=list(csv.DictReader(io.StringIO(completed.stdout),delimiter="\t"))
@@ -107,7 +107,7 @@ def run(tool):
                                 raw_identical=ru["source_sha256"]==en["source_sha256"],
                                 pcm_identical=ru["pcm_u8_sha256"]==en["pcm_u8_sha256"]))
     (ROOT/"analysis/sounds-comparison.json").write_text(json.dumps(comparisons,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
-    (ROOT/"build/sounds/index.html").write_text('<!doctype html><meta charset="utf-8"><title>DoK sound research</title>'+
+    (ROOT/"research/evidence/sounds/index.html").write_text('<!doctype html><meta charset="utf-8"><title>DoK sound research</title>'+
         '<style>body{background:#20252a;color:#eee;font:16px sans-serif}section{margin:32px 0}h2{font-size:18px}img{max-width:100%}</style>'+
         '<h1>Original sound resources</h1><p>RUS files; compare language data in analysis/sounds-comparison.json. No gain, effects or resampling.</p>'+"\n".join(gallery),encoding="utf-8")
     print("Identical RUS/ENG sounds:",sum(x["raw_identical"] for x in comparisons),"of",len(comparisons))

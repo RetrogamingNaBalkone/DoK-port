@@ -368,7 +368,7 @@ def build(runtime_dir, source_files):
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--output", type=Path, default=ROOT / "build/gba/assets")
-    p.add_argument("--runtime-dir", type=Path, default=ROOT / "build/runtime")
+    p.add_argument("--runtime-dir", type=Path, default=ROOT / "research/evidence/runtime")
     p.add_argument("--ru-res", type=Path, default=ROOT / "originals/pkr/RUS/PKR.RES")
     p.add_argument("--en-res", type=Path, default=ROOT / "originals/pkr/ENG/PKE.RES")
     p.add_argument("--emit-c", action="store_true")

@@ -10,7 +10,7 @@ RU/EN меняют локализацию, сохраняя геометрию, 
 
 Адреса ниже — **Ghidra NE loader**, не файловые смещения, индексы сегментов
 и не runtime-селекторы DPMI. Анализ выполнен по исходным программам проектов
-`build/ghidra/{ru,en}/Kremlin.gpr`, без вставок WASDify.
+`research/ghidra/projects/{ru,en}/Kremlin.gpr`, без вставок WASDify.
 
 | Образец | SHA-256 до и после анализа |
 |---|---|
@@ -27,7 +27,7 @@ RU/EN меняют локализацию, сохраняя геометрию, 
 
 Воспроизводимый анализ: `scripts/InspectCollision.java`, `analyze-collision.ps1`.
 Листинги, байты исходных инструкций, журналы и manifests сохранены в
-`build/collision/{ru,en}/`. Автоматический `automatic.c` хранится там отдельно;
+`research/evidence/collision/{ru,en}/`. Автоматический `automatic.c` хранится там отдельно;
 он не включён в движок и не объявляется проверенным собираемым C.
 Контрольные суммы и границы доказательств — `analysis/g08-collision-evidence.json`.
 

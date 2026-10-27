@@ -14,8 +14,8 @@
 | Индекс функций, статусы, пути | [functions.tsv](../decompiled/ru/functions.tsv) | [functions.tsv](../decompiled/en/functions.tsv) |
 | Метрики покрытия | [coverage-ru.json](../analysis/coverage-ru.json) | [coverage-en.json](../analysis/coverage-en.json) |
 
-Сохранённые проекты: `build/ghidra/ru/Kremlin.gpr` и
-`build/ghidra/en/Kremlin.gpr`. Каждый содержит только свой оригинальный EXE
+Сохранённые проекты: `research/ghidra/projects/ru/Kremlin.gpr` и
+`research/ghidra/projects/en/Kremlin.gpr`. Каждый содержит только свой оригинальный EXE
 с результатами анализа и смысловыми метками. Полные экспорты и проекты
 остаются локальными, поскольку включают производные материалы игры.
 
@@ -106,7 +106,7 @@ runtime, восстановить RES и типы игрового состоя�
 Продолжение: [этап 2 — контейнер RES и ресурсы](resources.md),
 [частичные типы состояния](native-state.md), [собираемые модули](building.md).
 Первичная декомпиляция остаётся снимком этапа 1; последующие аннотации
-добавлены в проекты Ghidra и отдельные выдержки `build/stage2/`.
+добавлены в проекты Ghidra и отдельные выдержки `research/evidence/stage2/`.
 
 ## Проверка результатов
 

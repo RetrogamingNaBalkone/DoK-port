@@ -10,7 +10,7 @@ def main():
  source=originals();package=Package(Path('build/gba/assets/assets.bin').read_bytes(),source)
  results=[];static_checks=[]
  for language in ('ru','en'):
-  model=json.loads(Path('build/runtime/ru/LEVEL1-runtime.json').read_text())
+  model=json.loads(Path('research/evidence/runtime/ru/LEVEL1-runtime.json').read_text())
   id=next(i for i,o in enumerate(model['objects']) if o['class']==8)
   obj=model['objects'][id];metadata,pixels=frames(source[language]['resources'][obj['animation']])[0]
   width=metadata['width']*obj['width_parameter'];height=metadata['height']*obj['width_parameter']

@@ -31,7 +31,7 @@ def main():
     assert len(reports['ui-gba']['pages'])==3
     assert reports['original-verification']['script_sha256']==sha('scripts/verify_ui_original.py')
     for lang in ('ru','en'):
-        directory=Path('build/ui')/lang
+        directory=Path('research/evidence/ui')/lang
         manifest=read(directory/'analysis-manifest.json')
         assert manifest['sha256_before']==manifest['sha256_after']==sha(manifest['sample'])
         assert manifest['script_sha256']==sha('scripts/InspectUI.java')

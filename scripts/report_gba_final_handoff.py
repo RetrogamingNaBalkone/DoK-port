@@ -9,16 +9,16 @@ from verify_gba import sha
 def main():
     read = lambda p: json.loads((ROOT/p).read_text(encoding='utf-8-sig'))
     audit = read('analysis/g20a-final-costs.json')
-    manifest_path = 'build/g20a-final-costs/prototype-build.json'
+    manifest_path = 'research/experiments/g20a-final-costs/prototype-build.json'
     manifest = read(manifest_path)
     assert sha(ROOT/manifest_path) == audit['manifest_sha256']
     assert sha(ROOT/'scripts/audit_gba_final_costs.py') == audit['script_sha256']
     assert sha(ROOT/'build/gba/assets/assets.bin') == audit['source_post_feasibility']['package_sha256']
-    assert sha(ROOT/'build/g20a-final-costs/prelit.bin') == audit['source_post_feasibility']['bank_sha256']
-    assert sha(ROOT/'build/g20a-final-costs/exact-offsets.bin') == audit['source_post_feasibility']['tables_sha256']
+    assert sha(ROOT/'research/experiments/g20a-final-costs/prelit.bin') == audit['source_post_feasibility']['bank_sha256']
+    assert sha(ROOT/'research/experiments/g20a-final-costs/exact-offsets.bin') == audit['source_post_feasibility']['tables_sha256']
     assert all(sha(ROOT/p) == value for p, value in manifest['sources'].items())
     for name in ('hw_v128_entity_rect','hw_v128_final_class_profile'):
-        assert sha(ROOT/'build/g20a-final-costs'/name/'dok-diagnostic.gba') == manifest['variants'][name]['rom_sha256']
+        assert sha(ROOT/'research/experiments/g20a-final-costs'/name/'dok-diagnostic.gba') == manifest['variants'][name]['rom_sha256']
     assert manifest['variants']['hw_v128_entity_rect']['rom_sha256'] == CONTROL
     assert audit['profile']['rom_sha256'] == manifest['variants']['hw_v128_final_class_profile']['rom_sha256']
     assert len(audit['profile']['rows']) == 5 and not audit['profile']['forced_pcm']
@@ -31,10 +31,10 @@ def main():
         assert sha(ROOT/item['path']) == item['sha256']
     for name, expected in shear['preserved_roms'].items():
         assert sha(ROOT/'artifacts/gba'/name) == expected
-    spatial = read('build/g20a-hw-entity-rect-v2/spatial.json')
+    spatial = read('research/experiments/g20a-hw-entity-rect-v2/spatial.json')
     assert spatial['rom_sha256'] == CONTROL and len(spatial['rows']) == 440
-    heavy = read('build/g20a-sector-shear-v4/control-target.json')
-    live = read('build/g20a-sector-shear-v4/hw_v128_entity_rect-live24.json')
+    heavy = read('research/experiments/g20a-sector-shear-v4/control-target.json')
+    live = read('research/experiments/g20a-sector-shear-v4/hw_v128_entity_rect-live24.json')
     assert heavy['rom_sha256'] == live['rom_sha256'] == CONTROL
     assert all(row['audio']['underruns'] == 0 for row in heavy['rows']+live['rows'])
     assert all(row['time_conservation_error_ticks'] == 0 for row in live['rows'])
@@ -43,9 +43,9 @@ def main():
     inputs = ['analysis/g20a-final-costs.json', manifest_path,
               'analysis/g20a-hardware-cache.json','analysis/g20a-row-quality-trial.json',
               'analysis/g20a-sector-shear-trial.json',
-              'build/g20a-hw-entity-rect-v2/spatial.json',
-              'build/g20a-sector-shear-v4/control-target.json',
-              'build/g20a-sector-shear-v4/hw_v128_entity_rect-live24.json',
+              'research/experiments/g20a-hw-entity-rect-v2/spatial.json',
+              'research/experiments/g20a-sector-shear-v4/control-target.json',
+              'research/experiments/g20a-sector-shear-v4/hw_v128_entity_rect-live24.json',
               'analysis/g20a-dark-distance-audit.json',
               'docs/gba-optimization-handoff.md']
     result = dict(task='G20A-current-goal-final-handoff',

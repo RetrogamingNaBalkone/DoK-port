@@ -14,7 +14,7 @@
   запуска, сохраняет Ghidra-проекты, логи и manifest с SHA Java/PowerShell scripts.
   Оригинальные EXE не изменяются.
 - Свежие `annotated.c`, `evidence.asm`, `roles.tsv`, `callers.tsv`, таблицы и
-  `analysis-manifest.json` находятся в `build/rendering/{ru,en}/`.
+  `analysis-manifest.json` находятся в `research/evidence/rendering/{ru,en}/`.
   Автоматический C — диагностический псевдокод, не собираемый модуль движка.
 
 ```powershell

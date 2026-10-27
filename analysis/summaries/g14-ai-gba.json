@@ -1,0 +1,75 @@
+{
+  "summary_schema": 1,
+  "full_report": {
+    "path": "analysis/g14-ai-gba.json",
+    "sha256": "75f6f36dc08550196c084dc6399e5415d09089e3536490058714327afe2cf893",
+    "bytes": 55174
+  },
+  "scope": "Summary of a recorded run; not a new verification. Full report is local and ignored by Git.",
+  "result": {
+    "task": "G14",
+    "status": "passed",
+    "rom_sha256": "9b4a9a28634fa5dbcb6ce15e74acf681c8bae7c91349c7da86f705d3b7e62926",
+    "script_sha256": "de7995711133536da958bf85e74bb60248fd95c42ee3da6033724a31e0dd2808",
+    "perception": {
+      "detail_pointer": "/perception",
+      "items": 40
+    },
+    "traces": {
+      "detail_pointer": "/traces",
+      "items": 2
+    },
+    "viewed_wake": [
+      {
+        "language": 0,
+        "live_consideration_path": true,
+        "valid_display_before_first_callback": true,
+        "before": {
+          "path": "build/g14/sprite-check/ai-sleeping-0.png",
+          "framebuffer_sha256": "f70071aaeed363fecfd21e97c03bba3504ad159608628a6d1ab038f0c6e606e7",
+          "cycles": 5585340,
+          "faces": 1
+        },
+        "after": {
+          "path": "build/g14/sprite-check/ai-awake-0.png",
+          "framebuffer_sha256": "f70071aaeed363fecfd21e97c03bba3504ad159608628a6d1ab038f0c6e606e7",
+          "cycles": 5584671,
+          "faces": 1
+        }
+      },
+      {
+        "language": 1,
+        "live_consideration_path": true,
+        "valid_display_before_first_callback": true,
+        "before": {
+          "path": "build/g14/sprite-check/ai-sleeping-1.png",
+          "framebuffer_sha256": "4b0fad3b5a7b7091dd4fa8d10cff7a6667888c934c27b4143d6a3d7f2a50b95b",
+          "cycles": 5583403,
+          "faces": 1
+        },
+        "after": {
+          "path": "build/g14/sprite-check/ai-awake-1.png",
+          "framebuffer_sha256": "4b0fad3b5a7b7091dd4fa8d10cff7a6667888c934c27b4143d6a3d7f2a50b95b",
+          "cycles": 5583418,
+          "faces": 1
+        }
+      }
+    ],
+    "combat_owners": {
+      "sleeping_hit_woke_without_damage": true,
+      "reclaimed_monster_owner_removed_before_projectile_reuse": true,
+      "reused_glyph": 129
+    },
+    "stack": {
+      "main_stack_low": 50356224,
+      "main_stack_top": 50364160,
+      "sentinel_word": 219540062,
+      "untouched_margin_bytes": 5576,
+      "high_water_bytes": 2360,
+      "irq_and_bios_excluded": true,
+      "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+    },
+    "physical_gba_tested": false,
+    "whole_dos_session_equivalence": false
+  }
+}

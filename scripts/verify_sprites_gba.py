@@ -303,7 +303,7 @@ def main():
         probe.write(probe.symbols['g_camera_capture_hold'], struct.pack('<I', 1))
         # Observe ordinary runtime progression in LEVEL2's water scene before
         # freezing controlled time. LEVEL1 has no visible water at startup.
-        model = load_json('build/runtime/ru/LEVEL2-runtime.json')
+        model = load_json('research/evidence/runtime/ru/LEVEL2-runtime.json')
         cell = next(i for i, glyph in enumerate(bytes.fromhex(model['maps'][2]))
                     if glyph == ord('<'))
         probe.camera(1, cell % 64 * 480 + 240, -300, cell // 64 * 480 + 240)
@@ -331,7 +331,7 @@ def main():
         probe.write(probe.symbols['g_visual_probe'], struct.pack('<I', 1))
         water_check = water_tail(probe, automatic['water_objects'])
         probe.camera(0, 15120, -300, 22800, 90)
-        model = load_json('build/runtime/ru/LEVEL1-runtime.json')
+        model = load_json('research/evidence/runtime/ru/LEVEL1-runtime.json')
         for language in (0, 1):
             probe.language(language)
             resources, source = original_animations(language)

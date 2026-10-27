@@ -60,7 +60,7 @@ class FlowProbe(UIProbe):
         self.until(lambda d: d['last_keys'] == 0 and d['draws'] > previous and d['phase'] == 2)
 
     def runtime(self, level, language=0):
-        return load_json(f'build/runtime/{"ru" if language == 0 else "en"}/LEVEL{level+1}-runtime.json')
+        return load_json(f'research/evidence/runtime/{"ru" if language == 0 else "en"}/LEVEL{level+1}-runtime.json')
 
     def player_pose(self, model, cell):
         obj = model['objects'][model['player_index']-1]

@@ -75,7 +75,7 @@ def main():
             p.press()  # release edge
             screens[f'menu_{language}']=p.screen(f'ui01-menu-{language}')
             p.press(8);assert p.ui()['state']==6
-            segments=Path('build/ui')/('ru/1190.bin' if language==0 else 'en/10d0.bin')
+            segments=Path('research/evidence/ui')/('ru/1190.bin' if language==0 else 'en/10d0.bin')
             data=segments.read_bytes()
             names=(['ХОРОМЫ НЕЧИСТИ'.encode('cp866'),
                     'ПОДЗЕМНАЯ РЕКА'.encode('cp866'),'ПОДВАЛЫ КРЕМЛЯ'.encode('cp866')] if language==0 else

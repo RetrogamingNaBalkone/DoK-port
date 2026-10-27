@@ -37,7 +37,7 @@ def main():
             rows.append(dict(type=type_id, vtable_data_offset=vtable, reader=address,
                              target_ne_segment=relocation["target"]))
             roles.setdefault(address, f"level_read_class_{type_id}")
-        directory = ROOT / "build/stage5" / lang
+        directory = ROOT / "research/evidence/stage5" / lang
         directory.mkdir(parents=True, exist_ok=True)
         (directory / "requested-roles.tsv").write_text(
             "address\trole\n" + "".join(f"{a}\t{r}\n" for a, r in roles.items()), encoding="utf-8")

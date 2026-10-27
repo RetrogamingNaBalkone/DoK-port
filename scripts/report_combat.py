@@ -11,7 +11,7 @@ def main():
   assert r.get('status','passed')=='passed',name
   if 'rom_sha256' in r:assert r['rom_sha256']==build['rom_sha256'],name
  for lang in ('ru','en'):
-  path=f'build/combat/{lang}/analysis-manifest.json';m=read(path)
+  path=f'research/evidence/combat/{lang}/analysis-manifest.json';m=read(path)
   assert m['sha256_before']==m['sha256_after']==sha(m['sample'])
   assert m['script_sha256']==sha('scripts/InspectCombat.java') and m['driver_sha256']==sha('scripts/analyze-combat.ps1')
   assert reports['original-verification']['languages'][lang]['manifest_sha256']==sha(path)

@@ -122,8 +122,8 @@ GPU pixels по статическому sector clip contract. Это не от�
 
 ## Воспроизводимость и следующий ограниченный опыт
 
-`build/g20a-sector-gpu-v8/`: private source, ELF/map/ROM, paired targets,
-profile, visibility, live24. `build/g20a-sector-gpu-repeat/`: все три ROM
+`research/experiments/g20a-sector-gpu-v8/`: private source, ELF/map/ROM, paired targets,
+profile, visibility, live24. `research/experiments/g20a-sector-gpu-repeat/`: все три ROM
 byte exact. Контроль2775 и artifacts96/72 сохранены с прежними SHA.
 EWRAM261324/free820, IWRAM24196/free380 до8192 bytes stack reserve.
 Main stack2544/margin5392, IRQ80/margin80. State19640 bytes заимствует
@@ -131,7 +131,7 @@ covered[] вместе с sector state13496 bytes; состояние перес
 native draw, постоянного magic поверх Mode4 scratch нет.
 
 ```powershell
-& C:/Source/wasdify/.venv/Scripts/python.exe scripts/prototype_gba_bsp.py --out build/g20a-sector-gpu-v8 --variants hw_v128_sector_gpu_thumb hw_v128_sector_gpu_off hw_v128_entity_rect
+& C:/Source/wasdify/.venv/Scripts/python.exe scripts/prototype_gba_bsp.py --out research/experiments/g20a-sector-gpu-v8 --variants hw_v128_sector_gpu_thumb hw_v128_sector_gpu_off hw_v128_entity_rect
 & C:/Source/wasdify/.venv/Scripts/python.exe scripts/report_gba_sector_gpu.py
 ```
 

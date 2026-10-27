@@ -126,7 +126,7 @@ def run(build,core,scenes,trig,trial):
                 # Recreate initial actors after freezing. Different renderer speeds
                 # otherwise allow different startup AI movement before freeze.
                 p.camera(level%3,15120,-300,22800,90)
-                model=load_json(f'build/runtime/ru/LEVEL{level}-runtime.json');hero=model['objects'][model['player_index']-1]['actor']
+                model=load_json(f'research/evidence/runtime/ru/LEVEL{level}-runtime.json');hero=model['objects'][model['player_index']-1]['actor']
                 cell=hero['z']//480*64+hero['x']//480
                 cases=[(cell,h) for h in (0,45,90,135)]
                 cases+={1:[(520,225),(3640,225)],2:[(1592,135),(2871,225)],3:[(1544,315),(1560,90)]}[level]

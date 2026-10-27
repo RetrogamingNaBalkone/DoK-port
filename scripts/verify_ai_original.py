@@ -18,7 +18,7 @@ def table():
 class Original:
  def __init__(self,lang):
   self.ru=lang=='ru';self.seg=0x1068 if self.ru else 0x1020;self.math=0x10c8 if self.ru else 0x1058;self.tables=0x1180 if self.ru else 0x10c0
-  self.path=Path('build/ai')/lang;self.c=Uc(UC_ARCH_X86,UC_MODE_16);self.c.mem_map(0,0x100000);self.wakes=0
+  self.path=Path('research/evidence/ai')/lang;self.c=Uc(UC_ARCH_X86,UC_MODE_16);self.c.mem_map(0,0x100000);self.wakes=0
   self.c.hook_add(UC_HOOK_CODE,self.hook)
  def ret(self):
   c=self.c;sp=c.reg_read(R.UC_X86_REG_SP);ip,cs=struct.unpack('<HH',c.mem_read(0x30000+sp,4));c.reg_write(R.UC_X86_REG_SP,sp+4);c.reg_write(R.UC_X86_REG_CS,cs);c.reg_write(R.UC_X86_REG_IP,ip)

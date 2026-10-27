@@ -117,8 +117,8 @@ V3/final оставляют окно обслуживания прерывани
 
 ## Воспроизводимость и память
 
-Final inputs/ELF/map/ROM: `build/g20a-sector-clip-final/`. Измерения V4 в
-`build/g20a-sector-clip-v4/`; независимый repeat — `build/g20a-sector-clip-repeat/`.
+Final inputs/ELF/map/ROM: `research/experiments/g20a-sector-clip-final/`. Измерения V4 в
+`research/experiments/g20a-sector-clip-v4/`; независимый repeat — `research/experiments/g20a-sector-clip-repeat/`.
 Все три дерева дают одинаковые ROM обоих кандидатов и контроля.
 
 | Вариант | ROM SHA256 | EWRAM/free | IWRAM/free до8KiB stack |
@@ -132,7 +132,7 @@ Main stack high-water2528/2536, запас5408/5400; IRQ80, запас80. Ист
 Mode4 scratch нет. Никакого нового heap/frame/depth буфера не добавлено.
 
 ```powershell
-& C:/Source/wasdify/.venv/Scripts/python.exe scripts/prototype_gba_bsp.py --out build/g20a-sector-clip-final --variants hw_v128_sector_clip_hot hw_v128_sector_bitmap_hot hw_v128_entity_rect
+& C:/Source/wasdify/.venv/Scripts/python.exe scripts/prototype_gba_bsp.py --out research/experiments/g20a-sector-clip-final --variants hw_v128_sector_clip_hot hw_v128_sector_bitmap_hot hw_v128_entity_rect
 & C:/Source/wasdify/.venv/Scripts/python.exe scripts/report_gba_sector.py
 ```
 

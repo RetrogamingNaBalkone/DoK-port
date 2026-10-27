@@ -13,11 +13,11 @@ def main():
     def sha(p):
         return hashlib.sha256((ROOT / p).read_bytes()).hexdigest()
 
-    folder = Path('build/g20a-columns-v6')
+    folder = Path('research/experiments/g20a-columns-v6')
     paths = [folder / n for n in ('prototype-build.json', 'target.json',
              'ppu18-live.json', 'profile.json', 'visibility.json', 'control-live24.json')]
-    paths += [Path('build/g20a-columns-repeat-final/prototype-build.json'),
-              Path('build/g20a-hw-entity-rect-v2/spatial.json')]
+    paths += [Path('research/experiments/g20a-columns-repeat-final/prototype-build.json'),
+              Path('research/experiments/g20a-hw-entity-rect-v2/spatial.json')]
     manifest, target, ppu, profile, visibility, live, repeat, baseline = map(read, paths)
     variants = manifest['variants']
     trial = variants['hw_v128_columns']['rom_sha256']
@@ -27,10 +27,10 @@ def main():
     for name in ('hw_v128_columns', 'hw_v128_entity_rect'):
         assert variants[name]['rom_sha256'] == repeat['variants'][name]['rom_sha256']
         assert sha(folder / name / 'dok-diagnostic.gba') == variants[name]['rom_sha256']
-        assert sha(Path('build/g20a-columns-repeat-final') / name / 'dok-diagnostic.gba') == variants[name]['rom_sha256']
+        assert sha(Path('research/experiments/g20a-columns-repeat-final') / name / 'dok-diagnostic.gba') == variants[name]['rom_sha256']
     stream = 'bfdba7d0455199e5599ebea9bf795abefdaff0c730f63db4b848e71a12825184'
     assert repeat['variants']['hw_v128_stream_bsp']['rom_sha256'] == stream
-    assert sha(Path('build/g20a-columns-repeat-final/hw_v128_stream_bsp/dok-diagnostic.gba')) == stream
+    assert sha(Path('research/experiments/g20a-columns-repeat-final/hw_v128_stream_bsp/dok-diagnostic.gba')) == stream
     assert target['rom_sha256'] == profile['rom_sha256'] == ppu['after']['rom_sha256'] == visibility['after']['rom_sha256'] == trial
     assert baseline['rom_sha256'] == live['rom_sha256'] == ppu['before']['rom_sha256'] == visibility['before']['rom_sha256'] == control
     assert ppu['live']['rom_sha256'] == trial

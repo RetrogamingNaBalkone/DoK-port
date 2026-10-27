@@ -27,7 +27,7 @@ def main():
   raise AssertionError(('timeout',diag()))
  until(lambda d:d['draws']>=3 and d['phase']==2)
  write(syms['g_motion_probe'],struct.pack('<I',1));write(syms['g_camera_capture_hold'],struct.pack('<I',1))
- model=json.loads(Path('build/runtime/ru/LEVEL2-runtime.json').read_text());fc=bytes.fromhex(model['maps'][2]);request=0;captures=[]
+ model=json.loads(Path('research/evidence/runtime/ru/LEVEL2-runtime.json').read_text());fc=bytes.fromhex(model['maps'][2]);request=0;captures=[]
  def host(language,camera,glyph,phase):
   cmd=['build/native/dok-render-reference.exe','build/gba/assets/assets.bin','2',language,str(out/'host.idx'),str(out/'host.pal'),*map(str,camera),str(glyph),str(phase),'18']
   subprocess.run(cmd,stdout=subprocess.DEVNULL,check=True)
@@ -72,7 +72,7 @@ def main():
     captures.append(dict(glyph=selected['glyph'],language=language,phase=phase,camera=camera,scene_pixels=compared,cycles=d['last_cycles'],frame_sha256=hashlib.sha256(actual).hexdigest(),path=path.as_posix()))
  palettes=[]
  for level in range(3):
-  m=json.loads(Path(f'build/runtime/ru/LEVEL{level+1}-runtime.json').read_text())
+  m=json.loads(Path(f'research/evidence/runtime/ru/LEVEL{level+1}-runtime.json').read_text())
   request+=1
   # Only resource/palette selection matters here; the camera stays bounded.
   write(syms['g_camera_probe']+8,struct.pack('<I4i',level,15120,-300,22800,90));write(syms['g_camera_probe'],struct.pack('<I',request))

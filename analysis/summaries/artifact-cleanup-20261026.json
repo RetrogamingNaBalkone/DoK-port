@@ -1,0 +1,24 @@
+{
+  "summary_schema": 1,
+  "full_report": {
+    "path": "analysis/artifact-cleanup-20261026.json",
+    "sha256": "601f8f71fb5e0a7a8bf3ba2e56643434f520b870e3997917e3060e00fe91fa27",
+    "bytes": 72545
+  },
+  "scope": "Summary of a recorded run; not a new verification. Full report is local and ignored by Git.",
+  "result": {
+    "date": "2026-10-26",
+    "reason": "User requested removal of obsolete build and test artifacts",
+    "status": "completed",
+    "removed_files": 10661,
+    "removed_bytes": 5165518037,
+    "targets": {
+      "detail_pointer": "/targets",
+      "items": 342
+    },
+    "preserved_sha256": {
+      "detail_pointer": "/preserved_sha256",
+      "items": 26
+    }
+  }
+}

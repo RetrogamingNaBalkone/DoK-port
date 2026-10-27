@@ -17,8 +17,8 @@ Goal ещё открыт: ограниченная проверка формат
 ROM `hw_v128_sector_gpu_shear`, SHA
 `484099f868157067871d6241b61dfe1afcfd97951f9d0944045c06a6bf9deaae`,
 18 754 724 байта. Final inputs/ELF/map/ROM/QA:
-`build/g20a-sector-shear-final-v4/`; измерения и pressure diagnostic —
-`build/g20a-sector-shear-v4/`. GPU ROM и2775 byte exact в двух деревьях.
+`research/experiments/g20a-sector-shear-final-v4/`; измерения и pressure diagnostic —
+`research/experiments/g20a-sector-shear-v4/`. GPU ROM и2775 byte exact в двух деревьях.
 Диагональный GPU b2b16b…ca3d6e и CPU Mode2 fe51e2…52adcc также воспроизведены
 с прежними SHA. Игровые artifacts2775/96/72 сохранены.
 

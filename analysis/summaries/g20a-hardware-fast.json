@@ -1,0 +1,2154 @@
+{
+  "summary_schema": 1,
+  "full_report": {
+    "path": "analysis/g20a-hardware-fast.json",
+    "sha256": "fd3790492e5a0c8fbb25e9b7bbc603d9fbdce1fc8031e8d8e323ab4b1c80367a",
+    "bytes": 1024232
+  },
+  "scope": "Summary of a recorded run; not a new verification. Full report is local and ignored by Git.",
+  "result": {
+    "task": "G20A",
+    "date": "2026-10-27",
+    "status": "exact-optimizations-after128-rows",
+    "targets_met": false,
+    "artifact": "artifacts/gba/DoK-port_hardware_fast_prototype.gba",
+    "artifact_copied": true,
+    "rom_sha256": "e803f847e2c21abd9c1e5dbc70f12e98ef68f8c1ffc699989c7b97204a74308c",
+    "rom_bytes": 10845692,
+    "build_dir": "build/g20a-hw-projection/hw_v128_projection",
+    "exact_rgb_frames": 396,
+    "selected_changes": [
+      "HW_COVER4",
+      "coverage_edge in IWRAM",
+      "HW_DIRECT_RUN",
+      "HW_PROJECT_RECIP"
+    ],
+    "ram": {
+      "ewram": 260944,
+      "ewram_free": 1200,
+      "iwram_before_stacks": 24240,
+      "iwram_free_before_stacks": 336,
+      "stack_reserve": 8192
+    },
+    "live": {
+      "follow": {
+        "rom_sha256": "e803f847e2c21abd9c1e5dbc70f12e98ef68f8c1ffc699989c7b97204a74308c",
+        "rows": {
+          "detail_pointer": "/live/follow/rows",
+          "items": 6
+        },
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5408,
+          "high_water_bytes": 2528,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        },
+        "irq_stack": {
+          "low": 50364160,
+          "top": 50364320,
+          "untouched_margin_bytes": 80,
+          "high_water_bytes": 80,
+          "includes_bios_irq_saves": true
+        }
+      },
+      "turn120": {
+        "rom_sha256": "e803f847e2c21abd9c1e5dbc70f12e98ef68f8c1ffc699989c7b97204a74308c",
+        "rows": {
+          "detail_pointer": "/live/turn120/rows",
+          "items": 6
+        },
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5408,
+          "high_water_bytes": 2528,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        },
+        "irq_stack": {
+          "low": 50364160,
+          "top": 50364320,
+          "untouched_margin_bytes": 80,
+          "high_water_bytes": 80,
+          "includes_bios_irq_saves": true
+        }
+      },
+      "walking120": {
+        "rom_sha256": "e803f847e2c21abd9c1e5dbc70f12e98ef68f8c1ffc699989c7b97204a74308c",
+        "rows": {
+          "detail_pointer": "/live/walking120/rows",
+          "items": 6
+        },
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5408,
+          "high_water_bytes": 2528,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        },
+        "irq_stack": {
+          "low": 50364160,
+          "top": 50364320,
+          "untouched_margin_bytes": 80,
+          "high_water_bytes": 80,
+          "includes_bios_irq_saves": true
+        }
+      }
+    },
+    "heading_sweep": {
+      "rom_sha256": "e803f847e2c21abd9c1e5dbc70f12e98ef68f8c1ffc699989c7b97204a74308c",
+      "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+      "script_sha256": "50b2e4f483ce373da4a3334da591ba7c99a737f0f5068f51a1f7fcb1a1db1679",
+      "capture_hold_during_samples": false,
+      "simulation_frozen": true,
+      "heading_step": 15,
+      "rows": {
+        "detail_pointer": "/heading_sweep/rows",
+        "items": 72
+      },
+      "scope": "Frozen world at original player start; every selected heading measured separately, PCM on. This is a renderer floor and is not a live simulation or whole-level minimum."
+    },
+    "validation": {
+      "arm": {
+        "task": "G20",
+        "status": "passed",
+        "elf_sha256": "ab1fc86ecf455a8885568dea1032d5d360f7163fc9b894932b5207911cb275a5",
+        "rom_sha256": "e803f847e2c21abd9c1e5dbc70f12e98ef68f8c1ffc699989c7b97204a74308c",
+        "script_sha256": "3290c669fac488b4173d45a54f63b5f5ebf65e2ed4c530a6a72183f5a208979c",
+        "sampler_vectors": 4096,
+        "coverage_edge_vectors": 2048,
+        "exact_cell_coordinate_vectors": 30720,
+        "exact_plane_division_vectors": 65536,
+        "scalar_projection_vectors": 32811,
+        "unsigned_texture_division_vectors": 0,
+        "positive_texture_division_vectors": 0,
+        "covered_face_box_vectors": 1024,
+        "exact_panel_copy_vectors": 768,
+        "world_texture_vectors": 0,
+        "world_skip_vectors": 0,
+        "world_coarse_4x2": false,
+        "hardware_pack_vectors": 0,
+        "tiled_scene_vectors": 1536,
+        "hardware_map_vectors": 256,
+        "hardware_masked_vectors": 512,
+        "hardware_gap_vectors": 0,
+        "coverage_scene_rows": 128,
+        "sampler_digest": "f5fe0b085e9e86f72661b1f2bef1644fb971cddb50fb2227facdd4a148048067",
+        "original_animation_resources": 48,
+        "original_animation_frames": 308,
+        "callee_saved_registers_and_stack_checked": true,
+        "mutable_buffer_truncation_and_unchanged_error_output": true,
+        "timing_measured": false,
+        "scope": "ARM/Thumb execution in Unicorn; hardware timing checked separately in mGBA"
+      },
+      "sprites": {
+        "task": "G11",
+        "status": "passed",
+        "rom_sha256": "e803f847e2c21abd9c1e5dbc70f12e98ef68f8c1ffc699989c7b97204a74308c",
+        "script_sha256": "e4f4fa987ec5ea08ed494e87dad73d4892b93c9e9fbfb212c01da0f45e89d955",
+        "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+        "emulator": "mGBA",
+        "emulator_version": "0.11-212-7a12d6d",
+        "automatic": {
+          "level": 2,
+          "changed_objects": [
+            112,
+            113,
+            115
+          ],
+          "water_objects": [
+            111,
+            112,
+            113,
+            114
+          ],
+          "phase_trace_per_presentation": [
+            [
+              18,
+              2,
+              2,
+              18
+            ],
+            [
+              18,
+              5,
+              5,
+              18
+            ],
+            [
+              18,
+              7,
+              7,
+              18
+            ],
+            [
+              18,
+              10,
+              10,
+              18
+            ],
+            [
+              18,
+              12,
+              12,
+              18
+            ]
+          ],
+          "multiple_steps_per_draw_verified": true
+        },
+        "water_callback": {
+          "object": 112,
+          "states": {
+            "detail_pointer": "/validation/sprites/water_callback/states",
+            "items": 7
+          },
+          "crop_then_increment_verified": true
+        },
+        "playback": {
+          "detail_pointer": "/validation/sprites/playback",
+          "items": 8
+        },
+        "captures": {
+          "detail_pointer": "/validation/sprites/captures",
+          "items": 18
+        },
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5408,
+          "high_water_bytes": 2528,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        },
+        "embedded_package_byte_identical": true,
+        "package_sha256": "3efa5d3027d63ffd65e0ae8c0b45be23ee8394b3c5151c8e9f10e76fa8674351",
+        "originals": [
+          {
+            "path": "originals/pkr/RUS/PKR.RES",
+            "sha256": "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816"
+          },
+          {
+            "path": "originals/pkr/ENG/PKE.RES",
+            "sha256": "865da340621fa6f90548a84e9ae9bf0a85071befb32a40ca1d359e488f74d458"
+          }
+        ],
+        "physical_gba_tested": false,
+        "whole_dos_session_equivalence": false
+      },
+      "water": {
+        "status": "passed",
+        "rom_sha256": "e803f847e2c21abd9c1e5dbc70f12e98ef68f8c1ffc699989c7b97204a74308c",
+        "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+        "script_sha256": "5399c98f26e73540dc7502e6c194dc9cd8f4cd361edc0500f33d4f9541a76b5d",
+        "checks": {
+          "detail_pointer": "/validation/water/checks",
+          "items": 144
+        },
+        "originals": [
+          {
+            "path": "originals/pkr/RUS/PKR.RES",
+            "sha256": "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816"
+          },
+          {
+            "path": "originals/pkr/ENG/PKE.RES",
+            "sha256": "865da340621fa6f90548a84e9ae9bf0a85071befb32a40ca1d359e488f74d458"
+          }
+        ],
+        "phase_cases": 144,
+        "ppu_pixels": 362232,
+        "scope": "Every moving GPU material,18 crop/wrap phases, all3 LIGHT bands in VRAM; unobstructed actual PPU water pixels, RU/EN. Not native affine geometry equivalence."
+      },
+      "items": {
+        "task": "G12",
+        "status": "passed",
+        "rom_sha256": "e803f847e2c21abd9c1e5dbc70f12e98ef68f8c1ffc699989c7b97204a74308c",
+        "script_sha256": "1c152d3f3acdca6a0d94f2fa038c91a1ff90c6710ca578789967329e9fd107fc",
+        "stats": {
+          "detail_pointer": "/validation/items/stats",
+          "items": 109
+        },
+        "pickups": {
+          "detail_pointer": "/validation/items/pickups",
+          "items": 58
+        },
+        "live_pickup": [
+          {
+            "language": 0,
+            "object": 103,
+            "cell": 3038,
+            "production_motion_path": true,
+            "full_positive_item_retained": true,
+            "changed_scene_pixels": 948,
+            "before": {
+              "detail_pointer": "/validation/items/live_pickup/0/before",
+              "entries": 5,
+              "scalars": {
+                "path": "build/g20a-hw-projection/hw_v128_projection/sprite-check/item-before-0.png",
+                "buffer_kind": "ppu-rgb",
+                "framebuffer_sha256": "05db1ce6bbbc991c31ade3b73177cba12806df2ec291b3cb3eb21724a3205dc0",
+                "cycles": 811072,
+                "faces": 28
+              }
+            },
+            "after": {
+              "detail_pointer": "/validation/items/live_pickup/0/after",
+              "entries": 5,
+              "scalars": {
+                "path": "build/g20a-hw-projection/hw_v128_projection/sprite-check/item-after-0.png",
+                "buffer_kind": "ppu-rgb",
+                "framebuffer_sha256": "b9a5845d0d30f7f1773e6d0022094200fafee220e7ab41f733324b24562d350e",
+                "cycles": 829248,
+                "faces": 27
+              }
+            }
+          },
+          {
+            "language": 1,
+            "object": 103,
+            "cell": 3038,
+            "production_motion_path": true,
+            "full_positive_item_retained": true,
+            "changed_scene_pixels": 948,
+            "before": {
+              "detail_pointer": "/validation/items/live_pickup/1/before",
+              "entries": 5,
+              "scalars": {
+                "path": "build/g20a-hw-projection/hw_v128_projection/sprite-check/item-before-1.png",
+                "buffer_kind": "ppu-rgb",
+                "framebuffer_sha256": "a91d0fa79e3566be2f37f5d3a8329248d7e92910fa7ae3018757eb301c4d21dd",
+                "cycles": 938688,
+                "faces": 28
+              }
+            },
+            "after": {
+              "detail_pointer": "/validation/items/live_pickup/1/after",
+              "entries": 5,
+              "scalars": {
+                "path": "build/g20a-hw-projection/hw_v128_projection/sprite-check/item-after-1.png",
+                "buffer_kind": "ppu-rgb",
+                "framebuffer_sha256": "373f3944441eb0add691c61029e7fa0fc11dc9c174799fa11451d975ddb879e8",
+                "cycles": 831232,
+                "faces": 27
+              }
+            }
+          }
+        ],
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5408,
+          "high_water_bytes": 2528,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        },
+        "originals": [
+          {
+            "path": "originals/pkr/RUS/PKR.RES",
+            "sha256": "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816"
+          },
+          {
+            "path": "originals/pkr/ENG/PKE.RES",
+            "sha256": "865da340621fa6f90548a84e9ae9bf0a85071befb32a40ca1d359e488f74d458"
+          },
+          {
+            "path": "originals/pkr/RUS/PKR.RES",
+            "sha256": "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816"
+          },
+          {
+            "path": "originals/pkr/ENG/PKE.RES",
+            "sha256": "865da340621fa6f90548a84e9ae9bf0a85071befb32a40ca1d359e488f74d458"
+          },
+          {
+            "path": "originals/pkr/RUS/PKR.RES",
+            "sha256": "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816"
+          },
+          {
+            "path": "originals/pkr/ENG/PKE.RES",
+            "sha256": "865da340621fa6f90548a84e9ae9bf0a85071befb32a40ca1d359e488f74d458"
+          }
+        ],
+        "physical_gba_tested": false,
+        "whole_dos_session_equivalence": false
+      },
+      "combat": {
+        "task": "G13",
+        "status": "passed",
+        "rom_sha256": "e803f847e2c21abd9c1e5dbc70f12e98ef68f8c1ffc699989c7b97204a74308c",
+        "script_sha256": "1153f9522c6ee704191d8941d6a7890cfb0b7ee4407af13be2d767154e6de24c",
+        "flights": {
+          "detail_pointer": "/validation/combat/flights",
+          "items": 4
+        },
+        "pool": {
+          "capacity": 141,
+          "failed_allocation_preserved_charge": true,
+          "failed_allocation_changed_readiness": true,
+          "first_free_reused": 0,
+          "all_events_unlinked_after_clear": true
+        },
+        "independent_instances": [
+          {
+            "language": 0,
+            "template": 65,
+            "independent_texture_slots": [
+              256,
+              257
+            ],
+            "resource": 28,
+            "simultaneous_different_frames_verified": true,
+            "captures": [
+              {
+                "detail_pointer": "/validation/combat/independent_instances/0/captures/0",
+                "entries": 7,
+                "scalars": {
+                  "path": "build/g20a-hw-projection/hw_v128_projection/sprite-check/independent-effects-0-2.png",
+                  "buffer_kind": "ppu-rgb",
+                  "framebuffer_sha256": "5bb5bd351db9782c9b927fe2ba9375759a2196301682ab10bbfd8f2b935428e0",
+                  "cycles": 383872,
+                  "faces": 2
+                }
+              },
+              {
+                "detail_pointer": "/validation/combat/independent_instances/0/captures/1",
+                "entries": 7,
+                "scalars": {
+                  "path": "build/g20a-hw-projection/hw_v128_projection/sprite-check/independent-effects-0-3.png",
+                  "buffer_kind": "ppu-rgb",
+                  "framebuffer_sha256": "ef52469a4ddcb1bab3dafc6e8f02632d69ca6c2edc4a226caae7a387a231a56c",
+                  "cycles": 383872,
+                  "faces": 2
+                }
+              }
+            ]
+          },
+          {
+            "language": 1,
+            "template": 65,
+            "independent_texture_slots": [
+              256,
+              257
+            ],
+            "resource": 28,
+            "simultaneous_different_frames_verified": true,
+            "captures": [
+              {
+                "detail_pointer": "/validation/combat/independent_instances/1/captures/0",
+                "entries": 7,
+                "scalars": {
+                  "path": "build/g20a-hw-projection/hw_v128_projection/sprite-check/independent-effects-1-2.png",
+                  "buffer_kind": "ppu-rgb",
+                  "framebuffer_sha256": "5bb5bd351db9782c9b927fe2ba9375759a2196301682ab10bbfd8f2b935428e0",
+                  "cycles": 383936,
+                  "faces": 2
+                }
+              },
+              {
+                "detail_pointer": "/validation/combat/independent_instances/1/captures/1",
+                "entries": 7,
+                "scalars": {
+                  "path": "build/g20a-hw-projection/hw_v128_projection/sprite-check/independent-effects-1-3.png",
+                  "buffer_kind": "ppu-rgb",
+                  "framebuffer_sha256": "ef52469a4ddcb1bab3dafc6e8f02632d69ca6c2edc4a226caae7a387a231a56c",
+                  "cycles": 383872,
+                  "faces": 2
+                }
+              }
+            ]
+          }
+        ],
+        "collisions": [
+          {
+            "kind": "wall",
+            "pending_flight_image": 29,
+            "effect_resource": 26,
+            "effect_starts_at_frame": 1,
+            "damage_on_contact": null,
+            "cleaned_up": true
+          },
+          {
+            "kind": "door-closed",
+            "pending_flight_image": 29,
+            "effect_resource": 26,
+            "effect_starts_at_frame": 1,
+            "damage_on_contact": null,
+            "cleaned_up": true
+          },
+          {
+            "kind": "door-open",
+            "passed_through": true
+          },
+          {
+            "kind": "monster",
+            "pending_flight_image": 29,
+            "effect_resource": 28,
+            "effect_starts_at_frame": 1,
+            "damage_on_contact": 14,
+            "cleaned_up": true
+          },
+          {
+            "kind": "damage-events",
+            "sleeping_contact_wakes_without_damage": true,
+            "dead_health_clamped": true,
+            "ai_notification_states_verified": true,
+            "same_class_immune": true,
+            "player_health_after_15_damage": 85
+          }
+        ],
+        "dynamic_occupancy": {
+          "projectile": 0,
+          "cell": 2019,
+          "blocked_x": 16561,
+          "after_clear_x": 16830,
+          "production_actor_collision_verified": true,
+          "clear_released_occupancy": true
+        },
+        "weapon_transition": {
+          "states": {
+            "detail_pointer": "/validation/combat/weapon_transition/states",
+            "items": 7
+          },
+          "unavailable_weapon_rejected": true
+        },
+        "first_pickup_show": {
+          "ordinary_pickup_registered": true,
+          "show_states": [
+            [
+              1,
+              2
+            ],
+            [
+              1,
+              1
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              7,
+              0
+            ]
+          ],
+          "fire_rejected_during_show": true,
+          "first_ready_shot_charge": 136
+        },
+        "shot_series": [
+          {
+            "weapon": 1,
+            "shots": 10,
+            "final_charge": 860,
+            "active_after_each_shot": 0,
+            "all_events_and_occupancy_released": true
+          },
+          {
+            "weapon": 2,
+            "shots": 10,
+            "final_charge": 960,
+            "active_after_each_shot": 0,
+            "all_events_and_occupancy_released": true
+          }
+        ],
+        "live_input": {
+          "button": "A",
+          "gba_key_mask": 1,
+          "native_fire_command": 512,
+          "charge_after_shot": 86,
+          "screenshot": {
+            "path": "build/g20a-hw-projection/hw_v128_projection/sprite-check/real-a-button.png",
+            "buffer_kind": "ppu-rgb",
+            "framebuffer_sha256": "48503e411c06edef2093fad17773fe9ee278f06f9a2cd0aa8e786ad711a077ed",
+            "cycles": 1995264,
+            "faces": 1
+          },
+          "real_l_r_weapon_cycle": true,
+          "laser_shots": 1,
+          "laser_charge": 96,
+          "laser_screenshot": {
+            "path": "build/g20a-hw-projection/hw_v128_projection/sprite-check/real-l-r-cycle-and-laser-a.png",
+            "buffer_kind": "ppu-rgb",
+            "framebuffer_sha256": "2e85816cf2ea55ffc5c1a4741035f6ca18b8713050ebfcce93fc2cc88f61f2ac",
+            "cycles": 1590976,
+            "faces": 1
+          }
+        },
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5408,
+          "high_water_bytes": 2528,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        },
+        "whole_dos_session_equivalence": false,
+        "physical_gba_tested": false
+      },
+      "ui": {
+        "task": "G17",
+        "status": "passed",
+        "rom_sha256": "e803f847e2c21abd9c1e5dbc70f12e98ef68f8c1ffc699989c7b97204a74308c",
+        "hardware_ppu_frames": 22,
+        "script_sha256": "5976e96a249bc279b40a8125c055a54d959fb6b5b5ccb346b5af6b4eb0f6591e",
+        "source": {
+          "path": "originals/pkr/RUS/PKR.RES",
+          "sha256": "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816"
+        },
+        "screens": {
+          "title_ru": {
+            "path": "build/g20a-hw-projection/hw_v128_projection/ui-check/title-ru.png",
+            "sha256": "eadd1741afb0b646c0a2edef6e90110bb9e39e4c699d97b46aa74e6b81376668",
+            "framebuffer_sha256": "3588b22258d611c748cea2349d882668b7a15c7ca6e06f3015c04eccb04b9add"
+          },
+          "title_en": {
+            "path": "build/g20a-hw-projection/hw_v128_projection/ui-check/title-en.png",
+            "sha256": "26c92d110fb9a1eb20b5219df5d81ad6a5c4841999b6c129cc149ee7eee71c4d",
+            "framebuffer_sha256": "1029f91b19bb4d8a0e237b3ed1b41256815244b05ae2e8a6123d4ae87b828507"
+          },
+          "help_en": {
+            "path": "build/g20a-hw-projection/hw_v128_projection/ui-check/help-en.png",
+            "sha256": "2008c23cdb701ee5a4c96b21d6237365c16c8a8324d7716bfe88d3df8219b642",
+            "framebuffer_sha256": "c9c3617ca6894628e0169d74f1df4d8ce852f6145f53fc69cf1fc8256dbdf150"
+          },
+          "statistics_en": {
+            "path": "build/g20a-hw-projection/hw_v128_projection/ui-check/statistics-en.png",
+            "sha256": "dd2bab23d68c5f611c5078a0b930379ae84eb3814f8860aad477be79bb531fc6",
+            "framebuffer_sha256": "f67178fadcc745ee841b7536ba5da59cffd5c51532055cc2c8aba4778b091824"
+          },
+          "pause_en": {
+            "path": "build/g20a-hw-projection/hw_v128_projection/ui-check/pause-en.png",
+            "sha256": "d1b41c61571bcf7b1e46dca6e6466aab7f6ec1004568001635331c22a8773957",
+            "framebuffer_sha256": "3bd1bdef47324990b7b2169f88dfda24cfa46c7a00a9731afe4ce7bd225e9882"
+          },
+          "game_0": {
+            "path": "build/g20a-hw-projection/hw_v128_projection/ui-check/game-0.png",
+            "sha256": "58f122a3219132122dec9d9a6a7f8b7b230db391698a18c67c5ba34719a754f0",
+            "framebuffer_sha256": "af57804ddea48586004f4381438d3642f0ae70c1ed793fb0bae10ab926e3032a"
+          },
+          "keys_0": {
+            "path": "build/g20a-hw-projection/hw_v128_projection/ui-check/keys-0.png",
+            "sha256": "b3efffa7fc64fb8adf7dcb9d4f50302a78a9b15f3ecfa5288082b46c6f5a6dec",
+            "framebuffer_sha256": "2491538bea43e9ac0748f880ea0ce2005ef0d48e746b9ebfcaed73c7083ef49b"
+          },
+          "game_1": {
+            "path": "build/g20a-hw-projection/hw_v128_projection/ui-check/game-1.png",
+            "sha256": "58f122a3219132122dec9d9a6a7f8b7b230db391698a18c67c5ba34719a754f0",
+            "framebuffer_sha256": "af57804ddea48586004f4381438d3642f0ae70c1ed793fb0bae10ab926e3032a"
+          },
+          "keys_1": {
+            "path": "build/g20a-hw-projection/hw_v128_projection/ui-check/keys-1.png",
+            "sha256": "b3efffa7fc64fb8adf7dcb9d4f50302a78a9b15f3ecfa5288082b46c6f5a6dec",
+            "framebuffer_sha256": "2491538bea43e9ac0748f880ea0ce2005ef0d48e746b9ebfcaed73c7083ef49b"
+          },
+          "hud_ru": {
+            "path": "build/g20a-hw-projection/hw_v128_projection/ui-check/hud-ru.png",
+            "sha256": "920af7fd56035c36d7bc8e45c2d00dc22b436f792e9f60454e3957bb29371786",
+            "framebuffer_sha256": "de4c2c66b1a065626b3dff8617cf73b45d371610bd0b0b90e5d4fae4abfbbc1c"
+          },
+          "message_0": {
+            "path": "build/g20a-hw-projection/hw_v128_projection/ui-check/message-0.png",
+            "sha256": "54240d24f01ade17e8049ee7b55cffbfa810c8d52f6be2ce1e4dd75813b8cc6e",
+            "framebuffer_sha256": "557a1ad96bdfbeafb52b7cc306bab8882d351d81bfafad1bf8ad426a0ff1133a"
+          },
+          "message_1": {
+            "path": "build/g20a-hw-projection/hw_v128_projection/ui-check/message-1.png",
+            "sha256": "03c83d0d36af27e6187ec00d4a7e58c2806698bd6c2ff73af67d7d982aa12e27",
+            "framebuffer_sha256": "4115dda4a3706226b3be91ec51ababbf21d0d400e6439d0b438fec7635af950a"
+          },
+          "stress": {
+            "path": "build/g20a-hw-projection/hw_v128_projection/ui-check/stress.png",
+            "sha256": "0409ef4bb5f648d3b33b0d16d7b2e4363adf89feb4820594baeda8685b42b5df",
+            "framebuffer_sha256": "fad508d6690b7fd5b98c7783ecd5508aa0b8410ca41ed3029195dcace60c0e72"
+          },
+          "pickup_0": {
+            "path": "build/g20a-hw-projection/hw_v128_projection/ui-check/pickup-0.png",
+            "sha256": "a523fa23cefa19d166313f9ed91e5f29c13e7df3fd5dbdd6692990a5bde2929b",
+            "framebuffer_sha256": "605847f2ae34e9e1e91549339fef4b27c770573dbc41c53fcd7ff010b73242df"
+          },
+          "death_0": {
+            "path": "build/g20a-hw-projection/hw_v128_projection/ui-check/death-0.png",
+            "sha256": "f067d6bb6cea6d00946da669cd733f3aff13056fc71069efdcf51fd58dbcfdaf",
+            "framebuffer_sha256": "f6cc94a50ddd2d3aa56da6bfc099f16f5db53aeac5c5c9991b871c15f8b5faab"
+          },
+          "pickup_1": {
+            "path": "build/g20a-hw-projection/hw_v128_projection/ui-check/pickup-1.png",
+            "sha256": "f2d91855ff281cf96848603f4c286ac71aa5b1f22ad65715ca25d6c56fc1ecfe",
+            "framebuffer_sha256": "0b2ba0421c359584a7bcc2c265e09f1521f2c54570c20cf606b4ace816896e4b"
+          },
+          "death_1": {
+            "path": "build/g20a-hw-projection/hw_v128_projection/ui-check/death-1.png",
+            "sha256": "240466a96b593b98c97bedda34f6203982963463a9eedadeb4e0c09edee7c689",
+            "framebuffer_sha256": "ed3eac974186beb9a3f0e03d7d8e7ae5b80d638412086c43735f319fbe8f647e"
+          }
+        },
+        "checks": {
+          "real_keypad_menu": true,
+          "title_help_statistics": true,
+          "chord_suppressed_use_and_language": true,
+          "paused_world_and_clock": true,
+          "pause_preserved_fraction_and_raw_timer_continued": true,
+          "resume_excluded_paused_time": true,
+          "no_resume_fire_leak": true,
+          "language_preserved_world": true,
+          "in_game_select_preserves_language": true,
+          "pause_menu_language_row": true,
+          "exact_original_font8_pixels": true,
+          "exact_original_font16_pixels": true,
+          "offline_rom_icons_no_runtime_resize": true,
+          "signed16_hud_extremes": true,
+          "bounded_240byte_stress": true,
+          "viewport_240x144_messages_240x16": true
+        },
+        "messages": [
+          {
+            "language": 0,
+            "bytes": 36,
+            "object": 103,
+            "slot": 88,
+            "layout": {
+              "detail_pointer": "/validation/ui/messages/0/layout",
+              "entries": 4,
+              "scalars": {
+                "characters": 35,
+                "glyph_width": 6,
+                "x": 15,
+                "y": 148
+              }
+            }
+          },
+          {
+            "language": 1,
+            "bytes": 31,
+            "object": 103,
+            "slot": 88,
+            "layout": {
+              "detail_pointer": "/validation/ui/messages/1/layout",
+              "entries": 4,
+              "scalars": {
+                "characters": 30,
+                "glyph_width": 7,
+                "x": 15,
+                "y": 148
+              }
+            }
+          }
+        ],
+        "pages": [
+          {
+            "page": 1,
+            "exact_font_pixels": true
+          },
+          {
+            "page": 2,
+            "exact_font_pixels": true
+          },
+          {
+            "page": 3,
+            "exact_font_pixels": true
+          }
+        ],
+        "notifications": [
+          {
+            "language": 0,
+            "actual_pickup_item": 103,
+            "actual_completed_monster_death": 1,
+            "exact_death_text_pixels": true
+          },
+          {
+            "language": 1,
+            "actual_pickup_item": 103,
+            "actual_completed_monster_death": 1,
+            "exact_death_text_pixels": true
+          }
+        ],
+        "keys": {
+          "detail_pointer": "/validation/ui/keys",
+          "items": 16
+        },
+        "all_original_messages_single_line": {
+          "detail_pointer": "/validation/ui/all_original_messages_single_line",
+          "items": 6
+        },
+        "final": {
+          "magic": 1430860087,
+          "state": 2,
+          "focus": 0,
+          "language": 1,
+          "messages": 28,
+          "object": 65534,
+          "slot": 6,
+          "length": 12,
+          "page": 0,
+          "pages": 1,
+          "remaining": 30000,
+          "draws": 555,
+          "font8": 1,
+          "font16": 1,
+          "last_keys": 0,
+          "errors": 0
+        },
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5408,
+          "high_water_bytes": 2528,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        },
+        "physical_gba_tested": false,
+        "full_dos_session_tested": false
+      },
+      "flow": {
+        "task": "G18",
+        "status": "passed",
+        "rom_sha256": "e803f847e2c21abd9c1e5dbc70f12e98ef68f8c1ffc699989c7b97204a74308c",
+        "script_sha256": "905739442c519dc633dba5684dd9250243df40cabf474de28feefb114633ce95",
+        "levels": [
+          {
+            "language": 0,
+            "level": 1,
+            "actual_fcmap_exit_cell": 3678,
+            "score_collection_required": false,
+            "score": 0,
+            "total": 0,
+            "completed_to_title": true,
+            "fresh_inventory_on_start": true,
+            "retired_world_event_projectile_audio_cleanup": true
+          },
+          {
+            "language": 0,
+            "level": 2,
+            "actual_fcmap_exit_cell": 474,
+            "score_collection_required": false,
+            "score": 0,
+            "total": 0,
+            "completed_to_title": true,
+            "fresh_inventory_on_start": true,
+            "retired_world_event_projectile_audio_cleanup": true
+          },
+          {
+            "language": 0,
+            "level": 3,
+            "actual_fcmap_exit_cell": 1316,
+            "score_collection_required": false,
+            "score": 0,
+            "total": 0,
+            "completed_to_title": true,
+            "fresh_inventory_on_start": true,
+            "retired_world_event_projectile_audio_cleanup": true
+          },
+          {
+            "language": 1,
+            "level": 1,
+            "actual_fcmap_exit_cell": 3678,
+            "score_collection_required": false,
+            "score": 0,
+            "total": 0,
+            "completed_to_title": true,
+            "fresh_inventory_on_start": true,
+            "retired_world_event_projectile_audio_cleanup": true
+          },
+          {
+            "language": 1,
+            "level": 2,
+            "actual_fcmap_exit_cell": 474,
+            "score_collection_required": false,
+            "score": 0,
+            "total": 0,
+            "completed_to_title": true,
+            "fresh_inventory_on_start": true,
+            "retired_world_event_projectile_audio_cleanup": true
+          },
+          {
+            "language": 1,
+            "level": 3,
+            "actual_fcmap_exit_cell": 1316,
+            "score_collection_required": false,
+            "score": 0,
+            "total": 0,
+            "completed_to_title": true,
+            "fresh_inventory_on_start": true,
+            "retired_world_event_projectile_audio_cleanup": true
+          }
+        ],
+        "retries": [
+          {
+            "language": 0,
+            "lives": 2,
+            "inventory_world_visited_preserved": true,
+            "original_pose_subset_restored": true,
+            "other_actor_fields_preserved": true,
+            "ai_visual_door_events_preserved": true,
+            "projectiles_preserved": true,
+            "existing_sound_preserved_by_busy_death_voice": true
+          },
+          {
+            "language": 1,
+            "lives": 2,
+            "inventory_world_visited_preserved": true,
+            "original_pose_subset_restored": true,
+            "other_actor_fields_preserved": true,
+            "ai_visual_door_events_preserved": true,
+            "projectiles_preserved": true,
+            "existing_sound_preserved_by_busy_death_voice": true
+          }
+        ],
+        "screens": {
+          "detail_pointer": "/validation/flow/screens",
+          "items": 20
+        },
+        "ui_screens": {
+          "title_ru": {
+            "path": "build/g20a-hw-projection/hw_v128_projection/ui-check/flow-title-ru.png",
+            "sha256": "eadd1741afb0b646c0a2edef6e90110bb9e39e4c699d97b46aa74e6b81376668",
+            "framebuffer_sha256": "3588b22258d611c748cea2349d882668b7a15c7ca6e06f3015c04eccb04b9add"
+          },
+          "retry_0": {
+            "path": "build/g20a-hw-projection/hw_v128_projection/ui-check/flow-retry-0.png",
+            "sha256": "848ce5c6af78f5c86026a2a507fcec8796500926ae46da605c322a6fcdebec6c",
+            "framebuffer_sha256": "977332e0b02c7d9fded6f45842231d6055e43637869faa3124d79ddf03ecdc35"
+          },
+          "retry_1": {
+            "path": "build/g20a-hw-projection/hw_v128_projection/ui-check/flow-retry-1.png",
+            "sha256": "a17dcc3dce684895c431d85d97a990717cefd1c8fb7bdc287338569f0ffc756c",
+            "framebuffer_sha256": "73c9ffb23e1df09ed66d308e5dad0227af27486c13fd60a2ed1647df3f145863"
+          },
+          "gameover_en": {
+            "path": "build/g20a-hw-projection/hw_v128_projection/ui-check/flow-gameover-en.png",
+            "sha256": "b3c4914f96a561504d9b40709de79aa4fa894089c2918583b10074bb14d5fcdf",
+            "framebuffer_sha256": "227cbcdbbd91caba832b2d82279dfcf69103d3a0f2f118f8280350ac4e86e32c"
+          },
+          "suspended_title_ru": {
+            "path": "build/g20a-hw-projection/hw_v128_projection/ui-check/flow-suspended-title-ru.png",
+            "sha256": "ef52b8bb962edd02bfee52284f8c8fe9742ce46abde502e0c0fb0f9c236d21ca",
+            "framebuffer_sha256": "5cc39fb767a2be605c2563b0bf1518d36aca1ddc7e043d57935a86ee686c938b"
+          }
+        },
+        "gameover_three_lives": true,
+        "new_game_after_gameover": true,
+        "ending_from_title": true,
+        "suspended_continue_preserved_world_events_projectiles": true,
+        "ending_discarded_suspended_world_streams": true,
+        "new_game_replaced_live_world_without_old_owners": true,
+        "negative_hp_native_finish_sentinel": true,
+        "source_flow_independent_levels": true,
+        "no_automatic_campaign_or_inventory_carry": true,
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5408,
+          "high_water_bytes": 2528,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        },
+        "final": {
+          "magic": 1179398456,
+          "state": 0,
+          "level": 1,
+          "session": 0,
+          "lives": 3,
+          "score": 0,
+          "transitions": 54,
+          "resets": 10,
+          "pending": 0,
+          "text_id": 65535,
+          "text_size": 0,
+          "page": 0,
+          "pages": 1,
+          "errors": 0
+        },
+        "physical_gba_tested": false,
+        "whole_dos_session_tested": false
+      },
+      "ai": {
+        "task": "G14",
+        "status": "passed",
+        "rom_sha256": "e803f847e2c21abd9c1e5dbc70f12e98ef68f8c1ffc699989c7b97204a74308c",
+        "script_sha256": "e9cf4f6942b87ac0c174fc8471a4f64b78d69e544224773ff68c843f6bf73d85",
+        "perception": {
+          "detail_pointer": "/validation/ai/perception",
+          "items": 40
+        },
+        "traces": {
+          "detail_pointer": "/validation/ai/traces",
+          "items": 2
+        },
+        "viewed_wake": [
+          {
+            "language": 0,
+            "live_consideration_path": true,
+            "valid_display_before_first_callback": true,
+            "before": {
+              "detail_pointer": "/validation/ai/viewed_wake/0/before",
+              "entries": 5,
+              "scalars": {
+                "path": "build/g20a-hw-projection/hw_v128_projection/sprite-check/ai-sleeping-0.png",
+                "buffer_kind": "ppu-rgb",
+                "framebuffer_sha256": "2fc8ad5f90a47061610cf9451eee112eb5e30deefaf48f8222edf8f141b111f0",
+                "cycles": 302848,
+                "faces": 1
+              }
+            },
+            "after": {
+              "detail_pointer": "/validation/ai/viewed_wake/0/after",
+              "entries": 5,
+              "scalars": {
+                "path": "build/g20a-hw-projection/hw_v128_projection/sprite-check/ai-awake-0.png",
+                "buffer_kind": "ppu-rgb",
+                "framebuffer_sha256": "2fc8ad5f90a47061610cf9451eee112eb5e30deefaf48f8222edf8f141b111f0",
+                "cycles": 348544,
+                "faces": 1
+              }
+            }
+          },
+          {
+            "language": 1,
+            "live_consideration_path": true,
+            "valid_display_before_first_callback": true,
+            "before": {
+              "detail_pointer": "/validation/ai/viewed_wake/1/before",
+              "entries": 5,
+              "scalars": {
+                "path": "build/g20a-hw-projection/hw_v128_projection/sprite-check/ai-sleeping-1.png",
+                "buffer_kind": "ppu-rgb",
+                "framebuffer_sha256": "2fc8ad5f90a47061610cf9451eee112eb5e30deefaf48f8222edf8f141b111f0",
+                "cycles": 302848,
+                "faces": 1
+              }
+            },
+            "after": {
+              "detail_pointer": "/validation/ai/viewed_wake/1/after",
+              "entries": 5,
+              "scalars": {
+                "path": "build/g20a-hw-projection/hw_v128_projection/sprite-check/ai-awake-1.png",
+                "buffer_kind": "ppu-rgb",
+                "framebuffer_sha256": "2fc8ad5f90a47061610cf9451eee112eb5e30deefaf48f8222edf8f141b111f0",
+                "cycles": 346944,
+                "faces": 1
+              }
+            }
+          }
+        ],
+        "combat_owners": {
+          "sleeping_hit_woke_without_damage": true,
+          "reclaimed_monster_owner_removed_before_projectile_reuse": true,
+          "reused_glyph": 129
+        },
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5408,
+          "high_water_bytes": 2528,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        },
+        "physical_gba_tested": false,
+        "whole_dos_session_equivalence": false
+      },
+      "ai-combat": {
+        "task": "G15",
+        "status": "passed",
+        "rom_sha256": "e803f847e2c21abd9c1e5dbc70f12e98ef68f8c1ffc699989c7b97204a74308c",
+        "script_sha256": "b22c4c94028fd44c584603554e16ff70f7cc894a00ee98de5a6805d20f4c3b35",
+        "groups": {
+          "detail_pointer": "/validation/ai-combat/groups",
+          "items": 28
+        },
+        "extra": {
+          "ranged": {
+            "solid_wall_blocks_sight": true,
+            "front_monster_suppresses_shot": true,
+            "failed_allocation_still_counts_attempt": true,
+            "pool_capacity": 141,
+            "published_projectile_front_suppresses_shot": true
+          },
+          "occupied_corpse": {
+            "frames": {
+              "detail_pointer": "/validation/ai-combat/extra/occupied_corpse/frames",
+              "items": 8
+            },
+            "completed_once": true,
+            "passable_persistent_corpse": true,
+            "destination_plane": 0,
+            "mmap": 128,
+            "tmap": 108
+          }
+        },
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5408,
+          "high_water_bytes": 2528,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        },
+        "physical_gba_tested": false,
+        "whole_dos_session_equivalence": false
+      },
+      "interactions": {
+        "task": "G09",
+        "status": "passed",
+        "rom_sha256": "e803f847e2c21abd9c1e5dbc70f12e98ef68f8c1ffc699989c7b97204a74308c",
+        "scenarios": {
+          "detail_pointer": "/validation/interactions/scenarios",
+          "items": 6
+        },
+        "live_start": {
+          "flags": 88,
+          "frame": 29,
+          "phase": 1,
+          "ready": 1,
+          "occupancy": 0,
+          "extent": 30
+        },
+        "sensors": [
+          {
+            "level": 2,
+            "cells": [
+              3632,
+              3696,
+              3760,
+              3762
+            ],
+            "target": 104,
+            "closed": {
+              "detail_pointer": "/validation/interactions/sensors/0/closed",
+              "entries": 6,
+              "scalars": {
+                "flags": 64,
+                "frame": 0,
+                "phase": 2,
+                "ready": 1,
+                "occupancy": 0,
+                "extent": 30
+              }
+            }
+          },
+          {
+            "level": 3,
+            "cells": [
+              3321,
+              3322,
+              3323,
+              3324,
+              3325,
+              3326
+            ],
+            "target": 107,
+            "closed": {
+              "detail_pointer": "/validation/interactions/sensors/1/closed",
+              "entries": 6,
+              "scalars": {
+                "flags": 64,
+                "frame": 0,
+                "phase": 2,
+                "ready": 1,
+                "occupancy": 0,
+                "extent": 30
+              }
+            }
+          }
+        ],
+        "conveyors": [
+          {
+            "glyph": 60,
+            "cell": 153,
+            "before": [
+              12240,
+              -300,
+              1200
+            ],
+            "after": [
+              12194,
+              -300,
+              1200
+            ]
+          },
+          {
+            "glyph": 62,
+            "cell": 130,
+            "before": [
+              1200,
+              -300,
+              1200
+            ],
+            "after": [
+              1246,
+              -300,
+              1200
+            ]
+          },
+          {
+            "glyph": 123,
+            "cell": 148,
+            "before": [
+              9840,
+              -300,
+              1200
+            ],
+            "after": [
+              9840,
+              -300,
+              1246
+            ]
+          },
+          {
+            "glyph": 125,
+            "cell": 194,
+            "before": [
+              1200,
+              -300,
+              1680
+            ],
+            "after": [
+              1200,
+              -300,
+              1634
+            ]
+          }
+        ],
+        "active_door_language_preserved": true,
+        "finish_event": true,
+        "shared_arm_cases": true,
+        "poisoned_reset": true,
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5408,
+          "high_water_bytes": 2528,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        },
+        "captures": {
+          "detail_pointer": "/validation/interactions/captures",
+          "items": 12
+        },
+        "live_frame_min_cycles": 853504,
+        "live_frame_max_cycles": 2892416,
+        "test_frame_max_cycles": 1400064,
+        "physical_gba_tested": false,
+        "original_bios_tested": false,
+        "original_affine_visual_oracle_checked": false
+      },
+      "transitions": {
+        "rom_sha256": "e803f847e2c21abd9c1e5dbc70f12e98ef68f8c1ffc699989c7b97204a74308c",
+        "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+        "script_sha256": "16faa8d7b3c74b390dc42d9531ef8c5b8c97635dffb16d2f3ae854611395df73",
+        "rows": {
+          "detail_pointer": "/validation/transitions/rows",
+          "items": 282
+        },
+        "status": "passed",
+        "scope": "Every PPU callback for282 held camera/weapon/message changes in six world/language views; not continuous gameplay or physical GBA."
+      },
+      "stress": {
+        "task": "G20",
+        "status": "passed",
+        "script_sha256": "139f139f79eccf503505df9bee310a6d53b5083058f14f6c3f34a7957b27e082",
+        "rom_sha256": "e803f847e2c21abd9c1e5dbc70f12e98ef68f8c1ffc699989c7b97204a74308c",
+        "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+        "bios": "mGBA replacement BIOS",
+        "physical_gba_tested": false,
+        "budget_cycles": 561792,
+        "target_met": false,
+        "rows": {
+          "detail_pointer": "/validation/stress/rows",
+          "items": 24
+        },
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5408,
+          "high_water_bytes": 2528,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        },
+        "irq_stack": {
+          "low": 50364160,
+          "top": 50364320,
+          "untouched_margin_bytes": 80,
+          "high_water_bytes": 80,
+          "includes_bios_irq_saves": true
+        },
+        "audio_underruns": 0,
+        "capture_hold_during_samples": false,
+        "limitations": [
+          "Artificial all-awake and capacity fixtures are distinguished from normal gameplay.",
+          "CPU timer excludes presentation wait and diagnostic publication; presentation FPS includes them.",
+          "Controlled stationary camera; live D-pad turning, fire, callbacks and real clock run normally."
+        ]
+      },
+      "clock": {
+        "task": "G06",
+        "integrated_renderer": true,
+        "edge_vectors_on_arm": "passed",
+        "core_version": "0.11-212-7a12d6d",
+        "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+        "rom_sha256": "e803f847e2c21abd9c1e5dbc70f12e98ef68f8c1ffc699989c7b97204a74308c",
+        "rom_bytes": 10845692,
+        "ewram_static_bytes": 260944,
+        "start": {
+          "magic": 1414090038,
+          "error": 0,
+          "ticks": 867,
+          "counter": 170399,
+          "remainder": 17571212,
+          "step_now": 800,
+          "debt": 67,
+          "steps": 8,
+          "callbacks": 8,
+          "polls": 3,
+          "max_debt": 867,
+          "last_callback": 800
+        },
+        "after_600_vblanks": {
+          "magic": 1414090038,
+          "error": 0,
+          "ticks": 101222,
+          "counter": 2794119,
+          "remainder": 5174972,
+          "step_now": 101200,
+          "debt": 22,
+          "steps": 1012,
+          "callbacks": 1012,
+          "polls": 202,
+          "max_debt": 867,
+          "last_callback": 101200
+        },
+        "restart_after_poison": {
+          "magic": 1414090038,
+          "error": 0,
+          "ticks": 867,
+          "counter": 170399,
+          "remainder": 17571212,
+          "step_now": 800,
+          "debt": 67,
+          "steps": 8,
+          "callbacks": 8,
+          "polls": 3,
+          "max_debt": 867,
+          "last_callback": 800
+        },
+        "exact_rational_samples": true,
+        "hardware_low_word_rollover": true,
+        "title_pause_excluded_counter": 147717,
+        "physical_gba_tested": false,
+        "original_bios_tested": false
+      },
+      "actual_transition_video_frames": 1601,
+      "clean_repeat_byte_exact": true,
+      "effect_opaque_ppu_samples": 444
+    },
+    "baseline_harness_regressions": {
+      "items": {
+        "task": "G12",
+        "status": "passed",
+        "rom_sha256": "7babd40f913eb12f77c93c9df917cea432b0cbe3bd83e11da45ba08dec917ea8",
+        "script_sha256": "1c152d3f3acdca6a0d94f2fa038c91a1ff90c6710ca578789967329e9fd107fc",
+        "stats": {
+          "detail_pointer": "/baseline_harness_regressions/items/stats",
+          "items": 109
+        },
+        "pickups": {
+          "detail_pointer": "/baseline_harness_regressions/items/pickups",
+          "items": 58
+        },
+        "live_pickup": [
+          {
+            "language": 0,
+            "object": 103,
+            "cell": 3038,
+            "production_motion_path": true,
+            "full_positive_item_retained": true,
+            "changed_scene_pixels": 965,
+            "before": {
+              "detail_pointer": "/baseline_harness_regressions/items/live_pickup/0/before",
+              "entries": 5,
+              "scalars": {
+                "path": "build/select-menu-fix/sprite-check/item-before-0.png",
+                "buffer_kind": "mode4-indexed",
+                "framebuffer_sha256": "566102fd3e8a65bfc8c034433a5ce15bdf523a99c44de5c658212c813fb7323b",
+                "cycles": 2747840,
+                "faces": 39
+              }
+            },
+            "after": {
+              "detail_pointer": "/baseline_harness_regressions/items/live_pickup/0/after",
+              "entries": 5,
+              "scalars": {
+                "path": "build/select-menu-fix/sprite-check/item-after-0.png",
+                "buffer_kind": "mode4-indexed",
+                "framebuffer_sha256": "b4fbc8cf973df07f9e082732a76cbde9d14e7ec425f45399763b32d44b0d85e7",
+                "cycles": 3134592,
+                "faces": 38
+              }
+            }
+          },
+          {
+            "language": 1,
+            "object": 103,
+            "cell": 3038,
+            "production_motion_path": true,
+            "full_positive_item_retained": true,
+            "changed_scene_pixels": 965,
+            "before": {
+              "detail_pointer": "/baseline_harness_regressions/items/live_pickup/1/before",
+              "entries": 5,
+              "scalars": {
+                "path": "build/select-menu-fix/sprite-check/item-before-1.png",
+                "buffer_kind": "mode4-indexed",
+                "framebuffer_sha256": "7eddd54b5ebbd43fcf365dbea209dbf1a290417291cc1c6d966d3839f907b71e",
+                "cycles": 2879936,
+                "faces": 39
+              }
+            },
+            "after": {
+              "detail_pointer": "/baseline_harness_regressions/items/live_pickup/1/after",
+              "entries": 5,
+              "scalars": {
+                "path": "build/select-menu-fix/sprite-check/item-after-1.png",
+                "buffer_kind": "mode4-indexed",
+                "framebuffer_sha256": "4297ab14f9add8cda7fe2788f4b1011213331c2c4ba2f2aa91af0616e38c50c6",
+                "cycles": 3128768,
+                "faces": 38
+              }
+            }
+          }
+        ],
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5568,
+          "high_water_bytes": 2368,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        },
+        "originals": [
+          {
+            "path": "originals/pkr/RUS/PKR.RES",
+            "sha256": "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816"
+          },
+          {
+            "path": "originals/pkr/ENG/PKE.RES",
+            "sha256": "865da340621fa6f90548a84e9ae9bf0a85071befb32a40ca1d359e488f74d458"
+          },
+          {
+            "path": "originals/pkr/RUS/PKR.RES",
+            "sha256": "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816"
+          },
+          {
+            "path": "originals/pkr/ENG/PKE.RES",
+            "sha256": "865da340621fa6f90548a84e9ae9bf0a85071befb32a40ca1d359e488f74d458"
+          },
+          {
+            "path": "originals/pkr/RUS/PKR.RES",
+            "sha256": "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816"
+          },
+          {
+            "path": "originals/pkr/ENG/PKE.RES",
+            "sha256": "865da340621fa6f90548a84e9ae9bf0a85071befb32a40ca1d359e488f74d458"
+          }
+        ],
+        "physical_gba_tested": false,
+        "whole_dos_session_equivalence": false
+      },
+      "combat": {
+        "task": "G13",
+        "status": "passed",
+        "rom_sha256": "7babd40f913eb12f77c93c9df917cea432b0cbe3bd83e11da45ba08dec917ea8",
+        "script_sha256": "1153f9522c6ee704191d8941d6a7890cfb0b7ee4407af13be2d767154e6de24c",
+        "flights": {
+          "detail_pointer": "/baseline_harness_regressions/combat/flights",
+          "items": 4
+        },
+        "pool": {
+          "capacity": 141,
+          "failed_allocation_preserved_charge": true,
+          "failed_allocation_changed_readiness": true,
+          "first_free_reused": 0,
+          "all_events_unlinked_after_clear": true
+        },
+        "independent_instances": [
+          {
+            "language": 0,
+            "template": 65,
+            "independent_texture_slots": [
+              256,
+              257
+            ],
+            "resource": 28,
+            "simultaneous_different_frames_verified": true,
+            "captures": [
+              {
+                "detail_pointer": "/baseline_harness_regressions/combat/independent_instances/0/captures/0",
+                "entries": 7,
+                "scalars": {
+                  "path": "build/select-menu-fix/sprite-check/independent-effects-0-2.png",
+                  "buffer_kind": "mode4-indexed",
+                  "framebuffer_sha256": "bacfbbff92d68cb9afd8e5f5be3543aee3e0c2ec76d9a405f23d5609233d55e1",
+                  "cycles": 2640576,
+                  "faces": 2
+                }
+              },
+              {
+                "detail_pointer": "/baseline_harness_regressions/combat/independent_instances/0/captures/1",
+                "entries": 7,
+                "scalars": {
+                  "path": "build/select-menu-fix/sprite-check/independent-effects-0-3.png",
+                  "buffer_kind": "mode4-indexed",
+                  "framebuffer_sha256": "a882129fa461c7b1bfa47347c02424bf812e5417da1201d15f7e667d5d2069d8",
+                  "cycles": 2640000,
+                  "faces": 2
+                }
+              }
+            ]
+          },
+          {
+            "language": 1,
+            "template": 65,
+            "independent_texture_slots": [
+              256,
+              257
+            ],
+            "resource": 28,
+            "simultaneous_different_frames_verified": true,
+            "captures": [
+              {
+                "detail_pointer": "/baseline_harness_regressions/combat/independent_instances/1/captures/0",
+                "entries": 7,
+                "scalars": {
+                  "path": "build/select-menu-fix/sprite-check/independent-effects-1-2.png",
+                  "buffer_kind": "mode4-indexed",
+                  "framebuffer_sha256": "bacfbbff92d68cb9afd8e5f5be3543aee3e0c2ec76d9a405f23d5609233d55e1",
+                  "cycles": 2640576,
+                  "faces": 2
+                }
+              },
+              {
+                "detail_pointer": "/baseline_harness_regressions/combat/independent_instances/1/captures/1",
+                "entries": 7,
+                "scalars": {
+                  "path": "build/select-menu-fix/sprite-check/independent-effects-1-3.png",
+                  "buffer_kind": "mode4-indexed",
+                  "framebuffer_sha256": "a882129fa461c7b1bfa47347c02424bf812e5417da1201d15f7e667d5d2069d8",
+                  "cycles": 2639936,
+                  "faces": 2
+                }
+              }
+            ]
+          }
+        ],
+        "collisions": [
+          {
+            "kind": "wall",
+            "pending_flight_image": 29,
+            "effect_resource": 26,
+            "effect_starts_at_frame": 1,
+            "damage_on_contact": null,
+            "cleaned_up": true
+          },
+          {
+            "kind": "door-closed",
+            "pending_flight_image": 29,
+            "effect_resource": 26,
+            "effect_starts_at_frame": 1,
+            "damage_on_contact": null,
+            "cleaned_up": true
+          },
+          {
+            "kind": "door-open",
+            "passed_through": true
+          },
+          {
+            "kind": "monster",
+            "pending_flight_image": 29,
+            "effect_resource": 28,
+            "effect_starts_at_frame": 1,
+            "damage_on_contact": 14,
+            "cleaned_up": true
+          },
+          {
+            "kind": "damage-events",
+            "sleeping_contact_wakes_without_damage": true,
+            "dead_health_clamped": true,
+            "ai_notification_states_verified": true,
+            "same_class_immune": true,
+            "player_health_after_15_damage": 85
+          }
+        ],
+        "dynamic_occupancy": {
+          "projectile": 0,
+          "cell": 2019,
+          "blocked_x": 16561,
+          "after_clear_x": 16830,
+          "production_actor_collision_verified": true,
+          "clear_released_occupancy": true
+        },
+        "weapon_transition": {
+          "states": {
+            "detail_pointer": "/baseline_harness_regressions/combat/weapon_transition/states",
+            "items": 7
+          },
+          "unavailable_weapon_rejected": true
+        },
+        "first_pickup_show": {
+          "ordinary_pickup_registered": true,
+          "show_states": [
+            [
+              1,
+              2
+            ],
+            [
+              1,
+              1
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              7,
+              0
+            ]
+          ],
+          "fire_rejected_during_show": true,
+          "first_ready_shot_charge": 136
+        },
+        "shot_series": [
+          {
+            "weapon": 1,
+            "shots": 10,
+            "final_charge": 860,
+            "active_after_each_shot": 0,
+            "all_events_and_occupancy_released": true
+          },
+          {
+            "weapon": 2,
+            "shots": 10,
+            "final_charge": 960,
+            "active_after_each_shot": 0,
+            "all_events_and_occupancy_released": true
+          }
+        ],
+        "live_input": {
+          "button": "A",
+          "gba_key_mask": 1,
+          "native_fire_command": 512,
+          "charge_after_shot": 86,
+          "screenshot": {
+            "path": "build/select-menu-fix/sprite-check/real-a-button.png",
+            "buffer_kind": "mode4-indexed",
+            "framebuffer_sha256": "23c7b46b190efa5cfb00fc4f9bcfc4ba4f5b98447090e3904b342ce4e3938291",
+            "cycles": 5685312,
+            "faces": 1
+          },
+          "real_l_r_weapon_cycle": true,
+          "laser_shots": 1,
+          "laser_charge": 96,
+          "laser_screenshot": {
+            "path": "build/select-menu-fix/sprite-check/real-l-r-cycle-and-laser-a.png",
+            "buffer_kind": "mode4-indexed",
+            "framebuffer_sha256": "52ac6b7ee174ad49eb687697f9aaf095d09ebac0ed5a78d22798a29c3f66e12f",
+            "cycles": 3854592,
+            "faces": 1
+          }
+        },
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5568,
+          "high_water_bytes": 2368,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        },
+        "whole_dos_session_equivalence": false,
+        "physical_gba_tested": false
+      }
+    },
+    "originals_unchanged": {
+      "detail_pointer": "/originals_unchanged",
+      "items": 22
+    },
+    "preserved_artifacts": {
+      "artifacts/gba/DoK-port_hardware_128_prototype.gba": "16ba83e8efd86169abec4206b720dd7a59fbfc1de85dc4ac2580b098296b3961",
+      "artifacts/gba/DoK-port_hardware_culling_prototype.gba": "240669c13508acba18fa08a68dd0bc793c02366561ee0b617d7c1e62d976f014",
+      "artifacts/gba/DoK-port_hardware_planes_prototype.gba": "4dfbbe0e8a14352fcef5c182baef3ffdf0483b81345c8837b1530ee09f7f581d"
+    },
+    "build_manifest": {
+      "tables": {
+        "package_sha256": "3efa5d3027d63ffd65e0ae8c0b45be23ee8394b3c5151c8e9f10e76fa8674351",
+        "nodes_per_view": 8191,
+        "bsp_bytes": 196584,
+        "padding": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "prelit_bytes": 6234628,
+        "columns_no_scales_bytes": 378336,
+        "stored_light_rows": {
+          "detail_pointer": "/build_manifest/tables/stored_light_rows",
+          "items": 16
+        },
+        "quantized_light_rows": [
+          0,
+          4,
+          8,
+          12,
+          15
+        ],
+        "exact_hud_panel_atlas_bytes": 11824,
+        "surface_side_columns": true,
+        "hardware_bg": {
+          "texture_size": 32,
+          "light_rows": [
+            0,
+            7,
+            15
+          ],
+          "bank_bytes": 230400,
+          "views": [
+            {
+              "detail_pointer": "/build_manifest/tables/hardware_bg/views/0",
+              "entries": 4,
+              "scalars": {
+                "view": 0,
+                "minimum_walls_in_any16_cell_window": 14
+              }
+            },
+            {
+              "detail_pointer": "/build_manifest/tables/hardware_bg/views/1",
+              "entries": 4,
+              "scalars": {
+                "view": 1,
+                "minimum_walls_in_any16_cell_window": 14
+              }
+            },
+            {
+              "detail_pointer": "/build_manifest/tables/hardware_bg/views/2",
+              "entries": 4,
+              "scalars": {
+                "view": 2,
+                "minimum_walls_in_any16_cell_window": 20
+              }
+            },
+            {
+              "detail_pointer": "/build_manifest/tables/hardware_bg/views/3",
+              "entries": 4,
+              "scalars": {
+                "view": 3,
+                "minimum_walls_in_any16_cell_window": 20
+              }
+            },
+            {
+              "detail_pointer": "/build_manifest/tables/hardware_bg/views/4",
+              "entries": 4,
+              "scalars": {
+                "view": 4,
+                "minimum_walls_in_any16_cell_window": 32
+              }
+            },
+            {
+              "detail_pointer": "/build_manifest/tables/hardware_bg/views/5",
+              "entries": 4,
+              "scalars": {
+                "view": 5,
+                "minimum_walls_in_any16_cell_window": 32
+              }
+            }
+          ]
+        }
+      },
+      "variants": {
+        "hw_v128_projection": {
+          "rom": "build\\g20a-hw-fast-final\\hw_v128_projection\\dok-diagnostic.gba",
+          "rom_bytes": 10845692,
+          "rom_sha256": "e803f847e2c21abd9c1e5dbc70f12e98ef68f8c1ffc699989c7b97204a74308c",
+          "entry": 134217728,
+          "symbols": {
+            "__ARMv4ABSLongBXThunk_gba_render_stage": 50350184,
+            "__ARMv4ABSLongBXThunk_dok_rom_binding": 134318672,
+            "__ARMv4ABSLongBXThunk_dok_rom_resource_at": 134318684,
+            "__ARMv4ABSLongBXThunk_dok_animation_open": 134318728,
+            "__ARMv4ABSLongBXThunk_dok_animation_frame_at": 134318740,
+            "__ARMv5LongLdrPcThunk_billboard_image": 50350244,
+            "__ARMv5LongLdrPcThunk_billboard": 50350252,
+            "__ARMv5LongLdrPcThunk_sort_faces": 50350260,
+            "__ARMv5LongLdrPcThunk_defer_background": 50350268,
+            "__ARMv5LongLdrPcThunk_render_ticks": 50350276,
+            "__ARMv5LongLdrPcThunk_background_gaps": 50350284,
+            "__ARMv5LongLdrPcThunk_seed_hardware_surfaces": 50350292,
+            "__ARMv5LongLdrPcThunk_surface_sides": 50350300,
+            "__ARMv5LongLdrPcThunk_cell_sprites": 50350308,
+            "__ARMv5LongLdrPcThunk_image": 50350316,
+            "__ARMv5LongLdrPcThunk_face_box_covered": 50350324,
+            "__ARMv5LongLdrPcThunk_edge_start": 50350332,
+            "__ARMv5LongLdrPcThunk_surface_image": 50350340,
+            "__ARMv5LongLdrPcThunk_cover": 50350348,
+            "__ARMv4ABSLongBXThunk_dok_ui_set_art": 50353596,
+            "__Thumbv4ABSLongBXThunk___aeabi_memcpy4": 134309609,
+            "__Thumbv4ABSLongBXThunk_load_ui": 134309621,
+            "__Thumbv4ABSLongBXThunk_dok_renderer_camera_from_runtime": 134309633,
+            "__Thumbv4ABSLongBXThunk_dok_renderer_palette": 134309645,
+            "__Thumbv4ABSLongBXThunk_dok_gba_tiled_clear": 134309657,
+            "__Thumbv4ABSLongBXThunk_gba_divmod_selftest": 134309669,
+            "__Thumbv4ABSLongBXThunk_dok_renderer_light_row": 134309681,
+            "__Thumbv4ABSLongBXThunk_dok_renderer_camera_heading": 134309693,
+            "__Thumbv4ABSLongBXThunk_dok_renderer_draw": 134309705,
+            "__Thumbv4ABSLongBXThunk_hw_bg_prepare": 134309717,
+            "__Thumbv4ABSLongBXThunk_hw_dirty_tiles": 134309729,
+            "__Thumbv4ABSLongBXThunk_dok_gba_hw_map_cells": 134309741,
+            "__ARMv4ABSLongBXThunk_timer_sample": 134309752,
+            "__ARMv4ABSLongBXThunk_hw_bg_plan_cells": 134309764,
+            "__ARMv4ABSLongBXThunk_panic": 134309776,
+            "__ARMv4ABSLongBXThunk_hw_bg_fill_lut": 134309788,
+            "__ARMv5LongLdrPcThunk___aeabi_idiv": 134309800,
+            "__ARMv5LongLdrPcThunk_dok_renderer_light_row": 134309808,
+            "__Thumbv4ABSLongBXThunk___aeabi_idiv": 134309817,
+            "__Thumbv4ABSLongBXThunk___aeabi_memclr4": 134309829,
+            "__Thumbv4ABSLongBXThunk___aeabi_uidivmod": 134309841,
+            "__Thumbv4ABSLongBXThunk___aeabi_uidiv": 134309853,
+            "__Thumbv4ABSLongBXThunk_dok_gba_copy_panel_rows": 134309865,
+            "__Thumbv4ABSLongBXThunk_dok_gba_tiled_ui_panel": 134309877,
+            "__Thumbv4ABSLongBXThunk___aeabi_idivmod": 134309889,
+            "__Thumbv4ABSLongBXThunk___aeabi_memclr": 134309901,
+            "__Thumbv4ABSLongBXThunk___aeabi_memcpy": 134309913,
+            "__ARMv5LongLdrPcThunk___aeabi_uidivmod": 134318632,
+            "__ARMv5LongLdrPcThunk___aeabi_idivmod": 134318640,
+            "__ARMv4ABSLongBXThunk_dok_runtime_actor_at": 134318648,
+            "__ARMv4ABSLongBXThunk_dok_runtime_position": 134318660,
+            "__ARMv5LongLdrPcThunk_dok_projection_transform": 134318696,
+            "__ARMv5LongLdrPcThunk_dok_projection_project": 134318704,
+            "__ARMv5LongLdrPcThunk_coverage_edge": 134318712,
+            "__ARMv5LongLdrPcThunk_surfaces_build": 134318720,
+            "__ARMv4ABSLongBXThunk_dok_image_open": 134318752,
+            "__ARMv5LongLdrPcThunk___aeabi_uidiv": 134318764,
+            "_start": 134242160,
+            "__iwram_load": 134217920,
+            "__iwram_start": 50331648,
+            "__iwram_end": 50355888,
+            "__data_load": 145063416,
+            "__data_start": 33554432,
+            "__data_end": 33554436,
+            "__bss_start": 33554440,
+            "__bss_end": 33815376,
+            "gba_main": 134244477,
+            "gba_irq": 134242408,
+            "g_vblanks": 33771896,
+            "g_render_diag": 33569684,
+            "g_render_world": 33569812,
+            "g_render_frame": 33603680,
+            "g_render_stages": 33764196,
+            "__aeabi_memcpy4": 50350696,
+            "g_render_view": 33764292,
+            "g_diag": 33554440,
+            "dok_gba_assets": 134592976,
+            "dok_gba_assets_end": 137356022,
+            "g_render_stats": 33771948,
+            "g_render_completed_stages": 33773120,
+            "__aeabi_idiv": 50351024,
+            "__aeabi_uidivmod": 50351204,
+            "__aeabi_uidiv": 50350888,
+            "__aeabi_idivmod": 50351236,
+            "__aeabi_memclr4": 50350860,
+            "__aeabi_memclr": 50350832,
+            "__aeabi_memcpy": 50350628,
+            "__aeabi_memcpy8": 50350764,
+            "g_render_work": 33813768,
+            "__iwram_reserved_override": 8192,
+            "__iwram_reserved_bytes": 8192,
+            "__iwram_code_end": 50353608,
+            "__iwram_data_start": 50353608,
+            "__iwram_data_end": 50355888
+          },
+          "sections": [
+            {
+              "detail_pointer": "/build_manifest/variants/hw_v128_projection/sections/0",
+              "entries": 4,
+              "scalars": {
+                "name": ".header",
+                "address": 134217728,
+                "size": 192,
+                "type": 1
+              }
+            },
+            {
+              "detail_pointer": "/build_manifest/variants/hw_v128_projection/sections/1",
+              "entries": 4,
+              "scalars": {
+                "name": ".iwram",
+                "address": 50331648,
+                "size": 24240,
+                "type": 1
+              }
+            },
+            {
+              "detail_pointer": "/build_manifest/variants/hw_v128_projection/sections/2",
+              "entries": 4,
+              "scalars": {
+                "name": ".text",
+                "address": 134242160,
+                "size": 10821152,
+                "type": 1
+              }
+            },
+            {
+              "detail_pointer": "/build_manifest/variants/hw_v128_projection/sections/3",
+              "entries": 4,
+              "scalars": {
+                "name": ".ARM.exidx",
+                "address": 145063312,
+                "size": 104,
+                "type": 1879048193
+              }
+            },
+            {
+              "detail_pointer": "/build_manifest/variants/hw_v128_projection/sections/4",
+              "entries": 4,
+              "scalars": {
+                "name": ".data",
+                "address": 33554432,
+                "size": 4,
+                "type": 1
+              }
+            },
+            {
+              "detail_pointer": "/build_manifest/variants/hw_v128_projection/sections/5",
+              "entries": 4,
+              "scalars": {
+                "name": ".bss",
+                "address": 33554440,
+                "size": 260936,
+                "type": 8
+              }
+            }
+          ],
+          "header_checksum": 4,
+          "ewram_static_bytes": 260944,
+          "prototype_defines": [
+            "NO_SCALES",
+            "STATIC_SETUP",
+            "PRELIT",
+            "EXACT_LIGHT",
+            "EXACT_PLANES",
+            "UI_CACHE",
+            "SIDES_PRELIT",
+            "HW_OBJ",
+            "HW_PACK_ARM",
+            "HW_DIRECT",
+            "HW_BG",
+            "HW_RAYS32",
+            "HW_BG_LEASE_CACHE",
+            "HW_ROW_LUT",
+            "HW_BG_STREAM",
+            "HW_UI_REUSE",
+            "BACKFACE",
+            "HW_EDGE_ROM",
+            "BACKFACE_SIDES",
+            "SIDE_SETUP",
+            "HW_MASKED",
+            "HW_PRESENT",
+            "HW_MAP_CACHE",
+            "HW_EARLY_PRESENT",
+            "HW_VERTICAL128",
+            "HW_COLUMN_CACHE",
+            "HW_CELL_CLASS",
+            "HW_FC_SEED",
+            "HW_FACE_BOX",
+            "HW_COVER4",
+            "HW_DIRECT_RUN",
+            "HW_PROJECT_RECIP"
+          ]
+        },
+        "source_control": {
+          "rom": "build\\g20a-hw-fast-final\\source_control\\dok-diagnostic.gba",
+          "rom_bytes": 32891192,
+          "rom_sha256": "7babd40f913eb12f77c93c9df917cea432b0cbe3bd83e11da45ba08dec917ea8",
+          "entry": 134217728,
+          "symbols": {
+            "__ARMv4ABSLongBXThunk_dok_runtime_actor_at": 134309336,
+            "__ARMv4ABSLongBXThunk_dok_runtime_position": 50350972,
+            "__ARMv4ABSLongBXThunk_gba_render_stage": 50350984,
+            "__ARMv4ABSLongBXThunk_dok_rom_binding": 134309288,
+            "__ARMv4ABSLongBXThunk_dok_rom_resource_at": 134309300,
+            "__ARMv4ABSLongBXThunk_dok_animation_open": 134309348,
+            "__ARMv4ABSLongBXThunk_dok_animation_frame_at": 134309360,
+            "__ARMv5LongLdrPcThunk_billboard_image": 50351044,
+            "__ARMv5LongLdrPcThunk_billboard": 50351052,
+            "__ARMv5LongLdrPcThunk_render_ticks": 50351060,
+            "__ARMv5LongLdrPcThunk_surface_sides": 50351068,
+            "__ARMv5LongLdrPcThunk_cell_sprites": 50351076,
+            "__ARMv5LongLdrPcThunk_image": 50351084,
+            "__ARMv5LongLdrPcThunk_surface_image": 50351092,
+            "__ARMv4ABSLongBXThunk_dok_ui_set_art": 50353268,
+            "__Thumbv4ABSLongBXThunk___aeabi_memcpy4": 134303553,
+            "__Thumbv4ABSLongBXThunk_load_ui": 134303565,
+            "__Thumbv4ABSLongBXThunk_dok_renderer_camera_from_runtime": 134303577,
+            "__Thumbv4ABSLongBXThunk_dok_renderer_palette": 134303589,
+            "__Thumbv4ABSLongBXThunk_gba_divmod_selftest": 134303601,
+            "__Thumbv4ABSLongBXThunk_dok_renderer_light_row": 134303613,
+            "__Thumbv4ABSLongBXThunk_dok_renderer_camera_heading": 134303625,
+            "__Thumbv4ABSLongBXThunk_dok_renderer_draw": 134303637,
+            "__Thumbv4ABSLongBXThunk___aeabi_idiv": 134303649,
+            "__Thumbv4ABSLongBXThunk___aeabi_memclr4": 134303661,
+            "__Thumbv4ABSLongBXThunk___aeabi_uidivmod": 134303673,
+            "__Thumbv4ABSLongBXThunk___aeabi_uidiv": 134303685,
+            "__Thumbv4ABSLongBXThunk___aeabi_idivmod": 134303697,
+            "__Thumbv4ABSLongBXThunk___aeabi_memclr": 134303709,
+            "__Thumbv4ABSLongBXThunk___aeabi_memcpy": 134303721,
+            "__ARMv5LongLdrPcThunk___aeabi_uidivmod": 134309272,
+            "__ARMv5LongLdrPcThunk___aeabi_idivmod": 134309280,
+            "__ARMv5LongLdrPcThunk_dok_projection_transform": 134309312,
+            "__ARMv5LongLdrPcThunk_dok_projection_project": 134309320,
+            "__ARMv5LongLdrPcThunk___aeabi_idiv": 134309328,
+            "__ARMv4ABSLongBXThunk_dok_image_open": 134309372,
+            "_start": 134242312,
+            "__iwram_load": 134217920,
+            "__iwram_start": 50331648,
+            "__iwram_end": 50356040,
+            "__data_load": 167108916,
+            "__data_start": 33554432,
+            "__data_end": 33554436,
+            "__bss_start": 33554436,
+            "__bss_end": 33808100,
+            "gba_main": 134244301,
+            "gba_irq": 134242560,
+            "g_vblanks": 33766060,
+            "g_render_diag": 33569680,
+            "g_render_world": 33569808,
+            "g_render_frame": 33603672,
+            "g_render_stages": 33764188,
+            "__aeabi_memcpy4": 50351420,
+            "g_render_view": 33764284,
+            "g_diag": 33554436,
+            "dok_gba_assets": 134583584,
+            "dok_gba_assets_end": 137346630,
+            "g_render_stats": 33766112,
+            "g_render_completed_stages": 33766172,
+            "__aeabi_uidivmod": 50351928,
+            "__aeabi_uidiv": 50351612,
+            "__aeabi_idivmod": 50351960,
+            "__aeabi_idiv": 50351748,
+            "__aeabi_memclr4": 50351584,
+            "__aeabi_memclr": 50351556,
+            "__aeabi_memcpy": 50351352,
+            "__aeabi_memcpy8": 50351488,
+            "g_render_work": 33807568,
+            "__iwram_reserved_override": 8192,
+            "__iwram_reserved_bytes": 8192,
+            "__iwram_code_end": 50353280,
+            "__iwram_data_start": 50353280,
+            "__iwram_data_end": 50356040
+          },
+          "sections": [
+            {
+              "detail_pointer": "/build_manifest/variants/source_control/sections/0",
+              "entries": 4,
+              "scalars": {
+                "name": ".header",
+                "address": 134217728,
+                "size": 192,
+                "type": 1
+              }
+            },
+            {
+              "detail_pointer": "/build_manifest/variants/source_control/sections/1",
+              "entries": 4,
+              "scalars": {
+                "name": ".iwram",
+                "address": 50331648,
+                "size": 24392,
+                "type": 1
+              }
+            },
+            {
+              "detail_pointer": "/build_manifest/variants/source_control/sections/2",
+              "entries": 4,
+              "scalars": {
+                "name": ".text",
+                "address": 134242312,
+                "size": 32866452,
+                "type": 1
+              }
+            },
+            {
+              "detail_pointer": "/build_manifest/variants/source_control/sections/3",
+              "entries": 4,
+              "scalars": {
+                "name": ".ARM.exidx",
+                "address": 167108764,
+                "size": 152,
+                "type": 1879048193
+              }
+            },
+            {
+              "detail_pointer": "/build_manifest/variants/source_control/sections/4",
+              "entries": 4,
+              "scalars": {
+                "name": ".data",
+                "address": 33554432,
+                "size": 4,
+                "type": 1
+              }
+            },
+            {
+              "detail_pointer": "/build_manifest/variants/source_control/sections/5",
+              "entries": 4,
+              "scalars": {
+                "name": ".bss",
+                "address": 33554436,
+                "size": 253664,
+                "type": 8
+              }
+            }
+          ],
+          "header_checksum": 4,
+          "ewram_static_bytes": 253668,
+          "prototype_defines": [
+            "MAIN_CONTROL",
+            "UI_CONTROL"
+          ]
+        }
+      },
+      "base_rom_sha256": "7babd40f913eb12f77c93c9df917cea432b0cbe3bd83e11da45ba08dec917ea8",
+      "base_objects": {
+        "detail_pointer": "/build_manifest/base_objects",
+        "entries": 40
+      },
+      "sources": {
+        "detail_pointer": "/build_manifest/sources",
+        "entries": 36
+      }
+    },
+    "input_reports": {
+      "detail_pointer": "/input_reports",
+      "entries": 24
+    },
+    "limitations": [
+      "15+ met in selected runtime-camera averages;72 fixed-heading renderer fixtures still include14.931875FPS. Overall goal remains open.",
+      "No whole-level minimum FPS, physical GBA or original BIOS verification;24.1/30 not achieved across all worlds.",
+      "Artificial all-awake stress remains extremely slow with growing motion debt; passed verifies guards/audio/logic, not frame budget.",
+      "Quality remains identical to the128-row prototype, with128 CPU rows stretched to144; original floor affine pixel oracle intentionally omitted.",
+      "Direct runs require NO_SCALES; projection acceleration is selected only for denominator1..16384 with exact signed fallback.",
+      "Face-light and quotient-tracking trials were not selected; the latter has18 exact image comparisons, not an independent arithmetic acceptance."
+    ]
+  }
+}

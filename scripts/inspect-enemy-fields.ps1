@@ -20,7 +20,7 @@ if($Weapons) {
 }
 $taskHashes=@{}
 try {
-    $env:LOCALAPPDATA="$taskRoot/build/ghidra-local"
+    $env:LOCALAPPDATA="$taskRoot/research/ghidra/local"
     foreach($taskLang in @('ru','en')) {
         $taskInventory=Get-Content "$taskRoot/analysis/inventory-$taskLang.json" -Raw | ConvertFrom-Json
         foreach($taskSample in @($taskInventory,$taskInventory.resource)) {
@@ -31,9 +31,9 @@ try {
         $taskOutput="$taskRoot/build/$taskEvidenceName/$taskLang"
         New-Item -ItemType Directory -Force $taskOutput | Out-Null
         $taskArguments=@('-Djava.system.class.loader=ghidra.GhidraClassLoader',
-            "-Duser.home=$taskRoot/build/ghidra-home", "-Dapplication.settingsdir=$taskRoot/build/ghidra-settings",
+            "-Duser.home=$taskRoot/research/ghidra/home", "-Dapplication.settingsdir=$taskRoot/research/ghidra/settings",
             '-Djava.awt.headless=true','-Xmx3G','-cp',"$GhidraHome/Ghidra/Framework/Utility/lib/Utility.jar",
-            'ghidra.Ghidra','ghidra.app.util.headless.AnalyzeHeadless',"$taskRoot/build/ghidra/$taskLang",'Kremlin',
+            'ghidra.Ghidra','ghidra.app.util.headless.AnalyzeHeadless',"$taskRoot/research/ghidra/projects/$taskLang",'Kremlin',
             '-process',(Split-Path $taskInventory.file -Leaf),'-noanalysis','-readOnly',
             '-scriptPath',"$taskRoot/scripts",'-postScript','InspectEnemyFields.java',$taskOutput)
         $taskArguments += $taskAddresses[$taskLang]

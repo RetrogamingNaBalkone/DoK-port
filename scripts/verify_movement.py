@@ -33,7 +33,7 @@ class Original:
         self.ru = language == 'ru'
         self.cpu = Uc(UC_ARCH_X86, UC_MODE_16)
         self.world = Uc(UC_ARCH_X86, UC_MODE_16)
-        self.directory = ROOT/'build/movement'/language
+        self.directory = ROOT/'research/evidence/movement'/language
         for cpu in (self.cpu, self.world):
             cpu.mem_map(0, 0x100000)
             cpu.reg_write(reg.UC_X86_REG_SS, 0x3000)
@@ -202,7 +202,7 @@ def main():
                 trig_sha256=sha(ROOT/'src/renderer_trig.inc'),dos_game_session=False,
                 script_sha256=sha(Path(__file__)))
     (ROOT/'analysis/g07-movement-evidence.json').write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
-    (ROOT/'build/movement/reference-vectors.json').write_text(json.dumps(dict(vectors=vectors,expected=expected)))
+    (ROOT/'research/evidence/movement/reference-vectors.json').write_text(json.dumps(dict(vectors=vectors,expected=expected)))
     print(f'G07 original x86 arithmetic: {len(vectors)} vectors per language passed (clock/collision controlled)')
 
 

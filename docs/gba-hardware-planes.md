@@ -15,7 +15,7 @@ coarse-варианта в проверенных маршрутах, но по�
 
 ROM: `artifacts/gba/DoK-port_hardware_planes_prototype.gba`,10 841 864 B,
 SHA-256 `4dfbbe0e8a14352fcef5c182baef3ffdf0483b81345c8837b1530ee09f7f581d`.
-ELF/map/private sources — `build/g20a-hw-final/hw_hud_cache/`.
+ELF/map/private sources — `research/experiments/g20a-hw-final/hw_hud_cache/`.
 Сводка с хешами входных отчётов — `analysis/g20a-hardware-planes.json`.
 
 ## Измеренная производительность
@@ -80,10 +80,10 @@ Depth cap аппаратной плоскости3600. У поверхности
 В378 frozen comparisons с native изменились и пиксели, попавшие в hardware
 foreground-mask: до584 на кадр, в том числе стыки с исходными affine-плоскостями.
 Нельзя утверждать побайтную неизменность всех видимых границ стен. Примеры
-координат и RGB есть в `build/g20a-hw-ready/fg-debug.json`; нативные PNG — в
+координат и RGB есть в `research/experiments/g20a-hw-ready/fg-debug.json`; нативные PNG — в
 каталогах `hw_direct` и `hw_hud_cache`. Вид LEVEL2:
-[аппаратный](../build/g20a-hw-final/hw_hud_cache/L2-worst-ppu.png),
-[native](../build/g20a-hw-ready/hw_direct/L2-worst-ppu.png).
+[аппаратный](../research/experiments/g20a-hw-final/hw_hud_cache/L2-worst-ppu.png),
+[native](../research/experiments/g20a-hw-ready/hw_direct/L2-worst-ppu.png).
 
 ROM LUT360×144 хранит PA/PC и начало строк для обычной camera.y−300. Она
 уменьшила подготовку перспективы примерно90k→19k cycles; другая высота
@@ -120,7 +120,7 @@ upload за VBlank; его FPS **не основание для выбора**. 
   motion ticks0. EWRAM260916/free1228 B; IWRAM24396/free180 до stacks8192.
   В ходьбе main high water2544/margin5392, IRQ80/margin80 B.
 - Текущие main/UI/renderer без flags снова дают базовый ROM7bab…7ea8 побайтно.
-  Чистый повтор в `build/g20a-hw-repeat/` воспроизвёл новый ROM и control
+  Чистый повтор в `research/experiments/g20a-hw-repeat/` воспроизвёл новый ROM и control
   побайтно. Старые pre-alpha/exact/coarse ROM и22 оригинала проверены по SHA.
 
 **Полный hardware regression/stress/flow/door/grate suite ещё не выполнен**;
@@ -131,8 +131,8 @@ upload за VBlank; его FPS **не основание для выбора**. 
 Новые отрицательные опыты: отдельный C opaque raster и ARM per-pixel opaque
 kernel медленнее; paired-row пониженного потолка почти не изменил FPS; exact
 reciprocal raster divide тоже не помог. Частные сборки сохранены в
-`build/g20a-hw-{opaque,opaque-arm,ceiling2,div}/`. Дополнительный профиль
-`build/g20a-hw-profile2/attribution.json` показывает: в тяжёлом LEVEL2 основная
+`research/experiments/g20a-hw-{opaque,opaque-arm,ceiling2,div}/`. Дополнительный профиль
+`research/experiments/g20a-hw-profile2/attribution.json` показывает: в тяжёлом LEVEL2 основная
 CPU-стоимость поверх стен — **вертикальные уступы**, а горизонтальный
 пониженный потолок заметно дешевле. Поэтому перенос последнего в Mode2
 не следует приоритизировать без нового измеренного основания.
@@ -145,9 +145,9 @@ CPU-стоимость поверх стен — **вертикальные ус
 ## Воспроизведение
 
 ```powershell
-C:/Source/wasdify/.venv/Scripts/python.exe scripts/prototype_gba_bsp.py --out build/g20a-hw-final --variants hw_hud_cache source_control
-C:/Source/wasdify/.venv/Scripts/python.exe scripts/verify_performance_arm.py --build-dir build/g20a-hw-final/hw_hud_cache --report build/g20a-hw-final/arm.json
-C:/Source/wasdify/.venv/Scripts/python.exe scripts/benchmark_gba_hardware.py --build-dir build/g20a-hw-final/hw_hud_cache --reference-build build/g20a-hw-profile2/hw_stream --languages 0 1 --details --report build/g20a-hw-final/cache-ppu.json
+C:/Source/wasdify/.venv/Scripts/python.exe scripts/prototype_gba_bsp.py --out research/experiments/g20a-hw-final --variants hw_hud_cache source_control
+C:/Source/wasdify/.venv/Scripts/python.exe scripts/verify_performance_arm.py --build-dir research/experiments/g20a-hw-final/hw_hud_cache --report research/experiments/g20a-hw-final/arm.json
+C:/Source/wasdify/.venv/Scripts/python.exe scripts/benchmark_gba_hardware.py --build-dir research/experiments/g20a-hw-final/hw_hud_cache --reference-build research/experiments/g20a-hw-profile2/hw_stream --languages 0 1 --details --report research/experiments/g20a-hw-final/cache-ppu.json
 C:/Source/wasdify/.venv/Scripts/python.exe scripts/report_gba_hardware_planes.py --copy-rom
 ```
 

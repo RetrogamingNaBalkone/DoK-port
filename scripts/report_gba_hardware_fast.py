@@ -6,7 +6,7 @@ from pathlib import Path
 import shutil
 
 ROOT=Path(__file__).resolve().parents[1]
-FOLDER='build/g20a-hw-projection'
+FOLDER='research/experiments/g20a-hw-projection'
 VARIANT='hw_v128_projection'
 BASE='7babd40f913eb12f77c93c9df917cea432b0cbe3bd83e11da45ba08dec917ea8'
 def read(path):return json.loads((ROOT/path).read_text(encoding='utf-8-sig'))
@@ -16,8 +16,8 @@ def sha(path):return hashlib.sha256(path.read_bytes()).hexdigest()
 def main():
     parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--copy-rom',action='store_true');args=parser.parse_args()
     build=read(FOLDER+'/'+VARIANT+'/build-report.json');digest=build['rom_sha256'];rom=ROOT/FOLDER/VARIANT/'dok-diagnostic.gba'
-    assert sha(rom)==digest==read('build/g20a-hw-fast-final/'+VARIANT+'/build-report.json')['rom_sha256']
-    assert read('build/g20a-hw-fast-final/source_control/build-report.json')['rom_sha256']==BASE
+    assert sha(rom)==digest==read('research/experiments/g20a-hw-fast-final/'+VARIANT+'/build-report.json')['rom_sha256']
+    assert read('research/experiments/g20a-hw-fast-final/source_control/build-report.json')['rom_sha256']==BASE
     names=('arm','sprites','water','items','combat','ui','flow','ai','ai-combat','interactions','transitions','stress')
     checks={n:read(FOLDER+'/'+n+'.json') for n in names}
     for name,value in checks.items():assert value['status']=='passed' and value['rom_sha256']==digest,name
@@ -46,7 +46,7 @@ def main():
     assert sweep['simulation_frozen'] and not sweep['capture_hold_during_samples']
     for row in sweep['rows']:del row['samples']
     assert min(r['presented_fps'] for r in sweep['rows'])<15 # Explicit counterevidence to universal15+.
-    baseline={n:read('build/g20a-hw-hot-cover/mode4-'+n+'.json') for n in ('items','combat')}
+    baseline={n:read('research/experiments/g20a-hw-hot-cover/mode4-'+n+'.json') for n in ('items','combat')}
     for value in baseline.values():assert value['status']=='passed' and value['rom_sha256']==BASE
     originals=[]
     for entry in read('analysis/artifact-cleanup-20261026.json')['preserved_sha256']:
@@ -62,9 +62,9 @@ def main():
     assert not artifact.exists() or sha(artifact)==digest
     if args.copy_rom:shutil.copyfile(rom,artifact)
     paths=[FOLDER+'/'+n+'.json' for n in (*names,'time','exact396','follow','turn120','walking120','sweep')]
-    paths+=['build/g20a-hw-cover4-final/ppu.json','build/g20a-hw-cover4-final/arm.json',
-        'build/g20a-hw-face-light/ppu.json','build/g20a-hw-u-track-v3/exact.json',
-        'build/g20a-hw-hot-cover/mode4-items.json','build/g20a-hw-hot-cover/mode4-combat.json']
+    paths+=['research/experiments/g20a-hw-cover4-final/ppu.json','research/experiments/g20a-hw-cover4-final/arm.json',
+        'research/experiments/g20a-hw-face-light/ppu.json','research/experiments/g20a-hw-u-track-v3/exact.json',
+        'research/experiments/g20a-hw-hot-cover/mode4-items.json','research/experiments/g20a-hw-hot-cover/mode4-combat.json']
     symbol=build['symbols'];ewram=symbol['__bss_end']-symbol['__data_start'];iwram=symbol['__iwram_end']-symbol['__iwram_start']
     result=dict(task='G20A',date='2026-10-27',status='exact-optimizations-after128-rows',targets_met=False,
         artifact=artifact.relative_to(ROOT).as_posix(),artifact_copied=args.copy_rom,rom_sha256=digest,rom_bytes=rom.stat().st_size,
@@ -75,7 +75,7 @@ def main():
             'actual_transition_video_frames':sum(r['video_frames'] for r in transitions),'clean_repeat_byte_exact':True,
             'effect_opaque_ppu_samples':sum(sum(c['opaque_source_samples']) for v in checks['combat']['independent_instances'] for c in v['captures'])},
         baseline_harness_regressions=baseline,originals_unchanged=originals,preserved_artifacts=preserved,
-        build_manifest=read('build/g20a-hw-fast-final/prototype-build.json'),input_reports={p:sha(ROOT/p) for p in paths},
+        build_manifest=read('research/experiments/g20a-hw-fast-final/prototype-build.json'),input_reports={p:sha(ROOT/p) for p in paths},
         limitations=['15+ met in selected runtime-camera averages;72 fixed-heading renderer fixtures still include14.931875FPS. Overall goal remains open.',
             'No whole-level minimum FPS, physical GBA or original BIOS verification;24.1/30 not achieved across all worlds.',
             'Artificial all-awake stress remains extremely slow with growing motion debt; passed verifies guards/audio/logic, not frame budget.',

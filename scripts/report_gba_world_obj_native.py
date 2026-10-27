@@ -9,10 +9,10 @@ ROOT=Path(__file__).resolve().parents[1]
 def main():
     def read(p):return json.loads((ROOT/p).read_text(encoding='utf-8-sig'))
     def sha(p):return hashlib.sha256((ROOT/p).read_bytes()).hexdigest()
-    folder=Path('build/g20a-world-obj-native-final')
+    folder=Path('research/experiments/g20a-world-obj-native-final')
     paths=[folder/n for n in ('prototype-build.json','target.json','profile.json','ppu18-live.json','qa/verification.json')]
-    paths += [Path('build/g20a-world-obj-native-repeat/prototype-build.json'),
-              Path('build/g20a-hw-entity-rect-v2/spatial.json'),Path('build/g20a-columns-v6/control-live24.json'),
+    paths += [Path('research/experiments/g20a-world-obj-native-repeat/prototype-build.json'),
+              Path('research/experiments/g20a-hw-entity-rect-v2/spatial.json'),Path('research/experiments/g20a-columns-v6/control-live24.json'),
               Path('analysis/g20a-world-obj-bringup.json')]
     manifest,target,profile,ppu,qa,repeat,base,live,bringup=map(read,paths)
     variants=manifest['variants'];trial=variants['hw_v128_world_obj']['rom_sha256']
@@ -21,7 +21,7 @@ def main():
     for name in ('hw_v128_world_obj','hw_v128_entity_rect','hw_v128_world_obj_probe'):
         expected=variants[name]['rom_sha256']
         assert expected==repeat['variants'][name]['rom_sha256']
-        for directory in (folder,Path('build/g20a-world-obj-native-repeat')):
+        for directory in (folder,Path('research/experiments/g20a-world-obj-native-repeat')):
             assert sha(directory/name/'dok-diagnostic.gba')==expected
     assert variants['hw_v128_entity_rect']['rom_sha256']==control
     assert target['rom_sha256']==profile['rom_sha256']==ppu['after']['rom_sha256']==qa['after']['rom_sha256']==trial

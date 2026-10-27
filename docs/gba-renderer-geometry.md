@@ -100,8 +100,8 @@ faces не рисуются; статистика отдельно считае�
 ## Host-выход и проверяемая сцена
 
 ```powershell
-build/native/dok-render.exe build/gba/assets/assets.bin 1 ru build/render/level1-ru.idx build/render/level1-ru.pal
-build/native/dok-render.exe build/gba/assets/assets.bin 1 en build/render/level1-en.idx build/render/level1-en.pal
+build/native/dok-render.exe build/gba/assets/assets.bin 1 ru research/evidence/render/level1-ru.idx research/evidence/render/level1-ru.pal
+build/native/dok-render.exe build/gba/assets/assets.bin 1 en research/evidence/render/level1-en.idx research/evidence/render/level1-en.pal
 ```
 
 IDX — ровно38 400 индексов без заголовка, PAL — ровно768 исходных VGA RGB

@@ -102,13 +102,13 @@ occlusion и без частичного допуска patches. Отказы н
 ## Воспроизведение и следующий шаг
 
 ```powershell
-& C:/Source/wasdify/.venv/Scripts/python.exe scripts/prototype_gba_bsp.py --out build/g20a-world-obj-native-final --variants hw_v128_world_obj_probe hw_v128_entity_rect hw_v128_world_obj
-& C:/Source/wasdify/.venv/Scripts/python.exe scripts/probe_gba_world_obj.py --ppu-build build/g20a-world-obj-native-final/hw_v128_world_obj_probe --out build/g20a-world-obj-bringup-final
+& C:/Source/wasdify/.venv/Scripts/python.exe scripts/prototype_gba_bsp.py --out research/experiments/g20a-world-obj-native-final --variants hw_v128_world_obj_probe hw_v128_entity_rect hw_v128_world_obj
+& C:/Source/wasdify/.venv/Scripts/python.exe scripts/probe_gba_world_obj.py --ppu-build research/experiments/g20a-world-obj-native-final/hw_v128_world_obj_probe --out research/experiments/g20a-world-obj-bringup-final
 & C:/Source/wasdify/.venv/Scripts/python.exe scripts/report_gba_world_obj.py
 ```
 
 Probe ROM `c1903e5e242e3287afa19175ebc64c5189da21927b8eedc1c9158f111ede8a09`;
-чистый repeat `build/g20a-world-obj-native-repeat/` exact, контроль
+чистый repeat `research/experiments/g20a-world-obj-native-repeat/` exact, контроль
 2775 exact. EWRAM261308/free836, IWRAM24408/free168 до8192 stack reserve.
 Это размещение probe, не прогноз памяти готового backend. Прежние2775/96/72
 artifacts сохранены; новый игровой ROM не опубликован.
@@ -116,7 +116,7 @@ artifacts сохранены; новый игровой ROM не опублик�
 Вход — GBA package SHA3efa5d…4351, координаты runtime GBA-порта и его MMIO,
 а не адреса исходных EXE. EXE не анализировались и не изменялись. Источники
 изображений, LIGHT rows, native PNG и SHA сохраняются в
-`build/g20a-world-obj-bringup-final/`; сводка `analysis/g20a-world-obj-bringup.json`.
+`research/experiments/g20a-world-obj-bringup-final/`; сводка `analysis/g20a-world-obj-bringup.json`.
 Коллектор явно отделяет54 exact fixtures от двух отрицательных случаев.
 
 Native admission/coverage, residency/cache, перспективные полосы и PCM/live

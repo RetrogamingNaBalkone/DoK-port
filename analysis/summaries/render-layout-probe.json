@@ -1,0 +1,249 @@
+{
+  "summary_schema": 1,
+  "full_report": {
+    "path": "analysis/render-layout-probe.json",
+    "sha256": "a22360df38987d7cfe48a792955d973b092652eb29ce4c76b300a86ece51db2f",
+    "bytes": 110833
+  },
+  "scope": "Summary of a recorded run; not a new verification. Full report is local and ignored by Git.",
+  "result": {
+    "task": "G04",
+    "status": "passed_resource_probe",
+    "probe": "image/animation decoding and row-major/light/transparency formulas",
+    "dos_renderer_equivalence": false,
+    "fps_measured": false,
+    "script_sha256": "15a52876725b0fb5438795936482e3aa737960b1043f50a7e917e208ceb3f718",
+    "C_decoder_sha256": "24f025b247cef88529609e7135be58209f1e0e3b140111542da99be47e740d3e",
+    "languages": {
+      "ru": {
+        "exe_sha256": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+        "res_sha256": "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816",
+        "counts": {
+          "standalone_images": 77,
+          "animations": 24,
+          "animation_frames": 154,
+          "pixel_bytes_checked": 1644682
+        },
+        "stored_flags_histogram": {
+          "0": 231
+        },
+        "maxima": {
+          "width": 320,
+          "height": 200,
+          "pixels": 64000
+        },
+        "resources": {
+          "detail_pointer": "/languages/ru/resources",
+          "items": 101
+        },
+        "light_tables": {
+          "detail_pointer": "/languages/ru/light_tables",
+          "items": 3
+        },
+        "level_sprite_flags_histogram": {
+          "2": 265,
+          "8": 24,
+          "72": 39,
+          "264": 15,
+          "24": 30,
+          "2056": 3,
+          "1032": 3,
+          "8200": 3,
+          "4104": 3,
+          "16": 5
+        },
+        "native_crop_scratch_bytes": 32768,
+        "maximum_real_crop_sprite_bytes": 18432,
+        "source_level_uses_flag4000": false
+      },
+      "en": {
+        "exe_sha256": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b",
+        "res_sha256": "865da340621fa6f90548a84e9ae9bf0a85071befb32a40ca1d359e488f74d458",
+        "counts": {
+          "standalone_images": 77,
+          "animations": 24,
+          "animation_frames": 154,
+          "pixel_bytes_checked": 1644682
+        },
+        "stored_flags_histogram": {
+          "0": 231
+        },
+        "maxima": {
+          "width": 320,
+          "height": 200,
+          "pixels": 64000
+        },
+        "resources": {
+          "detail_pointer": "/languages/en/resources",
+          "items": 101
+        },
+        "light_tables": {
+          "detail_pointer": "/languages/en/light_tables",
+          "items": 3
+        },
+        "level_sprite_flags_histogram": {
+          "2": 265,
+          "8": 24,
+          "72": 39,
+          "264": 15,
+          "24": 30,
+          "2056": 3,
+          "1032": 3,
+          "8200": 3,
+          "4104": 3,
+          "16": 5
+        },
+        "native_crop_scratch_bytes": 32768,
+        "maximum_real_crop_sprite_bytes": 18432,
+        "source_level_uses_flag4000": false
+      }
+    },
+    "ghidra_evidence": {
+      "ru": {
+        "roles": 34,
+        "required_roles_present": 12,
+        "instruction_checks": 26,
+        "verified_addresses": [
+          "1010:0037",
+          "1010:003d",
+          "1010:004c",
+          "1010:00e5",
+          "1010:0101",
+          "1010:0092",
+          "1010:0097",
+          "1010:009a",
+          "1010:0168",
+          "1010:016b",
+          "1010:016e",
+          "1010:0197",
+          "1010:019a",
+          "1010:019d",
+          "1010:019f",
+          "1010:01a1",
+          "1010:01a4",
+          "1010:00c7",
+          "1010:0030",
+          "1010:008a",
+          "1010:015e",
+          "1050:032d",
+          "1088:0553",
+          "1088:0556",
+          "1088:0558",
+          "10f8:05b7"
+        ],
+        "exports": {
+          "analysis-manifest.json": {
+            "size": 623,
+            "sha256": "e04fe3b23c3abdc9d9c5bed2d0044836c3c8ff72afb562eeb156a8ab10d87150"
+          },
+          "annotated.c": {
+            "size": 147391,
+            "sha256": "e8741e7127e1a722784c68b4af94b554d0341ef429710d84a5532eae32d365b8"
+          },
+          "callers.tsv": {
+            "size": 1535,
+            "sha256": "e76907d97f4b14b92e88e04edb4caec32ccdd1fa64c5b98bf6b9dfd0f88a2509"
+          },
+          "evidence.asm": {
+            "size": 257154,
+            "sha256": "0bd594ca690ae400f34f839832c86879ea2d44d4dfc32bfdc7f8cbe8928c3ea2"
+          },
+          "roles.tsv": {
+            "size": 1404,
+            "sha256": "00d30c4865b2a86ef8e8f2068bdc967bf4596637152048bad82b58e92ceed958"
+          },
+          "static-data.tsv": {
+            "size": 188,
+            "sha256": "7b8bbcb4bbd85d803893442b8b3c2a1e539d09f6e5d0d964b92f06321994cbf8"
+          },
+          "static-math-constants.tsv": {
+            "size": 270,
+            "sha256": "03e712d3f398b20276a01d15e2a009e7d5b820d9c7efd237a507ec3699661b35"
+          },
+          "trig-tables.tsv": {
+            "size": 3258,
+            "sha256": "ceec1693e659488673ce5374216c994e4de561a18a66710c015dbde1f36c0b8a"
+          }
+        }
+      },
+      "en": {
+        "roles": 34,
+        "required_roles_present": 12,
+        "instruction_checks": 26,
+        "verified_addresses": [
+          "1010:0037",
+          "1010:003d",
+          "1010:004c",
+          "1010:00e5",
+          "1010:0101",
+          "1010:0092",
+          "1010:0097",
+          "1010:009a",
+          "1010:0168",
+          "1010:016b",
+          "1010:016e",
+          "1010:0197",
+          "1010:019a",
+          "1010:019d",
+          "1010:019f",
+          "1010:01a1",
+          "1010:01a4",
+          "1010:00c7",
+          "1010:0030",
+          "1010:008a",
+          "1010:015e",
+          "1018:1273",
+          "1028:197d",
+          "1028:1980",
+          "1028:1982",
+          "1060:06c7"
+        ],
+        "exports": {
+          "analysis-manifest.json": {
+            "size": 623,
+            "sha256": "428b013359d3244dbac4bb2c43433d7cf3654f85a888a9b4aba30031ea8e2d69"
+          },
+          "annotated.c": {
+            "size": 156245,
+            "sha256": "20c350efe42b8462d0e5fc8d5051b2eeae67c46e40eb8c0cc2c856afd77a19d5"
+          },
+          "callers.tsv": {
+            "size": 1605,
+            "sha256": "027d7d9db0027d9357a83045ce782cff224c9e8c57b5774d45ccdf1832810108"
+          },
+          "evidence.asm": {
+            "size": 276527,
+            "sha256": "484c456619194d40611ef9778bf63c9421b41d4dcb8fd8c2bc62ec9a12fac6b5"
+          },
+          "roles.tsv": {
+            "size": 1405,
+            "sha256": "621a62676083c5ae0db0e52f7ecd432bfc813e2bea4d9f1c6d1996d936843cb7"
+          },
+          "static-data.tsv": {
+            "size": 185,
+            "sha256": "ed938837d3eda32602c32f4bd2c128b105ba6ded1bbd283880ea67e05ca8f220"
+          },
+          "static-math-constants.tsv": {
+            "size": 270,
+            "sha256": "458f49c9c400769417f7029da182904889e24308d8bc7fcffbd23cc044675d39"
+          },
+          "trig-tables.tsv": {
+            "size": 3258,
+            "sha256": "ceec1693e659488673ce5374216c994e4de561a18a66710c015dbde1f36c0b8a"
+          }
+        }
+      }
+    },
+    "synthetic": {
+      "decoder_cases": {
+        "detail_pointer": "/synthetic/decoder_cases",
+        "items": 9
+      },
+      "transparency_ordering_discriminates": true,
+      "transparent_after_light_sha256": "f44afa13ca69280665e7e3216688af1dc5ae10f7d71a8ab04a661d0a02eb9a0f",
+      "transparent_before_light_sha256": "38db14e1d151a28651ba226ba3c60b1a3bb989647de485d99b49bae992f84efc",
+      "negative_width_limit": "0xffff is accepted as unsigned width 65535 by decoder; no claim about signed original renderer width outside real positive profile"
+    },
+    "originals_unchanged": true
+  }
+}

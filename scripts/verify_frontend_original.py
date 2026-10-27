@@ -21,7 +21,7 @@ def main():
     for language,lang in enumerate(('ru','en')):
         directory=args.out/('dos-'+lang)
         report=json.loads((directory/'report.json').read_text(encoding='utf-8'))
-        manifest=json.loads((Path('build/ui')/lang/'analysis-manifest.json').read_text(encoding='utf-8-sig'))
+        manifest=json.loads((Path('research/evidence/ui')/lang/'analysis-manifest.json').read_text(encoding='utf-8-sig'))
         assert report['originals_unchanged'] and report['runtime_copies_unchanged']
         assert sha(Path(manifest['sample']))==manifest['sha256_before']==manifest['sha256_after']
         resources,origin=original_animations(language)
@@ -31,13 +31,13 @@ def main():
         palette=resources['ЗАСТАВКА_ПАЛ'.encode('cp866').hex()]
         rgb=b''.join(bytes(v*255//63 for v in palette[x*3:x*3+3]) for x in sprite)
         png(directory/'splash-source-palette.png',320,200,rgb)
-        segment=(Path('build/ui')/lang/('1190.bin' if language==0 else '10d0.bin')).read_bytes()
+        segment=(Path('research/evidence/ui')/lang/('1190.bin' if language==0 else '10d0.bin')).read_bytes()
         names=(['ХОРОМЫ НЕЧИСТИ','ПОДЗЕМНАЯ РЕКА','ПОДВАЛЫ КРЕМЛЯ'] if language==0 else
                ['PALACE OF EVIL','SACRED RIVER','UNDERGROUND KREMLIN'])
         offsets=[segment.index(n.encode('cp866')+b'\0') for n in names]
         for offset,name in ((0x132,'ЗАСТАВКА_ПАЛ'),(0x13f,'ЗАСТАВКА_СПР'),(0x159,'ЗАСТАВКА_ЗВУК'),(0x175,'МЕНЮ_ПАЛ')):
             assert segment[offset:].startswith(name.encode('cp866')+b'\0')
-        asm=(Path('build/ui')/lang/'evidence.asm').read_text(encoding='utf-8')
+        asm=(Path('research/evidence/ui')/lang/'evidence.asm').read_text(encoding='utf-8')
         entry='1008:01ba' if language==0 else '1008:023e'
         end='1008:02f7' if language==0 else '1008:044b'
         body=asm[asm.index('FUNCTION '+entry):asm.index('FUNCTION '+end)]

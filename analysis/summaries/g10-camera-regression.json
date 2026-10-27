@@ -1,0 +1,131 @@
+{
+  "summary_schema": 1,
+  "full_report": {
+    "path": "analysis/g10-camera-regression.json",
+    "sha256": "fbbe90e5103c316d5b09db334ce526740a713c9b7cd46bdbb5c5472c3531d2d8",
+    "bytes": 903276
+  },
+  "scope": "Summary of a recorded run; not a new verification. Full report is local and ignored by Git.",
+  "result": {
+    "task": "G06A",
+    "status": "passed",
+    "budget_met": false,
+    "performance_status": "deferred",
+    "budget_policy": "User decision 2026-10-25: accept 120 horizontal scene samples with full-resolution UI; early excess deferred; full-game optimization G20",
+    "rom_sha256": "e9598753692371226d68213e135a31f7fb74f42a21ebd7a52d3587797fb23992",
+    "rom_bytes": 32846628,
+    "ewram_static_bytes": 202556,
+    "sections": [
+      {
+        "name": ".header",
+        "address": 134217728,
+        "size": 192,
+        "type": 1
+      },
+      {
+        "name": ".iwram",
+        "address": 50331648,
+        "size": 24120,
+        "type": 1
+      },
+      {
+        "name": ".text",
+        "address": 134242040,
+        "size": 32822160,
+        "type": 1
+      },
+      {
+        "name": ".ARM.exidx",
+        "address": 167064200,
+        "size": 152,
+        "type": 1879048193
+      },
+      {
+        "name": ".data",
+        "address": 33554432,
+        "size": 4,
+        "type": 1
+      },
+      {
+        "name": ".bss",
+        "address": 33554436,
+        "size": 202552,
+        "type": 8
+      }
+    ],
+    "emulator": "mGBA",
+    "version": "0.11-212-7a12d6d",
+    "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+    "bios": "mGBA replacement BIOS",
+    "budget": 400000,
+    "worst": {
+      "level": 1,
+      "pose": "near-x",
+      "camera": [
+        14881,
+        -300,
+        22800,
+        240
+      ],
+      "cycles": 6104796,
+      "stages": {
+        "clear_resources": 11110,
+        "geometry": 965417,
+        "sort": 5129,
+        "raster": 4953015,
+        "hud": 24664,
+        "copy": 76903
+      },
+      "faces": 34,
+      "near_clipped": 0,
+      "reference_pixel_writes": 34477,
+      "visible_pixel_writes": 17262,
+      "reference_transparent": 96,
+      "framebuffer_sha256": "92b03c4af29547b00f699e6ac0b44787a5154f28a9d8ad1a330c07c17fd451e5"
+    },
+    "max_faces": 58,
+    "rejected": [],
+    "checked_cameras": 1455,
+    "language_checks": [
+      {
+        "level": 1,
+        "ru_en_ru": true,
+        "world_equal": true,
+        "scene_equal": true
+      },
+      {
+        "level": 2,
+        "ru_en_ru": true,
+        "world_equal": true,
+        "scene_equal": true
+      },
+      {
+        "level": 3,
+        "ru_en_ru": true,
+        "world_equal": true,
+        "scene_equal": true
+      }
+    ],
+    "host_arm_scene_equal": true,
+    "world_unchanged": true,
+    "horizontal_scene_samples": 120,
+    "oracle_transform": "duplicate even columns before full-resolution HUD",
+    "capture_hold": "one extra VBlank after presentation, outside CPU timer; camera suite does not measure cadence",
+    "guards_passed": true,
+    "stack": {
+      "main_stack_low": 50356224,
+      "main_stack_top": 50364160,
+      "sentinel_word": 219540062,
+      "untouched_margin_bytes": 5584,
+      "high_water_bytes": 2352,
+      "irq_and_bios_excluded": true,
+      "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+    },
+    "physical_gba_tested": false,
+    "full_game_performance_verified": false,
+    "samples": {
+      "detail_pointer": "/samples",
+      "items": 1455
+    }
+  }
+}

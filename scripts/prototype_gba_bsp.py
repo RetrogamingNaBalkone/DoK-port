@@ -737,7 +737,7 @@ def build(base,out,variants,unreflected_control=False):
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--base',type=Path,default=Path('build/select-menu-fix'))
-    p.add_argument('--out',type=Path,default=Path('build/g20a-prototypes'))
+    p.add_argument('--out',type=Path,default=Path('research/experiments/g20a-prototypes'))
     p.add_argument('--variants',nargs='+',choices=VARIANTS,default=list(VARIANTS))
     p.add_argument('--keep-objects',action='store_true',help='Retain experiment object files for manual relinking')
     p.add_argument('--unreflected-control',action='store_true',help='Diagnostic only: disable native central-plane reflection in the private source snapshot')

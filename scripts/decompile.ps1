@@ -12,18 +12,18 @@ $taskProfiles = @{
 $taskLanguages = if ($Language -eq 'all') { @('ru','en') } else { @($Language) }
 $taskPreviousLocalAppData = $env:LOCALAPPDATA
 try {
-    $env:LOCALAPPDATA = "$taskRoot/build/ghidra-local"
+    $env:LOCALAPPDATA = "$taskRoot/research/ghidra/local"
     foreach ($taskLang in $taskLanguages) {
         $taskProfile = $taskProfiles[$taskLang]
         $taskFile = Join-Path "$taskRoot/originals/pkr" $taskProfile.File
         if ((Get-FileHash -LiteralPath $taskFile -Algorithm SHA256).Hash.ToLowerInvariant() -ne $taskProfile.Hash) { throw "Unexpected reference: $taskFile" }
-        $taskProject = "$taskRoot/build/ghidra/$taskLang"
+        $taskProject = "$taskRoot/research/ghidra/projects/$taskLang"
         $taskOutput = "$taskRoot/decompiled/$taskLang"
         New-Item -ItemType Directory -Force $taskProject, $taskOutput | Out-Null
         $taskArguments = @(
             '-Djava.system.class.loader=ghidra.GhidraClassLoader',
-            "-Duser.home=$taskRoot/build/ghidra-home",
-            "-Dapplication.settingsdir=$taskRoot/build/ghidra-settings",
+            "-Duser.home=$taskRoot/research/ghidra/home",
+            "-Dapplication.settingsdir=$taskRoot/research/ghidra/settings",
             '-Djava.awt.headless=true', '-Xmx3G', '-cp',
             "$GhidraHome/Ghidra/Framework/Utility/lib/Utility.jar",
             'ghidra.Ghidra', 'ghidra.app.util.headless.AnalyzeHeadless',

@@ -11,8 +11,8 @@
 PKR.EXE SHA-256 `12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28`,
 PKE.EXE `cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b`.
 `scripts/analyze-items.ps1` проверяет хеши до/после Ghidra. Проекты остаются
-`build/ghidra/{ru,en}/Kremlin.gpr`; свежие листинги/автоматический C/actor bytes,
-журналы и manifest — `build/items/{ru,en}/`. `InspectItems.java` читает
+`research/ghidra/projects/{ru,en}/Kremlin.gpr`; свежие листинги/автоматический C/actor bytes,
+журналы и manifest — `research/evidence/items/{ru,en}/`. `InspectItems.java` читает
 существующие функции actor-сегмента. Псевдокод не включается в сборку.
 
 Ниже **адреса NE loader Ghidra**, не файловые смещения, не индексы NE-сегментов,
@@ -151,4 +151,4 @@ rational clock — `analysis/g12-*-regression.json`. Renderer не менялс�
 
 Следующий ID — **G13**. Входы: inventory/stats API, pending slot,
 `docs/weapon-parameters.md`, positioned instances/visual playback из G11,
-`build/items/{ru,en}/automatic.c`/листинг с оригинальной цепочкой регистрации.
+`research/evidence/items/{ru,en}/automatic.c`/листинг с оригинальной цепочкой регистрации.

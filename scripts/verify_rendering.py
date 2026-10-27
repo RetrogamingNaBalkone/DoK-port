@@ -35,7 +35,7 @@ def main():
                              'res':artifact(ROOT/inv['resource']['file'])}
         assert samples[language]['exe']['sha256'] == inv['sha256']
         assert samples[language]['res']['sha256'] == inv['resource']['sha256']
-        directory = ROOT/f'build/rendering/{language}'
+        directory = ROOT/f'research/evidence/rendering/{language}'
         manifest = read(directory/'analysis-manifest.json')
         assert manifest['sha256_before'] == manifest['sha256_after'] == inv['sha256']
         assert manifest['script_sha256'] == sha(ROOT/manifest['script'])

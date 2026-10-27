@@ -19,9 +19,9 @@ assert len(surface['captures'])==32 and len(surface['palettes'])==6 and surface[
 for c in surface['captures']:assert c['scene_pixels']==32736
 for c in host['ARM_comparison']:assert c['status']=='identical'
 for language in ('ru','en'):
- manifest=read(f'build/surfaces/{language}/analysis-manifest.json')
+ manifest=read(f'research/evidence/surfaces/{language}/analysis-manifest.json')
  assert manifest['sha256_before']==manifest['sha256_after']==artifact(manifest['sample'])['sha256']
- assert original['languages'][language]['manifest_sha256']==artifact(f'build/surfaces/{language}/analysis-manifest.json')['sha256']
+ assert original['languages'][language]['manifest_sha256']==artifact(f'research/evidence/surfaces/{language}/analysis-manifest.json')['sha256']
  assert manifest['script_sha256']==artifact('scripts/InspectSurfaces.java')['sha256']
  assert original['languages'][language]['negative_depth_quads']>0 and original['languages'][language]['synthetic_single_planes']>0
 symbols=meta['symbols'];baseline=read('analysis/g09-review.json')

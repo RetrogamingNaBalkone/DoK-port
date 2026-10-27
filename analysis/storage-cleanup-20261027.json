@@ -1,0 +1,40 @@
+{
+  "status": "verified",
+  "deleted_files": 42702,
+  "deleted_bytes": 20524069116,
+  "protected_files": 25656,
+  "manifest": "research/_migration/prune-generated-files.json",
+  "manifest_sha256": "cf1cd56413c5952ae7669ac4958193b8f3a0d4bab63b2996bc4d2df381280ed9",
+  "retained_roms": [
+    "artifacts/gba/DoK-port_UI01.gba",
+    "artifacts/gba/DoK-port_hardware_cached_prototype.gba"
+  ],
+  "controls": [
+    "research/experiments/g20a-hw-entity-final/hw_v128_entity_rect/",
+    "build/g20b-playtest2/hardware/hw_v128_entity_rect/"
+  ],
+  "build_inputs": [
+    "build/select-menu-fix/",
+    "build/level1-fixes/",
+    "build/g20/",
+    "build/gba/assets/",
+    "build/native/"
+  ],
+  "protected_sha256_verified": 25656,
+  "remaining_bytes": {
+    "build": 679549971,
+    "research": 731659453,
+    "artifacts": 32158381
+  },
+  "empty_directories_removed": 2423,
+  "checks": {
+    "python_scripts_parsed": 157,
+    "powershell_scripts_parsed": 45,
+    "ui01_latency_report": "build/storage-check/ui01-latency.json",
+    "ui01_one_frame_input_cases": 16,
+    "boot_frames": 10,
+    "max_ui_latency_frames": 5,
+    "git_exclusions_verified": true,
+    "full_game_regression": false
+  }
+}

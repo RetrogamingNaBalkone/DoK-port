@@ -6,17 +6,17 @@ $ErrorActionPreference='Stop'
 $taskRoot=Split-Path $PSScriptRoot -Parent
 $taskPreviousLocal=$env:LOCALAPPDATA
 try {
-    $env:LOCALAPPDATA="$taskRoot/build/ghidra-local"
+    $env:LOCALAPPDATA="$taskRoot/research/ghidra/local"
     foreach ($taskLang in @('ru','en')) {
         $taskInventory=Get-Content "$taskRoot/analysis/inventory-$taskLang.json" -Raw | ConvertFrom-Json
         $taskFile=Join-Path $taskRoot $taskInventory.file
         if ((Get-FileHash -LiteralPath $taskFile).Hash.ToLowerInvariant() -ne $taskInventory.sha256) { throw 'Reference hash mismatch' }
-        $taskOutput="$taskRoot/build/stage6/$taskLang"
+        $taskOutput="$taskRoot/research/evidence/stage6/$taskLang"
         New-Item -ItemType Directory -Force $taskOutput | Out-Null
         $taskArguments=@('-Djava.system.class.loader=ghidra.GhidraClassLoader',
-            "-Duser.home=$taskRoot/build/ghidra-home", "-Dapplication.settingsdir=$taskRoot/build/ghidra-settings",
+            "-Duser.home=$taskRoot/research/ghidra/home", "-Dapplication.settingsdir=$taskRoot/research/ghidra/settings",
             '-Djava.awt.headless=true','-Xmx3G','-cp',"$GhidraHome/Ghidra/Framework/Utility/lib/Utility.jar",
-            'ghidra.Ghidra','ghidra.app.util.headless.AnalyzeHeadless',"$taskRoot/build/ghidra/$taskLang",'Kremlin',
+            'ghidra.Ghidra','ghidra.app.util.headless.AnalyzeHeadless',"$taskRoot/research/ghidra/projects/$taskLang",'Kremlin',
             '-process',(Split-Path $taskFile -Leaf),'-noanalysis','-scriptPath',"$taskRoot/scripts",'-postScript',
             'AnnotateWorld.java',$taskLang,$taskOutput)
         & "$JavaHome/bin/java.exe" @taskArguments *> "$taskOutput/ghidra.log"

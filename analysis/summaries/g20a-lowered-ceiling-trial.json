@@ -1,0 +1,672 @@
+{
+  "summary_schema": 1,
+  "full_report": {
+    "path": "analysis/g20a-lowered-ceiling-trial.json",
+    "sha256": "66b750d5e7d1f847aa13e146e36d397d4ff2de88dcd203b2b6e74a89b658f17f",
+    "bytes": 78200
+  },
+  "scope": "Summary of a recorded run; not a new verification. Full report is local and ignored by Git.",
+  "result": {
+    "task": "G20A",
+    "date": "2026-10-27",
+    "status": "experimental-not-selected",
+    "selected": false,
+    "targets_met": false,
+    "build_dir": "build/g20a-hw-lowered-v6/hw_v128_lowered",
+    "rom_sha256": "4f96b7dcbcad5933d38f3149b63868a53bbd52b8b3c6ad0bdfae643626444d80",
+    "rom_bytes": 16567124,
+    "artifact": null,
+    "previous_selected_artifact": "artifacts/gba/DoK-port_hardware_cached_prototype.gba",
+    "clean_repeat_byte_exact": true,
+    "ram": {
+      "ewram": 261276,
+      "ewram_free": 868,
+      "iwram_before_stacks": 23296,
+      "iwram_free_before_stacks": 1280,
+      "stack_reserve": 8192
+    },
+    "previous_selected_rebuild_byte_exact": true,
+    "mode1_ui_water_harness_regressions": "passed",
+    "changes": [
+      "Mode2 BG3 at actual inset400/y=-561",
+      "native HUD/weapon on normal OBJs",
+      "HBlank DMA3 multiplexes four scene OBJs",
+      "atomic immediate DMA3 configuration against VBlank IRQ",
+      "reuse duplicate BG2 far maps for BG3",
+      "native ceiling polygon still publishes coverage",
+      "completed front matrices held separately while Mode4 reuses covered[]"
+    ],
+    "live": {
+      "follow": {
+        "rom_sha256": "4f96b7dcbcad5933d38f3149b63868a53bbd52b8b3c6ad0bdfae643626444d80",
+        "rows": {
+          "detail_pointer": "/live/follow/rows",
+          "items": 6
+        },
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5392,
+          "high_water_bytes": 2544,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        },
+        "irq_stack": {
+          "low": 50364160,
+          "top": 50364320,
+          "untouched_margin_bytes": 80,
+          "high_water_bytes": 80,
+          "includes_bios_irq_saves": true
+        }
+      },
+      "turn120": {
+        "rom_sha256": "4f96b7dcbcad5933d38f3149b63868a53bbd52b8b3c6ad0bdfae643626444d80",
+        "rows": {
+          "detail_pointer": "/live/turn120/rows",
+          "items": 6
+        },
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5392,
+          "high_water_bytes": 2544,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        },
+        "irq_stack": {
+          "low": 50364160,
+          "top": 50364320,
+          "untouched_margin_bytes": 80,
+          "high_water_bytes": 80,
+          "includes_bios_irq_saves": true
+        }
+      },
+      "walking120": {
+        "rom_sha256": "4f96b7dcbcad5933d38f3149b63868a53bbd52b8b3c6ad0bdfae643626444d80",
+        "rows": {
+          "detail_pointer": "/live/walking120/rows",
+          "items": 6
+        },
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5392,
+          "high_water_bytes": 2544,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        },
+        "irq_stack": {
+          "low": 50364160,
+          "top": 50364320,
+          "untouched_margin_bytes": 80,
+          "high_water_bytes": 80,
+          "includes_bios_irq_saves": true
+        }
+      }
+    },
+    "spatial": {
+      "cases": 440,
+      "minima": {
+        "1": 11.945500113921167,
+        "2": 9.95458342826764,
+        "3": 14.931875142401458
+      }
+    },
+    "quality": {
+      "cases": 396,
+      "max_different_rgb_pixels": 1009,
+      "different_foreground_rgb_pixels": 0,
+      "different_overlay_rgb_pixels": 0,
+      "all_coverage_equal": true,
+      "ui_only_exact_rgb_cases": 396
+    },
+    "validation": {
+      "arm": {
+        "status": "passed",
+        "report": "build/g20a-hw-lowered-v6/arm.json"
+      },
+      "ui": {
+        "status": "passed",
+        "report": "build/g20a-hw-lowered-v6/ui.json"
+      },
+      "water": {
+        "status": "passed",
+        "report": "build/g20a-hw-lowered-v6/water.json"
+      },
+      "flow": {
+        "status": "passed",
+        "report": "build/g20a-hw-lowered-v6/flow.json"
+      },
+      "sprites": {
+        "status": "passed",
+        "report": "build/g20a-hw-lowered-v6/sprites.json"
+      },
+      "transitions": {
+        "status": "passed",
+        "report": "build/g20a-hw-lowered-v6/transitions.json"
+      }
+    },
+    "transition_callbacks": 5134,
+    "stricter_mode4_test": {
+      "status": "failed-in-baseline-and-trial",
+      "rows": 294,
+      "comparison": {
+        "detail_pointer": "/stricter_mode4_test/comparison",
+        "items": 12
+      },
+      "scope": "No callbacks discarded; the same counts of intermediate Pause/Resume images remain in selected2775 baseline and trial. This is not a clean transition pass."
+    },
+    "originals_unchanged": {
+      "detail_pointer": "/originals_unchanged",
+      "items": 22
+    },
+    "input_reports": {
+      "detail_pointer": "/input_reports",
+      "entries": 21
+    },
+    "build_manifest": {
+      "tables": {
+        "package_sha256": "3efa5d3027d63ffd65e0ae8c0b45be23ee8394b3c5151c8e9f10e76fa8674351",
+        "nodes_per_view": 8191,
+        "bsp_bytes": 196584,
+        "padding": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "prelit_bytes": 11224331,
+        "columns_no_scales_bytes": 474620,
+        "stored_light_rows": {
+          "detail_pointer": "/build_manifest/tables/stored_light_rows",
+          "items": 16
+        },
+        "quantized_light_rows": [
+          0,
+          4,
+          8,
+          12,
+          15
+        ],
+        "exact_hud_panel_atlas_bytes": 11824,
+        "surface_side_columns": true,
+        "entity_columns": true,
+        "hardware_bg": {
+          "texture_size": 32,
+          "light_rows": [
+            0,
+            7,
+            15
+          ],
+          "bank_bytes": 230400,
+          "views": [
+            {
+              "detail_pointer": "/build_manifest/tables/hardware_bg/views/0",
+              "entries": 4,
+              "scalars": {
+                "view": 0,
+                "minimum_walls_in_any16_cell_window": 14
+              }
+            },
+            {
+              "detail_pointer": "/build_manifest/tables/hardware_bg/views/1",
+              "entries": 4,
+              "scalars": {
+                "view": 1,
+                "minimum_walls_in_any16_cell_window": 14
+              }
+            },
+            {
+              "detail_pointer": "/build_manifest/tables/hardware_bg/views/2",
+              "entries": 4,
+              "scalars": {
+                "view": 2,
+                "minimum_walls_in_any16_cell_window": 20
+              }
+            },
+            {
+              "detail_pointer": "/build_manifest/tables/hardware_bg/views/3",
+              "entries": 4,
+              "scalars": {
+                "view": 3,
+                "minimum_walls_in_any16_cell_window": 20
+              }
+            },
+            {
+              "detail_pointer": "/build_manifest/tables/hardware_bg/views/4",
+              "entries": 4,
+              "scalars": {
+                "view": 4,
+                "minimum_walls_in_any16_cell_window": 32
+              }
+            },
+            {
+              "detail_pointer": "/build_manifest/tables/hardware_bg/views/5",
+              "entries": 4,
+              "scalars": {
+                "view": 5,
+                "minimum_walls_in_any16_cell_window": 32
+              }
+            }
+          ],
+          "lowered": {
+            "height": -561,
+            "inset": 400,
+            "maps_screenblocks": [
+              20,
+              26,
+              20
+            ],
+            "cells_by_view": [
+              383,
+              383,
+              995,
+              995,
+              0,
+              0
+            ],
+            "row_lut_bytes": 622080,
+            "reused_duplicate_far_maps": true
+          }
+        }
+      },
+      "variants": {
+        "hw_v128_lowered": {
+          "rom": "build\\g20a-hw-lowered-final\\hw_v128_lowered\\dok-diagnostic.gba",
+          "rom_bytes": 16567124,
+          "rom_sha256": "4f96b7dcbcad5933d38f3149b63868a53bbd52b8b3c6ad0bdfae643626444d80",
+          "entry": 134217728,
+          "symbols": {
+            "__ARMv4ABSLongBXThunk_gba_render_stage": 50349908,
+            "__ARMv5LongLdrPcThunk_hw_static_begin": 50349920,
+            "__ARMv4ABSLongBXThunk_dok_rom_binding": 134324996,
+            "__ARMv4ABSLongBXThunk_dok_rom_resource_at": 134325008,
+            "__ARMv5LongLdrPcThunk_hw_static_finish": 50349952,
+            "__ARMv4ABSLongBXThunk_dok_animation_open": 134325068,
+            "__ARMv4ABSLongBXThunk_dok_animation_frame_at": 134325080,
+            "__ARMv5LongLdrPcThunk_billboard_image": 50349984,
+            "__ARMv5LongLdrPcThunk_billboard": 50349992,
+            "__ARMv5LongLdrPcThunk_sort_faces": 50350000,
+            "__ARMv5LongLdrPcThunk_defer_background": 50350008,
+            "__ARMv5LongLdrPcThunk_render_ticks": 50350016,
+            "__ARMv5LongLdrPcThunk_background_gaps": 50350024,
+            "__ARMv5LongLdrPcThunk_hw_static_envelope": 50350032,
+            "__ARMv5LongLdrPcThunk_seed_hardware_surfaces": 50350040,
+            "__ARMv5LongLdrPcThunk_surface_sides": 50350048,
+            "__ARMv5LongLdrPcThunk_cell_sprites": 50350056,
+            "__ARMv5LongLdrPcThunk_hw_static_restore_cell": 50350064,
+            "__ARMv5LongLdrPcThunk_hw_static_wall_begin": 50350072,
+            "__ARMv5LongLdrPcThunk_image": 50350080,
+            "__ARMv5LongLdrPcThunk_hw_static_wall_end": 50350088,
+            "__ARMv5LongLdrPcThunk_surface_raster_general": 50350096,
+            "__ARMv5LongLdrPcThunk_face_box_covered": 50350104,
+            "__ARMv5LongLdrPcThunk_surface_image": 50350112,
+            "__ARMv5LongLdrPcThunk_cover": 50350120,
+            "__ARMv5LongLdrPcThunk_dok_gba_mapped_column": 50350128,
+            "__ARMv4ABSLongBXThunk_dok_ui_set_art": 50352892,
+            "__Thumbv4ABSLongBXThunk___aeabi_memcpy4": 134310009,
+            "__Thumbv4ABSLongBXThunk_load_ui": 134310021,
+            "__Thumbv4ABSLongBXThunk_dok_renderer_camera_from_runtime": 134310033,
+            "__Thumbv4ABSLongBXThunk_dok_renderer_palette": 134310045,
+            "__Thumbv4ABSLongBXThunk_dok_gba_tiled_clear": 134310057,
+            "__Thumbv4ABSLongBXThunk_gba_divmod_selftest": 134310069,
+            "__Thumbv4ABSLongBXThunk_dok_renderer_light_row": 134310081,
+            "__Thumbv4ABSLongBXThunk_dok_renderer_camera_heading": 134310093,
+            "__Thumbv4ABSLongBXThunk_dok_renderer_draw": 134310105,
+            "__Thumbv4ABSLongBXThunk_hw_bg_prepare": 134310117,
+            "__Thumbv4ABSLongBXThunk_hw_dirty_tiles": 134310129,
+            "__Thumbv4ABSLongBXThunk_dok_gba_hw_map_cells": 134310141,
+            "__ARMv4ABSLongBXThunk_timer_sample": 134310152,
+            "__ARMv4ABSLongBXThunk_hw_bg_plan_cells": 134310164,
+            "__ARMv4ABSLongBXThunk_panic": 134310176,
+            "__ARMv4ABSLongBXThunk_hw_bg_fill_lut": 134310188,
+            "__ARMv4ABSLongBXThunk_hw_bg_fill_low": 134310200,
+            "__ARMv5LongLdrPcThunk___aeabi_idiv": 134310212,
+            "__ARMv5LongLdrPcThunk_dok_renderer_light_row": 134310220,
+            "__Thumbv4ABSLongBXThunk___aeabi_idiv": 134310229,
+            "__Thumbv4ABSLongBXThunk___aeabi_memclr4": 134310241,
+            "__Thumbv4ABSLongBXThunk___aeabi_uidivmod": 134310253,
+            "__Thumbv4ABSLongBXThunk___aeabi_uidiv": 134310265,
+            "__Thumbv4ABSLongBXThunk_dok_gba_copy_panel_rows": 134310277,
+            "__Thumbv4ABSLongBXThunk_dok_gba_tiled_ui_panel": 134310289,
+            "__Thumbv4ABSLongBXThunk___aeabi_idivmod": 134310301,
+            "__Thumbv4ABSLongBXThunk___aeabi_memclr": 134310313,
+            "__Thumbv4ABSLongBXThunk___aeabi_memcpy": 134310325,
+            "__ARMv5LongLdrPcThunk___aeabi_uidivmod": 134324956,
+            "__ARMv5LongLdrPcThunk___aeabi_idivmod": 134324964,
+            "__ARMv4ABSLongBXThunk_dok_runtime_actor_at": 134324972,
+            "__ARMv4ABSLongBXThunk_dok_runtime_position": 134324984,
+            "__ARMv5LongLdrPcThunk_dok_gba_geometry_copy": 134325020,
+            "__ARMv5LongLdrPcThunk_dok_gba_geometry_equal": 134325028,
+            "__ARMv5LongLdrPcThunk_dok_projection_transform": 134325036,
+            "__ARMv5LongLdrPcThunk_dok_projection_project": 134325044,
+            "__ARMv5LongLdrPcThunk_coverage_edge": 134325052,
+            "__ARMv5LongLdrPcThunk_surfaces_build": 134325060,
+            "__ARMv4ABSLongBXThunk_dok_image_open": 134325092,
+            "__ARMv5LongLdrPcThunk_raster": 134325104,
+            "__ARMv5LongLdrPcThunk_dok_gba_plane_divide": 134325112,
+            "__ARMv5LongLdrPcThunk_dok_gba_tiled_surface": 134325120,
+            "_start": 134241216,
+            "__iwram_load": 134217920,
+            "__iwram_start": 50331648,
+            "__iwram_end": 50354944,
+            "__data_load": 150784848,
+            "__data_start": 33554432,
+            "__data_end": 33554436,
+            "__bss_start": 33554440,
+            "__bss_end": 33815708,
+            "gba_main": 134243625,
+            "gba_irq": 134241464,
+            "g_vblanks": 33771896,
+            "g_render_diag": 33569684,
+            "g_render_world": 33569812,
+            "g_render_frame": 33603680,
+            "g_render_stages": 33764196,
+            "__aeabi_memcpy4": 50350476,
+            "g_render_view": 33764292,
+            "g_diag": 33554440,
+            "dok_gba_assets": 134599332,
+            "dok_gba_assets_end": 137362378,
+            "g_render_stats": 33771948,
+            "g_render_completed_stages": 33773120,
+            "__aeabi_idiv": 50350804,
+            "__aeabi_uidivmod": 50350984,
+            "__aeabi_uidiv": 50350668,
+            "__aeabi_idivmod": 50351016,
+            "__aeabi_memclr4": 50350640,
+            "__aeabi_memclr": 50350612,
+            "__aeabi_memcpy": 50350408,
+            "__aeabi_memcpy8": 50350544,
+            "g_render_work": 33813752,
+            "__iwram_reserved_override": 8192,
+            "__iwram_reserved_bytes": 8192,
+            "__iwram_code_end": 50352904,
+            "__iwram_data_start": 50352904,
+            "__iwram_data_end": 50354944
+          },
+          "sections": [
+            {
+              "detail_pointer": "/build_manifest/variants/hw_v128_lowered/sections/0",
+              "entries": 4,
+              "scalars": {
+                "name": ".header",
+                "address": 134217728,
+                "size": 192,
+                "type": 1
+              }
+            },
+            {
+              "detail_pointer": "/build_manifest/variants/hw_v128_lowered/sections/1",
+              "entries": 4,
+              "scalars": {
+                "name": ".iwram",
+                "address": 50331648,
+                "size": 23296,
+                "type": 1
+              }
+            },
+            {
+              "detail_pointer": "/build_manifest/variants/hw_v128_lowered/sections/2",
+              "entries": 4,
+              "scalars": {
+                "name": ".text",
+                "address": 134241216,
+                "size": 16543496,
+                "type": 1
+              }
+            },
+            {
+              "detail_pointer": "/build_manifest/variants/hw_v128_lowered/sections/3",
+              "entries": 4,
+              "scalars": {
+                "name": ".ARM.exidx",
+                "address": 150784712,
+                "size": 136,
+                "type": 1879048193
+              }
+            },
+            {
+              "detail_pointer": "/build_manifest/variants/hw_v128_lowered/sections/4",
+              "entries": 4,
+              "scalars": {
+                "name": ".data",
+                "address": 33554432,
+                "size": 4,
+                "type": 1
+              }
+            },
+            {
+              "detail_pointer": "/build_manifest/variants/hw_v128_lowered/sections/5",
+              "entries": 4,
+              "scalars": {
+                "name": ".bss",
+                "address": 33554440,
+                "size": 261268,
+                "type": 8
+              }
+            }
+          ],
+          "header_checksum": 4,
+          "ewram_static_bytes": 261276,
+          "prototype_defines": [
+            "NO_SCALES",
+            "STATIC_SETUP",
+            "PRELIT",
+            "EXACT_LIGHT",
+            "EXACT_PLANES",
+            "UI_CACHE",
+            "SIDES_PRELIT",
+            "HW_OBJ",
+            "HW_PACK_ARM",
+            "HW_DIRECT",
+            "HW_BG",
+            "HW_RAYS32",
+            "HW_BG_LEASE_CACHE",
+            "HW_ROW_LUT",
+            "HW_BG_STREAM",
+            "HW_UI_REUSE",
+            "BACKFACE",
+            "HW_EDGE_ROM",
+            "BACKFACE_SIDES",
+            "SIDE_SETUP",
+            "HW_MASKED",
+            "HW_PRESENT",
+            "HW_MAP_CACHE",
+            "HW_EARLY_PRESENT",
+            "HW_VERTICAL128",
+            "HW_COLUMN_CACHE",
+            "HW_CELL_CLASS",
+            "HW_FC_SEED",
+            "HW_FACE_BOX",
+            "HW_COVER4",
+            "HW_DIRECT_RUN",
+            "HW_PROJECT_RECIP",
+            "HW_NONZERO_COLUMN",
+            "HW_COMPACT_ZERO",
+            "HW_SURFACE_SPLIT",
+            "HW_LINEAR_ROM",
+            "HW_DIRECT_GAPS",
+            "HW_STATIC_GEOMETRY",
+            "HW_EDGE_RAM_CALL",
+            "HW_INTERVAL_EWRAM",
+            "HW_ENTITY_PRELIT",
+            "HW_MASKED_BATCH",
+            "HW_RECT_RASTER",
+            "HW_UI_OBJ",
+            "HW_BG_LOWERED"
+          ]
+        },
+        "source_control": {
+          "rom": "build\\g20a-hw-lowered-final\\source_control\\dok-diagnostic.gba",
+          "rom_bytes": 32891192,
+          "rom_sha256": "7babd40f913eb12f77c93c9df917cea432b0cbe3bd83e11da45ba08dec917ea8",
+          "entry": 134217728,
+          "symbols": {
+            "__ARMv4ABSLongBXThunk_dok_runtime_actor_at": 134309336,
+            "__ARMv4ABSLongBXThunk_dok_runtime_position": 50350972,
+            "__ARMv4ABSLongBXThunk_gba_render_stage": 50350984,
+            "__ARMv4ABSLongBXThunk_dok_rom_binding": 134309288,
+            "__ARMv4ABSLongBXThunk_dok_rom_resource_at": 134309300,
+            "__ARMv4ABSLongBXThunk_dok_animation_open": 134309348,
+            "__ARMv4ABSLongBXThunk_dok_animation_frame_at": 134309360,
+            "__ARMv5LongLdrPcThunk_billboard_image": 50351044,
+            "__ARMv5LongLdrPcThunk_billboard": 50351052,
+            "__ARMv5LongLdrPcThunk_render_ticks": 50351060,
+            "__ARMv5LongLdrPcThunk_surface_sides": 50351068,
+            "__ARMv5LongLdrPcThunk_cell_sprites": 50351076,
+            "__ARMv5LongLdrPcThunk_image": 50351084,
+            "__ARMv5LongLdrPcThunk_surface_image": 50351092,
+            "__ARMv4ABSLongBXThunk_dok_ui_set_art": 50353268,
+            "__Thumbv4ABSLongBXThunk___aeabi_memcpy4": 134303553,
+            "__Thumbv4ABSLongBXThunk_load_ui": 134303565,
+            "__Thumbv4ABSLongBXThunk_dok_renderer_camera_from_runtime": 134303577,
+            "__Thumbv4ABSLongBXThunk_dok_renderer_palette": 134303589,
+            "__Thumbv4ABSLongBXThunk_gba_divmod_selftest": 134303601,
+            "__Thumbv4ABSLongBXThunk_dok_renderer_light_row": 134303613,
+            "__Thumbv4ABSLongBXThunk_dok_renderer_camera_heading": 134303625,
+            "__Thumbv4ABSLongBXThunk_dok_renderer_draw": 134303637,
+            "__Thumbv4ABSLongBXThunk___aeabi_idiv": 134303649,
+            "__Thumbv4ABSLongBXThunk___aeabi_memclr4": 134303661,
+            "__Thumbv4ABSLongBXThunk___aeabi_uidivmod": 134303673,
+            "__Thumbv4ABSLongBXThunk___aeabi_uidiv": 134303685,
+            "__Thumbv4ABSLongBXThunk___aeabi_idivmod": 134303697,
+            "__Thumbv4ABSLongBXThunk___aeabi_memclr": 134303709,
+            "__Thumbv4ABSLongBXThunk___aeabi_memcpy": 134303721,
+            "__ARMv5LongLdrPcThunk___aeabi_uidivmod": 134309272,
+            "__ARMv5LongLdrPcThunk___aeabi_idivmod": 134309280,
+            "__ARMv5LongLdrPcThunk_dok_projection_transform": 134309312,
+            "__ARMv5LongLdrPcThunk_dok_projection_project": 134309320,
+            "__ARMv5LongLdrPcThunk___aeabi_idiv": 134309328,
+            "__ARMv4ABSLongBXThunk_dok_image_open": 134309372,
+            "_start": 134242312,
+            "__iwram_load": 134217920,
+            "__iwram_start": 50331648,
+            "__iwram_end": 50356040,
+            "__data_load": 167108916,
+            "__data_start": 33554432,
+            "__data_end": 33554436,
+            "__bss_start": 33554436,
+            "__bss_end": 33808100,
+            "gba_main": 134244301,
+            "gba_irq": 134242560,
+            "g_vblanks": 33766060,
+            "g_render_diag": 33569680,
+            "g_render_world": 33569808,
+            "g_render_frame": 33603672,
+            "g_render_stages": 33764188,
+            "__aeabi_memcpy4": 50351420,
+            "g_render_view": 33764284,
+            "g_diag": 33554436,
+            "dok_gba_assets": 134583584,
+            "dok_gba_assets_end": 137346630,
+            "g_render_stats": 33766112,
+            "g_render_completed_stages": 33766172,
+            "__aeabi_uidivmod": 50351928,
+            "__aeabi_uidiv": 50351612,
+            "__aeabi_idivmod": 50351960,
+            "__aeabi_idiv": 50351748,
+            "__aeabi_memclr4": 50351584,
+            "__aeabi_memclr": 50351556,
+            "__aeabi_memcpy": 50351352,
+            "__aeabi_memcpy8": 50351488,
+            "g_render_work": 33807568,
+            "__iwram_reserved_override": 8192,
+            "__iwram_reserved_bytes": 8192,
+            "__iwram_code_end": 50353280,
+            "__iwram_data_start": 50353280,
+            "__iwram_data_end": 50356040
+          },
+          "sections": [
+            {
+              "detail_pointer": "/build_manifest/variants/source_control/sections/0",
+              "entries": 4,
+              "scalars": {
+                "name": ".header",
+                "address": 134217728,
+                "size": 192,
+                "type": 1
+              }
+            },
+            {
+              "detail_pointer": "/build_manifest/variants/source_control/sections/1",
+              "entries": 4,
+              "scalars": {
+                "name": ".iwram",
+                "address": 50331648,
+                "size": 24392,
+                "type": 1
+              }
+            },
+            {
+              "detail_pointer": "/build_manifest/variants/source_control/sections/2",
+              "entries": 4,
+              "scalars": {
+                "name": ".text",
+                "address": 134242312,
+                "size": 32866452,
+                "type": 1
+              }
+            },
+            {
+              "detail_pointer": "/build_manifest/variants/source_control/sections/3",
+              "entries": 4,
+              "scalars": {
+                "name": ".ARM.exidx",
+                "address": 167108764,
+                "size": 152,
+                "type": 1879048193
+              }
+            },
+            {
+              "detail_pointer": "/build_manifest/variants/source_control/sections/4",
+              "entries": 4,
+              "scalars": {
+                "name": ".data",
+                "address": 33554432,
+                "size": 4,
+                "type": 1
+              }
+            },
+            {
+              "detail_pointer": "/build_manifest/variants/source_control/sections/5",
+              "entries": 4,
+              "scalars": {
+                "name": ".bss",
+                "address": 33554436,
+                "size": 253664,
+                "type": 8
+              }
+            }
+          ],
+          "header_checksum": 4,
+          "ewram_static_bytes": 253668,
+          "prototype_defines": [
+            "MAIN_CONTROL",
+            "UI_CONTROL"
+          ]
+        }
+      },
+      "base_rom_sha256": "7babd40f913eb12f77c93c9df917cea432b0cbe3bd83e11da45ba08dec917ea8",
+      "base_objects": {
+        "detail_pointer": "/build_manifest/base_objects",
+        "entries": 40
+      },
+      "sources": {
+        "detail_pointer": "/build_manifest/sources",
+        "entries": 44
+      }
+    },
+    "limitations": [
+      "Large L1 ceiling-heavy stationary views improve, ordinary live routes regress; this trial does not replace the selected ROM.",
+      "UI/flow/sprites/water/ARM and282 ordinary transitions passed; full combat/items/AI/stress acceptance of this backend is not claimed.",
+      "Strict Pause/Resume video test exposes pre-existing intermediate images; extra corruption caused by scratch reuse was fixed, but overall test remains failed.",
+      "Source-derived32x32/three-LIGHT ceiling changes texture projection/lighting; actual lowered geometry is retained.",
+      "No whole-level minimum, physical GBA or original BIOS acceptance."
+    ]
+  }
+}

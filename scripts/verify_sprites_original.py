@@ -10,7 +10,7 @@ from verify_surfaces import Original,R
 def main():
  report=dict(task='G11',status='passed',whole_DOS_session=False,languages={})
  for language in ('ru','en'):
-  original=Original(language);c=original.c;path=Path('build/sprites')/language
+  original=Original(language);c=original.c;path=Path('research/evidence/sprites')/language
   c.mem_write(0x50000,(path/'geometry.bin').read_bytes());delta=original.delta
   count=0;negative_width=0
   for depth in (120,300,600,1200,2400,6000):

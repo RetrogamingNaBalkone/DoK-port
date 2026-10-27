@@ -417,7 +417,7 @@ def verify_manifest(manifest, package, original):
               "manifest original EXE/RES/LEVEL fingerprints")
     check(len(manifest["runtime_inputs"]), 6, "manifest all G02 inputs recorded")
     for metadata in manifest["runtime_inputs"]:
-        path = ROOT / "build/runtime" / metadata["language"] / f"LEVEL{metadata['level']}-runtime.json"
+        path = ROOT / "research/evidence/runtime" / metadata["language"] / f"LEVEL{metadata['level']}-runtime.json"
         check(metadata["sha256"], sha(path.read_bytes()), "manifest G02 input fingerprint")
     expected_changes = {}
     unified, _, _, _ = unified_oracle(original, 1, "ru")

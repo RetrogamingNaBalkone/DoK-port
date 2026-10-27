@@ -165,8 +165,8 @@ health activation_distance projectile_glyph burst_limit burst_delay course_perio
 
 Скрипт открывает сохранённые проекты Ghidra с `-readOnly -noanalysis`,
 повторно декомпилирует выбранные функции и экспортирует их инструкции.
-Результаты: `build/enemy-fields/<ru|en>/functions.c`, `evidence.asm`,
-`ghidra.log`; контрольные суммы — `build/enemy-fields/verified-hashes.json`.
+Результаты: `research/evidence/enemy-fields/<ru|en>/functions.c`, `evidence.asm`,
+`ghidra.log`; контрольные суммы — `research/evidence/enemy-fields/verified-hashes.json`.
 Исходные полные экспорты в `decompiled/` и проекты не перезаписываются.
 Сигнатуры автоматического C остаются предварительными. В частности,
 псевдокод ошибочно теряет старшую половину некоторых результатов DX:AX;

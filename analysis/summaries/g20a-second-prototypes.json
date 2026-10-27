@@ -1,0 +1,262 @@
+{
+  "summary_schema": 1,
+  "full_report": {
+    "path": "analysis/g20a-second-prototypes.json",
+    "sha256": "aee12bd580b82e1cac8bd97c13606486536393b750b931a14bafe731934ca872",
+    "bytes": 520269
+  },
+  "scope": "Summary of a recorded run; not a new verification. Full report is local and ignored by Git.",
+  "result": {
+    "task": "G20A",
+    "status": "prototype-comparison",
+    "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+    "script_sha256": "d3762515bff5c717697cb17c79236ecc7589ed1a80881be67ab7000608abbb53",
+    "targets_fps": [
+      30,
+      24.1,
+      15
+    ],
+    "cpu_hz": 16777216,
+    "selection": "Nine RU start cameras ranked by the older G20 sweep; not a new extrema search.",
+    "frozen": {
+      "baseline": {
+        "rom_sha256": "7babd40f913eb12f77c93c9df917cea432b0cbe3bd83e11da45ba08dec917ea8",
+        "rows": {
+          "detail_pointer": "/frozen/baseline/rows",
+          "items": 9
+        },
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5568,
+          "high_water_bytes": 2368,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        },
+        "defines": [],
+        "cpu_speedup_median": 1.0,
+        "cpu_speedup_range": [
+          1.0,
+          1.0
+        ]
+      },
+      "exact_ui": {
+        "rom_sha256": "be2195184977481f68abdd1b7d91ae5c91c6969b26a78469e70b63d5a7fde5b7",
+        "rows": {
+          "detail_pointer": "/frozen/exact_ui/rows",
+          "items": 9
+        },
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5568,
+          "high_water_bytes": 2368,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        },
+        "defines": [
+          "NO_SCALES",
+          "STATIC_SETUP",
+          "PRELIT",
+          "EXACT_LIGHT",
+          "EXACT_PLANES",
+          "UI_CACHE"
+        ],
+        "cpu_speedup_median": 1.326593022530113,
+        "cpu_speedup_range": [
+          1.2640547033819995,
+          1.3678370020010915
+        ]
+      },
+      "world_ui": {
+        "rom_sha256": "88a329898cf1774b2088ffd66364649f1f5f5c84abf21e812c835d86ecf00a6b",
+        "rows": {
+          "detail_pointer": "/frozen/world_ui/rows",
+          "items": 9
+        },
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5568,
+          "high_water_bytes": 2368,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        },
+        "defines": [
+          "NO_SCALES",
+          "STATIC_SETUP",
+          "WORLD_PLANES",
+          "PRELIT",
+          "EXACT_LIGHT",
+          "WORLD_SPANS",
+          "UI_CACHE"
+        ],
+        "cpu_speedup_median": 1.470349547787827,
+        "cpu_speedup_range": [
+          1.3277412946305391,
+          1.6087050671286272
+        ]
+      },
+      "world_water": {
+        "rom_sha256": "abf8ac697514074466e7ff74ff96cfa14b51c3f3364e54aa889eb646c3fab809",
+        "rows": {
+          "detail_pointer": "/frozen/world_water/rows",
+          "items": 9
+        },
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5568,
+          "high_water_bytes": 2368,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        },
+        "defines": [
+          "NO_SCALES",
+          "STATIC_SETUP",
+          "WORLD_PLANES",
+          "PRELIT",
+          "EXACT_LIGHT",
+          "WORLD_SPANS",
+          "UI_CACHE",
+          "WATER_SPANS"
+        ],
+        "cpu_speedup_median": 1.4722929312708048,
+        "cpu_speedup_range": [
+          1.331193980303198,
+          1.6209906174994546
+        ]
+      },
+      "world_coarse": {
+        "rom_sha256": "b4bd63f11f6d2f193eb4dcbd0886be5e4eabf52b2e5ca7136404198f02bcc0bd",
+        "rows": {
+          "detail_pointer": "/frozen/world_coarse/rows",
+          "items": 9
+        },
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5568,
+          "high_water_bytes": 2368,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        },
+        "defines": [
+          "NO_SCALES",
+          "STATIC_SETUP",
+          "WORLD_PLANES",
+          "PRELIT",
+          "EXACT_LIGHT",
+          "WORLD_SPANS",
+          "UI_CACHE",
+          "WATER_SPANS",
+          "COARSE_PLANES"
+        ],
+        "cpu_speedup_median": 1.877872127872128,
+        "cpu_speedup_range": [
+          1.6541766930216568,
+          2.271749655980837
+        ]
+      }
+    },
+    "live": {
+      "baseline": {
+        "rom_sha256": "7babd40f913eb12f77c93c9df917cea432b0cbe3bd83e11da45ba08dec917ea8",
+        "rows": {
+          "detail_pointer": "/live/baseline/rows",
+          "items": 6
+        },
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5568,
+          "high_water_bytes": 2368,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        }
+      },
+      "exact_ui": {
+        "rom_sha256": "be2195184977481f68abdd1b7d91ae5c91c6969b26a78469e70b63d5a7fde5b7",
+        "rows": {
+          "detail_pointer": "/live/exact_ui/rows",
+          "items": 6
+        },
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5568,
+          "high_water_bytes": 2368,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        }
+      },
+      "world_ui": {
+        "rom_sha256": "88a329898cf1774b2088ffd66364649f1f5f5c84abf21e812c835d86ecf00a6b",
+        "rows": {
+          "detail_pointer": "/live/world_ui/rows",
+          "items": 6
+        },
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5568,
+          "high_water_bytes": 2368,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        }
+      },
+      "world_water": {
+        "rom_sha256": "abf8ac697514074466e7ff74ff96cfa14b51c3f3364e54aa889eb646c3fab809",
+        "rows": {
+          "detail_pointer": "/live/world_water/rows",
+          "items": 6
+        },
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5568,
+          "high_water_bytes": 2368,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        }
+      },
+      "world_coarse": {
+        "rom_sha256": "b4bd63f11f6d2f193eb4dcbd0886be5e4eabf52b2e5ca7136404198f02bcc0bd",
+        "rows": {
+          "detail_pointer": "/live/world_coarse/rows",
+          "items": 6
+        },
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5568,
+          "high_water_bytes": 2368,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        }
+      }
+    },
+    "limitations": [
+      "mGBA replacement BIOS; physical GBA not tested.",
+      "Frozen samples include full frame CPU and exclude presentation wait.",
+      "Live FPS includes VBlank; fixtures turn/fire with PCM22050, not a whole-level playthrough.",
+      "Dynamic states differ with elapsed emulated time; only frozen frames form a pixel oracle.",
+      "Procedural and low-resolution experiments are quality comparisons, not defaults."
+    ],
+    "zero_difference_frozen_candidates": [
+      "baseline",
+      "exact_ui"
+    ],
+    "targets_met": false
+  }
+}

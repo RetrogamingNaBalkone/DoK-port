@@ -9,18 +9,18 @@ from verify_gba import sha
 
 
 def main():
-    root=ROOT/'build/g20a-sides';comparison=read(root/'comparison.json')
+    root=ROOT/'research/experiments/g20a-sides';comparison=read(root/'comparison.json')
     variants={};artifacts={}
     for variant,prefix,native in (('sides_exact','exact',True),('sides_coarse','coarse',False)):
         build=root/variant;meta=read(build/'build-report.json');digest=sha(build/'dok-diagnostic.gba')
         assert digest==meta['rom_sha256']==comparison['frozen'][variant]['rom_sha256']==comparison['live'][variant]['rom_sha256']
-        assert digest==sha(ROOT/'build/g20a-sides-rebuild'/variant/'dok-diagnostic.gba')
+        assert digest==sha(ROOT/'research/experiments/g20a-sides-rebuild'/variant/'dok-diagnostic.gba')
         checks={name:checked(root/f'{prefix}-{name}.json',digest)
                 for name in ('renderer','sprites','interactions','time','ai_combat','ui','flow','game')}
         checks['arm']=checked(root/f'{variant}-arm.json',digest)
         checks['oracle']=checked(root/f'{prefix}-oracle.json',digest,True)
         oracle=read(root/f'{prefix}-oracle.json');assert oracle['pixel_exact_frames']==488
-        reference=ROOT/('build/select-menu-fix' if native else 'build/g20a-second/world_coarse')/'dok-diagnostic.gba'
+        reference=ROOT/('build/select-menu-fix' if native else 'research/experiments/g20a-second/world_coarse')/'dok-diagnostic.gba'
         assert oracle['before']['rom_sha256']==sha(reference)
         assert read(root/f'{prefix}-interactions.json')['original_affine_visual_oracle_checked']==native
         game=read(root/f'{prefix}-game.json');assert game['audio_underruns']==0
@@ -43,12 +43,12 @@ def main():
                         ('g20a-second/world_coarse','DoK-port_floor_4x2_v2.gba'),
                         ('g20a-sides/sides_exact','DoK-port_optimized_prototype.gba'),
                         ('g20a-sides/sides_coarse','DoK-port_floor_4x2_prototype.gba')):
-        origin=ROOT/'build'/source/'dok-diagnostic.gba';dest=ROOT/'artifacts/gba'/name
+        origin=ROOT/'research/experiments'/source/'dok-diagnostic.gba';dest=ROOT/'artifacts/gba'/name
         shutil.copy2(origin,dest);assert sha(dest)==sha(origin)
         artifacts[name]=dict(path=dest.relative_to(ROOT).as_posix(),bytes=dest.stat().st_size,sha256=sha(dest))
     negative={}
     for folder in ('g20a-third','g20a-raster','g20a-eager','g20a-masked'):
-        path=ROOT/'build'/folder/'comparison.json';trial=read(path)
+        path=ROOT/'research/experiments'/folder/'comparison.json';trial=read(path)
         negative[folder]=dict(report_sha256=sha(path),scope='Nine frozen cameras and six live PCM fixtures only; unselected.',
             variants={v:dict(rom_sha256=r['rom_sha256'],cpu_speedup_median=r['cpu_speedup_median'],
                 frozen_cycles=[row['median'] for row in r['rows']],
@@ -67,7 +67,7 @@ def main():
                                           validation_sha256=sha(second_path)),
         isolated_rebuild_byte_identical=True,
         reviewed_native_pngs=[dict(path=p.relative_to(ROOT).as_posix(),sha256=sha(p)) for p in reviewed],
-        source_manifest=dict(path='build/g20a-sides/prototype-build.json',sha256=sha(root/'prototype-build.json')),
+        source_manifest=dict(path='research/experiments/g20a-sides/prototype-build.json',sha256=sha(root/'prototype-build.json')),
         script_sha256=sha(__file__),limitations=[
             'No physical GBA/original BIOS or whole-level playthrough.',
             'Live start fixtures are not whole-level minimum FPS;14.93 is below15.',

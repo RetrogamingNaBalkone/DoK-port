@@ -21,7 +21,7 @@
 и умножается на 10; изображения начинаются после заголовка и этой таблицы.
 `1050:02F2…0350` назначает указатель изображения каждой записи, указатель
 его пикселей и переходит к следующему изображению по 32-битному размеру.
-Свежие выдержки с аннотациями: `build/stage3/<ru|en>/annotated.c`,
+Свежие выдержки с аннотациями: `research/evidence/stage3/<ru|en>/annotated.c`,
 `evidence.asm`, `roles.tsv`. Типы `AnimationHeader8` и `AnimationFrame10`
 добавлены в `/DoK/Native16` обоих сохраняемых проектов Ghidra.
 
@@ -116,8 +116,8 @@ objects модулей; запуск на Linux/GBA пока не выполня
 [ENG](../analysis/animations-en.json), [сравнение](../analysis/animations-comparison.json).
 Итоговая проверка оригиналов, аннотаций и собранных файлов:
 [stage3-verification.json](../analysis/stage3-verification.json).
-В `build/animations/` лежат PGM-кадры, PNG-листы и
-[HTML-галерея](../build/animations/index.html). Листы просмотрены визуально.
+В `research/evidence/animations/` лежат PGM-кадры, PNG-листы и
+[HTML-галерея](../research/evidence/animations/index.html). Листы просмотрены визуально.
 Для предпросмотра используется GAMEP1, перевод VGA 0–63 → RGB 0–255,
 непрозрачный вывод индексов и порядок кадров слева направо, затем сверху вниз.
 Это каталог кадров, а не игровой renderer или воспроизведение с проверенным временем.

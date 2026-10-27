@@ -34,8 +34,8 @@ x86-векторов и mGBA подтверждают разъезд сосед�
 | Настройка image crop | `10F8:0592` | `1060:06A2` |
 | Преобразование image crop | `10F8:05C9` | `1060:06D9` |
 
-Проекты: `build/ghidra/{ru,en}/Kremlin.gpr`. Свежие инструкции, автоматический
-псевдокод, исходные байты и manifests — `build/interactions/{ru,en}/`.
+Проекты: `research/ghidra/projects/{ru,en}/Kremlin.gpr`. Свежие инструкции, автоматический
+псевдокод, исходные байты и manifests — `research/evidence/interactions/{ru,en}/`.
 Скрипты: `InspectInteractions.java`, `analyze-interactions.ps1`.
 Автоматический C не является редактируемым движком или проверенной сигнатурой.
 

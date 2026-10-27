@@ -1,0 +1,252 @@
+{
+  "summary_schema": 1,
+  "full_report": {
+    "path": "analysis/g16-review.json",
+    "sha256": "90c106be04d2b8e7b29bd367b9ac49444cb0efd794d9476183fc66814614f60d",
+    "bytes": 125632
+  },
+  "scope": "Summary of a recorded run; not a new verification. Full report is local and ignored by Git.",
+  "result": {
+    "task": "G16",
+    "status": "passed",
+    "next": "G17",
+    "rom_sha256": "99b4e21fabba12543bffa9217adf7e2a4d78655a45b7b0e57de1b0a0a022273e",
+    "rom_bytes": 32867908,
+    "ewram_static_bytes": 248136,
+    "ewram_remaining_bytes": 14008,
+    "iwram_static_bytes": 23980,
+    "iwram_remaining_before_stack_reserve": 596,
+    "stack_reserve_bytes": 8192,
+    "sources": {
+      "detail_pointer": "/sources",
+      "entries": 99
+    },
+    "reports": {
+      "analysis/g16-host-verification.json": "4c88554e67c91a7e4a07710f274f1419d1998dd344cd47e6eb59e805a7b18acb",
+      "analysis/g16-original-verification.json": "e757035b27611f38ddba36aff44b92184c2fe8e4e13d539c0d4efaf4f7619e92",
+      "analysis/g16-audio-gba.json": "f59a537c7ef3eb58c6d725538412bc9696169f7f3649a466fa22dce12d0328c1",
+      "analysis/g16-renderer-regression.json": "5c9066ae1899f8037c3e9d50afd904e9eccf845a8c58394bd63130805b7ff4cf",
+      "analysis/g16-interactions-regression.json": "0103f40ca1db2a3526e34c55b8a679c07c59443c22098b979a31f17ba77f2eff",
+      "analysis/g16-time-regression.json": "f12611d887c02b9d8b942ec3cf9ccd19a5f53413df3bf3641ab021e1a92900e3",
+      "analysis/g16-ai-combat-regression.json": "e39096cb75d397602d36b67883850c456459db5625726afcf5727d3770df0456",
+      "analysis/g16-listening.json": "e148f038ec3354faaeb2d3d83ae243cc54521cb333dc60e0b9772f303dbcb7e5"
+    },
+    "artifacts": {
+      "build/g16/dok-diagnostic.elf": "957179b6db39669b42d072f4b09d718243b41035073883ec03b3ddf448bc9874",
+      "build/g16/dok-diagnostic.gba": "99b4e21fabba12543bffa9217adf7e2a4d78655a45b7b0e57de1b0a0a022273e",
+      "build/g16/dok-diagnostic.map": "434cb61483552eb0aa790fc5c4365c800efa257ee77581b2cf59aa939e34edaa"
+    },
+    "checks": {
+      "native_policy_cases": 26,
+      "host_policy": "G16 host: mono reject, latched loop, identity stop, odd loop continuity, EOF silence, restart passed; dok_audio=56",
+      "arm_audio": {
+        "task": "G16",
+        "status": "passed",
+        "rom_sha256": "99b4e21fabba12543bffa9217adf7e2a4d78655a45b7b0e57de1b0a0a022273e",
+        "script_sha256": "eb6bfe8c5e156d7d5e3172ec3937672a9b2fc50c67ffad00322c2d1a3089e862",
+        "core_sample_rate": 65536.0,
+        "core_fps": 59.727500915527344,
+        "once": {
+          "path": "build/g16/audio-check/short-once.wav",
+          "sha256": "23d1a3fadd276c19af542bed36c57661cfe0092f0cbe42a8900f4e88cd2345a3",
+          "frames": 41696,
+          "seconds": 0.63623046875,
+          "peak": 24000,
+          "rms": 3677.7980799395946,
+          "channel_difference_samples": 0
+        },
+        "loop": {
+          "path": "build/g16/audio-check/short-loop.wav",
+          "sha256": "0da97f698205328e9694362aa807548d3bd642d6973ec607fb8dcf2f3f876a95",
+          "frames": 119600,
+          "seconds": 1.824951171875,
+          "peak": 24000,
+          "rms": 4674.258327146278,
+          "channel_difference_samples": 0
+        },
+        "final": {
+          "magic": 1096107057,
+          "active": 0,
+          "resource": 62,
+          "rate": 11025,
+          "period": 1522,
+          "position": 18976,
+          "loops": 0,
+          "starts": 33,
+          "rejected": 4,
+          "stops": 7,
+          "completed": 26,
+          "irqs": 81888,
+          "underruns": 0,
+          "max_gap": 412,
+          "refill_cycles": 1280,
+          "ram_bytes": 128,
+          "level_resets": 3,
+          "requests": 1,
+          "identity": 2147483710
+        },
+        "source": {
+          "path": "originals/pkr/RUS/PKR.RES",
+          "sha256": "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816"
+        },
+        "all_sounds": {
+          "detail_pointer": "/checks/arm_audio/all_sounds",
+          "items": 23
+        },
+        "identity": {
+          "same_pcm_distinct_sound_objects": true,
+          "other_owner_query_false": true,
+          "other_owner_stop_preserved_current": true,
+          "other_owner_start_rejected": true,
+          "correct_owner_stop": true
+        },
+        "projectile_identity": {
+          "actual_projectile_impact": true,
+          "prepared_other_effect_completion": true,
+          "same_pcm_distinct_clone_identities": true,
+          "removal_of_other_clone_preserved_voice": true,
+          "playing_slot": 1,
+          "removed_slot": 0
+        },
+        "integrated_cost": {
+          "silent": {
+            "minimum": 5383680,
+            "maximum": 5384320,
+            "mean": 5383840.0,
+            "values": {
+              "detail_pointer": "/checks/arm_audio/integrated_cost/silent/values",
+              "items": 12
+            },
+            "framebuffer_sha256": "4613daee9e338a5ff1efac6c1a95fadffaa5ee452f096812a8fbc3886ae6dd0d"
+          },
+          "active22050": {
+            "minimum": 6162880,
+            "maximum": 6164992,
+            "mean": 6163621.333333333,
+            "values": {
+              "detail_pointer": "/checks/arm_audio/integrated_cost/active22050/values",
+              "items": 12
+            },
+            "framebuffer_sha256": "4613daee9e338a5ff1efac6c1a95fadffaa5ee452f096812a8fbc3886ae6dd0d"
+          },
+          "active11025": {
+            "minimum": 5747840,
+            "maximum": 5749632,
+            "mean": 5748458.666666667,
+            "values": {
+              "detail_pointer": "/checks/arm_audio/integrated_cost/active11025/values",
+              "items": 12
+            },
+            "framebuffer_sha256": "4613daee9e338a5ff1efac6c1a95fadffaa5ee452f096812a8fbc3886ae6dd0d"
+          },
+          "overhead22050": 0.1448373899174813,
+          "overhead11025": 0.06772464758734786,
+          "timer_quantum_cycles": 64,
+          "scope": "Whole renderer elapsed cycles including audio IRQs and DMA"
+        },
+        "rejected_loop_preserved_once": true,
+        "language_preserved_active_voice": true,
+        "level_change_stopped_voice": true,
+        "irq_stack": {
+          "low": 50364160,
+          "top": 50364320,
+          "untouched_margin_bytes": 80,
+          "high_water_bytes": 80,
+          "includes_bios_irq_saves": true
+        },
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5576,
+          "high_water_bytes": 2360,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        },
+        "human_listening_verified": true,
+        "listening_evidence_sha256": "e148f038ec3354faaeb2d3d83ae243cc54521cb333dc60e0b9772f303dbcb7e5",
+        "physical_gba_tested": false
+      },
+      "rational_clock": true,
+      "door_sensor_conveyor_finish": true,
+      "ai_combat": {
+        "task": "G15",
+        "status": "passed",
+        "rom_sha256": "99b4e21fabba12543bffa9217adf7e2a4d78655a45b7b0e57de1b0a0a022273e",
+        "script_sha256": "b9b185787c145ee149c9dc0f2318c1f74e9f5d9037ef666ec8043926579eec9e",
+        "groups": {
+          "detail_pointer": "/checks/ai_combat/groups",
+          "items": 28
+        },
+        "extra": {
+          "ranged": {
+            "solid_wall_blocks_sight": true,
+            "front_monster_suppresses_shot": true,
+            "failed_allocation_still_counts_attempt": true,
+            "pool_capacity": 141,
+            "published_projectile_front_suppresses_shot": true
+          },
+          "occupied_corpse": {
+            "frames": {
+              "detail_pointer": "/checks/ai_combat/extra/occupied_corpse/frames",
+              "items": 8
+            },
+            "completed_once": true,
+            "passable_persistent_corpse": true,
+            "destination_plane": 0,
+            "mmap": 128,
+            "tmap": 108
+          }
+        },
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5576,
+          "high_water_bytes": 2360,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        },
+        "physical_gba_tested": false,
+        "whole_dos_session_equivalence": false
+      }
+    },
+    "performance": {
+      "renderer_timing": {
+        "cpu_hz": 16777216,
+        "hardware_frame_cycles": 280896,
+        "target_cycles": 561792,
+        "target_hardware_frames": 2,
+        "scope": "Timer0/1 cascade: time-poll + input/language switch + renderer + HUD + halfword VRAM back-page copy; excludes presentation wait",
+        "min_cycles": 4671616,
+        "max_cycles": 4693696,
+        "worst_render_budget_ratio": 8.354864433811802,
+        "nominal_target_fps": 29.863750284802915,
+        "over_budget_draws": 99,
+        "all_observed_draws_fit_target": false,
+        "min_present_interval_vblanks": 17,
+        "max_present_interval_vblanks": 17,
+        "cadence_intervals_vblanks": {
+          "detail_pointer": "/performance/renderer_timing/cadence_intervals_vblanks",
+          "items": 66
+        },
+        "cadence_warmup_excluded_draws": 8,
+        "observed_steady_presentation_fps": 3.513382386447402,
+        "sampled_draws": 98,
+        "samples": {
+          "detail_pointer": "/performance/renderer_timing/samples",
+          "items": 98
+        }
+      },
+      "target30fps_verified": false
+    },
+    "limits": [
+      "Physical GBA/original BIOS and full DOS playback untested",
+      "User listened to short-loop mGBA output, not all23 resources; exact listened artifact predates identity-only fix",
+      "Numerical output comparison is not Sound Blaster hardware equivalence",
+      "Refill cycles cover C fill/rearm only; complete IRQ cost is not directly instrumented",
+      "Linux/ARM policy cross compilation passed; Linux/MSVC/CMake execution untested",
+      "Full game flow G18 and 30FPS G20 remain separate tasks"
+    ]
+  }
+}

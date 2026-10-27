@@ -22,7 +22,7 @@ def main():
         for entry in parse(archive)[18:21]:
             payload = archive[entry["offset"]:entry["offset"] + entry["size"]]
             model = reference(payload)
-            extracted = ROOT / f"build/resources/{lang}/{entry['index']:04d}.bin"
+            extracted = ROOT / f"research/evidence/resources/{lang}/{entry['index']:04d}.bin"
             assert extracted.read_bytes() == payload
             native = json.loads(subprocess.check_output([str(ROOT / "build/native/dok-level.exe"), str(extracted)]))
             assert model == native

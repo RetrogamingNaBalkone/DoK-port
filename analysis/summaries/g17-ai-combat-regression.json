@@ -1,0 +1,50 @@
+{
+  "summary_schema": 1,
+  "full_report": {
+    "path": "analysis/g17-ai-combat-regression.json",
+    "sha256": "e45317b913cfd6ce79f90c480d10ab3ec0cc5810f34552846ce02685f3c7bb46",
+    "bytes": 56515
+  },
+  "scope": "Summary of a recorded run; not a new verification. Full report is local and ignored by Git.",
+  "result": {
+    "task": "G15",
+    "status": "passed",
+    "rom_sha256": "b63ae8087b6f4cff5f121bd919b982ecbf750a2d786c581ae85166c2f7b7aefb",
+    "script_sha256": "b9b185787c145ee149c9dc0f2318c1f74e9f5d9037ef666ec8043926579eec9e",
+    "groups": {
+      "detail_pointer": "/groups",
+      "items": 28
+    },
+    "extra": {
+      "ranged": {
+        "solid_wall_blocks_sight": true,
+        "front_monster_suppresses_shot": true,
+        "failed_allocation_still_counts_attempt": true,
+        "pool_capacity": 141,
+        "published_projectile_front_suppresses_shot": true
+      },
+      "occupied_corpse": {
+        "frames": {
+          "detail_pointer": "/extra/occupied_corpse/frames",
+          "items": 8
+        },
+        "completed_once": true,
+        "passable_persistent_corpse": true,
+        "destination_plane": 0,
+        "mmap": 128,
+        "tmap": 108
+      }
+    },
+    "stack": {
+      "main_stack_low": 50356224,
+      "main_stack_top": 50364160,
+      "sentinel_word": 219540062,
+      "untouched_margin_bytes": 5576,
+      "high_water_bytes": 2360,
+      "irq_and_bios_excluded": true,
+      "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+    },
+    "physical_gba_tested": false,
+    "whole_dos_session_equivalence": false
+  }
+}

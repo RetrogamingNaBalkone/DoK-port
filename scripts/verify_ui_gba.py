@@ -452,7 +452,7 @@ def main():
             p.camera(1, 15120, -300, 22800, 90)
             p.camera(0, 15120, -300, 22800, 90)
             if 'g_flow_probe' in p.symbols:p.command(1, 2)
-            runtime = load_json(f'build/runtime/{"ru" if language == 0 else "en"}/LEVEL1-runtime.json')
+            runtime = load_json(f'research/evidence/runtime/{"ru" if language == 0 else "en"}/LEVEL1-runtime.json')
             p.set_player(baseline())
             target = 47*64+30
             p.pose(runtime, target)

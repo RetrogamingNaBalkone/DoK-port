@@ -8,7 +8,7 @@ def sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
 def main():
  report=dict(task='G16',status='passed',whole_DOS_session=False,script_sha256=sha(__file__),languages={})
  for lang in ('ru','en'):
-  ru=lang=='ru';path=Path('build/audio')/lang;c=Uc(UC_ARCH_X86,UC_MODE_16);c.mem_map(0,0x100000)
+  ru=lang=='ru';path=Path('research/evidence/audio')/lang;c=Uc(UC_ARCH_X86,UC_MODE_16);c.mem_map(0,0x100000)
   base=0x10f0 if ru else 0x1058;entries=(0x5e,0xea,0x125) if ru else (0x186a,0x18f6,0x1931)
   # Give the NE segment a distinct physical real-mode load base. Ghidra NE
   # selectors are not real-mode paragraphs; this avoids overlapping aliases.

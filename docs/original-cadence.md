@@ -53,5 +53,5 @@ BL=80h отсутствует. Для однобуферного режима в
 `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/analyze-cadence.ps1`
 открывает сохранённый RUS-проект Ghidra read-only и запускает
 `scripts/InspectCadence.java`. ASM, vtable, descriptor, журнал и manifest —
-`build/cadence/ru/`. SHA-256 EXE до/после совпали. Автоматический C использован
+`research/evidence/cadence/ru/`. SHA-256 EXE до/после совпали. Автоматический C использован
 для навигации; приведённые связи подтверждены ASM и данными Ghidra.

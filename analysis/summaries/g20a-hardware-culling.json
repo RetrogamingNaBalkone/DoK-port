@@ -1,0 +1,917 @@
+{
+  "summary_schema": 1,
+  "full_report": {
+    "path": "analysis/g20a-hardware-culling.json",
+    "sha256": "b4265a6ec0caac6296f887747679cc6f90870d4290bac280275ae28fea6d16c5",
+    "bytes": 251494
+  },
+  "scope": "Summary of a recorded run; not a new verification. Full report is local and ignored by Git.",
+  "result": {
+    "task": "G20A",
+    "date": "2026-10-27",
+    "status": "measured-culling-presentation-prototype-partial-acceptance",
+    "targets_met": false,
+    "artifact": "artifacts/gba/DoK-port_hardware_culling_prototype.gba",
+    "artifact_copied": true,
+    "rom_sha256": "240669c13508acba18fa08a68dd0bc793c02366561ee0b617d7c1e62d976f014",
+    "rom_bytes": 10843464,
+    "build_dir": "build/g20a-hw-early-qa/hw_early_present",
+    "ram": {
+      "ewram": 260936,
+      "ewram_free": 1208,
+      "iwram_before_stacks": 24056,
+      "iwram_free_before_stacks": 520,
+      "stack_reserve": 8192
+    },
+    "live": {
+      "follow": {
+        "rom_sha256": "240669c13508acba18fa08a68dd0bc793c02366561ee0b617d7c1e62d976f014",
+        "rows": {
+          "detail_pointer": "/live/follow/rows",
+          "items": 6
+        },
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5400,
+          "high_water_bytes": 2536,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        },
+        "irq_stack": {
+          "low": 50364160,
+          "top": 50364320,
+          "untouched_margin_bytes": 80,
+          "high_water_bytes": 80,
+          "includes_bios_irq_saves": true
+        }
+      },
+      "walking": {
+        "rom_sha256": "240669c13508acba18fa08a68dd0bc793c02366561ee0b617d7c1e62d976f014",
+        "rows": {
+          "detail_pointer": "/live/walking/rows",
+          "items": 6
+        },
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5400,
+          "high_water_bytes": 2536,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        },
+        "irq_stack": {
+          "low": 50364160,
+          "top": 50364320,
+          "untouched_margin_bytes": 80,
+          "high_water_bytes": 80,
+          "includes_bios_irq_saves": true
+        }
+      }
+    },
+    "validation": {
+      "arm": {
+        "task": "G20",
+        "status": "passed",
+        "elf_sha256": "7cda99e83c5af9a757ce1abe9e1a3a1c9d00dacd0f0d835bb483178c449ff331",
+        "rom_sha256": "240669c13508acba18fa08a68dd0bc793c02366561ee0b617d7c1e62d976f014",
+        "script_sha256": "bf1d6981f763529fef09d611d4d5cf8d4a4ce26fc75b9ad91d25ef1c3b5a6863",
+        "sampler_vectors": 4096,
+        "coverage_edge_vectors": 2048,
+        "exact_cell_coordinate_vectors": 30720,
+        "exact_plane_division_vectors": 65536,
+        "exact_panel_copy_vectors": 768,
+        "world_texture_vectors": 0,
+        "world_skip_vectors": 0,
+        "world_coarse_4x2": false,
+        "hardware_pack_vectors": 0,
+        "tiled_scene_vectors": 1536,
+        "hardware_map_vectors": 256,
+        "hardware_masked_vectors": 512,
+        "hardware_gap_vectors": 0,
+        "sampler_digest": "107d2949ecdb410f041ae14347e41145f8fc0377a352e5cc86c874943f8db702",
+        "original_animation_resources": 48,
+        "original_animation_frames": 308,
+        "callee_saved_registers_and_stack_checked": true,
+        "mutable_buffer_truncation_and_unchanged_error_output": true,
+        "timing_measured": false,
+        "scope": "ARM/Thumb execution in Unicorn; hardware timing checked separately in mGBA"
+      },
+      "ai": {
+        "task": "G14",
+        "status": "passed",
+        "rom_sha256": "240669c13508acba18fa08a68dd0bc793c02366561ee0b617d7c1e62d976f014",
+        "script_sha256": "e9cf4f6942b87ac0c174fc8471a4f64b78d69e544224773ff68c843f6bf73d85",
+        "perception": {
+          "detail_pointer": "/validation/ai/perception",
+          "items": 40
+        },
+        "traces": {
+          "detail_pointer": "/validation/ai/traces",
+          "items": 2
+        },
+        "viewed_wake": [
+          {
+            "language": 0,
+            "live_consideration_path": true,
+            "valid_display_before_first_callback": true,
+            "before": {
+              "detail_pointer": "/validation/ai/viewed_wake/0/before",
+              "entries": 5,
+              "scalars": {
+                "path": "build/g20a-hw-early-qa/hw_early_present/sprite-check/ai-sleeping-0.png",
+                "buffer_kind": "ppu-rgb",
+                "framebuffer_sha256": "953d694f7b09c70b5e5fcadb417bde8f496bd156e5c9dcb17acff669604e0f16",
+                "cycles": 378048,
+                "faces": 1
+              }
+            },
+            "after": {
+              "detail_pointer": "/validation/ai/viewed_wake/0/after",
+              "entries": 5,
+              "scalars": {
+                "path": "build/g20a-hw-early-qa/hw_early_present/sprite-check/ai-awake-0.png",
+                "buffer_kind": "ppu-rgb",
+                "framebuffer_sha256": "953d694f7b09c70b5e5fcadb417bde8f496bd156e5c9dcb17acff669604e0f16",
+                "cycles": 434240,
+                "faces": 1
+              }
+            }
+          },
+          {
+            "language": 1,
+            "live_consideration_path": true,
+            "valid_display_before_first_callback": true,
+            "before": {
+              "detail_pointer": "/validation/ai/viewed_wake/1/before",
+              "entries": 5,
+              "scalars": {
+                "path": "build/g20a-hw-early-qa/hw_early_present/sprite-check/ai-sleeping-1.png",
+                "buffer_kind": "ppu-rgb",
+                "framebuffer_sha256": "953d694f7b09c70b5e5fcadb417bde8f496bd156e5c9dcb17acff669604e0f16",
+                "cycles": 378112,
+                "faces": 1
+              }
+            },
+            "after": {
+              "detail_pointer": "/validation/ai/viewed_wake/1/after",
+              "entries": 5,
+              "scalars": {
+                "path": "build/g20a-hw-early-qa/hw_early_present/sprite-check/ai-awake-1.png",
+                "buffer_kind": "ppu-rgb",
+                "framebuffer_sha256": "953d694f7b09c70b5e5fcadb417bde8f496bd156e5c9dcb17acff669604e0f16",
+                "cycles": 434304,
+                "faces": 1
+              }
+            }
+          }
+        ],
+        "combat_owners": {
+          "sleeping_hit_woke_without_damage": true,
+          "reclaimed_monster_owner_removed_before_projectile_reuse": true,
+          "reused_glyph": 129
+        },
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5400,
+          "high_water_bytes": 2536,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        },
+        "physical_gba_tested": false,
+        "whole_dos_session_equivalence": false
+      },
+      "ai_combat": {
+        "task": "G15",
+        "status": "passed",
+        "rom_sha256": "240669c13508acba18fa08a68dd0bc793c02366561ee0b617d7c1e62d976f014",
+        "script_sha256": "b22c4c94028fd44c584603554e16ff70f7cc894a00ee98de5a6805d20f4c3b35",
+        "groups": {
+          "detail_pointer": "/validation/ai_combat/groups",
+          "items": 28
+        },
+        "extra": {
+          "ranged": {
+            "solid_wall_blocks_sight": true,
+            "front_monster_suppresses_shot": true,
+            "failed_allocation_still_counts_attempt": true,
+            "pool_capacity": 141,
+            "published_projectile_front_suppresses_shot": true
+          },
+          "occupied_corpse": {
+            "frames": {
+              "detail_pointer": "/validation/ai_combat/extra/occupied_corpse/frames",
+              "items": 8
+            },
+            "completed_once": true,
+            "passable_persistent_corpse": true,
+            "destination_plane": 0,
+            "mmap": 128,
+            "tmap": 108
+          }
+        },
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5400,
+          "high_water_bytes": 2536,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        },
+        "physical_gba_tested": false,
+        "whole_dos_session_equivalence": false
+      },
+      "interactions": {
+        "task": "G09",
+        "status": "passed",
+        "rom_sha256": "240669c13508acba18fa08a68dd0bc793c02366561ee0b617d7c1e62d976f014",
+        "scenarios": {
+          "detail_pointer": "/validation/interactions/scenarios",
+          "items": 6
+        },
+        "live_start": {
+          "flags": 88,
+          "frame": 29,
+          "phase": 1,
+          "ready": 1,
+          "occupancy": 0,
+          "extent": 30
+        },
+        "sensors": [
+          {
+            "level": 2,
+            "cells": [
+              3632,
+              3696,
+              3760,
+              3762
+            ],
+            "target": 104,
+            "closed": {
+              "detail_pointer": "/validation/interactions/sensors/0/closed",
+              "entries": 6,
+              "scalars": {
+                "flags": 64,
+                "frame": 0,
+                "phase": 2,
+                "ready": 1,
+                "occupancy": 0,
+                "extent": 30
+              }
+            }
+          },
+          {
+            "level": 3,
+            "cells": [
+              3321,
+              3322,
+              3323,
+              3324,
+              3325,
+              3326
+            ],
+            "target": 107,
+            "closed": {
+              "detail_pointer": "/validation/interactions/sensors/1/closed",
+              "entries": 6,
+              "scalars": {
+                "flags": 64,
+                "frame": 0,
+                "phase": 2,
+                "ready": 1,
+                "occupancy": 0,
+                "extent": 30
+              }
+            }
+          }
+        ],
+        "conveyors": [
+          {
+            "glyph": 60,
+            "cell": 153,
+            "before": [
+              12240,
+              -300,
+              1200
+            ],
+            "after": [
+              12194,
+              -300,
+              1200
+            ]
+          },
+          {
+            "glyph": 62,
+            "cell": 130,
+            "before": [
+              1200,
+              -300,
+              1200
+            ],
+            "after": [
+              1246,
+              -300,
+              1200
+            ]
+          },
+          {
+            "glyph": 123,
+            "cell": 148,
+            "before": [
+              9840,
+              -300,
+              1200
+            ],
+            "after": [
+              9840,
+              -300,
+              1246
+            ]
+          },
+          {
+            "glyph": 125,
+            "cell": 194,
+            "before": [
+              1200,
+              -300,
+              1680
+            ],
+            "after": [
+              1200,
+              -300,
+              1634
+            ]
+          }
+        ],
+        "active_door_language_preserved": true,
+        "finish_event": true,
+        "shared_arm_cases": true,
+        "poisoned_reset": true,
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5400,
+          "high_water_bytes": 2536,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        },
+        "captures": {
+          "detail_pointer": "/validation/interactions/captures",
+          "items": 12
+        },
+        "live_frame_min_cycles": 984512,
+        "live_frame_max_cycles": 2995840,
+        "test_frame_max_cycles": 1550016,
+        "physical_gba_tested": false,
+        "original_bios_tested": false,
+        "original_affine_visual_oracle_checked": false
+      },
+      "clock": {
+        "task": "G06",
+        "integrated_renderer": true,
+        "edge_vectors_on_arm": "passed",
+        "core_version": "0.11-212-7a12d6d",
+        "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+        "rom_sha256": "240669c13508acba18fa08a68dd0bc793c02366561ee0b617d7c1e62d976f014",
+        "rom_bytes": 10843464,
+        "ewram_static_bytes": 260936,
+        "start": {
+          "magic": 1414090038,
+          "error": 0,
+          "ticks": 875,
+          "counter": 174880,
+          "remainder": 680614,
+          "step_now": 800,
+          "debt": 75,
+          "steps": 8,
+          "callbacks": 8,
+          "polls": 3,
+          "max_debt": 875,
+          "last_callback": 800
+        },
+        "after_600_vblanks": {
+          "magic": 1414090038,
+          "error": 0,
+          "ticks": 101397,
+          "counter": 2802985,
+          "remainder": 10799732,
+          "step_now": 101300,
+          "debt": 97,
+          "steps": 1013,
+          "callbacks": 1013,
+          "polls": 186,
+          "max_debt": 875,
+          "last_callback": 101300
+        },
+        "restart_after_poison": {
+          "magic": 1414090038,
+          "error": 0,
+          "ticks": 875,
+          "counter": 174880,
+          "remainder": 680614,
+          "step_now": 800,
+          "debt": 75,
+          "steps": 8,
+          "callbacks": 8,
+          "polls": 3,
+          "max_debt": 875,
+          "last_callback": 800
+        },
+        "exact_rational_samples": true,
+        "hardware_low_word_rollover": true,
+        "title_pause_excluded_counter": 152003,
+        "physical_gba_tested": false,
+        "original_bios_tested": false
+      },
+      "rgb_exact_frames": 396,
+      "transition_cases": 282,
+      "actual_transition_video_frames": 1750,
+      "mixed_transition_frames": 0,
+      "clean_repeat_byte_exact": true
+    },
+    "quality": {
+      "backface_selected_rows": {
+        "detail_pointer": "/quality/backface_selected_rows",
+        "items": 18
+      },
+      "max_changed_pixels_in18_backface_views": 176,
+      "side_setup_exact_frames": 18,
+      "masked_sampler_exact_frames": 18,
+      "other_plane_quality": "Same source-derived32x32 floor/ceiling and three LIGHT rows as previous hardware prototype."
+    },
+    "preserved_hardware_rom_sha256": "4dfbbe0e8a14352fcef5c182baef3ffdf0483b81345c8837b1530ee09f7f581d",
+    "originals_unchanged": {
+      "detail_pointer": "/originals_unchanged",
+      "items": 22
+    },
+    "input_reports": {
+      "build/g20a-hw-early-qa/ppu.json": "f8777b24d447c05ef7ad22958dd3e9a0c532f6dcdf332f19fd1fa1710bbdd24c",
+      "build/g20a-hw-early-qa/transitions.json": "84b6a6a7b0cc3b7367c889d2cdfa29a5cb729f338c10e32b0653a9295469d862",
+      "build/g20a-hw-early-qa/arm.json": "b5c0f125154c9ed3b6ae3e2d2db3d90fa609862ab4bf4b5f03c6da6343b73010",
+      "build/g20a-hw-early-qa/ai.json": "95265a65c561d0c4b9f362a6dc41cbe74053117e88a65bab66a7ddf7c5da27cf",
+      "build/g20a-hw-early-qa/ai-combat.json": "cf6629346a1dcbe18cc72e1314868e87f1ed104a6d66fbdf5ca4983fe733fd5d",
+      "build/g20a-hw-early-qa/interactions.json": "1e38e8102c601886da8b0a98306008c012cd1bd6e1781778106cda19aba46901",
+      "build/g20a-hw-early-qa/time.json": "4e034d2a32603dd4581f0f6797ab70753799beb7d15a0fd83a0d1d588aaf1757",
+      "build/g20a-hw-early-qa/live.json": "603bd98a21d10913e7cb35e3398a59fc42959c63a3fc833319f651ab0e063903",
+      "build/g20a-hw-backface/ppu.json": "7f7b4736db82744a825217922032b9ca3c6a0ceed8008bc4f9b94eb42203dace",
+      "build/g20a-hw-side-setup/ppu.json": "20d1d8bf8934ef7f7230b13f9e2727c6472495dc806f9d893a4fd9d557d3a825",
+      "build/g20a-hw-masked/ppu.json": "c9334fd25e16bd3fbc053cea14007ed4185e1997085fba8f7bbd5e4afce6f246",
+      "build/g20a-hw-masked/arm.json": "59cf55a35f505ad7f444a214410e13e3ff45e3dd74da3ca192038a92ed806d20",
+      "build/g20a-hw-column-profile/attribution.json": "097aa04833cb5b49074e6ce0aff3ce2440ec9899ad861b93ddd97e666c5c320b"
+    },
+    "build_manifest": {
+      "tables": {
+        "package_sha256": "3efa5d3027d63ffd65e0ae8c0b45be23ee8394b3c5151c8e9f10e76fa8674351",
+        "nodes_per_view": 8191,
+        "bsp_bytes": 196584,
+        "padding": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "prelit_bytes": 6234628,
+        "columns_no_scales_bytes": 378336,
+        "stored_light_rows": {
+          "detail_pointer": "/build_manifest/tables/stored_light_rows",
+          "items": 16
+        },
+        "quantized_light_rows": [
+          0,
+          4,
+          8,
+          12,
+          15
+        ],
+        "exact_hud_panel_atlas_bytes": 11824,
+        "surface_side_columns": true,
+        "hardware_bg": {
+          "texture_size": 32,
+          "light_rows": [
+            0,
+            7,
+            15
+          ],
+          "bank_bytes": 230400,
+          "views": [
+            {
+              "detail_pointer": "/build_manifest/tables/hardware_bg/views/0",
+              "entries": 4,
+              "scalars": {
+                "view": 0,
+                "minimum_walls_in_any16_cell_window": 14
+              }
+            },
+            {
+              "detail_pointer": "/build_manifest/tables/hardware_bg/views/1",
+              "entries": 4,
+              "scalars": {
+                "view": 1,
+                "minimum_walls_in_any16_cell_window": 14
+              }
+            },
+            {
+              "detail_pointer": "/build_manifest/tables/hardware_bg/views/2",
+              "entries": 4,
+              "scalars": {
+                "view": 2,
+                "minimum_walls_in_any16_cell_window": 20
+              }
+            },
+            {
+              "detail_pointer": "/build_manifest/tables/hardware_bg/views/3",
+              "entries": 4,
+              "scalars": {
+                "view": 3,
+                "minimum_walls_in_any16_cell_window": 20
+              }
+            },
+            {
+              "detail_pointer": "/build_manifest/tables/hardware_bg/views/4",
+              "entries": 4,
+              "scalars": {
+                "view": 4,
+                "minimum_walls_in_any16_cell_window": 32
+              }
+            },
+            {
+              "detail_pointer": "/build_manifest/tables/hardware_bg/views/5",
+              "entries": 4,
+              "scalars": {
+                "view": 5,
+                "minimum_walls_in_any16_cell_window": 32
+              }
+            }
+          ]
+        }
+      },
+      "variants": {
+        "hw_early_present": {
+          "rom": "build\\g20a-hw-early-qa\\hw_early_present\\dok-diagnostic.gba",
+          "rom_bytes": 10843464,
+          "rom_sha256": "240669c13508acba18fa08a68dd0bc793c02366561ee0b617d7c1e62d976f014",
+          "entry": 134217728,
+          "symbols": {
+            "__ARMv4ABSLongBXThunk_gba_render_stage": 50349548,
+            "__ARMv4ABSLongBXThunk_dok_rom_binding": 134318004,
+            "__ARMv4ABSLongBXThunk_dok_rom_resource_at": 134318016,
+            "__ARMv4ABSLongBXThunk_dok_animation_open": 134318044,
+            "__ARMv4ABSLongBXThunk_dok_animation_frame_at": 134318056,
+            "__ARMv5LongLdrPcThunk_billboard_image": 50349608,
+            "__ARMv5LongLdrPcThunk_billboard": 50349616,
+            "__ARMv5LongLdrPcThunk_sort_faces": 50349624,
+            "__ARMv5LongLdrPcThunk_defer_background": 50349632,
+            "__ARMv5LongLdrPcThunk_render_ticks": 50349640,
+            "__ARMv5LongLdrPcThunk_background_gaps": 50349648,
+            "__ARMv5LongLdrPcThunk_surface_sides": 50349656,
+            "__ARMv5LongLdrPcThunk_cell_sprites": 50349664,
+            "__ARMv5LongLdrPcThunk_image": 50349672,
+            "__ARMv5LongLdrPcThunk_edge_start": 50349680,
+            "__ARMv5LongLdrPcThunk_coverage_edge": 50349688,
+            "__ARMv5LongLdrPcThunk_surface_image": 50349696,
+            "__ARMv5LongLdrPcThunk_cover": 50349704,
+            "__ARMv4ABSLongBXThunk_dok_ui_set_art": 50352932,
+            "__Thumbv4ABSLongBXThunk___aeabi_memcpy4": 134309517,
+            "__Thumbv4ABSLongBXThunk_load_ui": 134309529,
+            "__Thumbv4ABSLongBXThunk_dok_renderer_camera_from_runtime": 134309541,
+            "__Thumbv4ABSLongBXThunk_dok_renderer_palette": 134309553,
+            "__Thumbv4ABSLongBXThunk_dok_gba_tiled_clear": 134309565,
+            "__Thumbv4ABSLongBXThunk_gba_divmod_selftest": 134309577,
+            "__Thumbv4ABSLongBXThunk_dok_renderer_light_row": 134309589,
+            "__Thumbv4ABSLongBXThunk_dok_renderer_camera_heading": 134309601,
+            "__Thumbv4ABSLongBXThunk_dok_renderer_draw": 134309613,
+            "__Thumbv4ABSLongBXThunk_hw_bg_prepare": 134309625,
+            "__Thumbv4ABSLongBXThunk_hw_dirty_tiles": 134309637,
+            "__Thumbv4ABSLongBXThunk_dok_gba_hw_map_cells": 134309649,
+            "__ARMv4ABSLongBXThunk_timer_sample": 134309660,
+            "__ARMv4ABSLongBXThunk_hw_bg_plan_cells": 134309672,
+            "__ARMv4ABSLongBXThunk_panic": 134309684,
+            "__ARMv4ABSLongBXThunk_hw_bg_fill_lut": 134309696,
+            "__ARMv5LongLdrPcThunk___aeabi_idiv": 134309708,
+            "__ARMv5LongLdrPcThunk_dok_renderer_light_row": 134309716,
+            "__Thumbv4ABSLongBXThunk___aeabi_idiv": 134309725,
+            "__Thumbv4ABSLongBXThunk___aeabi_memclr4": 134309737,
+            "__Thumbv4ABSLongBXThunk___aeabi_uidivmod": 134309749,
+            "__Thumbv4ABSLongBXThunk___aeabi_uidiv": 134309761,
+            "__Thumbv4ABSLongBXThunk_dok_gba_copy_panel_rows": 134309773,
+            "__Thumbv4ABSLongBXThunk_dok_gba_tiled_ui_panel": 134309785,
+            "__Thumbv4ABSLongBXThunk___aeabi_idivmod": 134309797,
+            "__Thumbv4ABSLongBXThunk___aeabi_memclr": 134309809,
+            "__Thumbv4ABSLongBXThunk___aeabi_memcpy": 134309821,
+            "__ARMv5LongLdrPcThunk___aeabi_uidivmod": 134317964,
+            "__ARMv5LongLdrPcThunk___aeabi_idivmod": 134317972,
+            "__ARMv4ABSLongBXThunk_dok_runtime_actor_at": 134317980,
+            "__ARMv4ABSLongBXThunk_dok_runtime_position": 134317992,
+            "__ARMv5LongLdrPcThunk_dok_projection_transform": 134318028,
+            "__ARMv5LongLdrPcThunk_dok_projection_project": 134318036,
+            "__ARMv4ABSLongBXThunk_dok_image_open": 134318068,
+            "__ARMv5LongLdrPcThunk___aeabi_uidiv": 134318080,
+            "_start": 134241976,
+            "__iwram_load": 134217920,
+            "__iwram_start": 50331648,
+            "__iwram_end": 50355704,
+            "__data_load": 145061188,
+            "__data_start": 33554432,
+            "__data_end": 33554436,
+            "__bss_start": 33554440,
+            "__bss_end": 33815368,
+            "gba_main": 134244293,
+            "gba_irq": 134242224,
+            "g_vblanks": 33771896,
+            "g_render_diag": 33569684,
+            "g_render_world": 33569812,
+            "g_render_frame": 33603680,
+            "g_render_stages": 33764196,
+            "__aeabi_memcpy4": 50350032,
+            "g_render_view": 33764292,
+            "g_diag": 33554440,
+            "dok_gba_assets": 134592292,
+            "dok_gba_assets_end": 137355338,
+            "g_render_stats": 33771948,
+            "g_render_completed_stages": 33773120,
+            "__aeabi_idiv": 50350360,
+            "__aeabi_uidivmod": 50350540,
+            "__aeabi_uidiv": 50350224,
+            "__aeabi_idivmod": 50350572,
+            "__aeabi_memclr4": 50350196,
+            "__aeabi_memclr": 50350168,
+            "__aeabi_memcpy": 50349964,
+            "__aeabi_memcpy8": 50350100,
+            "g_render_work": 33813768,
+            "__iwram_reserved_override": 8192,
+            "__iwram_reserved_bytes": 8192,
+            "__iwram_code_end": 50352944,
+            "__iwram_data_start": 50352944,
+            "__iwram_data_end": 50355704
+          },
+          "sections": [
+            {
+              "detail_pointer": "/build_manifest/variants/hw_early_present/sections/0",
+              "entries": 4,
+              "scalars": {
+                "name": ".header",
+                "address": 134217728,
+                "size": 192,
+                "type": 1
+              }
+            },
+            {
+              "detail_pointer": "/build_manifest/variants/hw_early_present/sections/1",
+              "entries": 4,
+              "scalars": {
+                "name": ".iwram",
+                "address": 50331648,
+                "size": 24056,
+                "type": 1
+              }
+            },
+            {
+              "detail_pointer": "/build_manifest/variants/hw_early_present/sections/2",
+              "entries": 4,
+              "scalars": {
+                "name": ".text",
+                "address": 134241976,
+                "size": 10819116,
+                "type": 1
+              }
+            },
+            {
+              "detail_pointer": "/build_manifest/variants/hw_early_present/sections/3",
+              "entries": 4,
+              "scalars": {
+                "name": ".ARM.exidx",
+                "address": 145061092,
+                "size": 96,
+                "type": 1879048193
+              }
+            },
+            {
+              "detail_pointer": "/build_manifest/variants/hw_early_present/sections/4",
+              "entries": 4,
+              "scalars": {
+                "name": ".data",
+                "address": 33554432,
+                "size": 4,
+                "type": 1
+              }
+            },
+            {
+              "detail_pointer": "/build_manifest/variants/hw_early_present/sections/5",
+              "entries": 4,
+              "scalars": {
+                "name": ".bss",
+                "address": 33554440,
+                "size": 260928,
+                "type": 8
+              }
+            }
+          ],
+          "header_checksum": 4,
+          "ewram_static_bytes": 260936,
+          "prototype_defines": [
+            "NO_SCALES",
+            "STATIC_SETUP",
+            "PRELIT",
+            "EXACT_LIGHT",
+            "EXACT_PLANES",
+            "UI_CACHE",
+            "SIDES_PRELIT",
+            "HW_OBJ",
+            "HW_PACK_ARM",
+            "HW_DIRECT",
+            "HW_BG",
+            "HW_RAYS32",
+            "HW_BG_LEASE_CACHE",
+            "HW_ROW_LUT",
+            "HW_BG_STREAM",
+            "HW_UI_REUSE",
+            "BACKFACE",
+            "HW_EDGE_ROM",
+            "HW_COVER_ROM",
+            "BACKFACE_SIDES",
+            "SIDE_SETUP",
+            "HW_MASKED",
+            "HW_PRESENT",
+            "HW_MAP_CACHE",
+            "HW_EARLY_PRESENT"
+          ]
+        },
+        "source_control": {
+          "rom": "build\\g20a-hw-early-qa\\source_control\\dok-diagnostic.gba",
+          "rom_bytes": 32891192,
+          "rom_sha256": "7babd40f913eb12f77c93c9df917cea432b0cbe3bd83e11da45ba08dec917ea8",
+          "entry": 134217728,
+          "symbols": {
+            "__ARMv4ABSLongBXThunk_dok_runtime_actor_at": 134309336,
+            "__ARMv4ABSLongBXThunk_dok_runtime_position": 50350972,
+            "__ARMv4ABSLongBXThunk_gba_render_stage": 50350984,
+            "__ARMv4ABSLongBXThunk_dok_rom_binding": 134309288,
+            "__ARMv4ABSLongBXThunk_dok_rom_resource_at": 134309300,
+            "__ARMv4ABSLongBXThunk_dok_animation_open": 134309348,
+            "__ARMv4ABSLongBXThunk_dok_animation_frame_at": 134309360,
+            "__ARMv5LongLdrPcThunk_billboard_image": 50351044,
+            "__ARMv5LongLdrPcThunk_billboard": 50351052,
+            "__ARMv5LongLdrPcThunk_render_ticks": 50351060,
+            "__ARMv5LongLdrPcThunk_surface_sides": 50351068,
+            "__ARMv5LongLdrPcThunk_cell_sprites": 50351076,
+            "__ARMv5LongLdrPcThunk_image": 50351084,
+            "__ARMv5LongLdrPcThunk_surface_image": 50351092,
+            "__ARMv4ABSLongBXThunk_dok_ui_set_art": 50353268,
+            "__Thumbv4ABSLongBXThunk___aeabi_memcpy4": 134303553,
+            "__Thumbv4ABSLongBXThunk_load_ui": 134303565,
+            "__Thumbv4ABSLongBXThunk_dok_renderer_camera_from_runtime": 134303577,
+            "__Thumbv4ABSLongBXThunk_dok_renderer_palette": 134303589,
+            "__Thumbv4ABSLongBXThunk_gba_divmod_selftest": 134303601,
+            "__Thumbv4ABSLongBXThunk_dok_renderer_light_row": 134303613,
+            "__Thumbv4ABSLongBXThunk_dok_renderer_camera_heading": 134303625,
+            "__Thumbv4ABSLongBXThunk_dok_renderer_draw": 134303637,
+            "__Thumbv4ABSLongBXThunk___aeabi_idiv": 134303649,
+            "__Thumbv4ABSLongBXThunk___aeabi_memclr4": 134303661,
+            "__Thumbv4ABSLongBXThunk___aeabi_uidivmod": 134303673,
+            "__Thumbv4ABSLongBXThunk___aeabi_uidiv": 134303685,
+            "__Thumbv4ABSLongBXThunk___aeabi_idivmod": 134303697,
+            "__Thumbv4ABSLongBXThunk___aeabi_memclr": 134303709,
+            "__Thumbv4ABSLongBXThunk___aeabi_memcpy": 134303721,
+            "__ARMv5LongLdrPcThunk___aeabi_uidivmod": 134309272,
+            "__ARMv5LongLdrPcThunk___aeabi_idivmod": 134309280,
+            "__ARMv5LongLdrPcThunk_dok_projection_transform": 134309312,
+            "__ARMv5LongLdrPcThunk_dok_projection_project": 134309320,
+            "__ARMv5LongLdrPcThunk___aeabi_idiv": 134309328,
+            "__ARMv4ABSLongBXThunk_dok_image_open": 134309372,
+            "_start": 134242312,
+            "__iwram_load": 134217920,
+            "__iwram_start": 50331648,
+            "__iwram_end": 50356040,
+            "__data_load": 167108916,
+            "__data_start": 33554432,
+            "__data_end": 33554436,
+            "__bss_start": 33554436,
+            "__bss_end": 33808100,
+            "gba_main": 134244301,
+            "gba_irq": 134242560,
+            "g_vblanks": 33766060,
+            "g_render_diag": 33569680,
+            "g_render_world": 33569808,
+            "g_render_frame": 33603672,
+            "g_render_stages": 33764188,
+            "__aeabi_memcpy4": 50351420,
+            "g_render_view": 33764284,
+            "g_diag": 33554436,
+            "dok_gba_assets": 134583584,
+            "dok_gba_assets_end": 137346630,
+            "g_render_stats": 33766112,
+            "g_render_completed_stages": 33766172,
+            "__aeabi_uidivmod": 50351928,
+            "__aeabi_uidiv": 50351612,
+            "__aeabi_idivmod": 50351960,
+            "__aeabi_idiv": 50351748,
+            "__aeabi_memclr4": 50351584,
+            "__aeabi_memclr": 50351556,
+            "__aeabi_memcpy": 50351352,
+            "__aeabi_memcpy8": 50351488,
+            "g_render_work": 33807568,
+            "__iwram_reserved_override": 8192,
+            "__iwram_reserved_bytes": 8192,
+            "__iwram_code_end": 50353280,
+            "__iwram_data_start": 50353280,
+            "__iwram_data_end": 50356040
+          },
+          "sections": [
+            {
+              "detail_pointer": "/build_manifest/variants/source_control/sections/0",
+              "entries": 4,
+              "scalars": {
+                "name": ".header",
+                "address": 134217728,
+                "size": 192,
+                "type": 1
+              }
+            },
+            {
+              "detail_pointer": "/build_manifest/variants/source_control/sections/1",
+              "entries": 4,
+              "scalars": {
+                "name": ".iwram",
+                "address": 50331648,
+                "size": 24392,
+                "type": 1
+              }
+            },
+            {
+              "detail_pointer": "/build_manifest/variants/source_control/sections/2",
+              "entries": 4,
+              "scalars": {
+                "name": ".text",
+                "address": 134242312,
+                "size": 32866452,
+                "type": 1
+              }
+            },
+            {
+              "detail_pointer": "/build_manifest/variants/source_control/sections/3",
+              "entries": 4,
+              "scalars": {
+                "name": ".ARM.exidx",
+                "address": 167108764,
+                "size": 152,
+                "type": 1879048193
+              }
+            },
+            {
+              "detail_pointer": "/build_manifest/variants/source_control/sections/4",
+              "entries": 4,
+              "scalars": {
+                "name": ".data",
+                "address": 33554432,
+                "size": 4,
+                "type": 1
+              }
+            },
+            {
+              "detail_pointer": "/build_manifest/variants/source_control/sections/5",
+              "entries": 4,
+              "scalars": {
+                "name": ".bss",
+                "address": 33554436,
+                "size": 253664,
+                "type": 8
+              }
+            }
+          ],
+          "header_checksum": 4,
+          "ewram_static_bytes": 253668,
+          "prototype_defines": [
+            "MAIN_CONTROL",
+            "UI_CONTROL"
+          ]
+        }
+      },
+      "base_rom_sha256": "7babd40f913eb12f77c93c9df917cea432b0cbe3bd83e11da45ba08dec917ea8",
+      "base_objects": {
+        "detail_pointer": "/build_manifest/base_objects",
+        "entries": 40
+      },
+      "sources": {
+        "detail_pointer": "/build_manifest/sources",
+        "entries": 34
+      }
+    },
+    "limitations": [
+      "15+ is observed only in the120-presentation walking scenarios, not all ordinary scenes; follow LEVEL1/2 still below15.",
+      "No whole-level minimum FPS, full water/sprite/UI/flow/stress acceptance, physical GBA or original BIOS validation.",
+      "Interaction logic passed; original affine visual oracle intentionally omitted for this quality prototype.",
+      "Synthetic large camera seeks use an explicitly blanked transition instead of an impossible upload deadline.",
+      "Presentation can begin at scanline144 because only the opaque bottom HUD remains; bottom HUD data is deferred until VBlank.",
+      "282 held transitions test every PPU callback; this does not prove every continuous-gameplay video frame is tear-free.",
+      "Procedural textures, previous BSP, C/ARM opaque kernels and gaps variant remain separate, unselected trials."
+    ]
+  }
+}

@@ -42,7 +42,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--zig', type=Path, default=Path(os.environ['LOCALAPPDATA'])/'Programs/Zig/0.13.0/zig.exe')
     args = parser.parse_args()
-    output = ROOT/'build/render-projection'
+    output = ROOT/'research/evidence/render-projection'
     output.mkdir(parents=True, exist_ok=True)
     env = dict(os.environ, ZIG_GLOBAL_CACHE_DIR=str(ROOT/'build/zig-cache'))
     common = [str(args.zig), 'cc', '-std=c11', '-Wall', '-Wextra', '-Werror', '-O2', '-I', 'include']
@@ -70,8 +70,8 @@ def main():
     scene_rows = {}
     for language, run, delta, focal_offset in [('ru','ru-03',0,0x934), ('en','en-02',0xb0,0xa44)]:
         import struct
-        report = json.loads((ROOT/f'build/reference/{run}/report.json').read_text(encoding='utf-8'))
-        memory = (ROOT/f'build/reference/{run}/level1-memory.bin').read_bytes()
+        report = json.loads((ROOT/f'research/evidence/reference/{run}/report.json').read_text(encoding='utf-8'))
+        memory = (ROOT/f'research/evidence/reference/{run}/level1-memory.bin').read_bytes()
         ds = int(report['runtime_linear_data_base'],16)
         value = lambda fmt, at: struct.unpack_from(fmt,memory,ds+at+delta)[0]
         camera = [value('<i',at) for at in (0xaa46,0xaa4a,0xaa4e,0xaa3e,0xaa42,0xaa16)]
@@ -86,7 +86,7 @@ def main():
                 for y in (-960,-480,0,480):
                     rows.append(camera+[camera[0]+dx,y,camera[2]+dz])
         scene_rows[language] = {'camera':camera,'vector_count':len(rows)-start,
-                                'source':artifact(ROOT/f'build/reference/{run}/level1-memory.bin')}
+                                'source':artifact(ROOT/f'research/evidence/reference/{run}/level1-memory.bin')}
     vectors = ''.join(' '.join(map(str,row))+'\n' for row in rows)
     result = subprocess.run([str(output/'probe.exe')],input=vectors,text=True,capture_output=True,check=True)
     actual = [list(map(int,line.split())) for line in result.stdout.splitlines()]

@@ -23,7 +23,7 @@ MZ объявляет 157442 байта, заголовок 9728 байт, 1589 
 
 | Результат | Путь от корня проекта |
 |---|---|
-| Проект с анализом и метками | `build/ghidra/old-gold-full/OldGold.gpr` |
+| Проект с анализом и метками | `research/ghidra/projects/old-gold-full/OldGold.gpr` |
 | Общий C-псевдокод | `decompiled/old-gold/decompiled.c` |
 | Типы, глобальные символы и C | `decompiled/old-gold/with_types.c` |
 | Отдельные функции | `decompiled/old-gold/functions/` |
@@ -143,7 +143,7 @@ C:/Source/wasdify/.venv/Scripts/python.exe scripts/analyze_old_gold_port.py
 Повторный импорт с отдельным проектом и экспортом:
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/decompile-old-gold.ps1 -ProjectDirectory build/ghidra/old-gold-clean-final -OutputDirectory build/old-gold/recheck-export
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/decompile-old-gold.ps1 -ProjectDirectory research/ghidra/projects/old-gold-clean-final -OutputDirectory research/evidence/old-gold/recheck-export
 ```
 
 При существующем проекте driver обрабатывает сохранённый `OG.EXE` без повторного

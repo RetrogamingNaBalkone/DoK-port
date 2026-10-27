@@ -9,7 +9,7 @@ ROOT=Path(__file__).resolve().parents[1]
 def main():
     read=lambda p:json.loads((ROOT/p).read_text(encoding='utf-8-sig'))
     sha=lambda p:hashlib.sha256((ROOT/p).read_bytes()).hexdigest()
-    folder=Path('build/g20a-sector-gpu-v8');repeat_folder=Path('build/g20a-sector-gpu-repeat')
+    folder=Path('research/experiments/g20a-sector-gpu-v8');repeat_folder=Path('research/experiments/g20a-sector-gpu-repeat')
     manifest=read(folder/'prototype-build.json');repeat=read(repeat_folder/'prototype-build.json')
     control='2775bdd0caaac64b4fd99e4c6d675587fad2da9c795468dc52efacb5d53edaab'
     assert manifest['variants']['hw_v128_entity_rect']['rom_sha256']==control

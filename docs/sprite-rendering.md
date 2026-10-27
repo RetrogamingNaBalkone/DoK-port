@@ -23,7 +23,7 @@ NE-индексам или runtime-селекторам DPMI.
 `scripts/analyze-sprites.ps1` повторно открывает сохранённые проекты Ghidra,
 проверяет SHA до/после, сохраняет журналы, `evidence.asm`, отдельный
 непроверенный `automatic.c`, сегменты для воспроизводимых instruction probes
-и manifest в `build/sprites/{ru,en}/`. Оригиналы не записываются.
+и manifest в `research/evidence/sprites/{ru,en}/`. Оригиналы не записываются.
 
 Функции используют far CALL/RETF, параметры удаляет вызывающий код.
 DS переключается на SS, входные структуры читаются через LES/ES;

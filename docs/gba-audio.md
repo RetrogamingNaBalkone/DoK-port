@@ -10,7 +10,7 @@ PCM8 из ROM через FIFO A. Микшера, нормализации, ус�
 
 Образцы — `originals/pkr/RUS/PKR.EXE` и `originals/pkr/ENG/PKE.EXE`.
 SHA-256 до/после, версии скриптов и проекты Ghidra зафиксированы в
-`build/audio/{ru,en}/analysis-manifest.json`. В этих каталогах сохранены
+`research/evidence/audio/{ru,en}/analysis-manifest.json`. В этих каталогах сохранены
 `evidence.asm`, отдельный автоматический `automatic.c`, сегментные выгрузки и
 `ghidra.log`. C-псевдокод служит свидетельством, не исходником движка.
 Адреса далее — адреса NE-загрузчика Ghidra: это не файловые смещения,

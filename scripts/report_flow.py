@@ -17,7 +17,7 @@ def main():
  assert reports['host-verification']['cross_compiled']
  assert reports['original-flow']['script_sha256']==sha('scripts/verify_flow_original.py')
  for lang in ('ru','en'):
-  d=Path('build/flow')/lang;m=read(d/'analysis-manifest.json');r=reports['original-flow']['languages'][lang]
+  d=Path('research/evidence/flow')/lang;m=read(d/'analysis-manifest.json');r=reports['original-flow']['languages'][lang]
   assert m['sha256_before']==m['sha256_after']==sha(m['sample'])
   assert m['script_sha256']==sha('scripts/InspectFlow.java') and m['driver_sha256']==sha('scripts/analyze-flow.ps1')
   assert r['manifest_sha256']==sha(d/'analysis-manifest.json') and r['asm_sha256']==sha(d/'evidence.asm')

@@ -64,7 +64,7 @@ def exercise(build,core,trial):
         for language in (0,1):
             p.language(language)
             for level in (1,2,3):
-                model=load_json(f'build/runtime/ru/LEVEL{level}-runtime.json');hero=model['objects'][model['player_index']-1]['actor']
+                model=load_json(f'research/evidence/runtime/ru/LEVEL{level}-runtime.json');hero=model['objects'][model['player_index']-1]['actor']
                 cases=[(hero['x']//480*480+240,hero['z']//480*480+240,h) for h in (0,45,90,135)]
                 heavy={1:[(520,225),(3640,225)],2:[(1592,135),(2871,225)],3:[(1544,315),(1560,90)]}[level]
                 cases.extend((c%64*480+240,c//64*480+240,h) for c,h in heavy)

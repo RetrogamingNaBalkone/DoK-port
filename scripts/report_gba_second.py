@@ -22,7 +22,7 @@ def checked(path,digest,oracle=False):
 
 
 def main():
-    root=ROOT/'build/g20a-second';comparison=read(ROOT/'analysis/g20a-second-prototypes.json')
+    root=ROOT/'research/experiments/g20a-second';comparison=read(ROOT/'analysis/g20a-second-prototypes.json')
     variants={};artifacts={}
     for variant,prefix in (('exact_ui','exact-ui'),('world_coarse','world-coarse')):
         build=root/variant;meta=read(build/'build-report.json');digest=sha(build/'dok-diagnostic.gba')
@@ -62,13 +62,13 @@ def main():
         assert sha(dest)==sha(root/variant/'dok-diagnostic.gba')
         artifacts[variant]=dict(path=dest.relative_to(ROOT).as_posix(),bytes=dest.stat().st_size,sha256=sha(dest))
     dest=ROOT/'artifacts/gba/DoK-port_exact_planes_v1.gba'
-    shutil.copy2(ROOT/'build/g20a-prototypes/exact_planes/dok-diagnostic.gba',dest)
+    shutil.copy2(ROOT/'research/experiments/g20a-prototypes/exact_planes/dok-diagnostic.gba',dest)
     result=dict(task='G20A',status='second-pass-validated-target-open',targets_fps=[30,24.1,15],targets_met=False,
                 conservative_choice='exact_ui',quality_experiment='world_coarse',artifacts=artifacts,variants=variants,
                 water_arm_vs_c_exact_frames=128,water_arm=water_arm,original_files_sha_matched=len(originals),
                 baseline_rom_reproduced_byte_for_byte=True,
                 comparison=dict(path='analysis/g20a-second-prototypes.json',sha256=sha(ROOT/'analysis/g20a-second-prototypes.json')),
-                source_manifest=dict(path='build/g20a-second/prototype-build.json',sha256=sha(root/'prototype-build.json')),
+                source_manifest=dict(path='research/experiments/g20a-second/prototype-build.json',sha256=sha(root/'prototype-build.json')),
                 script_sha256=sha(__file__),
                 limitations=['No physical GBA/original BIOS or whole-level playthrough.',
                              'World planes use perspective world UV instead of native affine tile UV.',

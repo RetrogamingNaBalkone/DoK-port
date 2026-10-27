@@ -1,7 +1,7 @@
 param(
     [string]$GhidraHome = 'C:/Users/dspev/AppData/Local/Programs/Ghidra/ghidra_12.1.2_PUBLIC',
     [string]$JavaHome = 'C:/Users/dspev/AppData/Local/Programs/Ghidra/java/jdk-21.0.12.1+1',
-    [string]$ProjectDirectory = 'build/ghidra/old-gold-full',
+    [string]$ProjectDirectory = 'research/ghidra/projects/old-gold-full',
     [string]$OutputDirectory = 'decompiled/old-gold'
 )
 $ErrorActionPreference = 'Stop'
@@ -21,11 +21,11 @@ foreach ($taskName in $taskExpected.Keys) {
 New-Item -ItemType Directory -Force $taskProject, $taskOutput | Out-Null
 $taskPreviousLocal = $env:LOCALAPPDATA
 try {
-    $env:LOCALAPPDATA = "$taskRoot/build/ghidra-local"
+    $env:LOCALAPPDATA = "$taskRoot/research/ghidra/local"
     $taskArguments = @(
         '-Djava.system.class.loader=ghidra.GhidraClassLoader',
-        "-Duser.home=$taskRoot/build/ghidra-home",
-        "-Dapplication.settingsdir=$taskRoot/build/ghidra-settings",
+        "-Duser.home=$taskRoot/research/ghidra/home",
+        "-Dapplication.settingsdir=$taskRoot/research/ghidra/settings",
         '-Djava.awt.headless=true', '-Xmx3G', '-cp',
         "$GhidraHome/Ghidra/Framework/Utility/lib/Utility.jar",
         'ghidra.Ghidra', 'ghidra.app.util.headless.AnalyzeHeadless', $taskProject, 'OldGold'

@@ -46,7 +46,7 @@ matrices2..31. HUD/оружие остаются на BG0, базовые пло
 
 ## Авторитетные замеры
 
-`build/g20a-world-obj-native-final/`, native-clock mGBA, WAITCNT4317, реальный
+`research/experiments/g20a-world-obj-native-final/`, native-clock mGBA, WAITCNT4317, реальный
 PPU, PCM22050Hz, без overclock.5 тяжёлых frozen видов,6 прогревочных и6 измеренных
 предъявлений; unprofiled timing, hold выключен во время измерения.
 
@@ -113,13 +113,13 @@ ROM `807f3e295143d5f01d97b5e262960543f160996800ddb719bce811f78663916c`,
 25929584B, tile bank9752576B. EWRAM261424/free720; IWRAM24072/free504 до отдельного
 8192 stack reserve. Наблюдаемый main2528/margin5408, IRQ80/margin80.
 State помещается в зарезервированном4KiB tail covered[], static cache явно
-ограничен перед ним. Чистое повторение `build/g20a-world-obj-native-repeat/`
+ограничен перед ним. Чистое повторение `research/experiments/g20a-world-obj-native-repeat/`
 воспроизвело новый ROM, probe и2775 побайтно. Прежние128/96/72 artifacts сохранены.
 Нового игрового artifact/default нет.
 
 ```powershell
-& C:/Source/wasdify/.venv/Scripts/python.exe scripts/prototype_gba_bsp.py --out build/g20a-world-obj-native-final --variants hw_v128_world_obj hw_v128_entity_rect hw_v128_world_obj_probe
-& C:/Source/wasdify/.venv/Scripts/python.exe scripts/verify_gba_world_obj_native.py --build-dir build/g20a-world-obj-native-final/hw_v128_world_obj --reference-build build/g20a-world-obj-native-final/hw_v128_entity_rect --out build/g20a-world-obj-native-final/qa
+& C:/Source/wasdify/.venv/Scripts/python.exe scripts/prototype_gba_bsp.py --out research/experiments/g20a-world-obj-native-final --variants hw_v128_world_obj hw_v128_entity_rect hw_v128_world_obj_probe
+& C:/Source/wasdify/.venv/Scripts/python.exe scripts/verify_gba_world_obj_native.py --build-dir research/experiments/g20a-world-obj-native-final/hw_v128_world_obj --reference-build research/experiments/g20a-world-obj-native-final/hw_v128_entity_rect --out research/experiments/g20a-world-obj-native-final/qa
 & C:/Source/wasdify/.venv/Scripts/python.exe scripts/report_gba_world_obj_native.py
 ```
 

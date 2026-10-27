@@ -1,0 +1,27 @@
+{
+  "summary_schema": 1,
+  "full_report": {
+    "path": "analysis/research-relocation-20261027.json",
+    "sha256": "ae319f7e05b58dc6139609b9816e802910f263b1a4a915e64de8a5798acc753c",
+    "bytes": 105519
+  },
+  "scope": "Summary of a recorded run; not a new verification. Full report is local and ignored by Git.",
+  "result": {
+    "status": "superseded_by_verified_selective_cleanup",
+    "moves": {
+      "detail_pointer": "/moves",
+      "items": 347
+    },
+    "files": 58449,
+    "bytes": 19073547085,
+    "protected_files": 9888,
+    "file_manifest": "research/_migration/files-20261027.json",
+    "file_manifest_sha256": "78b4ba255bf645fc90da2e904de9881b10b9617deb8440879065329f83837469",
+    "source_edits": {
+      "detail_pointer": "/source_edits",
+      "items": 188
+    },
+    "cleanup_report": "analysis/storage-cleanup-20261027.json",
+    "note": "Whole-archive retention was canceled by the user; only remaining files were verified by the cleanup. Original relocation verification was interrupted."
+  }
+}

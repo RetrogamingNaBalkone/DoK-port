@@ -11,8 +11,8 @@ from unicorn import x86_const as R
 class Original:
  def __init__(self,lang):
   self.ru=lang=='ru';self.c=Uc(UC_ARCH_X86,UC_MODE_16);self.c.mem_map(0,0x100000)
-  self.c.mem_write(0x50000,(ROOT/'build/interactions'/lang/'actor.bin').read_bytes())
-  self.c.mem_write(0x30000,(ROOT/'build/interactions'/lang/'data.bin').read_bytes())
+  self.c.mem_write(0x50000,(ROOT/'research/evidence/interactions'/lang/'actor.bin').read_bytes())
+  self.c.mem_write(0x30000,(ROOT/'research/evidence/interactions'/lang/'data.bin').read_bytes())
   self.actorseg=0x1068 if self.ru else 0x1020
   self.entries=[0x347e,0x3262,0x334e,0x3427,0x521] if self.ru else [0x3b33,0x3917,0x3a03,0x3adc,0xa01]
   self.scheduler=0x10380 if self.ru else 0x10100
@@ -70,7 +70,7 @@ class Original:
 def crop_check(lang):
  """Execute original crop body without intercepted callees, all 30 phases."""
  c=Uc(UC_ARCH_X86,UC_MODE_16);c.mem_map(0,0x100000)
- c.mem_write(0x50000,(ROOT/'build/interactions'/lang/'image.bin').read_bytes());count=0
+ c.mem_write(0x50000,(ROOT/'research/evidence/interactions'/lang/'image.bin').read_bytes());count=0
  for width,height in ((96,128),(96,192)):
   pixels=bytes((i*37+i//width*13)%256 for i in range(width*height));c.mem_write(0x60000,pixels)
   for flags in (0x48,0x108):
@@ -107,9 +107,9 @@ def main():
    if v[0]==0 and v[-1]==13:
     got=o.run(v,sensor=True);want=want.copy();want[7]=v[11]
     assert got==want,(lang,'sensor',v,want,got);sensors+=1
-  manifest=json.loads((ROOT/'build/interactions'/lang/'analysis-manifest.json').read_text(encoding='utf-8-sig'))
+  manifest=json.loads((ROOT/'research/evidence/interactions'/lang/'analysis-manifest.json').read_text(encoding='utf-8-sig'))
   report['languages'][lang]={'vectors':len(vectors),'sensor_routes':sensors,'crop_vectors':crop_check(lang),'manifest':manifest}
-  for p in (ROOT/'build/interactions'/lang).iterdir():
+  for p in (ROOT/'research/evidence/interactions'/lang).iterdir():
    if p.suffix in ('.bin','.asm','.c','.json'):report['artifacts'][p.relative_to(ROOT).as_posix()]=hashlib.sha256(p.read_bytes()).hexdigest()
  (ROOT/'analysis/g09-original-verification.json').write_text(json.dumps(report,indent=2)+'\n')
  print('G09 original door/base handlers and sensor routes matched C')

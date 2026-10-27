@@ -10,9 +10,9 @@
 
 Образцы — оригинальные PKR.EXE и PKE.EXE, пути и SHA-256 из
 `analysis/inventory-{ru,en}.json`. Скрипт `scripts/analyze-combat.ps1` сверяет
-SHA до и после, открывает сохранённые проекты `build/ghidra/{ru,en}/Kremlin.gpr`
+SHA до и после, открывает сохранённые проекты `research/ghidra/projects/{ru,en}/Kremlin.gpr`
 с `-readOnly -noanalysis`. `InspectCombat.java` сохраняет actor/world сегменты,
-листинг, автоматический C и manifest в `build/combat/{ru,en}/`. Оригиналы и
+листинг, автоматический C и manifest в `research/evidence/combat/{ru,en}/`. Оригиналы и
 проекты не меняются; автоматический C не компилируется и не поставляется.
 
 Все адреса ниже — **NE loader Ghidra**, не файловые смещения и не runtime

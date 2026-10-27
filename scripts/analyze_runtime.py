@@ -34,11 +34,11 @@ def check(actual, expected, context):
     if actual != expected:
         if isinstance(actual, (int, bool, type(None))) and isinstance(expected, (int, bool, type(None))):
             raise AssertionError(f"{context}: actual={actual!r}, expected={expected!r}")
-        raise AssertionError(f"{context}: values differ (full private outputs remain under build/runtime)")
+        raise AssertionError(f"{context}: values differ (full private outputs remain under research/evidence/runtime)")
 
 
 def load_oracles(language):
-    """Recompute from original RES; do not trust stale build/worlds outputs."""
+    """Recompute from original RES; do not trust stale research/evidence/worlds outputs."""
     exe_name, exe_hash = EXPECTED[language]
     exe = ROOT / "originals/pkr" / exe_name
     check(sha(exe.read_bytes()), exe_hash, f"{language} EXE hash")
@@ -53,7 +53,7 @@ def load_oracles(language):
         entry = entries[resource_index]
         source = reference(resources[entry["name_hex"]])
         native, states = startup(source, resources)
-        existing = ROOT / f"build/worlds/{language}/{resource_index:04d}.json"
+        existing = ROOT / f"research/evidence/worlds/{language}/{resource_index:04d}.json"
         check(json.loads(existing.read_text(encoding="utf-8")), native,
               f"{language} {entry['name']} independent stage6 oracle")
         yield archive_path, entry, source, native, states, entries
@@ -196,7 +196,7 @@ def main():
             actual = json.loads(raw)
             context = language + " " + entry["name"]
             summary = verify_model(actual, source, native, states, context)
-            directory = ROOT / "build/runtime" / language
+            directory = ROOT / "research/evidence/runtime" / language
             summary.update(language=language, resource_index=entry["index"], level_sha256=entry["sha256"],
                            source_model=save(directory / (entry["name"] + "-definitions.json"), source),
                            native_oracle=save(directory / (entry["name"] + "-native.json"), native),

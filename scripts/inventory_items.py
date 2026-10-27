@@ -5,7 +5,7 @@ def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
 report=dict(task='G12',status='passed',levels=[],differences=[])
 for language in ('ru','en'):
  for n in (1,2,3):
-  path=Path(f'build/runtime/{language}/LEVEL{n}-runtime.json');m=json.loads(path.read_text());maps=[bytes.fromhex(x) for x in m['maps'][:3]];records=[]
+  path=Path(f'research/evidence/runtime/{language}/LEVEL{n}-runtime.json');m=json.loads(path.read_text());maps=[bytes.fromhex(x) for x in m['maps'][:3]];records=[]
   for i,o in enumerate(m['objects']):
    if o['class'] not in (3,10):continue
    fields={f['offset']:f['number'] for f in o['fields'] if 'number' in f};counts=[p.count(o['glyph']) for p in maps]

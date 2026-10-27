@@ -10,18 +10,18 @@ ROOT=Path(__file__).resolve().parents[1]
 def main():
     def read(path):return json.loads((ROOT/path).read_text(encoding='utf-8-sig'))
     def sha(path):return hashlib.sha256((ROOT/path).read_bytes()).hexdigest()
-    folder=Path('build/g20a-stream-bsp-v3')
+    folder=Path('research/experiments/g20a-stream-bsp-v3')
     manifest=read(folder/'prototype-build.json')
-    repeat=read(Path('build/g20a-stream-bsp-repeat/prototype-build.json'))
+    repeat=read(Path('research/experiments/g20a-stream-bsp-repeat/prototype-build.json'))
     trial=manifest['variants']['hw_v128_stream_bsp']['rom_sha256']
     control=manifest['variants']['hw_v128_entity_rect']['rom_sha256']
     assert control=='2775bdd0caaac64b4fd99e4c6d675587fad2da9c795468dc52efacb5d53edaab'
     for name in ('hw_v128_stream_bsp','hw_v128_entity_rect'):
         assert manifest['variants'][name]['rom_sha256']==repeat['variants'][name]['rom_sha256']
         assert sha(folder/name/'dok-diagnostic.gba')==manifest['variants'][name]['rom_sha256']
-    paths=[folder/'spatial.json',Path('build/g20a-hw-entity-rect-v2/spatial.json'),folder/'profile.json',
+    paths=[folder/'spatial.json',Path('research/experiments/g20a-hw-entity-rect-v2/spatial.json'),folder/'profile.json',
            folder/'ppu18-live.json',folder/'structure.json',folder/'control-live24.json',
-           Path('analysis/g20a-dark-distance-audit.json'),folder/'prototype-build.json',Path('build/g20a-stream-bsp-repeat/prototype-build.json')]
+           Path('analysis/g20a-dark-distance-audit.json'),folder/'prototype-build.json',Path('research/experiments/g20a-stream-bsp-repeat/prototype-build.json')]
     spatial,base,profile,ppu,structure,live,dark,*_=map(read,paths)
     assert spatial['rom_sha256']==profile['rom_sha256']==ppu['after']['rom_sha256']==structure['after']['rom_sha256']==trial
     assert base['rom_sha256']==ppu['before']['rom_sha256']==structure['before']['rom_sha256']==live['rom_sha256']==control

@@ -20,7 +20,7 @@ def main():
         data = (directory / 'OG.EXE').read_bytes()
         header = struct.unpack_from('<14H', data)
         declared_size = header[2] * 512 if header[1] == 0 else (header[2]-1)*512+header[1]
-        evidence = ROOT / 'build/old-gold' / version
+        evidence = ROOT / 'research/evidence/old-gold' / version
         manifest = json.loads((evidence / 'manifest.json').read_text(encoding='utf-8-sig'))
         assert manifest['sha256_before'] == manifest['sha256_after'] == sha(data)
         samples.append(dict(version=version, size=len(data), sha256=sha(data),
@@ -30,8 +30,8 @@ def main():
                                    for p in sorted(directory.iterdir()) if p.is_file()},
                             ghidra=manifest))
     old, new = [(ROOT / 'originals' / v / 'OG.EXE').read_bytes() for v in VERSIONS]
-    memory = [(ROOT / 'build/old-gold' / v / 'memory.tsv').read_bytes() for v in VERSIONS]
-    listing = [(ROOT / 'build/old-gold' / v / 'listing.asm').read_bytes() for v in VERSIONS]
+    memory = [(ROOT / 'research/evidence/old-gold' / v / 'memory.tsv').read_bytes() for v in VERSIONS]
+    listing = [(ROOT / 'research/evidence/old-gold' / v / 'listing.asm').read_bytes() for v in VERSIONS]
     readmes = [(ROOT / 'originals' / v / 'README.TXT').read_bytes().decode('cp866').splitlines()
                for v in VERSIONS]
     report = dict(samples=samples, old_is_exact_prefix=new.startswith(old),

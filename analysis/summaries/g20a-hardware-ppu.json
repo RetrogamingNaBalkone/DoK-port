@@ -1,0 +1,51 @@
+{
+  "summary_schema": 1,
+  "full_report": {
+    "path": "analysis/g20a-hardware-ppu.json",
+    "sha256": "7d55d8c52f8fec3465fd3ef14d356b2b39ad9b89919b04d34e02a993ae8c3000",
+    "bytes": 106018
+  },
+  "scope": "Summary of a recorded run; not a new verification. Full report is local and ignored by Git.",
+  "result": {
+    "task": "G20A",
+    "status": "hardware-bringup-measurement",
+    "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+    "script_sha256": "028c6ecbade41605ed082d22839eecaba4f7dc3f84aad1f9054b76161c211f75",
+    "before": {
+      "rom_sha256": "b36472a0701f19a41fc009e003f0f78a4493921e1cf19f2b51c266cdfeb42501",
+      "rows": {
+        "detail_pointer": "/before/rows",
+        "items": 18
+      }
+    },
+    "after": {
+      "rom_sha256": "cb35b35c3eadac987a8f6487e0a7a96912778f97d0272cf0eaea1f1caee2386e",
+      "rows": {
+        "detail_pointer": "/after/rows",
+        "items": 18
+      }
+    },
+    "targets_met": false,
+    "languages": [
+      0,
+      1
+    ],
+    "scope": "Actual PPU video, selected frozen cameras. Not native-index oracle, full regressions or hardware acceptance.",
+    "live": {
+      "rom_sha256": "cb35b35c3eadac987a8f6487e0a7a96912778f97d0272cf0eaea1f1caee2386e",
+      "rows": {
+        "detail_pointer": "/live/rows",
+        "items": 6
+      },
+      "stack": {
+        "main_stack_low": 50356224,
+        "main_stack_top": 50364160,
+        "sentinel_word": 219540062,
+        "untouched_margin_bytes": 5304,
+        "high_water_bytes": 2632,
+        "irq_and_bios_excluded": true,
+        "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+      }
+    }
+  }
+}

@@ -1,0 +1,444 @@
+{
+  "summary_schema": 1,
+  "full_report": {
+    "path": "analysis/g20a-fps-audit.json",
+    "sha256": "08d090edfe027a7c4b12ce3e7952b0d1e8c3448c74881ebc6d1d63f375503734",
+    "bytes": 624064
+  },
+  "scope": "Summary of a recorded run; not a new verification. Full report is local and ignored by Git.",
+  "result": {
+    "task": "G20A-hypothesis-audit",
+    "status": "measured-experiments-no-release-change",
+    "script_sha256": "affb3b5ef2f5d4aebf99da24219d92b273f2a4508b3956d24dade2abd88652c9",
+    "base_rom_sha256": "d5bdcd171cfbca8c95d3965757a3c586c07622ce74243f5edfdce3b84e27957e",
+    "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+    "assets": {
+      "package_sha256": "3efa5d3027d63ffd65e0ae8c0b45be23ee8394b3c5151c8e9f10e76fa8674351",
+      "static_sprite_bindings_by_class": {
+        "1": {
+          "96x192": 6
+        },
+        "9": {
+          "96x192": 466
+        },
+        "8": {
+          "96x192": 22
+        },
+        "0": {
+          "96x192": 18
+        },
+        "2": {
+          "96x192": 6,
+          "48x96": 12
+        },
+        "4": {
+          "96x192": 6,
+          "96x128": 4,
+          "96x111": 2
+        },
+        "7": {
+          "96x192": 48,
+          "96x128": 20,
+          "96x114": 20,
+          "96x110": 20
+        },
+        "6": {
+          "49x43": 6,
+          "10x68": 6,
+          "63x66": 6,
+          "125x163": 6,
+          "114x127": 6
+        },
+        "3": {
+          "114x127": 18,
+          "124x68": 6,
+          "58x59": 6,
+          "120x58": 6,
+          "75x67": 6,
+          "50x43": 6,
+          "106x54": 6
+        },
+        "10": {
+          "246x70": 6,
+          "65x34": 6
+        },
+        "12": {
+          "96x96": 26,
+          "48x48": 2,
+          "92x92": 2
+        },
+        "13": {
+          "48x48": 2,
+          "92x92": 2
+        }
+      },
+      "animation_frame_bindings_by_class": {
+        "9": {
+          "75x91": 264,
+          "76x93": 132,
+          "77x91": 132,
+          "79x91": 132,
+          "73x91": 132,
+          "75x96": 198,
+          "78x124": 198,
+          "79x128": 198,
+          "47x44": 198,
+          "48x49": 198,
+          "46x71": 198,
+          "77x100": 198,
+          "4x3": 322,
+          "75x88": 198,
+          "73x92": 198,
+          "77x89": 198,
+          "74x91": 264,
+          "79x94": 424,
+          "90x75": 212,
+          "79x99": 106,
+          "79x95": 106,
+          "70x83": 106,
+          "65x78": 106,
+          "60x78": 106,
+          "60x61": 106,
+          "36x52": 106,
+          "36x38": 106,
+          "128x49": 248,
+          "63x64": 124,
+          "118x60": 248,
+          "136x52": 124,
+          "63x63": 124,
+          "62x63": 124,
+          "128x64": 124,
+          "140x60": 124,
+          "164x37": 124,
+          "119x60": 124,
+          "65x63": 124,
+          "117x59": 124,
+          "72x91": 66,
+          "74x93": 66,
+          "74x90": 132,
+          "62x84": 38,
+          "56x86": 38,
+          "74x84": 38,
+          "68x84": 38,
+          "53x60": 38,
+          "59x63": 38,
+          "72x68": 38,
+          "79x62": 38,
+          "43x52": 152,
+          "57x52": 38,
+          "43x79": 190
+        },
+        "8": {
+          "3x3": 6,
+          "1x2": 6,
+          "16x27": 6,
+          "30x30": 6,
+          "59x34": 6,
+          "57x49": 6,
+          "46x58": 6,
+          "18x15": 4,
+          "16x13": 8,
+          "20x16": 4
+        },
+        "0": {
+          "16x27": 6,
+          "30x30": 6,
+          "59x34": 6,
+          "57x49": 6,
+          "46x58": 6,
+          "18x15": 12,
+          "16x13": 24,
+          "20x16": 12
+        },
+        "2": {
+          "16x27": 6,
+          "30x30": 6,
+          "59x34": 6,
+          "57x49": 6,
+          "46x58": 6,
+          "18x15": 12,
+          "16x13": 24,
+          "20x16": 12
+        },
+        "4": {
+          "16x27": 4,
+          "30x30": 4,
+          "59x34": 4,
+          "57x49": 4,
+          "46x58": 4,
+          "18x15": 8,
+          "16x13": 16,
+          "20x16": 8
+        },
+        "7": {
+          "16x27": 36,
+          "30x30": 36,
+          "59x34": 36,
+          "57x49": 36,
+          "46x58": 36,
+          "18x15": 72,
+          "16x13": 144,
+          "20x16": 72
+        },
+        "6": {
+          "16x27": 10,
+          "30x30": 10,
+          "59x34": 10,
+          "57x49": 10,
+          "46x58": 10,
+          "18x15": 20,
+          "16x13": 40,
+          "20x16": 20
+        },
+        "3": {
+          "30x45": 108,
+          "27x45": 108,
+          "21x46": 108,
+          "11x46": 108,
+          "4x46": 54,
+          "16x46": 108,
+          "24x46": 108,
+          "29x45": 108,
+          "5x46": 54
+        },
+        "10": {
+          "47x78": 6,
+          "44x77": 6,
+          "42x79": 6,
+          "42x69": 12,
+          "42x59": 6,
+          "42x67": 6,
+          "42x75": 12,
+          "37x44": 6,
+          "38x43": 6,
+          "39x41": 6
+        },
+        "12": {
+          "37x44": 30,
+          "38x43": 30,
+          "39x41": 30
+        },
+        "13": {
+          "37x44": 4,
+          "38x43": 4,
+          "39x41": 4
+        }
+      },
+      "render_bank": {
+        "package_sha256": "3efa5d3027d63ffd65e0ae8c0b45be23ee8394b3c5151c8e9f10e76fa8674351",
+        "bytes": 29762068,
+        "bank_sha256": "be34856377d014fec83530dbca4a683bcedf7d98746f8827a0cf8f43228d3f91",
+        "resource_count": 143,
+        "image_bindings": 138,
+        "unique_images": 24,
+        "lossless": true,
+        "layout": "6 views, resource_count+1 pairs of LE32 column/v0-table offsets; 256 opaque-column flags precede columns x*height+y; v0 table height LE32 offsets to span tables (entry0=max_span), then width LE32 record offsets; record u8 run_count,payload_offset,opaque_only,0 then inclusive u8 run pairs, align4, span+1 colors, align4; LIGHT row0",
+        "unique_strips": 339821,
+        "scale_max_span": 140,
+        "scale_v0": "class2 reachable FCMap top offsets; class4/7 zero",
+        "scale_rounding": "exact Q16 floor step, inclusive span+1 samples"
+      }
+    },
+    "results": {
+      "baseline": {
+        "rom_sha256": "d5bdcd171cfbca8c95d3965757a3c586c07622ce74243f5edfdce3b84e27957e",
+        "rows": {
+          "detail_pointer": "/results/baseline/rows",
+          "items": 9
+        },
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5568,
+          "high_water_bytes": 2368,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        }
+      },
+      "no_scales": {
+        "rom_sha256": "5f943525b1d12ed6cf454792cf67bce6300814830aab523eefaabacd3be3d06e",
+        "rows": {
+          "detail_pointer": "/results/no_scales/rows",
+          "items": 9
+        },
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5568,
+          "high_water_bytes": 2368,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        }
+      },
+      "unlit": {
+        "rom_sha256": "a6a67fa4cc84000762d4846ff86a60f78d2c27df1cca4bd81174ec2c215f83f8",
+        "rows": {
+          "detail_pointer": "/results/unlit/rows",
+          "items": 9
+        },
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5568,
+          "high_water_bytes": 2368,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        }
+      },
+      "flat_surfaces": {
+        "rom_sha256": "bd52787de4a8227bd1d6daaef156ee019db7e82b5840a76fdf6619efc804a99e",
+        "rows": {
+          "detail_pointer": "/results/flat_surfaces/rows",
+          "items": 9
+        },
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5568,
+          "high_water_bytes": 2368,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        }
+      },
+      "primitive_profile": {
+        "rom_sha256": "d5bdcd171cfbca8c95d3965757a3c586c07622ce74243f5edfdce3b84e27957e",
+        "rows": {
+          "detail_pointer": "/results/primitive_profile/rows",
+          "items": 9
+        },
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5568,
+          "high_water_bytes": 2368,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        }
+      }
+    },
+    "live": {
+      "baseline": {
+        "rom_sha256": "d5bdcd171cfbca8c95d3965757a3c586c07622ce74243f5edfdce3b84e27957e",
+        "rows": {
+          "detail_pointer": "/live/baseline/rows",
+          "items": 6
+        },
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5568,
+          "high_water_bytes": 2368,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        }
+      },
+      "no_scales": {
+        "rom_sha256": "5f943525b1d12ed6cf454792cf67bce6300814830aab523eefaabacd3be3d06e",
+        "rows": {
+          "detail_pointer": "/live/no_scales/rows",
+          "items": 6
+        },
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5568,
+          "high_water_bytes": 2368,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        }
+      },
+      "unlit": {
+        "rom_sha256": "a6a67fa4cc84000762d4846ff86a60f78d2c27df1cca4bd81174ec2c215f83f8",
+        "rows": {
+          "detail_pointer": "/live/unlit/rows",
+          "items": 6
+        },
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5568,
+          "high_water_bytes": 2368,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        }
+      },
+      "flat_surfaces": {
+        "rom_sha256": "bd52787de4a8227bd1d6daaef156ee019db7e82b5840a76fdf6619efc804a99e",
+        "rows": {
+          "detail_pointer": "/live/flat_surfaces/rows",
+          "items": 6
+        },
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5568,
+          "high_water_bytes": 2368,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        }
+      },
+      "ai_half_range": {
+        "rom_sha256": "03d20ddfa69c84f1a63ad833e99df4601c53fe775ab6db3baadf63bb2a34511c",
+        "rows": {
+          "detail_pointer": "/live/ai_half_range/rows",
+          "items": 6
+        },
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5568,
+          "high_water_bytes": 2368,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        }
+      },
+      "no_ai": {
+        "rom_sha256": "d5bdcd171cfbca8c95d3965757a3c586c07622ce74243f5edfdce3b84e27957e",
+        "rows": {
+          "detail_pointer": "/live/no_ai/rows",
+          "items": 6
+        },
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5568,
+          "high_water_bytes": 2368,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        }
+      }
+    },
+    "sources": {
+      "src\\renderer.c": "3014e10c91899e222e952fb8511d1c4dd4b4900db5452b6b08d9a3de6ff7b593",
+      "src\\renderer_sprites.inc": "9dc432eee3020640642e4613d608dc7fbda7c7559656d89f989aeb09248e03fa",
+      "src\\renderer_surfaces.inc": "70e1ee846b2b3051a1e6c42f499e7b251cb7dea35ecffe28cc54b66453ed5885",
+      "src\\renderer_surface_raster.inc": "ad0f429bc6c7fd30895dc6b128ee17e2d11483672f6d527f534922c2c4c1a54e",
+      "src\\renderer_surface_sides.inc": "7afa6db6513b9d9a3b771b2d9a146eabefb67343350f85c4b755366bbbd8be47",
+      "src\\renderer_trig.inc": "3fc1acca3c6c7053ce9ce05e6179833e943195a24ce47a780187e3261b6762b1",
+      "gba\\columns.S": "226812059e25275ba84a454e8ce1676d6c6855ed05b0d0ed72bde08561649f36",
+      "src\\ai.c": "2337027a9ef54b3010761c8649f938ec79e6cdb129e65c8263b039fc9ea214ac",
+      "gba\\ai_probe.c": "2860cfbfc1afd3d7282d9f766e86e3acad4aaea561fef32b92978ea602cb3bfd",
+      "scripts\\verify_sprites_gba.py": "34bef16a0116d4c03cc73bac8251db6bd62da259eacde875ac3a14e6b99d4b3f",
+      "scripts\\profile_game_gba.py": "73f58c9c2f9f4feb63b5714b731d9e2a0009a2c5d463722153e52567296187be"
+    },
+    "limitations": [
+      "Frozen RU scenes, nine G20-ranked start cameras; not a full-game FPS result.",
+      "Timer includes full frame CPU but excludes capture/presentation wait.",
+      "Primitive attribution has overhead and is a separate run.",
+      "Unlit and flat surfaces are diagnostic extremes, not accepted quality settings.",
+      "Live fixtures use original start positions, a stationary test camera, turning/fire and 22050 Hz PCM; not a whole-level playthrough.",
+      "No physical GBA test; mGBA replacement BIOS."
+    ]
+  }
+}

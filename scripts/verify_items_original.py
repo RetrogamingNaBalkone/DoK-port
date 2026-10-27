@@ -12,7 +12,7 @@ class Original:
  def __init__(self,language):
   self.ru=language=='ru';self.segment=0x1068 if self.ru else 0x1020
   self.c=c=Uc(UC_ARCH_X86,UC_MODE_16);c.mem_map(0,0x100000)
-  self.path=Path('build/items')/language;c.mem_write(self.segment*16,(self.path/'actor.bin').read_bytes())
+  self.path=Path('research/evidence/items')/language;c.mem_write(self.segment*16,(self.path/'actor.bin').read_bytes())
   c.hook_add(UC_HOOK_CODE,self.hook);self.hud=0
  def hook(self,c,address,size,unused):
   cs=c.reg_read(R.UC_X86_REG_CS)

@@ -2,14 +2,14 @@
 
 24 октября 2026 года. Read-only проверка сохранённых G00-снимков:
 `scripts/probe_reference_scene.py`, `analysis/render-reference.json`,
-приватные визуализации `build/render-reference/`.
+приватные визуализации `research/evidence/render-reference/`.
 Новые игровые патчи, записи в RAM или повторные DOS-запуски не использовались.
 Формулы и адреса функций из Ghidra описываются отдельно в
 [rendering.md](rendering.md); этот документ связывает их с реальными данными.
 
 ## Образцы и адреса
 
-Входы — `build/reference/ru-03/` и `en-02/`: `report.json`,
+Входы — `research/evidence/reference/ru-03/` и `en-02/`: `report.json`,
 `level1-memory.bin` (16 MiB) и `level1-start.idx` (64000 байт).
 Это старты исходных RUS/ENG LEVEL1 без WASDify. EXE и RES проверяются
 по inventory SHA до и после пробы; скрипт не декодирует машинный код EXE.
@@ -40,7 +40,7 @@ Surface buffer far pointer по RUS DS+`B53A` / ENG DS+`B5EA` равен
 ## Реальные параметры стартовой камеры
 
 Fresh Ghidra evidence: RUS `1100:00F5`, ENG `1060:1025`
-`render_camera_initialize` из `build/rendering/{ru,en}/evidence.asm`.
+`render_camera_initialize` из `research/evidence/rendering/{ru,en}/evidence.asm`.
 Главный проход анализа сохраняет исходные EXE SHA и проекты Ghidra.
 
 | Поле | RUS DS offset | ENG DS offset | Значение обоих снимков |
@@ -165,7 +165,7 @@ DOS-показ растягивает вертикаль в 1,2 раза. Поэ
 с сохранением DOS pixel aspect, а не изменение измеренной высоты DOS-буфера.
 Политика размещения числовых HP/energy и ключей — [gba-ui.md](gba-ui.md).
 
-В `build/render-reference/` созданы raw viewport 320×160 и nearest-neighbor
+В `research/evidence/render-reference/` созданы raw viewport 320×160 и nearest-neighbor
 reference 240×144 для обоих языков. Это ресэмплированные DOS-эталоны,
 не кадры будущего GBA renderer.
 

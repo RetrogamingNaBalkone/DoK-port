@@ -42,9 +42,9 @@ W/L и hex-маска ключей убраны. Ключи показывают
 | `originals/pkr/ENG/PKE.EXE` | `cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b` |
 
 `scripts/analyze-ui.ps1` запускает `InspectUI.java` read-only в сохранённых
-`build/ghidra/{ru,en}/Kremlin.gpr`. Свежие листинги, бинарные NE-блоки,
+`research/ghidra/projects/{ru,en}/Kremlin.gpr`. Свежие листинги, бинарные NE-блоки,
 отдельный автоматический **непроверенный** C, журналы и манифесты находятся
-в `build/ui/{ru,en}/`. Автоматический C не входит в модули движка.
+в `research/evidence/ui/{ru,en}/`. Автоматический C не входит в модули движка.
 
 | Назначение | RUS | ENG |
 |---|---|---|

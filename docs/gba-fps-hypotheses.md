@@ -8,7 +8,7 @@ SHA-256 `d5bdcd171cfbca8c95d3965757a3c586c07622ce74243f5edfdce3b84e27957e`.
 
 Скрипт: `scripts/research_gba_fps.py`; измерения и хеши:
 `analysis/g20a-fps-audit.json`. ROM/ELF/map, частные копии исходников и PNG
-240×160: `build/g20a-audit/`. Production renderer и параметры AI не изменены.
+240×160: `research/experiments/g20a-audit/`. Production renderer и параметры AI не изменены.
 Отдельная исправленная сборка Select описана ниже.
 
 ## Методика и границы

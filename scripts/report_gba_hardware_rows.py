@@ -6,7 +6,7 @@ from pathlib import Path
 import shutil
 
 ROOT=Path(__file__).resolve().parents[1]
-FOLDER='build/g20a-hw-face-box'
+FOLDER='research/experiments/g20a-hw-face-box'
 BASE='7babd40f913eb12f77c93c9df917cea432b0cbe3bd83e11da45ba08dec917ea8'
 def read(path):return json.loads((ROOT/path).read_text(encoding='utf-8-sig'))
 def sha(path):return hashlib.sha256(path.read_bytes()).hexdigest()
@@ -16,9 +16,9 @@ def main():
     parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--copy-rom',action='store_true');args=parser.parse_args()
     build=read(FOLDER+'/hw_v128_box/build-report.json');digest=build['rom_sha256']
     rom=ROOT/FOLDER/'hw_v128_box/dok-diagnostic.gba';assert sha(rom)==digest
-    repeat=read('build/g20a-hw-rows-final-repeat/hw_v128_box/build-report.json')
+    repeat=read('research/experiments/g20a-hw-rows-final-repeat/hw_v128_box/build-report.json')
     assert repeat['rom_sha256']==digest
-    assert read('build/g20a-hw-rows-final-repeat/source_control/build-report.json')['rom_sha256']==BASE
+    assert read('research/experiments/g20a-hw-rows-final-repeat/source_control/build-report.json')['rom_sha256']==BASE
     baseline_sprites=read(FOLDER+'/source-control-sprites.json')
     assert baseline_sprites['status']=='passed' and baseline_sprites['rom_sha256']==BASE
     names=('arm','ui','flow','sprites','water','ai','ai-combat','interactions','transitions','stress')
@@ -55,8 +55,8 @@ def main():
     symbol=build['symbols'];ewram=symbol['__bss_end']-symbol['__data_start'];iwram=symbol['__iwram_end']-symbol['__iwram_start']
     paths=[FOLDER+'/'+n+'.json' for n in (*names,'time','exact128','quality')]
     paths += [FOLDER+'/hw_v128_box-'+mode+'.json' for mode in ('follow','turn120','walking120')]
-    paths += ['build/g20a-hw-row-probe/rows128.json','build/g20a-hw-row-probe/rows144.json']
-    old_qa={name:read('build/g20a-hw-early-qa/'+name+'.json') for name in ('ui','flow','sprites','water')}
+    paths += ['research/experiments/g20a-hw-row-probe/rows128.json','research/experiments/g20a-hw-row-probe/rows144.json']
+    old_qa={name:read('research/experiments/g20a-hw-early-qa/'+name+'.json') for name in ('ui','flow','sprites','water')}
     for value in old_qa.values():assert value['status']=='passed' and value['rom_sha256']=='240669c13508acba18fa08a68dd0bc793c02366561ee0b617d7c1e62d976f014'
     result=dict(task='G20A',date='2026-10-27',status='measured-separate128-row-prototype',targets_met=False,
         artifact=artifact.relative_to(ROOT).as_posix(),artifact_copied=args.copy_rom,rom_sha256=digest,rom_bytes=rom.stat().st_size,

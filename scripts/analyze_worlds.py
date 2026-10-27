@@ -161,7 +161,7 @@ def main():
         assert sha(archive) == inv["resource"]["sha256"]
         entries = parse(archive)
         resources = {e["name_hex"]: archive[e["offset"]:e["offset"]+e["size"]] for e in reversed(entries)}
-        directory = ROOT / "build/worlds" / lang
+        directory = ROOT / "research/evidence/worlds" / lang
         directory.mkdir(parents=True, exist_ok=True)
         reports = []
         for index in (18, 19, 20):
@@ -193,9 +193,9 @@ def main():
             verification["known_bytes"] += report["known_bytes"]
             verification["placed_actor_cells"] += report["placed_actor_cells"]
         (ROOT / f"analysis/worlds-{lang}.json").write_text(json.dumps(reports, indent=2)+"\n", encoding="utf-8")
-        roles = (ROOT / f"build/stage6/{lang}/roles.tsv").read_text(encoding="utf-8").splitlines()
+        roles = (ROOT / f"research/evidence/stage6/{lang}/roles.tsv").read_text(encoding="utf-8").splitlines()
         verification["ghidra_roles"][lang] = len(roles)-1
-        log = (ROOT / f"build/stage6/{lang}/ghidra.log").read_text(encoding="utf-16")
+        log = (ROOT / f"research/evidence/stage6/{lang}/ghidra.log").read_text(encoding="utf-16")
         assert "KREMLIN_STAGE6_COMPLETE" in log and not re.search(r"^ERROR", log, re.M)
         assert sha((ROOT / "originals/pkr" / exe).read_bytes()) == expected_sha
         assert sha(archive_path.read_bytes()) == sha(archive)
@@ -211,7 +211,7 @@ def main():
     (ROOT / "analysis/stage6-verification.json").write_text(json.dumps(verification, indent=2)+"\n", encoding="utf-8")
     roles = ["language\taddress\trole"]
     for lang in EXPECTED:
-        roles += [lang+"\t"+r for r in (ROOT / f"build/stage6/{lang}/roles.tsv").read_text(encoding="utf-8").splitlines()[1:]]
+        roles += [lang+"\t"+r for r in (ROOT / f"research/evidence/stage6/{lang}/roles.tsv").read_text(encoding="utf-8").splitlines()[1:]]
     (ROOT / "analysis/stage6-roles.tsv").write_text("\n".join(roles)+"\n", encoding="utf-8")
     print(json.dumps(verification, indent=2))
 

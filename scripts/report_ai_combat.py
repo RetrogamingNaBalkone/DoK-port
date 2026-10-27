@@ -13,7 +13,7 @@ def main():
  for p,h in reports['host-verification']['artifacts'].items():assert sha(p)==h,p
  assert reports['original-verification']['script_sha256']==sha('scripts/verify_ai_combat_original.py')
  for lang in ('ru','en'):
-  path=f'build/ai/{lang}/analysis-manifest.json';m=read(path);assert m['sha256_before']==m['sha256_after']==sha(m['sample']);assert m['script_sha256']==sha('scripts/InspectAI.java');assert m['driver_sha256']==sha('scripts/analyze-ai.ps1')
+  path=f'research/evidence/ai/{lang}/analysis-manifest.json';m=read(path);assert m['sha256_before']==m['sha256_after']==sha(m['sample']);assert m['script_sha256']==sha('scripts/InspectAI.java');assert m['driver_sha256']==sha('scripts/analyze-ai.ps1')
   o=reports['original-verification']['languages'][lang];assert o['manifest_sha256']==sha(path);assert o['burst_vectors']==648 and len(o['attack_vectors'])==6 and len(o['player_melee_vectors'])==12 and len(o['corpse_vectors'])==4
  arm=reports['ai-combat-gba'];assert arm['script_sha256']==sha('scripts/verify_ai_combat_gba.py');assert len(arm['groups'])==28
  assert {(x['language'],x['group']) for x in arm['groups']}=={(lang,f'E{g:02d}') for lang in (0,1) for g in range(1,15)}

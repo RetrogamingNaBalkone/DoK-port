@@ -12,7 +12,7 @@
 ## Откуда восстановлено поведение
 
 Адреса ниже — **Ghidra NE loader**, не файловые смещения и не DPMI-селекторы.
-Свежие результаты декомпиляции и инструкции: `build/stage6/<ru|en>/annotated.c`
+Свежие результаты декомпиляции и инструкции: `research/evidence/stage6/<ru|en>/annotated.c`
 и `evidence.asm`. Сохранены 26 смысловых меток и тип `WorldHeaderPartial1866`.
 
 | Действие | PKR | PKE |
@@ -160,7 +160,7 @@ Native-код копирует блок позы размером 30 байт, �
 `analyze_worlds.py` независимо вычисляет начальное состояние Python-кодом из
 оригинальных LEVEL и анимаций. С C побайтово сверяются три преобразованные карты,
 visited, каждый известный байт, маска известности, сумма предметов, выбранный
-герой и число размещений. Полные модели остаются в `build/worlds/`; отчёты
+герой и число размещений. Полные модели остаются в `research/evidence/worlds/`; отчёты
 [worlds-ru.json](../analysis/worlds-ru.json) и
 [worlds-en.json](../analysis/worlds-en.json) содержат координаты и метаданные.
 
@@ -211,5 +211,5 @@ C:/Source/wasdify/.venv/Scripts/python.exe scripts/analyze_worlds.py
 ./build/native/dok-world.exe originals/pkr/RUS/PKR.RES LEVEL1
 ```
 
-Для повторного запуска Ghidra нужны таблицы `build/stage6/<ru|en>/requested-roles.tsv`:
+Для повторного запуска Ghidra нужны таблицы `research/evidence/stage6/<ru|en>/requested-roles.tsv`:
 их воспроизводимое создание описано скриптом `prepare_world.py`.

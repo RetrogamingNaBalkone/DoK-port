@@ -65,7 +65,7 @@ def reset_level(probe, language, level=0):
     # The release package uses the approved shared balance in both languages.
     probe.camera((level + 1) % 3, 15120, -300, 22800, 90)
     probe.camera(level, 15120, -300, 22800, 90)
-    return load_json(f'build/runtime/{"ru" if language == 0 else "en"}/LEVEL{level + 1}-runtime.json')
+    return load_json(f'research/evidence/runtime/{"ru" if language == 0 else "en"}/LEVEL{level + 1}-runtime.json')
 
 
 def perception(probe, model, language):

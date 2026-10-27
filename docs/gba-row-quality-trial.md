@@ -76,7 +76,7 @@ passed. Декодер `scene_source_y` учитывает матрицу и OAM
 
 ## Проверки
 
-Оба ROM повторены byte-for-byte в `build/g20a-hw-row-quality-repeat/`;128 control
+Оба ROM повторены byte-for-byte в `research/experiments/g20a-hw-row-quality-repeat/`;128 control
 повторил2775. Все22 исходных SHA и прежние artifacts проверены. ARM vectors
 проверяют bounds96/72,512 rectangle cases, samplers/coverage/arithmetic/ABI.
 Отдельные row-color ROM доказывают mapping через настоящий PPU, их SHA отличаются
@@ -117,7 +117,7 @@ CPU ceilings0,584M. В профиле есть instrumentation overhead; это 
 качества не выбранo. Адаптивный Mode2 после отрицательного grid4 опыта отложен.
 
 ```powershell
-& C:/Source/wasdify/.venv/Scripts/python.exe scripts/prototype_gba_bsp.py --out build/g20a-hw-row-quality-v3 --variants hw_rows96 hw_rows72 hw_rows96_probe hw_rows72_probe hw_v128_entity_rect
+& C:/Source/wasdify/.venv/Scripts/python.exe scripts/prototype_gba_bsp.py --out research/experiments/g20a-hw-row-quality-v3 --variants hw_rows96 hw_rows72 hw_rows96_probe hw_rows72_probe hw_v128_entity_rect
 & C:/Source/wasdify/.venv/Scripts/python.exe scripts/report_gba_row_quality.py --copy-rom
 ```
 

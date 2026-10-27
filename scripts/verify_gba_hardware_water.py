@@ -54,7 +54,7 @@ def main():
             for level in range(3):
                 # Release geometry/definitions use the shared RUS baseline;
                 # localization changes the original RES payload only.
-                model=load_json(f'build/runtime/ru/LEVEL{level+1}-runtime.json')
+                model=load_json(f'research/evidence/runtime/ru/LEVEL{level+1}-runtime.json')
                 materials=views[level*2+language]['materials'];count=len(materials)
                 light=original[model['light']];maps=bytes.fromhex(model['maps'][2])
                 for mat,material in enumerate(materials):

@@ -35,8 +35,8 @@ SHA-256 соответственно:
 Текущие доказательства — `analysis/g20a-span-prototypes.json` и
 `analysis/g20a-span-validation.json`. Второй проход отдельно сохранён в
 `analysis/g20a-second-{prototypes,validation}.json`. ELF/map, частные снимки
-исходников и native PNG/индексы кадров находятся в `build/g20a-sides/`,
-`build/g20a-second/`. ROM/игровые данные не включаются в Git.
+исходников и native PNG/индексы кадров находятся в `research/experiments/g20a-sides/`,
+`research/experiments/g20a-second/`. ROM/игровые данные не включаются в Git.
 
 ## Что изменилось
 
@@ -128,7 +128,7 @@ SHA изображений привязаны к отчёту. Пример од
 
 | Точный вариант | Фактура пола/потолка 4×2 |
 |---|---|
-| ![Точный L1](../build/g20a-sides/sides_exact/L1-median.png) | ![Пол 4×2 L1](../build/g20a-sides/sides_coarse/L1-median.png) |
+| ![Точный L1](../research/experiments/g20a-sides/sides_exact/L1-median.png) | ![Пол 4×2 L1](../research/experiments/g20a-sides/sides_coarse/L1-median.png) |
 
 ## Проверки и ограничения
 
@@ -180,11 +180,11 @@ inventory. Физическая GBA, оригинальный BIOS и целый
 готовые проверенные каталоги не пересобирать во время исполнения тестов.
 
 ```powershell
-C:/Source/wasdify/.venv/Scripts/python.exe scripts/prototype_gba_bsp.py --out build/g20a-sides-rebuild --variants baseline sides_exact sides_coarse
-C:/Source/wasdify/.venv/Scripts/python.exe scripts/benchmark_gba_prototypes.py --build-root build/g20a-sides --variants baseline sides_exact sides_world sides_coarse --report build/g20a-sides/comparison.json
-C:/Source/wasdify/.venv/Scripts/python.exe scripts/verify_performance_gba.py --build-dir build/g20a-sides/sides_exact --reference-build build/select-menu-fix --reference-rom-sha256 7babd40f913eb12f77c93c9df917cea432b0cbe3bd83e11da45ba08dec917ea8 --step 5 --samples 2 --report build/g20a-sides/exact-oracle.json
-C:/Source/wasdify/.venv/Scripts/python.exe scripts/verify_performance_gba.py --build-dir build/g20a-sides/sides_coarse --reference-build build/g20a-second/world_coarse --reference-rom-sha256 b4bd63f11f6d2f193eb4dcbd0886be5e4eabf52b2e5ca7136404198f02bcc0bd --step 5 --samples 2 --report build/g20a-sides/coarse-oracle.json
-C:/Source/wasdify/.venv/Scripts/python.exe scripts/profile_gba_world_spans.py --build-dir build/g20a-sides/sides_coarse --report build/g20a-sides/coarse-attribution.json
+C:/Source/wasdify/.venv/Scripts/python.exe scripts/prototype_gba_bsp.py --out research/experiments/g20a-sides-rebuild --variants baseline sides_exact sides_coarse
+C:/Source/wasdify/.venv/Scripts/python.exe scripts/benchmark_gba_prototypes.py --build-root research/experiments/g20a-sides --variants baseline sides_exact sides_world sides_coarse --report research/experiments/g20a-sides/comparison.json
+C:/Source/wasdify/.venv/Scripts/python.exe scripts/verify_performance_gba.py --build-dir research/experiments/g20a-sides/sides_exact --reference-build build/select-menu-fix --reference-rom-sha256 7babd40f913eb12f77c93c9df917cea432b0cbe3bd83e11da45ba08dec917ea8 --step 5 --samples 2 --report research/experiments/g20a-sides/exact-oracle.json
+C:/Source/wasdify/.venv/Scripts/python.exe scripts/verify_performance_gba.py --build-dir research/experiments/g20a-sides/sides_coarse --reference-build research/experiments/g20a-second/world_coarse --reference-rom-sha256 b4bd63f11f6d2f193eb4dcbd0886be5e4eabf52b2e5ca7136404198f02bcc0bd --step 5 --samples 2 --report research/experiments/g20a-sides/coarse-oracle.json
+C:/Source/wasdify/.venv/Scripts/python.exe scripts/profile_gba_world_spans.py --build-dir research/experiments/g20a-sides/sides_coarse --report research/experiments/g20a-sides/coarse-attribution.json
 C:/Source/wasdify/.venv/Scripts/python.exe scripts/report_gba_spans.py
 ```
 

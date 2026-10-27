@@ -42,7 +42,7 @@ def main():
    count=min(n,128);request+=1;write(motion+12,struct.pack('<II',cmd,count));write(motion+4,struct.pack('<I',request))
    until(lambda:struct.unpack('<I',f.read(motion+8,4))[0]==request);n-=count
   assert interaction()[1]==0,interaction()
- def model(level):return json.loads(Path(f'build/runtime/ru/LEVEL{level+1}-runtime.json').read_text())
+ def model(level):return json.loads(Path(f'research/evidence/runtime/ru/LEVEL{level+1}-runtime.json').read_text())
  def actor(m):return world+9220+64*m['objects'][m['player_index']-1]['actor_index']
  def obj(m,glyph):return world+4+36*next(i for i,o in enumerate(m['objects']) if o['glyph']==glyph)
  def pose(m,cell,heading=0):

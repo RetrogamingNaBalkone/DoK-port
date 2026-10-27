@@ -57,7 +57,7 @@ runtime-сегмент DOS. Хвост не появляется среди за
 Игру в DOS в рамках этого сравнения не запускали.
 
 Проекты, журналы, таблицы блоков, листинги и манифесты сохранены локально:
-`build/old-gold/{Old_Gold_Old_Version,Old_Gold_3D}/`.
+`research/evidence/old-gold/{Old_Gold_Old_Version,Old_Gold_3D}/`.
 SHA-256 оригинальных EXE до и после анализа совпали.
 
 ## Что изменено в README

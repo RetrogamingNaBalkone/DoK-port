@@ -21,8 +21,8 @@ PKR.EXE (RUS) и PKE.EXE (ENG). Windows/Linux используются для и
 - Отдельные функции: `decompiled/ru/functions/` и `decompiled/en/functions/`.
 - В каждом каталоге: `listing.asm`, `functions.tsv`, `references.tsv`, `blocks.tsv`,
   `unrecovered.tsv`, `summary.txt`, `ghidra.log`.
-- Сохраняемые проекты Ghidra: `build/ghidra/ru/Kremlin.gpr` и
-  `build/ghidra/en/Kremlin.gpr`. Они содержат оригинальные версии без ASM-патчей.
+- Сохраняемые проекты Ghidra: `research/ghidra/projects/ru/Kremlin.gpr` и
+  `research/ghidra/projects/en/Kremlin.gpr`. Они содержат оригинальные версии без ASM-патчей.
 
 Исходные игровые файлы, полные экспорты, проекты Ghidra и рабочие копии исключены
 из Git через `.gitignore`. Скрипты, небольшие таблицы анализа и Markdown-документация

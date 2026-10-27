@@ -145,12 +145,12 @@ unsigned 16. Изменение геометрии после начала ка�
 карты побайтово. `analyze_levels.py` независимо разбирает исходные байты Python
 сканером, сравнивает **всю** C-модель, разрешает все ссылки по RES и проверяет
 категории изображений, анимаций и звука. Полные определения/тексты остаются
-в игнорируемом `build/levels/`; в `analysis/` — отчёты и различия без текстов.
+в игнорируемом `research/evidence/levels/`; в `analysis/` — отчёты и различия без текстов.
 
 Проверены 6 LEVEL, 780 определений, 7610 class-specific значений, 4474 употребления
 ссылок (включая сохраняющиеся Sprite/Flic/Sound и ссылки класса). SHA-256 обеих
 EXE и обоих RES совпал до и после. В Ghidra сохранены 32 смысловые метки и один
-новый тип; свежие C/ASM — `build/stage5/<ru|en>/`.
+новый тип; свежие C/ASM — `research/evidence/stage5/<ru|en>/`.
 
 Различия не ограничиваются переводом: в LEVEL1 меняются L38, WA4, LBA, WAE
 некоторых монстров, параметры width и marker; width отличается также в LEVEL2/3.
@@ -175,5 +175,5 @@ EXE и обоих RES совпал до и после. В Ghidra сохране�
 C:/Source/wasdify/.venv/Scripts/python.exe scripts/prepare_levels.py
 ./scripts/annotate-stage5.ps1
 C:/Source/wasdify/.venv/Scripts/python.exe scripts/analyze_levels.py
-./build/native/dok-level.exe build/resources/ru/0018.bin
+./build/native/dok-level.exe research/evidence/resources/ru/0018.bin
 ```

@@ -26,7 +26,7 @@ def main():
         rate=max(sounds()[0],key=lambda r:r['rate'])
         for level in range(3):
             p.write(p.symbols['g_camera_capture_hold'],struct.pack('<I',1));p.present()
-            model=load_json(f'build/runtime/ru/LEVEL{level+1}-runtime.json')
+            model=load_json(f'research/evidence/runtime/ru/LEVEL{level+1}-runtime.json')
             hero=model['objects'][model['player_index']-1]['actor']
             p.camera((level+1)%3,15120,-300,22800,90)
             p.camera(level,hero['x'],hero['y'],hero['z'],hero['heading'])

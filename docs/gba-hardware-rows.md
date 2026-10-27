@@ -4,7 +4,7 @@
 поэтому15+ во всех обычных сценариях,24,1 и30 не достигнуты.
 Отдельный `artifacts/gba/DoK-port_hardware_128_prototype.gba`,10 846 124 B,
 SHA-256 `16ba83e8efd86169abec4206b720dd7a59fbfc1de85dc4ac2580b098296b3961`.
-ELF/map/частные исходники — `build/g20a-hw-face-box/hw_v128_box/`;
+ELF/map/частные исходники — `research/experiments/g20a-hw-face-box/hw_v128_box/`;
 сводка и хеши свидетельств — `analysis/g20a-hardware-rows.json`.
 Прежние pre-alpha/exact/coarse/BSP/hardware/culling ROM сохранены.
 Выбор качества для release не сделан. SDL2 и оригиналы не менялись.
@@ -40,7 +40,7 @@ CPU рисует стены/актёров/низкие потолки в120×12
 Инструментированный geometry profile отдельно показал в L2-worst30 вызовов
 боковин/75 surfaces/117 sprite cells. Последняя группа стоила1194 timer ticks
 с накладными расходами профиля. Это основание для class filter, не FPS-замер.
-Источник — `build/g20a-hw-geometry-profile/attribution.json`; единица timer64 cycles.
+Источник — `research/experiments/g20a-hw-geometry-profile/attribution.json`; единица timer64 cycles.
 
 ## Полная игра с runtime-камерой и PCM
 
@@ -90,7 +90,7 @@ Observed main stack2528/margin5408, IRQ80/margin80. Запас кода IWRAM м
   все22 исходных SHA совпали с inventory.
 
 UI/flow/sprites/water дополнительно прошли на прежнем опубликованном144
-ROM240669…f014 (`build/g20a-hw-early-qa/{ui,flow,sprites,water}.json`);
+ROM240669…f014 (`research/experiments/g20a-hw-early-qa/{ui,flow,sprites,water}.json`);
 старые документы отражают прежний срез. Адаптированная sprite harness также
 прошла на базовом Mode4 ROM7bab…7ea8.
 UI harness проверяет actual PPU color перед восстановлением исходного индекса
@@ -110,7 +110,7 @@ pool capacity11,56..18,86 FPS, all-awake0,07..0,37 FPS с растущим motio
 ## Остальные опыты
 
 Все перечисленные ниже остаются частными и не вошли в опубликованный128 ROM.
-Их source/ELF/manifest/JSON лежат в соответствующих `build/g20a-hw-*`:
+Их source/ELF/manifest/JSON лежат в соответствующих `research/experiments/g20a-hw-*`:
 
 | Каталог/flags | Результат |
 |---|---|
@@ -133,8 +133,8 @@ Unsigned helper отдельно прошёл196605 vectors в combo ARM report.
 ## Воспроизведение
 
 ```powershell
-C:/Source/wasdify/.venv/Scripts/python.exe scripts/prototype_gba_bsp.py --out build/g20a-hw-face-box --variants hw_face_box hw_v128_box
-C:/Source/wasdify/.venv/Scripts/python.exe scripts/verify_gba_hardware_water.py --build-dir build/g20a-hw-face-box/hw_v128_box --report build/g20a-hw-face-box/water.json
+C:/Source/wasdify/.venv/Scripts/python.exe scripts/prototype_gba_bsp.py --out research/experiments/g20a-hw-face-box --variants hw_face_box hw_v128_box
+C:/Source/wasdify/.venv/Scripts/python.exe scripts/verify_gba_hardware_water.py --build-dir research/experiments/g20a-hw-face-box/hw_v128_box --report research/experiments/g20a-hw-face-box/water.json
 C:/Source/wasdify/.venv/Scripts/python.exe scripts/report_gba_hardware_rows.py --copy-rom
 ```
 

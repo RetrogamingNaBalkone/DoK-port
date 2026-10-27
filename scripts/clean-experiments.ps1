@@ -1,7 +1,7 @@
 param([switch]$Apply)
 $ErrorActionPreference = 'Stop'
 $taskRoot = [IO.Path]::GetFullPath((Split-Path $PSScriptRoot -Parent))
-$buildRoot = Join-Path $taskRoot 'build'
+$buildRoot = Join-Path $taskRoot 'research/experiments'
 
 function Assert-LocalPath([string]$Path) {
     $resolved = [IO.Path]::GetFullPath($Path)

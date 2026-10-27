@@ -23,9 +23,9 @@ coverage bitset переиспользованы, потолки ещё рису
 affine quads. Общая visplane/span архитектура и software direct framebuffer
 не реализованы этим вариантом и не считаются проверенными.
 
-ROM — `build/g20a-stream-bsp-v3/hw_v128_stream_bsp/dok-diagnostic.gba`,
+ROM — `research/experiments/g20a-stream-bsp-v3/hw_v128_stream_bsp/dok-diagnostic.gba`,
 SHA256 `bfdba7d0455199e5599ebea9bf795abefdaff0c730f63db4b848e71a12825184`,
-16 429 504B. Чистая повторная сборка `build/g20a-stream-bsp-repeat/` побайтно
+16 429 504B. Чистая повторная сборка `research/experiments/g20a-stream-bsp-repeat/` побайтно
 совпадает, включая последующие compile-time scratch capacity assertions.
 Контроль128 в обеих сборках побайтно совпал с опубликованным2775.
 Новый ROM не назначен default и не копировался в artifacts.
@@ -77,8 +77,8 @@ fixtures, **не** прежние turn120/walk120 и не новый полны�
 native HUD/weapon overlay exact, максимум272 изменённых пикселя сцены из38 400.
 Перекрытия теперь идут по пространственному BSP, а не прежнему среднему ключу;
 точное RGB совпадение не заявляется. Пример тяжёлого L2 cell1592,135°:
-[контроль](../build/g20a-stream-bsp-v3/hw_v128_entity_rect/stream-qa-0-L2-27120-11760-135.png),
-[BSP](../build/g20a-stream-bsp-v3/hw_v128_stream_bsp/stream-qa-0-L2-27120-11760-135.png).
+[контроль](../research/experiments/g20a-stream-bsp-v3/hw_v128_entity_rect/stream-qa-0-L2-27120-11760-135.png),
+[BSP](../research/experiments/g20a-stream-bsp-v3/hw_v128_stream_bsp/stream-qa-0-L2-27120-11760-135.png).
 Сравнение на240×160 показало сохранение рисунка уступов/решёток; отдельной
 оценки движения на физическом маленьком экране не было.
 
@@ -111,10 +111,10 @@ native проверка контролирует адрес и сохранен�
 ## Воспроизведение
 
 ```powershell
-& C:/Source/wasdify/.venv/Scripts/python.exe scripts/prototype_gba_bsp.py --out build/g20a-stream-bsp-repeat --variants hw_v128_stream_bsp hw_v128_entity_rect
-& C:/Source/wasdify/.venv/Scripts/python.exe scripts/benchmark_gba_spatial_sweep.py --build-dir build/g20a-stream-bsp-v3/hw_v128_stream_bsp --report build/g20a-stream-bsp-v3/spatial.json
-& C:/Source/wasdify/.venv/Scripts/python.exe scripts/profile_gba_stream_scene.py --build-dir build/g20a-stream-bsp-v3/hw_v128_stream_bsp --report build/g20a-stream-bsp-v3/profile.json
-& C:/Source/wasdify/.venv/Scripts/python.exe scripts/verify_gba_stream_scene.py --build-dir build/g20a-stream-bsp-v3/hw_v128_stream_bsp --reference-build build/g20a-stream-bsp-v3/hw_v128_entity_rect --report build/g20a-stream-bsp-v3/structure.json
+& C:/Source/wasdify/.venv/Scripts/python.exe scripts/prototype_gba_bsp.py --out research/experiments/g20a-stream-bsp-repeat --variants hw_v128_stream_bsp hw_v128_entity_rect
+& C:/Source/wasdify/.venv/Scripts/python.exe scripts/benchmark_gba_spatial_sweep.py --build-dir research/experiments/g20a-stream-bsp-v3/hw_v128_stream_bsp --report research/experiments/g20a-stream-bsp-v3/spatial.json
+& C:/Source/wasdify/.venv/Scripts/python.exe scripts/profile_gba_stream_scene.py --build-dir research/experiments/g20a-stream-bsp-v3/hw_v128_stream_bsp --report research/experiments/g20a-stream-bsp-v3/profile.json
+& C:/Source/wasdify/.venv/Scripts/python.exe scripts/verify_gba_stream_scene.py --build-dir research/experiments/g20a-stream-bsp-v3/hw_v128_stream_bsp --reference-build research/experiments/g20a-stream-bsp-v3/hw_v128_entity_rect --report research/experiments/g20a-stream-bsp-v3/structure.json
 & C:/Source/wasdify/.venv/Scripts/python.exe scripts/report_gba_stream_scene.py
 ```
 

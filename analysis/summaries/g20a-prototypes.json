@@ -1,0 +1,531 @@
+{
+  "summary_schema": 1,
+  "full_report": {
+    "path": "analysis/g20a-prototypes.json",
+    "sha256": "32dd21a246e29c0061296897e8cf2c18eea519f50e0a9db0ab0e3c7e668b3a76",
+    "bytes": 1249843
+  },
+  "scope": "Summary of a recorded run; not a new verification. Full report is local and ignored by Git.",
+  "result": {
+    "task": "G20A",
+    "status": "prototype-comparison",
+    "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+    "script_sha256": "2f54916676ac22ec97bfbb327e01e759642d69f8f360679f5983d9de7ccc0a44",
+    "targets_fps": [
+      30,
+      24.1,
+      15
+    ],
+    "cpu_hz": 16777216,
+    "selection": "Nine RU start cameras ranked by the older G20 sweep; not a new extrema search.",
+    "frozen": {
+      "baseline": {
+        "rom_sha256": "7babd40f913eb12f77c93c9df917cea432b0cbe3bd83e11da45ba08dec917ea8",
+        "rows": {
+          "detail_pointer": "/frozen/baseline/rows",
+          "items": 9
+        },
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5568,
+          "high_water_bytes": 2368,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        },
+        "defines": [],
+        "cpu_speedup_median": 1.0,
+        "cpu_speedup_range": [
+          1.0,
+          1.0
+        ]
+      },
+      "no_scales": {
+        "rom_sha256": "d7b707eb10b9c50377653a6234247cf70a650cee7940908ffd7d42ec1d06eaa4",
+        "rows": {
+          "detail_pointer": "/frozen/no_scales/rows",
+          "items": 9
+        },
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5568,
+          "high_water_bytes": 2368,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        },
+        "defines": [
+          "NO_SCALES"
+        ],
+        "cpu_speedup_median": 1.0140011926058439,
+        "cpu_speedup_range": [
+          0.9837435086927071,
+          1.0908701140938
+        ]
+      },
+      "no_scales_runtime": {
+        "rom_sha256": "c2222056329c73a76b65ff1ba939128e3c4331a9fc241dafb5c148134f1a1916",
+        "rows": {
+          "detail_pointer": "/frozen/no_scales_runtime/rows",
+          "items": 9
+        },
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5568,
+          "high_water_bytes": 2368,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        },
+        "defines": [
+          "NO_SCALES_RUNTIME"
+        ],
+        "cpu_speedup_median": 1.0139770071077614,
+        "cpu_speedup_range": [
+          0.9836800516045799,
+          1.090844131097561
+        ]
+      },
+      "planes": {
+        "rom_sha256": "0963e6edd2155b899316314e298e0812e4aa79e6048347529616e503ae0b14f3",
+        "rows": {
+          "detail_pointer": "/frozen/planes/rows",
+          "items": 9
+        },
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5568,
+          "high_water_bytes": 2368,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        },
+        "defines": [
+          "FAST_PLANES"
+        ],
+        "cpu_speedup_median": 1.0095439563142619,
+        "cpu_speedup_range": [
+          1.0004920614092638,
+          1.0212924804395866
+        ]
+      },
+      "light": {
+        "rom_sha256": "72012cf93d87c512675f6f7cf29a494c7efa92f9b2871d80aca685d01c2238b8",
+        "rows": {
+          "detail_pointer": "/frozen/light/rows",
+          "items": 9
+        },
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5568,
+          "high_water_bytes": 2368,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        },
+        "defines": [
+          "NO_SCALES",
+          "PRELIT"
+        ],
+        "cpu_speedup_median": 1.0405004785359135,
+        "cpu_speedup_range": [
+          0.9791325564223571,
+          1.1042294446835987
+        ]
+      },
+      "bsp_setup": {
+        "rom_sha256": "735ba24497f1623751a4a58f7ace00206d87f2e32824ada73c752d69eeb76297",
+        "rows": {
+          "detail_pointer": "/frozen/bsp_setup/rows",
+          "items": 9
+        },
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5568,
+          "high_water_bytes": 2368,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        },
+        "defines": [
+          "STATIC_SETUP",
+          "BSP"
+        ],
+        "cpu_speedup_median": 0.9910414604109821,
+        "cpu_speedup_range": [
+          0.9621866471597783,
+          1.2476580077725505
+        ]
+      },
+      "setup": {
+        "rom_sha256": "fb8c71f3857007d5446639276231a0481503d0f68f5a790bf3f27f6952a3bd6b",
+        "rows": {
+          "detail_pointer": "/frozen/setup/rows",
+          "items": 9
+        },
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5568,
+          "high_water_bytes": 2368,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        },
+        "defines": [
+          "STATIC_SETUP"
+        ],
+        "cpu_speedup_median": 1.1314059446150722,
+        "cpu_speedup_range": [
+          1.0932397593812662,
+          1.2136717646584076
+        ]
+      },
+      "textured": {
+        "rom_sha256": "b8bcb51f7502094bcae54f21e7d00e17247a150b55250ce565957eaaffb369be",
+        "rows": {
+          "detail_pointer": "/frozen/textured/rows",
+          "items": 9
+        },
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5568,
+          "high_water_bytes": 2368,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        },
+        "defines": [
+          "NO_SCALES",
+          "STATIC_SETUP",
+          "FAST_PLANES",
+          "SWEEP_PLANES",
+          "PRELIT"
+        ],
+        "cpu_speedup_median": 1.2196349905601007,
+        "cpu_speedup_range": [
+          1.1617742802955247,
+          1.250013647033135
+        ]
+      },
+      "exact_planes": {
+        "rom_sha256": "ef4237c9699c140adca2e0dbb951938194331d1664a36f6d1d27ea2f7efed999",
+        "rows": {
+          "detail_pointer": "/frozen/exact_planes/rows",
+          "items": 9
+        },
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5568,
+          "high_water_bytes": 2368,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        },
+        "defines": [
+          "NO_SCALES",
+          "STATIC_SETUP",
+          "PRELIT",
+          "EXACT_LIGHT",
+          "EXACT_PLANES"
+        ],
+        "cpu_speedup_median": 1.2145049265062187,
+        "cpu_speedup_range": [
+          1.1468477531857812,
+          1.2500609161793372
+        ]
+      },
+      "world_planes": {
+        "rom_sha256": "b85b3181ff0aaf38881490d89a805755ef08195d9ac9600598c29b08ec86623e",
+        "rows": {
+          "detail_pointer": "/frozen/world_planes/rows",
+          "items": 9
+        },
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5568,
+          "high_water_bytes": 2368,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        },
+        "defines": [
+          "NO_SCALES",
+          "WORLD_PLANES"
+        ],
+        "cpu_speedup_median": 0.7275177710987071,
+        "cpu_speedup_range": [
+          0.6783962104550837,
+          0.7767375597842678
+        ]
+      },
+      "low_vertical": {
+        "rom_sha256": "e54f81eb5d1e593e9160700eb45c3d0261585a8e048bbcbfb5ea876d23427aa7",
+        "rows": {
+          "detail_pointer": "/frozen/low_vertical/rows",
+          "items": 9
+        },
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5568,
+          "high_water_bytes": 2368,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        },
+        "defines": [
+          "NO_SCALES",
+          "FAST_PLANES",
+          "SWEEP_PLANES",
+          "PRELIT",
+          "LOW_VERTICAL"
+        ],
+        "cpu_speedup_median": 1.1841874551685663,
+        "cpu_speedup_range": [
+          1.031382097325082,
+          1.2863161442534548
+        ]
+      },
+      "procedural": {
+        "rom_sha256": "43a66d4b9dc3502c967e9303bb2783cd46bf0337ae59766d5b79328477494ebf",
+        "rows": {
+          "detail_pointer": "/frozen/procedural/rows",
+          "items": 9
+        },
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5568,
+          "high_water_bytes": 2368,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        },
+        "defines": [
+          "NO_SCALES",
+          "WORLD_PLANES",
+          "PRELIT",
+          "PROCEDURAL"
+        ],
+        "cpu_speedup_median": 1.1283352632486634,
+        "cpu_speedup_range": [
+          0.9538912896959124,
+          1.2141775911804187
+        ]
+      }
+    },
+    "live": {
+      "baseline": {
+        "rom_sha256": "7babd40f913eb12f77c93c9df917cea432b0cbe3bd83e11da45ba08dec917ea8",
+        "rows": {
+          "detail_pointer": "/live/baseline/rows",
+          "items": 6
+        },
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5568,
+          "high_water_bytes": 2368,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        }
+      },
+      "no_scales": {
+        "rom_sha256": "d7b707eb10b9c50377653a6234247cf70a650cee7940908ffd7d42ec1d06eaa4",
+        "rows": {
+          "detail_pointer": "/live/no_scales/rows",
+          "items": 6
+        },
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5568,
+          "high_water_bytes": 2368,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        }
+      },
+      "no_scales_runtime": {
+        "rom_sha256": "c2222056329c73a76b65ff1ba939128e3c4331a9fc241dafb5c148134f1a1916",
+        "rows": {
+          "detail_pointer": "/live/no_scales_runtime/rows",
+          "items": 6
+        },
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5568,
+          "high_water_bytes": 2368,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        }
+      },
+      "planes": {
+        "rom_sha256": "0963e6edd2155b899316314e298e0812e4aa79e6048347529616e503ae0b14f3",
+        "rows": {
+          "detail_pointer": "/live/planes/rows",
+          "items": 6
+        },
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5568,
+          "high_water_bytes": 2368,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        }
+      },
+      "light": {
+        "rom_sha256": "72012cf93d87c512675f6f7cf29a494c7efa92f9b2871d80aca685d01c2238b8",
+        "rows": {
+          "detail_pointer": "/live/light/rows",
+          "items": 6
+        },
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5568,
+          "high_water_bytes": 2368,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        }
+      },
+      "bsp_setup": {
+        "rom_sha256": "735ba24497f1623751a4a58f7ace00206d87f2e32824ada73c752d69eeb76297",
+        "rows": {
+          "detail_pointer": "/live/bsp_setup/rows",
+          "items": 6
+        },
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5568,
+          "high_water_bytes": 2368,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        }
+      },
+      "setup": {
+        "rom_sha256": "fb8c71f3857007d5446639276231a0481503d0f68f5a790bf3f27f6952a3bd6b",
+        "rows": {
+          "detail_pointer": "/live/setup/rows",
+          "items": 6
+        },
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5568,
+          "high_water_bytes": 2368,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        }
+      },
+      "textured": {
+        "rom_sha256": "b8bcb51f7502094bcae54f21e7d00e17247a150b55250ce565957eaaffb369be",
+        "rows": {
+          "detail_pointer": "/live/textured/rows",
+          "items": 6
+        },
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5568,
+          "high_water_bytes": 2368,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        }
+      },
+      "exact_planes": {
+        "rom_sha256": "ef4237c9699c140adca2e0dbb951938194331d1664a36f6d1d27ea2f7efed999",
+        "rows": {
+          "detail_pointer": "/live/exact_planes/rows",
+          "items": 6
+        },
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5568,
+          "high_water_bytes": 2368,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        }
+      },
+      "world_planes": {
+        "rom_sha256": "b85b3181ff0aaf38881490d89a805755ef08195d9ac9600598c29b08ec86623e",
+        "rows": {
+          "detail_pointer": "/live/world_planes/rows",
+          "items": 6
+        },
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5568,
+          "high_water_bytes": 2368,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        }
+      },
+      "low_vertical": {
+        "rom_sha256": "e54f81eb5d1e593e9160700eb45c3d0261585a8e048bbcbfb5ea876d23427aa7",
+        "rows": {
+          "detail_pointer": "/live/low_vertical/rows",
+          "items": 6
+        },
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5568,
+          "high_water_bytes": 2368,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        }
+      },
+      "procedural": {
+        "rom_sha256": "43a66d4b9dc3502c967e9303bb2783cd46bf0337ae59766d5b79328477494ebf",
+        "rows": {
+          "detail_pointer": "/live/procedural/rows",
+          "items": 6
+        },
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5568,
+          "high_water_bytes": 2368,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        }
+      }
+    },
+    "limitations": [
+      "mGBA replacement BIOS; physical GBA not tested.",
+      "Frozen samples include full frame CPU and exclude presentation wait.",
+      "Live FPS includes VBlank; fixtures turn/fire with PCM22050, not a whole-level playthrough.",
+      "Dynamic states differ with elapsed emulated time; only frozen frames form a pixel oracle.",
+      "Procedural and low-resolution experiments are quality comparisons, not defaults."
+    ],
+    "best_validated_candidate": "exact_planes",
+    "targets_met": false
+  }
+}

@@ -18,7 +18,7 @@ from analyze_levels import reference
 from inventory import EXPECTED
 
 ROOT = Path(__file__).resolve().parents[1]
-OUT = ROOT / "build/render-layout"
+OUT = ROOT / "research/evidence/render-layout"
 
 
 def sha(data):
@@ -123,7 +123,7 @@ def synthetic(tool):
 
 
 def ghidra_checks(language, exe_sha):
-    directory = ROOT / "build/rendering" / language
+    directory = ROOT / "research/evidence/rendering" / language
     manifest = json.loads((directory / "analysis-manifest.json").read_text(encoding="utf-8-sig"))
     check((manifest["sha256_before"], manifest["sha256_after"]), (exe_sha, exe_sha), "Ghidra original EXE hashes")
     roles = list(csv.DictReader(io.StringIO((directory / "roles.tsv").read_text(encoding="utf-8-sig")), delimiter="\t"))

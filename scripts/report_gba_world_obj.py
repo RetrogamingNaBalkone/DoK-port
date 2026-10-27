@@ -15,16 +15,16 @@ def main():
     def sha(p):
         return hashlib.sha256((ROOT/p).read_bytes()).hexdigest()
 
-    report_path = Path('build/g20a-world-obj-bringup-final/report.json')
-    manifest_path = Path('build/g20a-world-obj-native-final/prototype-build.json')
-    repeat_path = Path('build/g20a-world-obj-native-repeat/prototype-build.json')
+    report_path = Path('research/experiments/g20a-world-obj-bringup-final/report.json')
+    manifest_path = Path('research/experiments/g20a-world-obj-native-final/prototype-build.json')
+    repeat_path = Path('research/experiments/g20a-world-obj-native-repeat/prototype-build.json')
     r, manifest, repeat = map(read,(report_path,manifest_path,repeat_path))
     variants = manifest['variants']
     for name in ('hw_v128_world_obj_probe','hw_v128_entity_rect'):
         expected = variants[name]['rom_sha256']
         assert repeat['variants'][name]['rom_sha256'] == expected
         for folder in ('g20a-world-obj-native-final','g20a-world-obj-native-repeat'):
-            assert sha(Path('build')/folder/name/'dok-diagnostic.gba') == expected
+            assert sha(Path('research/experiments')/folder/name/'dok-diagnostic.gba') == expected
     control = '2775bdd0caaac64b4fd99e4c6d675587fad2da9c795468dc52efacb5d53edaab'
     assert variants['hw_v128_entity_rect']['rom_sha256'] == r['geometry']['rom_sha256'] == control
     assert variants['hw_v128_world_obj_probe']['rom_sha256'] == r['ppu']['rom_sha256']

@@ -50,7 +50,7 @@ def exercise(build,core):
         for language in (0,1):
             p.language(language)
             for level in range(3):
-                model=load_json(f'build/runtime/ru/LEVEL{level+1}-runtime.json');hero=model['objects'][model['player_index']-1]['actor']
+                model=load_json(f'research/evidence/runtime/ru/LEVEL{level+1}-runtime.json');hero=model['objects'][model['player_index']-1]['actor']
                 p.camera((level+1)%3,15120,-300,22800,90)
                 p.camera(level,hero['x'],hero['y'],hero['z'],90)
                 prefix=f'{language}-{level+1}-'
@@ -98,7 +98,7 @@ def exercise(build,core):
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--build-dir',type=Path,required=True)
-    parser.add_argument('--reference-build',type=Path,default=Path('build/g20a-hw-projection/hw_v128_projection'))
+    parser.add_argument('--reference-build',type=Path,default=Path('research/experiments/g20a-hw-projection/hw_v128_projection'))
     parser.add_argument('--report',type=Path,required=True);a=parser.parse_args()
     os.chdir(ROOT);os.environ['DOK_PROBE_FAST_VIDEO']='1'
     core=Path(os.environ['LOCALAPPDATA'])/'Programs/mGBA/libretro-20261024/mgba_libretro.dll'

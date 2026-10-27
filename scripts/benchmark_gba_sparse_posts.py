@@ -15,7 +15,7 @@ CASES=['1:520:225','1:3640:225','2:1592:135','2:2871:225','3:1544:315']
 
 def main():
     p=argparse.ArgumentParser(description=__doc__)
-    p.add_argument('--out',type=Path,default=Path('build/g20c-sparse-posts'))
+    p.add_argument('--out',type=Path,default=Path('research/experiments/g20c-sparse-posts'))
     p.add_argument('--mode',choices=('heavy','spatial','live'),required=True)
     a=p.parse_args();os.chdir(ROOT);os.environ['DOK_PROBE_FAST_VIDEO']='1'
     core=Path(os.environ['LOCALAPPDATA'])/'Programs/mGBA/libretro-20261024/mgba_libretro.dll'

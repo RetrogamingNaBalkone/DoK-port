@@ -115,11 +115,11 @@ def main():
         for index in (18, 19, 20):
             entry = entries[index]
             payload = archive[entry["offset"]:entry["offset"] + entry["size"]]
-            path = ROOT / f"build/resources/{lang}/{index:04d}.bin"
+            path = ROOT / f"research/evidence/resources/{lang}/{index:04d}.bin"
             assert path.read_bytes() == payload
             actual = json.loads(subprocess.check_output([str(ROOT / "build/native/dok-level.exe"), str(path)]))
             assert actual == reference(payload), (lang, index)
-            directory = ROOT / "build/levels" / lang
+            directory = ROOT / "research/evidence/levels" / lang
             directory.mkdir(parents=True, exist_ok=True)
             (directory / f"{index:04d}.json").write_text(json.dumps(actual, indent=2) + "\n", encoding="utf-8")
             references = []
@@ -171,20 +171,20 @@ def main():
             verification["resource_references"] += len(references)
         (ROOT / f"analysis/levels-{lang}.json").write_text(json.dumps(reports, indent=2) + "\n", encoding="utf-8")
         verification["original_sha256"][lang] = dict(exe=expected, res=sha(archive))
-        roles = (ROOT / f"build/stage5/{lang}/roles.tsv").read_text(encoding="utf-8").splitlines()
+        roles = (ROOT / f"research/evidence/stage5/{lang}/roles.tsv").read_text(encoding="utf-8").splitlines()
         verification["ghidra_roles"][lang] = len(roles) - 1
-        log = (ROOT / f"build/stage5/{lang}/ghidra.log").read_text(encoding="utf-16")
+        log = (ROOT / f"research/evidence/stage5/{lang}/ghidra.log").read_text(encoding="utf-16")
         assert "KREMLIN_STAGE5_COMPLETE" in log and not re.search(r"^ERROR", log, re.M)
         assert sha((ROOT / "originals/pkr" / exe).read_bytes()) == expected
         assert sha(archive_path.read_bytes()) == sha(archive)
     (ROOT / "analysis/stage5-verification.json").write_text(json.dumps(verification, indent=2) + "\n", encoding="utf-8")
     rows = ["language\taddress\trole"]
     for lang in EXPECTED:
-        rows += [f"{lang}\t{row}" for row in (ROOT / f"build/stage5/{lang}/roles.tsv").read_text(encoding="utf-8").splitlines()[1:]]
+        rows += [f"{lang}\t{row}" for row in (ROOT / f"research/evidence/stage5/{lang}/roles.tsv").read_text(encoding="utf-8").splitlines()[1:]]
     (ROOT / "analysis/stage5-roles.tsv").write_text("\n".join(rows) + "\n", encoding="utf-8")
     differences = []
     for index in (18, 19, 20):
-        ru, en = [json.loads((ROOT / f"build/levels/{lang}/{index:04d}.json").read_text(encoding="utf-8"))
+        ru, en = [json.loads((ROOT / f"research/evidence/levels/{lang}/{index:04d}.json").read_text(encoding="utf-8"))
                   for lang in ("ru", "en")]
         changed = []
         assert ru["settings"] == en["settings"]

@@ -1,0 +1,169 @@
+{
+  "summary_schema": 1,
+  "full_report": {
+    "path": "analysis/g14-review.json",
+    "sha256": "b37bb0b4f52fcc5b011a54d1f24652f82dbd21ed6ec39984a51c36820040b6cc",
+    "bytes": 94271
+  },
+  "scope": "Summary of a recorded run; not a new verification. Full report is local and ignored by Git.",
+  "result": {
+    "task": "G14",
+    "status": "passed",
+    "next": "G15",
+    "rom_sha256": "9b4a9a28634fa5dbcb6ce15e74acf681c8bae7c91349c7da86f705d3b7e62926",
+    "rom_bytes": 32861724,
+    "ewram_static_bytes": 247800,
+    "ewram_remaining_bytes": 14344,
+    "iwram_static_bytes": 23980,
+    "iwram_remaining_before_stack_reserve": 596,
+    "stack_reserve_bytes": 8192,
+    "sources": {
+      "detail_pointer": "/sources",
+      "entries": 93
+    },
+    "reports": {
+      "analysis/g14-host-verification.json": "ea5811a478de88d714a0ba8c654cf734283230173fac5374e96cc5b88d8d9af3",
+      "analysis/g14-original-verification.json": "34c77302ad70708381c84dcd568172a5cee10d3e8e7deded59c718bddd00b772",
+      "analysis/g14-ai-gba.json": "75f6f36dc08550196c084dc6399e5415d09089e3536490058714327afe2cf893",
+      "analysis/g14-renderer-regression.json": "da462f5b389a9df31a716e9b4db900f58ac8b655dae61abbfe1f98677f01000e",
+      "analysis/g14-interactions-regression.json": "c718906844040555f3559fc29f69abfefa16396c2e905b1df0185d9f3ae27a70",
+      "analysis/g14-time-regression.json": "094040ff779ae60d3bff5bf36a05483dc75783dae59ce040b6c5678583622262"
+    },
+    "artifacts": {
+      "build/g14/dok-diagnostic.elf": "396b871e142ac5f85d50ec27da46f3bc918eab471f24a22f876879a9ae51a404",
+      "build/g14/dok-diagnostic.gba": "9b4a9a28634fa5dbcb6ce15e74acf681c8bae7c91349c7da86f705d3b7e62926",
+      "build/g14/dok-diagnostic.map": "c679620b6e1fb1f2540709d000d98c19117251fe2f3496880d09c02ade065e1e"
+    },
+    "checks": {
+      "original_heading": 2098,
+      "original_perception": 400,
+      "original_course": 50,
+      "host_real_RES_replay": true,
+      "host_four_corners": true,
+      "host_combat_reclaim": true,
+      "arm": {
+        "task": "G14",
+        "status": "passed",
+        "rom_sha256": "9b4a9a28634fa5dbcb6ce15e74acf681c8bae7c91349c7da86f705d3b7e62926",
+        "script_sha256": "de7995711133536da958bf85e74bb60248fd95c42ee3da6033724a31e0dd2808",
+        "perception": {
+          "detail_pointer": "/checks/arm/perception",
+          "items": 40
+        },
+        "traces": {
+          "detail_pointer": "/checks/arm/traces",
+          "items": 2
+        },
+        "viewed_wake": [
+          {
+            "language": 0,
+            "live_consideration_path": true,
+            "valid_display_before_first_callback": true,
+            "before": {
+              "detail_pointer": "/checks/arm/viewed_wake/0/before",
+              "entries": 4,
+              "scalars": {
+                "path": "build/g14/sprite-check/ai-sleeping-0.png",
+                "framebuffer_sha256": "f70071aaeed363fecfd21e97c03bba3504ad159608628a6d1ab038f0c6e606e7",
+                "cycles": 5585340,
+                "faces": 1
+              }
+            },
+            "after": {
+              "detail_pointer": "/checks/arm/viewed_wake/0/after",
+              "entries": 4,
+              "scalars": {
+                "path": "build/g14/sprite-check/ai-awake-0.png",
+                "framebuffer_sha256": "f70071aaeed363fecfd21e97c03bba3504ad159608628a6d1ab038f0c6e606e7",
+                "cycles": 5584671,
+                "faces": 1
+              }
+            }
+          },
+          {
+            "language": 1,
+            "live_consideration_path": true,
+            "valid_display_before_first_callback": true,
+            "before": {
+              "detail_pointer": "/checks/arm/viewed_wake/1/before",
+              "entries": 4,
+              "scalars": {
+                "path": "build/g14/sprite-check/ai-sleeping-1.png",
+                "framebuffer_sha256": "4b0fad3b5a7b7091dd4fa8d10cff7a6667888c934c27b4143d6a3d7f2a50b95b",
+                "cycles": 5583403,
+                "faces": 1
+              }
+            },
+            "after": {
+              "detail_pointer": "/checks/arm/viewed_wake/1/after",
+              "entries": 4,
+              "scalars": {
+                "path": "build/g14/sprite-check/ai-awake-1.png",
+                "framebuffer_sha256": "4b0fad3b5a7b7091dd4fa8d10cff7a6667888c934c27b4143d6a3d7f2a50b95b",
+                "cycles": 5583418,
+                "faces": 1
+              }
+            }
+          }
+        ],
+        "combat_owners": {
+          "sleeping_hit_woke_without_damage": true,
+          "reclaimed_monster_owner_removed_before_projectile_reuse": true,
+          "reused_glyph": 129
+        },
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5576,
+          "high_water_bytes": 2360,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        },
+        "physical_gba_tested": false,
+        "whole_dos_session_equivalence": false
+      },
+      "renderer_guards_reset_language": true,
+      "door_sensor_conveyor_finish": true,
+      "rational_clock": true
+    },
+    "performance": {
+      "renderer_timing": {
+        "cpu_hz": 16777216,
+        "hardware_frame_cycles": 280896,
+        "target_cycles": 561792,
+        "target_hardware_frames": 2,
+        "scope": "Timer0/1 cascade: time-poll + input/language switch + renderer + HUD + halfword VRAM back-page copy; excludes presentation wait",
+        "min_cycles": 4668231,
+        "max_cycles": 4690291,
+        "worst_render_budget_ratio": 8.348803471747551,
+        "nominal_target_fps": 29.863750284802915,
+        "over_budget_draws": 99,
+        "all_observed_draws_fit_target": false,
+        "min_present_interval_vblanks": 17,
+        "max_present_interval_vblanks": 17,
+        "cadence_intervals_vblanks": {
+          "detail_pointer": "/performance/renderer_timing/cadence_intervals_vblanks",
+          "items": 66
+        },
+        "cadence_warmup_excluded_draws": 8,
+        "observed_steady_presentation_fps": 3.513382386447402,
+        "sampled_draws": 98,
+        "samples": {
+          "detail_pointer": "/performance/renderer_timing/samples",
+          "items": 98
+        }
+      },
+      "target30fps_verified": false
+    },
+    "limits": [
+      "Physical GBA/original BIOS untested",
+      "Full DOS gameplay untested; isolated original heading/getter/counter instructions executed",
+      "FPU table ctor and full native active callback/scheduler closure not executed as a whole",
+      "GBA getter sampling uses previous-render consideration lease in simulation time; exact DOS render/event interleaving not claimed",
+      "Linux/CMake/MSVC execution untested; Linux static and Thumb compilation passed",
+      "Full1455camera sweep not repeated; targeted static/AI sprite scenarios used",
+      "Attack/hurt/death G15, sound G16, HUD G17, complete game flow G18; 30FPS G20"
+    ]
+  }
+}

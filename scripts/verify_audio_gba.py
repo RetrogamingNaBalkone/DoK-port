@@ -170,7 +170,7 @@ def irq_stack(probe):
 
 def identity_cases(probe):
     probe.command(6)
-    model = load_json('build/runtime/ru/LEVEL1-runtime.json')
+    model = load_json('research/evidence/runtime/ru/LEVEL1-runtime.json')
     first, second = (model['glyph_index'][glyph] - 1 for glyph in (0x80, 0x81))
     assert model['objects'][first]['sound'] == model['objects'][second]['sound']
     first = (first << 16) | 0xfff2
@@ -194,7 +194,7 @@ def identity_cases(probe):
 
 def projectile_identity(probe):
     probe.command(6)
-    model = load_json('build/runtime/ru/LEVEL1-runtime.json')
+    model = load_json('research/evidence/runtime/ru/LEVEL1-runtime.json')
     setup_open(probe, model)
     wall = next(obj['glyph'] for obj in model['objects']
                 if obj['class'] == 2 and not obj['flags'] & 0x18)

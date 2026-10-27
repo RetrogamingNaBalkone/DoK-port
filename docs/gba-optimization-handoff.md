@@ -31,7 +31,7 @@ prelit16/column-major материалы, отсечение coverage/backface �
 ROM: [DoK-port_hardware_cached_prototype.gba](../artifacts/gba/DoK-port_hardware_cached_prototype.gba),
 15 938 936 байт, SHA-256
 `2775bdd0caaac64b4fd99e4c6d675587fad2da9c795468dc52efacb5d53edaab`.
-Последняя сборка из текущих исходников: `build/g20a-final-costs/hw_v128_entity_rect/`;
+Последняя сборка из текущих исходников: `research/experiments/g20a-final-costs/hw_v128_entity_rect/`;
 она побайтно воспроизводит этот ROM. Исходный игровой ROM и отдельные96/72
 артефакты сохранены; нового release default не назначено.
 
@@ -61,7 +61,7 @@ FPS ниже — предъявления, не обратная величин�
 достаточной скорости симуляции. Artificial all-awake fixture всё ещё перегружает
 CPU (около0,07–0,38FPS); это отдельный игровой предел, не обычный коридор.
 
-Последние production heavy замеры из `build/g20a-sector-shear-v4/control-target.json`:
+Последние production heavy замеры из `research/experiments/g20a-sector-shear-v4/control-target.json`:
 
 |World/cell/heading|CPU cycles, медиана|FPS|
 |---|---:|---:|

@@ -6,7 +6,7 @@
 
 ## Граница очистки
 
-Удалены объектные файлы `build/g20a-*/**/*.o`, локальный `build/zig-cache`,
+Удалены объектные файлы `research/experiments/g20a-*/**/*.o`, локальный `build/zig-cache`,
 `scripts/__pycache__`, старые повреждённые пакеты и два повторных пакета
 из `build/gba/assets-check/{corruptions,repeat-a,repeat-b}`.
 Всего 16 168 файлов, 7 151 123 190 байт (около 6,66 ГиБ).

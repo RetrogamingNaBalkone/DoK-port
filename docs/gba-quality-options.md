@@ -37,7 +37,7 @@ release quality не выбран. G20 остаётся открытой по б
   `735ba24497f1623751a4a58f7ace00206d87f2e32824ada73c752d69eeb76297`.
   Он сохраняет исходный банк масштабов для отдельного сравнения BSP/setup.
 - ELF/map, частные снимки исходников, `.idx` и PNG 240×160 всех вариантов:
-  `build/g20a-prototypes/`. Прежние готовые ROM не заменены.
+  `research/experiments/g20a-prototypes/`. Прежние готовые ROM не заменены.
 - Измерения: `analysis/g20a-prototypes.json`. Проверки, память, SHA артефактов,
   ссылки на конкретные отчёты: `analysis/g20a-prototype-validation.json`.
   `prototype-build.json` рядом с ROM сохраняет flags, SHA исходников и всех
@@ -204,13 +204,13 @@ LEVEL1-median) просмотрены; процедурный LEVEL1-median то
 ```powershell
 C:/Source/wasdify/.venv/Scripts/python.exe scripts/prototype_gba_bsp.py
 C:/Source/wasdify/.venv/Scripts/python.exe scripts/benchmark_gba_prototypes.py
-C:/Source/wasdify/.venv/Scripts/python.exe scripts/verify_performance_gba.py --build-dir build/g20a-prototypes/exact_planes --reference-build build/select-menu-fix --reference-rom-sha256 7babd40f913eb12f77c93c9df917cea432b0cbe3bd83e11da45ba08dec917ea8 --step 5 --samples 2 --report build/g20a-prototypes/exact-planes-oracle.json
-C:/Source/wasdify/.venv/Scripts/python.exe scripts/verify_performance_arm.py --build-dir build/g20a-prototypes/exact_planes --report build/g20a-prototypes/exact-planes-arm.json
-C:/Source/wasdify/.venv/Scripts/python.exe scripts/profile_game_gba.py --build-dir build/g20a-prototypes/exact_planes --report build/g20a-prototypes/exact-planes-game.json --samples 24 --stress-samples 6
+C:/Source/wasdify/.venv/Scripts/python.exe scripts/verify_performance_gba.py --build-dir research/experiments/g20a-prototypes/exact_planes --reference-build build/select-menu-fix --reference-rom-sha256 7babd40f913eb12f77c93c9df917cea432b0cbe3bd83e11da45ba08dec917ea8 --step 5 --samples 2 --report research/experiments/g20a-prototypes/exact-planes-oracle.json
+C:/Source/wasdify/.venv/Scripts/python.exe scripts/verify_performance_arm.py --build-dir research/experiments/g20a-prototypes/exact_planes --report research/experiments/g20a-prototypes/exact-planes-arm.json
+C:/Source/wasdify/.venv/Scripts/python.exe scripts/profile_game_gba.py --build-dir research/experiments/g20a-prototypes/exact_planes --report research/experiments/g20a-prototypes/exact-planes-game.json --samples 24 --stress-samples 6
 ```
 
 Функциональные scripts `verify_{renderer,sprites,interactions,time,ai_combat,ui,flow}_gba.py`
-запускаются с тем же `--build-dir` и отчётами `build/g20a-prototypes/exact-planes-*.json`.
+запускаются с тем же `--build-dir` и отчётами `research/experiments/g20a-prototypes/exact-planes-*.json`.
 Затем `scripts/report_gba_prototypes.py` проверяет SHA/результаты и копирует
 два отдельных ROM в `artifacts/gba/`. Отчёт не заменяет исполнение проверок.
 Во время проверки не пересобирать ROM: отчёты должны относиться к загруженному SHA.

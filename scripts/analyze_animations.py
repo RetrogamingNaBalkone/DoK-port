@@ -78,7 +78,7 @@ def run(tool):
         results = []; images_checked = 0
         for entry in catalog["entries"]:
             raw = data[entry["offset"]:entry["offset"]+entry["size"]]
-            source = ROOT/"build/resources"/lang/f"{entry['index']:04d}.bin"
+            source = ROOT/"research/evidence/resources"/lang/f"{entry['index']:04d}.bin"
             if sha(source.read_bytes()) != entry["sha256"] or sha(raw) != entry["sha256"]:
                 raise ValueError("Source extraction differs")
             if entry["kind"] == "indexed_image18":
@@ -92,7 +92,7 @@ def run(tool):
             if entry["kind"] != "unparsed":
                 continue
             frames, pixels = animation(raw)
-            output = ROOT/"build/animations"/lang/f"{entry['index']:04d}"
+            output = ROOT/"research/evidence/animations"/lang/f"{entry['index']:04d}"
             output.mkdir(parents=True,exist_ok=True)
             completed = subprocess.run([str(tool),"--export",str(source),str(output)],check=True,capture_output=True,text=True)
             actual = list(csv.DictReader(io.StringIO(completed.stdout),delimiter="\t"))
@@ -127,7 +127,7 @@ def run(tool):
             differences.extend(dict(frame=a["index"],field=k,ru=a[k],en=b[k]) for k in keys if a[k]!=b[k])
         pixel_differences=[]
         if any(d["field"]=="sha256" for d in differences):
-            raw_frames={lang:animation((ROOT/"build/resources"/lang/f"{ru['resource_index']:04d}.bin").read_bytes())[1] for lang in ("ru","en")}
+            raw_frames={lang:animation((ROOT/"research/evidence/resources"/lang/f"{ru['resource_index']:04d}.bin").read_bytes())[1] for lang in ("ru","en")}
             for a,b in zip(ru["frames"],en["frames"]):
                 if a["sha256"]==b["sha256"]:
                     continue
@@ -141,7 +141,7 @@ def run(tool):
                                 raw_identical=ru["sha256"]==en["sha256"],frame_counts_equal=len(ru["frames"])==len(en["frames"]),
                                 decoded_differences=differences,pixel_differences=pixel_differences))
     (ROOT/"analysis/animations-comparison.json").write_text(json.dumps(comparisons,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
-    (ROOT/"build/animations/index.html").write_text('<!doctype html><meta charset="utf-8"><title>DoK animation research</title>'+
+    (ROOT/"research/evidence/animations/index.html").write_text('<!doctype html><meta charset="utf-8"><title>DoK animation research</title>'+
         '<style>body{background:#222;color:#eee;font:16px sans-serif}img{image-rendering:pixelated;max-width:100%}figure{margin:24px 0}</style>'+
         '<h1>RUS animation frames</h1><p>Palette GAMEP1, opaque indices, no playback timing or world transforms.</p>'+"\n".join(gallery),encoding="utf-8")
     print("C and Python agree on",sum(r["frames"] for r in reports.values()),"animation frames and",

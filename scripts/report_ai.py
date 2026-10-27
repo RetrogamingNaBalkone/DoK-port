@@ -12,7 +12,7 @@ def main():
  for p,h in reports['host-verification']['sources'].items():assert sha(p)==h,p
  for p,h in reports['host-verification']['artifacts'].items():assert sha(p)==h,p
  for lang in ('ru','en'):
-  path=f'build/ai/{lang}/analysis-manifest.json';m=read(path);assert m['sha256_before']==m['sha256_after']==sha(m['sample']);assert m['script_sha256']==sha('scripts/InspectAI.java');assert m['driver_sha256']==sha('scripts/analyze-ai.ps1');assert reports['original-verification']['languages'][lang]['manifest_sha256']==sha(path)
+  path=f'research/evidence/ai/{lang}/analysis-manifest.json';m=read(path);assert m['sha256_before']==m['sha256_after']==sha(m['sample']);assert m['script_sha256']==sha('scripts/InspectAI.java');assert m['driver_sha256']==sha('scripts/analyze-ai.ps1');assert reports['original-verification']['languages'][lang]['manifest_sha256']==sha(path)
  assert reports['ai-gba']['script_sha256']==sha('scripts/verify_ai_gba.py')
  arm=reports['ai-gba'];assert len(arm['perception'])==40 and len(arm['traces'])==2
  assert all(x['repeat_equal'] and x['duplicate_glyph_preserved'] for x in arm['traces'])

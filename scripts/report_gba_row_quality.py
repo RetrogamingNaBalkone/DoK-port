@@ -7,8 +7,8 @@ import shutil
 import statistics
 
 ROOT=Path(__file__).resolve().parents[1]
-FOLDER=Path('build/g20a-hw-row-quality-v3')
-OLD=Path('build/g20a-hw-row-quality-v2')
+FOLDER=Path('research/experiments/g20a-hw-row-quality-v3')
+OLD=Path('research/experiments/g20a-hw-row-quality-v2')
 
 
 def read(path):
@@ -24,7 +24,7 @@ def main():
     parser.add_argument('--copy-rom',action='store_true')
     args=parser.parse_args()
     manifest=read(FOLDER/'prototype-build.json')
-    repeat=read(Path('build/g20a-hw-row-quality-repeat/prototype-build.json'))
+    repeat=read(Path('research/experiments/g20a-hw-row-quality-repeat/prototype-build.json'))
     accepted=read(Path('analysis/g20a-hardware-cache.json'))
     control=manifest['variants']['hw_v128_entity_rect']['rom_sha256']
     assert control==accepted['rom_sha256']=='2775bdd0caaac64b4fd99e4c6d675587fad2da9c795468dc52efacb5d53edaab'
@@ -32,7 +32,7 @@ def main():
     for path,digest in preserved.items():assert sha(Path(path))==digest,path
     originals=accepted['originals_unchanged']
     for original in originals:assert sha(Path(original['path']))==original['sha256'],original
-    reference=read(Path('build/g20a-hw-entity-rect-v2/spatial.json'))
+    reference=read(Path('research/experiments/g20a-hw-entity-rect-v2/spatial.json'))
     assert reference['rom_sha256']==control
     rows={};inputs=[];copies=[]
     for n in ('96','72'):
@@ -45,7 +45,7 @@ def main():
         for name in ('water','transitions','quality','spatial'):
             reports[name]=(FOLDER if n=='96' else OLD)/(name+n+'.json')
         reports['arm']=FOLDER/'arm96.json' if n=='96' else OLD/'hw_rows72/arm.json'
-        reports['row_probe']=FOLDER/'rows96.json' if n=='96' else Path('build/g20a-hw-row-probes/rows72.json')
+        reports['row_probe']=FOLDER/'rows96.json' if n=='96' else Path('research/experiments/g20a-hw-row-probes/rows72.json')
         if n=='96':reports['profile']=FOLDER/'profile96.json'
         data={name:read(path) for name,path in reports.items()}
         for name,d in data.items():

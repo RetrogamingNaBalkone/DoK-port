@@ -121,7 +121,7 @@ def run(tool):
         native = list(csv.DictReader(io.StringIO(completed.stdout), delimiter="\t"))
         if len(native) != len(entries):
             raise ValueError("C and Python entry counts differ")
-        output = ROOT / "build/resources" / lang
+        output = ROOT / "research/evidence/resources" / lang
         output.mkdir(parents=True, exist_ok=True)
         levels = {}
         for entry, other in zip(entries, native):
@@ -174,7 +174,7 @@ def run(tool):
         maps = {}
         for lang in ("ru", "en"):
             entry = next(e for e in reports[lang]["entries"] if e["name"] == level)
-            maps[lang] = level_sections((ROOT / "build/resources" / lang / f"{entry['index']:04d}.bin").read_bytes())
+            maps[lang] = level_sections((ROOT / "research/evidence/resources" / lang / f"{entry['index']:04d}.bin").read_bytes())
         map_differences[level] = {}
         width = reports["ru"]["levels"][level]["settings"]["Level Width"]
         for name in ("MMap", "TMap", "FCMap"):

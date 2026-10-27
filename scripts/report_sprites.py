@@ -21,11 +21,11 @@ def main():
  for name in ('stack_before_reset','stack_after_reset'):
   assert reports['renderer-regression'][name]['untouched_margin_bytes']>=512
  for language in ('ru','en'):
-  manifest=read(f'build/sprites/{language}/analysis-manifest.json')
+  manifest=read(f'research/evidence/sprites/{language}/analysis-manifest.json')
   assert manifest['sha256_before']==manifest['sha256_after']==sha(manifest['sample'])
   assert manifest['script_sha256']==sha('scripts/InspectSprites.java')
   assert manifest['driver_sha256']==sha('scripts/analyze-sprites.ps1')
-  assert reports['original-verification']['languages'][language]['manifest_sha256']==sha(f'build/sprites/{language}/analysis-manifest.json')
+  assert reports['original-verification']['languages'][language]['manifest_sha256']==sha(f'research/evidence/sprites/{language}/analysis-manifest.json')
  assert reports['sprites-gba']['script_sha256']==sha('scripts/verify_sprites_gba.py')
  assert reports['sprites-gba']['automatic']['multiple_steps_per_draw_verified']
  assert reports['sprites-gba']['water_callback']['crop_then_increment_verified']

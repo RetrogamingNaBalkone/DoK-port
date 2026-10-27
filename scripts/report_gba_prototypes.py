@@ -14,7 +14,7 @@ def read(path):
 
 
 def main():
-    out=ROOT/'build/g20a-prototypes'
+    out=ROOT/'research/experiments/g20a-prototypes'
     builds=read(out/'prototype-build.json')
     comparison=read(ROOT/'analysis/g20a-prototypes.json')
     best=read(out/'exact_planes/build-report.json')

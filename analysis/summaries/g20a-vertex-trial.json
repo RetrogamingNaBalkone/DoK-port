@@ -1,0 +1,222 @@
+{
+  "summary_schema": 1,
+  "full_report": {
+    "path": "analysis/g20a-vertex-trial.json",
+    "sha256": "b7ea3fb60dc4af95311941a534335e56311eaf72e54153bea34f1465eb3b8f47",
+    "bytes": 416547
+  },
+  "scope": "Summary of a recorded run; not a new verification. Full report is local and ignored by Git.",
+  "result": {
+    "task": "G20A",
+    "status": "prototype-comparison",
+    "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+    "script_sha256": "d3762515bff5c717697cb17c79236ecc7589ed1a80881be67ab7000608abbb53",
+    "targets_fps": [
+      30,
+      24.1,
+      15
+    ],
+    "cpu_hz": 16777216,
+    "selection": "Nine RU start cameras ranked by the older G20 sweep; not a new extrema search.",
+    "frozen": {
+      "baseline": {
+        "rom_sha256": "7babd40f913eb12f77c93c9df917cea432b0cbe3bd83e11da45ba08dec917ea8",
+        "rows": {
+          "detail_pointer": "/frozen/baseline/rows",
+          "items": 9
+        },
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5568,
+          "high_water_bytes": 2368,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        },
+        "defines": [],
+        "cpu_speedup_median": 1.0,
+        "cpu_speedup_range": [
+          1.0,
+          1.0
+        ]
+      },
+      "vertex_exact": {
+        "rom_sha256": "ac14f9a4587e4364cf2299100aa0c4a8129691db8ceccaf57ff1b11f5c78aa66",
+        "rows": {
+          "detail_pointer": "/frozen/vertex_exact/rows",
+          "items": 9
+        },
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5568,
+          "high_water_bytes": 2368,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        },
+        "defines": [
+          "NO_SCALES",
+          "STATIC_SETUP",
+          "PRELIT",
+          "EXACT_LIGHT",
+          "EXACT_PLANES",
+          "UI_CACHE",
+          "SIDES_PRELIT",
+          "GEOMETRY_CACHE"
+        ],
+        "cpu_speedup_median": 1.3238996877832612,
+        "cpu_speedup_range": [
+          1.2668173062675951,
+          1.4989199450153825
+        ]
+      },
+      "vertex_world": {
+        "rom_sha256": "a0e808e10294548a4a35f8574eea2e4e912c703e418acd5d16398a5d6a645c89",
+        "rows": {
+          "detail_pointer": "/frozen/vertex_world/rows",
+          "items": 9
+        },
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5568,
+          "high_water_bytes": 2368,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        },
+        "defines": [
+          "NO_SCALES",
+          "STATIC_SETUP",
+          "WORLD_PLANES",
+          "PRELIT",
+          "EXACT_LIGHT",
+          "WORLD_SPANS",
+          "UI_CACHE",
+          "WATER_SPANS",
+          "SIDES_PRELIT",
+          "GEOMETRY_CACHE"
+        ],
+        "cpu_speedup_median": 1.5594057524981952,
+        "cpu_speedup_range": [
+          1.3314149742681645,
+          1.6466198743997045
+        ]
+      },
+      "vertex_coarse": {
+        "rom_sha256": "1a74535a073a0bbc9f387695d56a744e172d949de388188e93f4c76076a46f8f",
+        "rows": {
+          "detail_pointer": "/frozen/vertex_coarse/rows",
+          "items": 9
+        },
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5568,
+          "high_water_bytes": 2368,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        },
+        "defines": [
+          "NO_SCALES",
+          "STATIC_SETUP",
+          "WORLD_PLANES",
+          "PRELIT",
+          "EXACT_LIGHT",
+          "WORLD_SPANS",
+          "UI_CACHE",
+          "WATER_SPANS",
+          "COARSE_PLANES",
+          "SIDES_PRELIT",
+          "GEOMETRY_CACHE"
+        ],
+        "cpu_speedup_median": 2.1545916447120814,
+        "cpu_speedup_range": [
+          1.6557704218567202,
+          2.3249530565407888
+        ]
+      }
+    },
+    "live": {
+      "baseline": {
+        "rom_sha256": "7babd40f913eb12f77c93c9df917cea432b0cbe3bd83e11da45ba08dec917ea8",
+        "rows": {
+          "detail_pointer": "/live/baseline/rows",
+          "items": 6
+        },
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5568,
+          "high_water_bytes": 2368,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        }
+      },
+      "vertex_exact": {
+        "rom_sha256": "ac14f9a4587e4364cf2299100aa0c4a8129691db8ceccaf57ff1b11f5c78aa66",
+        "rows": {
+          "detail_pointer": "/live/vertex_exact/rows",
+          "items": 6
+        },
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5568,
+          "high_water_bytes": 2368,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        }
+      },
+      "vertex_world": {
+        "rom_sha256": "a0e808e10294548a4a35f8574eea2e4e912c703e418acd5d16398a5d6a645c89",
+        "rows": {
+          "detail_pointer": "/live/vertex_world/rows",
+          "items": 6
+        },
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5568,
+          "high_water_bytes": 2368,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        }
+      },
+      "vertex_coarse": {
+        "rom_sha256": "1a74535a073a0bbc9f387695d56a744e172d949de388188e93f4c76076a46f8f",
+        "rows": {
+          "detail_pointer": "/live/vertex_coarse/rows",
+          "items": 6
+        },
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5568,
+          "high_water_bytes": 2368,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        }
+      }
+    },
+    "limitations": [
+      "mGBA replacement BIOS; physical GBA not tested.",
+      "Frozen samples include full frame CPU and exclude presentation wait.",
+      "Live FPS includes VBlank; fixtures turn/fire with PCM22050, not a whole-level playthrough.",
+      "Dynamic states differ with elapsed emulated time; only frozen frames form a pixel oracle.",
+      "Procedural and low-resolution experiments are quality comparisons, not defaults."
+    ],
+    "zero_difference_frozen_candidates": [
+      "baseline",
+      "vertex_exact"
+    ],
+    "targets_met": false
+  }
+}

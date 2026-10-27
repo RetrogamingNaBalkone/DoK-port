@@ -6,14 +6,14 @@ $ErrorActionPreference='Stop'
 $taskRoot=Split-Path $PSScriptRoot -Parent
 $taskPreviousLocal=$env:LOCALAPPDATA
 try {
- $env:LOCALAPPDATA="$taskRoot/build/ghidra-local"
+ $env:LOCALAPPDATA="$taskRoot/research/ghidra/local"
  foreach($taskVersion in @('Old_Gold_Old_Version','Old_Gold_3D')) {
   $taskFile="$taskRoot/originals/$taskVersion/OG.EXE"
-  $taskOutput="$taskRoot/build/old-gold/$taskVersion"
+  $taskOutput="$taskRoot/research/evidence/old-gold/$taskVersion"
   New-Item -ItemType Directory -Force $taskOutput | Out-Null
   $taskBefore=(Get-FileHash -LiteralPath $taskFile -Algorithm SHA256).Hash.ToLowerInvariant()
   $taskArguments=@('-Djava.system.class.loader=ghidra.GhidraClassLoader',
-   "-Duser.home=$taskRoot/build/ghidra-home","-Dapplication.settingsdir=$taskRoot/build/ghidra-settings",
+   "-Duser.home=$taskRoot/research/ghidra/home","-Dapplication.settingsdir=$taskRoot/research/ghidra/settings",
    '-Djava.awt.headless=true','-Xmx3G','-cp',"$GhidraHome/Ghidra/Framework/Utility/lib/Utility.jar",
    'ghidra.Ghidra','ghidra.app.util.headless.AnalyzeHeadless',$taskOutput,'OldGold',
    '-import',$taskFile,'-overwrite','-scriptPath',"$taskRoot/scripts",'-postScript','InspectOldGold.java',$taskOutput)
@@ -22,7 +22,7 @@ try {
   $taskAfter=(Get-FileHash -LiteralPath $taskFile -Algorithm SHA256).Hash.ToLowerInvariant()
   if($taskBefore -ne $taskAfter){throw 'Original changed'}
   [ordered]@{sample="originals/$taskVersion/OG.EXE";sha256_before=$taskBefore;sha256_after=$taskAfter;
-   project="build/old-gold/$taskVersion/OldGold.gpr";script='scripts/InspectOldGold.java';
+   project="research/evidence/old-gold/$taskVersion/OldGold.gpr";script='scripts/InspectOldGold.java';
    script_sha256=(Get-FileHash "$PSScriptRoot/InspectOldGold.java").Hash.ToLowerInvariant();
    driver_sha256=(Get-FileHash $PSCommandPath).Hash.ToLowerInvariant()} |
    ConvertTo-Json | Set-Content -Encoding UTF8 "$taskOutput/manifest.json"

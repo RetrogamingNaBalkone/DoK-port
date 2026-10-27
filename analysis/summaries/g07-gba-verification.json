@@ -1,0 +1,103 @@
+{
+  "summary_schema": 1,
+  "full_report": {
+    "path": "analysis/g07-gba-verification.json",
+    "sha256": "33aec6355c4596b6ee95de424cd92291be8a93c64710512f0caf0fff7961d0b5",
+    "bytes": 63831
+  },
+  "scope": "Summary of a recorded run; not a new verification. Full report is local and ignored by Git.",
+  "result": {
+    "task": "G07",
+    "status": "passed",
+    "rom_sha256": "9bb6fd9f83ea4689893e1e166c6ea7168881a2fb39c53c41800af4e223f0baf1",
+    "rom_bytes": 32830976,
+    "ewram_static_bytes": 129224,
+    "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+    "core_version": "0.11-212-7a12d6d",
+    "initial": {
+      "magic": 1297044535,
+      "error": 0,
+      "steps": 7,
+      "debt": 402,
+      "commands": 0,
+      "last_cycles": 1127,
+      "max_cycles": 5942,
+      "total_cycles": 11249,
+      "x": 15120,
+      "y": -300,
+      "z": 22800,
+      "heading": 90,
+      "direction": 0,
+      "step": 0,
+      "accumulator_a": 0,
+      "accumulator_b": 0,
+      "command": 0,
+      "held": 0,
+      "pressed": 0,
+      "released": 0,
+      "seen": 0,
+      "quantum": 416,
+      "step_distance": 0,
+      "motion_flags": 0,
+      "remembered_flags": 0
+    },
+    "replay": {
+      "detail_pointer": "/replay",
+      "items": 13
+    },
+    "live_buttons": {
+      "detail_pointer": "/live_buttons",
+      "items": 10
+    },
+    "captures": {
+      "detail_pointer": "/captures",
+      "items": 4
+    },
+    "stack": {
+      "main_stack_low": 50356224,
+      "main_stack_top": 50364160,
+      "sentinel_word": 219540062,
+      "untouched_margin_bytes": 5584,
+      "high_water_bytes": 2352,
+      "irq_and_bios_excluded": true,
+      "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+    },
+    "restart": {
+      "magic": 1297044535,
+      "error": 0,
+      "steps": 7,
+      "debt": 402,
+      "commands": 0,
+      "last_cycles": 1127,
+      "max_cycles": 5942,
+      "total_cycles": 11249,
+      "x": 15120,
+      "y": -300,
+      "z": 22800,
+      "heading": 90,
+      "direction": 0,
+      "step": 0,
+      "accumulator_a": 0,
+      "accumulator_b": 0,
+      "command": 0,
+      "held": 0,
+      "pressed": 0,
+      "released": 0,
+      "seen": 0,
+      "quantum": 416,
+      "step_distance": 0,
+      "motion_flags": 0,
+      "remembered_flags": 0
+    },
+    "samples": {
+      "detail_pointer": "/samples",
+      "items": 151
+    },
+    "full_frame_min_cycles": 436509,
+    "full_frame_max_cycles": 517085,
+    "physical_gba_tested": false,
+    "original_bios_tested": false,
+    "policy": "instant translation start/stop/reversal; original turn acceleration",
+    "replay_scope": "same explicit commands and 416-tick steps on host and ARM; original x86 evidence is separate"
+  }
+}

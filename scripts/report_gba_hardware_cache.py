@@ -6,7 +6,7 @@ from pathlib import Path
 import shutil
 
 ROOT=Path(__file__).resolve().parents[1]
-FOLDER='build/g20a-hw-entity-rect-v2'
+FOLDER='research/experiments/g20a-hw-entity-rect-v2'
 VARIANT='hw_v128_entity_rect'
 BASE='7babd40f913eb12f77c93c9df917cea432b0cbe3bd83e11da45ba08dec917ea8'
 
@@ -20,7 +20,7 @@ def main():
     parser.add_argument('--copy-rom',action='store_true');args=parser.parse_args()
     build=read(FOLDER+'/'+VARIANT+'/build-report.json');digest=build['rom_sha256']
     rom=ROOT/FOLDER/VARIANT/'dok-diagnostic.gba';assert sha(rom)==digest
-    repeat=read('build/g20a-hw-entity-final/prototype-build.json')
+    repeat=read('research/experiments/g20a-hw-entity-final/prototype-build.json')
     assert repeat['variants'][VARIANT]['rom_sha256']==digest
     assert repeat['variants']['source_control']['rom_sha256']==BASE
     names=('arm','sprites','water','ui','flow','ai','ai-combat','items','combat','cache','transitions','interactions','stress')
@@ -71,7 +71,7 @@ def main():
     assert not artifact.exists() or sha(artifact)==digest
     if args.copy_rom:shutil.copyfile(rom,artifact)
     paths=[FOLDER+'/'+n+'.json' for n in (*names,'time','exact396','follow','turn120','walking120','standing120','sweep','spatial','reference-spatial','profile')]
-    paths+=['build/g20a-hw-entity-final/prototype-build.json']
+    paths+=['research/experiments/g20a-hw-entity-final/prototype-build.json']
     s=build['symbols'];iwram=s['__iwram_end']-s['__iwram_start'];ewram=build['ewram_static_bytes']
     result=dict(task='G20A',date='2026-10-27',status='cache-and-entity-raster-accepted-prototype',targets_met=False,
         artifact=artifact.relative_to(ROOT).as_posix(),artifact_copied=args.copy_rom,rom_sha256=digest,rom_bytes=rom.stat().st_size,

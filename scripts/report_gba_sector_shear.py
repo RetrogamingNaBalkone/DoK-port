@@ -9,7 +9,7 @@ ROOT=Path(__file__).resolve().parents[1]
 def main():
     read=lambda p:json.loads((ROOT/p).read_text(encoding='utf-8-sig'))
     sha=lambda p:hashlib.sha256((ROOT/p).read_bytes()).hexdigest()
-    folder=Path('build/g20a-sector-shear-v4');final=Path('build/g20a-sector-shear-final-v4')
+    folder=Path('research/experiments/g20a-sector-shear-v4');final=Path('research/experiments/g20a-sector-shear-final-v4')
     manifest=read(final/'prototype-build.json');measured=read(folder/'prototype-build.json')
     trial=manifest['variants']['hw_v128_sector_gpu_shear'];control=manifest['variants']['hw_v128_entity_rect']['rom_sha256']
     assert control=='2775bdd0caaac64b4fd99e4c6d675587fad2da9c795468dc52efacb5d53edaab'
@@ -17,7 +17,7 @@ def main():
     assert all(sha(Path(p))==v for p,v in manifest['sources'].items()),'Current native sources'
     for name in ('hw_v128_sector_gpu_shear','hw_v128_entity_rect'):
         for directory in (folder,final):assert sha(directory/name/'dok-diagnostic.gba')==manifest['variants'][name]['rom_sha256']
-    original=read(Path('build/g20a-sector-gpu-v8/prototype-build.json'))
+    original=read(Path('research/experiments/g20a-sector-gpu-v8/prototype-build.json'))
     for name in ('hw_v128_sector_gpu_thumb','hw_v128_sector_gpu_off','hw_v128_entity_rect'):
         assert manifest['variants'][name]['rom_sha256']==original['variants'][name]['rom_sha256']
         assert sha(final/name/'dok-diagnostic.gba')==original['variants'][name]['rom_sha256']
@@ -54,7 +54,7 @@ def main():
     short=lambda rs:[dict(level=r['level'],language=r['language'],fps=r['presented_fps'],debt=r['max_motion_debt']) for r in rs]
     paths=[final/'prototype-build.json',folder/'prototype-build.json',final/'visibility.json',folder/'pressure.json',
         folder/'profile.json',folder/'target.json',folder/'control-target.json',folder/'hw_v128_sector_gpu_shear-live24.json',
-        folder/'hw_v128_entity_rect-live24.json',Path('build/g20a-sector-gpu-v8/prototype-build.json')]
+        folder/'hw_v128_entity_rect-live24.json',Path('research/experiments/g20a-sector-gpu-v8/prototype-build.json')]
     result=dict(task='G20A',status='bounded-affine-shear-not-selected-architecture-comparison-closed',goal_complete=False,
         performance_build_in_current_goal=False,trial_rom_sha256=trial['rom_sha256'],rom_bytes=trial['rom_bytes'],
         control_rom_sha256=control,byte_exact_repeat=True,core_sha256=qa['core_sha256'],heavy_cases=heavy,

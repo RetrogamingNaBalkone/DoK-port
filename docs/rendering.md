@@ -87,7 +87,7 @@ C:/Source/wasdify/.venv/Scripts/python.exe scripts/verify_rendering.py
 
 Сначала собрать native-инструменты. Ghidra-шаг эксклюзивно открывает проекты
 каждого языка и сохраняет
-`build/rendering/{ru,en}/{evidence.asm,annotated.c,roles.tsv,ghidra.log}`,
+`research/evidence/rendering/{ru,en}/{evidence.asm,annotated.c,roles.tsv,ghidra.log}`,
 роли и SHA-256 образцов до/после. Итоговая команда повторяет три host-пробы
 и формирует `analysis/rendering-verification.json`. Исходные пиксели и полный
 автоматический C остаются в игнорируемом build, в поставку не входят.

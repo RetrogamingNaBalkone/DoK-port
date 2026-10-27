@@ -1,0 +1,112 @@
+{
+  "summary_schema": 1,
+  "full_report": {
+    "path": "analysis/g11-sprites-gba.json",
+    "sha256": "abeafa052893ecae8acb9e592b96c6c925cdcac72866fd5c10e88167397e7b79",
+    "bytes": 36205
+  },
+  "scope": "Summary of a recorded run; not a new verification. Full report is local and ignored by Git.",
+  "result": {
+    "task": "G11",
+    "status": "passed",
+    "rom_sha256": "231069467bf90b2021956ce0d5a00552424019b1dd3c2721dbce785236d3e493",
+    "script_sha256": "ce3c8d264a0170c573004cba762616b09f390e07801d7d4f0623e942dbbd869d",
+    "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+    "emulator": "mGBA",
+    "emulator_version": "0.11-212-7a12d6d",
+    "automatic": {
+      "level": 2,
+      "changed_objects": [
+        112,
+        113,
+        115
+      ],
+      "water_objects": [
+        111,
+        112,
+        113,
+        114
+      ],
+      "phase_trace_per_presentation": [
+        [
+          18,
+          8,
+          8,
+          18
+        ],
+        [
+          18,
+          15,
+          15,
+          18
+        ],
+        [
+          18,
+          3,
+          3,
+          18
+        ],
+        [
+          18,
+          11,
+          11,
+          18
+        ],
+        [
+          18,
+          17,
+          0,
+          18
+        ]
+      ],
+      "multiple_steps_per_draw_verified": true
+    },
+    "water_callback": {
+      "object": 112,
+      "states": [
+        {
+          "counter": 18,
+          "displayed_crop": 17,
+          "active": 1
+        },
+        {
+          "counter": 18,
+          "displayed_crop": 17,
+          "active": 0
+        }
+      ],
+      "crop_then_increment_verified": true
+    },
+    "playback": {
+      "detail_pointer": "/playback",
+      "items": 8
+    },
+    "captures": {
+      "detail_pointer": "/captures",
+      "items": 18
+    },
+    "stack": {
+      "main_stack_low": 50356224,
+      "main_stack_top": 50364160,
+      "sentinel_word": 219540062,
+      "untouched_margin_bytes": 5560,
+      "high_water_bytes": 2376,
+      "irq_and_bios_excluded": true,
+      "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+    },
+    "embedded_package_byte_identical": true,
+    "package_sha256": "3efa5d3027d63ffd65e0ae8c0b45be23ee8394b3c5151c8e9f10e76fa8674351",
+    "originals": [
+      {
+        "path": "originals/pkr/RUS/PKR.RES",
+        "sha256": "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816"
+      },
+      {
+        "path": "originals/pkr/ENG/PKE.RES",
+        "sha256": "865da340621fa6f90548a84e9ae9bf0a85071befb32a40ca1d359e488f74d458"
+      }
+    ],
+    "physical_gba_tested": false,
+    "whole_dos_session_equivalence": false
+  }
+}

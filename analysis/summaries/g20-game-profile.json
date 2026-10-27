@@ -1,0 +1,47 @@
+{
+  "summary_schema": 1,
+  "full_report": {
+    "path": "analysis/g20-game-profile.json",
+    "sha256": "b31ba955cf569d9a719047aa3c6f544556333598a52992df99c2129dc0cb21c0",
+    "bytes": 181007
+  },
+  "scope": "Summary of a recorded run; not a new verification. Full report is local and ignored by Git.",
+  "result": {
+    "task": "G20",
+    "status": "passed",
+    "script_sha256": "73f58c9c2f9f4feb63b5714b731d9e2a0009a2c5d463722153e52567296187be",
+    "rom_sha256": "a56330bf11dc6f3e5906d71b8d2dbb20b2c36a55c9f3e63c8c8eb5baa44c5c94",
+    "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+    "bios": "mGBA replacement BIOS",
+    "physical_gba_tested": false,
+    "budget_cycles": 561792,
+    "target_met": false,
+    "rows": {
+      "detail_pointer": "/rows",
+      "items": 24
+    },
+    "stack": {
+      "main_stack_low": 50356224,
+      "main_stack_top": 50364160,
+      "sentinel_word": 219540062,
+      "untouched_margin_bytes": 5568,
+      "high_water_bytes": 2368,
+      "irq_and_bios_excluded": true,
+      "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+    },
+    "irq_stack": {
+      "low": 50364160,
+      "top": 50364320,
+      "untouched_margin_bytes": 80,
+      "high_water_bytes": 80,
+      "includes_bios_irq_saves": true
+    },
+    "audio_underruns": 0,
+    "capture_hold_during_samples": false,
+    "limitations": [
+      "Artificial all-awake and capacity fixtures are distinguished from normal gameplay.",
+      "CPU timer excludes presentation wait and diagnostic publication; presentation FPS includes them.",
+      "Controlled stationary camera; live D-pad turning, fire, callbacks and real clock run normally."
+    ]
+  }
+}

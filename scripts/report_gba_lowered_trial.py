@@ -4,7 +4,7 @@ import json
 from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[1]
-FOLDER='build/g20a-hw-lowered-v6'
+FOLDER='research/experiments/g20a-hw-lowered-v6'
 VARIANT='hw_v128_lowered'
 def read(path):return json.loads((ROOT/path).read_text(encoding='utf-8-sig'))
 def sha(path):return hashlib.sha256(path.read_bytes()).hexdigest()
@@ -14,12 +14,12 @@ def minima(rows):return {str(n):min(r['presented_fps'] for r in rows if r['level
 def main():
     build=read(FOLDER+'/'+VARIANT+'/build-report.json');digest=build['rom_sha256']
     assert sha(ROOT/FOLDER/VARIANT/'dok-diagnostic.gba')==digest
-    repeat=read('build/g20a-hw-lowered-final/prototype-build.json')
+    repeat=read('research/experiments/g20a-hw-lowered-final/prototype-build.json')
     assert repeat['variants'][VARIANT]['rom_sha256']==digest
     assert repeat['variants']['source_control']['rom_sha256']=='7babd40f913eb12f77c93c9df917cea432b0cbe3bd83e11da45ba08dec917ea8'
     accepted=read('analysis/g20a-hardware-cache.json')
     assert sha(ROOT/accepted['artifact'])==accepted['rom_sha256']
-    old_repeat=read('build/g20a-hw-post-lowered-control/prototype-build.json')
+    old_repeat=read('research/experiments/g20a-hw-post-lowered-control/prototype-build.json')
     assert old_repeat['variants']['hw_v128_entity_rect']['rom_sha256']==accepted['rom_sha256']
     for name in ('ui','water'):
         control=read(FOLDER+'/control-'+name+'.json')
@@ -33,7 +33,7 @@ def main():
     assert all(r['coverage_equal'] and r['different_foreground_rgb_pixels']==r['different_overlay_rgb_pixels']==0 for r in exact['after']['rows'])
     spatial=read(FOLDER+'/spatial.json');assert spatial['rom_sha256']==digest and len(spatial['rows'])==440
     mode4=read(FOLDER+'/transitions-mode4.json')
-    old_mode4=read('build/g20a-hw-lowered-v5/control-transitions-mode4.json')
+    old_mode4=read('research/experiments/g20a-hw-lowered-v5/control-transitions-mode4.json')
     assert mode4['rom_sha256']==digest and mode4['status']==old_mode4['status']=='failed'
     assert len(mode4['rows'])==len(old_mode4['rows'])==294
     comparison=[]
@@ -53,14 +53,14 @@ def main():
         if entry['path'].startswith('originals/'):
             assert sha(ROOT/entry['path'])==entry['sha256'];originals.append(entry)
     assert len(originals)==22
-    ui_only=read('build/g20a-hw-lowered-v2/ui-exact396.json')
+    ui_only=read('research/experiments/g20a-hw-lowered-v2/ui-exact396.json')
     assert len(ui_only['after']['rows'])==396 and all(r['different_rgb_pixels']==0 for r in ui_only['after']['rows'])
     s=build['symbols'];iwram=s['__iwram_end']-s['__iwram_start'];ewram=build['ewram_static_bytes']
     paths=[FOLDER+'/'+n+'.json' for n in (*checks,'exact396','spatial','transitions-mode4','follow','turn120','walking120')]
-    paths+=['build/g20a-hw-lowered-final/prototype-build.json','build/g20a-hw-lowered-v2/ui-exact396.json',
-            'build/g20a-hw-lowered-v2/ui-transitions.json','build/g20a-hw-lowered-v5/control-transitions-mode4.json',
-            'build/g20a-hw-lowered-ram/target.json','build/g20a-hw-surface-clip/target.json',
-            FOLDER+'/control-ui.json',FOLDER+'/control-water.json','build/g20a-hw-post-lowered-control/prototype-build.json']
+    paths+=['research/experiments/g20a-hw-lowered-final/prototype-build.json','research/experiments/g20a-hw-lowered-v2/ui-exact396.json',
+            'research/experiments/g20a-hw-lowered-v2/ui-transitions.json','research/experiments/g20a-hw-lowered-v5/control-transitions-mode4.json',
+            'research/experiments/g20a-hw-lowered-ram/target.json','research/experiments/g20a-hw-surface-clip/target.json',
+            FOLDER+'/control-ui.json',FOLDER+'/control-water.json','research/experiments/g20a-hw-post-lowered-control/prototype-build.json']
     result=dict(task='G20A',date='2026-10-27',status='experimental-not-selected',selected=False,targets_met=False,
         build_dir=FOLDER+'/'+VARIANT,rom_sha256=digest,rom_bytes=build['rom_bytes'],artifact=None,previous_selected_artifact=accepted['artifact'],
         clean_repeat_byte_exact=True,ram=dict(ewram=ewram,ewram_free=262144-ewram,iwram_before_stacks=iwram,iwram_free_before_stacks=24576-iwram,stack_reserve=8192),

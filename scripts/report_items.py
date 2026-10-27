@@ -12,11 +12,11 @@ def main():
   assert r.get('status','passed')=='passed',name
   if 'rom_sha256' in r:assert r['rom_sha256']==build['rom_sha256'],name
  for language in ('ru','en'):
-  m=read(f'build/items/{language}/analysis-manifest.json')
+  m=read(f'research/evidence/items/{language}/analysis-manifest.json')
   assert m['sha256_before']==m['sha256_after']==sha(m['sample'])
   assert m['script_sha256']==sha('scripts/InspectItems.java')
   assert m['driver_sha256']==sha('scripts/analyze-items.ps1')
-  assert reports['original-verification']['languages'][language]['manifest_sha256']==sha(f'build/items/{language}/analysis-manifest.json')
+  assert reports['original-verification']['languages'][language]['manifest_sha256']==sha(f'research/evidence/items/{language}/analysis-manifest.json')
  assert reports['items-gba']['script_sha256']==sha('scripts/verify_items_gba.py')
  assert len(reports['items-gba']['stats'])==109
  assert len(reports['items-gba']['pickups'])==58

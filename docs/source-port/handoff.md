@@ -1,5 +1,9 @@
 # Передача контекста Source Port
 
+27 ???????: ??????? Ghidra ? ?????????????? ????????? ? `research/ghidra/`
+? `research/evidence/`, ??? build ? Git. ???????????? ????????? ? ???????
+?????? ? [???????](../tasks/RESEARCH-STORAGE.md). ??????? SP01?SP20 ?? ????????.
+
 ## Актуально: принят план SDL2-разработки — 26 октября 2026 года
 
 **OG01 и SP00 завершены в прежних границах. Планирование общего SDL2-порта
@@ -75,11 +79,11 @@ SDL2 Source Port для Old Gold, PKR и PKE. Подробные результ�
 этого каталога. Реализация SDL2 не запрашивалась в рамках этой задачи.
 
 Готово: Ghidra 12.1.2/MZ real mode, 889/889 функций; отдельный проект
-`build/ghidra/old-gold-full/OldGold.gpr`, экспорт `decompiled/old-gold/`.
+`research/ghidra/projects/old-gold-full/OldGold.gpr`, экспорт `decompiled/old-gold/`.
 Образцы не менялись; SHA-256 — `analysis/old-gold/verification.json`.
 Там же хеши артефактов, метрики, предупреждения и повторный чистый импорт.
 Первые пробные проекты и журнал диагностического исследования сохранены
-локально в `build/ghidra/old-gold/` и `build/old-gold/`.
+локально в `research/ghidra/projects/old-gold/` и `research/evidence/old-gold/`.
 
 Ключевые адреса **MZ Ghidra**, не NE и не DPMI: фабрика `1ae1:0003`,
 герой ctor/check/stats `1ae1:128f/15a2/18b9`, projectile reader `1ae1:21ea`,
@@ -113,6 +117,6 @@ C:/Source/wasdify/.venv/Scripts/python.exe scripts/analyze_old_gold_port.py
 ```
 
 Для повторного чистого импорта — параметр `-ProjectDirectory` с новым каталогом
-и `-OutputDirectory build/old-gold/recheck-export`. Основной и контрольный
+и `-OutputDirectory research/evidence/old-gold/recheck-export`. Основной и контрольный
 экспорты сравнивает Python verifier. Полные производные материалы и оригиналы
 в Git не добавлять. DOS-прохождение, акустическая сверка и SDL2 не проверены.

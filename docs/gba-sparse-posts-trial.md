@@ -8,7 +8,7 @@ ROM2775. Следующая задача — UI G20B; бюджет G20 оста�
 
 Итог: [analysis/g20c-sparse-posts.json](../analysis/g20c-sparse-posts.json).
 Исходные отчёты, PNG, ROM/ELF/map и снимки исходников —
-`build/g20c-sparse-posts/`; чистое повторение — `build/g20c-sparse-repeat/`.
+`research/experiments/g20c-sparse-posts/`; чистое повторение — `research/experiments/g20c-sparse-repeat/`.
 
 ## Реализация и контракт
 
@@ -159,20 +159,20 @@ GBA ELF/ROM VMA из map. Это не NE-сегменты, Ghidra-адреса �
 $py = 'C:/Source/wasdify/.venv/Scripts/python.exe'
 $env:ZIG_GLOBAL_CACHE_DIR = 'C:/Source/DoK-port/build/zig-cache'
 $env:DOK_PROBE_FAST_VIDEO = '1'
-& $py scripts/prototype_gba_bsp.py --out build/g20c-sparse-posts --variants hw_v128_entity_rect hw_v128_sparse_control hw_v128_sparse_posts
-& $py scripts/prototype_gba_bsp.py --out build/g20c-sparse-repeat --variants hw_v128_entity_rect hw_v128_sparse_control hw_v128_sparse_posts
+& $py scripts/prototype_gba_bsp.py --out research/experiments/g20c-sparse-posts --variants hw_v128_entity_rect hw_v128_sparse_control hw_v128_sparse_posts
+& $py scripts/prototype_gba_bsp.py --out research/experiments/g20c-sparse-repeat --variants hw_v128_entity_rect hw_v128_sparse_control hw_v128_sparse_posts
 foreach ($mode in @('heavy','spatial','live')) {
     & $py scripts/benchmark_gba_sparse_posts.py --mode $mode
 }
-& $py scripts/verify_performance_arm.py --build-dir build/g20c-sparse-posts/hw_v128_sparse_posts --report build/g20c-sparse-posts/arm.json
-& $py scripts/benchmark_gba_hardware.py --build-dir build/g20c-sparse-posts/hw_v128_sparse_posts --reference-build build/g20c-sparse-posts/hw_v128_entity_rect --report build/g20c-sparse-posts/ppu-details.json --languages 0 1 --details
-& $py scripts/verify_gba_static_cache.py --build-dir build/g20c-sparse-posts/hw_v128_sparse_posts --reference-build build/g20c-sparse-posts/hw_v128_entity_rect --report build/g20c-sparse-posts/mutations.json
+& $py scripts/verify_performance_arm.py --build-dir research/experiments/g20c-sparse-posts/hw_v128_sparse_posts --report research/experiments/g20c-sparse-posts/arm.json
+& $py scripts/benchmark_gba_hardware.py --build-dir research/experiments/g20c-sparse-posts/hw_v128_sparse_posts --reference-build research/experiments/g20c-sparse-posts/hw_v128_entity_rect --report research/experiments/g20c-sparse-posts/ppu-details.json --languages 0 1 --details
+& $py scripts/verify_gba_static_cache.py --build-dir research/experiments/g20c-sparse-posts/hw_v128_sparse_posts --reference-build research/experiments/g20c-sparse-posts/hw_v128_entity_rect --report research/experiments/g20c-sparse-posts/mutations.json
 foreach ($suite in @('sprites','ui','ai_combat')) {
     $name = $suite.Replace('_','-')
-    & $py "scripts/verify_${suite}_gba.py" --build-dir build/g20c-sparse-posts/hw_v128_sparse_posts --report "build/g20c-sparse-posts/$name.json"
+    & $py "scripts/verify_${suite}_gba.py" --build-dir research/experiments/g20c-sparse-posts/hw_v128_sparse_posts --report "research/experiments/g20c-sparse-posts/$name.json"
 }
-& $py scripts/verify_interactions_gba.py --build-dir build/g20c-sparse-posts/hw_v128_sparse_posts --report build/g20c-sparse-posts/interactions.json --skip-visual-oracle
-& $py scripts/verify_gba_hardware_transitions.py --build-dir build/g20c-sparse-posts/hw_v128_sparse_posts --report build/g20c-sparse-posts/transitions.json
+& $py scripts/verify_interactions_gba.py --build-dir research/experiments/g20c-sparse-posts/hw_v128_sparse_posts --report research/experiments/g20c-sparse-posts/interactions.json --skip-visual-oracle
+& $py scripts/verify_gba_hardware_transitions.py --build-dir research/experiments/g20c-sparse-posts/hw_v128_sparse_posts --report research/experiments/g20c-sparse-posts/transitions.json
 & $py scripts/report_gba_sparse_posts.py --copy-rom
 ```
 

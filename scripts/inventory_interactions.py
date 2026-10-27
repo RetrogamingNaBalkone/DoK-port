@@ -4,7 +4,7 @@ from pathlib import Path
 report={'task':'G09','status':'passed','address_system':'runtime-oriented map cells; native scalar offsets are evidence tags','levels':[]}
 for language in ('ru','en'):
  for level in range(1,4):
-  path=Path(f'build/runtime/{language}/LEVEL{level}-runtime.json');model=json.loads(path.read_text());maps=[bytes.fromhex(p) for p in model['maps'][:3]]
+  path=Path(f'research/evidence/runtime/{language}/LEVEL{level}-runtime.json');model=json.loads(path.read_text());maps=[bytes.fromhex(p) for p in model['maps'][:3]]
   objects=[];by_glyph={o['glyph']:o for o in model['objects']}
   for o in model['objects']:
    if o['class'] not in (6,7,12,13):continue

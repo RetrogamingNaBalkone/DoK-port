@@ -124,7 +124,7 @@ def stats_checks(probe):
 
 
 def pickup_checks(probe, level, language, resources):
-    model = load_json(f'build/runtime/ru/LEVEL{level + 1}-runtime.json')
+    model = load_json(f'research/evidence/runtime/ru/LEVEL{level + 1}-runtime.json')
     original = reference(resources[f'LEVEL{level + 1}'.encode().hex()])
     by_glyph = {obj['glyph']: obj for obj in original['objects']}
     original_map = bytes.fromhex(model['maps'][1])
@@ -190,7 +190,7 @@ def pickup_checks(probe, level, language, resources):
 
 def visible_live_pickup(probe, language):
     """Use a controlled placement and the production 416-tick movement path."""
-    model = load_json('build/runtime/ru/LEVEL1-runtime.json')
+    model = load_json('research/evidence/runtime/ru/LEVEL1-runtime.json')
     probe.camera(0, 15120, -300, 22800, 90)
     probe.language(language)
     obj_index = next(i for i, obj in enumerate(model['objects']) if obj['glyph'] == ord('8'))

@@ -7,8 +7,8 @@
 
 Реестр — [g20a-lowered-ceiling-trial.json](../analysis/g20a-lowered-ceiling-trial.json),
 collector — `scripts/report_gba_lowered_trial.py`. ROM/ELF/map/private sources:
-`build/g20a-hw-lowered-v6/hw_v128_lowered/`; повторение —
-`build/g20a-hw-lowered-final/`. ROM16 567 124B,
+`research/experiments/g20a-hw-lowered-v6/hw_v128_lowered/`; повторение —
+`research/experiments/g20a-hw-lowered-final/`. ROM16 567 124B,
 SHA-256 `4f96b7dcbcad5933d38f3149b63868a53bbd52b8b3c6ad0bdfae643626444d80`.
 Он оставлен в build как исследовательский образец. Прежние опубликованные ROM
 сохранены; рекомендуемый кандидат пока

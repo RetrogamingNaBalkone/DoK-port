@@ -84,7 +84,7 @@ def capture(build,core,cameras,force_low_mode=0):
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--build-dir',type=Path,required=True)
-    parser.add_argument('--reference-build',type=Path,default=Path('build/g20a-sides/sides_exact'))
+    parser.add_argument('--reference-build',type=Path,default=Path('research/experiments/g20a-sides/sides_exact'))
     parser.add_argument('--report',type=Path,required=True)
     parser.add_argument('--live',action='store_true')
     parser.add_argument('--languages',type=int,nargs='+',choices=(0,1),default=[0])

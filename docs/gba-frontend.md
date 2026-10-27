@@ -82,8 +82,8 @@ UI-кадр появляется через10 video frames вместо404 ка�
 ## Исходные доказательства и адаптации
 
 Исследование EXE выполнено read-only в Ghidra через `analyze-ui.ps1` /
-`InspectUI.java`. Проекты — `build/ghidra/{ru,en}/Kremlin.gpr`, свежие ASM,
-отдельный непроверенный автоматический C и журналы — `build/ui/{ru,en}/`.
+`InspectUI.java`. Проекты — `research/ghidra/projects/{ru,en}/Kremlin.gpr`, свежие ASM,
+отдельный непроверенный автоматический C и журналы — `research/evidence/ui/{ru,en}/`.
 Адреса ниже относятся к **NE-загрузчику Ghidra**, а не к смещениям файла,
 номерам NE-сегментов или runtime-селекторам DPMI.
 
@@ -149,7 +149,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts/analyze-ui.ps1
 & $py scripts/dos_reference.py ru --output build/g20b/dos-ru --port 8143 --enters 6
 & $py scripts/dos_reference.py en --output build/g20b/dos-en --port 8144 --enters 6
 & $py scripts/verify_frontend_original.py
-& $py scripts/benchmark_gba_hardware.py --build-dir build/g20b-fixes/hardware/hw_v128_entity_rect --reference-build build/g20a-final-costs/hw_v128_entity_rect --report build/g20b-fixes/exact396.json --languages 0 1 --details
+& $py scripts/benchmark_gba_hardware.py --build-dir build/g20b-fixes/hardware/hw_v128_entity_rect --reference-build research/experiments/g20a-final-costs/hw_v128_entity_rect --report build/g20b-fixes/exact396.json --languages 0 1 --details
 & $py scripts/report_frontend.py --build-root build/g20b-fixes --repeat-root build/g20b-fixes-repeat --report analysis/g20b-ui01-feedback.json --copy-rom
 ```
 

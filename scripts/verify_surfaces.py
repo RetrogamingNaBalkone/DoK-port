@@ -14,7 +14,7 @@ from unicorn import x86_const as R
 def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
 def crop_check(language):
  c=Uc(UC_ARCH_X86,UC_MODE_16);c.mem_map(0,0x100000)
- c.mem_write(0x50000,(ROOT/'build/surfaces'/language/'image.bin').read_bytes());count=0
+ c.mem_write(0x50000,(ROOT/'research/evidence/surfaces'/language/'image.bin').read_bytes());count=0
  width,height=96,128;pixels=bytes((i*37+i//width*13)%256 for i in range(width*height));c.mem_write(0x60000,pixels)
  for flags in [0x408,0x808,0x1008,0x2008,0x48,0x88,0x108,0x208]:
   for phase in range(18):
@@ -35,7 +35,7 @@ def crop_check(language):
  return count
 class Original:
  def __init__(self,language):
-  self.ru=language=='ru';self.path=ROOT/'build/surfaces'/language
+  self.ru=language=='ru';self.path=ROOT/'research/evidence/surfaces'/language
   self.c=c=Uc(UC_ARCH_X86,UC_MODE_16);c.mem_map(0,0x100000)
   c.mem_write(0x50000,(self.path/'geometry.bin').read_bytes())
   c.mem_write(0x60000,(self.path/'raster.bin').read_bytes())

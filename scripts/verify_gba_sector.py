@@ -164,7 +164,7 @@ def run(build,core,out,scenes,trig,trial):
             p.language(language)
             for level in (1,2,3):
                 p.camera(level%3,15120,-300,22800,90)
-                model=load_json(f'build/runtime/ru/LEVEL{level}-runtime.json')
+                model=load_json(f'research/evidence/runtime/ru/LEVEL{level}-runtime.json')
                 hero=model['objects'][model['player_index']-1]['actor'];cell=hero['z']//480*64+hero['x']//480
                 cases=[(cell,h,False) for h in (0,45,90,135)]
                 heavy={1:[(520,225),(3640,225)],2:[(1592,135),(2871,225)],3:[(1544,315)]}[level]

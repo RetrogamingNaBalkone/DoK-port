@@ -7,8 +7,8 @@ e803 ROM и прежней выборки; новые минимумы нель�
 27 октября2026. Новый отдельный ROM:
 `artifacts/gba/DoK-port_hardware_fast_prototype.gba`,10 845 692 B,
 SHA-256 `e803f847e2c21abd9c1e5dbc70f12e98ef68f8c1ffc699989c7b97204a74308c`.
-ELF/map/source/QA — `build/g20a-hw-projection/hw_v128_projection/` и родительский
-каталог; чистое повторение — `build/g20a-hw-fast-final/`.
+ELF/map/source/QA — `research/experiments/g20a-hw-projection/hw_v128_projection/` и родительский
+каталог; чистое повторение — `research/experiments/g20a-hw-fast-final/`.
 Реестр — `analysis/g20a-hardware-fast.json`; collector проверяет фактические JSON.
 Прежний [128-строчный вариант](gba-hardware-rows.md), остальные готовые ROM и
 оригиналы сохранены. SDL2 не менялся.
@@ -113,14 +113,14 @@ oracle сознательно omitted; physical GBA/original BIOS не пров�
 
 ## Невыбранные варианты этого прохода
 
-`build/g20a-hw-face-light/`: постоянный LIGHT по середине depth грани меняет
+`research/experiments/g20a-hw-face-light/`: постоянный LIGHT по середине depth грани меняет
 до4724 RGB pixels в18 видах, но практически не улучшает L2 FPS. Не выбран.
 Это отдельная попытка упростить свет; основной ROM сохраняет прежний свет.
 
-`build/g20a-hw-hot-cover/`: перенос также `edge_start` из ROM в IWRAM
+`research/experiments/g20a-hw-hot-cover/`: перенос также `edge_start` из ROM в IWRAM
 (`hw_v128_hot_edges`) улучшил LEVEL3, но L2 вернулся к14,93; не выбран.
 
-`build/g20a-hw-u-track-v3/`: exact quotient tracking через остаток предыдущей
+`research/experiments/g20a-hw-u-track-v3/`: exact quotient tracking через остаток предыдущей
 видимой колонки, до двух коррекций, затем старый division fallback. Ограничение
 u0/u1<=512,q0/q1<=128,span<=16384 сохраняет positive signed products.
 18 RGB кадров совпали, но live17,92/14,93/22,05 хуже выбранного.
@@ -129,7 +129,7 @@ coverage_first в EWRAM. Ранние варианты не влезли в IWRA
 уменьшался. Не выбран, отдельной arithmetic acceptance для tracker не заявлено.
 Эти флаги остаются gated experiments, не defaults.
 
-`build/g20a-hw-v128-profile/attribution.json` — диагностический frozen profile:
+`research/experiments/g20a-hw-v128-profile/attribution.json` — диагностический frozen profile:
 L2-worst mapped-column2964 ticks/226 calls, visible-column4821/228,
 CPU low ceiling983 ticks/10 surfaces, vertical strips3219/8.
 Единица64 cycles, вложенные timestamps включают overhead; суммы вложенных
@@ -140,8 +140,8 @@ CPU low ceiling983 ticks/10 surfaces, vertical strips3219/8.
 ## Воспроизведение
 
 ```powershell
-C:/Source/wasdify/.venv/Scripts/python.exe scripts/prototype_gba_bsp.py --out build/g20a-hw-fast-final --variants hw_v128_projection source_control
-C:/Source/wasdify/.venv/Scripts/python.exe scripts/benchmark_gba_heading_sweep.py --build-dir build/g20a-hw-projection/hw_v128_projection --report build/g20a-hw-projection/sweep.json
+C:/Source/wasdify/.venv/Scripts/python.exe scripts/prototype_gba_bsp.py --out research/experiments/g20a-hw-fast-final --variants hw_v128_projection source_control
+C:/Source/wasdify/.venv/Scripts/python.exe scripts/benchmark_gba_heading_sweep.py --build-dir research/experiments/g20a-hw-projection/hw_v128_projection --report research/experiments/g20a-hw-projection/sweep.json
 C:/Source/wasdify/.venv/Scripts/python.exe scripts/report_gba_hardware_fast.py --copy-rom
 ```
 

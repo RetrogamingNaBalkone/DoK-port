@@ -20,7 +20,7 @@ from verify_sprites_gba import Probe, load_json
 def cases(step):
     result = []
     for level in range(3):
-        model = load_json(f'build/runtime/ru/LEVEL{level+1}-runtime.json')
+        model = load_json(f'research/evidence/runtime/ru/LEVEL{level+1}-runtime.json')
         actor = model['objects'][model['player_index']-1]['actor']
         # Runtime JSON stores initial native scalar fields as a dictionary.
         pose = [actor['x'], actor['y'], actor['z']]
@@ -62,7 +62,7 @@ def run(build, core, selected, samples, output, expected=None):
                     current = level
                 probe.camera(level, *case['camera'])
                 if 'crop_glyph' in case:
-                    model=load_json('build/runtime/ru/LEVEL2-runtime.json')
+                    model=load_json('research/evidence/runtime/ru/LEVEL2-runtime.json')
                     for index,obj in enumerate(model['objects']):
                         if obj['glyph'] not in (60,62,123,125):continue
                         phase=case['crop_phase'] if obj['glyph']==case['crop_glyph'] else 0

@@ -8,9 +8,9 @@
 
 Образцы: неизменённые PKR.EXE/PKE.EXE из `analysis/inventory-{ru,en}.json`.
 Повторный `scripts/analyze-ai.ps1` открывает проекты
-`build/ghidra/{ru,en}/Kremlin.gpr` в режиме `-readOnly -noanalysis` и сохраняет
+`research/ghidra/projects/{ru,en}/Kremlin.gpr` в режиме `-readOnly -noanalysis` и сохраняет
 `actor.bin`, `evidence.asm`, непроверенный автоматический C и manifest
-в `build/ai/{ru,en}/`. SHA-256 EXE до/после совпали. Автоматический C не
+в `research/evidence/ai/{ru,en}/`. SHA-256 EXE до/после совпали. Автоматический C не
 компилируется и не входит в движок. Исследование G15 использует тот же
 воспроизводимый `InspectAI.java`, который экспортирует весь actor segment.
 

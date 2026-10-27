@@ -1,5 +1,19 @@
 # Передача контекста между чатами
 
+27 октября: крупные подробные JSON исключены из Git; их сводки —
+`analysis/summaries/`, политика — `analysis/report-policy.json`, пояснение —
+`analysis/README.md`. Полные локальные отчёты остались по прежним путям для
+существующих скриптов. После нового запуска обновлять сводки
+`scripts/summarize_reports.py`. Статусы игровых задач не менялись.
+
+27 октября: хранение исследований вынесено в `research/`; после уточнения
+пользователя промежуточные сборки и повторы удаляются. Паспорт и границы —
+[tasks/RESEARCH-STORAGE.md](tasks/RESEARCH-STORAGE.md), итоговый учёт —
+`analysis/storage-cleanup-20261027.json`. Старые отчёты могут ссылаться на
+удалённые выходы; для повторных проверок нужна новая сборка. Игровые статусы
+не меняются; текущая UI01 и необходимые контрольные образцы сохраняются.
+
+
 ## Текущая UI01: второй плейтест,27 октября2026
 
 `artifacts/gba/DoK-port_UI01.gba`,16012100 bytes, SHA-256
@@ -48,7 +62,7 @@ FON/МЕНЮ_ПАЛ/FONT8/FONT16 исходные. Музыка ЗАСТАВКА
 проходит полную проверку профиля. Boot suites отделены от обычного запуска;
 часы дополнительно проверены отдельной ARM-ROM `time-selftest`.
 
-Свежие Ghidra exports/logs и manifests — `build/ui/{ru,en}/`, оба EXE SHA
+Свежие Ghidra exports/logs и manifests — `research/evidence/ui/{ru,en}/`, оба EXE SHA
 до/после совпали. DOS boot VGA-индексы совпали с ЗАСТАВКА_СПР целиком;
 запуски — `build/g20b/dos-{ru,en}/`. Native once/stop и адреса имён
 отделены от согласованных адаптаций GBA.
@@ -66,7 +80,7 @@ transition учтены отдельно. PNG RU/EN просмотрены; WAV/
 Более ранние указания об ожидании G20B ниже заменены этим результатом.
 
 27 октября выполнена [очистка экспериментального мусора](tasks/CLEANUP.md).
-В `build/g20a-*` больше нет `.o`, кэш Zig удалён; ROM/ELF/map, отчёты,
+В `research/experiments/g20a-*` больше нет `.o`, кэш Zig удалён; ROM/ELF/map, отчёты,
 журналы и снимки исходников сохранены. Базовые объекты `select-menu-fix`,
 `level1-fixes`, `g20` и общие assets сохранены. Сборщики автоматически
 удаляют собственные объекты; для новой базы/ручной перелинковки нужен
@@ -86,8 +100,8 @@ transition учтены отдельно. PNG RU/EN просмотрены; WAV/
   прошли. Known Pause/Resume intermediate issue не закрыт; физической GBA нет.
   Контроль2775 и96/72 сохранены. Trial ROM7dfe60…99e94,16438720B,
   EWRAM261300/free844, IWRAM24544/free32 до8192 stacks;
-  main2528/margin5408, IRQ80/margin80. Три ROM в `build/g20c-sparse-posts/`
-  и `build/g20c-sparse-repeat/` byte exact; команды/границы — в новом документе,
+  main2528/margin5408, IRQ80/margin80. Три ROM в `research/experiments/g20c-sparse-posts/`
+  и `research/experiments/g20c-sparse-repeat/` byte exact; команды/границы — в новом документе,
   итог — `analysis/g20c-sparse-posts.json`. Native отказ относится к этой
   реализации; новый перебор kernels в G20C не требуется.
 - **G20B готово:** оригинальная заставка/музыка и главное меню; результат выше.
@@ -120,7 +134,7 @@ G20A готова как анализ/передача этого этапа; G2
 Loss силуэта не принят как minor. Плановые крупные сравнения закрыты,
 основной путь выбран2775, **не объявлен абсолютный предел GBA**.
 
-Свежая сборка `build/g20a-final-costs/hw_v128_entity_rect/` byte exact к2775;
+Свежая сборка `research/experiments/g20a-final-costs/hw_v128_entity_rect/` byte exact к2775;
 игровые128/96/72 artifacts сохранены. Новый диагностический128 профиль
 разделяет masked/opaque/потолки: L1 дороги пониженные плоскости, L2 masked
 грани. На завершении G20A sparse posts были проверены только offline;
@@ -156,7 +170,7 @@ All-prelit mip bank135,6MB был отвергнут до ROM. Whole flat billbo
 узкие perspective strips; PA/PD, PC/PB0. Per-face clip вычисляется один раз;
 fully hidden faces отсекаются до GPU setup, без old alpha/coverage prepass.
 
-`build/g20a-sector-gpu-v8/`, repeat `build/g20a-sector-gpu-repeat/`:
+`research/experiments/g20a-sector-gpu-v8/`, repeat `research/experiments/g20a-sector-gpu-repeat/`:
 `hw_v128_sector_gpu_thumb`, ROMb2b16b…ca3d6e,18 754 460B;
 `hw_v128_sector_gpu_off`, ROMfe51e2…52adcc,16 365 548B. Все3 ROM с2775
 byte exact в обоих деревьях, artifacts2775/96/72 сохранены. Ранние drafts
@@ -194,8 +208,8 @@ Goal/G20/G20A активны. Следующие разделы — предыд
 
 Читать [sector trial](gba-sector-clip-trial.md), `analysis/g20a-sector-trial.json`.
 Оба варианта реализованы и проверены, но не выбраны.
-`build/g20a-sector-clip-final/`, измерения в `build/g20a-sector-clip-v4/`,
-repeat `build/g20a-sector-clip-repeat/`. ROM8d46e3…ae3ba и0cd601…ff2dc4;
+`research/experiments/g20a-sector-clip-final/`, измерения в `research/experiments/g20a-sector-clip-v4/`,
+repeat `research/experiments/g20a-sector-clip-repeat/`. ROM8d46e3…ae3ba и0cd601…ff2dc4;
 все три дерева byte exact, контроль2775 exact. Sector+HW: CPU1,37–1,87×,
 heavy5,69–11,95FPS; sector+bitmap:1,86–2,35×,4,59–8,53FPS. Short live24 RU/EN
 11,65/11,20/17,07 и7,20/7,43/8,74 против контрольных19,37/19,11/27,57.
@@ -225,7 +239,7 @@ reuse/120, при стоянии120. Это не native cache и не reprojecti
 
 Читать [native trial](gba-world-obj-native-trial.md),
 `analysis/g20a-world-obj-native.json`. `hw_v128_world_obj`, ROM807f3e…3916c,
-`build/g20a-world-obj-native-final/`; чистый repeat `...native-repeat/` exact
+`research/experiments/g20a-world-obj-native-final/`; чистый repeat `...native-repeat/` exact
 для native,2775 и probe.128/96/72 artifacts сохранены, нового default нет.
 Исходные16×32 texture strips/16 LIGHT rows, перспективные стены и static masked
 objects; CPU сохраняет потолки и fallback.32 slots×512B в16KiB, HBlank CPU
@@ -263,7 +277,7 @@ GPU output из секторного clip этим гибридом не опр�
 
 Source-art probe отдельно перепроверен:54/56 exact с фактическим DISPCNT bit5,
 2 non-multiplex pressure failures по100pixels остаются отрицательными.
-ROMc1903e…8a09, `build/g20a-world-obj-bringup-final/`,
+ROMc1903e…8a09, `research/experiments/g20a-world-obj-bringup-final/`,
 `analysis/g20a-world-obj-bringup.json`. V4/c83cea без bit5 заменён. Стенд с
 IRQ/PCM hold не использовать как FPS evidence; native trial выше работает с PCM.
 
@@ -271,7 +285,7 @@ IRQ/PCM hold не использовать как FPS evidence; native trial в�
 
 Читать [gba-column-pipeline-trial.md](gba-column-pipeline-trial.md) и
 `analysis/g20a-columns-trial.json`. `hw_v128_columns` V6, ROMe9bae2…04b22,
-`build/g20a-columns-v6/`, repeat `build/g20a-columns-repeat-final/` exact.
+`research/experiments/g20a-columns-v6/`, repeat `research/experiments/g20a-columns-repeat-final/` exact.
 Не выбран: пять тяжёлых PCM видов CPU3,55–4,31× контроля,2,71–4,12FPS,
 short live24 RU/EN5,08/4,86/5,67. Нового sweep440/full gameplay acceptance нет.
 36 poses/108 column snapshots/13752 rows passed (72 grid-boundary rows excluded),
@@ -302,8 +316,8 @@ AI rebalance отдельным gameplay profile. G20/G20A/goal открыты.
 Читать [gba-stream-bsp-trial.md](gba-stream-bsp-trial.md),
 `analysis/g20a-stream-bsp-trial.json`. Native hybrid streaming segment BSP
 реализован в `src/renderer_stream*.inc`, packed tables в `scripts/gba_stream_scene.py`.
-Сборка `build/g20a-stream-bsp-v3/hw_v128_stream_bsp/`, ROMbfdba7…25184,
-чистое повторение `build/g20a-stream-bsp-repeat/` exact. Контроль128 byte-exact2775;
+Сборка `research/experiments/g20a-stream-bsp-v3/hw_v128_stream_bsp/`, ROMbfdba7…25184,
+чистое повторение `research/experiments/g20a-stream-bsp-repeat/` exact. Контроль128 byte-exact2775;
 2775/96/72 artifacts неизменны. **Вариант не выбран, новых artifacts нет.**
 
 Spatial440: median CPU ratio1,507/1,573/1,361;0 быстрее/424 медленнее/16 равны
@@ -345,7 +359,7 @@ spatial44028 быстрее/36 медленнее против96; общего �
 Ни новый artifact, ни release default не назначались;2775/96/72 сохранены.
 
 Начат отдельный `scripts/compile_gba_render_scene.py`, вход SHA3efa5d…674351.
-`build/g20a-scene-compiler-v1/`: шесть представлений статических отрезков и
+`research/experiments/g20a-scene-compiler-v1/`: шесть представлений статических отрезков и
 floor/ceiling rectangles.1998/3242/1364 исходных отрезка →649/1148/255 групп;
 segment BSP564/853/302 nodes, глубина16/11/10. Сохранены исходные UV pieces,
 все lowered rims, высоты и материалы; проверено полное покрытие данных.
@@ -377,7 +391,7 @@ oracle выключен.282 held transitions прошли;294 Pause/Resume ос�
 96 использует WIN0 для clipping OBJ к144 строкам; mapping учитывает OAM overlap.
 Скрипты используют `scene_source_y` вместо только128/144. EWRAM261292;
 IWRAM24540 у96 (free36 до8192 stacks),24364 у72. Main2520/margin5416,
-IRQ80/margin80. Производственные ROM в `build/g20a-hw-row-quality-v3/`;
+IRQ80/margin80. Производственные ROM в `research/experiments/g20a-hw-row-quality-v3/`;
 72 spatial/396/water/ARM/transitions изv2 валидны по тому же SHA.
 Пути входных reports перечислены сборщиком. Adaptive grid4 отложен:15 быстрее/
 62 медленнее из440. Простому opaque64×64 OBJ пути не подошла ни одна грань
@@ -395,7 +409,7 @@ samples, чтобы не читать counters следующего кадра; 
 прямые OBJ для игровых объектов/подходящих стен ещё не сравнивались. Voxel
 heightmap не решает автоматически интерьеры с нависающими потолками.
 
-Новый v2 ROMeacf37…e55c в `build/g20a-hw-adaptive-v2/` не выбран и не опубликован
+Новый v2 ROMeacf37…e55c в `research/experiments/g20a-hw-adaptive-v2/` не выбран и не опубликован
 в artifacts. Spatial440:26 быстрее/66 медленнее/348 равны по FPS, минимумы
 11,9455/9,9546/14,9319.397 Mode1 PPU exact,43 Mode2 имеют отличия;18 обычных RGB
 exact. Короткий live24:18,145/18,145/27,567 RU/EN, не turn120/walk120.
@@ -408,8 +422,8 @@ estimator trial; если общего выигрыша нет, отложить
 
 Читать [gba-lowered-ceiling-trial.md](gba-lowered-ceiling-trial.md),
 `analysis/g20a-lowered-ceiling-trial.json`. Эксперимент4f96b7…44d80,
-`build/g20a-hw-lowered-v6/hw_v128_lowered/`,16 567 124B; чистое повторение
-`build/g20a-hw-lowered-final/`. **Не выбран и не копировался в artifacts**;
+`research/experiments/g20a-hw-lowered-v6/hw_v128_lowered/`,16 567 124B; чистое повторение
+`research/experiments/g20a-hw-lowered-final/`. **Не выбран и не копировался в artifacts**;
 рекомендуемый ROM остаётся2775. Цель/G20/G20A открыты.
 
 Mode2 BG3 рисует source-derived32×32 потолок на исходной высоте−561/inset400,
@@ -451,8 +465,8 @@ table не окупились, отложены. Схема памяти и то
 Последний измеренный результат — [gba-render-costs.md](gba-render-costs.md),
 `analysis/g20a-hardware-cache.json`. Новый отдельный
 `artifacts/gba/DoK-port_hardware_cached_prototype.gba`, SHA2775bd…edaab,
-15 938 936B. Build/QA `build/g20a-hw-entity-rect-v2/hw_v128_entity_rect/`,
-чистое повторение `build/g20a-hw-entity-final/`, source control7bab…7ea8.
+15 938 936B. Build/QA `research/experiments/g20a-hw-entity-rect-v2/hw_v128_entity_rect/`,
+чистое повторение `research/experiments/g20a-hw-entity-final/`, source control7bab…7ea8.
 Предыдущие опубликованные ROM сохранены. Ни SDL2, ни оригиналы не менялись.
 
 Кэш статической геометрии использует свободный legacy interval payload;
@@ -498,8 +512,8 @@ Procedural/сокращение LIGHT не продвигать без ново�
 Читать [gba-hardware-fast.md](gba-hardware-fast.md),
 `analysis/g20a-hardware-fast.json`. Новый отдельный
 `artifacts/gba/DoK-port_hardware_fast_prototype.gba`, SHAe803f8…4308c,
-10 845 692 B; build/QA `build/g20a-hw-projection/hw_v128_projection/`.
-Чистое повторение `build/g20a-hw-fast-final/`, source control7bab…7ea8.
+10 845 692 B; build/QA `research/experiments/g20a-hw-projection/hw_v128_projection/`.
+Чистое повторение `research/experiments/g20a-hw-fast-final/`, source control7bab…7ea8.
 Предыдущие ROM сохранены, изображение396 PPU RGB exact относительно16ba83…3961.
 
 HW_COVER4 уменьшил128-row bitset до4words/column (C и оба ARM surface kernels,
@@ -535,7 +549,7 @@ opaque старые варианты не повторять как неиспы
 Читать [gba-hardware-rows.md](gba-hardware-rows.md),
 `analysis/g20a-hardware-rows.json`. **Goal/G20/G20A открыты**.
 Новый отдельный `artifacts/gba/DoK-port_hardware_128_prototype.gba`,
-SHA16ba83…3961,10 846 124 B; ELF/source `build/g20a-hw-face-box/hw_v128_box/`.
+SHA16ba83…3961,10 846 124 B; ELF/source `research/experiments/g20a-hw-face-box/hw_v128_box/`.
 128 CPU строк растянуты в144,120 columns; GPU floor144/UI/weapon прежние.
 Column cache/class filter/base surface seed/covered face box:396 exact PPU
 против исходного128, overlay0differences против144, clean repeat/source control passed.
@@ -569,7 +583,7 @@ walking120 frames RU/EN15,03/15,12/18,01 FPS, но turn/PCM24 frames
 14,93/13,27/17,48 (EN LEVEL3 17,70). Не объявлять15+ по одному walking-проходу.
 Новый `artifacts/gba/DoK-port_hardware_culling_prototype.gba`,10 843 464 B,
 SHA`240669c13508acba18fa08a68dd0bc793c02366561ee0b617d7c1e62d976f014`.
-ELF/map/source: `build/g20a-hw-early-qa/hw_early_present/`; clean repeat совпал.
+ELF/map/source: `research/experiments/g20a-hw-early-qa/hw_early_present/`; clean repeat совпал.
 Старый hardware4dfb…581d/pre-alpha/exact/coarse/BSP сохранены.
 
 Новые flags: BACKFACE стен, BACKFACE_SIDES, SIDE_SETUP (static side mask и
@@ -620,7 +634,7 @@ LEVEL2 turn остаётся ниже цели; процедурная гене�
 мирах нет, full hardware regression/stress/flow ещё не выполнен. Старые ROM
 сохранены. Новый отдельный `artifacts/gba/DoK-port_hardware_planes_prototype.gba`,
 SHA`4dfbbe0e8a14352fcef5c182baef3ffdf0483b81345c8837b1530ee09f7f581d`,
-10 841 864 B. ELF/map/source — `build/g20a-hw-final/hw_hud_cache/`.
+10 841 864 B. ELF/map/source — `research/experiments/g20a-hw-final/hw_hud_cache/`.
 
 Прямой tiled foreground убрал packing400k; Mode1 BG2 рисует пол/базовый потолок,
 BG0 — полный HUD/оружие,72 affine OBJ — CPU scene120×144. Source-derived32×32
@@ -672,7 +686,7 @@ VBlank callback сохраняет pending audio IRQ bits; активные row 
 `analysis/g20a-hardware-{ppu,bringup}.json`. **Цели FPS ещё не выполнены**;
 лучшие опубликованные exact/coarse ниже не заменены.
 
-Новый `build/g20a-hw-pack-ready/hw_obj_arm/`, SHA
+Новый `research/experiments/g20a-hw-pack-ready/hw_obj_arm/`, SHA
 `cb35b35c3eadac987a8f6487e0a7a96912778f97d0272cf0eaea1f1caee2386e`:
 Mode1,72 affine OBJ для сцены120×144, BG0 для UI240. Это подготовка к BG2 floor,
 **пол/потолок пока считает CPU**, affine/HBlank ещё не реализованы.18 настоящих
@@ -718,7 +732,7 @@ GEOMETRY_CACHE остаётся только исследовательским 
 Процедурный вариант остаётся отложенным по измеренному соотношению скорости
 и качества, не получает приоритета из-за предложения пользователя.
 
-Текущий точный кандидат `build/g20a-sides/sides_exact/`:
+Текущий точный кандидат `research/experiments/g20a-sides/sides_exact/`:
 `artifacts/gba/DoK-port_optimized_prototype.gba`, 9 954 008 B,
 SHA `b36472a0701f19a41fc009e003f0f78a4493921e1cf19f2b51c266cdfeb42501`.
 488 кадров совпали с `build/select-menu-fix/`, CPU парная медиана1,324×,
@@ -727,7 +741,7 @@ offline prelit всех16 LIGHT rows без scales, точный HUD-атлас 
 вертикальных потолочных уступов. EWRAM254704/free7440,
 IWRAM23064/free1512 до отдельного резерва stacks/BIOS8192.
 
-Отдельный quality-кандидат `build/g20a-sides/sides_coarse/`:
+Отдельный quality-кандидат `research/experiments/g20a-sides/sides_coarse/`:
 `artifacts/gba/DoK-port_floor_4x2_prototype.gba`, 9 888 624 B,
 SHA `04dfe358654cc865a22ec9e674217eb4cde7583bde4f61d57d361fa1e61b5d11`.
 World-coordinate ARM spans/crop/wrap, исходные текстуры/16 LIGHT rows,
@@ -752,7 +766,7 @@ correlation в этом проходе не проверялись.
 не поверх загруженных тестами файлов. Замеры — `benchmark_gba_prototypes.py`;
 атрибуция — `profile_gba_world_spans.py` (с timestamp overhead, не headline FPS);
 aggregate/delivery — `report_gba_spans.py`. Проверенные файлы/снимки исходников
-остаются в `build/g20a-sides/`; второй проход — `build/g20a-second/`.
+остаются в `research/experiments/g20a-sides/`; второй проход — `research/experiments/g20a-second/`.
 Существующий `DoK-port_pre_alpha.gba` не заменён. Старые report scripts
 копируют архивные v1/v2 имена, не перезаписывают актуальный exact/coarse.
 
@@ -773,7 +787,7 @@ aggregate/delivery — `report_gba_spans.py`. Проверенные файлы/
 картинки допускается. Процедурный пол/потолок не получает приоритета из-за
 авторства идеи: измеренный результат не оправдал картинку, вариант отложен.
 
-Лучший проверенный на первом проходе `build/g20a-prototypes/exact_planes/`:
+Лучший проверенный на первом проходе `research/experiments/g20a-prototypes/exact_planes/`:
 `artifacts/gba/DoK-port_exact_planes_v1.gba`, 9 938 648 B, SHA
 `ef4237c9699c140adca2e0dbb951938194331d1664a36f6d1d27ea2f7efed999`.
 Static setup/cache + точный ARM reciprocal plane divide + offline prelit
@@ -782,7 +796,7 @@ Static setup/cache + точный ARM reciprocal plane divide + offline prelit
 с PCM22 050 дают 6,64/6,64/7,47 FPS. Цели не выполнены; это не полный уровень.
 Прежние `DoK-port.gba`/`DoK-port_pre_alpha.gba` не заменены.
 
-Отдельный BSP `build/g20a-prototypes/bsp_setup/`, копия
+Отдельный BSP `research/experiments/g20a-prototypes/bsp_setup/`, копия
 `artifacts/gba/DoK-port_BSP_prototype.gba`, SHA `735ba244…eb76297`.
 8191-node/view grid BSP, conservative Y/depth occlusion, sprite/AI lease
 сохранён. 488 кадров точные, но обычно медленнее `setup`: prepass дублирует
@@ -793,7 +807,7 @@ geometry. Не делать BSP default только по названию ал�
 `scripts/report_gba_prototypes.py` (связывает проверки/SHA и копирует ROM).
 Данные только из текущего G03 package; EXE не анализировались. 22 originals
 SHA совпали с pre-task inventory. Baseline ROM воспроизведён побайтно.
-Все частные ROM/ELF/map/source/PNG в `build/g20a-prototypes/`; не включать в Git.
+Все частные ROM/ELF/map/source/PNG в `research/experiments/g20a-prototypes/`; не включать в Git.
 
 Проверки exact-варианта: 65 536 ARM divide vectors + sampler4096/coverage2048/
 cell30 720, 48 animation resources/308 frames; mGBA renderer/reset, sprites/water,
@@ -823,7 +837,7 @@ G20B/G21 ожидают. Ниже сохранены исторические з
 G20A начата и в работе; G20 открыта по бюджету, G20B/G21 ожидают.
 Аудит использует baseline после level1 fixes, побайтно воспроизведённый из
 сохранённых объектов: SHA `d5bdcd17…7957e`. Частные ROM/ELF/map/source/PNG
-в `build/g20a-audit/`; production renderer/AI не изменены.
+в `research/experiments/g20a-audit/`; production renderer/AI не изменены.
 
 Девять frozen камер и live fixtures RU/EN трёх миров с PCM: отказ от scales
 в live даёт примерно 2–8% FPS, без pixel differences на девяти frozen кадрах;
@@ -1128,7 +1142,7 @@ dynamic projectile identity=40000000|(slot+1), standalone test voice=80000000|PC
 Нельзя заменять identity одним resource ID: другая дверь/clone с тем же PCM
 не имеет права останавливать текущий звук. Source proof RU `1060:0145`,
 `1068:2368`, EN bind `1018:1965`, clone`1020:2960`; complete fresh Ghidra
-exports/manifests — `build/audio/{ru,en}/`, оригинальные SHA до/после совпали.
+exports/manifests — `research/evidence/audio/{ru,en}/`, оригинальные SHA до/после совпали.
 
 AI WAKE/default, CONTACT/RANGED/F0, DYING/globalstop+F4, DEAD/stopF4;
 player damage/A6, shot/weapon default, projectile impact/removal, item accepted
@@ -1198,7 +1212,7 @@ burst timer/count/corpse используют запас существующе�
 collision overlay заимствуют context одного активного world. Перед выходом
 context снять `dok_collision_overlay(0,0,0)`; production context статический.
 
-Ghidra exports/manifests — `build/ai/{ru,en}/`, EXE SHA до/после совпали.
+Ghidra exports/manifests — `research/evidence/ai/{ru,en}/`, EXE SHA до/после совпали.
 Native x86 на язык:648 burst,6 melee/hurt,12 player damage,4 corpse случая.
 Перехвачены внешние sight/animation/sound/allocation/stats/text/owner boundaries;
 полный callback с DOS scheduler closure и целая DOS-сессия не эмулировались.
@@ -1241,7 +1255,7 @@ angle table (ctor scale1000), до10 collision-resolved проб полукле�
 счётчик N+1. AI использует original acceleration, герой сохраняет исправление G07.
 
 Спецификация/адреса/ABI/политики — [ai-movement.md](ai-movement.md).
-Ghidra exports/manifests — `build/ai/{ru,en}/`, SHA EXE до/после совпали.
+Ghidra exports/manifests — `research/evidence/ai/{ru,en}/`, SHA EXE до/после совпали.
 Оригинальные x86 probes исполнили на язык1049 углов,200 perception и25 course
 cases. Полный active callback, FPU table ctor и scheduler closure целиком не
 эмулировались; abs/wake boundaries перехватывались. Host original RES трассы
@@ -1313,7 +1327,7 @@ SUB16/clamp, но combat не меняет hurt/attack/death state и не по�
 visual completion. Hero death — G18, звук/HUD consumers — G16/G17.
 
 Свежие Ghidra C/ASM/actor.bin/world.bin и manifests:
-`build/combat/{ru,en}/`. EXE SHA до/после совпали. Прошли 20 исходных x86
+`research/evidence/combat/{ru,en}/`. EXE SHA до/после совпали. Прошли 20 исходных x86
 readiness-векторов, 72 slots cases, 2 position-copy slices, 2012 damage-decay
 векторов, 336 monster arithmetic cases; полный native scheduler closure ABI
 в spawn не эмулирован и не объявляется проверенным целиком. Windows suites
@@ -1358,7 +1372,7 @@ Notifications готовы для G16/G17; gameplay не выводит текс
 reserved word+54; native это world+0C. Object36/player60/ARM world33864 не выросли.
 Первое оружие выбирается сразу; duplicate refill/pending сохраняет текущий
 выбор, а transition hide/show должен реализовать G13 вместе с оружием/снарядами.
-Исходный код этой цепочки — свежий `build/items/{ru,en}/` C/ASM/actor.bin.
+Исходный код этой цепочки — свежий `research/evidence/items/{ru,en}/` C/ASM/actor.bin.
 
 Ghidra read-only exports и EXE SHA-256 до/после совпали.5274 actual x86 stat
 vectors и16 native item callbacks (перехват только HUD/sound) прошли.
@@ -1422,7 +1436,7 @@ Raw scheduler сохраняет signed interval/unsigned deadline semantics, в
 loop или one-shot completion; native gameplay state не меняется.
 
 Ghidra EXE hashes до/после совпали; проекты/логи/экспорты:
-`build/sprites/{ru,en}/`, скрипты `InspectSprites.java`/`analyze-sprites.ps1`.
+`research/evidence/sprites/{ru,en}/`, скрипты `InspectSprites.java`/`analyze-sprites.ps1`.
 900 оригинальных x86 billboard-векторов прошли в Unicorn. Host1750
 последовательностей/9714 deadline переходов/322 прохода отрицательных
 интервалов,9 coarse/fine timelines и точные water crop/end/rearm прошли.
@@ -1466,7 +1480,7 @@ Near=1920 подтверждён в G00 RAM обоих языков; RUS DS:0DFA
 не универсальный +B0. Незакрытый фон теперь0, цветная диагностика G05 удалена.
 
 Оригинальные инструкции: `InspectSurfaces.java`, `analyze-surfaces.ps1`,
-`build/surfaces/{ru,en}/`, прежние Ghidra-проекты сохранены; SHA EXE до/после
+`research/evidence/surfaces/{ru,en}/`, прежние Ghidra-проекты сохранены; SHA EXE до/после
 совпали. На язык2065 quads/8260 вершин,6 quads с negative depth,42 synthetic
 single-plane,10610 light-векторов C/native,144 crop-вектора прошли.
 Constructor array-helper перехвачен; проекция и crop — нет. Не полный DOS-session.
@@ -1531,7 +1545,7 @@ Native door берёт число фаз из измеренного FPS (DS:C2)
 Текущий renderer поддерживает два реально используемых door crop-режима;
 полная анимация/billboards остаются G11, сообщения/звуки — G16/G17.
 
-Ghidra-проекты/журналы/ASM/bytes: `build/interactions/{ru,en}/`,
+Ghidra-проекты/журналы/ASM/bytes: `research/evidence/interactions/{ru,en}/`,
 `InspectInteractions.java`, `analyze-interactions.ps1`. SHA EXE до/после совпали.
 На язык6000 Door/base-векторов,622 sensor routes,120 crop-векторов Unicorn
 совпали с C/формулой. Sound/UI/scheduler перехвачены; crop без перехвата callees.
@@ -1587,7 +1601,7 @@ ENG1030:052C/09E5/0EF7,1020:13BB; это не DPMI-селекторы/файло
 Это намеренная защита порта, не утверждение о точных инструкциях оригинала.
 Кнопки и416-tick fixed steps из G07 сохранены, Select меняет только язык.
 
-Ghidra-проекты/журналы/ASM/байты: `build/collision/{ru,en}/`, скрипты
+Ghidra-проекты/журналы/ASM/байты: `research/evidence/collision/{ru,en}/`, скрипты
 `InspectCollision.java`, `analyze-collision.ps1`, `verify_collision.py`.
 SHA оригинальных EXE до/после совпали. 55 152 x86-проверки на исходных
 LEVEL1–3 каждой версии,1200 native-обёрток с тремя подшагами: позы/MMap/door
@@ -1642,7 +1656,7 @@ Start edge Use (G09), Select RU/EN, Start+Select диагностический 
 Камера следует runtime player; test-only camera/motion mailboxes после reset0.
 
 Проверки: Ghidra обеих версий, SHA оригиналов до/после совпали;
-`scripts/InspectMovement.java`, `analyze-movement.ps1`, `build/movement/{ru,en}/`.
+`scripts/InspectMovement.java`, `analyze-movement.ps1`, `research/evidence/movement/{ru,en}/`.
 Unicorn исполнил по2667 векторов/язык; clock/collision и wrapper перехвачены,
 не считать это полным запуском DOS. Windows11 suites, Linux/Thumb compile,
 shared suite на ARM, точная input/ticks траектория, реальные GBA-кнопки,
@@ -1783,9 +1797,9 @@ records. `analysis/rendering-verification.json`. UI — **240×144 + 240×16**:
 - **G06:** `docs/time-events.md`, `src/{scheduler,clock}.c`, соответствующие
   headers, `gba/{clock,time_probe}.c`, `tests/{time_cases,test_time}.c`.
   `scripts/InspectTime.java`, `analyze-time.ps1`, `verify_time_evidence.py`;
-  Ghidra exports/logs/manifests — `build/time/{ru,en}/`, проекты сохранены.
+  Ghidra exports/logs/manifests — `research/evidence/time/{ru,en}/`, проекты сохранены.
   SHA обоих оригинальных EXE до/после совпали. Новые DOS-запуски
-  `build/time/dos-{ru,en}/` дали по 21 HTTP time samples, PIT period65536,
+  `research/evidence/time/dos-{ru,en}/` дали по 21 HTTP time samples, PIT period65536,
   около 10 тыс. ticks/с. `analysis/g06-time-evidence.json` хранит инструкции,
   provenance/hashes и сами samples. Точные динамические deadlines DOS,
   rollover и callback mutation в DOS не проверены; модель этих краёв —по ASM.
@@ -1867,7 +1881,7 @@ records. `analysis/rendering-verification.json`. UI — **240×144 + 240×16**:
 
 - **G00:** `scripts/dos_reference.py`, `docs/reference-runs.md`,
   `analysis/reference-manifest.json`. Пять неизменённых DOS-запусков
-  в `build/reference/{ru-01,ru-02,ru-03,en-01,en-02}/`.
+  в `research/evidence/reference/{ru-01,ru-02,ru-03,en-01,en-02}/`.
   Стартовые VGA-индексы побайтно повторяются внутри языка. Реальные позы:
   RU `(15120,-300,22800)/90`, EN `(15120,-300,23280)/90`, HP100, energy0, lives3.
   Input — исследованная таблица игры через localhost API, не IRQ1;
@@ -1935,7 +1949,7 @@ G03 использует отдельные языковые ROM pools/views б�
 Пакет/manifest/generatedassets находятся только под ignored `build/gba/assets/`.
 
 Общая Ghidra `C:/Users/dspev/AppData/Local/Programs/Ghidra/ghidra_12.1.2_PUBLIC`,
-проекты `build/ghidra/{ru,en}/Kremlin.gpr`, экспорт `decompiled/`.
+проекты `research/ghidra/projects/{ru,en}/Kremlin.gpr`, экспорт `decompiled/`.
 Java/headless настройки — `scripts/annotate-stage6.ps1`.
 Существенные доказательства этапов 2–6: `docs/resources.md`, `animations.md`,
 `sound.md`, `levels.md`, `world.md`; различия/параметры — `enemy-parameters.md`,

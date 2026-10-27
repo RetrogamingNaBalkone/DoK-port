@@ -1,0 +1,296 @@
+{
+  "summary_schema": 1,
+  "full_report": {
+    "path": "analysis/g13-review.json",
+    "sha256": "e760d168e1f941cef2557dfc1e2f14a804396675ff515b9df1665c46a6aa3436",
+    "bytes": 41266
+  },
+  "scope": "Summary of a recorded run; not a new verification. Full report is local and ignored by Git.",
+  "result": {
+    "task": "G13",
+    "status": "passed",
+    "next": "G14",
+    "rom_sha256": "5039eb8c4189474259127390b26742b305f9e9ce7f354fa584ea6fe668a466be",
+    "rom_bytes": 32858612,
+    "package_sha256": "3efa5d3027d63ffd65e0ae8c0b45be23ee8394b3c5151c8e9f10e76fa8674351",
+    "ewram_static_bytes": 239416,
+    "ewram_remaining_bytes": 22728,
+    "iwram_static_bytes": 23980,
+    "iwram_remaining_before_stack_reserve": 596,
+    "stack_reserve_bytes": 8192,
+    "sources": {
+      "detail_pointer": "/sources",
+      "entries": 88
+    },
+    "reports": {
+      "analysis/g13-host-verification.json": "8b93b9ddbe7fbe0c30b1d6aa8e0c8bfd5380d4f3267a3f0d6396402f952f8eae",
+      "analysis/g13-original-verification.json": "6535f35fd0b9d09e52b4184be407f8696d44086244d5d8c3c545ea27e0515d0a",
+      "analysis/g13-combat-gba.json": "4e9f2cb84a2a04320a72666994c5aa544e056820995bc32ee421432b03eafa57",
+      "analysis/g13-renderer-regression.json": "676f0a52f1fc741a027d8c3b306219285aa6319a1eb581a636c518eec42c2c90",
+      "analysis/g13-interactions-regression.json": "9d3af2422e92b117dba64b172b31e91b7aae6d1e16aaa18e4f95dd5f581911d1",
+      "analysis/g13-time-regression.json": "85efbda909217ba53466c4b8b8d29c55c956ef2da65a342ba53f0f7fd429353f"
+    },
+    "artifacts": {
+      "build/g13/dok-diagnostic.elf": "0c7d675e9b01e805ed7fb3f63a9a1ce9ed18e1c0bb695ee6eb24d81d6ee26298",
+      "build/g13/dok-diagnostic.gba": "5039eb8c4189474259127390b26742b305f9e9ce7f354fa584ea6fe668a466be",
+      "build/g13/dok-diagnostic.map": "45176fa4b37735409aeaa22a72020c29410893023f74b6df6dc621949c9f34a8",
+      "build/native/dok-combat-tests.exe": "940c99e4dbfc9b669f3e029ab66e8320fc6e682b67d42ec7275fa3b9cd3b8e8f"
+    },
+    "checks": {
+      "original_readiness": 20,
+      "original_slots": 72,
+      "original_spawn_copy": 2,
+      "original_damage_decay": 2012,
+      "original_monster_damage": 336,
+      "host_combat": true,
+      "arm_combat": {
+        "task": "G13",
+        "status": "passed",
+        "rom_sha256": "5039eb8c4189474259127390b26742b305f9e9ce7f354fa584ea6fe668a466be",
+        "script_sha256": "fc2fb628fd8b71a883513afffba84d78a3bca01280602da5db594afc0459758b",
+        "flights": {
+          "detail_pointer": "/checks/arm_combat/flights",
+          "items": 4
+        },
+        "pool": {
+          "capacity": 141,
+          "failed_allocation_preserved_charge": true,
+          "failed_allocation_changed_readiness": true,
+          "first_free_reused": 0,
+          "all_events_unlinked_after_clear": true
+        },
+        "independent_instances": [
+          {
+            "language": 0,
+            "template": 65,
+            "independent_texture_slots": [
+              256,
+              257
+            ],
+            "resource": 28,
+            "simultaneous_different_frames_verified": true,
+            "captures": [
+              {
+                "detail_pointer": "/checks/arm_combat/independent_instances/0/captures/0",
+                "entries": 6,
+                "scalars": {
+                  "path": "build/g13/sprite-check/independent-effects-0-2.png",
+                  "framebuffer_sha256": "01adf434c18d62f1146836698d94b97cc17dd0fecc7964f4619b1bf9343e0ac6",
+                  "cycles": 5807102,
+                  "faces": 2
+                }
+              },
+              {
+                "detail_pointer": "/checks/arm_combat/independent_instances/0/captures/1",
+                "entries": 6,
+                "scalars": {
+                  "path": "build/g13/sprite-check/independent-effects-0-3.png",
+                  "framebuffer_sha256": "363334faa394daa74e5c1d4b2e8fbdef1088bcdc252f4ecebc6945632ce51aa1",
+                  "cycles": 5808123,
+                  "faces": 2
+                }
+              }
+            ]
+          },
+          {
+            "language": 1,
+            "template": 65,
+            "independent_texture_slots": [
+              256,
+              257
+            ],
+            "resource": 28,
+            "simultaneous_different_frames_verified": true,
+            "captures": [
+              {
+                "detail_pointer": "/checks/arm_combat/independent_instances/1/captures/0",
+                "entries": 6,
+                "scalars": {
+                  "path": "build/g13/sprite-check/independent-effects-1-2.png",
+                  "framebuffer_sha256": "7380df33c5447cc65f0d94713f925b23e8a9cc8289ffc260e9c85854ff402ead",
+                  "cycles": 5805199,
+                  "faces": 2
+                }
+              },
+              {
+                "detail_pointer": "/checks/arm_combat/independent_instances/1/captures/1",
+                "entries": 6,
+                "scalars": {
+                  "path": "build/g13/sprite-check/independent-effects-1-3.png",
+                  "framebuffer_sha256": "c05436713588076e322d7cd907ee36b8430e6b6bfea8cc0f2fc06cc00a605892",
+                  "cycles": 5807513,
+                  "faces": 2
+                }
+              }
+            ]
+          }
+        ],
+        "collisions": [
+          {
+            "kind": "wall",
+            "pending_flight_image": 29,
+            "effect_resource": 26,
+            "effect_starts_at_frame": 1,
+            "damage_on_contact": null,
+            "cleaned_up": true
+          },
+          {
+            "kind": "door-closed",
+            "pending_flight_image": 29,
+            "effect_resource": 26,
+            "effect_starts_at_frame": 1,
+            "damage_on_contact": null,
+            "cleaned_up": true
+          },
+          {
+            "kind": "door-open",
+            "passed_through": true
+          },
+          {
+            "kind": "monster",
+            "pending_flight_image": 29,
+            "effect_resource": 28,
+            "effect_starts_at_frame": 1,
+            "damage_on_contact": 14,
+            "cleaned_up": true
+          },
+          {
+            "kind": "damage-events",
+            "sleeping_contact_wakes_without_damage": true,
+            "dead_health_clamped": true,
+            "ai_state_preserved": true,
+            "same_class_immune": true,
+            "player_health_after_15_damage": 85
+          }
+        ],
+        "dynamic_occupancy": {
+          "projectile": 0,
+          "cell": 2019,
+          "blocked_x": 16561,
+          "after_clear_x": 16830,
+          "production_actor_collision_verified": true,
+          "clear_released_occupancy": true
+        },
+        "weapon_transition": {
+          "states": {
+            "detail_pointer": "/checks/arm_combat/weapon_transition/states",
+            "items": 7
+          },
+          "unavailable_weapon_rejected": true
+        },
+        "first_pickup_show": {
+          "ordinary_pickup_registered": true,
+          "show_states": [
+            [
+              1,
+              2
+            ],
+            [
+              1,
+              1
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              7,
+              0
+            ]
+          ],
+          "fire_rejected_during_show": true,
+          "first_ready_shot_charge": 136
+        },
+        "shot_series": [
+          {
+            "weapon": 1,
+            "shots": 10,
+            "final_charge": 860,
+            "active_after_each_shot": 0,
+            "all_events_and_occupancy_released": true
+          },
+          {
+            "weapon": 2,
+            "shots": 10,
+            "final_charge": 960,
+            "active_after_each_shot": 0,
+            "all_events_and_occupancy_released": true
+          }
+        ],
+        "live_input": {
+          "button": "A",
+          "gba_key_mask": 1,
+          "native_fire_command": 512,
+          "charge_after_shot": 86,
+          "screenshot": {
+            "path": "build/g13/sprite-check/real-a-button.png",
+            "framebuffer_sha256": "ed1d17a4afbc98ad42ee0028cf2c3f71c39376d6b04985a98ea38a8e4cbb6307",
+            "cycles": 11891103,
+            "faces": 1
+          },
+          "real_l_r_weapon_cycle": true,
+          "laser_shots": 1,
+          "laser_charge": 96,
+          "laser_screenshot": {
+            "path": "build/g13/sprite-check/real-l-r-cycle-and-laser-a.png",
+            "framebuffer_sha256": "6aacf78e0bebc79237d8877bc8612567573836477e147ac3621b00821f2f5435",
+            "cycles": 10271772,
+            "faces": 1
+          }
+        },
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5560,
+          "high_water_bytes": 2376,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        },
+        "whole_dos_session_equivalence": false,
+        "physical_gba_tested": false
+      },
+      "renderer_guards_reset_language": true,
+      "door_sensor_conveyor_finish": true,
+      "rational_clock": true
+    },
+    "performance": {
+      "renderer_timing": {
+        "cpu_hz": 16777216,
+        "hardware_frame_cycles": 280896,
+        "target_cycles": 561792,
+        "target_hardware_frames": 2,
+        "scope": "Timer0/1 cascade: time-poll + input/language switch + renderer + HUD + halfword VRAM back-page copy; excludes presentation wait",
+        "min_cycles": 4668074,
+        "max_cycles": 4689700,
+        "worst_render_budget_ratio": 8.347751480975166,
+        "nominal_target_fps": 29.863750284802915,
+        "over_budget_draws": 99,
+        "all_observed_draws_fit_target": false,
+        "min_present_interval_vblanks": 17,
+        "max_present_interval_vblanks": 17,
+        "cadence_intervals_vblanks": {
+          "detail_pointer": "/performance/renderer_timing/cadence_intervals_vblanks",
+          "items": 66
+        },
+        "cadence_warmup_excluded_draws": 8,
+        "observed_steady_presentation_fps": 3.513382386447402,
+        "sampled_draws": 98,
+        "samples": {
+          "detail_pointer": "/performance/renderer_timing/samples",
+          "items": 98
+        }
+      },
+      "target30fps_verified": false
+    },
+    "limits": [
+      "Physical GBA/original BIOS untested",
+      "Full DOS gameplay session untested; isolated original x86 instructions executed",
+      "Linux/CMake/MSVC execution untested; Linux/Thumb compilation checked",
+      "Full1455 camera sweep not repeated; targeted static and new instance-image tests used",
+      "AI consumers of WAKE/DAMAGE/DEATH/RECLAIM are G14/G15; sound/HUD G16/G17; hero death G18",
+      "Weapon overlay uses original images with GBA placement; not a DOS pixel-equivalence claim",
+      "G20 performance optimization remains required"
+    ]
+  }
+}

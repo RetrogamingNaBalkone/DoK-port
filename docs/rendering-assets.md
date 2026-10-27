@@ -10,7 +10,7 @@ G04, 24 октября 2026 года. Документ дополняет [rende
 с RU/EN, общим профилем и целевыми 30 FPS; ниже нет измерения GBA FPS.
 
 Факты сверены с новыми Ghidra C/ASM-экспортами G04:
-`build/rendering/{ru,en}/{annotated.c,evidence.asm,roles.tsv}`. Обе серии
+`research/evidence/rendering/{ru,en}/{annotated.c,evidence.asm,roles.tsv}`. Обе серии
 содержат по 34 роли; `analysis-manifest.json` фиксирует совпавшие SHA-256
 EXE до/после. В логах есть `KREMLIN_RENDERING_COMPLETE`, проекты сохранены.
 Скрипт экспорта — `scripts/InspectRendering.java`, запуск —
@@ -229,7 +229,7 @@ far-pointer, flat-view больше 64 KiB, усечение и противор
 и 26 ключевых ASM-инструкций в каждом свежем Ghidra-экспорте, включая порядок
 GS→FS→проверка нуля, OR флагов, runtime flags анимаций и unsigned clamp LIGHT.
 Полные пиксели, преобразованные изображения и дампы остаются в ignored
-`build/render-layout/`; в `analysis/` входят только хеши, счётчики и результаты.
+`research/evidence/render-layout/`; в `analysis/` входят только хеши, счётчики и результаты.
 
 Материалы WASDify `performance.md` и `render.md` использованы как указатели
 на участки исходного кода. Их адреса NE-сегментов переводятся отдельно;

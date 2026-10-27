@@ -20,7 +20,7 @@ def main():
         for scene,buttons in (('turn-fire',(8,7)),('walk-turn-fire',(8,4,7)),('stand-fire',(8,))):
             for level in range(3):
                 freeze(p,True);p.write(p.symbols['g_camera_capture_hold'],struct.pack('<I',1));p.language(0)
-                model=load_json(f'build/runtime/ru/LEVEL{level+1}-runtime.json');hero=model['objects'][model['player_index']-1]['actor']
+                model=load_json(f'research/evidence/runtime/ru/LEVEL{level+1}-runtime.json');hero=model['objects'][model['player_index']-1]['actor']
                 p.camera((level+1)%3,15120,-300,22800,90);p.camera(level,hero['x'],hero['y'],hero['z'],hero['heading'])
                 p.command(6);p.command(2,rate['id']);freeze(p,False);p.write(p.symbols['test_camera'],b'\0')
                 collect(p,6,buttons=buttons);before=list(p.words('g_hw_static_work',4));d0=p.diag()['draws']
