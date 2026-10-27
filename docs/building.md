@@ -1,11 +1,59 @@
 # Сборка первых модулей и VS Code
 
-Готовый ROM для запуска хранится отдельно от промежуточных файлов:
-`artifacts/gba/DoK-port.gba`. Сейчас это проверенная сборка с обновлённым HUD
-из `build/level1-fixes/`: уменьшенные offline иконки, центрированные однострочные
-сообщения, исправленная открытая дверь. Команды и проверки —
-[level1-fixes.md](level1-fixes.md). ROM не включается в Git;
-ELF/map и отчёты остаются в `build/`.
+Новые отдельные quality prototypes G20A для сравнения:
+`artifacts/gba/DoK-port_hardware_rows96_prototype.gba` (97f0b3…57f81) и
+`artifacts/gba/DoK-port_hardware_rows72_prototype.gba` (176969…8888a).
+[Результаты96/72](gba-row-quality-trial.md):96 экономит10–12% CPU,
+spatial440 min11,95/11,95/19,91.72 грубее; универсальные15+ не доказаны.
+Сборки воспроизводятся `scripts/prototype_gba_bsp.py` с variants `hw_rows96`
+и `hw_rows72`; сборщик проверочных результатов `scripts/report_gba_row_quality.py`.
+Основной128-строчный artifact ниже автоматически не заменялся.
+
+Рекомендуемый отдельный аппаратный прототип G20A:
+`artifacts/gba/DoK-port_hardware_cached_prototype.gba`, SHA2775bd…edaab,
+15 938 936B. [Результаты и стоимость кадра](gba-render-costs.md):
+runtime turn12019,85/16,86/21,79 FPS, ходьба17,96/17,92/20,54 RU
+(EN L1 18,10). Spatial440 minimum9,954583/9,954583/14,931875; общая цель открыта.
+CPU128 строк растянуты в144;396+440 PPU кадров совпали с предыдущим e803 ROM,
+полные suites/512 rectangle ARM/48cache cases прошли. Прежние ROM сохранены.
+Воспроизведение: `scripts/prototype_gba_bsp.py --out build/g20a-hw-entity-final
+--variants hw_v128_entity_rect source_control`; collector —
+`scripts/report_gba_hardware_cache.py --copy-rom` после описанных QA-запусков.
+Прежний [быстрый128](gba-hardware-fast.md) остаётся отдельным артефактом.
+
+Следующий [Mode2 ceiling experiment](gba-lowered-ceiling-trial.md) оставлен в
+`build/g20a-hw-lowered-v6/hw_v128_lowered/`, SHA4f96b7…44d80; он не выбран.
+Сборка: `scripts/prototype_gba_bsp.py --out build/g20a-hw-lowered-final
+--variants hw_v128_lowered source_control`. Статус/контроль —
+`scripts/report_gba_lowered_trial.py`. Не подменять им рекомендованный ROM.
+
+Начальный, ещё медленный этап этой ветки описан в
+[gba-hardware-floor.md](gba-hardware-floor.md). Изображения проверяются по
+настоящему PPU video, а не чтением Mode4 bitmap. Исторические сборки ниже
+остаются доступными для сравнения.
+
+27 октября: отдельные [G20A-прототипы спанов/HUD/уступов](gba-span-prototypes.md).
+Текущий exact-ROM для сравнения — `artifacts/gba/DoK-port_optimized_prototype.gba`;
+SHA `b36472a0…eb42501`, 9 954 008 B, 488 точных кадров, live7,17/7,47/8,53 FPS.
+Пол/потолок4×2 — `DoK-port_floor_4x2_prototype.gba`, SHA `04dfe358…1b5d11`,
+9 888 624 B, live11,95/9,95/14,93. BSP первого прохода —
+`artifacts/gba/DoK-port_BSP_prototype.gba`. Изолированная повторная сборка:
+`C:/Source/wasdify/.venv/Scripts/python.exe scripts/prototype_gba_bsp.py --out build/g20a-sides-rebuild --variants baseline sides_exact sides_coarse`.
+Она выполнена, ROM воспроизведены побайтно. Замеры:
+`scripts/benchmark_gba_prototypes.py`, aggregate — `scripts/report_gba_spans.py`;
+все команды/ограничения в документе. Прежние готовые ROM не заменены;
+15+ FPS пока нет. Банк масштабов отключён, исходные16 LIGHT rows сохранены.
+
+Текущая правка управления: язык переключается только в меню; Select в игре
+язык не меняет. Проверенная сборка `build/select-menu-fix/`, готовый ROM —
+`artifacts/gba/DoK-port_pre_alpha.gba`. Проверки UI/renderer/flow и SHA:
+[gba-fps-hypotheses.md](gba-fps-hypotheses.md#попутное-исправление-select).
+
+Основной сохранённый ROM для запуска — `artifacts/gba/DoK-port_pre_alpha.gba`.
+Он включает обновлённый HUD из `build/level1-fixes/` и последующую правку Select:
+уменьшенные offline иконки, центрированные однострочные сообщения, исправленную
+открытую дверь. История HUD — [level1-fixes.md](level1-fixes.md).
+ROM не включается в Git; ELF/map и отчёты остаются в `build/`.
 
 Актуальная сборка G20 и полный профиль без усечений:
 

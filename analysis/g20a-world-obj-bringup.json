@@ -1,0 +1,210 @@
+{
+  "task": "G20A",
+  "status": "source-art-bringup-corrected-hblank-access",
+  "goal_complete": false,
+  "performance_build_in_current_goal": false,
+  "trial_rom_sha256": "c1903e5e242e3287afa19175ebc64c5189da21927b8eedc1c9158f111ede8a09",
+  "control_rom_sha256": "2775bdd0caaac64b4fd99e4c6d675587fad2da9c795468dc52efacb5d53edaab",
+  "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+  "byte_exact_repeat": true,
+  "scope": "34 frozen real views RU/EN resource planning; 56 source-art PPU fixtures including all 16 LIGHT rows, CPU-layer occlusion, scanline-pressure cases and legal HBlank OAM access. Supersedes V4 probe without DISPCNT bit5. No native CPU offload, live FPS or whole-scene occlusion acceptance.",
+  "ppu_exact_cases": 54,
+  "ppu_pressure_cases": [
+    {
+      "name": "masked-behind-cpu",
+      "language": 0,
+      "objects": 2,
+      "matrices": 1,
+      "texture_bytes": 8192,
+      "different_native_pixels": 100,
+      "image": "build\\g20a-world-obj-bringup-final\\masked-behind-cpu-0.png",
+      "image_sha256": "12e844442a71b039fa8667e562c81f0d66f6b48b0bc1e3e192084ad232907bc1",
+      "different_rows": {
+        "50": 13,
+        "51": 14,
+        "52": 14,
+        "53": 14,
+        "54": 14,
+        "55": 14,
+        "56": 14,
+        "110": 3
+      },
+      "scope": "Composition exceeds available OBJ scanline work; native admission must fall back to CPU.",
+      "hblank_oam_access_enabled": false,
+      "dispcnt": 12352
+    },
+    {
+      "name": "masked-behind-cpu",
+      "language": 1,
+      "objects": 2,
+      "matrices": 1,
+      "texture_bytes": 8192,
+      "different_native_pixels": 100,
+      "image": "build\\g20a-world-obj-bringup-final\\masked-behind-cpu-1.png",
+      "image_sha256": "12e844442a71b039fa8667e562c81f0d66f6b48b0bc1e3e192084ad232907bc1",
+      "different_rows": {
+        "50": 13,
+        "51": 14,
+        "52": 14,
+        "53": 14,
+        "54": 14,
+        "55": 14,
+        "56": 14,
+        "110": 3
+      },
+      "scope": "Composition exceeds available OBJ scanline work; native admission must fall back to CPU.",
+      "hblank_oam_access_enabled": false,
+      "dispcnt": 12352
+    }
+  ],
+  "ppu_hblank_multiplex_cases": [
+    {
+      "name": "masked-behind-cpu-multiplex",
+      "language": 0,
+      "objects": 2,
+      "matrices": 1,
+      "texture_bytes": 8192,
+      "different_native_pixels": 0,
+      "image": "build\\g20a-world-obj-bringup-final\\masked-behind-cpu-multiplex-0.png",
+      "image_sha256": "f8a9918524482d422c8eba66c0fb532d9173681ee9799e80bfd6d20a326d3ceb",
+      "hblank_oam_access_enabled": true,
+      "dispcnt": 12384
+    },
+    {
+      "name": "masked-behind-cpu-multiplex",
+      "language": 1,
+      "objects": 2,
+      "matrices": 1,
+      "texture_bytes": 8192,
+      "different_native_pixels": 0,
+      "image": "build\\g20a-world-obj-bringup-final\\masked-behind-cpu-multiplex-1.png",
+      "image_sha256": "f8a9918524482d422c8eba66c0fb532d9173681ee9799e80bfd6d20a326d3ceb",
+      "hblank_oam_access_enabled": true,
+      "dispcnt": 12384
+    }
+  ],
+  "source_images": [
+    {
+      "name": "wall-0",
+      "width": 96,
+      "height": 192,
+      "resource": 60,
+      "masked": false,
+      "light_row": 0,
+      "original_source_sha256": "94dcff8e49f85163caec07b6433583fe38a225f3e5e135e87d798261986b09c0",
+      "lit_pixels_path": "build\\g20a-world-obj-bringup-final\\wall-0-lit-source.bin",
+      "lit_pixels_sha256": "94dcff8e49f85163caec07b6433583fe38a225f3e5e135e87d798261986b09c0",
+      "palette_sha256": "563188cc97da73f8b40c595cf61a4d2998a9f69f4177b8edf91b909ebe0594ac"
+    },
+    {
+      "name": "masked-0",
+      "width": 120,
+      "height": 58,
+      "resource": 107,
+      "masked": true,
+      "light_row": 4,
+      "original_source_sha256": "6ac03b2c53fb2b4a595de566ae1f129b9e1974a955be063e0a706d0c1426cef1",
+      "lit_pixels_path": "build\\g20a-world-obj-bringup-final\\masked-0-lit-source.bin",
+      "lit_pixels_sha256": "689f6e33f4dfdb1c5822eccbe46797586d49ecea29b287f16f7e3772f59d652f",
+      "palette_sha256": "563188cc97da73f8b40c595cf61a4d2998a9f69f4177b8edf91b909ebe0594ac"
+    },
+    {
+      "name": "wall-1",
+      "width": 96,
+      "height": 192,
+      "resource": 60,
+      "masked": false,
+      "light_row": 0,
+      "original_source_sha256": "94dcff8e49f85163caec07b6433583fe38a225f3e5e135e87d798261986b09c0",
+      "lit_pixels_path": "build\\g20a-world-obj-bringup-final\\wall-1-lit-source.bin",
+      "lit_pixels_sha256": "94dcff8e49f85163caec07b6433583fe38a225f3e5e135e87d798261986b09c0",
+      "palette_sha256": "563188cc97da73f8b40c595cf61a4d2998a9f69f4177b8edf91b909ebe0594ac"
+    },
+    {
+      "name": "masked-1",
+      "width": 120,
+      "height": 58,
+      "resource": 107,
+      "masked": true,
+      "light_row": 4,
+      "original_source_sha256": "6ac03b2c53fb2b4a595de566ae1f129b9e1974a955be063e0a706d0c1426cef1",
+      "lit_pixels_path": "build\\g20a-world-obj-bringup-final\\masked-1-lit-source.bin",
+      "lit_pixels_sha256": "689f6e33f4dfdb1c5822eccbe46797586d49ecea29b287f16f7e3772f59d652f",
+      "palette_sha256": "563188cc97da73f8b40c595cf61a4d2998a9f69f4177b8edf91b909ebe0594ac"
+    }
+  ],
+  "geometry_counts": {
+    "visible_face_bbox": 914,
+    "constant_depth_rectangle": 386,
+    "patch_candidate": 386,
+    "perspective_not_yet_supported": 528
+  },
+  "resource_plans": {
+    "full_obj": {
+      "admitted_rectangles": 254,
+      "failures": {
+        "texture_capacity": 132
+      },
+      "median_objects": 19.0,
+      "median_matrices": 5.0,
+      "median_texture_bytes": 30720.0
+    },
+    "hybrid": {
+      "admitted_rectangles": 156,
+      "failures": {
+        "texture_capacity": 230
+      },
+      "median_objects": 6.0,
+      "median_matrices": 3.0,
+      "median_texture_bytes": 14336.0
+    },
+    "hybrid_multiplex": {
+      "admitted_rectangles": 156,
+      "failures": {
+        "texture_capacity": 230
+      },
+      "median_objects": 6.0,
+      "median_matrices": 3.0,
+      "median_texture_bytes": 14336.0
+    }
+  },
+  "preserved_roms": {
+    "DoK-port_hardware_cached_prototype.gba": "2775bdd0caaac64b4fd99e4c6d675587fad2da9c795468dc52efacb5d53edaab",
+    "DoK-port_hardware_rows96_prototype.gba": "97f0b3cb1d97c958bb0750128cef72aa94f64fa4107a8edc53d743c38b557f81",
+    "DoK-port_hardware_rows72_prototype.gba": "17696958e5d1f08672754f788861c31fdc6302d242f24f0b4a5223768688888a"
+  },
+  "memory": {
+    "ewram_bytes": 261308,
+    "ewram_free_bytes": 836,
+    "iwram_bytes": 24408,
+    "iwram_free_before_stack_reserve_bytes": 168,
+    "stack_reserve_bytes": 8192
+  },
+  "limitations": [
+    "Perspective walls not implemented; constant-depth rectangles only.",
+    "Affine canvas enlargement beyond 2x explicitly falls back; no mip or degraded art.",
+    "Full OBJ plans omit CPU ceiling composition; hybrid plans reserve 64 OBJ/16KiB for the CPU scene.",
+    "Resource admission uses face bounding boxes, not final visibility; no projected CPU/FPS savings.",
+    "Quantized patch transforms may differ from a seamless whole-image resize; exact proof is against independent patch sampling.",
+    "CPU is held with IRQ and PCM disabled during PPU upload fixtures. This is not a gameplay or performance ROM.",
+    "Two non-multiplex pressure fixtures lose 100 pixels each; they are explicit failures, not counted as passed.",
+    "V4 probe omitted DISPCNT bit5 for HBlank OAM access; its conclusion is superseded. Current native CPU stores enable bit5 and assert it in actual MMIO.",
+    "Native hybrid integration and its timing are recorded separately in analysis/g20a-world-obj-native.json.",
+    "The same full mixed composition is exact with legal HBlank OAM multiplex; physical GBA not tested."
+  ],
+  "next_action": "Use the separate native hybrid trial for architecture selection; genuine sector clip/span still open.",
+  "evidence": [
+    {
+      "path": "build/g20a-world-obj-bringup-final/report.json",
+      "sha256": "610ca769423e03dde5f2855580eb6a4a5517653987ffde98ed7797b45dd79533"
+    },
+    {
+      "path": "build/g20a-world-obj-native-final/prototype-build.json",
+      "sha256": "0825ce66f5442c0d52264921da7ea91690714f098f90765a95206868eba97415"
+    },
+    {
+      "path": "build/g20a-world-obj-native-repeat/prototype-build.json",
+      "sha256": "e894340854437913f868e59c2c4b6d1e4008b94446c593807d320e11ff14f123"
+    }
+  ]
+}

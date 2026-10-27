@@ -1,0 +1,386 @@
+{
+  "task": "G20A",
+  "status": "architecture-selection-in-progress",
+  "goal_complete": false,
+  "local_optimization_gate": "Frozen until major rendering architecture candidates are compared on native GBA emulation.",
+  "baseline_rows96_rom_sha256": "97f0b3cb1d97c958bb0750128cef72aa94f64fa4107a8edc53d743c38b557f81",
+  "scene_compiler": {
+    "package_sha256": "3efa5d3027d63ffd65e0ae8c0b45be23ee8394b3c5151c8e9f10e76fa8674351",
+    "script_sha256": "288fd461a41fbd6dcd0ed375dd56af6f04b161f1199e961fed35a5aac8731130",
+    "views": [
+      {
+        "view": 0,
+        "level": 1,
+        "language": 0,
+        "wall_cells": 1043,
+        "source_segments": 1998,
+        "merged_segments": 649,
+        "segment_kinds": {
+          "rim": 716,
+          "wall": 1282
+        },
+        "ceiling_floor_cells": 3053,
+        "material_rectangles": 239,
+        "lowered_cells": 383,
+        "dynamic_panels": {
+          "4": 57,
+          "7": 47
+        },
+        "wall_profiles": [
+          {
+            "width": 480,
+            "height": 960,
+            "masked": false,
+            "cells": 1043
+          }
+        ],
+        "bsp_nodes": 564,
+        "bsp_fragments": 770,
+        "bsp_max_depth": 16,
+        "old_cell_bsp_nodes": 8191,
+        "compiled_sha256": "f70882357f21756c4ce389155764b15d181e35326a6881c1e47a0387da690bac",
+        "compiled_bytes": 547554
+      },
+      {
+        "view": 1,
+        "level": 1,
+        "language": 1,
+        "wall_cells": 1043,
+        "source_segments": 1998,
+        "merged_segments": 649,
+        "segment_kinds": {
+          "rim": 716,
+          "wall": 1282
+        },
+        "ceiling_floor_cells": 3053,
+        "material_rectangles": 239,
+        "lowered_cells": 383,
+        "dynamic_panels": {
+          "4": 57,
+          "7": 47
+        },
+        "wall_profiles": [
+          {
+            "width": 480,
+            "height": 960,
+            "masked": false,
+            "cells": 1043
+          }
+        ],
+        "bsp_nodes": 564,
+        "bsp_fragments": 770,
+        "bsp_max_depth": 16,
+        "old_cell_bsp_nodes": 8191,
+        "compiled_sha256": "96b46be216f6992c0b1e946efc4acdd4c42d5ec518985bd371820fd726f0f248",
+        "compiled_bytes": 547554
+      },
+      {
+        "view": 2,
+        "level": 2,
+        "language": 0,
+        "wall_cells": 1424,
+        "source_segments": 3242,
+        "merged_segments": 1148,
+        "segment_kinds": {
+          "rim": 1216,
+          "wall": 2026
+        },
+        "ceiling_floor_cells": 2672,
+        "material_rectangles": 392,
+        "lowered_cells": 995,
+        "dynamic_panels": {
+          "4": 231,
+          "7": 65
+        },
+        "wall_profiles": [
+          {
+            "width": 480,
+            "height": 960,
+            "masked": false,
+            "cells": 1424
+          }
+        ],
+        "bsp_nodes": 853,
+        "bsp_fragments": 1339,
+        "bsp_max_depth": 11,
+        "old_cell_bsp_nodes": 8191,
+        "compiled_sha256": "e87476a1e980a5990061412758414fbbdc6cff002cf42d860f92b91c635bdec4",
+        "compiled_bytes": 897898
+      },
+      {
+        "view": 3,
+        "level": 2,
+        "language": 1,
+        "wall_cells": 1424,
+        "source_segments": 3242,
+        "merged_segments": 1148,
+        "segment_kinds": {
+          "rim": 1216,
+          "wall": 2026
+        },
+        "ceiling_floor_cells": 2672,
+        "material_rectangles": 392,
+        "lowered_cells": 995,
+        "dynamic_panels": {
+          "4": 231,
+          "7": 65
+        },
+        "wall_profiles": [
+          {
+            "width": 480,
+            "height": 960,
+            "masked": false,
+            "cells": 1424
+          }
+        ],
+        "bsp_nodes": 853,
+        "bsp_fragments": 1339,
+        "bsp_max_depth": 11,
+        "old_cell_bsp_nodes": 8191,
+        "compiled_sha256": "1998f71b7d7b0c4989b0fcee1b0abb813a6edc7163e33b54db52619476341cc0",
+        "compiled_bytes": 897898
+      },
+      {
+        "view": 4,
+        "level": 3,
+        "language": 0,
+        "wall_cells": 1672,
+        "source_segments": 1364,
+        "merged_segments": 255,
+        "segment_kinds": {
+          "rim": 248,
+          "wall": 1116
+        },
+        "ceiling_floor_cells": 2424,
+        "material_rectangles": 91,
+        "lowered_cells": 0,
+        "dynamic_panels": {
+          "7": 41,
+          "4": 33
+        },
+        "wall_profiles": [
+          {
+            "width": 480,
+            "height": 960,
+            "masked": false,
+            "cells": 1672
+          }
+        ],
+        "bsp_nodes": 302,
+        "bsp_fragments": 339,
+        "bsp_max_depth": 10,
+        "old_cell_bsp_nodes": 8191,
+        "compiled_sha256": "320c2e7809f0af71e802fb6fc7c357348caf986d67fe6a651fa54374e26a009e",
+        "compiled_bytes": 343626
+      },
+      {
+        "view": 5,
+        "level": 3,
+        "language": 1,
+        "wall_cells": 1672,
+        "source_segments": 1364,
+        "merged_segments": 255,
+        "segment_kinds": {
+          "rim": 248,
+          "wall": 1116
+        },
+        "ceiling_floor_cells": 2424,
+        "material_rectangles": 91,
+        "lowered_cells": 0,
+        "dynamic_panels": {
+          "7": 41,
+          "4": 33
+        },
+        "wall_profiles": [
+          {
+            "width": 480,
+            "height": 960,
+            "masked": false,
+            "cells": 1672
+          }
+        ],
+        "bsp_nodes": 302,
+        "bsp_fragments": 339,
+        "bsp_max_depth": 10,
+        "old_cell_bsp_nodes": 8191,
+        "compiled_sha256": "b801d3320cbb39da1e76bafd35580b39f2e9b15c6fec4238a63ada5e756aff91",
+        "compiled_bytes": 343626
+      }
+    ],
+    "checks": [
+      "exact disjoint cell/material reconstruction",
+      "source segment ownership",
+      "BSP fragment coverage without gaps/overlap"
+    ],
+    "scope": "Offline static render representation feasibility only. No runtime renderer, FPS, visibility equivalence, map mutations, or gameplay acceptance claimed.",
+    "preserved": [
+      "all emitted static wall boundaries",
+      "all emitted lowered-ceiling rims",
+      "all non-wall floor/ceiling cell materials and heights",
+      "per-cell UV source pieces"
+    ],
+    "pending": [
+      "native GBA traversal/visibility/raster",
+      "dynamic doors/actors integration",
+      "mutable-map invalidation",
+      "world-space versus native rounded image comparison"
+    ]
+  },
+  "prior_experiments": [
+    {
+      "label": "opaque-batch",
+      "evidence": {
+        "path": "build/g20a-hw-opaque-batch-v2/spatial.json",
+        "sha256": "5d52729fe6df69fa21dfab141bdf8aeca72ac58daf28bd0cc7ad46829f093d8f"
+      },
+      "rom_sha256": "627cd29dbc4260c8bb4c08e6a1b01a219fafd815e12b2b40a5ab150b5447cc7d",
+      "cases": 440,
+      "minimum_fps_by_level": [
+        11.945500113921167,
+        11.945500113921167,
+        19.90916685653528
+      ],
+      "better_fps": 34,
+      "worse_fps": 0,
+      "median_cpu_ratio_by_level": [
+        0.9961490134375326,
+        0.9935753911750358,
+        0.9985225037893763
+      ],
+      "promoted": false
+    },
+    {
+      "label": "feedback-v2",
+      "evidence": {
+        "path": "build/g20a-hw-low-feedback96-v2/spatial.json",
+        "sha256": "f03e2c7415d686872915b5032fedfd69a0ea4bebf6156a9c19172088bd39b8d2"
+      },
+      "rom_sha256": "4c8cd276d762f8dc03dfd3b5aa6dc6b021549225332ac3ac0f46a1c2963581b2",
+      "cases": 440,
+      "minimum_fps_by_level": [
+        14.931875142401458,
+        11.945500113921167,
+        19.90916685653528
+      ],
+      "better_fps": 49,
+      "worse_fps": 25,
+      "median_cpu_ratio_by_level": [
+        1.0042065882633437,
+        0.9991404951865828,
+        1.0063774541813175
+      ],
+      "promoted": false
+    },
+    {
+      "label": "feedback-v3",
+      "evidence": {
+        "path": "build/g20a-hw-low-feedback96-v3/spatial.json",
+        "sha256": "edd3e2330bdbe57183bf49a40b31bf81214aca5057cf46ff53dc3206519d3d7c"
+      },
+      "rom_sha256": "a105171cfa9202a8e2c722a19445989cb0f8a95069c34dc0ee6ed4aff7a3f86e",
+      "cases": 440,
+      "minimum_fps_by_level": [
+        11.945500113921167,
+        11.945500113921167,
+        19.90916685653528
+      ],
+      "better_fps": 28,
+      "worse_fps": 36,
+      "median_cpu_ratio_by_level": [
+        1.003991283271056,
+        1.0038741511571887,
+        1.0063582422489543
+      ],
+      "promoted": false
+    }
+  ],
+  "ppu_feedback_v3": [
+    {
+      "evidence": {
+        "path": "build/g20a-hw-low-feedback96-v3/ppu396-live.json",
+        "sha256": "b57d61cf4fe21fb4dbaee9973d13cb82d98452264ffb8dd0395f4c1d2cafb7a8"
+      },
+      "rom_sha256": "a105171cfa9202a8e2c722a19445989cb0f8a95069c34dc0ee6ed4aff7a3f86e",
+      "cases": 396,
+      "max_background_or_foreground_changed_pixels": 0,
+      "max_foreground_changed_pixels": 0,
+      "max_overlay_changed_pixels": 0,
+      "coverage_equal": 396,
+      "scope": "PPU frame/coverage comparison only; not complete logic/water/warm backend transition acceptance."
+    },
+    {
+      "evidence": {
+        "path": "build/g20a-hw-low-feedback96-v3/forced2-396.json",
+        "sha256": "41349114273ac95047d1c0367844ea51c6963567cd15c6ad844365adafa70c29"
+      },
+      "rom_sha256": "a105171cfa9202a8e2c722a19445989cb0f8a95069c34dc0ee6ed4aff7a3f86e",
+      "cases": 396,
+      "max_background_or_foreground_changed_pixels": 780,
+      "max_foreground_changed_pixels": 0,
+      "max_overlay_changed_pixels": 0,
+      "coverage_equal": 396,
+      "scope": "PPU frame/coverage comparison only; not complete logic/water/warm backend transition acceptance."
+    }
+  ],
+  "profile": {
+    "evidence": {
+      "path": "build/g20a-hw-face-class/profile.json",
+      "sha256": "6a8ed04bcde241d9883df06983e1b65394fcaa3a2a6023fb0649b27114aee01b"
+    },
+    "timer_cycles_per_tick": 64,
+    "rows": [
+      {
+        "level": 1,
+        "cell": 520,
+        "heading": 225,
+        "masked_cycles": 242304,
+        "opaque_cycles": 208512
+      },
+      {
+        "level": 1,
+        "cell": 3640,
+        "heading": 225,
+        "masked_cycles": 114112,
+        "opaque_cycles": 174784
+      },
+      {
+        "level": 2,
+        "cell": 1592,
+        "heading": 135,
+        "masked_cycles": 499712,
+        "opaque_cycles": 178688
+      },
+      {
+        "level": 2,
+        "cell": 2871,
+        "heading": 225,
+        "masked_cycles": 499648,
+        "opaque_cycles": 209600
+      },
+      {
+        "level": 3,
+        "cell": 1544,
+        "heading": 315,
+        "masked_cycles": 269568,
+        "opaque_cycles": 235712
+      }
+    ],
+    "scope": "Instrumented class attribution only; renderer draw function moved to ROM in this variant, not production FPS."
+  },
+  "evidence": [
+    {
+      "path": "build/g20a-scene-compiler-v1/scene-compile-report.json",
+      "sha256": "7ea7d02eb0c8f8066466d7efa33675d60b642e253cfd19162bd1687bd0f9a34f"
+    },
+    {
+      "path": "scripts/compile_gba_render_scene.py",
+      "sha256": "288fd461a41fbd6dcd0ed375dd56af6f04b161f1199e961fed35a5aac8731130"
+    }
+  ],
+  "primary_sources": [
+    "https://github.com/doomhack/GBADoom",
+    "https://github.com/doomhack/GBADoom/blob/master/include/doomdef.h",
+    "https://github.com/doomhack/GBADoom/blob/master/source/r_hotpath.iwram.c",
+    "https://github.com/doomhack/GBADoom/releases"
+  ]
+}

@@ -81,22 +81,47 @@ class Probe:
     def language(self, language):
         if self.diag()['language'] != language:
             previous = self.diag()['switches']
-            self.until(lambda d: d['switches'] > previous, buttons=(2,))
+            if 'g_ui_probe' in self.symbols:
+                # Localization fixture; production keypad behavior is tested
+                # by verify_ui_gba. Select in gameplay has no language action.
+                address = self.symbols['g_ui_probe']
+                request = self.words('g_ui_probe', 2)[1] + 1
+                self.write(address + 8, struct.pack('<2I', 2, language))
+                self.write(address, struct.pack('<I', request))
+                self.until(lambda d: d['switches'] > previous)
+            else:
+                self.until(lambda d: d['switches'] > previous, buttons=(2,))
             self.until(lambda d: d['language'] == language and d['last_keys'] == 0
                        and d['phase'] == 2)
 
     def capture(self, name):
         diag = self.present()
-        raw = self.frontend.read(0x06000000 + diag['visible_page'] * 0xa000, 38400)
         palette = self.frontend.read(0x05000000, 512)
         destination = self.build / 'sprite-check' / name
         destination.parent.mkdir(exist_ok=True)
-        destination.with_suffix('.idx').write_bytes(raw)
+        hardware='g_hw_obj_diag' in self.symbols and (struct.unpack('<H',self.frontend.read(0x04000000,2))[0]&7) in (1,2)
+        if hardware:
+            self.frontend.run(2);self.frontend.screenshot(destination.with_suffix('.png'))
+            raw=self.frontend.rgb;assert len(raw)==240*160*3
+            destination.with_suffix('.rgb').write_bytes(raw)
+        else:
+            raw = self.frontend.read(0x06000000 + diag['visible_page'] * 0xa000, 38400)
+            destination.with_suffix('.idx').write_bytes(raw)
         destination.with_suffix('.pal').write_bytes(palette)
         self.frontend.screenshot(destination.with_suffix('.png'))
         return dict(path=destination.with_suffix('.png').as_posix(),
+                    buffer_kind='ppu-rgb' if hardware else 'mode4-indexed',
                     framebuffer_sha256=hashlib.sha256(raw).hexdigest(),
                     cycles=diag['last_cycles'], faces=diag['face_count'])
+
+    def scene_pixels(self):
+        """Read displayed scene pixels; tiled VRAM is never a bitmap oracle."""
+        if 'g_hw_obj_diag' in self.symbols and (struct.unpack('<H',self.frontend.read(0x04000000,2))[0]&7) in (1,2):
+            self.frontend.run(2)
+            self.frontend.decode_video(self.frontend.last_video_raw)
+            raw=self.frontend.rgb;assert len(raw)==240*160*3
+            return [raw[i:i+3] for i in range(0,144*240*3,3)]
+        return self.frontend.read(0x06000000+self.diag()['visible_page']*0xa000,144*240)
 
     def close(self):
         self.frontend.core.retro_unload_game()
@@ -120,11 +145,13 @@ class Probe:
         return state
 
     def camera(self, level, x, y, z, heading=0):
+        previous=self.diag()['draws']
         request = self.words('g_camera_probe', 2)[0] + 1
         address = self.symbols['g_camera_probe']
         self.write(address + 8, struct.pack('<I4i', level, x, y, z, heading))
         self.write(address, struct.pack('<I', request))
-        self.until(lambda d: self.words('g_camera_probe', 2)[1] == request and d['phase'] == 2)
+        self.until(lambda d: self.words('g_camera_probe', 2)[1] == request
+                   and d['draws']>previous and d['phase'] == 2)
 
 
 def playback(probe, language, index, slot, name, raw, loop=False):
@@ -179,38 +206,46 @@ def projectile_scenes(probe, language, model, resources):
     probe.camera(0, 15120, -300, 22800, 90)
     probe.write(probe.symbols['g_sprite_probe'], bytes(20))
     diag = probe.present()
-    background = probe.frontend.read(0x06000000 + diag['visible_page'] * 0xa000, 38400)
+    background = probe.scene_pixels()
+    scene_objects=probe.words('g_hw_obj_diag',6)[5] if 'g_hw_obj_diag' in probe.symbols else 72
     for index, obj in enumerate(model['objects']):
         if obj['class'] != 8:
             continue
         sequence = frames(resources[obj['animation']])
         for frame_index in sorted({0, len(sequence) - 1}):
+            probe.present() # Leave any PPU-settling draw before mailbox writes.
             im = sequence[frame_index][0]
             probe.write(probe.symbols['g_render_world'] + 4 + index * 36 + 2,
                         struct.pack('<H', frame_index))
             width = im['width'] * obj['width_parameter']
             height = im['height'] * obj['width_parameter']
             for depth in (320, 640):
+                probe.present()
                 probe.write(probe.symbols['g_sprite_probe'], struct.pack(
                     '<II3i', 1, index, 15120 - depth, -250, 22800))
-                capture = probe.capture(f'projectile-{language}-{index}-{frame_index}-{depth}')
-                diag = probe.diag()
+                # Snapshot CPU geometry at completed draw. PPU settling can
+                # already let the following draw start rewriting this array.
+                diag = probe.present()
                 faces = probe.frontend.read(probe.symbols['g_render_frame'] + 38408,
                                             diag['face_count'] * 48)
                 found = [struct.unpack_from('<11iHh', faces, offset)
                          for offset in range(0, len(faces), 48)
                          if struct.unpack_from('<H', faces, offset + 44)[0] == index]
-                assert len(found) == 1, (index, frame_index, depth, found)
+                assert len(found) == 1, (index, frame_index, depth, found,diag,
+                    sorted({struct.unpack_from('<H',faces,o+44)[0] for o in range(0,len(faces),48)}),
+                    probe.words('g_sprite_probe',5),probe.words('g_camera_probe',7))
                 factor = 6553600 // (depth + 200)
                 left = (159 + ((-(width // 2) * factor) >> 15)) * 3 // 4
                 right = (159 + (((width // 2) * factor) >> 15)) * 3 // 4
-                top = (79 + (((50 - height) * factor) >> 15)) * 9 // 10
-                bottom = (79 + ((50 * factor) >> 15)) * 9 // 10
+                yn,yd={72:(9,10),64:(4,5),48:(3,5),36:(9,20)}[scene_objects]
+                top = (79 + (((50 - height) * factor) >> 15)) * yn // yd
+                bottom = (79 + ((50 * factor) >> 15)) * yn // yd
                 expected = (left, right, top, top, bottom, bottom, depth, depth,
                             0, im['width'] - 1, max(0, depth - width // 4), index, 0)
                 assert found[0] == expected, (found[0], expected)
-                raw = probe.frontend.read(0x06000000 + diag['visible_page'] * 0xa000, 38400)
-                changed = sum(a != b for a, b in zip(raw[:144 * 240], background[:144 * 240]))
+                capture = probe.capture(f'projectile-{language}-{index}-{frame_index}-{depth}')
+                raw = probe.scene_pixels()
+                changed = sum(a != b for a, b in zip(raw, background))
                 assert changed > 0, ('Projectile invisible', index, frame_index, depth)
                 captures.append(dict(language=language, object=index, frame=frame_index,
                                      depth=depth, changed_scene_pixels=changed,
@@ -259,6 +294,8 @@ def main():
     probe = Probe(args.core, args.build_dir)
     results, captures, sources = [], [], []
     try:
+        probe.until(lambda d:d['draws']>=1)
+        probe.write(probe.symbols['g_camera_capture_hold'], struct.pack('<I',1))
         probe.until(lambda d: d['draws'] >= 3 and d['phase'] == 2)
         package = args.assets_bin.read_bytes()
         assert probe.frontend.read(probe.symbols['dok_gba_assets'], len(package)) == package, \

@@ -1,0 +1,894 @@
+{
+  "package_sha256": "3efa5d3027d63ffd65e0ae8c0b45be23ee8394b3c5151c8e9f10e76fa8674351",
+  "script_sha256": "e4a163ea1e50f12636c07913d70990a30ec03a14da45d7028e86cc90ec0a799a",
+  "views": [
+    {
+      "level": 1,
+      "language": 0,
+      "rows": [
+        {
+          "row": 0,
+          "start_depth": 0,
+          "all_palette_nonblack": 254,
+          "static_image_colors_nonblack": 224,
+          "maximum_gba5_component": 31,
+          "maximum_static_image_gba5_component": 31
+        },
+        {
+          "row": 1,
+          "start_depth": 2040,
+          "all_palette_nonblack": 254,
+          "static_image_colors_nonblack": 224,
+          "maximum_gba5_component": 31,
+          "maximum_static_image_gba5_component": 31
+        },
+        {
+          "row": 2,
+          "start_depth": 2160,
+          "all_palette_nonblack": 254,
+          "static_image_colors_nonblack": 224,
+          "maximum_gba5_component": 31,
+          "maximum_static_image_gba5_component": 31
+        },
+        {
+          "row": 3,
+          "start_depth": 2280,
+          "all_palette_nonblack": 254,
+          "static_image_colors_nonblack": 224,
+          "maximum_gba5_component": 31,
+          "maximum_static_image_gba5_component": 28
+        },
+        {
+          "row": 4,
+          "start_depth": 2400,
+          "all_palette_nonblack": 254,
+          "static_image_colors_nonblack": 224,
+          "maximum_gba5_component": 31,
+          "maximum_static_image_gba5_component": 26
+        },
+        {
+          "row": 5,
+          "start_depth": 2520,
+          "all_palette_nonblack": 254,
+          "static_image_colors_nonblack": 224,
+          "maximum_gba5_component": 26,
+          "maximum_static_image_gba5_component": 23
+        },
+        {
+          "row": 6,
+          "start_depth": 2640,
+          "all_palette_nonblack": 252,
+          "static_image_colors_nonblack": 223,
+          "maximum_gba5_component": 26,
+          "maximum_static_image_gba5_component": 21
+        },
+        {
+          "row": 7,
+          "start_depth": 2760,
+          "all_palette_nonblack": 252,
+          "static_image_colors_nonblack": 223,
+          "maximum_gba5_component": 20,
+          "maximum_static_image_gba5_component": 18
+        },
+        {
+          "row": 8,
+          "start_depth": 2880,
+          "all_palette_nonblack": 251,
+          "static_image_colors_nonblack": 222,
+          "maximum_gba5_component": 18,
+          "maximum_static_image_gba5_component": 17
+        },
+        {
+          "row": 9,
+          "start_depth": 3000,
+          "all_palette_nonblack": 251,
+          "static_image_colors_nonblack": 222,
+          "maximum_gba5_component": 15,
+          "maximum_static_image_gba5_component": 15
+        },
+        {
+          "row": 10,
+          "start_depth": 3120,
+          "all_palette_nonblack": 250,
+          "static_image_colors_nonblack": 222,
+          "maximum_gba5_component": 13,
+          "maximum_static_image_gba5_component": 12
+        },
+        {
+          "row": 11,
+          "start_depth": 3240,
+          "all_palette_nonblack": 247,
+          "static_image_colors_nonblack": 220,
+          "maximum_gba5_component": 12,
+          "maximum_static_image_gba5_component": 10
+        },
+        {
+          "row": 12,
+          "start_depth": 3360,
+          "all_palette_nonblack": 241,
+          "static_image_colors_nonblack": 217,
+          "maximum_gba5_component": 10,
+          "maximum_static_image_gba5_component": 10
+        },
+        {
+          "row": 13,
+          "start_depth": 3480,
+          "all_palette_nonblack": 232,
+          "static_image_colors_nonblack": 210,
+          "maximum_gba5_component": 10,
+          "maximum_static_image_gba5_component": 8
+        },
+        {
+          "row": 14,
+          "start_depth": 3600,
+          "all_palette_nonblack": 210,
+          "static_image_colors_nonblack": 190,
+          "maximum_gba5_component": 6,
+          "maximum_static_image_gba5_component": 5
+        },
+        {
+          "row": 15,
+          "start_depth": 3720,
+          "all_palette_nonblack": 125,
+          "static_image_colors_nonblack": 110,
+          "maximum_gba5_component": 3,
+          "maximum_static_image_gba5_component": 3
+        }
+      ],
+      "static_image_bindings": 139,
+      "static_image_source_colors": 226,
+      "wake_radii": [
+        {
+          "distance": 3400,
+          "definitions": 1
+        },
+        {
+          "distance": 4000,
+          "definitions": 61
+        },
+        {
+          "distance": 9000,
+          "definitions": 2
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "language": 1,
+      "rows": [
+        {
+          "row": 0,
+          "start_depth": 0,
+          "all_palette_nonblack": 254,
+          "static_image_colors_nonblack": 224,
+          "maximum_gba5_component": 31,
+          "maximum_static_image_gba5_component": 31
+        },
+        {
+          "row": 1,
+          "start_depth": 2040,
+          "all_palette_nonblack": 254,
+          "static_image_colors_nonblack": 224,
+          "maximum_gba5_component": 31,
+          "maximum_static_image_gba5_component": 31
+        },
+        {
+          "row": 2,
+          "start_depth": 2160,
+          "all_palette_nonblack": 254,
+          "static_image_colors_nonblack": 224,
+          "maximum_gba5_component": 31,
+          "maximum_static_image_gba5_component": 31
+        },
+        {
+          "row": 3,
+          "start_depth": 2280,
+          "all_palette_nonblack": 254,
+          "static_image_colors_nonblack": 224,
+          "maximum_gba5_component": 31,
+          "maximum_static_image_gba5_component": 28
+        },
+        {
+          "row": 4,
+          "start_depth": 2400,
+          "all_palette_nonblack": 254,
+          "static_image_colors_nonblack": 224,
+          "maximum_gba5_component": 31,
+          "maximum_static_image_gba5_component": 26
+        },
+        {
+          "row": 5,
+          "start_depth": 2520,
+          "all_palette_nonblack": 254,
+          "static_image_colors_nonblack": 224,
+          "maximum_gba5_component": 26,
+          "maximum_static_image_gba5_component": 23
+        },
+        {
+          "row": 6,
+          "start_depth": 2640,
+          "all_palette_nonblack": 252,
+          "static_image_colors_nonblack": 223,
+          "maximum_gba5_component": 26,
+          "maximum_static_image_gba5_component": 21
+        },
+        {
+          "row": 7,
+          "start_depth": 2760,
+          "all_palette_nonblack": 252,
+          "static_image_colors_nonblack": 223,
+          "maximum_gba5_component": 20,
+          "maximum_static_image_gba5_component": 18
+        },
+        {
+          "row": 8,
+          "start_depth": 2880,
+          "all_palette_nonblack": 251,
+          "static_image_colors_nonblack": 222,
+          "maximum_gba5_component": 18,
+          "maximum_static_image_gba5_component": 17
+        },
+        {
+          "row": 9,
+          "start_depth": 3000,
+          "all_palette_nonblack": 251,
+          "static_image_colors_nonblack": 222,
+          "maximum_gba5_component": 15,
+          "maximum_static_image_gba5_component": 15
+        },
+        {
+          "row": 10,
+          "start_depth": 3120,
+          "all_palette_nonblack": 250,
+          "static_image_colors_nonblack": 222,
+          "maximum_gba5_component": 13,
+          "maximum_static_image_gba5_component": 12
+        },
+        {
+          "row": 11,
+          "start_depth": 3240,
+          "all_palette_nonblack": 247,
+          "static_image_colors_nonblack": 220,
+          "maximum_gba5_component": 12,
+          "maximum_static_image_gba5_component": 10
+        },
+        {
+          "row": 12,
+          "start_depth": 3360,
+          "all_palette_nonblack": 241,
+          "static_image_colors_nonblack": 217,
+          "maximum_gba5_component": 10,
+          "maximum_static_image_gba5_component": 10
+        },
+        {
+          "row": 13,
+          "start_depth": 3480,
+          "all_palette_nonblack": 232,
+          "static_image_colors_nonblack": 210,
+          "maximum_gba5_component": 10,
+          "maximum_static_image_gba5_component": 8
+        },
+        {
+          "row": 14,
+          "start_depth": 3600,
+          "all_palette_nonblack": 210,
+          "static_image_colors_nonblack": 190,
+          "maximum_gba5_component": 6,
+          "maximum_static_image_gba5_component": 5
+        },
+        {
+          "row": 15,
+          "start_depth": 3720,
+          "all_palette_nonblack": 125,
+          "static_image_colors_nonblack": 110,
+          "maximum_gba5_component": 3,
+          "maximum_static_image_gba5_component": 3
+        }
+      ],
+      "static_image_bindings": 139,
+      "static_image_source_colors": 226,
+      "wake_radii": [
+        {
+          "distance": 3400,
+          "definitions": 1
+        },
+        {
+          "distance": 4000,
+          "definitions": 61
+        },
+        {
+          "distance": 9000,
+          "definitions": 2
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "language": 0,
+      "rows": [
+        {
+          "row": 0,
+          "start_depth": 0,
+          "all_palette_nonblack": 254,
+          "static_image_colors_nonblack": 214,
+          "maximum_gba5_component": 31,
+          "maximum_static_image_gba5_component": 31
+        },
+        {
+          "row": 1,
+          "start_depth": 2040,
+          "all_palette_nonblack": 254,
+          "static_image_colors_nonblack": 214,
+          "maximum_gba5_component": 31,
+          "maximum_static_image_gba5_component": 31
+        },
+        {
+          "row": 2,
+          "start_depth": 2160,
+          "all_palette_nonblack": 254,
+          "static_image_colors_nonblack": 214,
+          "maximum_gba5_component": 31,
+          "maximum_static_image_gba5_component": 31
+        },
+        {
+          "row": 3,
+          "start_depth": 2280,
+          "all_palette_nonblack": 254,
+          "static_image_colors_nonblack": 214,
+          "maximum_gba5_component": 31,
+          "maximum_static_image_gba5_component": 28
+        },
+        {
+          "row": 4,
+          "start_depth": 2400,
+          "all_palette_nonblack": 254,
+          "static_image_colors_nonblack": 214,
+          "maximum_gba5_component": 31,
+          "maximum_static_image_gba5_component": 26
+        },
+        {
+          "row": 5,
+          "start_depth": 2520,
+          "all_palette_nonblack": 253,
+          "static_image_colors_nonblack": 213,
+          "maximum_gba5_component": 26,
+          "maximum_static_image_gba5_component": 23
+        },
+        {
+          "row": 6,
+          "start_depth": 2640,
+          "all_palette_nonblack": 253,
+          "static_image_colors_nonblack": 213,
+          "maximum_gba5_component": 26,
+          "maximum_static_image_gba5_component": 21
+        },
+        {
+          "row": 7,
+          "start_depth": 2760,
+          "all_palette_nonblack": 253,
+          "static_image_colors_nonblack": 213,
+          "maximum_gba5_component": 20,
+          "maximum_static_image_gba5_component": 19
+        },
+        {
+          "row": 8,
+          "start_depth": 2880,
+          "all_palette_nonblack": 253,
+          "static_image_colors_nonblack": 213,
+          "maximum_gba5_component": 18,
+          "maximum_static_image_gba5_component": 17
+        },
+        {
+          "row": 9,
+          "start_depth": 3000,
+          "all_palette_nonblack": 250,
+          "static_image_colors_nonblack": 212,
+          "maximum_gba5_component": 15,
+          "maximum_static_image_gba5_component": 15
+        },
+        {
+          "row": 10,
+          "start_depth": 3120,
+          "all_palette_nonblack": 250,
+          "static_image_colors_nonblack": 212,
+          "maximum_gba5_component": 13,
+          "maximum_static_image_gba5_component": 12
+        },
+        {
+          "row": 11,
+          "start_depth": 3240,
+          "all_palette_nonblack": 245,
+          "static_image_colors_nonblack": 208,
+          "maximum_gba5_component": 12,
+          "maximum_static_image_gba5_component": 11
+        },
+        {
+          "row": 12,
+          "start_depth": 3360,
+          "all_palette_nonblack": 239,
+          "static_image_colors_nonblack": 203,
+          "maximum_gba5_component": 10,
+          "maximum_static_image_gba5_component": 10
+        },
+        {
+          "row": 13,
+          "start_depth": 3480,
+          "all_palette_nonblack": 229,
+          "static_image_colors_nonblack": 195,
+          "maximum_gba5_component": 10,
+          "maximum_static_image_gba5_component": 8
+        },
+        {
+          "row": 14,
+          "start_depth": 3600,
+          "all_palette_nonblack": 202,
+          "static_image_colors_nonblack": 170,
+          "maximum_gba5_component": 6,
+          "maximum_static_image_gba5_component": 5
+        },
+        {
+          "row": 15,
+          "start_depth": 3720,
+          "all_palette_nonblack": 109,
+          "static_image_colors_nonblack": 86,
+          "maximum_gba5_component": 3,
+          "maximum_static_image_gba5_component": 2
+        }
+      ],
+      "static_image_bindings": 144,
+      "static_image_source_colors": 216,
+      "wake_radii": [
+        {
+          "distance": 3600,
+          "definitions": 29
+        },
+        {
+          "distance": 4000,
+          "definitions": 35
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "language": 1,
+      "rows": [
+        {
+          "row": 0,
+          "start_depth": 0,
+          "all_palette_nonblack": 254,
+          "static_image_colors_nonblack": 214,
+          "maximum_gba5_component": 31,
+          "maximum_static_image_gba5_component": 31
+        },
+        {
+          "row": 1,
+          "start_depth": 2040,
+          "all_palette_nonblack": 254,
+          "static_image_colors_nonblack": 214,
+          "maximum_gba5_component": 31,
+          "maximum_static_image_gba5_component": 31
+        },
+        {
+          "row": 2,
+          "start_depth": 2160,
+          "all_palette_nonblack": 254,
+          "static_image_colors_nonblack": 214,
+          "maximum_gba5_component": 31,
+          "maximum_static_image_gba5_component": 31
+        },
+        {
+          "row": 3,
+          "start_depth": 2280,
+          "all_palette_nonblack": 254,
+          "static_image_colors_nonblack": 214,
+          "maximum_gba5_component": 31,
+          "maximum_static_image_gba5_component": 28
+        },
+        {
+          "row": 4,
+          "start_depth": 2400,
+          "all_palette_nonblack": 254,
+          "static_image_colors_nonblack": 214,
+          "maximum_gba5_component": 31,
+          "maximum_static_image_gba5_component": 26
+        },
+        {
+          "row": 5,
+          "start_depth": 2520,
+          "all_palette_nonblack": 253,
+          "static_image_colors_nonblack": 213,
+          "maximum_gba5_component": 26,
+          "maximum_static_image_gba5_component": 23
+        },
+        {
+          "row": 6,
+          "start_depth": 2640,
+          "all_palette_nonblack": 253,
+          "static_image_colors_nonblack": 213,
+          "maximum_gba5_component": 26,
+          "maximum_static_image_gba5_component": 21
+        },
+        {
+          "row": 7,
+          "start_depth": 2760,
+          "all_palette_nonblack": 253,
+          "static_image_colors_nonblack": 213,
+          "maximum_gba5_component": 20,
+          "maximum_static_image_gba5_component": 19
+        },
+        {
+          "row": 8,
+          "start_depth": 2880,
+          "all_palette_nonblack": 253,
+          "static_image_colors_nonblack": 213,
+          "maximum_gba5_component": 18,
+          "maximum_static_image_gba5_component": 17
+        },
+        {
+          "row": 9,
+          "start_depth": 3000,
+          "all_palette_nonblack": 250,
+          "static_image_colors_nonblack": 212,
+          "maximum_gba5_component": 15,
+          "maximum_static_image_gba5_component": 15
+        },
+        {
+          "row": 10,
+          "start_depth": 3120,
+          "all_palette_nonblack": 250,
+          "static_image_colors_nonblack": 212,
+          "maximum_gba5_component": 13,
+          "maximum_static_image_gba5_component": 12
+        },
+        {
+          "row": 11,
+          "start_depth": 3240,
+          "all_palette_nonblack": 245,
+          "static_image_colors_nonblack": 208,
+          "maximum_gba5_component": 12,
+          "maximum_static_image_gba5_component": 11
+        },
+        {
+          "row": 12,
+          "start_depth": 3360,
+          "all_palette_nonblack": 239,
+          "static_image_colors_nonblack": 203,
+          "maximum_gba5_component": 10,
+          "maximum_static_image_gba5_component": 10
+        },
+        {
+          "row": 13,
+          "start_depth": 3480,
+          "all_palette_nonblack": 229,
+          "static_image_colors_nonblack": 195,
+          "maximum_gba5_component": 10,
+          "maximum_static_image_gba5_component": 8
+        },
+        {
+          "row": 14,
+          "start_depth": 3600,
+          "all_palette_nonblack": 202,
+          "static_image_colors_nonblack": 170,
+          "maximum_gba5_component": 6,
+          "maximum_static_image_gba5_component": 5
+        },
+        {
+          "row": 15,
+          "start_depth": 3720,
+          "all_palette_nonblack": 109,
+          "static_image_colors_nonblack": 86,
+          "maximum_gba5_component": 3,
+          "maximum_static_image_gba5_component": 2
+        }
+      ],
+      "static_image_bindings": 144,
+      "static_image_source_colors": 216,
+      "wake_radii": [
+        {
+          "distance": 3600,
+          "definitions": 29
+        },
+        {
+          "distance": 4000,
+          "definitions": 35
+        }
+      ]
+    },
+    {
+      "level": 3,
+      "language": 0,
+      "rows": [
+        {
+          "row": 0,
+          "start_depth": 0,
+          "all_palette_nonblack": 254,
+          "static_image_colors_nonblack": 206,
+          "maximum_gba5_component": 31,
+          "maximum_static_image_gba5_component": 31
+        },
+        {
+          "row": 1,
+          "start_depth": 2040,
+          "all_palette_nonblack": 254,
+          "static_image_colors_nonblack": 206,
+          "maximum_gba5_component": 31,
+          "maximum_static_image_gba5_component": 31
+        },
+        {
+          "row": 2,
+          "start_depth": 2160,
+          "all_palette_nonblack": 254,
+          "static_image_colors_nonblack": 206,
+          "maximum_gba5_component": 31,
+          "maximum_static_image_gba5_component": 31
+        },
+        {
+          "row": 3,
+          "start_depth": 2280,
+          "all_palette_nonblack": 254,
+          "static_image_colors_nonblack": 206,
+          "maximum_gba5_component": 31,
+          "maximum_static_image_gba5_component": 29
+        },
+        {
+          "row": 4,
+          "start_depth": 2400,
+          "all_palette_nonblack": 254,
+          "static_image_colors_nonblack": 206,
+          "maximum_gba5_component": 31,
+          "maximum_static_image_gba5_component": 28
+        },
+        {
+          "row": 5,
+          "start_depth": 2520,
+          "all_palette_nonblack": 253,
+          "static_image_colors_nonblack": 205,
+          "maximum_gba5_component": 26,
+          "maximum_static_image_gba5_component": 25
+        },
+        {
+          "row": 6,
+          "start_depth": 2640,
+          "all_palette_nonblack": 253,
+          "static_image_colors_nonblack": 205,
+          "maximum_gba5_component": 26,
+          "maximum_static_image_gba5_component": 20
+        },
+        {
+          "row": 7,
+          "start_depth": 2760,
+          "all_palette_nonblack": 253,
+          "static_image_colors_nonblack": 205,
+          "maximum_gba5_component": 19,
+          "maximum_static_image_gba5_component": 19
+        },
+        {
+          "row": 8,
+          "start_depth": 2880,
+          "all_palette_nonblack": 252,
+          "static_image_colors_nonblack": 205,
+          "maximum_gba5_component": 17,
+          "maximum_static_image_gba5_component": 17
+        },
+        {
+          "row": 9,
+          "start_depth": 3000,
+          "all_palette_nonblack": 249,
+          "static_image_colors_nonblack": 203,
+          "maximum_gba5_component": 16,
+          "maximum_static_image_gba5_component": 14
+        },
+        {
+          "row": 10,
+          "start_depth": 3120,
+          "all_palette_nonblack": 249,
+          "static_image_colors_nonblack": 203,
+          "maximum_gba5_component": 13,
+          "maximum_static_image_gba5_component": 13
+        },
+        {
+          "row": 11,
+          "start_depth": 3240,
+          "all_palette_nonblack": 247,
+          "static_image_colors_nonblack": 202,
+          "maximum_gba5_component": 11,
+          "maximum_static_image_gba5_component": 11
+        },
+        {
+          "row": 12,
+          "start_depth": 3360,
+          "all_palette_nonblack": 243,
+          "static_image_colors_nonblack": 200,
+          "maximum_gba5_component": 9,
+          "maximum_static_image_gba5_component": 9
+        },
+        {
+          "row": 13,
+          "start_depth": 3480,
+          "all_palette_nonblack": 234,
+          "static_image_colors_nonblack": 195,
+          "maximum_gba5_component": 9,
+          "maximum_static_image_gba5_component": 9
+        },
+        {
+          "row": 14,
+          "start_depth": 3600,
+          "all_palette_nonblack": 212,
+          "static_image_colors_nonblack": 178,
+          "maximum_gba5_component": 5,
+          "maximum_static_image_gba5_component": 4
+        },
+        {
+          "row": 15,
+          "start_depth": 3720,
+          "all_palette_nonblack": 112,
+          "static_image_colors_nonblack": 93,
+          "maximum_gba5_component": 3,
+          "maximum_static_image_gba5_component": 2
+        }
+      ],
+      "static_image_bindings": 185,
+      "static_image_source_colors": 208,
+      "wake_radii": [
+        {
+          "distance": 4000,
+          "definitions": 82
+        },
+        {
+          "distance": 6600,
+          "definitions": 23
+        }
+      ]
+    },
+    {
+      "level": 3,
+      "language": 1,
+      "rows": [
+        {
+          "row": 0,
+          "start_depth": 0,
+          "all_palette_nonblack": 254,
+          "static_image_colors_nonblack": 206,
+          "maximum_gba5_component": 31,
+          "maximum_static_image_gba5_component": 31
+        },
+        {
+          "row": 1,
+          "start_depth": 2040,
+          "all_palette_nonblack": 254,
+          "static_image_colors_nonblack": 206,
+          "maximum_gba5_component": 31,
+          "maximum_static_image_gba5_component": 31
+        },
+        {
+          "row": 2,
+          "start_depth": 2160,
+          "all_palette_nonblack": 254,
+          "static_image_colors_nonblack": 206,
+          "maximum_gba5_component": 31,
+          "maximum_static_image_gba5_component": 31
+        },
+        {
+          "row": 3,
+          "start_depth": 2280,
+          "all_palette_nonblack": 254,
+          "static_image_colors_nonblack": 206,
+          "maximum_gba5_component": 31,
+          "maximum_static_image_gba5_component": 29
+        },
+        {
+          "row": 4,
+          "start_depth": 2400,
+          "all_palette_nonblack": 254,
+          "static_image_colors_nonblack": 206,
+          "maximum_gba5_component": 31,
+          "maximum_static_image_gba5_component": 28
+        },
+        {
+          "row": 5,
+          "start_depth": 2520,
+          "all_palette_nonblack": 253,
+          "static_image_colors_nonblack": 205,
+          "maximum_gba5_component": 26,
+          "maximum_static_image_gba5_component": 25
+        },
+        {
+          "row": 6,
+          "start_depth": 2640,
+          "all_palette_nonblack": 253,
+          "static_image_colors_nonblack": 205,
+          "maximum_gba5_component": 26,
+          "maximum_static_image_gba5_component": 20
+        },
+        {
+          "row": 7,
+          "start_depth": 2760,
+          "all_palette_nonblack": 253,
+          "static_image_colors_nonblack": 205,
+          "maximum_gba5_component": 19,
+          "maximum_static_image_gba5_component": 19
+        },
+        {
+          "row": 8,
+          "start_depth": 2880,
+          "all_palette_nonblack": 252,
+          "static_image_colors_nonblack": 205,
+          "maximum_gba5_component": 17,
+          "maximum_static_image_gba5_component": 17
+        },
+        {
+          "row": 9,
+          "start_depth": 3000,
+          "all_palette_nonblack": 249,
+          "static_image_colors_nonblack": 203,
+          "maximum_gba5_component": 16,
+          "maximum_static_image_gba5_component": 14
+        },
+        {
+          "row": 10,
+          "start_depth": 3120,
+          "all_palette_nonblack": 249,
+          "static_image_colors_nonblack": 203,
+          "maximum_gba5_component": 13,
+          "maximum_static_image_gba5_component": 13
+        },
+        {
+          "row": 11,
+          "start_depth": 3240,
+          "all_palette_nonblack": 247,
+          "static_image_colors_nonblack": 202,
+          "maximum_gba5_component": 11,
+          "maximum_static_image_gba5_component": 11
+        },
+        {
+          "row": 12,
+          "start_depth": 3360,
+          "all_palette_nonblack": 243,
+          "static_image_colors_nonblack": 200,
+          "maximum_gba5_component": 9,
+          "maximum_static_image_gba5_component": 9
+        },
+        {
+          "row": 13,
+          "start_depth": 3480,
+          "all_palette_nonblack": 234,
+          "static_image_colors_nonblack": 195,
+          "maximum_gba5_component": 9,
+          "maximum_static_image_gba5_component": 9
+        },
+        {
+          "row": 14,
+          "start_depth": 3600,
+          "all_palette_nonblack": 212,
+          "static_image_colors_nonblack": 178,
+          "maximum_gba5_component": 5,
+          "maximum_static_image_gba5_component": 4
+        },
+        {
+          "row": 15,
+          "start_depth": 3720,
+          "all_palette_nonblack": 112,
+          "static_image_colors_nonblack": 93,
+          "maximum_gba5_component": 3,
+          "maximum_static_image_gba5_component": 2
+        }
+      ],
+      "static_image_bindings": 185,
+      "static_image_source_colors": 208,
+      "wake_radii": [
+        {
+          "distance": 4000,
+          "definitions": 82
+        },
+        {
+          "distance": 6600,
+          "definitions": 23
+        }
+      ]
+    }
+  ],
+  "palette_conversion": "VGA6 components >>1, matching gba/renderer_probe.c to native GBA5.",
+  "scope": "Asset/implementation audit only, no visibility threshold, human perception result, FPS improvement or AI rebalance claimed.",
+  "interpretation": "Final LIGHT15 is not identically black, including bound static art. Perceptually negligible dark detail may still be removed in a separate draw-distance quality prototype.",
+  "ai": "0xBA uses max(abs(dx),abs(dz))<distance to initially wake considered monsters. Existing owners are not stopped at that radius; combat wake bypasses this test. No gameplay fields changed."
+}

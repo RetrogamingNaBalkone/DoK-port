@@ -1,0 +1,347 @@
+{
+  "task": "G20A",
+  "status": "native-column-prototype-not-selected",
+  "goal_complete": false,
+  "trial_rom_sha256": "e9bae2d9268db5c74674c7dd2eab8e8511d1ea2d84d039122c745e5b54804b22",
+  "control_rom_sha256": "2775bdd0caaac64b4fd99e4c6d675587fad2da9c795468dc52efacb5d53edaab",
+  "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+  "byte_exact_repeat": true,
+  "prior_stream_rom_preserved": "bfdba7d0455199e5599ebea9bf795abefdaff0c730f63db4b848e71a12825184",
+  "heavy_cases": [
+    {
+      "level": 1,
+      "cell": 520,
+      "heading": 225,
+      "cpu_ratio": 3.580979573907314,
+      "baseline_fps": 9.95458342826764,
+      "fps": 3.1435526615582017
+    },
+    {
+      "level": 1,
+      "cell": 3640,
+      "heading": 225,
+      "cpu_ratio": 3.5544303797468353,
+      "baseline_fps": 11.945500113921167,
+      "fps": 3.318194476089213
+    },
+    {
+      "level": 2,
+      "cell": 1592,
+      "heading": 135,
+      "cpu_ratio": 4.022558346154679,
+      "baseline_fps": 9.95458342826764,
+      "fps": 2.778023282307248
+    },
+    {
+      "level": 2,
+      "cell": 2871,
+      "heading": 225,
+      "cpu_ratio": 4.03523166023166,
+      "baseline_fps": 9.95458342826764,
+      "fps": 2.7148863895275377
+    },
+    {
+      "level": 3,
+      "cell": 1544,
+      "heading": 315,
+      "cpu_ratio": 4.3106449375866855,
+      "baseline_fps": 14.931875142401458,
+      "fps": 4.119137970317643
+    }
+  ],
+  "ppu": {
+    "cases": 18,
+    "coverage_exact": 2,
+    "max_changed_pixels": 17298,
+    "max_overlay_changes": 0
+  },
+  "visibility": {
+    "poses": 36,
+    "column_snapshots": 108,
+    "checked_rows": 13752,
+    "excluded_shared_boundary_rows": 72,
+    "scope": "Native all-dynamic-candidate/geometry checks, final nearest owner/alpha/vertical and ceiling pixels, direct segment-ray wall intersections, world-cell lowered ceiling oracle, visibility leases, guards. Shared grid boundary rows explicitly excluded. Not full gameplay or identical old affine pixels.",
+    "stack": {
+      "main_stack_low": 50356224,
+      "main_stack_top": 50364160,
+      "sentinel_word": 219540062,
+      "untouched_margin_bytes": 5408,
+      "high_water_bytes": 2528,
+      "irq_and_bios_excluded": true,
+      "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+    }
+  },
+  "live24": {
+    "before": [
+      {
+        "level": 1,
+        "language": 0,
+        "fps": 19.37108126581811,
+        "max_motion_debt": 415
+      },
+      {
+        "level": 2,
+        "language": 0,
+        "fps": 19.112800182273865,
+        "max_motion_debt": 399
+      },
+      {
+        "level": 3,
+        "language": 0,
+        "fps": 27.56653872443346,
+        "max_motion_debt": 411
+      },
+      {
+        "level": 1,
+        "language": 1,
+        "fps": 19.37108126581811,
+        "max_motion_debt": 414
+      },
+      {
+        "level": 2,
+        "language": 1,
+        "fps": 19.112800182273865,
+        "max_motion_debt": 415
+      },
+      {
+        "level": 3,
+        "language": 1,
+        "fps": 27.56653872443346,
+        "max_motion_debt": 412
+      }
+    ],
+    "after": [
+      {
+        "level": 1,
+        "language": 0,
+        "fps": 5.083191537838794,
+        "max_motion_debt": 415
+      },
+      {
+        "level": 2,
+        "language": 0,
+        "fps": 4.859186487018779,
+        "max_motion_debt": 409
+      },
+      {
+        "level": 3,
+        "language": 0,
+        "fps": 5.665849856405297,
+        "max_motion_debt": 410
+      },
+      {
+        "level": 1,
+        "language": 1,
+        "fps": 5.083191537838794,
+        "max_motion_debt": 415
+      },
+      {
+        "level": 2,
+        "language": 1,
+        "fps": 4.859186487018779,
+        "max_motion_debt": 409
+      },
+      {
+        "level": 3,
+        "language": 1,
+        "fps": 5.665849856405297,
+        "max_motion_debt": 409
+      }
+    ]
+  },
+  "profile": {
+    "rom_sha256": "e9bae2d9268db5c74674c7dd2eab8e8511d1ea2d84d039122c745e5b54804b22",
+    "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+    "script_sha256": "6778446eb4dec8258772a3c2ed7c064fe4a71e2df84db3b4569fe1f1218dbc74",
+    "rows": [
+      {
+        "level": 1,
+        "cell": 520,
+        "heading": 225,
+        "cycles": 4575232,
+        "work": [
+          1,
+          120,
+          777,
+          365,
+          5952,
+          7173,
+          4756,
+          0
+        ],
+        "attributed_cycles": {
+          "prepare": 107776,
+          "visibility": 2097856,
+          "vertical_output": 597504,
+          "ceiling_output": 811712
+        },
+        "image": "build\\g20a-columns-v6\\hw_v128_columns\\columns-L1-cell520-225.png",
+        "image_sha256": "a7da9196f3062aeb7d4ed8d18f6cc13be4007fbf6bd2239a50a18ef869a61969"
+      },
+      {
+        "level": 1,
+        "cell": 3640,
+        "heading": 225,
+        "cycles": 4335040,
+        "work": [
+          1,
+          120,
+          1143,
+          247,
+          1709,
+          4613,
+          5737,
+          0
+        ],
+        "attributed_cycles": {
+          "prepare": 110080,
+          "visibility": 1777664,
+          "vertical_output": 552064,
+          "ceiling_output": 933696
+        },
+        "image": "build\\g20a-columns-v6\\hw_v128_columns\\columns-L1-cell3640-225.png",
+        "image_sha256": "54fc271c29e2b8f167125ee5634fe9a342719562ccd7b583c95d9c8b64063d51"
+      },
+      {
+        "level": 2,
+        "cell": 1592,
+        "heading": 135,
+        "cycles": 5202816,
+        "work": [
+          1,
+          120,
+          1082,
+          635,
+          11733,
+          11890,
+          566,
+          0
+        ],
+        "attributed_cycles": {
+          "prepare": 143488,
+          "visibility": 3195456,
+          "vertical_output": 562880,
+          "ceiling_output": 288320
+        },
+        "image": "build\\g20a-columns-v6\\hw_v128_columns\\columns-L2-cell1592-135.png",
+        "image_sha256": "b6536870a2a6edbc00a1379d5af00c4472f7f00f6866798e2d9f163dc64beb02"
+      },
+      {
+        "level": 2,
+        "cell": 2871,
+        "heading": 225,
+        "cycles": 5387072,
+        "work": [
+          1,
+          120,
+          1004,
+          544,
+          13908,
+          10533,
+          1287,
+          0
+        ],
+        "attributed_cycles": {
+          "prepare": 119552,
+          "visibility": 3342336,
+          "vertical_output": 545792,
+          "ceiling_output": 376000
+        },
+        "image": "build\\g20a-columns-v6\\hw_v128_columns\\columns-L2-cell2871-225.png",
+        "image_sha256": "b9b31e137dc00a804cb3c9d745c8a1869af1b1c11c9fbe0a78ea09a3472ad256"
+      },
+      {
+        "level": 3,
+        "cell": 1544,
+        "heading": 315,
+        "cycles": 3497984,
+        "work": [
+          1,
+          120,
+          614,
+          335,
+          6723,
+          14132,
+          0,
+          0
+        ],
+        "attributed_cycles": {
+          "prepare": 102016,
+          "visibility": 1902208,
+          "vertical_output": 509568,
+          "ceiling_output": 256
+        },
+        "image": "build\\g20a-columns-v6\\hw_v128_columns\\columns-L3-cell1544-315.png",
+        "image_sha256": "f7ad07ecebbde4fc1cee608e422ab7d02ccf85d974014257b7e6eee1643733cf"
+      }
+    ],
+    "stack": {
+      "main_stack_low": 50356224,
+      "main_stack_top": 50364160,
+      "sentinel_word": 219540062,
+      "untouched_margin_bytes": 5408,
+      "high_water_bytes": 2528,
+      "irq_and_bios_excluded": true,
+      "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+    },
+    "forced_pcm": false,
+    "cold_reset_after_freeze": true,
+    "scope": "Instrumented completed held draws, frozen simulation, original maps. No forced PCM workload. Timer64 cycles/tick, overhead included; not production FPS or gameplay acceptance."
+  },
+  "memory": {
+    "ewram_bytes": 261280,
+    "ewram_free_bytes": 864,
+    "iwram_bytes": 20976,
+    "iwram_free_before_stack_reserve_bytes": 3600,
+    "stack_reserve_bytes": 8192
+  },
+  "preserved_roms": {
+    "DoK-port_hardware_cached_prototype.gba": "2775bdd0caaac64b4fd99e4c6d675587fad2da9c795468dc52efacb5d53edaab",
+    "DoK-port_hardware_rows96_prototype.gba": "97f0b3cb1d97c958bb0750128cef72aa94f64fa4107a8edc53d743c38b557f81",
+    "DoK-port_hardware_rows72_prototype.gba": "17696958e5d1f08672754f788861c31fdc6302d242f24f0b4a5223768688888a"
+  },
+  "evidence": [
+    {
+      "path": "build/g20a-columns-v6/prototype-build.json",
+      "sha256": "4b44aa3f9f1821e005bfd7079ab207be107af771be610f44d033ee9f21ef918a"
+    },
+    {
+      "path": "build/g20a-columns-v6/target.json",
+      "sha256": "038075418ef1f1ca239f7112a74c7775d6eb3692975a5cf517693a478780c66b"
+    },
+    {
+      "path": "build/g20a-columns-v6/ppu18-live.json",
+      "sha256": "4f63c17dc6bcb4e89150944e4ff3b6b5242872f976c88fdf0c09ef45deac77ad"
+    },
+    {
+      "path": "build/g20a-columns-v6/profile.json",
+      "sha256": "cda5cbaeb67d866e26d728a0f6c62f4056cc586bcd9b60775980963ae52152a5"
+    },
+    {
+      "path": "build/g20a-columns-v6/visibility.json",
+      "sha256": "e6b7b30640cc02463af727b3571d15d7e5f0713c0ce8fec0d0d40df7069678fd"
+    },
+    {
+      "path": "build/g20a-columns-v6/control-live24.json",
+      "sha256": "eafabc2bd05198d1daadc038786ff07dc75653894963a880328384534a02024f"
+    },
+    {
+      "path": "build/g20a-columns-repeat-final/prototype-build.json",
+      "sha256": "cc8f009a929fa2db9b718298efde2778520296669936c7613088c33e4049212c"
+    },
+    {
+      "path": "build/g20a-hw-entity-rect-v2/spatial.json",
+      "sha256": "15596daa16c2bd2cec1558f68ae0063f3db8e82d97c08cdd5d6f5f4b4401a879"
+    }
+  ],
+  "limitations": [
+    "Five heavy PCM cases, 18 frozen PPU views, 36 visibility poses and six short live runs; no full 440-column sweep or full gameplay acceptance.",
+    "Specific per-row nearest-depth/owner DDA implementation; not a Doom sector top/bottom clip and visplane renderer.",
+    "World-space ceiling and wall UV/raster rounding differ from the old affine path; exact RGB is not the acceptance criterion.",
+    "Profile uses instrumentation without forced PCM; do not compare attributed totals directly with target PCM cycles.",
+    "Live motion debt is retained, not proof of sufficient simulation speed; no physical GBA acceptance.",
+    "V1-V5 superseded: reciprocal depth equality fixed, startup state cold-reset after freeze, original envelope restored without a 6400 cap.",
+    "No draw-distance or AI activation changes. Full mutated-map/fallback and moving-transition QA not accepted."
+  ],
+  "next_action": "Direct hardware world OBJ and genuine sector clip/span architecture before local tuning; static image cache lower priority."
+}

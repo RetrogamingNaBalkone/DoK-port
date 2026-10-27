@@ -9,6 +9,7 @@ def main():
  p=argparse.ArgumentParser(description=__doc__)
  p.add_argument('--build-dir',type=Path,default=Path('build/g09'))
  p.add_argument('--report',type=Path,default=Path('analysis/g09-gba-verification.json'))
+ p.add_argument('--skip-visual-oracle',action='store_true',help='Quality prototypes only: retain all door/collision/sensor checks, omit original affine floor pixel comparison')
  p.add_argument('--core',type=Path,default=Path(os.environ['LOCALAPPDATA'])/'Programs/mGBA/libretro-20261024/mgba_libretro.dll')
  a=p.parse_args();build=a.build_dir;_,syms,_=elf_info(build/'dok-diagnostic.elf')
  f=Frontend(a.core.resolve(),build);f.load(build/'dok-diagnostic.gba');request=0;camera_request=0;captures=[];cycles=[];camera_pose=[0,0,0]
@@ -22,10 +23,19 @@ def main():
    if r['magic']==0x524e4435 and r['draws']:start_gameplay(f,syms)
    if basic['magic']==0x444f4b31:assert not basic['fault'],basic
    if r['draws'] and r['magic']==0x524e4435:
+    if 'g_camera_capture_hold' in syms:write(syms['g_camera_capture_hold'],struct.pack('<I',1))
     assert r['status']==0 and r['guard_ok'],r;cycles.append((r['last_cycles'],struct.unpack('<I',f.read(motion,4))[0]))
    if pred():return
   raise AssertionError(('timeout',render(),interaction()))
  def ready():until(lambda:render()['draws']>=3 and interaction()[0]==0x494e5439)
+ def switch_language():
+  previous=render();switches=previous['switches']
+  if 'g_ui_probe' in syms:
+   address=syms['g_ui_probe'];request=struct.unpack('<I',f.read(address+4,4))[0]+1
+   write(address+8,struct.pack('<2I',2,previous['language']^1));write(address,struct.pack('<I',request))
+   until(lambda:render()['switches']>switches and render()['phase']==2)
+  else:until(lambda:render()['switches']>switches,[2])
+  until(lambda:render()['last_keys']==0)
  def steps(n=1,cmd=0):
   nonlocal request
   while n:
@@ -52,7 +62,7 @@ def main():
   idx=build/'interaction-reference.idx';pal=build/'interaction-reference.pal'
   subprocess.run(['build/native/dok-render-reference.exe','build/gba/assets/assets.bin',str(level+1),language,str(idx),str(pal),str(cell%64*480+240),'-300',str(cell//64*480+240),str(heading),str(g),str(d['frame']),str(d['extent'])],stdout=subprocess.DEVNULL,check=True)
   reference=idx.read_bytes();actual=f.read(syms['g_render_frame']+4,38400);compared=0
-  for y in range(144):
+  for y in range(0 if a.skip_visual_oracle else 144):
    for x in range(240):
     if y<14 and (x<80 or x>=160) or y>=128 and x>=192:continue
     assert actual[y*240+x]==reference[y*240+(x&~1)],(name,x,y,actual[y*240+x],reference[y*240+(x&~1)])
@@ -77,7 +87,7 @@ def main():
   for glyph in (ord('a'),ord('d'),ord('g')):
    reset();m=model(0);cell,neighbor,heading=spot(m,glyph);pose(m,neighbor,heading);camera(0,neighbor,heading)
    if language=='en':
-    switches=render()['switches'];until(lambda:render()['switches']>switches,[2]);until(lambda:render()['last_keys']==0)
+    switch_language()
    if glyph==ord('a'):
     steps(1,0x800);assert door(m,glyph)['frame']==0 and interaction()[3]==1
     write(world+17412+20,struct.pack('<H',2))
@@ -85,7 +95,7 @@ def main():
    if language=='ru' and glyph==ord('d'):
     before=f.read(world+4,render()['world_bytes']-4)
     for _ in range(2):
-     switches=render()['switches'];until(lambda:render()['switches']>switches,[2]);until(lambda:render()['last_keys']==0)
+     switch_language()
      assert f.read(world+4,render()['world_bytes']-4)==before,'Language changed active door/world'
    capture(f'{language}-{chr(glyph)}-opening',m,glyph);steps(32);opened=door(m,glyph);assert opened['phase']==1 and opened['flags']&16,opened
    capture(f'{language}-{chr(glyph)}-open',m,glyph)
@@ -120,5 +130,6 @@ def main():
  stack=stack_usage(f);meta=json.loads((build/'build-report.json').read_text());f.core.retro_reset();ct.memset(f.pointer(0x02000000,meta['ewram_static_bytes']),0xa5,meta['ewram_static_bytes']);ready()
  assert f.read(motion,20)==bytes(20) and interaction()[1]==0
  report=dict(task='G09',status='passed',rom_sha256=sha(build/'dok-diagnostic.gba'),scenarios=scenarios,live_start=live,sensors=sensor_results,conveyors=conveyors,active_door_language_preserved=True,finish_event=True,shared_arm_cases=True,poisoned_reset=True,stack=stack,captures=captures,live_frame_min_cycles=min(c for c,mode in cycles if not mode),live_frame_max_cycles=max(c for c,mode in cycles if not mode),test_frame_max_cycles=max(c for c,mode in cycles if mode),physical_gba_tested=False,original_bios_tested=False)
- a.report.write_text(json.dumps(report,indent=2)+'\n');f.core.retro_unload_game();f.core.retro_deinit();print('G09 mGBA door/collision, RU/EN, Start, sensors, finish and reset passed')
+ report['original_affine_visual_oracle_checked']=not a.skip_visual_oracle
+ a.report.write_text(json.dumps(report,indent=2)+'\n');f.core.retro_unload_game();f.core.retro_deinit();print('G09 mGBA door/collision, RU/EN, Start, sensors, finish and reset passed'+('; original affine visual oracle intentionally omitted' if a.skip_visual_oracle else ''))
 if __name__=='__main__':main()

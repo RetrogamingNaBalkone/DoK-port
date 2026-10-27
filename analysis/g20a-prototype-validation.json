@@ -1,0 +1,220 @@
+{
+  "task": "G20A",
+  "status": "validated-prototypes-performance-target-open",
+  "current_best": "exact_planes",
+  "rom_sha256": "ef4237c9699c140adca2e0dbb951938194331d1664a36f6d1d27ea2f7efed999",
+  "artifacts": {
+    "exact_planes": {
+      "path": "artifacts/gba/DoK-port_exact_planes_v1.gba",
+      "bytes": 9938648,
+      "sha256": "ef4237c9699c140adca2e0dbb951938194331d1664a36f6d1d27ea2f7efed999"
+    },
+    "bsp_setup": {
+      "path": "artifacts/gba/DoK-port_BSP_prototype.gba",
+      "bytes": 33233800,
+      "sha256": "735ba24497f1623751a4a58f7ace00206d87f2e32824ada73c752d69eeb76297"
+    }
+  },
+  "checks": {
+    "oracle": {
+      "path": "build/g20a-prototypes/exact-planes-oracle.json",
+      "sha256": "f1ef363ddf6e70f0bdbc23784ff422fea502ff2f61aa9e837f93778343847ae9",
+      "status": "passed"
+    },
+    "arm": {
+      "path": "build/g20a-prototypes/exact-planes-arm.json",
+      "sha256": "aec2a973039442ea1c5408a067c4914ba7d04c6da5fad68d8bf9bf3f0d4919a6",
+      "status": "passed"
+    },
+    "renderer": {
+      "path": "build/g20a-prototypes/exact-planes-renderer.json",
+      "sha256": "bee938752bb9983e101ec70194205646db3b5fdbea5f1e20e01ebc3d6874bab6",
+      "status": "passed"
+    },
+    "sprites": {
+      "path": "build/g20a-prototypes/exact-planes-sprites.json",
+      "sha256": "e7cf03d6caa58182617ca075c3c0cbd676ab3b57105842a3ec9a563855915f86",
+      "status": "passed"
+    },
+    "interactions": {
+      "path": "build/g20a-prototypes/exact-planes-interactions.json",
+      "sha256": "197a2c2b3c73cf07e18189c2a902cc9edaa6e6eccd07fac3c357690b0c5b6e79",
+      "status": "passed"
+    },
+    "time": {
+      "path": "build/g20a-prototypes/exact-planes-time.json",
+      "sha256": "f0efc4858e5da324987bbcc696fc75d671006fe80ce90e557d203b2150c99db7",
+      "status": "passed"
+    },
+    "ai_combat": {
+      "path": "build/g20a-prototypes/exact-planes-ai_combat.json",
+      "sha256": "968c67077b4abcdf426c7c9440e6229e6a2425b2a7827892019fae3591604f31",
+      "status": "passed"
+    },
+    "ui": {
+      "path": "build/g20a-prototypes/exact-planes-ui.json",
+      "sha256": "b07a719197f5d065995553a4e1b8ab62f051941f00e54bc8d6025200435c603e",
+      "status": "passed"
+    },
+    "flow": {
+      "path": "build/g20a-prototypes/exact-planes-flow.json",
+      "sha256": "a95ca5c0e56ae07269dffb1e32d7e085c257a94c88dc47a500c6976d634b6cae",
+      "status": "passed"
+    },
+    "game": {
+      "path": "build/g20a-prototypes/exact-planes-game.json",
+      "sha256": "bb657c4c9a3eca86e872bf379f1936de0f88226a1dac78e8ee5ecc21b5d26ee5",
+      "status": "passed"
+    }
+  },
+  "pixel_exact_frames": 488,
+  "scene_columns": 120,
+  "scene_height": 144,
+  "ui_width": 240,
+  "ui_height": 160,
+  "quality_reduced_in_best": false,
+  "ai_rules_changed": false,
+  "ticks_dropped": false,
+  "targets_fps": [
+    30,
+    24.1,
+    15
+  ],
+  "targets_met": false,
+  "memory": {
+    "rom_bytes": 9938648,
+    "ewram_static_bytes": 254704,
+    "ewram_free": 7440,
+    "iwram_static_bytes": 22888,
+    "iwram_stack_bios_reserve": 8192,
+    "iwram_free_before_stack": 1688,
+    "stack": {
+      "main_stack_low": 50356224,
+      "main_stack_top": 50364160,
+      "sentinel_word": 219540062,
+      "untouched_margin_bytes": 5568,
+      "high_water_bytes": 2368,
+      "irq_and_bios_excluded": true,
+      "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+    },
+    "irq_stack": {
+      "low": 50364160,
+      "top": 50364320,
+      "untouched_margin_bytes": 80,
+      "high_water_bytes": 80,
+      "includes_bios_irq_saves": true
+    }
+  },
+  "integrated_audio_underruns": 0,
+  "all_awake_worst_cycles": 651488832,
+  "original_files_matching_preexisting_inventory": [
+    {
+      "path": "originals/Old_Gold_3D/OG.EXE",
+      "sha256": "7965e1d67128f196fbcf2bc449d97197f355c6b81cf043608fc9e01103ea043f"
+    },
+    {
+      "path": "originals/Old_Gold_3D/old-games.nfo",
+      "sha256": "cc2283945241a42a54020c30fa83aa3c17a91a59c034ae5f444db62e303b1602"
+    },
+    {
+      "path": "originals/Old_Gold_3D/OLD_GOLD.RES",
+      "sha256": "e376855167b64a7190ec2da0ba9bd1da129ba178c4033aebadebca3f08b2be25"
+    },
+    {
+      "path": "originals/Old_Gold_3D/README.TXT",
+      "sha256": "456d39010efe5e41f17445eeb5c0851b06472cbb84a0a4a5c854948b97f00a29"
+    },
+    {
+      "path": "originals/Old_Gold_Old_Version/OG.EXE",
+      "sha256": "673563eccad4d23c3cebe56f16ce9a1f631b6d45ffb73559d5c53c1bf252da90"
+    },
+    {
+      "path": "originals/Old_Gold_Old_Version/old-games.nfo",
+      "sha256": "cc2283945241a42a54020c30fa83aa3c17a91a59c034ae5f444db62e303b1602"
+    },
+    {
+      "path": "originals/Old_Gold_Old_Version/OLD_GOLD.RES",
+      "sha256": "e376855167b64a7190ec2da0ba9bd1da129ba178c4033aebadebca3f08b2be25"
+    },
+    {
+      "path": "originals/Old_Gold_Old_Version/README.TXT",
+      "sha256": "142858dd6f21135ac29d9dccfa29f6b08277513a67498adeb6d793327294ef5f"
+    },
+    {
+      "path": "originals/pkr/ENG/DPMI16BI.OVL",
+      "sha256": "d7b0fe7a20b535f983767d472a520da3bf03018932a1f65625916d0cd6e96110"
+    },
+    {
+      "path": "originals/pkr/ENG/PK.ICO",
+      "sha256": "b187a8c37e4ba21f11efa3030fc0e97925a68f45efcc885cc16c3f209231121c"
+    },
+    {
+      "path": "originals/pkr/ENG/PKE.EXE",
+      "sha256": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b"
+    },
+    {
+      "path": "originals/pkr/ENG/PKE.PIF",
+      "sha256": "bf0cce218c19dc0f1385faf922e9d7091f0f74ea4e90549c03f5d513fbcbbf80"
+    },
+    {
+      "path": "originals/pkr/ENG/PKE.RES",
+      "sha256": "865da340621fa6f90548a84e9ae9bf0a85071befb32a40ca1d359e488f74d458"
+    },
+    {
+      "path": "originals/pkr/ENG/RTM.EXE",
+      "sha256": "10acd85af3767634450a793f2af1e057de888621cbfc578d35d3fa91abc09661"
+    },
+    {
+      "path": "originals/pkr/RUS/DPMI16BI.OVL",
+      "sha256": "d7b0fe7a20b535f983767d472a520da3bf03018932a1f65625916d0cd6e96110"
+    },
+    {
+      "path": "originals/pkr/RUS/old-games.nfo",
+      "sha256": "cc2283945241a42a54020c30fa83aa3c17a91a59c034ae5f444db62e303b1602"
+    },
+    {
+      "path": "originals/pkr/RUS/PK.ICO",
+      "sha256": "b187a8c37e4ba21f11efa3030fc0e97925a68f45efcc885cc16c3f209231121c"
+    },
+    {
+      "path": "originals/pkr/RUS/PKR.EXE",
+      "sha256": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28"
+    },
+    {
+      "path": "originals/pkr/RUS/PKR.PIF",
+      "sha256": "84bf9acfb5c021d4aedbe081ebc1b5d3af9eef432ff16fc7fc5c47deaca4689a"
+    },
+    {
+      "path": "originals/pkr/RUS/PKR.RES",
+      "sha256": "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816"
+    },
+    {
+      "path": "originals/pkr/RUS/README.TXT",
+      "sha256": "0312e896c3d99300169f14e06cb7f78895799643094e2280f5d010706fb55dc5"
+    },
+    {
+      "path": "originals/pkr/RUS/RTM.EXE",
+      "sha256": "10acd85af3767634450a793f2af1e057de888621cbfc578d35d3fa91abc09661"
+    }
+  ],
+  "comparison": {
+    "path": "analysis/g20a-prototypes.json",
+    "sha256": "32dd21a246e29c0061296897e8cf2c18eea519f50e0a9db0ab0e3c7e668b3a76"
+  },
+  "scripts": {
+    "scripts/prototype_gba_bsp.py": "b3c1971d32a63f28573331df56af937fa52718740dd2293e056f21b1040912a7",
+    "scripts/benchmark_gba_prototypes.py": "d3762515bff5c717697cb17c79236ecc7589ed1a80881be67ab7000608abbb53",
+    "scripts/report_gba_prototypes.py": "67468c900555d26f242ffdf5d807f6ecf71302d134712bd509e7b0b30f8b1158",
+    "scripts/verify_performance_arm.py": "a455dc62d67cdc1738ae498519aeed35c49ba285f783bac9e1b1a5093e9e4e88",
+    "scripts/verify_sprites_gba.py": "03dc3906b27b0a10d2d96a356cbf031a857b7db008dce295e39398a428b4740c",
+    "scripts/verify_ui_gba.py": "6f1b209008aa5918f3b5ae5fe98d85e7f454d15e5ddfeb325f72ee2667e3e6e4",
+    "scripts/verify_interactions_gba.py": "0db45429f01ebed132fd45626ee0b6430f7427e4ae8c298dab3814896f0b7f6f"
+  },
+  "limitations": [
+    "No physical GBA or original BIOS test.",
+    "Live FPS fixtures are not whole-level playthroughs.",
+    "BSP and procedural variants are not selected defaults.",
+    "The five-band and low-resolution options do not justify their image cost.",
+    "All-awake simulation overload remains; rendering changes do not solve it."
+  ]
+}

@@ -1,0 +1,235 @@
+{
+  "task": "G20A",
+  "status": "second-pass-validated-target-open",
+  "targets_fps": [
+    30,
+    24.1,
+    15
+  ],
+  "targets_met": false,
+  "conservative_choice": "exact_ui",
+  "quality_experiment": "world_coarse",
+  "artifacts": {
+    "exact_ui": {
+      "path": "artifacts/gba/DoK-port_exact_ui_v2.gba",
+      "bytes": 9950848,
+      "sha256": "be2195184977481f68abdd1b7d91ae5c91c6969b26a78469e70b63d5a7fde5b7"
+    },
+    "world_water": {
+      "path": "artifacts/gba/DoK-port_world_spans_prototype.gba",
+      "bytes": 9885056,
+      "sha256": "abf8ac697514074466e7ff74ff96cfa14b51c3f3364e54aa889eb646c3fab809"
+    },
+    "world_coarse": {
+      "path": "artifacts/gba/DoK-port_floor_4x2_v2.gba",
+      "bytes": 9885436,
+      "sha256": "b4bd63f11f6d2f193eb4dcbd0886be5e4eabf52b2e5ca7136404198f02bcc0bd"
+    }
+  },
+  "variants": {
+    "exact_ui": {
+      "rom_sha256": "be2195184977481f68abdd1b7d91ae5c91c6969b26a78469e70b63d5a7fde5b7",
+      "rom_bytes": 9950848,
+      "checks": {
+        "arm": {
+          "path": "build/g20a-second/exact-ui-arm.json",
+          "sha256": "967553842f3f1d60a70f1e5f9a4c57a258de67b975c75b109aa4d4c5a94000c1",
+          "status": "passed"
+        },
+        "renderer": {
+          "path": "build/g20a-second/exact-ui-renderer.json",
+          "sha256": "8544552d37a4a2beeabab21e1ca967074224767e212b366479ef3339dfd06591",
+          "status": "passed"
+        },
+        "sprites": {
+          "path": "build/g20a-second/exact-ui-sprites.json",
+          "sha256": "5db3d2bca13a17405edb440c325be8c59a1c3bebb97c86293955c298af262ec4",
+          "status": "passed"
+        },
+        "interactions": {
+          "path": "build/g20a-second/exact-ui-interactions.json",
+          "sha256": "6c32d53515488b17c1a607b3243f21e93bcec978db575480fc917c7686bcf741",
+          "status": "passed"
+        },
+        "time": {
+          "path": "build/g20a-second/exact-ui-time.json",
+          "sha256": "1fe7ba50000f9420daaf1f44c79c2c4680d82f5e7297ee91d9524ec33be25535",
+          "status": "passed"
+        },
+        "ai_combat": {
+          "path": "build/g20a-second/exact-ui-ai_combat.json",
+          "sha256": "338065b432e670d7cefdce171be107aec834931b0fc0eb16839a73bd9d9ed011",
+          "status": "passed"
+        },
+        "ui": {
+          "path": "build/g20a-second/exact-ui-ui.json",
+          "sha256": "bd3b0c30bd0e24c38858267d5953c5043ae8e20fb249d443b67cd9f9927cbbc7",
+          "status": "passed"
+        },
+        "flow": {
+          "path": "build/g20a-second/exact-ui-flow.json",
+          "sha256": "3875d7cc30361bd89f1bef0f593f3d0d31753b4ad47ef21cac627490127dc12f",
+          "status": "passed"
+        },
+        "game": {
+          "path": "build/g20a-second/exact-ui-game.json",
+          "sha256": "4d3e0fabb87700bfef029dc4dfab7a99b80554114863c68b6edd14d44312def4",
+          "status": "passed"
+        },
+        "oracle": {
+          "path": "build/g20a-second/exact-ui-oracle.json",
+          "sha256": "ddf13a29de59a0c1d2d0c41bc7f3b454c4d03897406a54e8c128c0fa47fa4c12",
+          "status": "passed"
+        }
+      },
+      "ewram_static_bytes": 254704,
+      "iwram_static_bytes": 22976,
+      "iwram_stack_bios_reserve": 8192,
+      "stack": {
+        "main_stack_low": 50356224,
+        "main_stack_top": 50364160,
+        "sentinel_word": 219540062,
+        "untouched_margin_bytes": 5568,
+        "high_water_bytes": 2368,
+        "irq_and_bios_excluded": true,
+        "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+      },
+      "irq_stack": {
+        "low": 50364160,
+        "top": 50364320,
+        "untouched_margin_bytes": 80,
+        "high_water_bytes": 80,
+        "includes_bios_irq_saves": true
+      },
+      "audio_underruns": 0,
+      "native_pixel_exact": true,
+      "source_snapshot": {
+        "renderer.c": "13e03cdf00d43a2a2b2cbff3286a5889e9dd05b0f7f80c8f2267975fbec1dc99",
+        "renderer_bsp.inc": "81382269f30a2fe0efd16ae32ab599ca32ea893d7bea549b495d1a192bb9d72c",
+        "renderer_ray_walls.inc": "2776ac27bb4232895bd321daa1d4bc813a032dad3f9fde9a79288a7bb73eeb4c",
+        "renderer_sprites.inc": "9dc432eee3020640642e4613d608dc7fbda7c7559656d89f989aeb09248e03fa",
+        "renderer_surfaces.inc": "0adb850885050c52fcd5e7321c1b60445f425ea7e32fc8220c9f03ffcbb99055",
+        "renderer_surface_raster.inc": "15c423c170e3181058e11dc89f3c9e9bfcc2c5c10b79b6f8f71663c2eb7cc771",
+        "renderer_surface_sides.inc": "7afa6db6513b9d9a3b771b2d9a146eabefb67343350f85c4b755366bbbd8be47",
+        "renderer_trig.inc": "3fc1acca3c6c7053ce9ce05e6179833e943195a24ce47a780187e3261b6762b1",
+        "renderer_world_planes.inc": "9ebf6aca019dd462a7afa82e08d029d325808b675fa67a08e269d8383d302689",
+        "ui.c": "0e0ee95a7c698718f0db78708c2f3c98da536213d06c4d32b0f4865611bcc6af",
+        "ui_native_text.inc": "f557a4965b8716972d8c5870de5743df260beb0328caf73c6efe06ec93e80ceb",
+        "ui_panel_cache.inc": "0a4e65205e8c028ca1a272a2a864c14227d1adbb33c07d37ba821ab7a5c815da",
+        "ui_text.inc": "fc1ef715b4c89bade71d474048488eaa42e4e7aaa7bd4d2059c870281aa02a3f"
+      }
+    },
+    "world_coarse": {
+      "rom_sha256": "b4bd63f11f6d2f193eb4dcbd0886be5e4eabf52b2e5ca7136404198f02bcc0bd",
+      "rom_bytes": 9885436,
+      "checks": {
+        "arm": {
+          "path": "build/g20a-second/world-coarse-arm.json",
+          "sha256": "89f97f08b5d2a79b0bff959835913316e0f20c0547d90eaf73e85746d9b66b88",
+          "status": "passed"
+        },
+        "renderer": {
+          "path": "build/g20a-second/world-coarse-renderer.json",
+          "sha256": "4f852b14e14588e9d7fd0976f7016bf951d613054c871211284666f10f966e92",
+          "status": "passed"
+        },
+        "sprites": {
+          "path": "build/g20a-second/world-coarse-sprites.json",
+          "sha256": "1e86d58284a67d4c03c759fe68573d138ef1584ab98ac5187052da049db3d817",
+          "status": "passed"
+        },
+        "interactions": {
+          "path": "build/g20a-second/world-coarse-interactions.json",
+          "sha256": "a3154fb4ce32e3354cb7018a5437654c8de1edaa0012ac9568cd6b1ec7f869ae",
+          "status": "passed"
+        },
+        "time": {
+          "path": "build/g20a-second/world-coarse-time.json",
+          "sha256": "2eda44af98e8c5e59445103dfbda721d79c1c5ef1212d46471c2e4dd17683087",
+          "status": "passed"
+        },
+        "ai_combat": {
+          "path": "build/g20a-second/world-coarse-ai_combat.json",
+          "sha256": "341a200201b47e74474dd9b7d07c6729d22fed9843b2d442f9f42bff3bf844f2",
+          "status": "passed"
+        },
+        "ui": {
+          "path": "build/g20a-second/world-coarse-ui.json",
+          "sha256": "5d9de1fe6bb2ddcb4783c4d3c3c22840f77774edb52112b993af0d5103ee9ebc",
+          "status": "passed"
+        },
+        "flow": {
+          "path": "build/g20a-second/world-coarse-flow.json",
+          "sha256": "bc6862c28fab126edf5fc8e1bd664d5628d498b7ad272b972e5d6306886d22d2",
+          "status": "passed"
+        },
+        "game": {
+          "path": "build/g20a-second/world-coarse-game.json",
+          "sha256": "67455bf8bf645ba8aad6c0e75f54746b766f4a74f313a88ca346caf5b670dc5e",
+          "status": "passed"
+        }
+      },
+      "ewram_static_bytes": 255828,
+      "iwram_static_bytes": 22280,
+      "iwram_stack_bios_reserve": 8192,
+      "stack": {
+        "main_stack_low": 50356224,
+        "main_stack_top": 50364160,
+        "sentinel_word": 219540062,
+        "untouched_margin_bytes": 5568,
+        "high_water_bytes": 2368,
+        "irq_and_bios_excluded": true,
+        "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+      },
+      "irq_stack": {
+        "low": 50364160,
+        "top": 50364320,
+        "untouched_margin_bytes": 80,
+        "high_water_bytes": 80,
+        "includes_bios_irq_saves": true
+      },
+      "audio_underruns": 0,
+      "native_pixel_exact": false,
+      "source_snapshot": {
+        "renderer.c": "13e03cdf00d43a2a2b2cbff3286a5889e9dd05b0f7f80c8f2267975fbec1dc99",
+        "renderer_bsp.inc": "81382269f30a2fe0efd16ae32ab599ca32ea893d7bea549b495d1a192bb9d72c",
+        "renderer_ray_walls.inc": "2776ac27bb4232895bd321daa1d4bc813a032dad3f9fde9a79288a7bb73eeb4c",
+        "renderer_sprites.inc": "9dc432eee3020640642e4613d608dc7fbda7c7559656d89f989aeb09248e03fa",
+        "renderer_surfaces.inc": "0adb850885050c52fcd5e7321c1b60445f425ea7e32fc8220c9f03ffcbb99055",
+        "renderer_surface_raster.inc": "15c423c170e3181058e11dc89f3c9e9bfcc2c5c10b79b6f8f71663c2eb7cc771",
+        "renderer_surface_sides.inc": "7afa6db6513b9d9a3b771b2d9a146eabefb67343350f85c4b755366bbbd8be47",
+        "renderer_trig.inc": "3fc1acca3c6c7053ce9ce05e6179833e943195a24ce47a780187e3261b6762b1",
+        "renderer_world_planes.inc": "9ebf6aca019dd462a7afa82e08d029d325808b675fa67a08e269d8383d302689",
+        "ui.c": "0e0ee95a7c698718f0db78708c2f3c98da536213d06c4d32b0f4865611bcc6af",
+        "ui_native_text.inc": "f557a4965b8716972d8c5870de5743df260beb0328caf73c6efe06ec93e80ceb",
+        "ui_panel_cache.inc": "0a4e65205e8c028ca1a272a2a864c14227d1adbb33c07d37ba821ab7a5c815da",
+        "ui_text.inc": "fc1ef715b4c89bade71d474048488eaa42e4e7aaa7bd4d2059c870281aa02a3f"
+      }
+    }
+  },
+  "water_arm_vs_c_exact_frames": 128,
+  "water_arm": {
+    "path": "build/g20a-second/world-water-arm.json",
+    "sha256": "158e14e26ed0616070df335bab409935e0305ae8484af8b4a1259d9ca40ee553",
+    "status": "passed"
+  },
+  "original_files_sha_matched": 22,
+  "baseline_rom_reproduced_byte_for_byte": true,
+  "comparison": {
+    "path": "analysis/g20a-second-prototypes.json",
+    "sha256": "aee12bd580b82e1cac8bd97c13606486536393b750b931a14bafe731934ca872"
+  },
+  "source_manifest": {
+    "path": "build/g20a-second/prototype-build.json",
+    "sha256": "346f6dec1cf59e3d6880e36c639c818d823cc81361f8d5b6a8ba89a099a60be3"
+  },
+  "script_sha256": "50e61e064b82a67b8d298ef96f619cc7f4cd50702f9b729fc61c2f69556f2fd5",
+  "limitations": [
+    "No physical GBA/original BIOS or whole-level playthrough.",
+    "World planes use perspective world UV instead of native affine tile UV.",
+    "Coarse planes sample4x2 displayed pixels; geometry masks/actors remain120x144, HUD240x160.",
+    "The original affine visual oracle is intentionally not applied to coarse interactions; logic checks remain active.",
+    "All-awake AI overload remains; no ticks or callbacks are dropped.",
+    "15+ FPS has not been achieved across all three live start scenes."
+  ]
+}

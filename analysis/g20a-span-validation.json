@@ -1,0 +1,642 @@
+{
+  "task": "G20A",
+  "status": "validated-checkpoint-target-open",
+  "targets_fps": [
+    30,
+    24.1,
+    15
+  ],
+  "targets_met": false,
+  "conservative_choice": "sides_exact",
+  "quality_prototype": "sides_coarse",
+  "variants": {
+    "sides_exact": {
+      "rom_sha256": "b36472a0701f19a41fc009e003f0f78a4493921e1cf19f2b51c266cdfeb42501",
+      "rom_bytes": 9954008,
+      "checks": {
+        "renderer": {
+          "path": "build/g20a-sides/exact-renderer.json",
+          "sha256": "3a1cd13bb9b4f951c967a9fa997f89f953e37af68d0ba8a80ba8a5b6d0530cca",
+          "status": "passed"
+        },
+        "sprites": {
+          "path": "build/g20a-sides/exact-sprites.json",
+          "sha256": "f54ed42c8687d59102fbc029563e7b271eba34c6fc299924398399254a88dbd8",
+          "status": "passed"
+        },
+        "interactions": {
+          "path": "build/g20a-sides/exact-interactions.json",
+          "sha256": "32fe7ee729c9a2fa6ad4ba0811a871aabcee3ddd3497734f3fd1103d33985ae3",
+          "status": "passed"
+        },
+        "time": {
+          "path": "build/g20a-sides/exact-time.json",
+          "sha256": "22e2a12d0dce08f81b6146b658c16c3fe64f4129b20d6449e191737f745fa227",
+          "status": "passed"
+        },
+        "ai_combat": {
+          "path": "build/g20a-sides/exact-ai_combat.json",
+          "sha256": "b31863d0b5f6d4b8b130205050a0d7f4f4f02383956102f25b1f4d8f7775174e",
+          "status": "passed"
+        },
+        "ui": {
+          "path": "build/g20a-sides/exact-ui.json",
+          "sha256": "4c53cfcd4757f4fba5bd9b412a7c822a0201aa5bc2b1b009376c1d64dc12f4cd",
+          "status": "passed"
+        },
+        "flow": {
+          "path": "build/g20a-sides/exact-flow.json",
+          "sha256": "0be522bd6f91484a29a3f1dc3661111e1ca0abcce4246405ff42bb3ef9cbbc4e",
+          "status": "passed"
+        },
+        "game": {
+          "path": "build/g20a-sides/exact-game.json",
+          "sha256": "1462d51ada545d91b1833f0399b45b66a588d2a8d509e24f6537d6e9087e74ea",
+          "status": "passed"
+        },
+        "arm": {
+          "path": "build/g20a-sides/sides_exact-arm.json",
+          "sha256": "cce0ca10374f4f8547e96fdbef66c56084d4075941756768afad17316a90305f",
+          "status": "passed"
+        },
+        "oracle": {
+          "path": "build/g20a-sides/exact-oracle.json",
+          "sha256": "d2422cffb3e902bfd0fb8435e64db54a91a78bdf9c7ed0d9e8a89689cafc5fab",
+          "status": "passed"
+        }
+      },
+      "native_pixel_exact": true,
+      "oracle_reference_sha256": "7babd40f913eb12f77c93c9df917cea432b0cbe3bd83e11da45ba08dec917ea8",
+      "exact_frames": 488,
+      "paired_cpu_speedup_median": 1.3240399708953365,
+      "ewram_static_bytes": 254704,
+      "iwram_static_bytes": 23064,
+      "ewram_free_bytes": 7440,
+      "iwram_free_bytes": 1512,
+      "stack": {
+        "main_stack_low": 50356224,
+        "main_stack_top": 50364160,
+        "sentinel_word": 219540062,
+        "untouched_margin_bytes": 5568,
+        "high_water_bytes": 2368,
+        "irq_and_bios_excluded": true,
+        "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+      },
+      "irq_stack": {
+        "low": 50364160,
+        "top": 50364320,
+        "untouched_margin_bytes": 80,
+        "high_water_bytes": 80,
+        "includes_bios_irq_saves": true
+      },
+      "audio_underruns": 0,
+      "sources": {
+        "renderer.c": "6504647f512ff9b7470a08e19dbc079b9d1b132a25d6bb560ada42337305371f",
+        "renderer_bsp.inc": "81382269f30a2fe0efd16ae32ab599ca32ea893d7bea549b495d1a192bb9d72c",
+        "renderer_ray_walls.inc": "2776ac27bb4232895bd321daa1d4bc813a032dad3f9fde9a79288a7bb73eeb4c",
+        "renderer_sprites.inc": "9dc432eee3020640642e4613d608dc7fbda7c7559656d89f989aeb09248e03fa",
+        "renderer_surfaces.inc": "0adb850885050c52fcd5e7321c1b60445f425ea7e32fc8220c9f03ffcbb99055",
+        "renderer_surface_raster.inc": "6d823cbbe73942dddf0eb98e67ae14057537c59534944ba3e26da3f2ffad2ec5",
+        "renderer_surface_sides.inc": "7afa6db6513b9d9a3b771b2d9a146eabefb67343350f85c4b755366bbbd8be47",
+        "renderer_trig.inc": "3fc1acca3c6c7053ce9ce05e6179833e943195a24ce47a780187e3261b6762b1",
+        "renderer_world_planes.inc": "4a8d62013d25ee0803f129ded00b03003ebfe5c7d6e8f20c7cf778dc0d9fa4ac",
+        "ui.c": "0e0ee95a7c698718f0db78708c2f3c98da536213d06c4d32b0f4865611bcc6af",
+        "ui_native_text.inc": "f557a4965b8716972d8c5870de5743df260beb0328caf73c6efe06ec93e80ceb",
+        "ui_panel_cache.inc": "0a4e65205e8c028ca1a272a2a864c14227d1adbb33c07d37ba821ab7a5c815da",
+        "ui_text.inc": "fc1ef715b4c89bade71d474048488eaa42e4e7aaa7bd4d2059c870281aa02a3f"
+      }
+    },
+    "sides_coarse": {
+      "rom_sha256": "04dfe358654cc865a22ec9e674217eb4cde7583bde4f61d57d361fa1e61b5d11",
+      "rom_bytes": 9888624,
+      "checks": {
+        "renderer": {
+          "path": "build/g20a-sides/coarse-renderer.json",
+          "sha256": "45632379b579711cf6fe2e8cfd684142822e307f4c37d1dfc6f854b9e3f92d5f",
+          "status": "passed"
+        },
+        "sprites": {
+          "path": "build/g20a-sides/coarse-sprites.json",
+          "sha256": "1d3830d804411ea49ecbbe9a8683265d8caee1d8a4bcde514bf6320475c8a885",
+          "status": "passed"
+        },
+        "interactions": {
+          "path": "build/g20a-sides/coarse-interactions.json",
+          "sha256": "da64f92ce9f9b3a428961c09139d5478fbbcf16b2d7d85f1a00ec4cb244f0ef4",
+          "status": "passed"
+        },
+        "time": {
+          "path": "build/g20a-sides/coarse-time.json",
+          "sha256": "eb8f19a4867e770883767b2703515796677144cb642ec225f18b6c725389b2af",
+          "status": "passed"
+        },
+        "ai_combat": {
+          "path": "build/g20a-sides/coarse-ai_combat.json",
+          "sha256": "987ea8db30860d4f4fdbaf0005f40a278a19f7312c963916b6e0d0703891d87c",
+          "status": "passed"
+        },
+        "ui": {
+          "path": "build/g20a-sides/coarse-ui.json",
+          "sha256": "4cc564f63924b5d4d3ae912bafb0fddb8894e97bf3f7a77862ce44a4238d5a52",
+          "status": "passed"
+        },
+        "flow": {
+          "path": "build/g20a-sides/coarse-flow.json",
+          "sha256": "13c9856f27af20efe268319bc02fbbc19d030871d4e503327c99b457462c613e",
+          "status": "passed"
+        },
+        "game": {
+          "path": "build/g20a-sides/coarse-game.json",
+          "sha256": "3355a71dda1c7fcd85b4cdee3b2cfcf67d0da38045ee0bf7f2e7d1556525851c",
+          "status": "passed"
+        },
+        "arm": {
+          "path": "build/g20a-sides/sides_coarse-arm.json",
+          "sha256": "511631474e66658783cc9191af17c1973900e45dddd733c0254a0d7f4a6e105b",
+          "status": "passed"
+        },
+        "oracle": {
+          "path": "build/g20a-sides/coarse-oracle.json",
+          "sha256": "776528a548a321314244c25a7a91ac849961ff68c6526609485ea8e6dd713fda",
+          "status": "passed"
+        }
+      },
+      "native_pixel_exact": false,
+      "oracle_reference_sha256": "b4bd63f11f6d2f193eb4dcbd0886be5e4eabf52b2e5ca7136404198f02bcc0bd",
+      "exact_frames": 488,
+      "paired_cpu_speedup_median": 0.9997995791161439,
+      "ewram_static_bytes": 255828,
+      "iwram_static_bytes": 22396,
+      "ewram_free_bytes": 6316,
+      "iwram_free_bytes": 2180,
+      "stack": {
+        "main_stack_low": 50356224,
+        "main_stack_top": 50364160,
+        "sentinel_word": 219540062,
+        "untouched_margin_bytes": 5568,
+        "high_water_bytes": 2368,
+        "irq_and_bios_excluded": true,
+        "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+      },
+      "irq_stack": {
+        "low": 50364160,
+        "top": 50364320,
+        "untouched_margin_bytes": 80,
+        "high_water_bytes": 80,
+        "includes_bios_irq_saves": true
+      },
+      "audio_underruns": 0,
+      "sources": {
+        "renderer.c": "6504647f512ff9b7470a08e19dbc079b9d1b132a25d6bb560ada42337305371f",
+        "renderer_bsp.inc": "81382269f30a2fe0efd16ae32ab599ca32ea893d7bea549b495d1a192bb9d72c",
+        "renderer_ray_walls.inc": "2776ac27bb4232895bd321daa1d4bc813a032dad3f9fde9a79288a7bb73eeb4c",
+        "renderer_sprites.inc": "9dc432eee3020640642e4613d608dc7fbda7c7559656d89f989aeb09248e03fa",
+        "renderer_surfaces.inc": "0adb850885050c52fcd5e7321c1b60445f425ea7e32fc8220c9f03ffcbb99055",
+        "renderer_surface_raster.inc": "6d823cbbe73942dddf0eb98e67ae14057537c59534944ba3e26da3f2ffad2ec5",
+        "renderer_surface_sides.inc": "7afa6db6513b9d9a3b771b2d9a146eabefb67343350f85c4b755366bbbd8be47",
+        "renderer_trig.inc": "3fc1acca3c6c7053ce9ce05e6179833e943195a24ce47a780187e3261b6762b1",
+        "renderer_world_planes.inc": "4a8d62013d25ee0803f129ded00b03003ebfe5c7d6e8f20c7cf778dc0d9fa4ac",
+        "ui.c": "0e0ee95a7c698718f0db78708c2f3c98da536213d06c4d32b0f4865611bcc6af",
+        "ui_native_text.inc": "f557a4965b8716972d8c5870de5743df260beb0328caf73c6efe06ec93e80ceb",
+        "ui_panel_cache.inc": "0a4e65205e8c028ca1a272a2a864c14227d1adbb33c07d37ba821ab7a5c815da",
+        "ui_text.inc": "fc1ef715b4c89bade71d474048488eaa42e4e7aaa7bd4d2059c870281aa02a3f"
+      }
+    }
+  },
+  "artifacts": {
+    "DoK-port_exact_ui_v2.gba": {
+      "path": "artifacts/gba/DoK-port_exact_ui_v2.gba",
+      "bytes": 9950848,
+      "sha256": "be2195184977481f68abdd1b7d91ae5c91c6969b26a78469e70b63d5a7fde5b7"
+    },
+    "DoK-port_floor_4x2_v2.gba": {
+      "path": "artifacts/gba/DoK-port_floor_4x2_v2.gba",
+      "bytes": 9885436,
+      "sha256": "b4bd63f11f6d2f193eb4dcbd0886be5e4eabf52b2e5ca7136404198f02bcc0bd"
+    },
+    "DoK-port_optimized_prototype.gba": {
+      "path": "artifacts/gba/DoK-port_optimized_prototype.gba",
+      "bytes": 9954008,
+      "sha256": "b36472a0701f19a41fc009e003f0f78a4493921e1cf19f2b51c266cdfeb42501"
+    },
+    "DoK-port_floor_4x2_prototype.gba": {
+      "path": "artifacts/gba/DoK-port_floor_4x2_prototype.gba",
+      "bytes": 9888624,
+      "sha256": "04dfe358654cc865a22ec9e674217eb4cde7583bde4f61d57d361fa1e61b5d11"
+    }
+  },
+  "measurements": {
+    "path": "analysis/g20a-span-prototypes.json",
+    "sha256": "98ea04dac89bb41d6505569d3fdd710010ea2724b317e51854e5a83b4a92b704"
+  },
+  "attribution": {
+    "path": "analysis/g20a-span-attribution.json",
+    "sha256": "aac737ff2e845a4a33c3c58c19dd70be22099d360cb8b396f4304027cd9d5b8b",
+    "instrumented": true
+  },
+  "negative_experiments": {
+    "g20a-third": {
+      "report_sha256": "80bc35a626adc8338105bfe12ec404a7cb34bc614bc2848a78f6a28bb9121466",
+      "scope": "Nine frozen cameras and six live PCM fixtures only; unselected.",
+      "variants": {
+        "world_div": {
+          "rom_sha256": "ab01f2713d8869bb3c35cd9d6f1387b5120282ed4786f24e7c9c171c92b8851a",
+          "cpu_speedup_median": 1.4794628363421714,
+          "frozen_cycles": [
+            1350016,
+            1737216,
+            2145152,
+            1301056,
+            1936640,
+            2031552,
+            1150528,
+            1452032,
+            1672256
+          ],
+          "changed_scene_pixels": [
+            5520,
+            11178,
+            14700,
+            8246,
+            12044,
+            12034,
+            6484,
+            13622,
+            14104
+          ],
+          "live_fps": [
+            8.144659168582614,
+            7.919668583815138,
+            9.95458342826764,
+            8.144659168582614,
+            7.919668583815138,
+            9.95458342826764
+          ]
+        },
+        "coarse_div": {
+          "rom_sha256": "2c13529874c3d861878c2736be8bef106459be3476d41f647916db143a65340c",
+          "cpu_speedup_median": 1.8849335673101029,
+          "frozen_cycles": [
+            1036800,
+            1244224,
+            1537856,
+            1021184,
+            1540672,
+            1601472,
+            927872,
+            991232,
+            1202176
+          ],
+          "changed_scene_pixels": [
+            5664,
+            11422,
+            14936,
+            8366,
+            12324,
+            12312,
+            6672,
+            13940,
+            14496
+          ],
+          "live_fps": [
+            11.026615489773384,
+            9.95458342826764,
+            14.931875142401458,
+            11.026615489773384,
+            9.95458342826764,
+            14.931875142401458
+          ]
+        }
+      }
+    },
+    "g20a-raster": {
+      "report_sha256": "4fe2824849a1f4979a170e333a992417fa4476f4a6d556e211ec87955eee3f40",
+      "scope": "Nine frozen cameras and six live PCM fixtures only; unselected.",
+      "variants": {
+        "raster_exact": {
+          "rom_sha256": "f4340d169cfff0622cf0b2fb3aeff77a8c3138b441b456a02da8db44ebb9dffe",
+          "cpu_speedup_median": 1.330121085072432,
+          "frozen_cycles": [
+            1476480,
+            2172672,
+            2542080,
+            1406208,
+            1779264,
+            1956096,
+            1144000,
+            1728832,
+            2045504
+          ],
+          "changed_scene_pixels": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "live_fps": [
+            7.2396970387401005,
+            7.465937571200729,
+            8.532500081372262,
+            7.2396970387401005,
+            7.465937571200729,
+            8.532500081372262
+          ]
+        },
+        "raster_world": {
+          "rom_sha256": "257e774ecc52cee0344a7726c259948b9f1f67d9d3e9cd97f52cf69cfa043b17",
+          "cpu_speedup_median": 1.562611840852846,
+          "frozen_cycles": [
+            1356544,
+            1724864,
+            2096384,
+            1306944,
+            1680960,
+            1804928,
+            1156288,
+            1460608,
+            1698688
+          ],
+          "changed_scene_pixels": [
+            5520,
+            11178,
+            14700,
+            8246,
+            12044,
+            12034,
+            6484,
+            13622,
+            14104
+          ],
+          "live_fps": [
+            8.532500081372262,
+            7.919668583815138,
+            9.95458342826764,
+            8.532500081372262,
+            7.919668583815138,
+            9.95458342826764
+          ]
+        },
+        "raster_coarse": {
+          "rom_sha256": "fbb0ddedab864a89bc454eb938d08afa26491b5b7dd5bc82d4906d2e22c05cd1",
+          "cpu_speedup_median": 2.155402861445783,
+          "frozen_cycles": [
+            1038144,
+            1219392,
+            1471040,
+            1023488,
+            1277056,
+            1359872,
+            929792,
+            993856,
+            1215936
+          ],
+          "changed_scene_pixels": [
+            5664,
+            11422,
+            14936,
+            8366,
+            12324,
+            12312,
+            6672,
+            13940,
+            14496
+          ],
+          "live_fps": [
+            11.945500113921167,
+            9.95458342826764,
+            14.931875142401458,
+            11.945500113921167,
+            9.95458342826764,
+            14.931875142401458
+          ]
+        }
+      }
+    },
+    "g20a-eager": {
+      "report_sha256": "cf2a9912b69debfbba1ea26ce33d050ea41b721e1053d084fb357f50aa49d978",
+      "scope": "Nine frozen cameras and six live PCM fixtures only; unselected.",
+      "variants": {
+        "eager_exact": {
+          "rom_sha256": "193270cb1b0fb67814021e9f8fdf13914e95d41bfb3d10331eb799e9be7cc279",
+          "cpu_speedup_median": 1.326717223730612,
+          "frozen_cycles": [
+            1479424,
+            2178176,
+            2545920,
+            1407232,
+            1786368,
+            1967488,
+            1145792,
+            1732096,
+            2050752
+          ],
+          "changed_scene_pixels": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "live_fps": [
+            7.1673000683526995,
+            7.465937571200729,
+            8.532500081372262,
+            7.1673000683526995,
+            7.465937571200729,
+            8.532500081372262
+          ]
+        },
+        "eager_coarse": {
+          "rom_sha256": "03244363639e25cb9cc94c9ccaa4adc01739dd641064531977b5c841ffecadbf",
+          "cpu_speedup_median": 2.136599020293912,
+          "frozen_cycles": [
+            1041344,
+            1225536,
+            1477312,
+            1024832,
+            1290432,
+            1371840,
+            932480,
+            998016,
+            1219328
+          ],
+          "changed_scene_pixels": [
+            5664,
+            11422,
+            14936,
+            8366,
+            12324,
+            12312,
+            6672,
+            13940,
+            14496
+          ],
+          "live_fps": [
+            11.945500113921167,
+            9.95458342826764,
+            14.931875142401458,
+            11.945500113921167,
+            9.95458342826764,
+            14.931875142401458
+          ]
+        }
+      }
+    },
+    "g20a-masked": {
+      "report_sha256": "5d03c6f35c4ad0c1ead51e329d66cbfda19ee71890903e2ea761f4fb8af9fbf2",
+      "scope": "Nine frozen cameras and six live PCM fixtures only; unselected.",
+      "variants": {
+        "masked_exact": {
+          "rom_sha256": "d46bc615e18e1c534861c0a9748b4685b116563c69005a25af87a145e2ab4949",
+          "cpu_speedup_median": 1.3355533913480568,
+          "frozen_cycles": [
+            1479488,
+            2170304,
+            2534528,
+            1402176,
+            1782720,
+            1960064,
+            1143168,
+            1725376,
+            2037184
+          ],
+          "changed_scene_pixels": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "live_fps": [
+            7.276446769901218,
+            7.465937571200729,
+            8.532500081372262,
+            7.276446769901218,
+            7.465937571200729,
+            8.532500081372262
+          ]
+        },
+        "masked_world": {
+          "rom_sha256": "3a618c3454b4fe8bd1a010c95f0e436252671113ef7429170f19b4b52a5cc12c",
+          "cpu_speedup_median": 1.5507443512431043,
+          "frozen_cycles": [
+            1358976,
+            1730880,
+            2107776,
+            1313792,
+            1693824,
+            1817920,
+            1163968,
+            1464384,
+            1706624
+          ],
+          "changed_scene_pixels": [
+            5520,
+            11178,
+            14700,
+            8246,
+            12044,
+            12034,
+            6484,
+            13622,
+            14104
+          ],
+          "live_fps": [
+            8.532500081372262,
+            7.465937571200729,
+            9.95458342826764,
+            8.532500081372262,
+            7.465937571200729,
+            9.95458342826764
+          ]
+        },
+        "masked_coarse": {
+          "rom_sha256": "2107d00ca05223a9b479c0380754d706ed6df33781daa180565447a4d6d140eb",
+          "cpu_speedup_median": 2.135104895104895,
+          "frozen_cycles": [
+            1040512,
+            1225408,
+            1482432,
+            1030272,
+            1289792,
+            1372800,
+            938112,
+            998272,
+            1223872
+          ],
+          "changed_scene_pixels": [
+            5664,
+            11422,
+            14936,
+            8366,
+            12324,
+            12312,
+            6672,
+            13940,
+            14496
+          ],
+          "live_fps": [
+            11.749672243201147,
+            9.95458342826764,
+            14.931875142401458,
+            11.749672243201147,
+            9.95458342826764,
+            14.931875142401458
+          ]
+        }
+      }
+    }
+  },
+  "baseline_reproduced_byte_for_byte": true,
+  "original_files_sha_matched": 22,
+  "retained_world_span_prototype": {
+    "path": "artifacts/gba/DoK-port_world_spans_prototype.gba",
+    "bytes": 9885056,
+    "sha256": "abf8ac697514074466e7ff74ff96cfa14b51c3f3364e54aa889eb646c3fab809",
+    "validation_path": "analysis/g20a-second-validation.json",
+    "validation_sha256": "0b7a22dbbeba9f121060f0017ca4d0a7ff0cff58f6dbac422279ead4eed447d7"
+  },
+  "isolated_rebuild_byte_identical": true,
+  "reviewed_native_pngs": [
+    {
+      "path": "build/g20a-sides/sides_exact/L1-median.png",
+      "sha256": "3a173b711c0a13541f7b4416ac982b086daddc3e701e41b2cef73c72658a6d33"
+    },
+    {
+      "path": "build/g20a-sides/sides_coarse/L1-median.png",
+      "sha256": "927cc79b2ad868b7775dde9fd7ba6a4e146d4d28e00d7a0d7d27efc271fc41db"
+    },
+    {
+      "path": "build/g20a-sides/sides_coarse/L2-worst.png",
+      "sha256": "5e4035f1d3b4545e8b741dc1967f28b993bf9100a70406bef0ed1b22b3250c7e"
+    }
+  ],
+  "source_manifest": {
+    "path": "build/g20a-sides/prototype-build.json",
+    "sha256": "70204454f5ac60d2e0c775e84d858a9aa371beeea1cf2ce7b4c015a50c25e153"
+  },
+  "script_sha256": "5d200d220bab452e7cb93fa7ecc7f96038100ca7d480d8606bd513d863c9ebac",
+  "limitations": [
+    "No physical GBA/original BIOS or whole-level playthrough.",
+    "Live start fixtures are not whole-level minimum FPS;14.93 is below15.",
+    "Coarse floor/ceiling UV is perspective world mapping instead of native affine tile interpolation.",
+    "Coarse floor/ceiling samples4x2 displayed pixels; actors/doors/walls remain120x144, HUD240x160.",
+    "Coarse488-frame comparison proves equivalence to the previous coarse prototype, not the original.",
+    "Coarse interaction logic checks retain an explicit skip of the original affine visual oracle.",
+    "All-awake overload persists; simulation debt and callbacks are retained.",
+    "Standalone23-sound correlation suite was not repeated; integrated PCM22050 underruns0."
+  ]
+}

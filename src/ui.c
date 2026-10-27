@@ -6,7 +6,6 @@ unsigned dok_ui_input(dok_ui *u,uint16_t keys){
  unsigned pressed=keys&~u->last_keys,changed=0;u->last_keys=keys;
  if(u->state==DOK_UI_PLAY){
   if((keys&12)==12 && (pressed&12)){u->state=DOK_UI_PAUSE;u->focus=0;u->blocked|=keys;}
-  else if(pressed&4){u->language^=1;changed=1;}
  }else if(u->state==DOK_UI_HELP || u->state==DOK_UI_STATUS){
   if(pressed&(2|4|8)){u->state=u->return_state;u->blocked|=keys;}
  }else{
@@ -75,11 +74,17 @@ size_t dok_ui_text(dok_ui *u,const dok_runtime_level *l,uint8_t out[60]){
  return n;
 }
 typedef struct {uint8_t *f;const uint8_t *f8,*f16;unsigned fg,bg;} canvas;
+#ifdef DOK_RENDER_HW_DIRECT_PROTOTYPE
+#include "ui_tiled.inc"
+#endif
 static const dok_ui_art *art;
 void dok_ui_set_art(const dok_ui_art *value){art=value;}
 static void box(canvas *c,unsigned x,unsigned y,unsigned w,unsigned h,unsigned color){
  if(x>=240 || y>=160)return;
  if(w>240-x)w=240-x;if(h>160-y)h=160-y;
+#ifdef DOK_RENDER_HW_DIRECT_PROTOTYPE
+ if(g_hw_tile_active){for(unsigned r=0;r<h;++r)for(unsigned col=0;col<w;++col)UI_PUT(c,x+col,y+r,color);return;}
+#endif
 #if defined(__GNUC__)
  typedef uint32_t fill_word __attribute__((may_alias));
 #else
@@ -96,7 +101,12 @@ static void box(canvas *c,unsigned x,unsigned y,unsigned w,unsigned h,unsigned c
 static void text(canvas *c,unsigned x,unsigned y,const uint8_t *s,size_t n,unsigned height){
  const uint8_t *font=height==16?c->f16:c->f8;
  for(size_t i=0;i<n && x+8<=240;i++,x+=8)for(unsigned r=0;r<height && y+r<160;r++){
-  unsigned bits=font[(unsigned)s[i]*height+r];for(unsigned col=0;col<8;col++)if(bits&(128u>>col))c->f[(y+r)*240+x+col]=(uint8_t)c->fg;
+  unsigned bits=font[(unsigned)s[i]*height+r];for(unsigned col=0;col<8;col++)if(bits&(128u>>col))
+#ifdef DOK_RENDER_HW_DIRECT_PROTOTYPE
+   UI_PUT(c,x+col,y+r,c->fg);
+#else
+   c->f[(y+r)*240+x+col]=(uint8_t)c->fg;
+#endif
  }
 }
 /* One centered line inside the three-pixel panel bevel. Condense FONT8
@@ -112,7 +122,12 @@ static void message_line(canvas *c,const uint8_t *s,size_t n){
  for(size_t i=0;i<n;i++)for(unsigned r=0;r<8;r++){
   unsigned bits=c->f8[(unsigned)s[i]*8+r];
   for(unsigned col=0;col<width;col++){
-   if(bits&masks[col])c->f[(148+r)*240+x+(unsigned)i*width+col]=(uint8_t)c->fg;
+   if(bits&masks[col])
+#ifdef DOK_RENDER_HW_DIRECT_PROTOTYPE
+    UI_PUT(c,x+(unsigned)i*width+col,148+r,c->fg);
+#else
+    c->f[(148+r)*240+x+(unsigned)i*width+col]=(uint8_t)c->fg;
+#endif
   }
  }
 }
@@ -129,7 +144,11 @@ static void panel(canvas *c,unsigned x,unsigned y,unsigned w,unsigned h){
    unsigned col=count==6 && i>=3?w-6+i:i;
    if(x+col>=240)continue;
    unsigned sx=col<3?col:col+3>=w?p->width-(w-col):10;
+#ifdef DOK_RENDER_HW_DIRECT_PROTOTYPE
+   UI_PUT(c,x+col,y+r,p->pixels[sy*p->width+sx]);
+#else
    c->f[(y+r)*240+x+col]=p->pixels[sy*p->width+sx];
+#endif
   }
  }
 }
@@ -137,7 +156,12 @@ static void icon(canvas *c,const dok_image_view *p,unsigned x,unsigned y){
  if(!p || !p->pixels)return;
  for(unsigned r=0;r<p->height && y+r<160;r++)for(unsigned col=0;col<p->width && x+col<240;col++){
   unsigned pixel=p->pixels[r*p->width+col];
-  if(pixel)c->f[(y+r)*240+x+col]=(uint8_t)pixel;
+  if(pixel)
+#ifdef DOK_RENDER_HW_DIRECT_PROTOTYPE
+   UI_PUT(c,x+col,y+r,pixel);
+#else
+   c->f[(y+r)*240+x+col]=(uint8_t)pixel;
+#endif
  }
 }
 static unsigned digits(int n){unsigned count=n<0?1:0,v=n<0?0u-(unsigned)n:(unsigned)n;do{++count;v/=10;}while(v);return count;}
@@ -151,8 +175,31 @@ static void number(canvas *c,unsigned x,unsigned y,int n){
 #include "ui_text.inc"
 static const char *const ui_end[2]={"\202\233\225\216\204", "END / CREDITS"};
 static const char *const ui_new[2]={"\215\216\202\200\237 \210\203\220\200", "NEW GAME"};
+#ifdef DOK_RENDER_HW_UI_REUSE_PROTOTYPE
+unsigned g_hw_ui_changed;
+static unsigned hw_ui_valid,hw_ui_key[11];
+static uint8_t hw_ui_message[60];
+static int hw_ui_cached(dok_ui *u,uint8_t *frame,const dok_runtime *w,const uint8_t *f8,const uint8_t *f16,unsigned fg,unsigned bg) {
+ if(!g_hw_tile_active){hw_ui_valid=0;return 0;}
+ uint8_t message[60];unsigned n=(unsigned)dok_ui_text(u,w->level,message);
+ unsigned key[11]={(unsigned)(uintptr_t)frame,(unsigned)(uintptr_t)w->level,(unsigned)(uintptr_t)art,
+  (unsigned)(uintptr_t)f8,(unsigned)(uintptr_t)f16,fg,bg,u->language,(unsigned)(uint16_t)w->player.health|
+  ((unsigned)(uint16_t)w->player.energy<<16),w->player.keys,n};
+ unsigned same=hw_ui_valid;
+ for(unsigned i=0;i<11;++i)if(key[i]!=hw_ui_key[i])same=0;
+ for(unsigned i=0;i<n;++i)if(message[i]!=hw_ui_message[i])same=0;
+ g_hw_ui_changed=!same;if(same)return 1;
+ for(unsigned i=0;i<11;++i)hw_ui_key[i]=key[i];
+ for(unsigned i=0;i<n;++i)hw_ui_message[i]=message[i];
+ extern void dok_gba_tiled_clear(uint8_t *,unsigned);
+ dok_gba_tiled_clear(frame+18432,6784);hw_ui_valid=1;return 0;
+}
+#endif
 void dok_ui_draw(dok_ui *u,uint8_t *frame,const dok_runtime *w,const uint8_t *f8,const uint8_t *f16,unsigned fg,unsigned bg){
  if(!u || !frame || !w || !f8 || !f16)return;
+#ifdef DOK_RENDER_HW_UI_REUSE_PROTOTYPE
+ if(hw_ui_cached(u,frame,w,f8,f16,fg,bg))return;
+#endif
  canvas c={frame,f8,f16,fg,bg};unsigned en=u->language;
  unsigned hpw=20+digits(w->player.health)*8,epw=16+digits(w->player.energy)*8,ex=240-epw;
  panel(&c,0,0,hpw,14);panel(&c,ex,0,epw,14);

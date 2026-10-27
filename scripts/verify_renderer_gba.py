@@ -170,7 +170,15 @@ def main():
 
     def switch(language, name):
         previous = check()['switches']
-        pressed = until(lambda d: d['switches'] > previous, [2])
+        if 'g_ui_probe' in symbols:
+            # Test-only localization request; real menu input has its own UI check.
+            address = symbols['g_ui_probe']
+            request = struct.unpack('<I', frontend.read(address+4, 4))[0] + 1
+            ct.memmove(frontend.pointer(address+8, 8), struct.pack('<2I', 2, language), 8)
+            ct.memmove(frontend.pointer(address, 4), struct.pack('<I', request), 4)
+            pressed = until(lambda d: d['switches'] > previous)
+        else:
+            pressed = until(lambda d: d['switches'] > previous, [2])
         assert pressed['switches'] == previous+1 and pressed['language'] == language, pressed
         until(lambda d: d['last_keys'] == 0 and d['draws'] >= pressed['draws']+2)
         current_world=frontend.read(symbols['g_render_world'],33864)

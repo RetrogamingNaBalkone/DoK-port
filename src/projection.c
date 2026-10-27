@@ -39,6 +39,11 @@ int dok_projection_project(const dok_projection_camera *camera,
     int32_t denominator=add(point->depth,camera->distance);
     int32_t factor;
     if (!denominator || (numerator == INT32_MIN && denominator == -1)) return 0;
+#ifdef DOK_PROJECTION_RECIP
+    extern int32_t dok_gba_plane_divide(int32_t,unsigned);
+    if((uint32_t)denominator-1<16384u)factor=dok_gba_plane_divide(numerator,(unsigned)denominator);
+    else
+#endif
     factor=numerator/denominator;
     out->x=add(sar15(mul(point->lateral,factor)),camera->center_x);
     out->y=add(sar15(mul(point->vertical,factor)),camera->center_y);

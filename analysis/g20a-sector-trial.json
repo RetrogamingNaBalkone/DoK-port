@@ -1,0 +1,1015 @@
+{
+  "task": "G20A",
+  "status": "sector-clip-and-direct-bitmap-not-selected",
+  "goal_complete": false,
+  "performance_build_in_current_goal": false,
+  "control_rom_sha256": "2775bdd0caaac64b4fd99e4c6d675587fad2da9c795468dc52efacb5d53edaab",
+  "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+  "byte_exact_repeat": true,
+  "variants": {
+    "hw_v128_sector_clip_hot": {
+      "rom_sha256": "8d46e32173ff77bf2d011f54f80e6f67757073e52beb28cdc0fb114a147ae3ba",
+      "rom_bytes": 16365388,
+      "heavy_cases": [
+        {
+          "level": 1,
+          "cell": 520,
+          "heading": 225,
+          "cpu_ratio": 1.5945637377596276,
+          "baseline_fps": 9.95458342826764,
+          "fps": 6.636388952178426
+        },
+        {
+          "level": 1,
+          "cell": 3640,
+          "heading": 225,
+          "cpu_ratio": 1.3699749177347722,
+          "baseline_fps": 11.945500113921167,
+          "fps": 8.532500081372262
+        },
+        {
+          "level": 2,
+          "cell": 1592,
+          "heading": 135,
+          "cpu_ratio": 1.8066928195236134,
+          "baseline_fps": 9.95458342826764,
+          "fps": 5.972750056960583
+        },
+        {
+          "level": 2,
+          "cell": 2871,
+          "heading": 225,
+          "cpu_ratio": 1.867642426660507,
+          "baseline_fps": 9.95458342826764,
+          "fps": 5.688333387581508
+        },
+        {
+          "level": 3,
+          "cell": 1544,
+          "heading": 315,
+          "cpu_ratio": 1.4771135307580276,
+          "baseline_fps": 14.931875142401458,
+          "fps": 11.945500113921167
+        }
+      ],
+      "live24": [
+        {
+          "level": 1,
+          "language": 0,
+          "fps": 11.654146452606016,
+          "max_motion_debt": 323
+        },
+        {
+          "level": 2,
+          "language": 0,
+          "fps": 11.198906356801094,
+          "max_motion_debt": 379
+        },
+        {
+          "level": 3,
+          "language": 0,
+          "fps": 17.065000162744525,
+          "max_motion_debt": 411
+        },
+        {
+          "level": 1,
+          "language": 1,
+          "fps": 11.654146452606016,
+          "max_motion_debt": 324
+        },
+        {
+          "level": 2,
+          "language": 1,
+          "fps": 11.198906356801094,
+          "max_motion_debt": 379
+        },
+        {
+          "level": 3,
+          "language": 1,
+          "fps": 17.065000162744525,
+          "max_motion_debt": 411
+        }
+      ],
+      "profile": {
+        "rom_sha256": "8d46e32173ff77bf2d011f54f80e6f67757073e52beb28cdc0fb114a147ae3ba",
+        "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+        "script_sha256": "1d3398164b30b4cb51f09f0416dfc5a96581f42ffffc884aacfd2392bd8b1afd",
+        "rows": [
+          {
+            "level": 1,
+            "cell": 520,
+            "heading": 225,
+            "cycles": 2020096,
+            "work": [
+              1,
+              77,
+              22,
+              37,
+              119,
+              61,
+              296,
+              4,
+              199,
+              4770,
+              3708,
+              0
+            ],
+            "attributed_cycles": {
+              "prepare": 122688,
+              "BSP_and_static_walls": 675776,
+              "shared_ceiling": 529216,
+              "dynamic_objects": 362752,
+              "software_base_planes": 0
+            }
+          },
+          {
+            "level": 1,
+            "cell": 3640,
+            "heading": 225,
+            "cycles": 1658752,
+            "work": [
+              1,
+              37,
+              14,
+              12,
+              86,
+              0,
+              166,
+              2,
+              161,
+              5913,
+              2949,
+              0
+            ],
+            "attributed_cycles": {
+              "prepare": 122688,
+              "BSP_and_static_walls": 357504,
+              "shared_ceiling": 615232,
+              "dynamic_objects": 231680,
+              "software_base_planes": 0
+            }
+          },
+          {
+            "level": 2,
+            "cell": 1592,
+            "heading": 135,
+            "cycles": 2321664,
+            "work": [
+              1,
+              73,
+              22,
+              37,
+              98,
+              86,
+              106,
+              4,
+              451,
+              948,
+              9936,
+              0
+            ],
+            "attributed_cycles": {
+              "prepare": 123200,
+              "BSP_and_static_walls": 595264,
+              "shared_ceiling": 282432,
+              "dynamic_objects": 941696,
+              "software_base_planes": 0
+            }
+          },
+          {
+            "level": 2,
+            "cell": 2871,
+            "heading": 225,
+            "cycles": 2475328,
+            "work": [
+              1,
+              51,
+              13,
+              51,
+              120,
+              70,
+              140,
+              4,
+              355,
+              1502,
+              10162,
+              0
+            ],
+            "attributed_cycles": {
+              "prepare": 122752,
+              "BSP_and_static_walls": 646080,
+              "shared_ceiling": 399232,
+              "dynamic_objects": 942016,
+              "software_base_planes": 0
+            }
+          },
+          {
+            "level": 3,
+            "cell": 1544,
+            "heading": 315,
+            "cycles": 1186176,
+            "work": [
+              1,
+              21,
+              8,
+              12,
+              95,
+              0,
+              0,
+              0,
+              240,
+              0,
+              5857,
+              0
+            ],
+            "attributed_cycles": {
+              "prepare": 122496,
+              "BSP_and_static_walls": 329280,
+              "shared_ceiling": 192,
+              "dynamic_objects": 393600,
+              "software_base_planes": 0
+            }
+          }
+        ],
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5408,
+          "high_water_bytes": 2528,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        },
+        "forced_pcm": false,
+        "cold_reset_after_freeze": true,
+        "scope": "Instrumented held frames, timer64 cycles/tick; no forced PCM, not the unprofiled target benchmark."
+      },
+      "verification": {
+        "poses": 40,
+        "mode4_cycles": 6,
+        "map_edit_fixtures": 12,
+        "wall_columns": 4800,
+        "roof_rows": 603106,
+        "dynamic_pixels": 97590,
+        "roof_pixels": 27992,
+        "software_base_pixels": 0,
+        "wall_endpoint_columns_excluded": 6,
+        "opaque_edge_rows_excluded": 4,
+        "scope": "Original dynamic geometry/leases; BSP-independent wall rays and world-cell roof masks with separately counted world-grid, segment endpoint, adjacent roof row, wall-depth edge and opaque-edge exclusions; shared ARM plane pixels; dynamic source/alpha/order pixels against the ray-checked static clip contract; coverage backing; Mode4 cycles; original map-edit fallback geometry/leases. Bitmap also checks software base pixels and full actual PPU composition. No independent proof of dynamic clip histories, full gameplay, or physical GBA acceptance.",
+        "world_grid_rows_excluded": 10188,
+        "adjacent_roof_rows_excluded": 1102,
+        "wall_depth_edge_rows_excluded": 0,
+        "full_ppu_composition_pixels": 0
+      },
+      "memory": {
+        "ewram_bytes": 261288,
+        "ewram_free_bytes": 856,
+        "iwram_bytes": 24372,
+        "iwram_free_before_stack_reserve": 204,
+        "main_stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5408,
+          "high_water_bytes": 2528,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        },
+        "irq_stack": {
+          "low": 50364160,
+          "top": 50364320,
+          "untouched_margin_bytes": 80,
+          "high_water_bytes": 80,
+          "includes_bios_irq_saves": true
+        }
+      }
+    },
+    "hw_v128_sector_bitmap_hot": {
+      "rom_sha256": "0cd6016dabdd9d6e4e5f89744dc634b3da563264e55c7f7b44091f5b6cff2dc4",
+      "rom_bytes": 15791592,
+      "heavy_cases": [
+        {
+          "level": 1,
+          "cell": 520,
+          "heading": 225,
+          "cpu_ratio": 2.033636323716682,
+          "baseline_fps": 9.95458342826764,
+          "fps": 5.429772779055075
+        },
+        {
+          "level": 1,
+          "cell": 3640,
+          "heading": 225,
+          "cpu_ratio": 1.8605518098350093,
+          "baseline_fps": 11.945500113921167,
+          "fps": 5.972750056960583
+        },
+        {
+          "level": 2,
+          "cell": 1592,
+          "heading": 135,
+          "cpu_ratio": 2.3354429007997575,
+          "baseline_fps": 9.95458342826764,
+          "fps": 4.59442312073891
+        },
+        {
+          "level": 2,
+          "cell": 2871,
+          "heading": 225,
+          "cpu_ratio": 2.350202641691691,
+          "baseline_fps": 9.95458342826764,
+          "fps": 4.59442312073891
+        },
+        {
+          "level": 3,
+          "cell": 1544,
+          "heading": 315,
+          "cpu_ratio": 2.106214023163881,
+          "baseline_fps": 14.931875142401458,
+          "fps": 8.532500081372262
+        }
+      ],
+      "live24": [
+        {
+          "level": 1,
+          "language": 0,
+          "fps": 7.203316651610754,
+          "max_motion_debt": 400
+        },
+        {
+          "level": 2,
+          "language": 0,
+          "fps": 7.4272539568421765,
+          "max_motion_debt": 392
+        },
+        {
+          "level": 3,
+          "language": 0,
+          "fps": 8.740609839454512,
+          "max_motion_debt": 400
+        },
+        {
+          "level": 1,
+          "language": 1,
+          "fps": 7.203316651610754,
+          "max_motion_debt": 400
+        },
+        {
+          "level": 2,
+          "language": 1,
+          "fps": 7.4272539568421765,
+          "max_motion_debt": 415
+        },
+        {
+          "level": 3,
+          "language": 1,
+          "fps": 8.740609839454512,
+          "max_motion_debt": 400
+        }
+      ],
+      "profile": {
+        "rom_sha256": "0cd6016dabdd9d6e4e5f89744dc634b3da563264e55c7f7b44091f5b6cff2dc4",
+        "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+        "script_sha256": "1d3398164b30b4cb51f09f0416dfc5a96581f42ffffc884aacfd2392bd8b1afd",
+        "rows": [
+          {
+            "level": 1,
+            "cell": 520,
+            "heading": 225,
+            "cycles": 2584640,
+            "work": [
+              1,
+              77,
+              22,
+              37,
+              119,
+              61,
+              296,
+              4,
+              199,
+              4770,
+              3708,
+              0
+            ],
+            "attributed_cycles": {
+              "prepare": 121472,
+              "BSP_and_static_walls": 688256,
+              "shared_ceiling": 501888,
+              "dynamic_objects": 343616,
+              "software_base_planes": 596480
+            }
+          },
+          {
+            "level": 1,
+            "cell": 3640,
+            "heading": 225,
+            "cycles": 2256448,
+            "work": [
+              1,
+              37,
+              14,
+              12,
+              86,
+              0,
+              166,
+              2,
+              161,
+              5913,
+              2949,
+              0
+            ],
+            "attributed_cycles": {
+              "prepare": 121536,
+              "BSP_and_static_walls": 358144,
+              "shared_ceiling": 582656,
+              "dynamic_objects": 218880,
+              "software_base_planes": 642240
+            }
+          },
+          {
+            "level": 2,
+            "cell": 1592,
+            "heading": 135,
+            "cycles": 3007936,
+            "work": [
+              1,
+              73,
+              22,
+              37,
+              98,
+              86,
+              106,
+              4,
+              451,
+              948,
+              9936,
+              0
+            ],
+            "attributed_cycles": {
+              "prepare": 121280,
+              "BSP_and_static_walls": 608192,
+              "shared_ceiling": 265920,
+              "dynamic_objects": 894528,
+              "software_base_planes": 737664
+            }
+          },
+          {
+            "level": 2,
+            "cell": 2871,
+            "heading": 225,
+            "cycles": 3124672,
+            "work": [
+              1,
+              51,
+              13,
+              51,
+              120,
+              70,
+              140,
+              4,
+              355,
+              1502,
+              10162,
+              0
+            ],
+            "attributed_cycles": {
+              "prepare": 121280,
+              "BSP_and_static_walls": 650304,
+              "shared_ceiling": 372736,
+              "dynamic_objects": 883008,
+              "software_base_planes": 732416
+            }
+          },
+          {
+            "level": 3,
+            "cell": 1544,
+            "heading": 315,
+            "cycles": 1697472,
+            "work": [
+              1,
+              21,
+              8,
+              12,
+              95,
+              0,
+              0,
+              0,
+              240,
+              0,
+              5857,
+              0
+            ],
+            "attributed_cycles": {
+              "prepare": 121280,
+              "BSP_and_static_walls": 325888,
+              "shared_ceiling": 192,
+              "dynamic_objects": 375744,
+              "software_base_planes": 531328
+            }
+          }
+        ],
+        "stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5400,
+          "high_water_bytes": 2536,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        },
+        "forced_pcm": false,
+        "cold_reset_after_freeze": true,
+        "scope": "Instrumented held frames, timer64 cycles/tick; no forced PCM, not the unprofiled target benchmark."
+      },
+      "verification": {
+        "poses": 40,
+        "mode4_cycles": 6,
+        "map_edit_fixtures": 12,
+        "wall_columns": 4800,
+        "roof_rows": 603106,
+        "dynamic_pixels": 97590,
+        "roof_pixels": 27992,
+        "software_base_pixels": 202580,
+        "wall_endpoint_columns_excluded": 6,
+        "opaque_edge_rows_excluded": 4,
+        "scope": "Original dynamic geometry/leases; BSP-independent wall rays and world-cell roof masks with separately counted world-grid, segment endpoint, adjacent roof row, wall-depth edge and opaque-edge exclusions; shared ARM plane pixels; dynamic source/alpha/order pixels against the ray-checked static clip contract; coverage backing; Mode4 cycles; original map-edit fallback geometry/leases. Bitmap also checks software base pixels and full actual PPU composition. No independent proof of dynamic clip histories, full gameplay, or physical GBA acceptance.",
+        "world_grid_rows_excluded": 10188,
+        "adjacent_roof_rows_excluded": 1102,
+        "wall_depth_edge_rows_excluded": 0,
+        "full_ppu_composition_pixels": 1536000
+      },
+      "memory": {
+        "ewram_bytes": 261172,
+        "ewram_free_bytes": 972,
+        "iwram_bytes": 24148,
+        "iwram_free_before_stack_reserve": 428,
+        "main_stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5400,
+          "high_water_bytes": 2536,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        },
+        "irq_stack": {
+          "low": 50364160,
+          "top": 50364320,
+          "untouched_margin_bytes": 80,
+          "high_water_bytes": 80,
+          "includes_bios_irq_saves": true
+        }
+      }
+    }
+  },
+  "sector_tables": [
+    {
+      "view": 0,
+      "nodes": 564,
+      "leaves": 565,
+      "atoms": 1998,
+      "low_ceiling_cells": 383,
+      "packed_bytes": 65042,
+      "low_rectangular_leaves": 75,
+      "shared_roof_resource": 58,
+      "shared_roof_payload_sha256": "a4f3cf2b48d3650be1901247a0da35acad30eeb81250de757bfd7b39a9565811",
+      "all_source_rims_opaque": true
+    },
+    {
+      "view": 1,
+      "nodes": 564,
+      "leaves": 565,
+      "atoms": 1998,
+      "low_ceiling_cells": 383,
+      "packed_bytes": 65042,
+      "low_rectangular_leaves": 75,
+      "shared_roof_resource": 58,
+      "shared_roof_payload_sha256": "a4f3cf2b48d3650be1901247a0da35acad30eeb81250de757bfd7b39a9565811",
+      "all_source_rims_opaque": true
+    },
+    {
+      "view": 2,
+      "nodes": 853,
+      "leaves": 854,
+      "atoms": 3242,
+      "low_ceiling_cells": 995,
+      "packed_bytes": 104038,
+      "low_rectangular_leaves": 80,
+      "shared_roof_resource": 102,
+      "shared_roof_payload_sha256": "6d19806feead3a6e33f8f9e60f019d8ae2b3ca019150c39fb2bce1c37d6e1ff8",
+      "all_source_rims_opaque": true
+    },
+    {
+      "view": 3,
+      "nodes": 853,
+      "leaves": 854,
+      "atoms": 3242,
+      "low_ceiling_cells": 995,
+      "packed_bytes": 104038,
+      "low_rectangular_leaves": 80,
+      "shared_roof_resource": 102,
+      "shared_roof_payload_sha256": "6d19806feead3a6e33f8f9e60f019d8ae2b3ca019150c39fb2bce1c37d6e1ff8",
+      "all_source_rims_opaque": true
+    },
+    {
+      "view": 4,
+      "nodes": 302,
+      "leaves": 303,
+      "atoms": 1364,
+      "low_ceiling_cells": 0,
+      "packed_bytes": 40896,
+      "low_rectangular_leaves": 0,
+      "shared_roof_resource": 79,
+      "shared_roof_payload_sha256": "f5a0b96d27cc38da4db0c467a8d75f51c0b4d0a2bf9fd357a46b5f688a7ac9a0",
+      "all_source_rims_opaque": true
+    },
+    {
+      "view": 5,
+      "nodes": 302,
+      "leaves": 303,
+      "atoms": 1364,
+      "low_ceiling_cells": 0,
+      "packed_bytes": 40896,
+      "low_rectangular_leaves": 0,
+      "shared_roof_resource": 79,
+      "shared_roof_payload_sha256": "f5a0b96d27cc38da4db0c467a8d75f51c0b4d0a2bf9fd357a46b5f688a7ac9a0",
+      "all_source_rims_opaque": true
+    }
+  ],
+  "live24_control": [
+    {
+      "level": 1,
+      "language": 0,
+      "fps": 19.37108126581811
+    },
+    {
+      "level": 2,
+      "language": 0,
+      "fps": 19.112800182273865
+    },
+    {
+      "level": 3,
+      "language": 0,
+      "fps": 27.56653872443346
+    },
+    {
+      "level": 1,
+      "language": 1,
+      "fps": 19.37108126581811
+    },
+    {
+      "level": 2,
+      "language": 1,
+      "fps": 19.112800182273865
+    },
+    {
+      "level": 3,
+      "language": 1,
+      "fps": 27.56653872443346
+    }
+  ],
+  "hybrid_ppu": {
+    "cases": 18,
+    "max_scene_rgb_changes": 17314,
+    "overlay_changes": 0
+  },
+  "image_cache_eligibility": {
+    "rom_sha256": "2775bdd0caaac64b4fd99e4c6d675587fad2da9c795468dc52efacb5d53edaab",
+    "script_sha256": "1f111bbdc0e367c93f3e268fb80f8274a1bd7c6c225ba87e2893655845c321e7",
+    "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+    "rows": [
+      {
+        "scene": "turn-fire",
+        "level": 1,
+        "presentations": 120,
+        "draw_delta": 120,
+        "counters_before": [
+          0,
+          0,
+          6,
+          0
+        ],
+        "counters_after": [
+          0,
+          0,
+          124,
+          0
+        ],
+        "counter_delta": [
+          0,
+          0,
+          118,
+          0
+        ],
+        "exact_camera_reuse_opportunities_upper_bound": 3,
+        "baseline_fps": 19.854016809841273,
+        "audio_underruns": 0,
+        "time_conservation_error_ticks": 0
+      },
+      {
+        "scene": "turn-fire",
+        "level": 2,
+        "presentations": 120,
+        "draw_delta": 120,
+        "counters_before": [
+          0,
+          0,
+          129,
+          0
+        ],
+        "counters_after": [
+          0,
+          0,
+          249,
+          0
+        ],
+        "counter_delta": [
+          0,
+          0,
+          120,
+          0
+        ],
+        "exact_camera_reuse_opportunities_upper_bound": 1,
+        "baseline_fps": 16.86423545494753,
+        "audio_underruns": 0,
+        "time_conservation_error_ticks": 0
+      },
+      {
+        "scene": "turn-fire",
+        "level": 3,
+        "presentations": 120,
+        "draw_delta": 120,
+        "counters_before": [
+          0,
+          1,
+          252,
+          0
+        ],
+        "counters_after": [
+          0,
+          1,
+          367,
+          0
+        ],
+        "counter_delta": [
+          0,
+          0,
+          115,
+          0
+        ],
+        "exact_camera_reuse_opportunities_upper_bound": 6,
+        "baseline_fps": 21.78510659073769,
+        "audio_underruns": 0,
+        "time_conservation_error_ticks": 0
+      },
+      {
+        "scene": "walk-turn-fire",
+        "level": 1,
+        "presentations": 120,
+        "draw_delta": 120,
+        "counters_before": [
+          0,
+          1,
+          375,
+          0
+        ],
+        "counters_after": [
+          0,
+          1,
+          492,
+          0
+        ],
+        "counter_delta": [
+          0,
+          0,
+          117,
+          0
+        ],
+        "exact_camera_reuse_opportunities_upper_bound": 4,
+        "baseline_fps": 17.963158066046866,
+        "audio_underruns": 0,
+        "time_conservation_error_ticks": 0
+      },
+      {
+        "scene": "walk-turn-fire",
+        "level": 2,
+        "presentations": 120,
+        "draw_delta": 120,
+        "counters_before": [
+          0,
+          1,
+          500,
+          0
+        ],
+        "counters_after": [
+          0,
+          1,
+          620,
+          0
+        ],
+        "counter_delta": [
+          0,
+          0,
+          120,
+          0
+        ],
+        "exact_camera_reuse_opportunities_upper_bound": 1,
+        "baseline_fps": 17.91825017088175,
+        "audio_underruns": 0,
+        "time_conservation_error_ticks": 0
+      },
+      {
+        "scene": "walk-turn-fire",
+        "level": 3,
+        "presentations": 120,
+        "draw_delta": 120,
+        "counters_before": [
+          0,
+          1,
+          627,
+          0
+        ],
+        "counters_after": [
+          0,
+          1,
+          746,
+          0
+        ],
+        "counter_delta": [
+          0,
+          0,
+          119,
+          0
+        ],
+        "exact_camera_reuse_opportunities_upper_bound": 2,
+        "baseline_fps": 20.536676413618054,
+        "audio_underruns": 0,
+        "time_conservation_error_ticks": 0
+      },
+      {
+        "scene": "stand-fire",
+        "level": 1,
+        "presentations": 120,
+        "draw_delta": 120,
+        "counters_before": [
+          4,
+          2,
+          748,
+          0
+        ],
+        "counters_after": [
+          124,
+          2,
+          748,
+          0
+        ],
+        "counter_delta": [
+          120,
+          0,
+          0,
+          0
+        ],
+        "exact_camera_reuse_opportunities_upper_bound": 120,
+        "baseline_fps": 19.90916685653528,
+        "audio_underruns": 0,
+        "time_conservation_error_ticks": 0
+      },
+      {
+        "scene": "stand-fire",
+        "level": 2,
+        "presentations": 120,
+        "draw_delta": 120,
+        "counters_before": [
+          128,
+          3,
+          750,
+          0
+        ],
+        "counters_after": [
+          248,
+          3,
+          750,
+          0
+        ],
+        "counter_delta": [
+          120,
+          0,
+          0,
+          0
+        ],
+        "exact_camera_reuse_opportunities_upper_bound": 120,
+        "baseline_fps": 19.90916685653528,
+        "audio_underruns": 0,
+        "time_conservation_error_ticks": 0
+      },
+      {
+        "scene": "stand-fire",
+        "level": 3,
+        "presentations": 120,
+        "draw_delta": 120,
+        "counters_before": [
+          252,
+          4,
+          752,
+          0
+        ],
+        "counters_after": [
+          372,
+          4,
+          752,
+          0
+        ],
+        "counter_delta": [
+          120,
+          0,
+          0,
+          0
+        ],
+        "exact_camera_reuse_opportunities_upper_bound": 120,
+        "baseline_fps": 29.863750284802915,
+        "audio_underruns": 0,
+        "time_conservation_error_ticks": 0
+      }
+    ],
+    "cold_reset_after_freeze": true,
+    "scope": "RU original start routes,120 live presentations per route with PCM, real moving camera. Existing static-cache camera miss counters give a conservative exact-camera reuse bound; this is not an implemented image cache, a reprojection experiment, or a cache FPS claim."
+  },
+  "preserved_roms": {
+    "DoK-port_hardware_cached_prototype.gba": "2775bdd0caaac64b4fd99e4c6d675587fad2da9c795468dc52efacb5d53edaab",
+    "DoK-port_hardware_rows96_prototype.gba": "97f0b3cb1d97c958bb0750128cef72aa94f64fa4107a8edc53d743c38b557f81",
+    "DoK-port_hardware_rows72_prototype.gba": "17696958e5d1f08672754f788861c31fdc6302d242f24f0b4a5223768688888a"
+  },
+  "limitations": [
+    "Specific segment-BSP closed-X/top-clip/shared-plane/deferred-dynamics implementation. Not a proof against all Doom-style engines.",
+    "Dynamic source/alpha/order oracle uses the static clip contract. Original-segment wall rays and original-world-cell roof checks independently validate static geometry, with separately counted grid, endpoint, adjacent roof, wall-depth and opaque-edge exclusions in each verification summary.",
+    "Bitmap base planes retain32x32 /LIGHT0,7,15 /animated water phases and depth3600; all128 CPU rows retained. Native PPU affine PD228 changes vertical duplication relative to16 separately stretched OBJ bands.",
+    "Bitmap map-edit fallback uses the complete legacy CPU background; its faces/leases match the control, background surface lists intentionally differ from retained hardware planes.",
+    "V2 bitmap showed PCM underruns during row-DMA output; V3/final insert an IRQ service window and pass the specified PCM scope. Exact IRQ starvation mechanism is inferred, not physically traced. V2 timings are not accepted PCM results.",
+    "Five heavy PCM views, six short live24 runs per candidate,40 native poses and12 map edits; no full440 sweep/full gameplay/physical GBA acceptance for these losing candidates.",
+    "Exact-camera image cache eligibility was audited on nine120-frame routes; no image cache or camera reprojection was implemented.",
+    "Pure GPU/sector-fed output remains a separate architectural question. No Performance build or AI/draw-distance rebalance was implemented."
+  ],
+  "decision": "Preserve2775/96/72; stop local tuning of these two sector prototypes. Keep goal open until remaining architecture disposition and final remaining-cost handoff.",
+  "evidence": [
+    {
+      "path": "build/g20a-sector-clip-final/prototype-build.json",
+      "sha256": "ed019fa4be0255d41d3ce53d33a2bc3abe70d7c9c812fcfbeddf669f30ddc3de"
+    },
+    {
+      "path": "build/g20a-sector-clip-v4/prototype-build.json",
+      "sha256": "9017b3426f400af8e4a3e06bdeb4b3bd0ffa1aba99cf1abce91f97e774a7ea4a"
+    },
+    {
+      "path": "build/g20a-sector-clip-repeat/prototype-build.json",
+      "sha256": "b28f2ac453b83db33a3c4ffd707c2032e9580c134fcb86634637edefbecbe76c"
+    },
+    {
+      "path": "build/g20a-sector-clip-v4/control-target.json",
+      "sha256": "3182e3512baf7ca448efc2b14b0448f9d33f7a6041a0a3101117941e23cd6772"
+    },
+    {
+      "path": "build/g20a-sector-clip-v4/hw_v128_entity_rect-live24.json",
+      "sha256": "eafabc2bd05198d1daadc038786ff07dc75653894963a880328384534a02024f"
+    },
+    {
+      "path": "build/g20a-sector-clip-final/image-cache-eligibility.json",
+      "sha256": "6e0f10eb0132ae6a0134f6c60891dc837a4f03fb8e218f662532ffde3972d6e3"
+    },
+    {
+      "path": "build/g20a-sector-clip-v4/ppu18.json",
+      "sha256": "f0296e9ee19e0abe58c4d79cc61b7e8d06b7644db018060877108ab7a5b0cdbc"
+    },
+    {
+      "path": "build/g20a-sector-clip-v4/target.json",
+      "sha256": "8d0e12a4ed243bfab30fc294a8c6a79636a44d3cd5ca536f86840ead503cbf23"
+    },
+    {
+      "path": "build/g20a-sector-clip-v4/profile.json",
+      "sha256": "c3a230a66f3c3b135fd0806a57df840316ede1770c73568db1f8a0a701aaecf3"
+    },
+    {
+      "path": "build/g20a-sector-clip-v4/visibility.json",
+      "sha256": "c637778d5fcab4ee148bf7435b999b1e487dbfe7fef72d76225c938751603486"
+    },
+    {
+      "path": "build/g20a-sector-clip-v4/hw_v128_sector_clip_hot-live24.json",
+      "sha256": "9c9f38b36c64f8dbb9f1bf8bc8c7400928df59db967bdb6076536d0f535a2142"
+    },
+    {
+      "path": "build/g20a-sector-clip-v4/bitmap-target.json",
+      "sha256": "54097ca5607fce2caac7257646273199c226c5ee29bda8051cf500d41469d09a"
+    },
+    {
+      "path": "build/g20a-sector-clip-v4/bitmap-profile.json",
+      "sha256": "f92ad3ebd1235787f9a2c71d1ebf8c3a912b7c6a28bd9645c87262bbd2aa9a9c"
+    },
+    {
+      "path": "build/g20a-sector-clip-v4/bitmap-visibility.json",
+      "sha256": "e84d79aab6f250416b09679fd3e5abcba2ccdd98c0bd5f5b99d4c5e3d84ed56e"
+    },
+    {
+      "path": "build/g20a-sector-clip-v4/hw_v128_sector_bitmap_hot-live24.json",
+      "sha256": "7a4d8793d1bf9ac836cd0d2d1f3182291fbd02732819ecd47bb440c32f78cbfc"
+    }
+  ]
+}

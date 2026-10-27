@@ -1,0 +1,197 @@
+{
+  "rom_sha256": "04dfe358654cc865a22ec9e674217eb4cde7583bde4f61d57d361fa1e61b5d11",
+  "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+  "instrumented": true,
+  "scope": "Frozen attribution; timestamp overhead included. Not live FPS.",
+  "rows": [
+    {
+      "name": "L1-best",
+      "camera": [
+        15120,
+        -300,
+        22800,
+        0
+      ],
+      "cycles": 1080640,
+      "setup_cycles": 44352,
+      "walk_cycles": 136896,
+      "sample_cycles": 101056,
+      "rows": 80,
+      "spans": 73,
+      "pixels": 4080,
+      "covered": 7440,
+      "walls_cycles": 324928,
+      "sides_cycles": 0,
+      "walls": 35,
+      "sides": 0
+    },
+    {
+      "name": "L1-median",
+      "camera": [
+        15120,
+        -300,
+        22800,
+        295
+      ],
+      "cycles": 1292224,
+      "setup_cycles": 56384,
+      "walk_cycles": 209984,
+      "sample_cycles": 207296,
+      "rows": 90,
+      "spans": 236,
+      "pixels": 7622,
+      "covered": 5074,
+      "walls_cycles": 281984,
+      "sides_cycles": 49536,
+      "walls": 40,
+      "sides": 9
+    },
+    {
+      "name": "L1-worst",
+      "camera": [
+        15120,
+        -300,
+        22800,
+        130
+      ],
+      "cycles": 1571840,
+      "setup_cycles": 57408,
+      "walk_cycles": 257472,
+      "sample_cycles": 282432,
+      "rows": 91,
+      "spans": 374,
+      "pixels": 9975,
+      "covered": 2982,
+      "walls_cycles": 292736,
+      "sides_cycles": 117568,
+      "walls": 53,
+      "sides": 21
+    },
+    {
+      "name": "L2-best",
+      "camera": [
+        20880,
+        -300,
+        3120,
+        0
+      ],
+      "cycles": 1058752,
+      "setup_cycles": 27904,
+      "walk_cycles": 94912,
+      "sample_cycles": 124544,
+      "rows": 50,
+      "spans": 100,
+      "pixels": 4849,
+      "covered": 3339,
+      "walls_cycles": 365824,
+      "sides_cycles": 0,
+      "walls": 31,
+      "sides": 0
+    },
+    {
+      "name": "L2-median",
+      "camera": [
+        20880,
+        -300,
+        3120,
+        180
+      ],
+      "cycles": 1337728,
+      "setup_cycles": 41280,
+      "walk_cycles": 141504,
+      "sample_cycles": 166272,
+      "rows": 74,
+      "spans": 141,
+      "pixels": 6428,
+      "covered": 4959,
+      "walls_cycles": 189184,
+      "sides_cycles": 277248,
+      "walls": 12,
+      "sides": 27
+    },
+    {
+      "name": "L2-worst",
+      "camera": [
+        20880,
+        -300,
+        3120,
+        195
+      ],
+      "cycles": 1428032,
+      "setup_cycles": 51840,
+      "walk_cycles": 172096,
+      "sample_cycles": 177664,
+      "rows": 83,
+      "spans": 180,
+      "pixels": 6667,
+      "covered": 4892,
+      "walls_cycles": 209024,
+      "sides_cycles": 267904,
+      "walls": 15,
+      "sides": 30
+    },
+    {
+      "name": "L3-best",
+      "camera": [
+        17520,
+        -300,
+        28560,
+        5
+      ],
+      "cycles": 957568,
+      "setup_cycles": 23744,
+      "walk_cycles": 70016,
+      "sample_cycles": 94656,
+      "rows": 38,
+      "spans": 77,
+      "pixels": 3570,
+      "covered": 2182,
+      "walls_cycles": 348032,
+      "sides_cycles": 23168,
+      "walls": 7,
+      "sides": 8
+    },
+    {
+      "name": "L3-median",
+      "camera": [
+        17520,
+        -300,
+        28560,
+        60
+      ],
+      "cycles": 1063616,
+      "setup_cycles": 35328,
+      "walk_cycles": 166144,
+      "sample_cycles": 233984,
+      "rows": 56,
+      "spans": 306,
+      "pixels": 8346,
+      "covered": 1044,
+      "walls_cycles": 216128,
+      "sides_cycles": 18816,
+      "walls": 14,
+      "sides": 9
+    },
+    {
+      "name": "L3-worst",
+      "camera": [
+        17520,
+        -300,
+        28560,
+        250
+      ],
+      "cycles": 1285056,
+      "setup_cycles": 36672,
+      "walk_cycles": 180288,
+      "sample_cycles": 235328,
+      "rows": 57,
+      "spans": 284,
+      "pixels": 8530,
+      "covered": 1893,
+      "walls_cycles": 324416,
+      "sides_cycles": 0,
+      "walls": 46,
+      "sides": 0
+    }
+  ]
+}

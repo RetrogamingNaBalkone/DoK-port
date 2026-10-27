@@ -10,7 +10,7 @@ from pathlib import Path
 import struct
 import json
 
-from verify_gba import sha
+from verify_gba import sha, scene_source_y
 from verify_items_gba import ItemsProbe, baseline, MAP_OFFSET
 from verify_sprites_gba import load_json
 from verify_sprites_gba import original_animations
@@ -233,24 +233,25 @@ def collisions(probe, model):
                            effect_resource=effect['resource'], effect_starts_at_frame=1,
                            damage_on_contact=14 if kind == 'monster' else None,
                            cleaned_up=True))
-    # Damage events leave AI transitions to G15; same-class contacts are immune.
+    # G15 connects the emitted notifications synchronously: wake sets state1,
+    # damage sets hurt state3. Older standalone G13 ROMs had no AI listener.
     setup_open(probe, model)
     hero = model['player_index'] - 1
     probe.write(world + 4 + monster * 36 + 16, struct.pack('<hh', 100, 0))
     wake = probe.control(7, monster, hero, 14)
     assert wake['result'] == 1 and wake['kind'] == 10
-    assert struct.unpack('<hh', probe.frontend.read(world + 4 + monster * 36 + 16, 4)) == (100, 0)
+    assert struct.unpack('<hh', probe.frontend.read(world + 4 + monster * 36 + 16, 4)) == (100,1 if 'g_ai_probe' in probe.symbols else 0)
     probe.write(world + 4 + monster * 36 + 16, struct.pack('<hh', 7, 1))
     death = probe.control(7, monster, hero, 14)
     assert death['kind'] == 9
-    assert struct.unpack('<hh', probe.frontend.read(world + 4 + monster * 36 + 16, 4)) == (0, 1)
+    assert struct.unpack('<hh', probe.frontend.read(world + 4 + monster * 36 + 16, 4)) == (0,3 if 'g_ai_probe' in probe.symbols else 1)
     player = probe.player()
     immune = probe.control(7, hero, hero, 99)
     assert immune['result'] == 0 and probe.player() == player
     damaged = probe.control(7, hero, monster, 15)
     assert damaged['result'] == 1 and probe.player()[0] == 85
     checks.append(dict(kind='damage-events', sleeping_contact_wakes_without_damage=True,
-                       dead_health_clamped=True, ai_state_preserved=True,
+                       dead_health_clamped=True, ai_notification_states_verified=True,
                        same_class_immune=True, player_health_after_15_damage=85))
     return checks
 
@@ -374,10 +375,10 @@ def independent_instances(probe, model, language):
         probe.write(address + 28, struct.pack('<HH', resource_id, 2 if position == 0 else 3))
     captures = []
     for order in ((2, 3), (3, 2)):
+        probe.present()
         for address, frame in zip(slot_addresses, order):
             probe.write(address + 30, struct.pack('<H', frame))
         probe.present()
-        capture = probe.capture(f'independent-effects-{language}-{order[0]}')
         count = probe.diag()['face_count']
         data = probe.frontend.read(probe.symbols['g_render_frame'] + 38408, count * 48)
         faces = {struct.unpack_from('<H', data, offset + 44)[0]:
@@ -385,7 +386,11 @@ def independent_instances(probe, model, language):
                  for offset in range(0, len(data), 48)
                  if struct.unpack_from('<H', data, offset + 44)[0] >= 256}
         assert sorted(faces) == [256, 257], faces
-        actual = probe.frontend.read(probe.symbols['g_render_frame'] + 4, 38400)
+        capture = probe.capture(f'independent-effects-{language}-{order[0]}')
+        probe.frontend.run(2)
+        actual=probe.frontend.colors555()
+        palette=struct.unpack('<256H',probe.frontend.read(0x05000000,512))
+        scene_objects=probe.words('g_hw_obj_diag',6)[5] if 'g_hw_obj_diag' in probe.symbols else 72
         compared = []
         for texture, frame in zip((256, 257), order):
             meta, pixels = animation[frame]
@@ -395,11 +400,13 @@ def independent_instances(probe, model, language):
             checked = 0
             for x in range(max(0, x0 + (x0 & 1)), min(239, x1) + 1, 2):
                 u = (meta['width'] - 1) * (x - x0) // (x1 - x0)
-                for y in range(max(12, top), min(131, bottom) + 1):
-                    v = ((y - top) * step) >> 16
+                for y in range(12,132):
+                    sy=scene_source_y(y,scene_objects)
+                    if sy<top or sy>bottom:continue
+                    v = ((sy - top) * step) >> 16
                     color = pixels[v * meta['width'] + u]
                     if color:
-                        assert actual[y * 240 + x] == actual[y * 240 + x + 1] == color, \
+                        assert actual[y * 240 + x] == actual[y * 240 + x + 1] == palette[color], \
                             (language, texture, frame, x, y, color, actual[y * 240 + x])
                         checked += 1
             assert checked > 20, checked
@@ -421,10 +428,16 @@ def main():
     args = parser.parse_args()
     probe = CombatProbe(args.core, args.build_dir)
     try:
+        probe.until(lambda d:d['draws']>=1)
+        probe.write(probe.symbols['g_camera_capture_hold'],struct.pack('<I',1))
         probe.until(lambda d: d['draws'] >= 3 and d['phase'] == 2)
         probe.write(probe.symbols['g_motion_probe'], struct.pack('<I', 1))
         probe.write(probe.symbols['g_visual_probe'], struct.pack('<I', 1))
         probe.write(probe.symbols['g_combat_probe'], struct.pack('<I', 1))
+        # Isolate controlled combat from live AI polling/consideration.
+        # Synchronous wake/hurt notifications remain active and checked.
+        if 'g_ai_probe' in probe.symbols:
+            probe.write(probe.symbols['g_ai_probe'],struct.pack('<I',1))
         probe.write(probe.symbols['g_camera_capture_hold'], struct.pack('<I', 1))
         model = load_json('build/runtime/ru/LEVEL1-runtime.json')
         flights = []

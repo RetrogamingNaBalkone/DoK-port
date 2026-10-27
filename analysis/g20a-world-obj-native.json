@@ -1,0 +1,479 @@
+{
+  "task": "G20A",
+  "status": "native-hybrid-world-obj-not-selected",
+  "goal_complete": false,
+  "performance_build_in_current_goal": false,
+  "trial_rom_sha256": "807f3e295143d5f01d97b5e262960543f160996800ddb719bce811f78663916c",
+  "control_rom_sha256": "2775bdd0caaac64b4fd99e4c6d675587fad2da9c795468dc52efacb5d53edaab",
+  "byte_exact_repeat": true,
+  "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+  "heavy_cases": [
+    {
+      "level": 1,
+      "cell": 520,
+      "heading": 225,
+      "cpu_ratio": 2.6733142982648803,
+      "baseline_fps": 9.95458342826764,
+      "fps": 4.266250040686131,
+      "work": [
+        5,
+        12,
+        518,
+        144,
+        0,
+        0,
+        137,
+        13,
+        27,
+        0,
+        3264,
+        861
+      ]
+    },
+    {
+      "level": 1,
+      "cell": 3640,
+      "heading": 225,
+      "cpu_ratio": 1.4866052934407366,
+      "baseline_fps": 11.945500113921167,
+      "fps": 7.465937571200729,
+      "work": [
+        5,
+        11,
+        525,
+        106,
+        0,
+        0,
+        24,
+        8,
+        26,
+        0,
+        4544,
+        534
+      ]
+    },
+    {
+      "level": 2,
+      "cell": 1592,
+      "heading": 135,
+      "cpu_ratio": 2.1641710187011074,
+      "baseline_fps": 9.95458342826764,
+      "fps": 4.97729171413382,
+      "work": [
+        5,
+        16,
+        1569,
+        331,
+        0,
+        0,
+        67,
+        17,
+        38,
+        0,
+        4864,
+        2469
+      ]
+    },
+    {
+      "level": 2,
+      "cell": 2871,
+      "heading": 225,
+      "cpu_ratio": 4.406076884337754,
+      "baseline_fps": 9.95458342826764,
+      "fps": 2.48864585706691,
+      "work": [
+        4,
+        13,
+        1310,
+        194,
+        0,
+        0,
+        283,
+        21,
+        40,
+        0,
+        3200,
+        3888
+      ]
+    },
+    {
+      "level": 3,
+      "cell": 1544,
+      "heading": 315,
+      "cpu_ratio": 2.543030513176144,
+      "baseline_fps": 14.931875142401458,
+      "fps": 6.636388952178426,
+      "work": [
+        4,
+        16,
+        1261,
+        205,
+        0,
+        0,
+        74,
+        5,
+        14,
+        0,
+        3456,
+        688
+      ]
+    }
+  ],
+  "live24": {
+    "before": [
+      {
+        "level": 1,
+        "language": 0,
+        "fps": 19.37108126581811,
+        "max_motion_debt": 415
+      },
+      {
+        "level": 2,
+        "language": 0,
+        "fps": 19.112800182273865,
+        "max_motion_debt": 399
+      },
+      {
+        "level": 3,
+        "language": 0,
+        "fps": 27.56653872443346,
+        "max_motion_debt": 411
+      },
+      {
+        "level": 1,
+        "language": 1,
+        "fps": 19.37108126581811,
+        "max_motion_debt": 414
+      },
+      {
+        "level": 2,
+        "language": 1,
+        "fps": 19.112800182273865,
+        "max_motion_debt": 415
+      },
+      {
+        "level": 3,
+        "language": 1,
+        "fps": 27.56653872443346,
+        "max_motion_debt": 412
+      }
+    ],
+    "after": [
+      {
+        "level": 1,
+        "language": 0,
+        "fps": 12.35741391095293,
+        "max_motion_debt": 406
+      },
+      {
+        "level": 2,
+        "language": 0,
+        "fps": 8.334069846921745,
+        "max_motion_debt": 382
+      },
+      {
+        "level": 3,
+        "language": 0,
+        "fps": 11.198906356801094,
+        "max_motion_debt": 405
+      },
+      {
+        "level": 1,
+        "language": 1,
+        "fps": 12.35741391095293,
+        "max_motion_debt": 406
+      },
+      {
+        "level": 2,
+        "language": 1,
+        "fps": 8.334069846921745,
+        "max_motion_debt": 382
+      },
+      {
+        "level": 3,
+        "language": 1,
+        "fps": 11.198906356801094,
+        "max_motion_debt": 405
+      }
+    ]
+  },
+  "profile": {
+    "rom_sha256": "807f3e295143d5f01d97b5e262960543f160996800ddb719bce811f78663916c",
+    "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+    "script_sha256": "fe8dc93d5761624cfa6f6a1ce95517343df5bc22c67744c8aba3097b9d3048af",
+    "rows": [
+      {
+        "level": 1,
+        "cell": 520,
+        "heading": 225,
+        "cycles": 3597056,
+        "work": [
+          5,
+          12,
+          518,
+          144,
+          0,
+          0,
+          137,
+          13,
+          27,
+          0,
+          3328,
+          861
+        ],
+        "attributed_cycles": {
+          "setup_admission_and_oam": 1820224,
+          "opaque_coverage": 18048,
+          "masked_coverage": 216512
+        }
+      },
+      {
+        "level": 1,
+        "cell": 3640,
+        "heading": 225,
+        "cycles": 2049920,
+        "work": [
+          5,
+          11,
+          525,
+          106,
+          0,
+          0,
+          24,
+          8,
+          26,
+          0,
+          3072,
+          534
+        ],
+        "attributed_cycles": {
+          "setup_admission_and_oam": 372352,
+          "opaque_coverage": 23744,
+          "masked_coverage": 142016
+        }
+      },
+      {
+        "level": 2,
+        "cell": 1592,
+        "heading": 135,
+        "cycles": 3017280,
+        "work": [
+          5,
+          16,
+          1569,
+          331,
+          0,
+          0,
+          67,
+          17,
+          38,
+          0,
+          3328,
+          2469
+        ],
+        "attributed_cycles": {
+          "setup_admission_and_oam": 790464,
+          "opaque_coverage": 11008,
+          "masked_coverage": 642880
+        }
+      },
+      {
+        "level": 2,
+        "cell": 2871,
+        "heading": 225,
+        "cycles": 6167168,
+        "work": [
+          4,
+          13,
+          1310,
+          194,
+          0,
+          0,
+          283,
+          21,
+          40,
+          0,
+          3200,
+          3888
+        ],
+        "attributed_cycles": {
+          "setup_admission_and_oam": 3461504,
+          "opaque_coverage": 0,
+          "masked_coverage": 956288
+        }
+      },
+      {
+        "level": 3,
+        "cell": 1544,
+        "heading": 315,
+        "cycles": 2159616,
+        "work": [
+          4,
+          16,
+          1261,
+          205,
+          0,
+          0,
+          74,
+          5,
+          14,
+          0,
+          3456,
+          688
+        ],
+        "attributed_cycles": {
+          "setup_admission_and_oam": 944320,
+          "opaque_coverage": 83264,
+          "masked_coverage": 183872
+        }
+      }
+    ],
+    "stack": {
+      "main_stack_low": 50356224,
+      "main_stack_top": 50364160,
+      "sentinel_word": 219540062,
+      "untouched_margin_bytes": 5408,
+      "high_water_bytes": 2528,
+      "irq_and_bios_excluded": true,
+      "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+    },
+    "forced_pcm": false,
+    "cold_reset_after_freeze": true,
+    "scope": "Instrumented held frames, timer64 cycles/tick; no forced PCM, not the unprofiled target benchmark."
+  },
+  "ppu": {
+    "cases": 18,
+    "max_changed_rgb_pixels": 449,
+    "max_overlay_changes": 0
+  },
+  "verification": {
+    "poses": 40,
+    "mode4_cycles": 6,
+    "scope": "40 original-map RU/EN poses including six pause/Mode4/resume cycles: exact projected geometry and leases, source/VRAM residency, legal HBlank access, scanline upper bound, coverage backed by foreground, independent actual PPU CPU/OBJ/UI composition. Background UV/art quality, full gameplay and physical GBA not accepted.",
+    "revealed_direct_obj_pixels": 36308,
+    "foreground_ppu_pixels_checked": 1091448,
+    "max_scanline_bound": 938
+  },
+  "memory": {
+    "ewram_bytes": 261424,
+    "ewram_free_bytes": 720,
+    "iwram_bytes": 24072,
+    "iwram_free_before_stack_reserve_bytes": 504,
+    "stack_reserve_bytes": 8192,
+    "main_stack": {
+      "main_stack_low": 50356224,
+      "main_stack_top": 50364160,
+      "sentinel_word": 219540062,
+      "untouched_margin_bytes": 5408,
+      "high_water_bytes": 2528,
+      "irq_and_bios_excluded": true,
+      "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+    },
+    "irq_stack": {
+      "low": 50364160,
+      "top": 50364320,
+      "untouched_margin_bytes": 80,
+      "high_water_bytes": 80,
+      "includes_bios_irq_saves": true
+    }
+  },
+  "world_obj_tables": {
+    "views": [
+      {
+        "view": 0,
+        "images": 24,
+        "patch_references": 9024,
+        "black_index": 223
+      },
+      {
+        "view": 1,
+        "images": 24,
+        "patch_references": 9024,
+        "black_index": 223
+      },
+      {
+        "view": 2,
+        "images": 24,
+        "patch_references": 9024,
+        "black_index": 255
+      },
+      {
+        "view": 3,
+        "images": 24,
+        "patch_references": 9024,
+        "black_index": 255
+      },
+      {
+        "view": 4,
+        "images": 24,
+        "patch_references": 8832,
+        "black_index": 255
+      },
+      {
+        "view": 5,
+        "images": 24,
+        "patch_references": 8832,
+        "black_index": 255
+      }
+    ],
+    "bank_bytes": 9752576,
+    "unique_patches": 19048,
+    "sha256": {
+      "world-obj-records.bin": "6eb8e46c31eda25bb2081d66e353a2d248c15b9c2fbe19ae94bac036cbbf6530",
+      "world-obj-patch-offsets.bin": "03b935f9761bbf9197ecccd203b1c74e1425df1a6b296d0ce2a63099ba3bc78a",
+      "world-obj-bank.bin": "675a8e755510769515ab1605f5533d58ed3a52e79e9917a082de53da3e6b8fbc"
+    }
+  },
+  "preserved_roms": {
+    "DoK-port_hardware_cached_prototype.gba": "2775bdd0caaac64b4fd99e4c6d675587fad2da9c795468dc52efacb5d53edaab",
+    "DoK-port_hardware_rows96_prototype.gba": "97f0b3cb1d97c958bb0750128cef72aa94f64fa4107a8edc53d743c38b557f81",
+    "DoK-port_hardware_rows72_prototype.gba": "17696958e5d1f08672754f788861c31fdc6302d242f24f0b4a5223768688888a"
+  },
+  "limitations": [
+    "V1-V8 superseded: Mode4 could corrupt persistent OBJ row maps in shared interval scratch; final invalidates all OBJ state across Mode4, with six verified pause/resume cycles.",
+    "Early asset records used image flags alone; final includes definition sprite_flags and falls back for ambiguous resource opacity.",
+    "Original source dimensions and 16 LIGHT rows retained; perspective approximated by 16x32 diagonal affine strips, with CPU fallback for crop, magnification, residency and scanline capacity.",
+    "Specific hybrid GPU/source-texture plus CPU coverage path. Does not disprove a pure hardware renderer or GPU output fed by a sector clip representation.",
+    "Five heavy PCM views, six live24 runs, 18 paired PPU views and 40 native composition/geometry/lease poses; no full440 sweep or full gameplay/physical GBA acceptance.",
+    "Profile instrumented without forced PCM; use unprofiled target report for speed comparison. Live motion debt retained; not a simulation budget pass."
+  ],
+  "decision": "Keep control2775 and quality96/72 artifacts; stop local tuning of this losing hybrid. Test genuine sector clip/span architecture next.",
+  "evidence": [
+    {
+      "path": "build/g20a-world-obj-native-final/prototype-build.json",
+      "sha256": "0825ce66f5442c0d52264921da7ea91690714f098f90765a95206868eba97415"
+    },
+    {
+      "path": "build/g20a-world-obj-native-final/target.json",
+      "sha256": "e7a6ce3bff9b9a80600abde0fbea0f1da8d4dd1b8cfc62192d5e978c65a347f5"
+    },
+    {
+      "path": "build/g20a-world-obj-native-final/profile.json",
+      "sha256": "9fd55ff97e9cf4046216f4ec0206a4e71203fda1a480057347bcdd8d4dd1ffbe"
+    },
+    {
+      "path": "build/g20a-world-obj-native-final/ppu18-live.json",
+      "sha256": "8659cb32decf8bc3d445da2d8153a04acead8c9ab69aec95049829d651cf98c5"
+    },
+    {
+      "path": "build/g20a-world-obj-native-final/qa/verification.json",
+      "sha256": "5352a88f17e7097235d9e8ae91a2cf2fcad937a3b7be0627294cb794e68a0b02"
+    },
+    {
+      "path": "build/g20a-world-obj-native-repeat/prototype-build.json",
+      "sha256": "e894340854437913f868e59c2c4b6d1e4008b94446c593807d320e11ff14f123"
+    },
+    {
+      "path": "build/g20a-hw-entity-rect-v2/spatial.json",
+      "sha256": "15596daa16c2bd2cec1558f68ae0063f3db8e82d97c08cdd5d6f5f4b4401a879"
+    },
+    {
+      "path": "build/g20a-columns-v6/control-live24.json",
+      "sha256": "eafabc2bd05198d1daadc038786ff07dc75653894963a880328384534a02024f"
+    },
+    {
+      "path": "analysis/g20a-world-obj-bringup.json",
+      "sha256": "dcba927b9b805b2dbdc3e69e789139862f254fe9a414873ed4489850a6072b5b"
+    }
+  ]
+}

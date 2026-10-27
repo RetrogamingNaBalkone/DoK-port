@@ -97,6 +97,16 @@ gba_irq:
     ldrne r2, [r0]
     addne r2, r2, #1
     strne r2, [r0]
+#ifdef DOK_RENDER_HW_BG_PROTOTYPE
+    tst r1,#1
+    beq 7f
+    push {r1,r4,r5,lr}
+    ldr r3,=gba_hw_bg_vblank
+    mov lr,pc
+    bx r3
+    pop {r1,r4,r5,lr}
+7:
+#endif
 #ifdef DOK_RENDERER_PROBE
     tst r1, #0x210
     beq 6f

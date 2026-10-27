@@ -1,0 +1,516 @@
+{
+  "task": "G05",
+  "status": "passed",
+  "emulator": "mGBA",
+  "emulator_version": "0.11-212-7a12d6d",
+  "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+  "bios": "mGBA replacement BIOS (no external BIOS)",
+  "rom_sha256": "7babd40f913eb12f77c93c9df917cea432b0cbe3bd83e11da45ba08dec917ea8",
+  "rom_bytes": 32891192,
+  "package_sha256": "3efa5d3027d63ffd65e0ae8c0b45be23ee8394b3c5151c8e9f10e76fa8674351",
+  "embedded_package_byte_identical": true,
+  "ewram_static_bytes": 253668,
+  "iwram_stack_bios_reserve": 8192,
+  "ru": {
+    "diag": {
+      "magic": 1380860981,
+      "status": 0,
+      "language": 0,
+      "level": 0,
+      "draws": 13,
+      "last_cycles": 2694592,
+      "min_cycles": 2672704,
+      "max_cycles": 3059584,
+      "faces": 15,
+      "columns": 0,
+      "pixels": 17246,
+      "switches": 0,
+      "last_keys": 0,
+      "player_x": 15120,
+      "player_y": -300,
+      "player_z": 22800,
+      "scene_height": 144,
+      "message_height": 16,
+      "cycle_budget": 561792,
+      "over_budget": 14,
+      "present_vblank": 360,
+      "frame_bytes": 38400,
+      "world_bytes": 33864,
+      "workspace_bytes": 160260,
+      "guard_ok": 1,
+      "palette_ready": 1,
+      "font_ready": 1,
+      "visible_page": 1,
+      "face_count": 38,
+      "geometry_fnv1a": 3213303041,
+      "phase": 2,
+      "reserved4": 0
+    },
+    "framebuffer_sha256": "1dfaba681b6e0aab4a30e74895f7c2556c30297c5b7736d2e454f3293b3a212b",
+    "scene_sha256": "b1ac29e4162a2029a268ab0e1d0753bd67f054e5e0c741f2c16f5a03825fd17c",
+    "message_sha256": "931f5b454f0243d4e9e9ff0f378a7bae781e90411c25ba8fb93596fa42f2400d",
+    "palette_sha256": "563188cc97da73f8b40c595cf61a4d2998a9f69f4177b8edf91b909ebe0594ac",
+    "geometry_fnv1a": 3213303041,
+    "geometry_sha256": "52584829254c51d8962db57bcd1c87861881279e3f238d3d540e168fd8f9b861",
+    "geometry_faces": 38,
+    "dispcnt": 1044
+  },
+  "en": {
+    "diag": {
+      "magic": 1380860981,
+      "status": 0,
+      "language": 1,
+      "level": 0,
+      "draws": 26,
+      "last_cycles": 2694528,
+      "min_cycles": 2672704,
+      "max_cycles": 3059584,
+      "faces": 15,
+      "columns": 0,
+      "pixels": 17246,
+      "switches": 1,
+      "last_keys": 0,
+      "player_x": 15120,
+      "player_y": -300,
+      "player_z": 22800,
+      "scene_height": 144,
+      "message_height": 16,
+      "cycle_budget": 561792,
+      "over_budget": 27,
+      "present_vblank": 490,
+      "frame_bytes": 38400,
+      "world_bytes": 33864,
+      "workspace_bytes": 160260,
+      "guard_ok": 1,
+      "palette_ready": 1,
+      "font_ready": 1,
+      "visible_page": 0,
+      "face_count": 38,
+      "geometry_fnv1a": 3213303041,
+      "phase": 2,
+      "reserved4": 0
+    },
+    "framebuffer_sha256": "1dfaba681b6e0aab4a30e74895f7c2556c30297c5b7736d2e454f3293b3a212b",
+    "scene_sha256": "b1ac29e4162a2029a268ab0e1d0753bd67f054e5e0c741f2c16f5a03825fd17c",
+    "message_sha256": "931f5b454f0243d4e9e9ff0f378a7bae781e90411c25ba8fb93596fa42f2400d",
+    "palette_sha256": "563188cc97da73f8b40c595cf61a4d2998a9f69f4177b8edf91b909ebe0594ac",
+    "geometry_fnv1a": 3213303041,
+    "geometry_sha256": "52584829254c51d8962db57bcd1c87861881279e3f238d3d540e168fd8f9b861",
+    "geometry_faces": 38,
+    "dispcnt": 1028
+  },
+  "ru_return": {
+    "diag": {
+      "magic": 1380860981,
+      "status": 0,
+      "language": 0,
+      "level": 0,
+      "draws": 39,
+      "last_cycles": 2693888,
+      "min_cycles": 2672704,
+      "max_cycles": 3059584,
+      "faces": 15,
+      "columns": 0,
+      "pixels": 17246,
+      "switches": 2,
+      "last_keys": 0,
+      "player_x": 15120,
+      "player_y": -300,
+      "player_z": 22800,
+      "scene_height": 144,
+      "message_height": 16,
+      "cycle_budget": 561792,
+      "over_budget": 40,
+      "present_vblank": 620,
+      "frame_bytes": 38400,
+      "world_bytes": 33864,
+      "workspace_bytes": 160260,
+      "guard_ok": 1,
+      "palette_ready": 1,
+      "font_ready": 1,
+      "visible_page": 1,
+      "face_count": 38,
+      "geometry_fnv1a": 3213303041,
+      "phase": 2,
+      "reserved4": 0
+    },
+    "framebuffer_sha256": "1dfaba681b6e0aab4a30e74895f7c2556c30297c5b7736d2e454f3293b3a212b",
+    "scene_sha256": "b1ac29e4162a2029a268ab0e1d0753bd67f054e5e0c741f2c16f5a03825fd17c",
+    "message_sha256": "931f5b454f0243d4e9e9ff0f378a7bae781e90411c25ba8fb93596fa42f2400d",
+    "palette_sha256": "563188cc97da73f8b40c595cf61a4d2998a9f69f4177b8edf91b909ebe0594ac",
+    "geometry_fnv1a": 3213303041,
+    "geometry_sha256": "52584829254c51d8962db57bcd1c87861881279e3f238d3d540e168fd8f9b861",
+    "geometry_faces": 38,
+    "dispcnt": 1044
+  },
+  "restart_after_poison": {
+    "magic": 1380860981,
+    "status": 0,
+    "language": 0,
+    "level": 0,
+    "draws": 3,
+    "last_cycles": 2672704,
+    "min_cycles": 2672704,
+    "max_cycles": 3059584,
+    "faces": 15,
+    "columns": 0,
+    "pixels": 17246,
+    "switches": 0,
+    "last_keys": 0,
+    "player_x": 15120,
+    "player_y": -300,
+    "player_z": 22800,
+    "scene_height": 144,
+    "message_height": 16,
+    "cycle_budget": 561792,
+    "over_budget": 3,
+    "present_vblank": 260,
+    "frame_bytes": 38400,
+    "world_bytes": 33864,
+    "workspace_bytes": 160260,
+    "guard_ok": 1,
+    "palette_ready": 1,
+    "font_ready": 1,
+    "visible_page": 1,
+    "face_count": 38,
+    "geometry_fnv1a": 3213303041,
+    "phase": 1,
+    "reserved4": 0
+  },
+  "world_bytes": 33864,
+  "mutable_world_sha256": "cc868648a3c586e203186b897dfb116211ccc74af39bbb9913744107951eb18c",
+  "mutable_world_preserved_byte_for_byte": true,
+  "scene_geometry_signature_preserved": true,
+  "scene_geometry_preserved_byte_for_byte": true,
+  "scene_pixels_preserved_byte_for_byte": true,
+  "localized_message_changed": true,
+  "framebuffer_guards_passed": true,
+  "poisoned_ewram_reset_passed": true,
+  "stack_before_reset": {
+    "main_stack_low": 50356224,
+    "main_stack_top": 50364160,
+    "sentinel_word": 219540062,
+    "untouched_margin_bytes": 5568,
+    "high_water_bytes": 2368,
+    "irq_and_bios_excluded": true,
+    "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+  },
+  "stack_after_reset": {
+    "main_stack_low": 50356224,
+    "main_stack_top": 50364160,
+    "sentinel_word": 219540062,
+    "untouched_margin_bytes": 5568,
+    "high_water_bytes": 2368,
+    "irq_and_bios_excluded": true,
+    "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+  },
+  "timing": {
+    "cpu_hz": 16777216,
+    "hardware_frame_cycles": 280896,
+    "target_cycles": 561792,
+    "target_hardware_frames": 2,
+    "scope": "Timer0/1 cascade: time-poll + input/language switch + renderer + HUD + halfword VRAM back-page copy; excludes presentation wait",
+    "min_cycles": 2672704,
+    "max_cycles": 3059584,
+    "worst_render_budget_ratio": 5.446115288220551,
+    "nominal_target_fps": 29.863750284802915,
+    "over_budget_draws": 40,
+    "all_observed_draws_fit_target": false,
+    "min_present_interval_vblanks": 10,
+    "max_present_interval_vblanks": 10,
+    "cadence_intervals_vblanks": [
+      10,
+      10,
+      10,
+      10,
+      10,
+      10
+    ],
+    "cadence_warmup_excluded_draws": 8,
+    "observed_steady_presentation_fps": 5.972750056960583,
+    "sampled_draws": 39,
+    "samples": [
+      {
+        "draws": 1,
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 3049088,
+        "present_vblank": 239
+      },
+      {
+        "draws": 2,
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 3059584,
+        "present_vblank": 250
+      },
+      {
+        "draws": 3,
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 2672704,
+        "present_vblank": 260
+      },
+      {
+        "draws": 4,
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 2693568,
+        "present_vblank": 270
+      },
+      {
+        "draws": 5,
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 2694528,
+        "present_vblank": 280
+      },
+      {
+        "draws": 6,
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 2694528,
+        "present_vblank": 290
+      },
+      {
+        "draws": 7,
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 2694528,
+        "present_vblank": 300
+      },
+      {
+        "draws": 8,
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 2693888,
+        "present_vblank": 310
+      },
+      {
+        "draws": 9,
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 2694528,
+        "present_vblank": 320
+      },
+      {
+        "draws": 10,
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 2694528,
+        "present_vblank": 330
+      },
+      {
+        "draws": 11,
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 2694592,
+        "present_vblank": 340
+      },
+      {
+        "draws": 12,
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 2693888,
+        "present_vblank": 350
+      },
+      {
+        "draws": 13,
+        "language": 0,
+        "switches": 0,
+        "last_cycles": 2694592,
+        "present_vblank": 360
+      },
+      {
+        "draws": 14,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 2694592,
+        "present_vblank": 370
+      },
+      {
+        "draws": 15,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 2701248,
+        "present_vblank": 380
+      },
+      {
+        "draws": 16,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 2694528,
+        "present_vblank": 390
+      },
+      {
+        "draws": 17,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 2693888,
+        "present_vblank": 400
+      },
+      {
+        "draws": 18,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 2694592,
+        "present_vblank": 410
+      },
+      {
+        "draws": 19,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 2694592,
+        "present_vblank": 420
+      },
+      {
+        "draws": 20,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 2694528,
+        "present_vblank": 430
+      },
+      {
+        "draws": 21,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 2694592,
+        "present_vblank": 440
+      },
+      {
+        "draws": 22,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 2693888,
+        "present_vblank": 450
+      },
+      {
+        "draws": 23,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 2694592,
+        "present_vblank": 460
+      },
+      {
+        "draws": 24,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 2694592,
+        "present_vblank": 470
+      },
+      {
+        "draws": 25,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 2694592,
+        "present_vblank": 480
+      },
+      {
+        "draws": 26,
+        "language": 1,
+        "switches": 1,
+        "last_cycles": 2693888,
+        "present_vblank": 490
+      },
+      {
+        "draws": 27,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 2694528,
+        "present_vblank": 500
+      },
+      {
+        "draws": 28,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 2701184,
+        "present_vblank": 510
+      },
+      {
+        "draws": 29,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 2694592,
+        "present_vblank": 520
+      },
+      {
+        "draws": 30,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 2694528,
+        "present_vblank": 530
+      },
+      {
+        "draws": 31,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 2693888,
+        "present_vblank": 540
+      },
+      {
+        "draws": 32,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 2694528,
+        "present_vblank": 550
+      },
+      {
+        "draws": 33,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 2697728,
+        "present_vblank": 560
+      },
+      {
+        "draws": 34,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 2694592,
+        "present_vblank": 570
+      },
+      {
+        "draws": 35,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 2694208,
+        "present_vblank": 580
+      },
+      {
+        "draws": 36,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 2693888,
+        "present_vblank": 590
+      },
+      {
+        "draws": 37,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 2694528,
+        "present_vblank": 600
+      },
+      {
+        "draws": 38,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 2694592,
+        "present_vblank": 610
+      },
+      {
+        "draws": 39,
+        "language": 0,
+        "switches": 2,
+        "last_cycles": 2694592,
+        "present_vblank": 620
+      }
+    ]
+  },
+  "physical_gba_tested": false,
+  "full_game_performance_verified": false,
+  "visual_playback_frozen": true,
+  "screenshots": {
+    "renderer-ru.png": "1d2265d3d00094bc9c7240a1180df5dcf081707c4093f7761e9fcb999d825776",
+    "renderer-en.png": "1d2265d3d00094bc9c7240a1180df5dcf081707c4093f7761e9fcb999d825776",
+    "renderer-ru-return.png": "1d2265d3d00094bc9c7240a1180df5dcf081707c4093f7761e9fcb999d825776"
+  }
+}

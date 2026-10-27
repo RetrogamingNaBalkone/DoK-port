@@ -1,5 +1,187 @@
 # План анализа PKR/PKE и реализации GBA-порта
 
+## Актуальный результат оптимизационного goal,27 октября
+
+[Итоговый handoff](gba-optimization-handoff.md),
+`analysis/g20a-final-handoff.json`: плановое сравнение крупных архитектур
+закрыто, выбран2775 (HW base planes + CPU foreground/cached geometry/prelit
+columns/rectangle path). Wide affine PC shear также измерен и не выбран;
+actual pressure diagnostic подтвердил PPU loss в4 тяжёлых видах. Последняя
+сборка текущих исходников повторяет2775,128/96/72 artifacts сохранены.
+
+**Goal завершён на анализе/handoff, Performance ROM не создан.** Новый128
+профиль расходов и offline sparse-post feasibility включены в передачу;
+полный sparse sampler не измерен. Spatial440 minimum9,95/9,95/14,93:
+15+/24,1/30 универсально не достигнуты. G20A завершена как исследование и
+передача текущего этапа; G20 остаётся открытой по бюджету, G20B/G21 ожидают.
+Это не релизная приёмка и не доказательство аппаратного предела GBA.
+
+Следующие датированные записи — история. Актуальные статусы — в реестре ниже.
+
+27 октября, [sector-fed Mode2 GPU checkpoint](gba-sector-gpu-checkpoint.md)
+реализован: CPU foreground BG2, base planes BG3, clipped mip OBJ dynamics,
+без прежнего screen coverage prepass и HBlank OAM multiplex.58 native поз,
+6 активных GPU Mode4 cycles,18 weapon states, full PPU/source/clip checks
+прошли;46 поз действительно используют OBJ. В пяти тяжёлых видах admission
+не помещается и возвращается на CPU:2,06–3,12× CPU2775,3,98–5,43FPS.
+Диагональная версия не выбрана, loss силуэта измерен и не принят как minor.
+Повтор ROMb2b16b…ca3d6e и Mode2 CPU control exact;2775/96/72 сохранены.
+Осталась крупная проверка широких perspective fragments с affine PC shear
+и ограничением ошибки; это ещё не отрицательный вывод обо всём sector-fed GPU.
+Goal открыт; локальные kernels этой версии не доводить, Performance ROM не делать.
+
+27 октября, [sector clip/span и прямой bitmap](gba-sector-clip-trial.md)
+реализованы и проверены. Оба не выбраны: пять тяжёлых PCM видов требуют
+1,37–1,87× и1,86–2,35× CPU контроля2775 соответственно. По40 native поз,
+6 Mode4 cycles и12 map edits на вариант; bitmap также проверен по полному
+PPU composition. Чистый repeat exact для обоих ROM и2775;96/72 сохранены.
+Кэш точной картинки оценён на9 маршрутах по120 кадров: мало повторов камеры
+при движении; это eligibility audit, не готовый cache/FPS. Следующая оставшаяся
+архитектурная развилка — pure/sector-fed GPU output. Локальную доводку
+проигравших sector kernels не продолжать; goal/G20/G20A остаются открытыми.
+Performance-сборку в текущем goal не реализовывать.
+
+27 октября, [native world OBJ hybrid](gba-world-obj-native-trial.md) реализован
+с16×32 perspective strips, masked coverage, residency cache и HBlank multiplex.
+40 native geometry/leases/PPU/coverage poses, включая6 Mode4 cycles, passed;
+18 PPU overlays exact, max449 scene RGB changes. Пять тяжёлых PCM видов:
+CPU1,49–4,41×2775,2,49–7,47FPS; short live24 12,36/8,33/11,20. Не выбран.
+ROM807f3e…3916c repeat exact,2775/96/72 сохранены. V1–V8 с ошибкой lifetime
+scratch заменены. [Source-art probe](gba-world-obj-bringup.md) повторён с
+правильным DISPCNT bit5:54/56 exact,2 pressure failures явно сохранены.
+Следующая главная проверка — genuine sector clip/span; local OBJ tuning не
+продолжать. Pure GPU/sector-fed output этим конкретным гибридом не опровергнут.
+
+Граница текущего goal уточнена пользователем27 октября: завершить выбор и
+разумную оптимизацию основной архитектуры, подготовить итоговый handoff с
+замерами/анализом оставшихся расходов. **Саму Performance-сборку не делать
+в этом goal**; будущие графические уступки сохраняют геймплей. Основные
+архитектурные проверки ещё не закончены, goal остаётся открыт.
+
+27 октября, [полный колоночный foreground](gba-column-pipeline-trial.md):
+native DDA/depth-owner конвейер реализован, V6 проверен и чисто повторён,
+но не выбран. Пять тяжёлых видов: CPU3,55–4,31× контроля,2,71–4,12FPS;
+short live24 около5FPS.36 poses/108 columns/13752 rows проверены независимыми
+geometry/alpha/ceiling/lease checks,18 PPU overlays exact; сцена не RGB exact.
+Это не Doom sector clip/visplane renderer. Остались две главные архитектуры:
+настоящий sector clip/span и прямые world OBJ; image cache менее приоритетен.
+2775/96/72 и прежний streaming BSP сохранены. Дальность/AI не менялись;
+G20/G20A/goal открыты, локальную доводку проигравшего пути не продолжать.
+
+27 октября, [native streaming segment BSP](gba-stream-bsp-trial.md): новый
+порядок рендера реализован, но не выбран. Spatial440 CPU+51/+57/+36%,0 видов
+быстрее,424 медленнее.18 PPU coverage/overlay exact, до272 pixels сцены изменены;
+48 native ownership/leases/mutation fixtures прошли. Чистое повторение ROM
+bfdba7…25184;2775/96/72 сохранены. Это не полноценный column/visplane pipeline:
+он и direct hardware OBJ остаются крупными непроверенными вариантами.
+[Дальность/темнота/AI](gba-dark-distance.md): LIGHT15 в GBA5 очень тёмный,
+но не весь чёрный; перцептивная незаметность допустима как критерий. Draw far
+и AI rebalance пока не вводились. Goal/G20/G20A открыты, local tuning заморожен.
+
+27 октября, новый приоритет пользователя: **сначала выбор архитектуры, затем
+точечные оптимизации**. [Сравнение архитектур](gba-architecture-selection.md):
+локальные batch/alpha/feedback опыты заморожены; ни один не выбран как default.
+Начат offline segment-BSP compiler:564/853/302 узла с сохранением исходных
+стен/уступов и низких потолков; это проверка данных, **не новый FPS benchmark**.
+Следующий шаг — native секторный/колоночный прототип и сравнение крупных backend.
+Разница с GBADoom исследуется сейчас; исчерпание вариантов не доказано.
+G20/G20A/goal открыты;2775/rows96/rows72 сохранены.
+
+27 октября, [96/72 строки CPU-слоя](gba-row-quality-trial.md): два новых
+отдельных quality ROM.96 экономит10–12% CPU; spatial440 minimum11,95/11,95/19,91.
+Потолки сохранены,396 overlays exact у каждого; ARM/PPU/game suites прошли в scope.
+72 заметно грубее и остаётся сравнением.2775 сохранён; Goal/G20/G20A открыты.
+Адаптивный потолок отложен после отрицательного grid4 опыта.
+
+27 октября, [аудит аппаратного резерва](gba-hardware-audit.md): исчерпание
+возможностей GBA не доказано. Прямое OBJ-рисование игровых объектов/части стен
+ещё не проверено; voxel terrain не является аппаратным ускорителем интерьеров.
+[Адаптивный Mode1/Mode2 v2](gba-adaptive-ceiling-checkpoint.md) не выбран:
+spatial440 улучшил26 видов, ухудшил66, минимумы11,95/9,95/14,93FPS.
+Основной ROM2775 сохранён; G20/G20A/goal открыты.
+
+27 октября, исследование [аппаратного низкого потолка](gba-lowered-ceiling-trial.md):
+геометрия сохранена, два тяжёлых L1-вида CPU−21/−31%, но обычные live маршруты
+замедляются. Вариант4f96b7…44d80 не выбран; основной кандидат остаётся2775.
+Spatial440 minimum11,95/9,95/14,93; Goal/G20/G20A открыты.396 PPU foreground/
+overlay/coverage exact, ARM/UI/flow/sprites/water/282transitions прошли в scope.
+Новый294 Pause/Resume test failed и на2775; ограничение отражено в документах.
+
+27 октября, продолжение: [стоимость кадра и кэш](gba-render-costs.md),
+`analysis/g20a-hardware-cache.json`. Отдельный ROM2775bd…edaab;396+440 PPU exact.
+Runtime turn12019,85/16,86/21,79, walking12017,96/17,92/20,54 RU (EN L1 18,10).
+Новый spatial sweep440 показывает9,954583/9,954583/14,931875FPS в минимуме:
+**Goal/G20/G20A открыты**. Полные hardware suites,512 rectangle ARM vectors,
+48 cache mutation cases,282 transitions/4811callbacks прошли. Прежние ROM
+сохранены; следующий узкий участок — вертикальные грани и CPU lowered ceilings.
+
+Уточнение пользователя: Fidelity исключён из предлагаемых игровых ROM;
+точный вариант остаётся внутренним эталоном. Текущий hardware-подход —
+Balanced; отдельный Performance с целью 30 FPS пока требует проверки.
+
+27 октября: [оценка отдельных ROM для разных целей FPS](gba-rom-profiles-assessment.md).
+Рекомендация — профили общего движка, включая эксперимент Performance;
+это не выбор качества и не достижение 30 FPS. Статусы этапов не меняются.
+
+27 октября, последний результат: [точные оптимизации128](gba-hardware-fast.md).
+Отдельный ROMe803f8…4308c;396 PPU RGB exact против предыдущего128.
+Runtime turn120 —19,37/15,15/20,90 FPS, walking120 —17,11/16,75/19,58 RU
+(EN L1 17,15). Новый72-heading frozen sweep даёт minimum14,931875 L1/L2:
+**Goal/G20/G20A остаются открыты**, универсального15+ нет. ARM32811projection,
+полные UI/flow/sprites/water/items/combat/AI28combat/interactions/time и
+282transitions/1601callbacks прошли в заявленном scope. Старые ROM сохранены.
+Artificial all-awake stress/whole-level/physical GBA остаются ограничениями.
+
+27 октября, последний результат: [геометрия и128 строк](gba-hardware-rows.md).
+Отдельный ROM16ba83…3961; runtime PCM turn120 —18,71/14,75/20,13 FPS,
+walking120 —16,55/16,00/19,27 RU/EN. **Goal/G20/G20A открыты**: L2 turning<15.
+396 exact PPU относительно128 control, UI/weapon overlay без изменений против144;
+ARM/UI/flow/sprites/AI/28combat/interactions/time,144 water phase cases,
+282 transitions/1633 callbacks прошли. Искусственный all-awake stress остаётся
+0,07..0,37FPS; это не приемлемый бюджет. Independent combat/item pixel QA и
+физическая GBA открыты; старые ROM сохранены, release quality не выбрано.
+
+27 октября, текущий проход: [отсечение и раннее предъявление](gba-hardware-culling.md).
+Новый отдельный ROM240669…f014; walking120 кадров RU/EN —15,03/15,12/18,01 FPS.
+Turn/PCM —14,93/13,27/17,48 (EN LEVEL3 17,70): **общая цель15+ ещё не достигнута**.
+396 exact RGB и282 transitions/1750 PPU кадров без смешивания; ARM, clock,
+AI/28 combat и interactions logic прошли. Full hardware QA остаётся открытой.
+Прежние ROM сохранены; G20/G20A в работе, G20B/G21 ожидают.
+
+27 октября, текущий результат: [аппаратные пол/базовый потолок](gba-hardware-planes.md).
+Отдельный hardware ROM, direct output378 exact RGB, HUD cache396 exact RGB,
+1536 tiled/256 map ARM vectors. Runtime-камера с поворотом/PCM:
+13,52/11,20/17,27 FPS; ходьба/поворот/огонь120 кадров —13,22/12,60/16,48.
+В проверенных сценариях upload overflows0, audio underruns0, ticks conservation0.
+Это ещё не полная приёмка и не15+ во всех мирах; G20/G20A открыты.
+Исторические live-замеры ниже держали диагностическую камеру; новая методика
+и парные сравнения описаны в документе. Следующий шаг — wall/side raster,
+geometry/coverage и полный hardware regression. Процедурные текстуры отложены.
+
+27 октября, продолжение: [проверена основа аппаратного вывода](gba-hardware-floor.md).
+18 RGB PPU кадров совпали с exact,768 ARM packing vectors прошли; Mode1/OBJ
+подготовлен для будущего affine floor. Пока он медленнее: CPU всё ещё рисует
+пол, а упаковка стоит400k. Следующий шаг — прямой tiled foreground, затем
+аппаратные плоскости; новые ROM не назначены default. G20/G20A в работе,
+15+ не достигнуты, лучшие сборки ниже сохранены.
+
+27 октября: [ускорены общие спаны, HUD и потолочные уступы](gba-span-prototypes.md).
+Текущий `sides_exact` сохраняет 488 полных кадров побайтно, CPU медиана1,324×;
+живые стартовые сцены с PCM — 7,17/7,47/8,53 FPS. Отдельный пол/потолок4×2 —
+11,95/9,95/14,93 FPS, стены/двери/акторы120×144 и HUD240×160 сохранены.
+ROM — `artifacts/gba/DoK-port_optimized_prototype.gba` и
+`DoK-port_floor_4x2_prototype.gba`; [BSP первого прохода](gba-quality-options.md) отдельно.
+G20/G20A **в работе: даже удовлетворительная цель 15+ FPS ещё не достигнута**.
+Следующий шаг — дальнейшее сокращение общего traversal/geometry и стоимости
+покрытия/спанов. Процедурный вариант отложен по результату и
+уточнению пользователя; G20B/G21 ожидают. SDL2-линия не менялась.
+
+26 октября: [проверены гипотезы FPS и оценён BSP](gba-fps-hypotheses.md).
+G20A начата, в работе: сравнены экспериментальные режимы, качество не выбрано,
+30 FPS не достигнуты. Следующий шаг — прототип раннего отсечения и сокращения
+стоимости horizontal surface setup. Select исправлен: язык меняется только
+в меню; G17 остаётся готовой.
+
 26 октября после тестирования первого уровня [исправлены HUD и открытая дверь](level1-fixes.md).
 Иконки уменьшены offline в ROM, нижние сообщения центрированы и целиком
 помещаются в одну строку с адаптивной шириной шрифта. Полоса полностью
@@ -124,8 +306,8 @@ docs/handoff.md: изменения, проверки, ограничения и
 | [G16](tasks/G16.md) | Звук и воспроизведение на GBA | G15 | готово; mono/native identity, DMA stream23 sounds, actual capture/listening, underruns0 |
 | [G17](tasks/G17.md) | HUD, меню и русская/английская локализация | G16 | готово; original CP866, кнопки/пауза, notifications, native x86/ARM/visual и регрессии;26октября иконки уменьшены offline, нижние сообщения центрированы в одну строку |
 | [G18](tasks/G18.md) | Полный игровой цикл и прохождение трёх уровней | G17 | готово; исходный выбор LEVEL1–3, BINTRO/EINTRO/ENDTXT, смерть/повтор/новый мир, независимые ARM/native/host/visual проверки |
-| [G20](tasks/G20.md) | Общая интеграция и оптимизация под GBA | G18 | в работе по бюджету; проход без усечений проверен, 488 pixel-exact кадров, full-game CPU/память/регрессии; 30 FPS не достигнуты |
-| [G20A](tasks/G20A.md) | Определение усечений на целевом разрешении | измеренный профиль G20 | готова к началу; варианты и выбор качества, не начата |
+| [G20](tasks/G20.md) | Общая интеграция и оптимизация под GBA | G18 | в работе по бюджету; исследовательский goal закончен handoff, архитектура2775 выбрана;15+/24,1/30 универсально не достигнуты |
+| [G20A](tasks/G20A.md) | Определение усечений на целевом разрешении | измеренный профиль G20 | готово в границе текущего goal: сравнение/анализ/handoff; Performance ROM и выбор release quality не входят;96/72 сохранены |
 | [G20B](tasks/G20B.md) | Полноценная заставка и главное меню | G17/G18; в очереди после G20A | ожидает; прямой запрос пользователя, не начата |
 | [G21](tasks/G21.md) | Регрессия, воспроизводимый релиз и инструкция | G20, решение G20A, G20B | ожидает |
 

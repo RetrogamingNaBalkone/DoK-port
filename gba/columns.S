@@ -152,7 +152,11 @@ dok_gba_surface_span:
     str r12,[sp]
 2:
     add r0,r0,#2
+#ifdef DOK_HW_COVER4
+    add r9,r9,#16
+#else
     add r9,r9,#20
+#endif
     add r3,r3,r5
     add r4,r4,r6
     subs r11,r11,#1

@@ -13,6 +13,25 @@ import struct
 import zlib
 
 
+def scene_source_y(y,scene_objects):
+    """Decode the established affine8-row scene strips, including quality trials.
+
+    Uses the hardware fixed-point transform at each destination pixel, rather
+    than assuming a uniform nearest-neighbor resize of the whole image.
+    """
+    assert scene_objects in (72,64,48,36),scene_objects
+    rows=scene_objects//4;step=144//rows;row=y//step
+    pd=2048//step;top=row*step+step//2-8
+    if row:
+        previous=((y-(top-step)-8)*pd+1024)>>8
+        # Earlier OAM entries win when fixed-point rounding makes the preceding
+        # strip extend one destination row into this strip (96-row trial).
+        if 0<=previous<8:return (row-1)*8+previous
+    source=((y-top-8)*pd+1024)>>8
+    assert 0<=y<144 and 0<=source<8,(y,scene_objects,source)
+    return row*8+source
+
+
 class SystemInfo(ct.Structure):
     _fields_ = [('name', ct.c_char_p), ('version', ct.c_char_p), ('extensions', ct.c_char_p),
                 ('need_fullpath', ct.c_bool), ('block_extract', ct.c_bool)]
@@ -142,6 +161,7 @@ class Frontend:
         try:
             bpp = 4 if self.pixel_format == 1 else 2
             raw = b''.join(ct.string_at(data + y*pitch, width*bpp) for y in range(height))
+            self.last_video_raw=raw
             if os.environ.get('DOK_PROBE_FAST_VIDEO')=='1':
                 # Console rasterization is unchanged. Defer only Python RGB
                 # conversion until an actual screenshot needs those bytes.
@@ -165,6 +185,42 @@ class Frontend:
                             ((v>>5)&((1<<green_bits)-1))*255//((1<<green_bits)-1),
                             (v&31)*255//31))
         self.rgb=bytes(rgb)
+
+    def colors555(self):
+        """Normalize the actual PPU callback to native GBA palette colors."""
+        raw=self.last_video_raw
+        assert len(raw)==240*160*(4 if self.pixel_format==1 else 2)
+        if self.pixel_format==1:
+            return [((v>>19)&31)|(((v>>11)&31)<<5)|(((v>>3)&31)<<10)
+                    for (v,) in struct.iter_unpack('<I',raw)]
+        rs,gs=(11,6) if self.pixel_format==2 else (10,5)
+        return [((v>>rs)&31)|(((v>>gs)&31)<<5)|((v&31)<<10)
+                for (v,) in struct.iter_unpack('<H',raw)]
+
+    def mode2_ui_indices(self):
+        """Decode this backend's native normal-OBJ overlay, slots0..63.
+
+        These indices are an attribution aid. A caller must still compare
+        each visible source color with actual PPU video before using it.
+        """
+        layer=bytearray(38400);oam=self.read(0x07000000,512);vram=self.read(0x06000000,98304)
+        for n in reversed(range(64)):
+            a,b,c=struct.unpack_from('<3H',oam,n*8)
+            if a&0x200:continue
+            assert not(a&0x100) and a&0x2000 and not(c&0xc00),'Unexpected UI OBJ format'
+            shape,size=a>>14,b>>14
+            assert (shape,size) in ((0,0),(1,0),(1,1)),('Unexpected UI OBJ size',shape,size)
+            width=8 if shape==0 else 16 if size==0 else 32
+            left=b&511;top=a&255
+            if left>=256:left-=512
+            if top>=160:top-=256
+            for dy in range(8):
+                for dx in range(width):
+                    x,y=left+dx,top+dy
+                    if not(0<=x<240 and 0<=y<160):continue
+                    texel=vram[0x10000+(c&1023)*32+(dx//8)*64+dy*8+(dx&7)]
+                    if texel:layer[y*240+x]=texel
+        return layer
 
     def load(self, rom):
         self.rom_buffer = ct.create_string_buffer(rom.read_bytes())

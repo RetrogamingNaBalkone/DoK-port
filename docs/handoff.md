@@ -1,5 +1,742 @@
 # Передача контекста между чатами
 
+## Итог текущего goal,27 октября
+
+**Начинать с [итогового handoff](gba-optimization-handoff.md)** и
+`analysis/g20a-final-handoff.json`. Текущий goal закончен в уточнённой
+пользователем границе: архитектурное сравнение, разумная оптимизация основной
+ветки, замеры и анализ остатка. **Performance-сборка не реализована.**
+G20A готова как анализ/передача этого этапа; G20 открыта по бюджету,
+G20B/G21 ожидают. Численные цели15+/24,1/30 универсально не достигнуты.
+
+Последний wide affine/PC shear trial проверен и не выбран:58 native poses,
+46 GPU-active,8 nonzero-PC,6 Mode4 cycles,18 weapon states/full PPU/source/clip.
+Все5 heavy views уходят вCPU fallback, CPU2,10–2,38×2775. Pressure diagnostic
+показал реальное исчерпание PPU в4 видах; пятый не проходит fit bound.
+Loss силуэта не принят как minor. Плановые крупные сравнения закрыты,
+основной путь выбран2775, **не объявлен абсолютный предел GBA**.
+
+Свежая сборка `build/g20a-final-costs/hw_v128_entity_rect/` byte exact к2775;
+игровые128/96/72 artifacts сохранены. Новый диагностический128 профиль
+разделяет masked/opaque/потолки: L1 дороги пониженные плоскости, L2 masked
+грани. Sparse posts проверены offline на точное восстановление и размер
+метаданных; native gain не измерен, полный kernel отложен. Не подменять это
+отрицательным native trial. Подробные оставшиеся расходы, measured quality
+варианты и ограничения — в итоговом документе. AI/draw distance не менялись.
+
+Ниже — история контрольных точек. Их «следующий шаг» и «goal открыт» относятся
+к моменту записи; актуальный результат и граница указаны выше.
+
+## Уточнённая граница активного goal
+
+Прямое указание пользователя27 октября: goal **не включает реализацию
+Performance-сборки**. Он заканчивается выбором/разумной оптимизацией основной
+архитектуры, итоговыми замерами и handoff с анализом оставшихся расходов и
+возможных графических сокращений. Будущий Performance сохраняет геймплей;
+AI radius автоматически не менять. Цели15+/24,1/30 сохраняются как критерии
+оценки достигнутого результата, но не повод скрыть недостижение или бесконечно
+продлевать доводку. Native OBJ hybrid и два sector clip/span backend проверены
+отрицательно; диагональный sector-fed GPU checkpoint проверен и не выбран,
+широкие affine/shear фрагменты ещё требуют отдельного решения;
+текущий этап открыт. Подробности в `gba-architecture-selection.md`.
+
+## Последний опыт: sector-fed Mode2 GPU checkpoint
+
+Читать [GPU checkpoint](gba-sector-gpu-checkpoint.md),
+`analysis/g20a-sector-gpu-checkpoint.json`. Native backend: CPU tile foreground
+на affine BG2/PA128/PD228, исходные базовые planes на BG3, clipped source-mip
+OBJ dynamics, HBlank OAM multiplex выключен, DISPCNT1c42/1210-cycle OBJ budget.
+Ближние стены/уступы/низкие потолки пока CPU. Это не full-GPU static renderer.
+Исходные16 LIGHT rows применяются ARM source-copy; unshaded mip bank1 912 576B.
+All-prelit mip bank135,6MB был отвергнут до ROM. Whole flat billboards plus
+узкие perspective strips; PA/PD, PC/PB0. Per-face clip вычисляется один раз;
+fully hidden faces отсекаются до GPU setup, без old alpha/coverage prepass.
+
+`build/g20a-sector-gpu-v8/`, repeat `build/g20a-sector-gpu-repeat/`:
+`hw_v128_sector_gpu_thumb`, ROMb2b16b…ca3d6e,18 754 460B;
+`hw_v128_sector_gpu_off`, ROMfe51e2…52adcc,16 365 548B. Все3 ROM с2775
+byte exact в обоих деревьях, artifacts2775/96/72 сохранены. Ранние drafts
+physical/logical X/admission не использовать. Source/current hashes проверены
+collector `scripts/report_gba_sector_gpu.py`.
+
+58 native poses RU/EN,6 Mode4 cycles с активным GPU,18 weapon states:
+dynamic geometry/leases и native HUD/weapon exact против2775.46 поз реально
+рисуют OBJ. Для GPU и CPU Mode2 по2 227 200 actual PPU pixels/source base pixels
+прошли; GPU ещё56 444 source texels и70 446 candidate pixels по static clip
+contract. Это не independent dynamic completeness proof. Alpha mask comparison
+с Mode2 CPU: max278 missing/96 extra physical pixels; послеradius2 max62 missing
+interior/2 extra beyond tolerance. Loss картинки измерен, не принят как minor.
+Нет new map edits/full440/full gameplay/physical GBA acceptance.
+
+**Не выбран.** Все5 heavy views отклоняют GPU admission: scan budget у4,
+atlas уL2/2871. Затем CPU dynamic fallback; это не successful-GPU heavy FPS.
+CPU ratios2,29/2,06/2,52/2,60/3,12, FPS4,98/5,43/4,27/3,98/5,43.
+Short live24 RU/EN10,70/8,33/12,91; CPU Mode2 11,03/10,24/14,63;
+2775 19,37/19,11/27,57. PCM underruns0, time-conservation error0, debt retained.
+Held profile без forced PCM: attempted GPU setup0,792–1,274M cycles.
+EWRAM261324/free820, IWRAM24196/free380 до8192 stacks; main2544/margin5392,
+IRQ80/margin80. GPU state19640 plus sector13496 вcovered[], fresh каждый draw.
+
+**Следующий ограниченный крупный опыт:** широкие perspective fragments с
+affine PC shear и измеримым ограничением ошибки, вместо текущих узких
+диагональных полос. Это меняет OAM/canvas pressure и аппроксимацию; текущий
+checkpoint ещё не отвергает всё семейство sector-fed GPU. Оценить также
+оставшийся бюджет для static output, затем выбрать основную архитектуру и
+закончить goal итоговым handoff оставшихся расходов. Локально не доводить
+диагональные kernels, не строить Performance ROM, не менять AI/draw distance.
+Goal/G20/G20A активны. Следующие разделы — предыдущие этапы.
+
+## Предыдущий опыт: sector clip/span и прямой Mode4 bitmap
+
+Читать [sector trial](gba-sector-clip-trial.md), `analysis/g20a-sector-trial.json`.
+Оба варианта реализованы и проверены, но не выбраны.
+`build/g20a-sector-clip-final/`, измерения в `build/g20a-sector-clip-v4/`,
+repeat `build/g20a-sector-clip-repeat/`. ROM8d46e3…ae3ba и0cd601…ff2dc4;
+все три дерева byte exact, контроль2775 exact. Sector+HW: CPU1,37–1,87×,
+heavy5,69–11,95FPS; sector+bitmap:1,86–2,35×,4,59–8,53FPS. Short live24 RU/EN
+11,65/11,20/17,07 и7,20/7,43/8,74 против контрольных19,37/19,11/27,57.
+Низкие потолки/свет/исходные leases/AI сохранены.
+
+По40 native поз/6 Mode4 cycles/12 map edits на вариант. Original dynamic
+geometry/leases, независимые wall-ray/roof-mask checks,27992 roof pixels,
+97590 dynamic source/alpha/order pixels прошли; static clip contract не имеет
+отдельного полного dynamic visibility oracle. Исключения посчитаны отдельно:
+6 endpoint columns,10188 world-grid rows,1102 adjacent roof rows и4 opaque
+edge rows. Bitmap:202580 software base pixels и1 536 000 actual
+Mode4/OBJ PPU pixels прошли.18 PPU overlays гибрида exact, scene max17314RGB
+changes. Нет full440/full gameplay/physical acceptance новых вариантов.
+У bitmap V2 были PCM underruns; V3/final с IRQ service window проходит heavy/live
+с underruns0. RAM/стеки и ограничения подробно в новом документе.
+
+**Не доводить локально эти два проигравших пути.** Кэш exact-camera картинки
+не выбран как главная архитектура по audit9×120: при движении1–6 возможностей
+reuse/120, при стоянии120. Это не native cache и не reprojection benchmark.
+Главная оставшаяся проверка — pure/sector-fed GPU output, который не опровергнут
+прежним CPU+OBJ coverage hybrid. После его обоснованного disposition — выбор
+основной ветки, ограниченная доводка, итоговые замеры и handoff оставшихся
+расходов. **Performance ROM не делать.** G20/G20A/goal активны;
+2775/96/72 artifacts сохранены. Следующие записи — предыдущие этапы.
+
+## Предыдущий опыт: native world OBJ hybrid
+
+Читать [native trial](gba-world-obj-native-trial.md),
+`analysis/g20a-world-obj-native.json`. `hw_v128_world_obj`, ROM807f3e…3916c,
+`build/g20a-world-obj-native-final/`; чистый repeat `...native-repeat/` exact
+для native,2775 и probe.128/96/72 artifacts сохранены, нового default нет.
+Исходные16×32 texture strips/16 LIGHT rows, перспективные стены и static masked
+objects; CPU сохраняет потолки и fallback.32 slots×512B в16KiB, HBlank CPU
+slots4..7/matrix0, world slots8+/matrices2+, matrix1 reserved под DMA padding.
+DISPCNT3561h, законный bit5/954 scanline budget;8-line conservative admission.
+
+40 poses RU/EN с6 Pause/Mode4/Resume cycles: original projected geometry/leases
+exact, row maps/VRAM residency/coverage/independent PPU composition passed.
+1 091 448 foreground pixels проверено,36 308 непосредственно из OBJ; максимум
+scanline bound938/954.18 PPU overlays exact, max449 scene RGB changes.
+5 heavy PCM CPU ratios2,67/1,49/2,16/4,41/2,54, FPS4,27/7,47/4,98/2,49/6,64.
+Short live24 RU/EN12,36/8,33/11,20 против2775 19,37/19,11/27,57. Underruns0,
+time-conservation error0; retained debt до406 не budget pass. Нового440/full
+gameplay acceptance нет. Профиль без forced PCM: setup/admission0,37–3,46M,
+opaque coverage0–0,083M, masked0,14–0,96M. Warm texture upload0B во всех5 видах.
+
+V1–V8 **не использовать для решения**: Mode4 перезаписывал часть row maps в
+covered[] без изменения magic. Теперь non-native draw сбрасывает owner pointer;
+следующий native полностью создаёт state. Вся first/last table проверяется
+в каждой QA позе. Ранее asset opacity пропускал definition.sprite_flags;
+финал учитывает их, ambiguous resources получают fallback. МакросHW_WORLD_OBJ,
+файлы `renderer_world_obj.inc`, `gba_world_obj_assets.py`, `hardware_world_obj.inc`,
+`include/dok/gba_world_obj.h`. `g_world_obj_work` счётчики, `...ticks` optional
+g_render_work profile, `...trace` отключённый по умолчанию pixel owner probe.
+EWRAM261424/free720, IWRAM24072/free504 до8192stack; main2528/margin5408,
+IRQ80/margin80. State зарезервирован в4KiB tail covered[], static cache урезан
+перед ним. Guards/linker/повторяемость прошли в scope, physical GBA нет.
+
+**Не доводить этот проигравший гибрид локальными kernels. Следующая крупная
+проверка — genuine sector top/bottom clip + shared planes/spans**, с оценкой
+software bitmap и сохранения аппаратных базовых плоскостей. Чистый GPU или
+GPU output из секторного clip этим гибридом не опровергнуты: здесь дорого
+связывать старый CPU raster и OBJ через coverage. Image cache остаётся запасным
+кандидатом. Goal заканчивается итоговым архитектурным handoff, не Performance ROM.
+
+Source-art probe отдельно перепроверен:54/56 exact с фактическим DISPCNT bit5,
+2 non-multiplex pressure failures по100pixels остаются отрицательными.
+ROMc1903e…8a09, `build/g20a-world-obj-bringup-final/`,
+`analysis/g20a-world-obj-bringup.json`. V4/c83cea без bit5 заменён. Стенд с
+IRQ/PCM hold не использовать как FPS evidence; native trial выше работает с PCM.
+
+## Предыдущий опыт: полный колоночный foreground
+
+Читать [gba-column-pipeline-trial.md](gba-column-pipeline-trial.md) и
+`analysis/g20a-columns-trial.json`. `hw_v128_columns` V6, ROMe9bae2…04b22,
+`build/g20a-columns-v6/`, repeat `build/g20a-columns-repeat-final/` exact.
+Не выбран: пять тяжёлых PCM видов CPU3,55–4,31× контроля,2,71–4,12FPS,
+short live24 RU/EN5,08/4,86/5,67. Нового sweep440/full gameplay acceptance нет.
+36 poses/108 column snapshots/13752 rows passed (72 grid-boundary rows excluded),
+все dynamic candidate geometry/visibility leases совпали с2775, nearest owner,
+alpha/vertical/ceiling pixels и independent segment-ray/world-cell oracle прошли.
+18 PPU overlays exact, coverage2/18 exact, max17298 scene RGB changes вследствие
+world UV/raster differences; physical/moving visual acceptance не заявлена.
+PCM underruns0, live time-conservation error0; retained motion debt не budget pass.
+Профиль без forced PCM; per-row visibility доминирует. EWRAM261280/free864,
+IWRAM20976/free3600 до8192stack reserve; main2528/margin5408.
+
+V1–V5 superseded: depth проверяется по реальным концам, после freeze нужен
+cold world reset, V6 убирает6400 cap и сохраняет исходный envelope. Harness
+`benchmark_gba_hardware.py` теперь также cold-reset до frozen capture. Последний
+verifier проверяет и ceiling pixels; source SHA совпадает с visibility report.
+Коллектор `scripts/report_gba_columns.py` завершён. Контроль2775, quality96/72 и
+streaming BSPbfdba7…25184 сохранены/повторены. Оригиналы не менялись.
+
+Не доводить этот DDA локальными kernels. Следующие главные проверки — прямые
+аппаратные world OBJ и настоящий sector top/bottom clip + planes/spans с оценкой
+bitmap против аппаратных базовых плоскостей. DDA nearest-row-owner не закрывает
+проверку Doom подхода. Image cache при движении — третий, менее приоритетный
+кандидат. Draw distance/AI не менялись; дальность в темноте проверять отдельно,
+AI rebalance отдельным gameplay profile. G20/G20A/goal открыты.
+
+## Последняя native архитектурная контрольная точка
+
+Читать [gba-stream-bsp-trial.md](gba-stream-bsp-trial.md),
+`analysis/g20a-stream-bsp-trial.json`. Native hybrid streaming segment BSP
+реализован в `src/renderer_stream*.inc`, packed tables в `scripts/gba_stream_scene.py`.
+Сборка `build/g20a-stream-bsp-v3/hw_v128_stream_bsp/`, ROMbfdba7…25184,
+чистое повторение `build/g20a-stream-bsp-repeat/` exact. Контроль128 byte-exact2775;
+2775/96/72 artifacts неизменны. **Вариант не выбран, новых artifacts нет.**
+
+Spatial440: median CPU ratio1,507/1,573/1,361;0 быстрее/424 медленнее/16 равны
+по FPS. Min7,96/6,64/11,95 против9,95/9,95/14,93. Short live24 RU/EN:
+13,40/12,15/19,11 против19,37/19,11/27,57. Это не turn120/walk120.
+18 PPU coverage/overlay exact, max272 scene pixels changed;48 native fragment
+ownership/alignment/visibility leases/TMap fallback/guards fixtures прошли.
+Full gameplay/water/AI suites, moving transition acceptance не заявлены.
+EWRAM261296/free848; IWRAM23336/free1240 до8192stack; main2528/margin5408.
+
+V1/V2 имели невыравненный XY overlay covered[] и **не используются** для выводов.
+V3 выравнивает scratch; новый verifier проверяет alignment и сохранение каждой
+динамической экранной колонки. Existing rectangle/map comparison helpers
+переиспользованы; новые ASM kernels не писались. Статика идёт near-to-far без
+общей сортировки, но coverage samplers и cell ceilings прежние. Поэтому это
+не отрицательная проверка полного sector/column/visplane renderer.
+**Следующее действие: полноценное представление видимых колонок/spans, затем
+direct world OBJ. Не доводить этот BSP/quad путь локальными kernels/порогами.**
+
+Новые уточнения: [gba-dark-distance.md](gba-dark-distance.md),
+`analysis/g20a-dark-distance-audit.json`. Почти чёрные различия могут быть
+незаметны на маленьком экране; оценивать240×160 и движение, а не только RGB diff.
+Проверено в actual GBA package: LIGHT15 starts3720, native static-art максимум
+3/2/2 из31 по мирам. BG base planes ужеcap3600. Graphics-only draw distance
+с прежними AI/leases — отдельный quality axis; пока не реализован.
+Идею меньшего wake radius рассмотреть отдельным balance prototype:0xBA только
+initial wake поChebyshev metric, уже активных не останавливает; combat wake
+обходит радиус. Не менятьAI автоматически. Goal/G20/G20A остаются открыты.
+
+## Актуальное управление работой: сначала архитектура
+
+Прямое уточнение пользователя27 октября: не уходить в детальные правки,
+пока не проверены крупные варианты; цель отредактирована соответственно.
+**Этот порядок заменяет прежние указания «следующий sampler/пороговый опыт».**
+Читать [gba-architecture-selection.md](gba-architecture-selection.md) и
+`analysis/g20a-architecture-checkpoint.json`. Batch/visible split/alpha-empty/
+feedback сохранены как опыты, но дальнейшая их доводка заморожена. Feedback v3
+spatial44028 быстрее/36 медленнее против96; общего выигрыша нет, не выбран.
+Ни новый artifact, ни release default не назначались;2775/96/72 сохранены.
+
+Начат отдельный `scripts/compile_gba_render_scene.py`, вход SHA3efa5d…674351.
+`build/g20a-scene-compiler-v1/`: шесть представлений статических отрезков и
+floor/ceiling rectangles.1998/3242/1364 исходных отрезка →649/1148/255 групп;
+segment BSP564/853/302 nodes, глубина16/11/10. Сохранены исходные UV pieces,
+все lowered rims, высоты и материалы; проверено полное покрытие данных.
+**Runtime renderer/visibility/FPS/изменяемая карта этим не проверены.**
+Следующее действие — native прототип крупной архитектуры: секторный segment
+BSP/span pipeline (software direct framebuffer и hybrid affine BG), затем
+полный layered column pipeline и прямой hardware OBJ/strips; gate в документе.
+Не считать прежние grid-BSP/ray addons проверкой новых конвейеров. Картинку,
+двери, actors и низкие потолки сохранить в representative prototype.
+
+GBADoom primary README:≈35 только простые места,≈10 сложные; distance lighting
+убран, mipmapping. Его clip/span pipeline отличается от нашего; нижние потолки
+сами по себе не аргумент за неизбежную медленность DoK. Источники и границы
+вывода в документе. Чужие35FPS здесь не воспроизведены. Goal/G20/G20A открыты.
+
+## 96/72 строки CPU-слоя — последний законченный эксперимент
+
+Читать [gba-row-quality-trial.md](gba-row-quality-trial.md),
+`analysis/g20a-row-quality-trial.json`. Artifacts rows96/rows72:
+97f0b3…57f81 /176969…8888a. Оба чисто повторены;2775 и оригиналы сохранены.
+96 — умеренный quality candidate,72 — только сравнение; default не менялся.
+Turn12096:21,20/18,24/23,12; walking12096:19,85/20,13/22,61.
+Spatial440 min96:11,9455/11,9455/19,9092;72:13,7833/11,9455/19,9092.
+Goal/G20/G20A открыты.396 overlays exact/ARM/row-color/UI/flow/sprites/water/
+AI/28combat/items/combat/time/interactions прошли в scope; G09 native pixel
+oracle выключен.282 held transitions прошли;294 Pause/Resume остаётся открытым.
+96 all-awake stress0,07–0,38FPS, это не приемлемый бюджет.
+
+96 использует WIN0 для clipping OBJ к144 строкам; mapping учитывает OAM overlap.
+Скрипты используют `scene_source_y` вместо только128/144. EWRAM261292;
+IWRAM24540 у96 (free36 до8192 stacks),24364 у72. Main2520/margin5416,
+IRQ80/margin80. Производственные ROM в `build/g20a-hw-row-quality-v3/`;
+72 spatial/396/water/ARM/transitions изv2 валидны по тому же SHA.
+Пути входных reports перечислены сборщиком. Adaptive grid4 отложен:15 быстрее/
+62 медленнее из440. Простому opaque64×64 OBJ пути не подошла ни одна грань
+в17 видах: wall source96×192, прочие в основном masked; сложный OBJ backend
+не отвергнут. Новый96 профиль показывает L2 vertical0,66–0,69M из1,33–1,37M.
+Следующий узкий участок — sampling/visibility вертикальных граней.
+Per-primitive profiling теперь берёт отдельный completed held draw после FPS
+samples, чтобы не читать counters следующего кадра; ticks×64=cycles.
+
+## Аудит железа и адаптивный потолок — текущая контрольная точка
+
+Читать [gba-hardware-audit.md](gba-hardware-audit.md) и
+[gba-adaptive-ceiling-checkpoint.md](gba-adaptive-ceiling-checkpoint.md).
+Нельзя считать, что аппаратные/архитектурные возможности GBA исчерпаны:
+прямые OBJ для игровых объектов/подходящих стен ещё не сравнивались. Voxel
+heightmap не решает автоматически интерьеры с нависающими потолками.
+
+Новый v2 ROMeacf37…e55c в `build/g20a-hw-adaptive-v2/` не выбран и не опубликован
+в artifacts. Spatial440:26 быстрее/66 медленнее/348 равны по FPS, минимумы
+11,9455/9,9546/14,9319.397 Mode1 PPU exact,43 Mode2 имеют отличия;18 обычных RGB
+exact. Короткий live24:18,145/18,145/27,567 RU/EN, не turn120/walk120.
+Нет полного regression/стеков/переключений нового backend. Water harness ещё
+требует поддержки compact single-frame внутри dual slot. Допустим один дешёвый
+estimator trial; если общего выигрыша нет, отложить адаптивную ветку.
+Основной кандидат2775 остаётся прежним; G20/G20A/goal открыты.
+
+## Аппаратный низкий потолок — следующий исследовательский проход
+
+Читать [gba-lowered-ceiling-trial.md](gba-lowered-ceiling-trial.md),
+`analysis/g20a-lowered-ceiling-trial.json`. Эксперимент4f96b7…44d80,
+`build/g20a-hw-lowered-v6/hw_v128_lowered/`,16 567 124B; чистое повторение
+`build/g20a-hw-lowered-final/`. **Не выбран и не копировался в artifacts**;
+рекомендуемый ROM остаётся2775. Цель/G20/G20A открыты.
+
+Mode2 BG3 рисует source-derived32×32 потолок на исходной высоте−561/inset400,
+CPU публикует прежнюю coverage без UV/LIGHT. UI/weapon native normal OBJs,
+сцена мультиплексируется в4 OBJs HBlank DMA3. DMA3 immediate config атомарна
+относительно VBlank IRQ; UI-only396 exact. Дубликаты near/far BG2 maps заняты
+низким потолком: screen20 near/far,26 mid; BG2 far теперь читает near map с
+другим charblock. Карт по-прежнему6, нет отдельного дорогого low-map upload.
+Два dual frame11592B занимают covered[] tail; отдельный front5796B удерживает
+GPU при подготовке Mode4, чтобы scratch reuse не портил старый видимый кадр.
+EWRAM261276/free868, IWRAM23296/free1280 до8192stacks; full stress ещё нет.
+
+В L1-cell520/3640 CPU−21,1/−31,1%; spatial440 minima11,9455/9,9546/14,9319.
+Но live turn12017,57/15,03/19,69 и walking12015,96/16,90/19,27 RU/EN хуже2775.
+Поэтому постоянный Mode2 не продвигается. Следующая обоснованная проверка —
+выбор пути по стоимости видимого низкого потолка, с быстрым Mode1 для остальных
+видов. Материалы обоих путей могут оставаться резидентными благодаря reuse maps;
+сам adaptive switch пока не реализован. L2 всё равно требует ускорения vertical raster.
+
+396 PPU: max1009 changed background pixels; foreground/overlay0, coverage exact.
+ARM1024 coverage-span vectors и прежние vectors прошли; UI/flow/sprites/144water
+прошли.282 held transitions5134callbacks mixed0/overflow0. Полная AI/combat/items/
+clock/stress приёмка нового backend открыта. Более строгий294 Pause/Resume test
+**failed также на2775**, counts переходных кадров после исправления front lifetime
+совпали: RU Pause3/Resume2; EN L1 1/1, EN L2/L3 3/2. Не выдавать его заpassed.
+Original22SHA unchanged; source control7bab. Surface clip prepass и OAM RAM
+table не окупились, отложены. Схема памяти и точные размеры приведены в
+документе и header `dok/gba_hw_scratch.h`.
+
+Критерии остановки уточнены в `gba-render-costs.md`:30; либо устойчивые15+
+при несоразмерной цене дальнейшего ускорения; либо зафиксировать недостижение
+после исчерпания обоснованных направлений в допустимом качестве и вынести
+конкретный выбор уступок. Отдельные ветки без заметной экономии полного кадра
+или перехода черезdeadline откладывать. Наличие идей не является основанием
+для бесконечного продолжения.
+
+## Кэш и текущая стоимость кадра — продолжение27 октября
+
+Последний измеренный результат — [gba-render-costs.md](gba-render-costs.md),
+`analysis/g20a-hardware-cache.json`. Новый отдельный
+`artifacts/gba/DoK-port_hardware_cached_prototype.gba`, SHA2775bd…edaab,
+15 938 936B. Build/QA `build/g20a-hw-entity-rect-v2/hw_v128_entity_rect/`,
+чистое повторение `build/g20a-hw-entity-final/`, source control7bab…7ea8.
+Предыдущие опубликованные ROM сохранены. Ни SDL2, ни оригиналы не менялись.
+
+Кэш статической геометрии использует свободный legacy interval payload;
+двери/актёры не замораживаются. Direct gaps, ненулевые столбцы, prelit16 для
+декораций, masked tile batches и точные постоянные прямоугольники ускорили
+отрисовку без новых потерь относительно прежнего128.396+440 PPU кадров exact;
+48 cache mutation cases,512 rectangle ARM vectors и полные hardware suites
+прошли;282 transitions/4811 callbacks безmixed. Исправлена синхронизация
+самого transition harness: дождаться предыдущего действия до следующей мутации;
+методика проверена и на e803. Все callbacks после мутации проверяются.
+EWRAM261292/free852, IWRAM24408/free168 до8192 stacks; main2528/IRQ80.
+
+Runtime turn120 RU/EN19,85/16,86/21,79; walking12017,96/17,92/20,54 RU,
+EN L1 18,10; стояние/огонь19,91/19,91/29,86. Но новый sweep440 пространственно
+распределённых неподвижных видов даёт minimum9,954583/9,954583/14,931875
+без live AI. В тех же440 видах e803 —7,465938/6,636389/11,945500; PPU exact.
+Худшие клетки проверены на связность с исходным стартом при открываемых дверях.
+Стартовый72-heading sweep18,86/17,92/19,91 более благоприятен и не заменяет440.
+**Goal/G20/G20A открыты**, universal15+,24,1/30 не достигнуты. Artificial
+all-awake stress сохраняет тяжёлый долг; guard/audio pass не является FPS pass.
+
+Текущая цена: короткий живой L2 raster~54%, geometry~25%; в тяжёлых frozen
+видах raster71–81%. Низкие потолки ещё поклеточные CPU polygons; в L1 могут
+стоить половины кадра, но в тяжёлом L3 CPU-потолков вообще нет. Следующий
+приоритет — общие настройки строк/объединение пониженных потолков и удешевление
+вертикальных граней. BSP reuse/крупные листья/Thumb всё ещё медленнее обычного
+обхода; ROM column cache/zero-span bitmap/дополнительные div и affine-U не выбраны.
+Procedural/сокращение LIGHT не продвигать без нового измеримого основания.
+
+Уточнение пользователя к профилям ROM: Fidelity бессмыслен для игрока и
+исключён из предлагаемых игровых версий. Точный программный вариант — только
+внутренний эталон регрессий. Текущая аппаратная линия — Balanced; Performance
+с целью 30 FPS пока предложение для эксперимента, а не достигнутый результат.
+
+27 октября: по вопросу пользователя подготовлена
+[оценка нескольких GBA ROM для разных FPS](gba-rom-profiles-assessment.md).
+Предложены профили общего движка и отдельный эксперимент Performance;
+достижимость 30 FPS не доказана. Новых сборок/замеров и выбора release quality
+нет; G20/G20A остаются открытыми.
+
+## Быстрый128 — последний результат27 октября
+
+Читать [gba-hardware-fast.md](gba-hardware-fast.md),
+`analysis/g20a-hardware-fast.json`. Новый отдельный
+`artifacts/gba/DoK-port_hardware_fast_prototype.gba`, SHAe803f8…4308c,
+10 845 692 B; build/QA `build/g20a-hw-projection/hw_v128_projection/`.
+Чистое повторение `build/g20a-hw-fast-final/`, source control7bab…7ea8.
+Предыдущие ROM сохранены, изображение396 PPU RGB exact относительно16ba83…3961.
+
+HW_COVER4 уменьшил128-row bitset до4words/column (C и оба ARM surface kernels,
+включая linear fallback). Вернули coverage_edge в IWRAM; HW_DIRECT_RUN убрал
+обратное деление tiled адреса на240; HW_PROJECT_RECIP ускорил signed projection
+для denominator1..16384 с прежним fallback/error contract. EWRAM260944/free1200,
+IWRAM24240/free336 до8192 stacks. Main2528/margin5408, IRQ80/margin80.
+
+Runtime PCM RU/EN: turn24 —18,38/15,25/24,30; turn120 —19,37/15,15/20,90;
+walking120 —17,11/16,75/19,58 (EN L1 17,15). **Goal/G20/G20A открыты**:
+новый sweep72 fixed headings (15°,6frames, RU, замороженная симуляция+PCM)
+всё ещё даёт14,931875FPS на части L1/L2; L3 minimum19,909167.
+Не округлять native4-refresh plateau до универсального15+. Whole-level/physical
+GBA/original BIOS не проверены,24,1/30 для всех миров нет.
+
+Полные ARM/UI/flow/sprites/water/AI28combat/interactions logic/time/reset,
+G12items и G13combat прошли. Independent effects теперь проверяют actual PPU
+444 source texels, pickup disappearance — actual PPU в исходном item footprint.
+G12/G13 harness regression на Mode4 control passed. В G13 поправлен старый
+pre-G15 state oracle: synchronous wake/hurt дают1/3, live AI freeze не отключает
+notifications. Game code не менялся.282 transitions/1601 callbacks безmixedframes;
+32811 projection/прежние sampler vectors passed. Original22SHA unchanged.
+Artificial all-awake stress всё ещё0,07..0,38FPS/debt; passed —guards/logic/audio,
+не бюджет. Original affine interaction visual oracle намеренно omitted.
+
+Face-midpoint LIGHT (до4724 changedpixels), hot edge_start и U quotient tracker
+не выбраны по live результатам; details/privatepaths в новом документе.
+Главный остаток — wall/side raster тяжёлых неподвижных видов. Процедурные/BSP/
+opaque старые варианты не повторять как неиспытанные, quality selection не закрыта.
+
+## Геометрия и128 строк — последний результат27 октября
+
+Читать [gba-hardware-rows.md](gba-hardware-rows.md),
+`analysis/g20a-hardware-rows.json`. **Goal/G20/G20A открыты**.
+Новый отдельный `artifacts/gba/DoK-port_hardware_128_prototype.gba`,
+SHA16ba83…3961,10 846 124 B; ELF/source `build/g20a-hw-face-box/hw_v128_box/`.
+128 CPU строк растянуты в144,120 columns; GPU floor144/UI/weapon прежние.
+Column cache/class filter/base surface seed/covered face box:396 exact PPU
+против исходного128, overlay0differences против144, clean repeat/source control passed.
+Runtime PCM: turn24 —17,70/14,78/22,40 RU (EN L3 22,05);
+turn120 —18,71/14,75/20,13; walking120 —16,55/16,00/19,27 RU/EN.
+15+ в LEVEL2 turning всё ещё нет. Старые ROM не заменены, quality choice не сделан.
+
+Прошли ARM/clock/reset, UI22 actual PPU, flow, sprites8 playback/18 captures,
+AI/28combat/interactions logic,282 transitions/1633PPU callbacks без mixedframes.
+Новый water verifier:144 phase cases,3LIGHT bands exact source RES и362232PPU
+pixels; все18 phases×4 moving materials×RU/EN. Independent combat-effect/item
+presentation pixel regressions ещё открыты; original affine interaction oracle omitted.
+Stressguards/audio passed, но искусственный all-awake0,07..0,37FPS и растущий
+debt — реальное ограничение, также наблюдалось до этой оптимизации.
+EWRAM260944/free1200, IWRAM24500/free76 до8192 stack; main2528/margin5408,
+IRQ80/margin80. Original22SHA unchanged. Старый144 ROM240669…f014 теперь также
+прошёл UI/flow/sprites/water (частные JSON в его QA folder); sprite harness
+прошла и на исходном Mode4 ROM7bab…7ea8.
+
+Не повторять как новые гипотезы: rims/affineU с coverage EWRAM/animation cache/
+ceil prelit/near skip/contains-call/unsigned/wide divide/affine divide.
+Они измерены, не дали устойчивого общего выигрыша, остались gated experiments.
+Следующий шаг — L2 wall/low-ceiling raster/geometry и оставшиеся hardware pixel
+regressions. Процедурный/BSP варианты отложены по прежним сравнениям.
+
+## Отсечение и предъявление — текущий результат27 октября
+
+Читать [gba-hardware-culling.md](gba-hardware-culling.md),
+`analysis/g20a-hardware-culling.json`. **Goal/G20/G20A не завершены**:
+walking120 frames RU/EN15,03/15,12/18,01 FPS, но turn/PCM24 frames
+14,93/13,27/17,48 (EN LEVEL3 17,70). Не объявлять15+ по одному walking-проходу.
+Новый `artifacts/gba/DoK-port_hardware_culling_prototype.gba`,10 843 464 B,
+SHA`240669c13508acba18fa08a68dd0bc793c02366561ee0b617d7c1e62d976f014`.
+ELF/map/source: `build/g20a-hw-early-qa/hw_early_present/`; clean repeat совпал.
+Старый hardware4dfb…581d/pre-alpha/exact/coarse/BSP сохранены.
+
+Новые flags: BACKFACE стен, BACKFACE_SIDES, SIDE_SETUP (static side mask и
+повторное использование projection factor), HW_MASKED (ARM tiled alpha sampler),
+HW_MAP_CACHE (пропуск неизменной BG0 map), HW_PRESENT/HW_EARLY_PRESENT. Отсечение
+изменило максимум176 RGB pixels в18 видах; setup/masked/raster из последующих
+шагов exact в контрольных comparisons. Пол/потолок остаются как в прошлом
+hardware32×32/3 LIGHT rows, без процедурных текстур и банка масштабов.
+
+Upload допускается с line144: сцена/оружие закончились на143, ниже полный
+непрозрачный BG0 HUD. Bottom UI data ждёт160. Раннее окно допускается только
+если elapsed>=1, обычное VBlank —elapsed>=2; minimum present gap2 VBlank.
+Budget учитываетdirty tiles/map commands/water blocks, запас для HDraw.
+Финальные observed margins>=3640 cycles, upload overflows0/cold loads0/underruns0,
+coherent motion conservation0 во всех12 live fixtures. Это не universal bound.
+Большой seek может превысить любое окно: теперь forced-blank переход вместо
+бесконечного ожидания. Это реальная ошибка, найденная и исправленная AI tests.
+
+На финальном ROM прошли:396 full RGB exact относительно pre-early renderer;
+282 transitions(camera/36 weapon combinations/messages) и все1750 video callbacks
+совпали со старым либо новым целым изображением, смешанных0. ARM1536 tiled,
+512 masked,256 map и прежние arithmetic/animation vectors passed. Clock/poisoned
+reset, AI perception/motion/wake,28 AI combat, interactions/doors/collision/
+sensors/conveyors/finish/reset logic passed. Original affine pixel oracle в
+interactions намеренно omitted для quality prototype. **Full water/sprites/UI/
+flow/stress и физическая GBA ещё не проверены**. Не наследовать старую приёмку.
+
+EWRAM260936/free1208; IWRAM24056/free520 до stacks8192. Main observed2536/
+margin5400, IRQ80/margin80. Source control7bab…7ea8 и22original SHA unchanged.
+`verify_ai_*` теперь ставит capture hold после1draw до первоначального phase2
+wait; раньше ускоренный presenter мог всегда скрывать это короткое окно.
+FPS harness не менялся на hold. Probe.capture для hardware пишет actual PPU
+RGB, а не выдаёт tiled VRAM за bitmap. Новая transition harness сохраняет все
+callbacks и проверяет их, не только конечные screenshot.
+
+Новые частные варианты `hw_profile`, `hw_backface`, `hw_backface_sides`,
+`hw_side_setup`, `hw_opaque_gaps`, `hw_gaps_masked`, `hw_masked`, `hw_present`,
+`hw_present_map/plain`, `hw_early_present` (выбран). Gaps ARM вектор512 exact,
+но full-face opaque путь всё ещё медленнее в live; не выбран. Pixel layout60
+колонок/Mode2 rewrite не реализовывались как будто допустимое minor loss.
+Следующий шаг — further wall/side raster/geometry и полный hardware acceptance.
+LEVEL2 turn остаётся ниже цели; процедурная генерация по-прежнему отложена.
+
+## Аппаратные пол и потолок — текущий результат 27 октября
+
+Читать [gba-hardware-planes.md](gba-hardware-planes.md),
+`analysis/g20a-hardware-planes.json`. **Goal/G20/G20A не завершены:**15+ во всех
+мирах нет, full hardware regression/stress/flow ещё не выполнен. Старые ROM
+сохранены. Новый отдельный `artifacts/gba/DoK-port_hardware_planes_prototype.gba`,
+SHA`4dfbbe0e8a14352fcef5c182baef3ffdf0483b81345c8837b1530ee09f7f581d`,
+10 841 864 B. ELF/map/source — `build/g20a-hw-final/hw_hud_cache/`.
+
+Прямой tiled foreground убрал packing400k; Mode1 BG2 рисует пол/базовый потолок,
+BG0 — полный HUD/оружие,72 affine OBJ — CPU scene120×144. Source-derived32×32
+textures, все18 water crop/wrap phases, LIGHT0/7/15 только GPU-плоскостей;
+стены/акторы/уступы сохраняют16 rows. Inset0/10 merged−951, depth cap3600,
+lowered400 ceiling и vertical strips CPU. Native plane/foreground boundaries
+не pixel-exact (до584 foreground-mask pixels в378 frozen cases).
+
+Direct/software planes378 PPU RGB совпали с native; кеш HUD396 PPU RGB совпал
+с hardware без кеша, включая четыре страницы сообщений/возврат из помощи.
+Final relink18 RGB точны. ARM1536 tiled/256 map + прежние arithmetic/animation
+vectors passed. Native source_control7bab…7ea8.22 originals и старые3 ROM SHA
+не изменились. EWRAM260916/free1228, IWRAM24396/free180 до stacks8192;
+main observed2544/margin5392, IRQ80/margin80. ROM не считается прошедшим full QA.
+
+Существенное уточнение измерений: прежний `live_measure` держал `test_camera`,
+несмотря на активные turn/fire/PCM. Новый `follow_camera=True` освобождает её.
+24 follow/PCM frames: **13,52/11,20/17,27 FPS**.120 walking/turn/fire frames:
+**13,22/12,60/16,48**, координаты действительно менялись, все720 PLAY, audio
+не обязательно непрерывно активен. Ошибка сохранения времени0 после добавления
+`g_hw_completed_logic` snapshot: иначе libretro иногда возвращает управление
+во время логики следующего кадра и смешивает diagnostics. Не менять cadence.
+
+Первый rowlut вариант имел cold flashes и upload overruns. Исправлено:
+удержание16×16 window до выхода envelope; prepared packed map commands во
+frame30720…37887, ARM пишет их только в VBlank; UI/weapon dirty tiles;
+неизменившийся HUD вообще не пересоздаётся. На всех12 follow/walking fixtures
+новых cold loads0, upload overflows0, underruns0. Не обобщать это на весь мир.
+
+Новые отрицательные опыты: C/ARM opaque kernels хуже, paired ceiling rows почти
+не влияют, exact raster-divide хуже. Новая атрибуция показывает: LEVEL2 тратит
+много на **вертикальные уступы**, горизонтальный lowered ceiling дешевле. Поэтому
+не начинать большой Mode2 HUD/двухплоскостной rewrite по прежней гипотезе без
+измеренного основания. Процедурные текстуры остаются отложенными по результату,
+не из-за отсутствия разрешения. Следующий шаг — wall/side raster и geometry/
+coverage, затем полный hardware fallback/doors/grates/water/stress suite.
+
+Builder variants: `hw_direct`, `hw_background`, `hw_rays32`, `hw_lease`,
+`hw_rowlut`, `hw_stream`, `hw_hud_cache` (текущий), `hw_ceiling2`, `hw_div`,
+`hw_opaque`, `hw_opaque_arm`. Непринятые прототипы/исходники сохранены в build.
+Новые modules: `gba/{hardware_direct,hardware_bg}.inc`, `gba/tiled_scene.S`,
+`src/ui_tiled.inc`, `scripts/gba_hw_bg_assets.py`, report collector. Startup
+VBlank callback сохраняет pending audio IRQ bits; активные row tables вне frame.
+Полные commands/input-report SHA — в документе/analysis; SDL2 не менялась.
+
+## Подготовка аппаратного вывода — продолжение 27 октября
+
+Читать [gba-hardware-floor.md](gba-hardware-floor.md),
+`analysis/g20a-hardware-{ppu,bringup}.json`. **Цели FPS ещё не выполнены**;
+лучшие опубликованные exact/coarse ниже не заменены.
+
+Новый `build/g20a-hw-pack-ready/hw_obj_arm/`, SHA
+`cb35b35c3eadac987a8f6487e0a7a96912778f97d0272cf0eaea1f1caee2386e`:
+Mode1,72 affine OBJ для сцены120×144, BG0 для UI240. Это подготовка к BG2 floor,
+**пол/потолок пока считает CPU**, affine/HBlank ещё не реализованы.18 настоящих
+RGB PPU кадров RU/EN всех миров совпали с `sides_exact`;768 ARM pack/transpose/UI
+vectors/guards/ABI прошли. В обычном index benchmark HW запрещён: нужен
+`benchmark_gba_hardware.py`, который сохраняет настоящий video callback.
+`AudioProbe.video` по умолчанию только считает кадры и не сохраняет RGB;
+аппаратный harness явно заменяет callback. Нельзя выдавать пустые RGB за oracle.
+
+Обнаруженные12 пропавших красных пикселей HP исправлены: palette1 не резервируется
+под чёрный;0 заменяется ненулевым дубликатом **GBA15-bit** чёрного —223/255/255
+для LEVEL1/2/3. Полные18 RGB comparisons теперь0. Многопиксельный оружейный overlay,
+все water phases, полный regression/UI/flow/stress ещё не проверены.
+
+На C упаковка стоила910k cycles, ARM —400k; upload после однократных OAM/map/
+palette setup —48k вместо77k, конец околоVCOUNT199 вместо222. Она всё ещё
+слишком дорога: live5,97/5,97/6,64 FPS. Не выбирать этот prototype как ускоренный.
+EWRAM257044/free5100, IWRAM23372/free1204 до stacks8192. Обычный текущий main
+и renderer перекомпилированы как `main_control`: ROM **7bab…7ea8** побайтно,
+так что изменение `gba/renderer_probe.c` за `HW_OBJ` не меняет обычную сборку.
+
+**Следующее действие:** прямой вывод foreground в OBJ tile layout, чтобы убрать
+упаковку400k; пока оставить программные плоскости и доказать совпадение RGB,
+включая оружие/прозрачность/clip. Подробная адресная формула и риски UI записаны
+в документе. После этого — affine BG floor/material window/row LIGHT/HBlank DMA.
+Нельзя хранить активную DMA-таблицу в очищаемом следующем `frame`; нужны двойные
+буферы/перезапуск каждый VBlank, включая длительный CPU draw. Первые hardware
+тесты тоже должны оставаться отдельными ROM; уменьшение фактуры оценивать по
+измеренному выигрышу. Процедурные текстуры по-прежнему отложены.
+
+Новые файлы: `gba/hardware_obj.inc`, `gba/hw_obj_pack.S`,
+`scripts/benchmark_gba_hardware.py`, `scripts/report_gba_hardware_bringup.py`.
+Все команды выполнялись,22 original SHA и три опубликованных ROM неизменны.
+Lookup/vertex/ray-sides пробы этого прохода медленнее, не выбраны; отчёты
+`analysis/g20a-{lookup,vertex,ray}-trial.json`. Не повторять их как новые гипотезы.
+GEOMETRY_CACHE остаётся только исследовательским flag;5120 B не окупились.
+
+## Общие спаны, HUD и потолочные уступы — 27 октября 2026 года
+
+Актуальные результаты/команды: [gba-span-prototypes.md](gba-span-prototypes.md),
+`docs/tasks/G20A.md`, `analysis/g20a-span-{prototypes,validation}.json`.
+**G20/G20A в работе: 30/24,1/15+ FPS не достигнуты.** SDL2 не менялась.
+Процедурный вариант остаётся отложенным по измеренному соотношению скорости
+и качества, не получает приоритета из-за предложения пользователя.
+
+Текущий точный кандидат `build/g20a-sides/sides_exact/`:
+`artifacts/gba/DoK-port_optimized_prototype.gba`, 9 954 008 B,
+SHA `b36472a0701f19a41fc009e003f0f78a4493921e1cf19f2b51c266cdfeb42501`.
+488 кадров совпали с `build/select-menu-fix/`, CPU парная медиана1,324×,
+live PCM RU/EN7,17/7,47/8,53 FPS. Static setup/cache, exact plane division,
+offline prelit всех16 LIGHT rows без scales, точный HUD-атлас и prelit
+вертикальных потолочных уступов. EWRAM254704/free7440,
+IWRAM23064/free1512 до отдельного резерва stacks/BIOS8192.
+
+Отдельный quality-кандидат `build/g20a-sides/sides_coarse/`:
+`artifacts/gba/DoK-port_floor_4x2_prototype.gba`, 9 888 624 B,
+SHA `04dfe358654cc865a22ec9e674217eb4cde7583bde4f61d57d361fa1e61b5d11`.
+World-coordinate ARM spans/crop/wrap, исходные текстуры/16 LIGHT rows,
+выборка пола/потолка4×2; геометрия стен/дверей/акторов120×144, HUD240×160.
+Live11,95/9,95/14,93 FPS:14,93 ниже15. 488 кадров совпали с прежним coarse-ROM,
+не с оригиналом; affine native oracle к coarse не применяется. Полная геометрия
+материалов/высот может сдвигаться примерно на строку. EWRAM255828/free6316,
+IWRAM22396/free2180. На release default не назначен.
+
+Оба ROM прошли ARM/renderer/sprites/interactions/time/28AI/UI/flow и
+integrated normal/frozen/capacity/all-awake ×6; audio underruns0, main stack
+2368/margin5568, IRQ80/margin80. Чистая отдельная повторная сборка обоих и базы
+дала те же ROM. All-awake overload сохраняется: worst585798080/468682048 cycles,
+simulation debt и callbacks не отбрасываются. 22 originals SHA совпали.
+Физическая GBA, original BIOS, целый уровень и самостоятельные23sound
+correlation в этом проходе не проверялись.
+
+Код: `renderer_world_planes.inc`, `gba/world_spans.S`, `ui_panel_cache.inc`,
+`gba/ui_panels.S`, side-resource table в builder и side path в
+`renderer_surface_raster.inc`. Общая сборка `scripts/prototype_gba_bsp.py`;
+собирать выбранные `baseline sides_exact sides_coarse` в **новую** папку,
+не поверх загруженных тестами файлов. Замеры — `benchmark_gba_prototypes.py`;
+атрибуция — `profile_gba_world_spans.py` (с timestamp overhead, не headline FPS);
+aggregate/delivery — `report_gba_spans.py`. Проверенные файлы/снимки исходников
+остаются в `build/g20a-sides/`; второй проход — `build/g20a-second/`.
+Существующий `DoK-port_pre_alpha.gba` не заменён. Старые report scripts
+копируют архивные v1/v2 имена, не перезаписывают актуальный exact/coarse.
+
+Дополнительные WORLD_DIV/RASTER_DIV/EAGER_CLEAR/MASKED_ARM пробы не выбраны:
+выигрыш мал либо есть регрессия; negative summary с ROM SHA в aggregate.
+Они прошли только сравнительный smoke/live, не полную приёмку. В частности,
+общий `gba/memory.c` уже оптимизирует делители<65536 через reciprocal;
+не повторять без нового профиля попытки получить большой выигрыш такой заменой.
+Следующий шаг — сокращение traversal/geometry и стоимости покрытия/спанов;
+крупного ускорения ещё нет, G20B/G21 ожидают. BSP ниже — сохранённый первый опыт.
+
+## Первый проход BSP/plane/light — 27 октября 2026 года
+
+Читать [gba-quality-options.md](gba-quality-options.md), `docs/tasks/G20A.md`,
+`analysis/g20a-prototypes.json`, `analysis/g20a-prototype-validation.json`.
+Это GBA; SDL2 не менялась. **G20/G20A остаются в работе: 15+ FPS ещё нет.**
+Ориентиры пользователя теперь явно 30 / 24,1 / 15+ FPS; небольшое ухудшение
+картинки допускается. Процедурный пол/потолок не получает приоритета из-за
+авторства идеи: измеренный результат не оправдал картинку, вариант отложен.
+
+Лучший проверенный на первом проходе `build/g20a-prototypes/exact_planes/`:
+`artifacts/gba/DoK-port_exact_planes_v1.gba`, 9 938 648 B, SHA
+`ef4237c9699c140adca2e0dbb951938194331d1664a36f6d1d27ea2f7efed999`.
+Static setup/cache + точный ARM reciprocal plane divide + offline prelit
+16 LIGHT rows без scale path/банка. Все 488 кадров побайтно совпали с
+`build/select-menu-fix/`, CPU парная медиана 1,20×; live стартовые RU/EN fixtures
+с PCM22 050 дают 6,64/6,64/7,47 FPS. Цели не выполнены; это не полный уровень.
+Прежние `DoK-port.gba`/`DoK-port_pre_alpha.gba` не заменены.
+
+Отдельный BSP `build/g20a-prototypes/bsp_setup/`, копия
+`artifacts/gba/DoK-port_BSP_prototype.gba`, SHA `735ba244…eb76297`.
+8191-node/view grid BSP, conservative Y/depth occlusion, sprite/AI lease
+сохранён. 488 кадров точные, но обычно медленнее `setup`: prepass дублирует
+geometry. Не делать BSP default только по названию алгоритма.
+
+Код и команды: `scripts/prototype_gba_bsp.py` (исходники/flags/base-object SHA),
+`scripts/benchmark_gba_prototypes.py` (9 frozen камер, live6worlds),
+`scripts/report_gba_prototypes.py` (связывает проверки/SHA и копирует ROM).
+Данные только из текущего G03 package; EXE не анализировались. 22 originals
+SHA совпали с pre-task inventory. Baseline ROM воспроизведён побайтно.
+Все частные ROM/ELF/map/source/PNG в `build/g20a-prototypes/`; не включать в Git.
+
+Проверки exact-варианта: 65 536 ARM divide vectors + sampler4096/coverage2048/
+cell30 720, 48 animation resources/308 frames; mGBA renderer/reset, sprites/water,
+doors/sensors, time, 28 enemy variants, UI/все сообщения, flow6worlds/14texts.
+Integrated normal/frozen/capacity/all-awake ×6, PCM actual, underruns0.
+EWRAM254 704/free7440, IWRAM22 888/free1688 до stack reserve8192;
+main2368/margin5568, IRQ80/margin80. All-awake worst651 488 832 cycles,
+retained simulation debt остаётся, callbacks не dropping.
+Full23sound correlation suite и physical GBA не повторялись.
+
+Стенд исправлен под прежний Select/menu fix: interactions меняет язык через
+mailbox; camera/UI ждут свежий завершённый кадр; synthetic UI snapshots держат
+VBlank после live keypad/pause проверок. Capture hold в FPS замерах выключен.
+Пять градаций света, Q31 без correction, 120×72 и procedural/world mapper
+сохранены отдельно, не выбраны: качество/выигрыш хуже exact-варианта.
+
+Следующее действие остаётся G20A: shared spans/visplanes с исходными материалами
+и дешёвой видимостью либо единый front-to-back BSP без повторного prepass.
+Не повторять C per-pixel world lookup как предполагаемое бесплатное ускорение:
+первый прототип медленнее. Готовность G20/G21 по бюджету не объявлять;
+G20B/G21 ожидают. Ниже сохранены исторические записи.
+
+## FPS, BSP и Select — 26 октября 2026 года
+
+Читать [gba-fps-hypotheses.md](gba-fps-hypotheses.md),
+`analysis/g20a-fps-audit.json`, `scripts/research_gba_fps.py`.
+G20A начата и в работе; G20 открыта по бюджету, G20B/G21 ожидают.
+Аудит использует baseline после level1 fixes, побайтно воспроизведённый из
+сохранённых объектов: SHA `d5bdcd17…7957e`. Частные ROM/ELF/map/source/PNG
+в `build/g20a-audit/`; production renderer/AI не изменены.
+
+Девять frozen камер и live fixtures RU/EN трёх миров с PCM: отказ от scales
+в live даёт примерно 2–8% FPS, без pixel differences на девяти frozen кадрах;
+unlit 4–17%, но заметно меняет дальний план. AI radius /2 почти не помогает
+стартам (L1 около2%, L2/3 около0). Полные замеры и ограничения в документе.
+BSP требует раннего отказа до geometry/surface setup, не только замены sort.
+Измеренного BSP-прототипа нет; следующий эксперимент — conservative static
+occlusion и сокращение настройки floor/ceiling quads, с сохранением AI lease.
+
+Select в игре больше не меняет язык; меню и Start+Select pause проверены.
+`build/select-menu-fix/`: ROM32891192, SHA
+`7babd40f913eb12f77c93c9df917cea432b0cbe3bd83e11da45ba08dec917ea8`.
+Host UI, ARM UI, renderer и flow прошли, отчёты `analysis/select-menu-*.json`.
+Готовая копия: `artifacts/gba/DoK-port_pre_alpha.gba`. Экспериментальные
+усечения в неё не включены. Физическая GBA и полный G20 suite не проверены.
+Старые записи ниже сохраняют исторические статусы/ROM, а не текущий следующий шаг.
+
 ## Правки первого уровня — 26 октября 2026 года
 
 После проверки пользователем уменьшены иконки, исправлено центрирование

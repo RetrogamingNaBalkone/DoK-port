@@ -1,0 +1,631 @@
+{
+  "task": "G20A",
+  "status": "qualified-sector-gpu-diagonal-checkpoint-not-selected",
+  "goal_complete": false,
+  "performance_build_in_current_goal": false,
+  "control_rom_sha256": "2775bdd0caaac64b4fd99e4c6d675587fad2da9c795468dc52efacb5d53edaab",
+  "variants": {
+    "hw_v128_sector_gpu_thumb": {
+      "rom_sha256": "b2b16b9e3831b8f0d8adcafdaebce8b25ada88e96c7e5bf51a72c4656eca3d6e",
+      "rom_bytes": 18754460,
+      "heavy": [
+        {
+          "level": 1,
+          "cell": 520,
+          "heading": 225,
+          "cpu_ratio": 2.2941860975716857,
+          "fps": 4.97729171413382,
+          "baseline_fps": 9.95458342826764
+        },
+        {
+          "level": 1,
+          "cell": 3640,
+          "heading": 225,
+          "cpu_ratio": 2.0644775295119313,
+          "fps": 5.429772779055075,
+          "baseline_fps": 11.945500113921167
+        },
+        {
+          "level": 2,
+          "cell": 1592,
+          "heading": 135,
+          "cpu_ratio": 2.5179349357376624,
+          "fps": 4.266250040686131,
+          "baseline_fps": 9.95458342826764
+        },
+        {
+          "level": 2,
+          "cell": 2871,
+          "heading": 225,
+          "cpu_ratio": 2.6045022154091684,
+          "fps": 3.9818333713070557,
+          "baseline_fps": 9.95458342826764
+        },
+        {
+          "level": 3,
+          "cell": 1544,
+          "heading": 315,
+          "cpu_ratio": 3.1235522574381025,
+          "fps": 5.429772779055075,
+          "baseline_fps": 14.931875142401458
+        }
+      ],
+      "live24": [
+        {
+          "level": 1,
+          "language": 0,
+          "fps": 10.697462788586119,
+          "max_motion_debt": 411
+        },
+        {
+          "level": 2,
+          "language": 0,
+          "fps": 8.334069846921745,
+          "max_motion_debt": 409
+        },
+        {
+          "level": 3,
+          "language": 0,
+          "fps": 12.914054177212073,
+          "max_motion_debt": 352
+        },
+        {
+          "level": 1,
+          "language": 1,
+          "fps": 10.697462788586119,
+          "max_motion_debt": 410
+        },
+        {
+          "level": 2,
+          "language": 1,
+          "fps": 8.334069846921745,
+          "max_motion_debt": 409
+        },
+        {
+          "level": 3,
+          "language": 1,
+          "fps": 12.914054177212073,
+          "max_motion_debt": 352
+        }
+      ],
+      "memory": {
+        "ewram_bytes": 261324,
+        "ewram_free": 820,
+        "iwram_bytes": 24196,
+        "iwram_free_before_stack": 380,
+        "main_stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5392,
+          "high_water_bytes": 2544,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        },
+        "irq_stack": {
+          "low": 50364160,
+          "top": 50364320,
+          "untouched_margin_bytes": 80,
+          "high_water_bytes": 80,
+          "includes_bios_irq_saves": true
+        }
+      }
+    },
+    "hw_v128_sector_gpu_off": {
+      "rom_sha256": "fe51e20f76d9d8e05042988f6fa2ff458c89432d7d1a6ac8178b8ff61c52adcc",
+      "rom_bytes": 16365548,
+      "heavy": [
+        {
+          "level": 1,
+          "cell": 520,
+          "heading": 225,
+          "cpu_ratio": 1.6501339305317702,
+          "fps": 6.636388952178426,
+          "baseline_fps": 9.95458342826764
+        },
+        {
+          "level": 1,
+          "cell": 3640,
+          "heading": 225,
+          "cpu_ratio": 1.4111880709667026,
+          "fps": 8.532500081372262,
+          "baseline_fps": 11.945500113921167
+        },
+        {
+          "level": 2,
+          "cell": 1592,
+          "heading": 135,
+          "cpu_ratio": 1.8664036931879755,
+          "fps": 5.972750056960583,
+          "baseline_fps": 9.95458342826764
+        },
+        {
+          "level": 2,
+          "cell": 2871,
+          "heading": 225,
+          "cpu_ratio": 1.9175153818693433,
+          "fps": 5.429772779055075,
+          "baseline_fps": 9.95458342826764
+        },
+        {
+          "level": 3,
+          "cell": 1544,
+          "heading": 315,
+          "cpu_ratio": 1.5358207920105416,
+          "fps": 9.95458342826764,
+          "baseline_fps": 14.931875142401458
+        }
+      ],
+      "live24": [
+        {
+          "level": 1,
+          "language": 0,
+          "fps": 11.026615489773384,
+          "max_motion_debt": 373
+        },
+        {
+          "level": 2,
+          "language": 0,
+          "fps": 10.239000097646715,
+          "max_motion_debt": 385
+        },
+        {
+          "level": 3,
+          "language": 0,
+          "fps": 14.627142996638163,
+          "max_motion_debt": 409
+        },
+        {
+          "level": 1,
+          "language": 1,
+          "fps": 11.026615489773384,
+          "max_motion_debt": 372
+        },
+        {
+          "level": 2,
+          "language": 1,
+          "fps": 10.239000097646715,
+          "max_motion_debt": 385
+        },
+        {
+          "level": 3,
+          "language": 1,
+          "fps": 14.627142996638163,
+          "max_motion_debt": 409
+        }
+      ],
+      "memory": {
+        "ewram_bytes": 261320,
+        "ewram_free": 824,
+        "iwram_bytes": 23740,
+        "iwram_free_before_stack": 836,
+        "main_stack": {
+          "main_stack_low": 50356224,
+          "main_stack_top": 50364160,
+          "sentinel_word": 219540062,
+          "untouched_margin_bytes": 5392,
+          "high_water_bytes": 2544,
+          "irq_and_bios_excluded": true,
+          "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+        },
+        "irq_stack": {
+          "low": 50364160,
+          "top": 50364320,
+          "untouched_margin_bytes": 80,
+          "high_water_bytes": 80,
+          "includes_bios_irq_saves": true
+        }
+      }
+    }
+  },
+  "profile": {
+    "rom_sha256": "b2b16b9e3831b8f0d8adcafdaebce8b25ada88e96c7e5bf51a72c4656eca3d6e",
+    "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+    "script_sha256": "34f9e8192f28483f861a0a528f4930694da4fcc692481b569ceb55a449283445",
+    "rows": [
+      {
+        "level": 1,
+        "cell": 520,
+        "heading": 225,
+        "cycles": 2908928,
+        "work": [
+          9,
+          37,
+          4050,
+          1,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          13,
+          0
+        ],
+        "state": [
+          1,
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        "sector_cycles": [
+          137344,
+          708544,
+          529216,
+          1186176,
+          0
+        ],
+        "gpu_cycles": [
+          817856,
+          0,
+          0
+        ],
+        "image": "build\\g20a-sector-gpu-v8\\hw_v128_sector_gpu_thumb\\gpu-L1-520-225.png",
+        "image_sha256": "2e9138f34b7d3f033149732af4eec06e9bfb3cc64693b3ccfc55e231dfba0de3"
+      },
+      {
+        "level": 1,
+        "cell": 3640,
+        "heading": 225,
+        "cycles": 2495872,
+        "work": [
+          16,
+          16,
+          5747,
+          1,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          1,
+          0
+        ],
+        "state": [
+          1,
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        "sector_cycles": [
+          137344,
+          368768,
+          615232,
+          1028736,
+          0
+        ],
+        "gpu_cycles": [
+          792320,
+          0,
+          0
+        ],
+        "image": "build\\g20a-sector-gpu-v8\\hw_v128_sector_gpu_thumb\\gpu-L1-3640-225.png",
+        "image_sha256": "7344e0a550f1fdd0ae966097043a3c1fedd5352481c1c70fdea97dcaeb720a1b"
+      },
+      {
+        "level": 2,
+        "cell": 1592,
+        "heading": 135,
+        "cycles": 3231744,
+        "work": [
+          7,
+          38,
+          5098,
+          1,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          19,
+          0
+        ],
+        "state": [
+          1,
+          1,
+          0,
+          0,
+          0,
+          2
+        ],
+        "sector_cycles": [
+          137920,
+          626816,
+          282432,
+          1790336,
+          0
+        ],
+        "gpu_cycles": [
+          837376,
+          0,
+          0
+        ],
+        "image": "build\\g20a-sector-gpu-v8\\hw_v128_sector_gpu_thumb\\gpu-L2-1592-135.png",
+        "image_sha256": "a20464756e19b85973e45b7b80e57496cd0f7261157853c6063ffad39e49df03"
+      },
+      {
+        "level": 2,
+        "cell": 2871,
+        "heading": 225,
+        "cycles": 3450880,
+        "work": [
+          8,
+          37,
+          8220,
+          1,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          4,
+          0
+        ],
+        "state": [
+          1,
+          1,
+          0,
+          0,
+          0,
+          2
+        ],
+        "sector_cycles": [
+          137600,
+          670272,
+          398592,
+          1864000,
+          0
+        ],
+        "gpu_cycles": [
+          910912,
+          0,
+          0
+        ],
+        "image": "build\\g20a-sector-gpu-v8\\hw_v128_sector_gpu_thumb\\gpu-L2-2871-225.png",
+        "image_sha256": "54d4e6067e0ae9b538baea195ca2ba2e5e591d808a75d5d64dfd4277226fd372"
+      },
+      {
+        "level": 3,
+        "cell": 1544,
+        "heading": 315,
+        "cycles": 2506816,
+        "work": [
+          7,
+          60,
+          9770,
+          1,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          6,
+          0
+        ],
+        "state": [
+          1,
+          1,
+          0,
+          0,
+          0,
+          4
+        ],
+        "sector_cycles": [
+          136832,
+          335488,
+          192,
+          1673664,
+          0
+        ],
+        "gpu_cycles": [
+          1273728,
+          0,
+          0
+        ],
+        "image": "build\\g20a-sector-gpu-v8\\hw_v128_sector_gpu_thumb\\gpu-L3-1544-315.png",
+        "image_sha256": "8569b0b7d3edb9d5b05a43ae9a98c514d69b88c4b3b70d3b350b4dae68e7085b"
+      }
+    ],
+    "stack": {
+      "main_stack_low": 50356224,
+      "main_stack_top": 50364160,
+      "sentinel_word": 219540062,
+      "untouched_margin_bytes": 5392,
+      "high_water_bytes": 2544,
+      "irq_and_bios_excluded": true,
+      "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+    },
+    "forced_pcm": false,
+    "cold_reset_after_freeze": true,
+    "scope": "Instrumented held native frames; not unprofiled FPS, full gameplay or physical GBA acceptance."
+  },
+  "verification": {
+    "poses": 58,
+    "mode4_cycles": 6,
+    "weapon_poses": 18,
+    "active_gpu_poses": 46,
+    "source_texels": 56444,
+    "gpu_candidate_clip_pixels": 70446,
+    "full_ppu_pixels": 2227200,
+    "original_base_pixels": 2227200,
+    "overlay_changes": 0,
+    "mask_missing": 8908,
+    "mask_extra": 2858,
+    "mask_missing_max": 278,
+    "mask_extra_max": 96,
+    "missing_interior_radius2": 866,
+    "extra_beyond_radius2": 12,
+    "missing_interior_radius2_max": 62,
+    "extra_beyond_radius2_max": 2,
+    "scope": "Original dynamic geometry/leases/native HUD, full actual Mode2 BG2/BG3/OBJ composition, original BG3 materials after VRAM relocation, nonzero original mip/LIGHT source texels and static sector clip contract for GPU pixels. Source padding/VRAM/OAM/matrices/scan budget/guards/Mode4 cycles. Not an independent proof of static histories or complete dynamic visibility; no gameplay/physical GBA acceptance."
+  },
+  "byte_exact_repeat": true,
+  "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+  "gpu_asset_tables": {
+    "views": [
+      {
+        "view": 0,
+        "first": 0,
+        "count": 274,
+        "images": 137,
+        "black_index": 223
+      },
+      {
+        "view": 1,
+        "first": 274,
+        "count": 274,
+        "images": 137,
+        "black_index": 223
+      },
+      {
+        "view": 2,
+        "first": 548,
+        "count": 276,
+        "images": 138,
+        "black_index": 255
+      },
+      {
+        "view": 3,
+        "first": 824,
+        "count": 276,
+        "images": 138,
+        "black_index": 255
+      },
+      {
+        "view": 4,
+        "first": 1100,
+        "count": 316,
+        "images": 158,
+        "black_index": 255
+      },
+      {
+        "view": 5,
+        "first": 1416,
+        "count": 316,
+        "images": 158,
+        "black_index": 255
+      }
+    ],
+    "sizes": [
+      [
+        8,
+        16
+      ],
+      [
+        16,
+        32
+      ],
+      [
+        32,
+        64
+      ],
+      [
+        64,
+        128
+      ]
+    ],
+    "bank_bytes": 1912576,
+    "unique_mips": 695,
+    "light_policy": "Runtime original16-row LIGHT, no UV resampling during source copy",
+    "bank_sha256": "079154021d503f73da43163ddcf01b30a3115c07eaac620d06a8d0dbec3766d6",
+    "offsets_sha256": "f24640ddcbe7df44f816acc1407ff4eeb5e466182ea9b41f9976123532dda0ae"
+  },
+  "control_live24": [
+    {
+      "level": 1,
+      "language": 0,
+      "fps": 19.37108126581811
+    },
+    {
+      "level": 2,
+      "language": 0,
+      "fps": 19.112800182273865
+    },
+    {
+      "level": 3,
+      "language": 0,
+      "fps": 27.56653872443346
+    },
+    {
+      "level": 1,
+      "language": 1,
+      "fps": 19.37108126581811
+    },
+    {
+      "level": 2,
+      "language": 1,
+      "fps": 19.112800182273865
+    },
+    {
+      "level": 3,
+      "language": 1,
+      "fps": 27.56653872443346
+    }
+  ],
+  "limitations": [
+    "CPU sector BSP/static walls/rims/low ceilings, BG3 base planes, BG2 CPU foreground and clipped source-mip OBJ dynamics. Not a full GPU static-wall renderer.",
+    "Diagonal matrices with whole flat billboards and narrow perspective strips. Wider bounded-error affine/sheared pieces remain a significant untested representation; this checkpoint does not reject that family.",
+    "All five heavy views exceed the scanline budget or16KiB dynamic atlas and use complete CPU dynamic fallback after attempted GPU preparation. These FPS are not successful pure-GPU heavy scenes.",
+    "Actual nonzero source mip/LIGHT texels, full PPU composition and the sector static clip contract are checked; no independent completeness proof of dynamic visibility. Alpha loss is measured, not accepted as visually minor.",
+    "Current source uses unshaded nearest-sampled mips and the original16-row LIGHT during clipped source copy. A prelit-all-images prototype bank was too large and is superseded.",
+    "Early V1/V2 physical/logical X mapping was wrong; earlier scanline/atlas/admission drafts superseded. Only V8 qualifies as this checkpoint.",
+    "58 poses include repeated cameras with18 weapon fixtures. No map-edit/full440/full gameplay/physical GBA acceptance of this losing checkpoint.",
+    "No Performance ROM, AI radius or darkness/draw-distance change implemented."
+  ],
+  "next_step": "Bounded test of wider perspective fragments with affine shear/error bounds; only after its disposition choose the main architecture and finish remaining-cost handoff. Do not locally polish this diagonal-strip version.",
+  "preserved_roms": {
+    "DoK-port_hardware_cached_prototype.gba": "2775bdd0caaac64b4fd99e4c6d675587fad2da9c795468dc52efacb5d53edaab",
+    "DoK-port_hardware_rows96_prototype.gba": "97f0b3cb1d97c958bb0750128cef72aa94f64fa4107a8edc53d743c38b557f81",
+    "DoK-port_hardware_rows72_prototype.gba": "17696958e5d1f08672754f788861c31fdc6302d242f24f0b4a5223768688888a"
+  },
+  "evidence": [
+    {
+      "path": "build/g20a-sector-gpu-v8/prototype-build.json",
+      "sha256": "b6adb50fe4c47842c660562a61452dde88e11c8ca6220a5c67b4b81a38825d4e"
+    },
+    {
+      "path": "build/g20a-sector-gpu-v8/visibility.json",
+      "sha256": "14690d6af90ba9d99e82ef7d80776974a671f83cd7e34f1a2e96fb22f1f42187"
+    },
+    {
+      "path": "build/g20a-sector-gpu-v8/profile.json",
+      "sha256": "1a9a1138f95a8ceb14e4c01ca077f3146ba26aea21e9862183e566e0f3a9d778"
+    },
+    {
+      "path": "build/g20a-sector-gpu-v8/control-target.json",
+      "sha256": "3182e3512baf7ca448efc2b14b0448f9d33f7a6041a0a3101117941e23cd6772"
+    },
+    {
+      "path": "build/g20a-sector-gpu-repeat/prototype-build.json",
+      "sha256": "f5bcbe6a7eb07760b1d8b231a098ca72c779006e3172f6b15bce38607f7f9596"
+    },
+    {
+      "path": "build/g20a-sector-gpu-v8/target.json",
+      "sha256": "dffa20e3de9235fc57ee12c9144e140438863332f727976f40704b3cb99f7676"
+    },
+    {
+      "path": "build/g20a-sector-gpu-v8/hw_v128_sector_gpu_thumb-live24.json",
+      "sha256": "29479e230e626474181e3e97dbb058c61806cc7ef22f5fe617525bc1980116b8"
+    },
+    {
+      "path": "build/g20a-sector-gpu-v8/off-target.json",
+      "sha256": "0036bd692eb5ad046def4caac9563cba14cf8919006b725a9a109df3bed9b9bc"
+    },
+    {
+      "path": "build/g20a-sector-gpu-v8/hw_v128_sector_gpu_off-live24.json",
+      "sha256": "8968d20fc261623dee691ca1e642d42ca1c0cc83f4790921a0705a997c6ee103"
+    },
+    {
+      "path": "build/g20a-sector-gpu-v8/hw_v128_entity_rect-live24.json",
+      "sha256": "eafabc2bd05198d1daadc038786ff07dc75653894963a880328384534a02024f"
+    }
+  ]
+}

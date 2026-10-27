@@ -11,7 +11,7 @@ from pathlib import Path
 import struct
 
 from analyze_levels import reference
-from verify_gba import sha
+from verify_gba import sha, scene_source_y
 from verify_renderer_gba import stack_usage
 from verify_sprites_gba import Probe, load_json, original_animations
 
@@ -215,16 +215,18 @@ def visible_live_pickup(probe, language):
     # sampled this cell. Wait for that draw and then capture a complete new one.
     probe.present()
 
-    def object_face_count():
+    def object_faces():
         count = probe.diag()['face_count']
         data = probe.frontend.read(probe.symbols['g_render_frame'] + 38408, count * 48)
-        return sum(struct.unpack_from('<H', data, offset + 44)[0] == obj_index
-                   for offset in range(0, len(data), 48))
+        return [struct.unpack_from('<11iHh',data,offset) for offset in range(0,len(data),48)
+                if struct.unpack_from('<H',data,offset+44)[0]==obj_index]
 
-    before = probe.capture(f'item-before-{language}')
-    before_faces = object_face_count()
+    probe.present()
+    faces=object_faces();before_faces=len(faces)
     assert before_faces > 0
-    raw_before = probe.frontend.read(probe.symbols['g_render_frame'] + 4, 38400)
+    before = probe.capture(f'item-before-{language}')
+    raw_before = probe.scene_pixels()
+    probe.present()
     mmap = bytearray.fromhex(model['maps'][0])
     player_glyph = model['objects'][model['player_index'] - 1]['glyph']
     mmap[:] = mmap.replace(bytes([player_glyph]), b' ')
@@ -243,12 +245,18 @@ def visible_live_pickup(probe, language):
     assert accepted and probe.player() == expected, probe.player()
     assert probe.item_diag()['pickups'] == notifications['pickups'] + 1
     assert probe.frontend.read(map_address + 4096 + target, 1) == b' '
+    after_faces=len(object_faces())
+    assert after_faces == before_faces - 1, (language,before_faces,after_faces)
     after = probe.capture(f'item-after-{language}')
-    assert object_face_count() == before_faces - 1, (language, before_faces, object_face_count())
-    raw_after = probe.frontend.read(probe.symbols['g_render_frame'] + 4, 38400)
-    changed = sum(a != b for a, b in zip(raw_before[12 * 240:132 * 240],
-                                        raw_after[12 * 240:132 * 240]))
-    assert changed > 0, 'Collected item remained visible in the ARM framebuffer'
+    raw_after = probe.scene_pixels()
+    scene_objects=probe.words('g_hw_obj_diag',6)[5] if 'g_hw_obj_diag' in probe.symbols else 72
+    changed=0
+    for y in range(12,132):
+        sy=scene_source_y(y,scene_objects)
+        for x in range(240):
+            if any(min(f[0],f[1])<=x<=max(f[0],f[1]) and f[2]<=sy<=f[4] for f in faces):
+                changed+=raw_before[y*240+x]!=raw_after[y*240+x]
+    assert changed > 0, 'Collected item remained visible in its displayed scene footprint'
     return dict(language=language, object=obj_index, cell=target,
                 production_motion_path=True, full_positive_item_retained=True,
                 changed_scene_pixels=changed,
@@ -264,6 +272,8 @@ def main():
     args = parser.parse_args()
     probe = ItemsProbe(args.core, args.build_dir)
     try:
+        probe.until(lambda d:d['draws']>=1)
+        probe.write(probe.symbols['g_camera_capture_hold'],struct.pack('<I',1))
         probe.until(lambda d: d['draws'] >= 3 and d['phase'] == 2)
         probe.write(probe.symbols['g_motion_probe'], struct.pack('<I', 1))
         probe.write(probe.symbols['g_visual_probe'], struct.pack('<I', 1))

@@ -66,7 +66,11 @@ _Static_assert(offsetof(dok_renderer_workspace,faces)==38408,"G05 faces ABI");
 _Static_assert(sizeof(dok_runtime)==33864,"G05 ARM runtime ABI");
 dok_runtime g_render_world;
 dok_runtime_level g_render_view;
+#ifdef DOK_RENDER_HW_DIRECT_PROTOTYPE
+dok_renderer_workspace g_render_frame __attribute__((aligned(8)));
+#else
 dok_renderer_workspace g_render_frame;
+#endif
 dok_renderer_stats g_render_stats;
 static dok_rom_assets package;
 extern void gba_combat_start(dok_runtime *,const dok_rom_assets *,unsigned,unsigned);
@@ -177,6 +181,12 @@ volatile uint32_t g_render_stages[7];
 /* Completed frame snapshot stays valid while the next frame is rasterized.
  * Consumers measuring normal cadence must not require a capture-only hold. */
 volatile uint32_t g_render_completed_stages[7];
+#ifdef DOK_RENDER_HW_BG_PROTOTYPE
+/* Coherent completed-draw counters; the next loop may already be in logic
+ * when a libretro frame boundary returns to the profiling harness. */
+volatile uint32_t g_hw_completed_logic[8];
+extern volatile uint32_t g_time_diag[],g_motion_diag[],g_ai_diag[],g_combat_diag[],g_flow_diag[],g_ui_diag[];
+#endif
 void gba_render_stage(unsigned stage) {
     g_render_stages[stage]=timer_sample();
 }
@@ -263,6 +273,13 @@ void gba_flow_load(unsigned level,unsigned carry){
  if(dok_renderer_camera_from_runtime(&camera,&g_render_world)!=DOK_RENDER_OK)panic(0x98);
 }
 
+#ifdef DOK_RENDER_HW_OBJ_PROTOTYPE
+#include "hardware_obj.inc"
+#ifdef DOK_RENDER_HW_WORLD_OBJ_PROBE_PROTOTYPE
+#include "hardware_world_obj_probe.inc"
+#endif
+#endif
+
 __attribute__((noreturn)) void gba_main(void)
 {
     unsigned bss_ok=g_diag.magic==0 && g_vblanks==0 && g_render_diag.magic==0;
@@ -301,6 +318,12 @@ __attribute__((noreturn)) void gba_main(void)
     gba_ui_start();
     unsigned visible=0;
     for (;;) {
+#ifdef DOK_RENDER_HW_OBJ_ROWS_PROBE_PROTOTYPE
+        hw_obj_test_rows();
+#endif
+#ifdef DOK_RENDER_HW_WORLD_OBJ_PROBE_PROTOTYPE
+        hw_world_obj_probe();
+#endif
         unsigned camera_changed=0;
         if(g_camera_probe.request!=g_camera_probe.ack) {
             camera_changed=1;
@@ -346,14 +369,121 @@ __attribute__((noreturn)) void gba_main(void)
             g_render_frame.sprites[n]=(dok_renderer_sprite){g_sprite_probe.x,g_sprite_probe.y,g_sprite_probe.z,(uint16_t)g_sprite_probe.object,0};
             g_render_frame.sprite_resource[n]=0;g_render_frame.sprite_frame[n]=0;
         }
+#ifdef DOK_RENDER_HW_DIRECT_PROTOTYPE
+        g_hw_tile_active=gba_flow_active();g_hw_weapon[4]=0;
+        if(g_hw_tile_active) {hw_obj_black();g_hw_tile_black=hw_black_index;}
+#ifdef DOK_RENDER_HW_BG_LOWERED_PROTOTYPE
+        else hw_bg_hold_before_mode4();
+#endif
+#endif
+#ifdef DOK_RENDER_SECTOR_GPU_PROTOTYPE
+        if(g_hw_tile_active)gba_combat_overlay(&g_render_frame);
+#endif
         dok_renderer_status status=dok_renderer_draw(&g_render_frame,&g_render_world,&package,g_render_diag.level,
             g_render_diag.language,&camera,&g_render_stats);
         g_render_diag.status=status;
         if (status!=DOK_RENDER_OK) panic(0xa0+(unsigned)status);
-        gba_combat_overlay(&g_render_frame);gba_ui_draw(g_render_frame.frame,font,font16,white,black);gba_flow_draw(g_render_frame.frame,font,font16,white,black);gba_render_stage(5);
+#ifdef DOK_RENDER_HW_BG_PROTOTYPE
+#ifdef DOK_RENDER_SECTOR_BITMAP_PROTOTYPE
+        if(0 && g_hw_tile_active)hw_bg_prepare();
+#else
+        if(g_hw_tile_active)hw_bg_prepare();
+#ifdef DOK_RENDER_SECTOR_GPU_PROTOTYPE
+        if(g_hw_tile_active)hw_sector_gpu_prepare();
+#endif
+#endif
+#endif
+#ifdef DOK_RENDER_SECTOR_GPU_PROTOTYPE
+        if(!g_hw_tile_active)gba_combat_overlay(&g_render_frame);
+#else
+        gba_combat_overlay(&g_render_frame);
+#endif
+#ifdef DOK_RENDER_HW_DIRECT_PROTOTYPE
+        if(g_hw_tile_active) hw_direct_ui_begin();
+#endif
+        gba_ui_draw(g_render_frame.frame,font,font16,white,black);gba_flow_draw(g_render_frame.frame,font,font16,white,black);
+#ifdef DOK_RENDER_HW_OBJ_PROTOTYPE
+        int hw_enabled=
+#ifdef DOK_RENDER_SECTOR_BITMAP_PROTOTYPE
+            g_hw_tile_active;
+#else
+            gba_flow_active();
+#endif
+        uint32_t hw_wait_cycles=0;
+        if(hw_enabled) hw_obj_prepare();
+#endif
+        gba_render_stage(5);
         volatile uint16_t *page=visible ? PAGE0 : PAGE1;
         /* DMA3 pauses the CPU, including audio IRQ refills. Bound each pause
          * while preserving every Mode4 pixel. DMA1 has higher bus priority. */
+#ifdef DOK_RENDER_HW_OBJ_PROTOTYPE
+        if(hw_enabled) {
+#ifdef DOK_RENDER_HW_PRESENT_PROTOTYPE
+            unsigned upload_budget=hw_upload_budget();g_hw_present_diag[0]=upload_budget;
+#ifdef DOK_RENDER_HW_EARLY_PRESENT_PROTOTYPE
+            if(upload_budget!=0xffffffffu)upload_budget+=6000;
+            g_hw_present_diag[0]=upload_budget;
+#endif
+            /* Large seeks or a complete atlas change may exceed every safe
+             * window. Use the existing blanked transition instead of waiting
+             * forever for an impossible deadline. Prepared map deltas remain
+             * valid; reloading textures also makes this path self-contained. */
+            if(upload_budget!=0xffffffffu && upload_budget>
+#ifdef DOK_RENDER_HW_EARLY_PRESENT_PROTOTYPE
+                84u*1232u
+#else
+                68u*1232u
+#endif
+            ) {hw_bg_stream_cold=1;upload_budget=0xffffffffu;g_hw_present_diag[0]=upload_budget;}
+#endif
+            uint32_t wait_stamp=timer_sample();
+#ifdef DOK_RENDER_HW_EARLY_PRESENT_PROTOTYPE
+            if(upload_budget!=0xffffffffu) {
+                for(;;) {
+                    unsigned line=VCOUNT,elapsed=(uint32_t)(g_vblanks-start_vblank);
+                    if(line>=144 && (line<160?elapsed>=1:elapsed>=2) && (228-line)*1232>=upload_budget)break;
+                }
+                ++g_hw_present_diag[2];g_hw_present_diag[1]=VCOUNT;
+            } else {
+                while((uint32_t)(g_vblanks-start_vblank)<2) __asm__ volatile("nop");
+                while(VCOUNT>=160) {}
+                while(VCOUNT<160) {}
+                g_hw_present_diag[1]=VCOUNT;
+            }
+#else
+            while((uint32_t)(g_vblanks-start_vblank)<2) __asm__ volatile("nop");
+#ifdef DOK_RENDER_HW_PRESENT_PROTOTYPE
+            unsigned line=VCOUNT;
+            if(line>=160 && (228-line)*1232>=upload_budget)++g_hw_present_diag[2];
+            else {
+                if(line>=160)++g_hw_present_diag[3];
+                while(VCOUNT>=160) {}
+                while(VCOUNT<160) {}
+            }
+            g_hw_present_diag[1]=VCOUNT;
+#else
+            while(VCOUNT>=160) {}
+            while(VCOUNT<160) {}
+#endif
+#endif
+            hw_wait_cycles=timer_sample()-wait_stamp;
+            hw_obj_upload();
+#ifdef DOK_RENDER_HW_BG_PROTOTYPE
+            hw_wait_cycles+=g_hw_bg_diag[7];
+            if(VCOUNT<160) {uint32_t stamp=timer_sample();while(VCOUNT<160){}hw_wait_cycles+=timer_sample()-stamp;}
+#endif
+        } else {
+            hw_video_ready=0;
+#ifdef DOK_RENDER_HW_BG_PROTOTYPE
+            hw_bg_disable();
+#endif
+#ifdef DOK_RENDER_HW_UI_OBJ_PROTOTYPE
+            if((DISPCNT&7)==1 || (DISPCNT&7)==2)
+#else
+            if((DISPCNT&7)==1)
+#endif
+            {DISPCNT=0x80;for(unsigned i=0;i<256;++i) PAL[i]=localized_ui[g_render_diag.language].colors[i];}
+#endif
         for(unsigned offset=0;offset<9600;offset+=256){
             unsigned count=9600-offset;if(count>256)count=256;
             *(volatile uint32_t *)0x040000d4=(uintptr_t)g_render_frame.frame+offset*4;
@@ -361,7 +491,13 @@ __attribute__((noreturn)) void gba_main(void)
             *(volatile uint32_t *)0x040000dc=0x84000000u|count;
             __asm__ volatile("nop" ::: "memory");
         }
+#ifdef DOK_RENDER_HW_OBJ_PROTOTYPE
+        }
+#endif
         gba_render_stage(6);uint32_t cycles=timer_stop();
+#ifdef DOK_RENDER_HW_OBJ_PROTOTYPE
+        cycles-=hw_wait_cycles;g_render_stages[6]-=hw_wait_cycles;
+#endif
         for(unsigned i=0;i<7;++i) g_render_completed_stages[i]=g_render_stages[i];
         g_render_diag.last_cycles=cycles;
         if (cycles<g_render_diag.min_cycles) g_render_diag.min_cycles=cycles;
@@ -378,10 +514,57 @@ __attribute__((noreturn)) void gba_main(void)
         g_render_diag.reserved3=2;
         /* Present only a complete frame, at most once per two VBlanks.
          * Wait for a fresh VBlank when work has already exceeded its budget. */
+#ifdef DOK_RENDER_HW_OBJ_PROTOTYPE
+        if(hw_enabled) {visible=0;DISPCNT=
+#ifdef DOK_RENDER_SECTOR_BITMAP_PROTOTYPE
+            (uint16_t)(0x1444|(hw_bitmap_page<<4));
+#else
+#ifdef DOK_RENDER_SECTOR_GPU_PROTOTYPE
+            0x1c42;
+#else
+#ifdef DOK_RENDER_HW_BG_PROTOTYPE
+#ifdef DOK_RENDER_HW_UI_OBJ_PROTOTYPE
+#ifdef DOK_RENDER_HW_LOW_ADAPTIVE_PROTOTYPE
+            (g_hw_low_mode?0x1c62:0x1541);
+#else
+#ifdef DOK_RENDER_HW_BG_LOWERED_PROTOTYPE
+            0x1c62;
+#else
+            0x1462;
+#endif
+#endif
+#else
+#ifdef DOK_RENDER_HW_WORLD_OBJ_PROTOTYPE
+            0x3561;
+#else
+#ifdef DOK_RENDER_HW_ROWS96_PROTOTYPE
+            0x3541;
+#else
+            0x1541;
+#endif
+#endif
+#endif
+#else
+            0x1141;
+#endif
+#endif
+#endif
+        }
+        else {
+#endif
         while ((uint32_t)(g_vblanks-start_vblank)<2) __asm__ volatile("nop");
         while (VCOUNT<160) {}
         visible^=1;DISPCNT=(uint16_t)(0x0404|(visible<<4));
+#ifdef DOK_RENDER_HW_OBJ_PROTOTYPE
+        }
+#endif
         g_render_diag.reserved0=visible;
+#ifdef DOK_RENDER_HW_BG_PROTOTYPE
+        g_hw_completed_logic[0]=g_time_diag[2];g_hw_completed_logic[1]=g_motion_diag[2];
+        g_hw_completed_logic[2]=g_motion_diag[3];g_hw_completed_logic[3]=g_ai_diag[2];
+        g_hw_completed_logic[4]=g_ai_diag[8];g_hw_completed_logic[5]=g_combat_diag[2];
+        g_hw_completed_logic[6]=g_flow_diag[1];g_hw_completed_logic[7]=g_ui_diag[1];
+#endif
         g_render_diag.present_vblank=g_vblanks;g_render_diag.draws++;
         g_diag.frames++;g_diag.vblanks=g_vblanks;
         if(g_camera_capture_hold) {

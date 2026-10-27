@@ -1,0 +1,55 @@
+{
+  "task": "G20A",
+  "status": "hardware-composition-bringup-not-optimized",
+  "targets_met": false,
+  "rom_sha256": "cb35b35c3eadac987a8f6487e0a7a96912778f97d0272cf0eaea1f1caee2386e",
+  "rom_path": "build/g20a-hw-pack-ready/hw_obj_arm/dok-diagnostic.gba",
+  "rom_bytes": 9957080,
+  "arm": {
+    "path": "build/g20a-hw-pack-ready/hw-arm.json",
+    "sha256": "29ce907b1dafb54fa5b398cf4c33df3aa685351fabfccf4b795f249345665150",
+    "status": "passed"
+  },
+  "actual_ppu_rgb_exact_frames": 18,
+  "software_floor_still_enabled": true,
+  "original_files_sha_matched": 22,
+  "normal_main_renderer_rom_byte_identical": true,
+  "ewram_static_bytes": 257044,
+  "iwram_static_bytes": 23372,
+  "measurements": {
+    "g20a-hw-pack-ready": {
+      "path": "analysis/g20a-hardware-ppu.json",
+      "sha256": "7d55d8c52f8fec3465fd3ef14d356b2b39ad9b89919b04d34e02a993ae8c3000"
+    },
+    "g20a-lookup": {
+      "path": "analysis/g20a-lookup-trial.json",
+      "sha256": "8b386001f89dd4bfbf720b717d005b26aaa9d528fbfc92c2317cebd022ce7f37"
+    },
+    "g20a-vertex-fixed": {
+      "path": "analysis/g20a-vertex-trial.json",
+      "sha256": "b7ea3fb60dc4af95311941a534335e56311eaf72e54153bea34f1465eb3b8f47"
+    },
+    "g20a-ray-sides": {
+      "path": "analysis/g20a-ray-trial.json",
+      "sha256": "8ea7dd124d393e3f9d4667918b1f9af00166d934bff9adeb07288ec4a6eee043"
+    }
+  },
+  "source_manifest": {
+    "path": "build/g20a-hw-pack-ready/prototype-build.json",
+    "sha256": "7613dd087cc0df8e8e75f7632eb77cc07946aa54a15b5a1550d7b55d0ec410c1"
+  },
+  "unchanged_public_artifacts": {
+    "DoK-port_pre_alpha.gba": "7babd40f913eb12f77c93c9df917cea432b0cbe3bd83e11da45ba08dec917ea8",
+    "DoK-port_optimized_prototype.gba": "b36472a0701f19a41fc009e003f0f78a4493921e1cf19f2b51c266cdfeb42501",
+    "DoK-port_floor_4x2_prototype.gba": "04dfe358654cc865a22ec9e674217eb4cde7583bde4f61d57d361fa1e61b5d11"
+  },
+  "script_sha256": "61636dc0fdb8cb2dc3bdbff84bb2b5e4ef5441205fa96f16f62875c4ce2f897e",
+  "next_step": "Direct tiled foreground output to remove packing, then affine BG floor sampling.",
+  "limitations": [
+    "Not a faster candidate; no artifact promotion.",
+    "Only18 frozen PPU scenes and six live PCM fixtures; no full functional/UI/flow/game stress suite.",
+    "Weapon overlay with distinct odd/even pixels, all water phases and physical GBA not verified.",
+    "The current prototype still samples both horizontal planes on CPU.",
+    "Future affine BG/HBlank floor, material streaming and row lighting are not implemented."
+  ]
+}

@@ -85,10 +85,26 @@ void gba_combat_overlay(dok_renderer_workspace *w) {
     dok_animation_frame_at(&a,c->weapon_frame,&f)!=DOK_ASSET_OK)return;
  int width=f.image.width*3/4,height=f.image.height*9/10;if(width<1 || height<1)return;
  int left=(240-width)/2,top=144-(height>>c->weapon_shift);
+#ifdef DOK_RENDER_HW_DIRECT_PROTOTYPE
+ _Static_assert(offsetof(dok_combat,weapon_shift)==10798,"hardware weapon probe ABI");
+ _Static_assert(offsetof(dok_combat,weapon_frame)==10800,"hardware weapon probe ABI");
+ extern uint32_t g_hw_tile_active;
+ extern unsigned g_hw_weapon[5];
+ extern int gba_hw_weapon_begin(int,int,int,int);
+ if(g_hw_tile_active && !gba_hw_weapon_begin(left,top,width,height))return;
+#endif
  for(int y=0;y<height && y+top<144;y++)for(int x=0;x<width;x++) {
   if(x+left<0 || x+left>=240 || y+top<0)continue;
   uint8_t color=f.image.pixels[(unsigned)(y*f.image.height/height)*f.image.width+(unsigned)(x*f.image.width/width)];
-  if(color)w->frame[(y+top)*240+x+left]=color;
+  if(color) {
+#ifdef DOK_RENDER_HW_DIRECT_PROTOTYPE
+   if(g_hw_tile_active) {
+    unsigned xx=(unsigned)(x+left)-g_hw_weapon[0],yy=(unsigned)(y+top)-g_hw_weapon[1];
+    w->frame[25600+((yy/8)*g_hw_weapon[2]+xx/8)*64+(yy&7)*8+(xx&7)]=color;
+   } else
+#endif
+   w->frame[(y+top)*240+x+left]=color;
+  }
  }
 }
 

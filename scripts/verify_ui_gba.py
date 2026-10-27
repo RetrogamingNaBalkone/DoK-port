@@ -87,10 +87,13 @@ class UIProbe(AICombatProbe):
 
     def __init__(self, core, build):
         super().__init__(core, build)
+        self.hardware_ppu_frames=0
         self.video_callback = VIDEO(self.video)
         self.frontend.core.retro_set_video_refresh(self.video_callback)
 
     def video(self, data, width, height, pitch):
+        if 'g_hw_obj_diag' in self.symbols:
+            self.frontend.video(data,width,height,pitch);return
         self.frontend.width, self.frontend.height = width, height
         self.frontend.video_frames += 1
 
@@ -101,14 +104,25 @@ class UIProbe(AICombatProbe):
         return self.until(lambda d: self.ui()['magic'] == 0x55493137 and predicate(self.ui()),
                           buttons=buttons, limit=limit)
 
+    def present(self):
+        if 'g_camera_capture_hold' in self.symbols:
+            self.write(self.symbols['g_camera_capture_hold'],struct.pack('<I',1))
+        return super().present()
+
     def command(self, op, arg=0, object_id=0, slot=0):
+        # Synthetic commands begin after the live keypad/pause checks. Keep a
+        # completed snapshot observable for a full VBlank; do not alias the
+        # brief phase2 window or mix UI diagnostics from adjacent frames.
+        if 'g_camera_capture_hold' in self.symbols:
+            self.write(self.symbols['g_camera_capture_hold'],struct.pack('<I',1))
         address = self.symbols['g_ui_probe']
         request = self.words('g_ui_probe', 2)[1] + 1
         self.write(address + 8, struct.pack('<4I', op, arg, object_id, slot))
         self.write(address, struct.pack('<I', request))
         previous = self.ui()['draws']
         self.until(lambda d: self.words('g_ui_probe', 2)[1] == request
-                   and self.ui()['draws'] > previous)
+                   and self.ui()['draws'] > previous and d['phase']==2
+                   and d['draws']>=self.ui()['draws'])
         return self.ui()
 
     def press(self, *buttons):
@@ -135,8 +149,44 @@ class UIProbe(AICombatProbe):
 
     def frame(self):
         d = self.present()
-        raw = self.frontend.read(0x06000000 + d['visible_page'] * 0xa000, 38400)
         palette = self.frontend.read(0x05000000, 512)
+        if 'g_hw_obj_diag' in self.symbols and (struct.unpack('<H',self.frontend.read(0x04000000,2))[0]&7) in (1,2):
+            self.frontend.run(2)
+            colors=struct.unpack('<256H',palette);canonical={}
+            for i,c in enumerate(colors):canonical.setdefault(c,i)
+            video=self.frontend.last_video_raw;fmt=self.frontend.pixel_format
+            assert len(video)==38400*(4 if fmt==1 else 2),'Missing actual PPU callback'
+            mode=struct.unpack('<H',self.frontend.read(0x04000000,2))[0]&7
+            vram=self.frontend.read(0x06000000,98304);raw=bytearray(38400)
+            obj_ui=bytearray(38400)
+            if mode==2:
+                assert self.frontend.read(0x05000200,512)==palette,'UI OBJ palette mismatch'
+                obj_ui=self.frontend.mode2_ui_indices()
+            for at in range(38400):
+                if fmt==1:
+                    c=struct.unpack_from('<I',video,at*4)[0];red=(c>>19)&31;green=(c>>11)&31;blue=(c>>3)&31
+                else:
+                    c=struct.unpack_from('<H',video,at*2)[0]
+                    red=(c>>(11 if fmt==2 else 10))&31;green=(c>>(6 if fmt==2 else 5))&31;blue=c&31
+                color=red|(green<<5)|(blue<<10)
+                y,x=divmod(at,240)
+                if mode==2:ui=obj_ui[at]
+                else:
+                    tile=struct.unpack_from('<H',vram,0x7800+((y//8)*32+x//8)*2)[0]&1023
+                    ui=vram[tile*64+(y&7)*8+(x&7)]
+                # Keep exact source indices for UI assertions, but only after
+                # proving the actual PPU showed that palette color. Other
+                # pixels use a canonical index for palette-color equivalence.
+                if ui:
+                    assert colors[ui]==color,('UI differs from actual PPU',mode,x,y,ui,colors[ui],color)
+                    raw[at]=ui
+                else:
+                    assert color in canonical,('PPU color absent from active palette',x,y,color)
+                    raw[at]=canonical[color]
+            self.hardware_ppu_frames+=1;self.last_frame_kind='ppu-color-with-validated-obj' if mode==2 else 'ppu-color-with-validated-bg0'
+            return bytes(raw),palette
+        raw = self.frontend.read(0x06000000 + d['visible_page'] * 0xa000, 38400)
+        self.last_frame_kind='mode4-indexed'
         return raw, palette
 
     def screen(self, name):
@@ -149,7 +199,8 @@ class UIProbe(AICombatProbe):
                         ((value >> 10) & 31)*255//31))
         path = self.build / 'ui-check' / (name + '.png')
         path.parent.mkdir(exist_ok=True)
-        png(path, 240, 160, rgb)
+        if self.last_frame_kind.startswith('ppu-color-with-validated-'):self.frontend.screenshot(path)
+        else:png(path, 240, 160, rgb)
         return dict(path=path.as_posix(), sha256=sha(path),
                     framebuffer_sha256=hashlib.sha256(raw).hexdigest())
 
@@ -244,8 +295,15 @@ def main():
         assert p.world_sha() == snapshot
         p.command(1, 0)
         p.press(2)
-        assert p.ui()['language'] == 1 and p.world_sha() == snapshot
+        assert p.ui()['state'] == 0 and p.ui()['language'] == 0 and p.world_sha() == snapshot
         p.press(2)
+        assert p.ui()['language'] == 0 and p.world_sha() == snapshot
+        # Language changes only in a menu, including the pause menu row.
+        p.press(2, 3)
+        p.press(5)
+        p.press(8)
+        assert p.ui()['state'] == 2 and p.ui()['language'] == 1 and p.world_sha() == snapshot
+        p.press(8)
         assert p.ui()['language'] == 0 and p.world_sha() == snapshot
         p.command(1, 2)
         p.press(2)
@@ -437,7 +495,7 @@ def main():
                         checked.add(text)
                         p.command(4, 0)
                         p.command(3, object_id=index, slot=slot)
-                        assert p.ui()['length'] == len(text)
+                        assert p.ui()['length'] == len(text), (language,level,index,slot,len(text),p.ui(),p.diag())
                         raw, palette = p.frame()
                         _, foreground = ui_colors(palette)
                         layout = message_mask(raw, bitmap, text, foreground)
@@ -455,12 +513,14 @@ def main():
         assert stack['untouched_margin_bytes'] >= 512, stack
         assert sha(p.rom) == p.metadata['rom_sha256'], 'ROM changed during verification'
         report = dict(task='G17', status='passed', rom_sha256=sha(p.rom),
+                      hardware_ppu_frames=p.hardware_ppu_frames,
                       script_sha256=sha(__file__), source=origin, screens=screens,
                       checks=dict(real_keypad_menu=True, title_help_statistics=True,
                                   chord_suppressed_use_and_language=True, paused_world_and_clock=True,
                                   pause_preserved_fraction_and_raw_timer_continued=True,
                                   resume_excluded_paused_time=True,
                                   no_resume_fire_leak=True, language_preserved_world=True,
+                                  in_game_select_preserves_language=True, pause_menu_language_row=True,
                                   exact_original_font8_pixels=True, exact_original_font16_pixels=True,
                                   offline_rom_icons_no_runtime_resize=True,
                                   signed16_hud_extremes=True,

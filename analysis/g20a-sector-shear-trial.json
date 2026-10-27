@@ -1,0 +1,620 @@
+{
+  "task": "G20A",
+  "status": "bounded-affine-shear-not-selected-architecture-comparison-closed",
+  "goal_complete": false,
+  "performance_build_in_current_goal": false,
+  "trial_rom_sha256": "484099f868157067871d6241b61dfe1afcfd97951f9d0944045c06a6bf9deaae",
+  "rom_bytes": 18754724,
+  "control_rom_sha256": "2775bdd0caaac64b4fd99e4c6d675587fad2da9c795468dc52efacb5d53edaab",
+  "byte_exact_repeat": true,
+  "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+  "heavy_cases": [
+    {
+      "level": 1,
+      "cell": 520,
+      "heading": 225,
+      "cpu_ratio": 2.0964738945242174,
+      "fps": 5.429772779055075,
+      "baseline_fps": 9.95458342826764
+    },
+    {
+      "level": 1,
+      "cell": 3640,
+      "heading": 225,
+      "cpu_ratio": 2.1901880019329454,
+      "fps": 5.429772779055075,
+      "baseline_fps": 11.945500113921167
+    },
+    {
+      "level": 2,
+      "cell": 1592,
+      "heading": 135,
+      "cpu_ratio": 2.376882897331975,
+      "fps": 4.59442312073891,
+      "baseline_fps": 9.95458342826764
+    },
+    {
+      "level": 2,
+      "cell": 2871,
+      "heading": 225,
+      "cpu_ratio": 2.355137439364986,
+      "fps": 4.59442312073891,
+      "baseline_fps": 9.95458342826764
+    },
+    {
+      "level": 3,
+      "cell": 1544,
+      "heading": 315,
+      "cpu_ratio": 2.3483251265691103,
+      "fps": 7.465937571200729,
+      "baseline_fps": 14.931875142401458
+    }
+  ],
+  "live24": {
+    "before": [
+      {
+        "level": 1,
+        "language": 0,
+        "fps": 19.37108126581811,
+        "debt": 415
+      },
+      {
+        "level": 2,
+        "language": 0,
+        "fps": 19.112800182273865,
+        "debt": 399
+      },
+      {
+        "level": 3,
+        "language": 0,
+        "fps": 27.56653872443346,
+        "debt": 411
+      },
+      {
+        "level": 1,
+        "language": 1,
+        "fps": 19.37108126581811,
+        "debt": 414
+      },
+      {
+        "level": 2,
+        "language": 1,
+        "fps": 19.112800182273865,
+        "debt": 415
+      },
+      {
+        "level": 3,
+        "language": 1,
+        "fps": 27.56653872443346,
+        "debt": 412
+      }
+    ],
+    "after": [
+      {
+        "level": 1,
+        "language": 0,
+        "fps": 10.540147159342206,
+        "debt": 410
+      },
+      {
+        "level": 2,
+        "language": 0,
+        "fps": 8.053146144216516,
+        "debt": 397
+      },
+      {
+        "level": 3,
+        "language": 0,
+        "fps": 12.574210646232807,
+        "debt": 352
+      },
+      {
+        "level": 1,
+        "language": 1,
+        "fps": 10.540147159342206,
+        "debt": 409
+      },
+      {
+        "level": 2,
+        "language": 1,
+        "fps": 8.053146144216516,
+        "debt": 396
+      },
+      {
+        "level": 3,
+        "language": 1,
+        "fps": 12.574210646232807,
+        "debt": 352
+      }
+    ]
+  },
+  "profile": {
+    "rom_sha256": "484099f868157067871d6241b61dfe1afcfd97951f9d0944045c06a6bf9deaae",
+    "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+    "script_sha256": "a128b516bdf869c5645fb99899dd132db9096f2ea0fc69181f1939b1546b9220",
+    "rows": [
+      {
+        "level": 1,
+        "cell": 520,
+        "heading": 225,
+        "cycles": 2657152,
+        "work": [
+          2,
+          20,
+          2629,
+          1,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          9,
+          0
+        ],
+        "state": [
+          1,
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        "shear_work": [
+          24,
+          20,
+          2,
+          2,
+          98,
+          14,
+          1024,
+          1266
+        ],
+        "sector_cycles": [
+          140672,
+          708480,
+          529216,
+          933952,
+          0
+        ],
+        "gpu_cycles": [
+          566464,
+          0,
+          0
+        ],
+        "image": "build\\g20a-sector-shear-v4\\hw_v128_sector_gpu_shear\\gpu-L1-520-225.png",
+        "image_sha256": "2e9138f34b7d3f033149732af4eec06e9bfb3cc64693b3ccfc55e231dfba0de3"
+      },
+      {
+        "level": 1,
+        "cell": 3640,
+        "heading": 225,
+        "cycles": 2649664,
+        "work": [
+          14,
+          19,
+          4967,
+          1,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          1,
+          0
+        ],
+        "state": [
+          1,
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        "shear_work": [
+          23,
+          19,
+          1,
+          0,
+          0,
+          4,
+          1008,
+          1248
+        ],
+        "sector_cycles": [
+          140672,
+          368768,
+          615232,
+          1176832,
+          0
+        ],
+        "gpu_cycles": [
+          939328,
+          0,
+          0
+        ],
+        "image": "build\\g20a-sector-shear-v4\\hw_v128_sector_gpu_shear\\gpu-L1-3640-225.png",
+        "image_sha256": "7344e0a550f1fdd0ae966097043a3c1fedd5352481c1c70fdea97dcaeb720a1b"
+      },
+      {
+        "level": 2,
+        "cell": 1592,
+        "heading": 135,
+        "cycles": 3051776,
+        "work": [
+          4,
+          16,
+          2326,
+          1,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          13,
+          0
+        ],
+        "state": [
+          1,
+          1,
+          0,
+          0,
+          0,
+          2
+        ],
+        "shear_work": [
+          18,
+          16,
+          1,
+          2,
+          103,
+          8,
+          1024,
+          1258
+        ],
+        "sector_cycles": [
+          141184,
+          626816,
+          282432,
+          1608704,
+          0
+        ],
+        "gpu_cycles": [
+          655168,
+          0,
+          0
+        ],
+        "image": "build\\g20a-sector-shear-v4\\hw_v128_sector_gpu_shear\\gpu-L2-1592-135.png",
+        "image_sha256": "a20464756e19b85973e45b7b80e57496cd0f7261157853c6063ffad39e49df03"
+      },
+      {
+        "level": 2,
+        "cell": 2871,
+        "heading": 225,
+        "cycles": 3121664,
+        "work": [
+          4,
+          19,
+          3889,
+          1,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          2,
+          0
+        ],
+        "state": [
+          1,
+          1,
+          0,
+          0,
+          0,
+          2
+        ],
+        "shear_work": [
+          25,
+          19,
+          1,
+          2,
+          59,
+          13,
+          1000,
+          1240
+        ],
+        "sector_cycles": [
+          140864,
+          670336,
+          398592,
+          1534080,
+          0
+        ],
+        "gpu_cycles": [
+          581312,
+          0,
+          0
+        ],
+        "image": "build\\g20a-sector-shear-v4\\hw_v128_sector_gpu_shear\\gpu-L2-2871-225.png",
+        "image_sha256": "54d4e6067e0ae9b538baea195ca2ba2e5e591d808a75d5d64dfd4277226fd372"
+      },
+      {
+        "level": 3,
+        "cell": 1544,
+        "heading": 315,
+        "cycles": 1884544,
+        "work": [
+          0,
+          30,
+          4771,
+          1,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          4,
+          0
+        ],
+        "state": [
+          1,
+          1,
+          0,
+          0,
+          0,
+          4
+        ],
+        "shear_work": [
+          28,
+          30,
+          2,
+          2,
+          114,
+          20,
+          1016,
+          1246
+        ],
+        "sector_cycles": [
+          140416,
+          335488,
+          192,
+          1052544,
+          0
+        ],
+        "gpu_cycles": [
+          654272,
+          0,
+          0
+        ],
+        "image": "build\\g20a-sector-shear-v4\\hw_v128_sector_gpu_shear\\gpu-L3-1544-315.png",
+        "image_sha256": "8569b0b7d3edb9d5b05a43ae9a98c514d69b88c4b3b70d3b350b4dae68e7085b"
+      }
+    ],
+    "stack": {
+      "main_stack_low": 50356224,
+      "main_stack_top": 50364160,
+      "sentinel_word": 219540062,
+      "untouched_margin_bytes": 5392,
+      "high_water_bytes": 2544,
+      "irq_and_bios_excluded": true,
+      "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+    },
+    "forced_pcm": false,
+    "cold_reset_after_freeze": true,
+    "scope": "Instrumented held native frames; not unprofiled FPS, full gameplay or physical GBA acceptance."
+  },
+  "verification": {
+    "poses": 58,
+    "mode4_cycles": 6,
+    "weapon_poses": 18,
+    "active_gpu_poses": 46,
+    "nonzero_pc_poses": 8,
+    "source_texels": 56810,
+    "gpu_clip_candidate_pixels": 71378,
+    "ppu_pixels": 2227200,
+    "base_pixels": 2227200,
+    "scope": "Original dynamic geometry/leases/native HUD, actual Mode2 BG2/BG3/OBJ composition, original BG3 materials after VRAM relocation, nonzero original mip/LIGHT source texels and static sector clip contract for GPU pixels. Source padding/VRAM/OAM/matrices/guards. Normal runs additionally check scan budget and Mode4 cycles. Not an independent proof of static histories or complete dynamic visibility; no gameplay/physical GBA acceptance.",
+    "missing_mask": 8750,
+    "extra_mask": 3464,
+    "max_missing": 304,
+    "max_extra": 123,
+    "missing_interior": 868,
+    "extra_beyond2": 28,
+    "max_missing_interior": 64,
+    "max_extra_beyond2": 8
+  },
+  "pressure_probe": [
+    {
+      "level": 1,
+      "cell": 520,
+      "pieces": 41,
+      "cpu_fallback": false,
+      "actual_ppu_lost_pixels": 732,
+      "classified_capacity_tail": 732,
+      "work": [
+        14,
+        41,
+        5494,
+        0,
+        0,
+        0,
+        21,
+        2,
+        0,
+        0,
+        14,
+        0
+      ]
+    },
+    {
+      "level": 1,
+      "cell": 3640,
+      "pieces": 23,
+      "cpu_fallback": false,
+      "actual_ppu_lost_pixels": 8,
+      "classified_capacity_tail": 8,
+      "work": [
+        18,
+        23,
+        6460,
+        0,
+        0,
+        0,
+        4,
+        0,
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "level": 2,
+      "cell": 1592,
+      "pieces": 32,
+      "cpu_fallback": false,
+      "actual_ppu_lost_pixels": 222,
+      "classified_capacity_tail": 222,
+      "work": [
+        24,
+        32,
+        5083,
+        0,
+        0,
+        0,
+        16,
+        196,
+        0,
+        0,
+        13,
+        0
+      ]
+    },
+    {
+      "level": 2,
+      "cell": 2871,
+      "pieces": 0,
+      "cpu_fallback": true,
+      "actual_ppu_lost_pixels": 0,
+      "classified_capacity_tail": 0,
+      "work": [
+        20,
+        39,
+        8818,
+        1,
+        0,
+        0,
+        20,
+        233,
+        0,
+        1,
+        4,
+        0
+      ]
+    },
+    {
+      "level": 3,
+      "cell": 1544,
+      "pieces": 55,
+      "cpu_fallback": false,
+      "actual_ppu_lost_pixels": 1368,
+      "classified_capacity_tail": 1368,
+      "work": [
+        9,
+        55,
+        7889,
+        0,
+        0,
+        0,
+        25,
+        30,
+        0,
+        0,
+        8,
+        0
+      ]
+    }
+  ],
+  "memory": {
+    "ewram_bytes": 261364,
+    "ewram_free": 780,
+    "iwram_bytes": 24196,
+    "iwram_free_before_stack": 380,
+    "main_stack": {
+      "main_stack_low": 50356224,
+      "main_stack_top": 50364160,
+      "sentinel_word": 219540062,
+      "untouched_margin_bytes": 5392,
+      "high_water_bytes": 2544,
+      "irq_and_bios_excluded": true,
+      "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+    },
+    "irq_stack": {
+      "low": 50364160,
+      "top": 50364320,
+      "untouched_margin_bytes": 80,
+      "high_water_bytes": 80,
+      "includes_bios_irq_saves": true
+    }
+  },
+  "preserved_roms": {
+    "DoK-port_hardware_cached_prototype.gba": "2775bdd0caaac64b4fd99e4c6d675587fad2da9c795468dc52efacb5d53edaab",
+    "DoK-port_hardware_rows96_prototype.gba": "97f0b3cb1d97c958bb0750128cef72aa94f64fa4107a8edc53d743c38b557f81",
+    "DoK-port_hardware_rows72_prototype.gba": "17696958e5d1f08672754f788861c31fdc6302d242f24f0b4a5223768688888a"
+  },
+  "decision": "Select existing2775 hardware base planes + CPU foreground as the main architecture. Close the planned representative architecture comparison; this is not a proof that no future GBA renderer can improve it. Limit remaining work to one justified transparent-column format experiment and final remaining-cost handoff. No Performance build.",
+  "limitations": [
+    "Five heavy production views use full CPU dynamic fallback after GPU preparation; do not call their FPS successful full-GPU FPS.",
+    "Pressure probe bypasses admission and may skip hard-cap commands; it is solely evidence of PPU loss in the uploaded command set, not full-scene/FPS/quality acceptance.",
+    "Actual static walls remain CPU. Adding commands for them does not solve capacity overflow already seen in dynamic command sets under this representation.",
+    "The bounded fit controls quantized X boundaries and native height variation; source clipping/mips still change silhouettes, which are measured and not accepted as minor.",
+    "Current mGBA upstream source informed budget accounting; compiled core identified separately by SHA. Actual pressure loss is verified in that compiled core, not physical GBA.",
+    "No full440/new map edits/full gameplay/physical GBA acceptance for this unselected prototype."
+  ],
+  "evidence": [
+    {
+      "path": "build/g20a-sector-shear-final-v4/prototype-build.json",
+      "sha256": "26810de5da1f62d343670dca2123c1895828a2a3cf6290ea638c38a257458fa2"
+    },
+    {
+      "path": "build/g20a-sector-shear-v4/prototype-build.json",
+      "sha256": "a34930f7ffefdd40b1f9bac23dca038251c345a23acdeed28ab68c27b245101b"
+    },
+    {
+      "path": "build/g20a-sector-shear-final-v4/visibility.json",
+      "sha256": "7a8c558ffafd89e386599bc16962fabd4d83cdf28732e206ccf9e2fa4cab7f5a"
+    },
+    {
+      "path": "build/g20a-sector-shear-v4/pressure.json",
+      "sha256": "9bf71f6582db09b64b3c4d9af30403ee37e70e32623d67f8baba5b85f639e497"
+    },
+    {
+      "path": "build/g20a-sector-shear-v4/profile.json",
+      "sha256": "2764edfc98abfc9aae907332ae42cd15fb3f8f60cbef42185c373db1d2aade1f"
+    },
+    {
+      "path": "build/g20a-sector-shear-v4/target.json",
+      "sha256": "e70f82038509dfad39715c974d87edae00d065851d8ea72c69737b91e3ee24f3"
+    },
+    {
+      "path": "build/g20a-sector-shear-v4/control-target.json",
+      "sha256": "3182e3512baf7ca448efc2b14b0448f9d33f7a6041a0a3101117941e23cd6772"
+    },
+    {
+      "path": "build/g20a-sector-shear-v4/hw_v128_sector_gpu_shear-live24.json",
+      "sha256": "faa0be93a3ea5aa619b3d0fa06878199cb7f2207b17bd7244e873f02dc56942c"
+    },
+    {
+      "path": "build/g20a-sector-shear-v4/hw_v128_entity_rect-live24.json",
+      "sha256": "eafabc2bd05198d1daadc038786ff07dc75653894963a880328384534a02024f"
+    },
+    {
+      "path": "build/g20a-sector-gpu-v8/prototype-build.json",
+      "sha256": "b6adb50fe4c47842c660562a61452dde88e11c8ca6220a5c67b4b81a38825d4e"
+    }
+  ]
+}

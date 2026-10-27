@@ -1,0 +1,330 @@
+{
+  "task": "G20A-current-goal-final-handoff",
+  "status": "handoff-complete-fps-targets-not-met",
+  "script_sha256": "e92b9abeff617f2a0ee5ed72b6ae50b75e5decc9359e97ce219f89b81e7639bf",
+  "current_goal_boundary_complete": true,
+  "performance_build_created": false,
+  "release_quality_selected": false,
+  "g20_budget_complete": false,
+  "g21_release_complete": false,
+  "selected_rom_sha256": "2775bdd0caaac64b4fd99e4c6d675587fad2da9c795468dc52efacb5d53edaab",
+  "spatial_poses": 440,
+  "spatial_minimum_fps": {
+    "1": 9.95458342826764,
+    "2": 9.95458342826764,
+    "3": 14.931875142401458
+  },
+  "fps_targets_universally_met": {
+    "satisfactory_15": false,
+    "good_internal_24_1": false,
+    "ideal_30": false
+  },
+  "architecture_comparison": "Planned representative comparison closed;2775 selected. Not an absolute GBA hardware limit proof.",
+  "transparent_column_check": "Source run storage/reconstruction feasible, native sparse-post renderer unmeasured and deferred. No FPS gain inferred from asset sparsity.",
+  "current_sources_byte_exact_control": true,
+  "heavy_control": [
+    {
+      "level": 1,
+      "cell": 520,
+      "heading": 225,
+      "median": 1457472.0,
+      "presented_fps": 9.95458342826764
+    },
+    {
+      "level": 1,
+      "cell": 3640,
+      "heading": 225,
+      "median": 1390624.0,
+      "presented_fps": 11.945500113921167
+    },
+    {
+      "level": 2,
+      "cell": 1592,
+      "heading": 135,
+      "median": 1476448.0,
+      "presented_fps": 9.95458342826764
+    },
+    {
+      "level": 2,
+      "cell": 2871,
+      "heading": 225,
+      "median": 1523872.0,
+      "presented_fps": 9.95458342826764
+    },
+    {
+      "level": 3,
+      "cell": 1544,
+      "heading": 315,
+      "median": 922816.0,
+      "presented_fps": 14.931875142401458
+    }
+  ],
+  "latest_live24": [
+    {
+      "level": 1,
+      "language": 0,
+      "presented_fps": 19.37108126581811
+    },
+    {
+      "level": 2,
+      "language": 0,
+      "presented_fps": 19.112800182273865
+    },
+    {
+      "level": 3,
+      "language": 0,
+      "presented_fps": 27.56653872443346
+    },
+    {
+      "level": 1,
+      "language": 1,
+      "presented_fps": 19.37108126581811
+    },
+    {
+      "level": 2,
+      "language": 1,
+      "presented_fps": 19.112800182273865
+    },
+    {
+      "level": 3,
+      "language": 1,
+      "presented_fps": 27.56653872443346
+    }
+  ],
+  "remaining_costs": {
+    "rom_sha256": "f4e66476b00326afd80ed5e3aff0be283ffb1d4c5ebbf61dcf301a76b23ea7d5",
+    "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+    "rows": [
+      {
+        "level": 1,
+        "cell": 520,
+        "heading": 225,
+        "instrumented_cpu_cycles": 1362048,
+        "work": [
+          1,
+          7063,
+          8321,
+          38,
+          21
+        ],
+        "face_class_work": [
+          3927,
+          3046,
+          17,
+          21
+        ],
+        "attributed_cycles": {
+          "masked_faces": 251328,
+          "opaque_faces": 194944,
+          "horizontal_surfaces": 532544
+        },
+        "stages": {
+          "logic": 36544,
+          "resources": 45824,
+          "geometry": 103232,
+          "sort": 12800,
+          "raster": 1096960,
+          "ui": 20672,
+          "copy": 46016
+        }
+      },
+      {
+        "level": 1,
+        "cell": 3640,
+        "heading": 225,
+        "instrumented_cpu_cycles": 1311680,
+        "work": [
+          1,
+          4367,
+          10083,
+          28,
+          47
+        ],
+        "face_class_work": [
+          1715,
+          2585,
+          16,
+          12
+        ],
+        "attributed_cycles": {
+          "masked_faces": 109760,
+          "opaque_faces": 165440,
+          "horizontal_surfaces": 645312
+        },
+        "stages": {
+          "logic": 36544,
+          "resources": 45824,
+          "geometry": 112256,
+          "sort": 6016,
+          "raster": 1043904,
+          "ui": 21120,
+          "copy": 46016
+        }
+      },
+      {
+        "level": 2,
+        "cell": 1592,
+        "heading": 135,
+        "instrumented_cpu_cycles": 1396096,
+        "work": [
+          1,
+          10811,
+          4528,
+          47,
+          37
+        ],
+        "face_class_work": [
+          7929,
+          2773,
+          33,
+          14
+        ],
+        "attributed_cycles": {
+          "masked_faces": 507456,
+          "opaque_faces": 177472,
+          "horizontal_surfaces": 289792
+        },
+        "stages": {
+          "logic": 38016,
+          "resources": 45824,
+          "geometry": 133120,
+          "sort": 10816,
+          "raster": 1100288,
+          "ui": 20736,
+          "copy": 47232
+        }
+      },
+      {
+        "level": 2,
+        "cell": 2871,
+        "heading": 225,
+        "instrumented_cpu_cycles": 1446208,
+        "work": [
+          1,
+          11198,
+          4986,
+          43,
+          55
+        ],
+        "face_class_work": [
+          7916,
+          3181,
+          22,
+          21
+        ],
+        "attributed_cycles": {
+          "masked_faces": 506624,
+          "opaque_faces": 203584,
+          "horizontal_surfaces": 319104
+        },
+        "stages": {
+          "logic": 38016,
+          "resources": 45824,
+          "geometry": 119488,
+          "sort": 15040,
+          "raster": 1160192,
+          "ui": 20800,
+          "copy": 46784
+        }
+      },
+      {
+        "level": 3,
+        "cell": 1544,
+        "heading": 315,
+        "instrumented_cpu_cycles": 873472,
+        "work": [
+          1,
+          8138,
+          0,
+          18,
+          0
+        ],
+        "face_class_work": [
+          4271,
+          3821,
+          13,
+          5
+        ],
+        "attributed_cycles": {
+          "masked_faces": 273344,
+          "opaque_faces": 244544,
+          "horizontal_surfaces": 0
+        },
+        "stages": {
+          "logic": 34304,
+          "resources": 45824,
+          "geometry": 96000,
+          "sort": 7616,
+          "raster": 623104,
+          "ui": 20864,
+          "copy": 45696
+        }
+      }
+    ],
+    "stack": {
+      "main_stack_low": 50356224,
+      "main_stack_top": 50364160,
+      "sentinel_word": 219540062,
+      "untouched_margin_bytes": 5408,
+      "high_water_bytes": 2528,
+      "irq_and_bios_excluded": true,
+      "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+    },
+    "forced_pcm": false,
+    "scope": "Completed held draws, frozen simulation, cold world reset after freeze. Face timers include setup/clipping/coverage/texels, not alpha tests alone. Draw orchestration moved to ROM to fit instrumentation. Timer overhead included; no forced PCM; not production FPS or an additive budget of2775."
+  },
+  "preserved_roms": {
+    "DoK-port_hardware_cached_prototype.gba": "2775bdd0caaac64b4fd99e4c6d675587fad2da9c795468dc52efacb5d53edaab",
+    "DoK-port_hardware_rows96_prototype.gba": "97f0b3cb1d97c958bb0750128cef72aa94f64fa4107a8edc53d743c38b557f81",
+    "DoK-port_hardware_rows72_prototype.gba": "17696958e5d1f08672754f788861c31fdc6302d242f24f0b4a5223768688888a"
+  },
+  "limitations": [
+    "No physical GBA/original BIOS acceptance.",
+    "Instrumented attribution includes setup/coverage/texels and ROM relocation; not production FPS.",
+    "Frozen spatial scenes do not establish whole-game minima or live AI budget.",
+    "Known294 Pause/Resume mixed-frame failure also occurs on2775; artificial all-awake overload remains.",
+    "No draw-distance/AI rebalance or Performance profile implemented."
+  ],
+  "evidence": [
+    {
+      "path": "analysis/g20a-final-costs.json",
+      "sha256": "60d0945e46428f250cd8608c345d79d048366a8f208636fb2931e5f041e7910c"
+    },
+    {
+      "path": "build/g20a-final-costs/prototype-build.json",
+      "sha256": "192707d909e6d7c59c348a25aaaf6a4629b6a46b0df55b1bfea249c0f6bf2f9e"
+    },
+    {
+      "path": "analysis/g20a-hardware-cache.json",
+      "sha256": "241e5a7951e0ab02863c9b82554dd908a792a78283af57209b9c85393c5db01d"
+    },
+    {
+      "path": "analysis/g20a-row-quality-trial.json",
+      "sha256": "2fe0f8762e18577ffd3a1805961c407f4a430849260fcf49070d2e16a9f5b4f3"
+    },
+    {
+      "path": "analysis/g20a-sector-shear-trial.json",
+      "sha256": "68d992ea9d6477242b2c12d1cf5949336cac4b95550dede263a1b58890c0d4be"
+    },
+    {
+      "path": "build/g20a-hw-entity-rect-v2/spatial.json",
+      "sha256": "15596daa16c2bd2cec1558f68ae0063f3db8e82d97c08cdd5d6f5f4b4401a879"
+    },
+    {
+      "path": "build/g20a-sector-shear-v4/control-target.json",
+      "sha256": "3182e3512baf7ca448efc2b14b0448f9d33f7a6041a0a3101117941e23cd6772"
+    },
+    {
+      "path": "build/g20a-sector-shear-v4/hw_v128_entity_rect-live24.json",
+      "sha256": "eafabc2bd05198d1daadc038786ff07dc75653894963a880328384534a02024f"
+    },
+    {
+      "path": "analysis/g20a-dark-distance-audit.json",
+      "sha256": "5739aff4a841c1550174d05838679e06f75a6c3f136959ead5e1b28ef0b3e0e1"
+    },
+    {
+      "path": "docs/gba-optimization-handoff.md",
+      "sha256": "d434b32906fb609b2af6cf8434cd544c7bf8c65bf233d024bcfc3866c674b561"
+    }
+  ]
+}

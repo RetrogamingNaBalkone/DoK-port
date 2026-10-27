@@ -1,0 +1,417 @@
+{
+  "task": "G20A",
+  "date": "2026-10-27",
+  "status": "comparison-prototypes-verified-goal-open",
+  "targets_met": false,
+  "default_control_unchanged": "2775bdd0caaac64b4fd99e4c6d675587fad2da9c795468dc52efacb5d53edaab",
+  "copied": true,
+  "variants": {
+    "96": {
+      "rom_sha256": "97f0b3cb1d97c958bb0750128cef72aa94f64fa4107a8edc53d743c38b557f81",
+      "rom_bytes": 15939148,
+      "artifact": "artifacts/gba/DoK-port_hardware_rows96_prototype.gba",
+      "ewram_bytes": 261292,
+      "iwram_bytes": 24540,
+      "stack_reserve_bytes": 8192,
+      "clean_repeat_byte_exact": true,
+      "live": {
+        "turn120": [
+          {
+            "level": 1,
+            "language": 0,
+            "fps": 21.20502978802574
+          },
+          {
+            "level": 2,
+            "language": 0,
+            "fps": 18.237404754078117
+          },
+          {
+            "level": 3,
+            "language": 0,
+            "fps": 23.120322801137743
+          },
+          {
+            "level": 1,
+            "language": 1,
+            "fps": 21.20502978802574
+          },
+          {
+            "level": 2,
+            "language": 1,
+            "fps": 18.237404754078117
+          },
+          {
+            "level": 3,
+            "language": 1,
+            "fps": 23.120322801137743
+          }
+        ],
+        "walking120": [
+          {
+            "level": 1,
+            "language": 0,
+            "fps": 19.854016809841273
+          },
+          {
+            "level": 2,
+            "language": 0,
+            "fps": 20.13286536054129
+          },
+          {
+            "level": 3,
+            "language": 0,
+            "fps": 22.609779395434387
+          },
+          {
+            "level": 1,
+            "language": 1,
+            "fps": 19.854016809841273
+          },
+          {
+            "level": 2,
+            "language": 1,
+            "fps": 20.13286536054129
+          },
+          {
+            "level": 3,
+            "language": 1,
+            "fps": 22.609779395434387
+          }
+        ]
+      },
+      "spatial_minima": {
+        "1": 11.945500113921167,
+        "2": 11.945500113921167,
+        "3": 19.90916685653528
+      },
+      "median_cpu_ratio": {
+        "1": 0.8953687373016463,
+        "2": 0.8781405096977388,
+        "3": 0.8973784270481963
+      },
+      "spatial_fps_improved": 255,
+      "spatial_fps_regressed": 0,
+      "native_overlay_exact_frames": 396,
+      "transition_callbacks": 4564,
+      "observed_stack": {
+        "main_stack_low": 50356224,
+        "main_stack_top": 50364160,
+        "sentinel_word": 219540062,
+        "untouched_margin_bytes": 5416,
+        "high_water_bytes": 2520,
+        "irq_and_bios_excluded": true,
+        "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+      },
+      "observed_irq_stack": {
+        "low": 50364160,
+        "top": 50364320,
+        "untouched_margin_bytes": 80,
+        "high_water_bytes": 80,
+        "includes_bios_irq_saves": true
+      },
+      "input_reports": {
+        "ui": "build/g20a-hw-row-quality-v3/ui96.json",
+        "sprites": "build/g20a-hw-row-quality-v3/sprites96.json",
+        "flow": "build/g20a-hw-row-quality-v3/flow96.json",
+        "ai": "build/g20a-hw-row-quality-v3/ai96.json",
+        "ai-combat": "build/g20a-hw-row-quality-v3/ai-combat96.json",
+        "items": "build/g20a-hw-row-quality-v3/items96.json",
+        "combat": "build/g20a-hw-row-quality-v3/combat96.json",
+        "interactions": "build/g20a-hw-row-quality-v3/interactions96.json",
+        "time": "build/g20a-hw-row-quality-v3/time96.json",
+        "turn120": "build/g20a-hw-row-quality-v3/turn120-96.json",
+        "walking120": "build/g20a-hw-row-quality-v3/walking120-96.json",
+        "water": "build/g20a-hw-row-quality-v3/water96.json",
+        "transitions": "build/g20a-hw-row-quality-v3/transitions96.json",
+        "quality": "build/g20a-hw-row-quality-v3/quality96.json",
+        "spatial": "build/g20a-hw-row-quality-v3/spatial96.json",
+        "arm": "build/g20a-hw-row-quality-v3/arm96.json",
+        "row_probe": "build/g20a-hw-row-quality-v3/rows96.json",
+        "profile": "build/g20a-hw-row-quality-v3/profile96.json"
+      }
+    },
+    "72": {
+      "rom_sha256": "17696958e5d1f08672754f788861c31fdc6302d242f24f0b4a5223768688888a",
+      "rom_bytes": 15939260,
+      "artifact": "artifacts/gba/DoK-port_hardware_rows72_prototype.gba",
+      "ewram_bytes": 261292,
+      "iwram_bytes": 24364,
+      "stack_reserve_bytes": 8192,
+      "clean_repeat_byte_exact": true,
+      "live": {
+        "turn120": [
+          {
+            "level": 1,
+            "language": 0,
+            "fps": 22.18978349335201
+          },
+          {
+            "level": 2,
+            "language": 0,
+            "fps": 19.799171459537845
+          },
+          {
+            "level": 3,
+            "language": 0,
+            "fps": 26.7436569714653
+          },
+          {
+            "level": 1,
+            "language": 1,
+            "fps": 22.18978349335201
+          },
+          {
+            "level": 2,
+            "language": 1,
+            "fps": 19.799171459537845
+          },
+          {
+            "level": 3,
+            "language": 1,
+            "fps": 26.7436569714653
+          }
+        ],
+        "walking120": [
+          {
+            "level": 1,
+            "language": 0,
+            "fps": 20.895918566625948
+          },
+          {
+            "level": 2,
+            "language": 0,
+            "fps": 21.142478077736577
+          },
+          {
+            "level": 3,
+            "language": 0,
+            "fps": 25.68924755681971
+          },
+          {
+            "level": 1,
+            "language": 1,
+            "fps": 20.895918566625948
+          },
+          {
+            "level": 2,
+            "language": 1,
+            "fps": 21.142478077736577
+          },
+          {
+            "level": 3,
+            "language": 1,
+            "fps": 25.874729488637907
+          }
+        ]
+      },
+      "spatial_minima": {
+        "1": 13.78326936221673,
+        "2": 11.945500113921167,
+        "3": 19.90916685653528
+      },
+      "median_cpu_ratio": {
+        "1": 0.8133392136081192,
+        "2": 0.7862198035375523,
+        "3": 0.8159439176546486
+      },
+      "spatial_fps_improved": 350,
+      "spatial_fps_regressed": 0,
+      "native_overlay_exact_frames": 396,
+      "transition_callbacks": 4402,
+      "observed_stack": {
+        "main_stack_low": 50356224,
+        "main_stack_top": 50364160,
+        "sentinel_word": 219540062,
+        "untouched_margin_bytes": 5416,
+        "high_water_bytes": 2520,
+        "irq_and_bios_excluded": true,
+        "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+      },
+      "observed_irq_stack": {
+        "low": 50364160,
+        "top": 50364320,
+        "untouched_margin_bytes": 80,
+        "high_water_bytes": 80,
+        "includes_bios_irq_saves": true
+      },
+      "input_reports": {
+        "ui": "build/g20a-hw-row-quality-v3/ui72.json",
+        "sprites": "build/g20a-hw-row-quality-v3/sprites72.json",
+        "flow": "build/g20a-hw-row-quality-v3/flow72.json",
+        "ai": "build/g20a-hw-row-quality-v3/ai72.json",
+        "ai-combat": "build/g20a-hw-row-quality-v3/ai-combat72.json",
+        "items": "build/g20a-hw-row-quality-v3/items72.json",
+        "combat": "build/g20a-hw-row-quality-v3/combat72.json",
+        "interactions": "build/g20a-hw-row-quality-v3/interactions72.json",
+        "time": "build/g20a-hw-row-quality-v3/time72.json",
+        "turn120": "build/g20a-hw-row-quality-v3/turn120-72.json",
+        "walking120": "build/g20a-hw-row-quality-v3/walking120-72.json",
+        "water": "build/g20a-hw-row-quality-v2/water72.json",
+        "transitions": "build/g20a-hw-row-quality-v2/transitions72.json",
+        "quality": "build/g20a-hw-row-quality-v2/quality72.json",
+        "spatial": "build/g20a-hw-row-quality-v2/spatial72.json",
+        "arm": "build/g20a-hw-row-quality-v2/hw_rows72/arm.json",
+        "row_probe": "build/g20a-hw-row-probes/rows72.json"
+      }
+    }
+  },
+  "decision": "96 rows is the moderate quality candidate;72 rows remains a comparison, no universal15+ demonstrated.",
+  "physical_gba_tested": false,
+  "original_bios_tested": false,
+  "stress96": {
+    "guards_logic_audio_passed": true,
+    "frame_budget_met": false,
+    "all_awake_fps": [
+      0.15101770055526126,
+      0.38164537105179447,
+      0.07157279876525564,
+      0.15101770055526126,
+      0.38164537105179447,
+      0.07157279876525564
+    ]
+  },
+  "originals_unchanged": [
+    {
+      "path": "originals/Old_Gold_3D/OG.EXE",
+      "sha256": "7965e1d67128f196fbcf2bc449d97197f355c6b81cf043608fc9e01103ea043f"
+    },
+    {
+      "path": "originals/Old_Gold_3D/old-games.nfo",
+      "sha256": "cc2283945241a42a54020c30fa83aa3c17a91a59c034ae5f444db62e303b1602"
+    },
+    {
+      "path": "originals/Old_Gold_3D/OLD_GOLD.RES",
+      "sha256": "e376855167b64a7190ec2da0ba9bd1da129ba178c4033aebadebca3f08b2be25"
+    },
+    {
+      "path": "originals/Old_Gold_3D/README.TXT",
+      "sha256": "456d39010efe5e41f17445eeb5c0851b06472cbb84a0a4a5c854948b97f00a29"
+    },
+    {
+      "path": "originals/Old_Gold_Old_Version/OG.EXE",
+      "sha256": "673563eccad4d23c3cebe56f16ce9a1f631b6d45ffb73559d5c53c1bf252da90"
+    },
+    {
+      "path": "originals/Old_Gold_Old_Version/old-games.nfo",
+      "sha256": "cc2283945241a42a54020c30fa83aa3c17a91a59c034ae5f444db62e303b1602"
+    },
+    {
+      "path": "originals/Old_Gold_Old_Version/OLD_GOLD.RES",
+      "sha256": "e376855167b64a7190ec2da0ba9bd1da129ba178c4033aebadebca3f08b2be25"
+    },
+    {
+      "path": "originals/Old_Gold_Old_Version/README.TXT",
+      "sha256": "142858dd6f21135ac29d9dccfa29f6b08277513a67498adeb6d793327294ef5f"
+    },
+    {
+      "path": "originals/pkr/ENG/DPMI16BI.OVL",
+      "sha256": "d7b0fe7a20b535f983767d472a520da3bf03018932a1f65625916d0cd6e96110"
+    },
+    {
+      "path": "originals/pkr/ENG/PK.ICO",
+      "sha256": "b187a8c37e4ba21f11efa3030fc0e97925a68f45efcc885cc16c3f209231121c"
+    },
+    {
+      "path": "originals/pkr/ENG/PKE.EXE",
+      "sha256": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b"
+    },
+    {
+      "path": "originals/pkr/ENG/PKE.PIF",
+      "sha256": "bf0cce218c19dc0f1385faf922e9d7091f0f74ea4e90549c03f5d513fbcbbf80"
+    },
+    {
+      "path": "originals/pkr/ENG/PKE.RES",
+      "sha256": "865da340621fa6f90548a84e9ae9bf0a85071befb32a40ca1d359e488f74d458"
+    },
+    {
+      "path": "originals/pkr/ENG/RTM.EXE",
+      "sha256": "10acd85af3767634450a793f2af1e057de888621cbfc578d35d3fa91abc09661"
+    },
+    {
+      "path": "originals/pkr/RUS/DPMI16BI.OVL",
+      "sha256": "d7b0fe7a20b535f983767d472a520da3bf03018932a1f65625916d0cd6e96110"
+    },
+    {
+      "path": "originals/pkr/RUS/old-games.nfo",
+      "sha256": "cc2283945241a42a54020c30fa83aa3c17a91a59c034ae5f444db62e303b1602"
+    },
+    {
+      "path": "originals/pkr/RUS/PK.ICO",
+      "sha256": "b187a8c37e4ba21f11efa3030fc0e97925a68f45efcc885cc16c3f209231121c"
+    },
+    {
+      "path": "originals/pkr/RUS/PKR.EXE",
+      "sha256": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28"
+    },
+    {
+      "path": "originals/pkr/RUS/PKR.PIF",
+      "sha256": "84bf9acfb5c021d4aedbe081ebc1b5d3af9eef432ff16fc7fc5c47deaca4689a"
+    },
+    {
+      "path": "originals/pkr/RUS/PKR.RES",
+      "sha256": "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816"
+    },
+    {
+      "path": "originals/pkr/RUS/README.TXT",
+      "sha256": "0312e896c3d99300169f14e06cb7f78895799643094e2280f5d010706fb55dc5"
+    },
+    {
+      "path": "originals/pkr/RUS/RTM.EXE",
+      "sha256": "10acd85af3767634450a793f2af1e057de888621cbfc578d35d3fa91abc09661"
+    }
+  ],
+  "preserved_artifacts": {
+    "artifacts/gba/DoK-port_hardware_fast_prototype.gba": "e803f847e2c21abd9c1e5dbc70f12e98ef68f8c1ffc699989c7b97204a74308c",
+    "artifacts/gba/DoK-port_hardware_128_prototype.gba": "16ba83e8efd86169abec4206b720dd7a59fbfc1de85dc4ac2580b098296b3961",
+    "artifacts/gba/DoK-port_hardware_culling_prototype.gba": "240669c13508acba18fa08a68dd0bc793c02366561ee0b617d7c1e62d976f014",
+    "artifacts/gba/DoK-port_hardware_planes_prototype.gba": "4dfbbe0e8a14352fcef5c182baef3ffdf0483b81345c8837b1530ee09f7f581d",
+    "artifacts/gba/DoK-port_hardware_cached_prototype.gba": "2775bdd0caaac64b4fd99e4c6d675587fad2da9c795468dc52efacb5d53edaab"
+  },
+  "inputs": {
+    "build/g20a-hw-row-quality-v3/ui96.json": "90e9ecea2e9d86b33cb066188f4a3534bf8c9368b817185a6147b7dd8c471c86",
+    "build/g20a-hw-row-quality-v3/sprites96.json": "b0d0f9d48ef23cd38856c27dbb7521a860bcee43f9e929734a6c35b528bd4715",
+    "build/g20a-hw-row-quality-v3/flow96.json": "6ca2c1feb5146719322f426dfa47039a48e365468280cb9253b95c5e45381cfb",
+    "build/g20a-hw-row-quality-v3/ai96.json": "9939d0b1bc67ceea0afe18cf613586e600ed997cbaf573b70f88629ac92512fe",
+    "build/g20a-hw-row-quality-v3/ai-combat96.json": "cb15bda99304a1067fda8686dddee83c5f48996b16fc6cbb113a0ee16aa9ce1a",
+    "build/g20a-hw-row-quality-v3/items96.json": "0fa748216ebd4ffd0f860a1431e8343d98adce740a9a1952577140ead7447977",
+    "build/g20a-hw-row-quality-v3/combat96.json": "b317ab2578fcc91608fa5b25937809b6bbdc9a4ca3053e3c45a8c285c0e7ad5a",
+    "build/g20a-hw-row-quality-v3/interactions96.json": "c4992648d759e8bafa2277445ef721533ea6a7fa98ff521b0d956ad1f744cff3",
+    "build/g20a-hw-row-quality-v3/time96.json": "fc4004503a4aa0dafca1d72a98a6c34ad49a1cfe6916c2175aba4489a068a299",
+    "build/g20a-hw-row-quality-v3/turn120-96.json": "12116387b2df8bd5633f9ae0069261bdec2eb6d9222cf8228e9aeecf850531f5",
+    "build/g20a-hw-row-quality-v3/walking120-96.json": "c87ed4dbdc5582c47a7cc6e669ddbafbc41577faa1ccd721dc31e04dc205cc56",
+    "build/g20a-hw-row-quality-v3/water96.json": "a8f341393ff9b29ec95eb193cdab65e4a8e8892cc2a199301aca15341b799f16",
+    "build/g20a-hw-row-quality-v3/transitions96.json": "cdda10947271891a6156164e6bca8c2f9831d75dff7090428aed90f966e9ffe8",
+    "build/g20a-hw-row-quality-v3/quality96.json": "e5462d8693d14b5150f8156e7c393e003c69d7e7919ebcd01d680e1668c7dc4d",
+    "build/g20a-hw-row-quality-v3/spatial96.json": "97a95fa972efc4a8ef190bcaa7a095d7e558fc7214411d1c1670daf5672df263",
+    "build/g20a-hw-row-quality-v3/arm96.json": "007ce829915827f1563f9f714e87e5670231573ef9cd9478baa31d2e7e9371ba",
+    "build/g20a-hw-row-quality-v3/rows96.json": "d6a474491728bf80e0fbb70ff11614b496da7c088da674d2f6fe29d9f41f42a9",
+    "build/g20a-hw-row-quality-v3/profile96.json": "408f0a7da5fb21fe60bb8dbde6f54f9e422bcbb18e80ec350e9953b49668f29b",
+    "build/g20a-hw-row-quality-v3/ui72.json": "9fb019e173dea14ccb8f473374bc8e6d7116b71775018ea1fd9e6cb9fb0f1e13",
+    "build/g20a-hw-row-quality-v3/sprites72.json": "00602e2faa18135b88246d84f63f16c6501b5b07d5cafdb70f5941176ad34458",
+    "build/g20a-hw-row-quality-v3/flow72.json": "6e224a70d50fa7dc1186d210e9262d3a90ee9289dfcd5df799e31f1f4a97dbfd",
+    "build/g20a-hw-row-quality-v3/ai72.json": "6c4a3acd5893df17601a811b9afc9902cb9fcf1bef7099b43183d52b280ec4b7",
+    "build/g20a-hw-row-quality-v3/ai-combat72.json": "ea7a436dee4a924fabac5b0013f1e3ac605bba3253c1b6e5d1259def5ed3ccf8",
+    "build/g20a-hw-row-quality-v3/items72.json": "b8fe44f4b162814e42e1652957c180f1ba68d752df908a82f8bce58117f8f511",
+    "build/g20a-hw-row-quality-v3/combat72.json": "987209113e819d0b8f9d7c1cf2d34abcad55c864a75cce6a260ef9f8d56f78c2",
+    "build/g20a-hw-row-quality-v3/interactions72.json": "6aa1f31f5f6b56c514a8ef5ad23a78ce87ef872137f784367b3e70f77c582e31",
+    "build/g20a-hw-row-quality-v3/time72.json": "f75c367be0114079da2adae35265ce9b8a05c03469314e08064a216911cc45ad",
+    "build/g20a-hw-row-quality-v3/turn120-72.json": "8ba28ea1b536d2787c4d2e71cde57bc590570cc6ee72e3643e919eeab5daf09e",
+    "build/g20a-hw-row-quality-v3/walking120-72.json": "865d6de4e7ca3cc0f01b2b2a83d5d75dce15d17ec921f8101363ae8f7cd29920",
+    "build/g20a-hw-row-quality-v2/water72.json": "c0769a41aceb1acceab0f359656095ceac39b23d3bdadb73fdf02e731b2e673e",
+    "build/g20a-hw-row-quality-v2/transitions72.json": "7cc9c91be3aa147fd37f265cdab1e42847f93fa7f12ba6ee5415ba4db5fcecd6",
+    "build/g20a-hw-row-quality-v2/quality72.json": "c5c78cb91a58b23cde7634b566f7d90ffce665c3c1060b2f07e14a3b32f719d7",
+    "build/g20a-hw-row-quality-v2/spatial72.json": "719b489cd82dfa5ccff8c0d2e0da745ce41f14fab664405d8d0a156e23e9ff25",
+    "build/g20a-hw-row-quality-v2/hw_rows72/arm.json": "0ebdbdcde2823beb82c9893b2e043545a23cb72bcd68e4f3b36b433f83a48b40",
+    "build/g20a-hw-row-probes/rows72.json": "472e148c14cdb7a8900436af99a5e57fff9279156b1bd3408a4f12d934b33776",
+    "build/g20a-hw-row-quality-v3/stress96.json": "dbf9d84789968d171af852998bfd8b1f69a84fec00223102b1b8a6e55d6d4b4f",
+    "build/g20a-hw-row-quality-v3/prototype-build.json": "f62d55d0aa450a5fda9132f2044ad231e4746f7dfa39616fbf12be19bd7a8998"
+  },
+  "limitations": [
+    "Spatial440 freezes simulation; live120 routes do not prove whole-level minima.",
+    "The new282-transition checks do not cover the known baseline294 Pause/Resume transient issue.",
+    "G09 checks production interaction logic; its original affine pixel oracle is explicitly disabled for these quality variants.",
+    "96-row affine rounding repeats one preceding-strip row at band boundaries; WIN0 clips scene OBJ below144.",
+    "72-row artificial all-awake stress not rerun;96-row stress still misses the frame budget."
+  ]
+}

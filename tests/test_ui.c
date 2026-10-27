@@ -7,8 +7,9 @@ static uint8_t framebuffer[38402],font8[2048],font16[4096];
 static void release(dok_ui *u){dok_ui_input(u,0);dok_ui_game_keys(u,0);}
 int main(void){
  dok_ui u;dok_ui_init(&u);assert(u.state==DOK_UI_TITLE);
+ assert(dok_ui_input(&u,4)==1 && u.language==1);release(&u);
  assert(!dok_ui_input(&u,1) && !u.state);assert(dok_ui_game_keys(&u,1)==0);release(&u);
- assert(dok_ui_game_keys(&u,1)==1);assert(dok_ui_input(&u,4)==1 && u.language==1);release(&u);
+ assert(dok_ui_game_keys(&u,1)==1);assert(!dok_ui_input(&u,4) && u.language==1 && u.state==DOK_UI_PLAY);release(&u);
  assert(!dok_ui_input(&u,12) && u.state==2 && u.language==1);assert(!dok_ui_game_keys(&u,12));release(&u);
  dok_ui_input(&u,128);release(&u);assert(u.focus==1);assert(dok_ui_input(&u,1)==1 && u.language==0);release(&u);
  dok_ui_input(&u,128);release(&u);dok_ui_input(&u,1);release(&u);assert(u.state==3);

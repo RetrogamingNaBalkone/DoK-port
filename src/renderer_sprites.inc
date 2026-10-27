@@ -1,6 +1,10 @@
 /* G11 software billboards. Original constructor: RU10b0:0ccb/EN1040:0ce3.
  * Shared coverage compositor applies LIGHT before transparency; no OBJ/OAM. */
+#ifdef DOK_RENDER_HW_HOT_BILLBOARD_PROTOTYPE
+static DOK_NOINLINE dok_renderer_status billboard_image(dok_renderer_workspace *w,const dok_runtime *r,
+#else
 static DOK_COLD dok_renderer_status billboard_image(dok_renderer_workspace *w,const dok_runtime *r,
+#endif
  const dok_projection_camera *c,dok_renderer_stats *s,uint16_t object,uint16_t texture,
  const dok_renderer_image *im,int32_t x,int32_t y,int32_t z) {
  const dok_runtime_definition *d=&r->level->definitions[object];
@@ -23,15 +27,30 @@ static DOK_COLD dok_renderer_status billboard_image(dok_renderer_workspace *w,co
  if(f.key<0) f.key=0;f.image_index=texture;f.v0=0;
  if(f.x0==f.x1) return DOK_RENDER_OK;
  if(w->face_count>=DOK_RENDER_FACE_CAPACITY) return DOK_RENDER_CAPACITY;
+#ifdef DOK_RENDER_STREAM_BSP_PROTOTYPE
+ if(stream_active) {
+  int hx=sar(c->cosine*(width/2),15),hz=sar(c->sine*(width/2),15);
+  stream_record(w->face_count,x-hx,z-hz,x+hx,z+hz,p.depth,p.depth);
+ }
+#endif
  w->faces[w->face_count++]=f;++s->faces_built;return DOK_RENDER_OK;
 }
+#ifdef DOK_RENDER_HW_HOT_BILLBOARD_PROTOTYPE
+static DOK_NOINLINE dok_renderer_status billboard(dok_renderer_workspace *w,const dok_runtime *r,
+#else
 static DOK_COLD dok_renderer_status billboard(dok_renderer_workspace *w,const dok_runtime *r,
+#endif
  const dok_rom_assets *a,unsigned level,unsigned language,const dok_projection_camera *c,
  dok_renderer_stats *s,uint16_t object,int32_t x,int32_t y,int32_t z) {
  dok_renderer_status status=image(w,r,a,level,language,object);if(status)return status;
  return billboard_image(w,r,c,s,object,object,&w->images[object],x,y,z);
 }
-static DOK_COLD dok_renderer_status cell_sprites(dok_renderer_workspace *w,const dok_runtime *r,
+#ifdef DOK_RENDER_HW_GEOMETRY_PROFILE_PROTOTYPE
+#define SPRITES_NAME cell_sprites_geometry_impl
+#else
+#define SPRITES_NAME cell_sprites
+#endif
+static DOK_COLD dok_renderer_status SPRITES_NAME(dok_renderer_workspace *w,const dok_runtime *r,
  const dok_rom_assets *a,unsigned level,unsigned language,const dok_projection_camera *c,
  dok_renderer_stats *s,int x,int z,uint16_t fc,uint16_t tmap) {
  uint16_t ids[2]={tmap,0};
@@ -50,3 +69,11 @@ static DOK_COLD dok_renderer_status cell_sprites(dok_renderer_workspace *w,const
  }
  return DOK_RENDER_OK;
 }
+#ifdef DOK_RENDER_HW_GEOMETRY_PROFILE_PROTOTYPE
+static DOK_COLD dok_renderer_status cell_sprites(dok_renderer_workspace *w,const dok_runtime *r,
+ const dok_rom_assets *a,unsigned level,unsigned language,const dok_projection_camera *c,
+ dok_renderer_stats *s,int x,int z,uint16_t fc,uint16_t tmap) {
+ uint32_t stamp=render_ticks();dok_renderer_status result=cell_sprites_geometry_impl(w,r,a,level,language,c,s,x,z,fc,tmap);
+ g_geometry_work[4]+=render_ticks()-stamp;++g_geometry_work[5];return result;
+}
+#endif

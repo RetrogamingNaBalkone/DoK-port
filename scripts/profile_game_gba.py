@@ -47,6 +47,15 @@ def collect(probe, count, buttons=()):
             t = probe.words('g_render_completed_stages', 7)
             row['stages'] = dict(zip(('logic','resources','geometry','sort','raster','ui','copy'),
                                     [t[0]]+[b-a for a,b in zip(t,t[1:])]))
+        if 'g_hw_bg_diag' in probe.symbols:
+            row['hardware_bg']=list(probe.words('g_hw_bg_diag',8))
+        if 'g_hw_present_diag' in probe.symbols:row['hardware_present']=list(probe.words('g_hw_present_diag',4))
+        if 'g_hw_obj_diag' in probe.symbols:row['hardware_obj']=list(probe.words('g_hw_obj_diag',6))
+        if 'g_flow_diag' in probe.symbols:row['flow_state']=probe.words('g_flow_diag',2)[1]
+        if 'g_ui_diag' in probe.symbols:row['ui_state']=probe.words('g_ui_diag',2)[1]
+        if 'g_hw_completed_logic' in probe.symbols:
+            keys=('ticks','motion_steps','motion_debt','ai_steps','ai_owners','projectiles','flow_state','ui_state')
+            row.update(zip(keys,probe.words('g_hw_completed_logic',8)))
         assert probe.audio()['underruns'] == 0, probe.audio()
         assert probe.words('g_ai_diag', 2)[1] == 0
         assert probe.words('g_combat_diag', 2)[1] == 0
@@ -83,6 +92,8 @@ def main():
     probe = GameProbe(a.core, a.build_dir)
     rows = []
     try:
+        probe.until(lambda d:d['draws']>=1)
+        probe.write(probe.symbols['g_camera_capture_hold'],struct.pack('<I',1))
         probe.until(lambda d: d['draws'] >= 4 and d['phase'] == 2)
         freeze(probe, True)
         rate = max(sounds()[0], key=lambda r: r['rate'])

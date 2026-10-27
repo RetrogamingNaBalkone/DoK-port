@@ -1,0 +1,205 @@
+{
+  "script_sha256": "0fa46973d4b96b0c2a6ec5debb5e13b202c8fc5cdabaeaf54aaff4d272319ecd",
+  "control_rom_sha256": "2775bdd0caaac64b4fd99e4c6d675587fad2da9c795468dc52efacb5d53edaab",
+  "manifest_sha256": "192707d909e6d7c59c348a25aaaf6a4629b6a46b0df55b1bfea249c0f6bf2f9e",
+  "source_post_feasibility": {
+    "package_sha256": "3efa5d3027d63ffd65e0ae8c0b45be23ee8394b3c5151c8e9f10e76fa8674351",
+    "tables_sha256": "74b395381cacc5e7fa2637c16ad0ed41eeb462d28f7272be7e94f65af7672cf8",
+    "bank_sha256": "aae2fe379947dbef72c9cbf49b53e8491eac9d303457d1237687e0a3a80a4e9a",
+    "bank_bytes": 11224331,
+    "bank_images": 1072,
+    "columns": 96518,
+    "source_texels": 10949206,
+    "zero_columns": 152,
+    "solid_columns": 38024,
+    "mixed_columns": 58342,
+    "zero_texels": 2629621,
+    "nonzero_runs": 149629,
+    "unique_columns": 84617,
+    "auxiliary_bytes": 1081206,
+    "scope": "All banked source columns/all16 LIGHT rows, deduplicated bank images. Not just runtime masked images; no visibility, screen-area weighting, minification/coverage costs or native sparse-post timing. Exact source reconstruction only; no FPS or speedup claim."
+  },
+  "profile": {
+    "rom_sha256": "f4e66476b00326afd80ed5e3aff0be283ffb1d4c5ebbf61dcf301a76b23ea7d5",
+    "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+    "rows": [
+      {
+        "level": 1,
+        "cell": 520,
+        "heading": 225,
+        "instrumented_cpu_cycles": 1362048,
+        "work": [
+          1,
+          7063,
+          8321,
+          38,
+          21
+        ],
+        "face_class_work": [
+          3927,
+          3046,
+          17,
+          21
+        ],
+        "attributed_cycles": {
+          "masked_faces": 251328,
+          "opaque_faces": 194944,
+          "horizontal_surfaces": 532544
+        },
+        "stages": {
+          "logic": 36544,
+          "resources": 45824,
+          "geometry": 103232,
+          "sort": 12800,
+          "raster": 1096960,
+          "ui": 20672,
+          "copy": 46016
+        }
+      },
+      {
+        "level": 1,
+        "cell": 3640,
+        "heading": 225,
+        "instrumented_cpu_cycles": 1311680,
+        "work": [
+          1,
+          4367,
+          10083,
+          28,
+          47
+        ],
+        "face_class_work": [
+          1715,
+          2585,
+          16,
+          12
+        ],
+        "attributed_cycles": {
+          "masked_faces": 109760,
+          "opaque_faces": 165440,
+          "horizontal_surfaces": 645312
+        },
+        "stages": {
+          "logic": 36544,
+          "resources": 45824,
+          "geometry": 112256,
+          "sort": 6016,
+          "raster": 1043904,
+          "ui": 21120,
+          "copy": 46016
+        }
+      },
+      {
+        "level": 2,
+        "cell": 1592,
+        "heading": 135,
+        "instrumented_cpu_cycles": 1396096,
+        "work": [
+          1,
+          10811,
+          4528,
+          47,
+          37
+        ],
+        "face_class_work": [
+          7929,
+          2773,
+          33,
+          14
+        ],
+        "attributed_cycles": {
+          "masked_faces": 507456,
+          "opaque_faces": 177472,
+          "horizontal_surfaces": 289792
+        },
+        "stages": {
+          "logic": 38016,
+          "resources": 45824,
+          "geometry": 133120,
+          "sort": 10816,
+          "raster": 1100288,
+          "ui": 20736,
+          "copy": 47232
+        }
+      },
+      {
+        "level": 2,
+        "cell": 2871,
+        "heading": 225,
+        "instrumented_cpu_cycles": 1446208,
+        "work": [
+          1,
+          11198,
+          4986,
+          43,
+          55
+        ],
+        "face_class_work": [
+          7916,
+          3181,
+          22,
+          21
+        ],
+        "attributed_cycles": {
+          "masked_faces": 506624,
+          "opaque_faces": 203584,
+          "horizontal_surfaces": 319104
+        },
+        "stages": {
+          "logic": 38016,
+          "resources": 45824,
+          "geometry": 119488,
+          "sort": 15040,
+          "raster": 1160192,
+          "ui": 20800,
+          "copy": 46784
+        }
+      },
+      {
+        "level": 3,
+        "cell": 1544,
+        "heading": 315,
+        "instrumented_cpu_cycles": 873472,
+        "work": [
+          1,
+          8138,
+          0,
+          18,
+          0
+        ],
+        "face_class_work": [
+          4271,
+          3821,
+          13,
+          5
+        ],
+        "attributed_cycles": {
+          "masked_faces": 273344,
+          "opaque_faces": 244544,
+          "horizontal_surfaces": 0
+        },
+        "stages": {
+          "logic": 34304,
+          "resources": 45824,
+          "geometry": 96000,
+          "sort": 7616,
+          "raster": 623104,
+          "ui": 20864,
+          "copy": 45696
+        }
+      }
+    ],
+    "stack": {
+      "main_stack_low": 50356224,
+      "main_stack_top": 50364160,
+      "sentinel_word": 219540062,
+      "untouched_margin_bytes": 5408,
+      "high_water_bytes": 2528,
+      "irq_and_bios_excluded": true,
+      "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+    },
+    "forced_pcm": false,
+    "scope": "Completed held draws, frozen simulation, cold world reset after freeze. Face timers include setup/clipping/coverage/texels, not alpha tests alone. Draw orchestration moved to ROM to fit instrumentation. Timer overhead included; no forced PCM; not production FPS or an additive budget of2775."
+  },
+  "sparse_post_disposition": "Deferred, not a native rejected architecture. Source reconstruction/storage feasibility does not establish a full-frame gain. Zero-span bitmap and empty-column native alternatives already failed overall ROI. A full sparse-run sampler remains unmeasured future kernel research, not a prerequisite for the current remaining-cost handoff."
+}

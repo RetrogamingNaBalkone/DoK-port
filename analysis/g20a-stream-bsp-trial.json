@@ -1,0 +1,366 @@
+{
+  "task": "G20A",
+  "status": "native-architecture-checkpoint-not-selected",
+  "goal_complete": false,
+  "trial_rom_sha256": "bfdba7d0455199e5599ebea9bf795abefdaff0c730f63db4b848e71a12825184",
+  "control_rom_sha256": "2775bdd0caaac64b4fd99e4c6d675587fad2da9c795468dc52efacb5d53edaab",
+  "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+  "byte_exact_repeat": true,
+  "levels": [
+    {
+      "level": 1,
+      "cases": 136,
+      "median_cpu_ratio": 1.507255499646874,
+      "baseline_minimum_fps": 9.95458342826764,
+      "trial_minimum_fps": 7.9636667426141114
+    },
+    {
+      "level": 2,
+      "cases": 168,
+      "median_cpu_ratio": 1.5730989629192842,
+      "baseline_minimum_fps": 9.95458342826764,
+      "trial_minimum_fps": 6.636388952178426
+    },
+    {
+      "level": 3,
+      "cases": 136,
+      "median_cpu_ratio": 1.360776532665923,
+      "baseline_minimum_fps": 14.931875142401458,
+      "trial_minimum_fps": 11.945500113921167
+    }
+  ],
+  "better_fps": 0,
+  "worse_fps": 424,
+  "ppu": {
+    "cases": 18,
+    "coverage_exact": 18,
+    "max_changed_pixels": 272,
+    "max_overlay_changes": 0
+  },
+  "live24": {
+    "before": [
+      {
+        "level": 1,
+        "language": 0,
+        "fps": 19.37108126581811
+      },
+      {
+        "level": 2,
+        "language": 0,
+        "fps": 19.112800182273865
+      },
+      {
+        "level": 3,
+        "language": 0,
+        "fps": 27.56653872443346
+      },
+      {
+        "level": 1,
+        "language": 1,
+        "fps": 19.37108126581811
+      },
+      {
+        "level": 2,
+        "language": 1,
+        "fps": 19.112800182273865
+      },
+      {
+        "level": 3,
+        "language": 1,
+        "fps": 27.56653872443346
+      }
+    ],
+    "after": [
+      {
+        "level": 1,
+        "language": 0,
+        "fps": 13.396822557668598
+      },
+      {
+        "level": 2,
+        "language": 0,
+        "fps": 12.14796621754695
+      },
+      {
+        "level": 3,
+        "language": 0,
+        "fps": 19.112800182273865
+      },
+      {
+        "level": 1,
+        "language": 1,
+        "fps": 13.396822557668598
+      },
+      {
+        "level": 2,
+        "language": 1,
+        "fps": 12.14796621754695
+      },
+      {
+        "level": 3,
+        "language": 1,
+        "fps": 19.112800182273865
+      }
+    ]
+  },
+  "structure_checks": {
+    "cases": 48,
+    "scope": "Native fragment ownership/alignment, visibility leases, guards, TMap fallback exact PPU. Does not prove all pixel occlusion, FCMap mutation semantics, full gameplay, frame transitions, or FPS acceptance.",
+    "stack": {
+      "main_stack_low": 50356224,
+      "main_stack_top": 50364160,
+      "sentinel_word": 219540062,
+      "untouched_margin_bytes": 5408,
+      "high_water_bytes": 2528,
+      "irq_and_bios_excluded": true,
+      "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+    }
+  },
+  "profile": {
+    "rom_sha256": "bfdba7d0455199e5599ebea9bf795abefdaff0c730f63db4b848e71a12825184",
+    "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+    "script_sha256": "76cffb537a8877cb44936a2452f91a6f2f3b0d1d828d9bf59ca73056f6978de3",
+    "rows": [
+      {
+        "level": 1,
+        "cell": 520,
+        "heading": 225,
+        "cycles": 1743616,
+        "work": [
+          1,
+          103,
+          20,
+          40,
+          32,
+          17,
+          0,
+          0
+        ],
+        "attributed_cycles": {
+          "validation": 61824,
+          "partition": 33536,
+          "box_tests": 91456,
+          "dynamics": 275648,
+          "static_atoms": 365632,
+          "ceilings": 546176
+        },
+        "image": "build\\g20a-stream-bsp-v3\\hw_v128_stream_bsp\\profile-L1-cell520-225.png",
+        "image_sha256": "74acb5a3fc6c7e631a08332007e276d6ef046ca1aa3023aee3a40085790c7eed"
+      },
+      {
+        "level": 1,
+        "cell": 3640,
+        "heading": 225,
+        "cycles": 1600832,
+        "work": [
+          1,
+          49,
+          14,
+          12,
+          11,
+          18,
+          0,
+          0
+        ],
+        "attributed_cycles": {
+          "validation": 61760,
+          "partition": 34112,
+          "box_tests": 29568,
+          "dynamics": 159552,
+          "static_atoms": 189632,
+          "ceilings": 798976
+        },
+        "image": "build\\g20a-stream-bsp-v3\\hw_v128_stream_bsp\\profile-L1-cell3640-225.png",
+        "image_sha256": "6734db835a23bffdcf75cf5be4ddd7e146da0a33cb30dad7ae6a11b6f882f2d0"
+      },
+      {
+        "level": 2,
+        "cell": 1592,
+        "heading": 135,
+        "cycles": 1904512,
+        "work": [
+          1,
+          123,
+          33,
+          39,
+          29,
+          35,
+          0,
+          0
+        ],
+        "attributed_cycles": {
+          "validation": 77440,
+          "partition": 72576,
+          "box_tests": 79424,
+          "dynamics": 581568,
+          "static_atoms": 441088,
+          "ceilings": 226112
+        },
+        "image": "build\\g20a-stream-bsp-v3\\hw_v128_stream_bsp\\profile-L2-cell1592-135.png",
+        "image_sha256": "bc8f6bf094f3a5c6938a1b5f4b8506d76da0f76f5b0958f11970e7bf0e3cc24a"
+      },
+      {
+        "level": 2,
+        "cell": 2871,
+        "heading": 225,
+        "cycles": 1928576,
+        "work": [
+          1,
+          79,
+          11,
+          53,
+          29,
+          23,
+          0,
+          0
+        ],
+        "attributed_cycles": {
+          "validation": 77376,
+          "partition": 44608,
+          "box_tests": 61056,
+          "dynamics": 588032,
+          "static_atoms": 427456,
+          "ceilings": 346816
+        },
+        "image": "build\\g20a-stream-bsp-v3\\hw_v128_stream_bsp\\profile-L2-cell2871-225.png",
+        "image_sha256": "d50fca35a0af6a11b0f488c48bff409b211985caabad459406b9d0268718ffb5"
+      },
+      {
+        "level": 3,
+        "cell": 1544,
+        "heading": 315,
+        "cycles": 1054272,
+        "work": [
+          1,
+          45,
+          18,
+          13,
+          5,
+          13,
+          0,
+          0
+        ],
+        "attributed_cycles": {
+          "validation": 49536,
+          "partition": 24192,
+          "box_tests": 60928,
+          "dynamics": 285440,
+          "static_atoms": 310016,
+          "ceilings": 704
+        },
+        "image": "build\\g20a-stream-bsp-v3\\hw_v128_stream_bsp\\profile-L3-cell1544-315.png",
+        "image_sha256": "889b299b3da8ac4eea588c3b744fe50f2559aa002e710e840265da4de45165ad"
+      }
+    ],
+    "stack": {
+      "main_stack_low": 50356224,
+      "main_stack_top": 50364160,
+      "sentinel_word": 219540062,
+      "untouched_margin_bytes": 5408,
+      "high_water_bytes": 2528,
+      "irq_and_bios_excluded": true,
+      "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+    },
+    "scope": "Instrumented completed held draws, frozen simulation, original maps. Timer64 cycles/tick; diagnostic costs included. Not production FPS or complete regression."
+  },
+  "stream_tables": [
+    {
+      "view": 0,
+      "nodes": 564,
+      "leaves": 565,
+      "atoms": 1998,
+      "low_ceiling_cells": 383,
+      "packed_bytes": 65042
+    },
+    {
+      "view": 1,
+      "nodes": 564,
+      "leaves": 565,
+      "atoms": 1998,
+      "low_ceiling_cells": 383,
+      "packed_bytes": 65042
+    },
+    {
+      "view": 2,
+      "nodes": 853,
+      "leaves": 854,
+      "atoms": 3242,
+      "low_ceiling_cells": 995,
+      "packed_bytes": 104038
+    },
+    {
+      "view": 3,
+      "nodes": 853,
+      "leaves": 854,
+      "atoms": 3242,
+      "low_ceiling_cells": 995,
+      "packed_bytes": 104038
+    },
+    {
+      "view": 4,
+      "nodes": 302,
+      "leaves": 303,
+      "atoms": 1364,
+      "low_ceiling_cells": 0,
+      "packed_bytes": 40896
+    },
+    {
+      "view": 5,
+      "nodes": 302,
+      "leaves": 303,
+      "atoms": 1364,
+      "low_ceiling_cells": 0,
+      "packed_bytes": 40896
+    }
+  ],
+  "preserved_roms": {
+    "DoK-port_hardware_cached_prototype.gba": "2775bdd0caaac64b4fd99e4c6d675587fad2da9c795468dc52efacb5d53edaab",
+    "DoK-port_hardware_rows96_prototype.gba": "97f0b3cb1d97c958bb0750128cef72aa94f64fa4107a8edc53d743c38b557f81",
+    "DoK-port_hardware_rows72_prototype.gba": "17696958e5d1f08672754f788861c31fdc6302d242f24f0b4a5223768688888a"
+  },
+  "evidence": [
+    {
+      "path": "build/g20a-stream-bsp-v3/spatial.json",
+      "sha256": "b59d75805ea1f5620e596ca3b5256598e8dd8e0771725d164ab901732b8733cb"
+    },
+    {
+      "path": "build/g20a-hw-entity-rect-v2/spatial.json",
+      "sha256": "15596daa16c2bd2cec1558f68ae0063f3db8e82d97c08cdd5d6f5f4b4401a879"
+    },
+    {
+      "path": "build/g20a-stream-bsp-v3/profile.json",
+      "sha256": "2357d395ebe68edbfe8450999beb4d40e275728c36f5179b05545a136fdb33dc"
+    },
+    {
+      "path": "build/g20a-stream-bsp-v3/ppu18-live.json",
+      "sha256": "603d9edcf49cdcfa5e2a29f623a6b4db57ec988bdf7414b497e99fc5f31203aa"
+    },
+    {
+      "path": "build/g20a-stream-bsp-v3/structure.json",
+      "sha256": "dcd562a7e32f00d5cd48668788b38f0bb9658d495489319c626f9dbdc8e117df"
+    },
+    {
+      "path": "build/g20a-stream-bsp-v3/control-live24.json",
+      "sha256": "eafabc2bd05198d1daadc038786ff07dc75653894963a880328384534a02024f"
+    },
+    {
+      "path": "analysis/g20a-dark-distance-audit.json",
+      "sha256": "5739aff4a841c1550174d05838679e06f75a6c3f136959ead5e1b28ef0b3e0e1"
+    },
+    {
+      "path": "build/g20a-stream-bsp-v3/prototype-build.json",
+      "sha256": "6dfc176c7e14ee235f86944be1fd41aa890b55e504882dc4d37d95474dec916a"
+    },
+    {
+      "path": "build/g20a-stream-bsp-repeat/prototype-build.json",
+      "sha256": "eef97748949c8df4843905f87b254557c4f304882202fb061e3b696558f2749f"
+    }
+  ],
+  "limitations": [
+    "V1/V2 had an unaligned XY overlay and are superseded; do not use them to reject an architecture.",
+    "Current prototype streams static geometry without a global face sort but reuses generic coverage samplers and per-cell affine ceilings.",
+    "Full sector/column spans, direct bitmap output, direct hardware world OBJ, moving-camera transition QA and full gameplay regression remain open.",
+    "No draw-distance shortening or AI rebalance implemented; latest darkness and wake-radius evidence is an asset audit only."
+  ],
+  "next_action": "Prototype full visible-column/span representation before local kernel tuning; keep original ceilings and gameplay. Compare far darkness as a separate quality axis."
+}
