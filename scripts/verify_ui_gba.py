@@ -22,6 +22,20 @@ from verify_sprites_gba import load_json
 UI_NAMES = 'magic state focus language messages object slot length page pages remaining draws font8 font16 last_keys errors'.split()
 
 
+# Approved presentation expectations, independent of the C implementation.
+NOTIFICATION_COPY = {
+    ' КОВШ ЖИВОЙ ВОДЫ ДАЛ 10 ЛЕТ ЖИЗНИ': 'ЖИВАЯ ВОДА ДАЛА 10 ЛЕТ ЖИЗНИ',
+    ' ГОРШОК ДОБРОЙ КАШИ ДАЛ 15 ЛЕТ ЖИЗНИ': 'ДОБРАЯ КАША ДАЛА 15 ЛЕТ ЖИЗНИ',
+}
+
+
+def notification_text(raw, language):
+    if language:
+        return raw
+    source = raw.decode('cp866')
+    return NOTIFICATION_COPY.get(source, source).encode('cp866')
+
+
 def font8(language):
     resources, origin = original_animations(language)
     result = resources[b'FONT8'.hex()]
@@ -212,6 +226,7 @@ def main():
                         'Programs/mGBA/libretro-20261024/mgba_libretro.dll')
     parser.add_argument('--report', type=Path, default=Path('analysis/g17-ui-gba.json'))
     args = parser.parse_args()
+    originals_before = [original_animations(language)[1] for language in (0, 1)]
     p = UIProbe(args.core, args.build)
     try:
         p.wait_ui(lambda u: u['draws'] >= 2)
@@ -419,7 +434,7 @@ def main():
             glyph = model['objects'][index]['glyph']
             obj = next(o for o in local_model['objects'] if o['glyph'] == glyph)
             value = next(v for kind, off, v in obj['fields'] if kind == T and off == slot)
-            text = bytes.fromhex(value)
+            text = notification_text(bytes.fromhex(value), language)
             raw, palette = p.frame()
             _, white = ui_colors(palette)
             bitmap, _ = font8(language)
@@ -470,7 +485,7 @@ def main():
             raw, palette = p.frame()
             _, white = ui_colors(palette)
             bitmap, _ = font8(language)
-            text = bytes.fromhex(fields[0xbe])
+            text = notification_text(bytes.fromhex(fields[0xbe]), language)
             message_mask(raw, bitmap, text, white)
             screens[f'death_{language}'] = p.screen(f'death-{language}')
             notifications.append(dict(language=language, actual_pickup_item=item,
@@ -479,6 +494,7 @@ def main():
         # all seven system messages per language. Originals fit in one page;
         # the60-byte paging stress above is only the synthetic safety limit.
         all_message_checks = []
+        adapted_checks = []
         native = load_json('analysis/g17-original-verification.json')['languages']
         for language in (0, 1):
             p.command(2, language)
@@ -495,10 +511,11 @@ def main():
                     for kind, slot, value in obj['fields']:
                         if kind != T or slot not in (0x58, 0xbe):
                             continue
-                        text = bytes.fromhex(value)
+                        text = notification_text(bytes.fromhex(value), language)
                         assert len(text) <= 60, 'A real message would require paging'
                         references += 1
-                        if text in checked:
+                        adapted = text != bytes.fromhex(value)
+                        if text in checked and not adapted:
                             continue
                         checked.add(text)
                         p.command(4, 0)
@@ -507,6 +524,12 @@ def main():
                         raw, palette = p.frame()
                         _, foreground = ui_colors(palette)
                         layout = message_mask(raw, bitmap, text, foreground)
+                        if adapted:
+                            assert layout['glyph_width'] == 8 and p.ui()['pages'] == 1
+                            name = 'water' if len(text) == 28 else 'porridge'
+                            screens[f'{name}_level{level+1}'] = p.screen(f'{name}-level{level+1}')
+                            adapted_checks.append(dict(level=level+1, object=index, slot=slot,
+                                original_hex=value, display_hex=text.hex(), **layout))
                         layouts.append(dict(object=index, slot=slot, **layout))
                 all_message_checks.append(dict(language=language, level=level+1,
                                                source_references=references, layouts=layouts))
@@ -516,6 +539,8 @@ def main():
                 raw, palette = p.frame()
                 _, foreground = ui_colors(palette)
                 message_mask(raw, bitmap, bytes.fromhex(value), foreground)
+        assert {(c['level'], c['characters']) for c in adapted_checks} == {(level, n) for level in (1, 2, 3) for n in (28, 29)}
+        assert all(sha(source['path']) == source['sha256'] for source in originals_before)
         assert p.diag()['scene_height'] == 144 and p.diag()['message_height'] == 16
         stack = stack_usage(p.frontend)
         assert stack['untouched_margin_bytes'] >= 512, stack
@@ -533,6 +558,8 @@ def main():
                                   offline_rom_icons_no_runtime_resize=True,
                                   signed16_hud_extremes=True,
                                   bounded_240byte_stress=True, viewport_240x144_messages_240x16=True),
+                      original_resources_unchanged=originals_before,
+                      adapted_notifications=adapted_checks,
                       messages=message_checks, pages=page_checks, notifications=notifications, keys=key_checks,
                       all_original_messages_single_line=all_message_checks,
                       final=p.ui(), stack=stack,

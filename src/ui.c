@@ -40,6 +40,18 @@ uint16_t dok_ui_game_keys(dok_ui *u,uint16_t keys){
  u->blocked&=keys;
  return u->state?0:(uint16_t)(keys&~u->blocked&~4u);
 }
+/* Approved GBA presentation copy; original LEVEL text pools stay intact. */
+static size_t notification_copy(unsigned language,const uint8_t **text,size_t n){
+ static const char *const source[2]={"\040\212\216\202\230 \206\210\202\216\211 \202\216\204\233 \204\200\213 10 \213\205\222 \206\210\207\215\210","\040\203\216\220\230\216\212 \204\216\201\220\216\211 \212\200\230\210 \204\200\213 15 \213\205\222 \206\210\207\215\210"};
+ static const char *const display[2]={"\206\210\202\200\237 \202\216\204\200 \204\200\213\200 10 \213\205\222 \206\210\207\215\210","\204\216\201\220\200\237 \212\200\230\200 \204\200\213\200 15 \213\205\222 \206\210\207\215\210"};
+ if(language)return n;
+ for(unsigned i=0;i<2;++i){
+  if(n!=length(source[i]))continue;
+  size_t j=0;while(j<n && (*text)[j]==(uint8_t)source[i][j])++j;
+  if(j==n){*text=(const uint8_t *)display[i];return length(display[i]);}
+ }
+ return n;
+}
 static size_t resolve(dok_ui *u,const dok_runtime_level *l,const uint8_t **text){
  if(u->object==UINT16_MAX-1){if(u->slot>=7)return 0;*text=(const uint8_t *)ui_native[u->language][u->slot];return length((const char *)*text);}
  if(u->object==UINT16_MAX){*text=u->literal;return u->literal_size;}
@@ -50,7 +62,8 @@ static size_t resolve(dok_ui *u,const dok_runtime_level *l,const uint8_t **text)
   if(f->native_offset==u->slot && f->kind==DOK_LEVEL_TEXT){
    unsigned start=f->value.bytes.offset,n=f->value.bytes.size;
    if(start>l->text_size || n>l->text_size-start){++u->errors;return 0;}
-   *text=l->text+start;return n>DOK_UI_TEXT_LIMIT?DOK_UI_TEXT_LIMIT:n;
+   *text=l->text+start;n=(unsigned)notification_copy(u->language,text,n);
+   return n>DOK_UI_TEXT_LIMIT?DOK_UI_TEXT_LIMIT:n;
   }
  }return 0;
 }

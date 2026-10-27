@@ -1,4 +1,7 @@
 #include "dok/ui.h"
+#ifdef NDEBUG
+#undef NDEBUG
+#endif
 #include <assert.h>
 #include <stdio.h>
 #include <string.h>
@@ -38,6 +41,22 @@ int main(void){
  field.value.bytes.offset=121;dok_ui_tick(&u,&level,0);assert(u.errors==1 && !u.active);
  dok_ui_init(&u);dok_ui_notify(&u,65534,2,0);dok_ui_tick(&u,&level,0);assert(dok_ui_text(&u,&level,out)>0);
  memcpy(long_text,out,30);u.language=1;dok_ui_tick(&u,&level,0);dok_ui_text(&u,&level,out);assert(memcmp(long_text,out,10)!=0);
+ /* Exact full-message adaptations occur before pagination, only in RU. */
+ const char *const original[2]={"\040\212\216\202\230 \206\210\202\216\211 \202\216\204\233 \204\200\213 10 \213\205\222 \206\210\207\215\210","\040\203\216\220\230\216\212 \204\216\201\220\216\211 \212\200\230\210 \204\200\213 15 \213\205\222 \206\210\207\215\210"};
+ const char *const shortened[2]={"\206\210\202\200\237 \202\216\204\200 \204\200\213\200 10 \213\205\222 \206\210\207\215\210","\204\216\201\220\200\237 \212\200\230\200 \204\200\213\200 15 \213\205\222 \206\210\207\215\210"};
+ field.value.bytes.offset=0;
+ for(unsigned i=0;i<2;++i){
+  level.text=(const uint8_t *)original[i];level.text_size=(uint16_t)strlen(original[i]);field.value.bytes.size=level.text_size;
+  dok_ui_init(&u);dok_ui_notify(&u,0,0xbe,0);dok_ui_tick(&u,&level,0);
+  assert(u.length==strlen(shortened[i]) && u.pages==1);
+  assert(dok_ui_text(&u,&level,out)==strlen(shortened[i]) && !memcmp(out,shortened[i],u.length));
+  u.language=1;dok_ui_tick(&u,&level,0);
+  assert(dok_ui_text(&u,&level,out)==strlen(original[i]) && !memcmp(out,original[i],u.length));
+  u.language=0;dok_ui_tick(&u,&level,0);assert(u.length==strlen(shortened[i]));
+  /* A partial/prefix match must retain original bytes. */
+  --field.value.bytes.size;dok_ui_tick(&u,&level,0);
+  assert(dok_ui_text(&u,&level,out)==strlen(original[i])-1 && !memcmp(out,original[i],u.length));
+ }
  memset(font8,0xff,sizeof(font8));memset(font16,0xff,sizeof(font16));
  world.player.health=-32768;world.player.energy=32767;world.player.lives=-32768;world.player.keys=65535;world.player.selected_weapon=8;
  for(unsigned state=0;state<=DOK_UI_MAP;state++)for(unsigned language=0;language<2;language++){

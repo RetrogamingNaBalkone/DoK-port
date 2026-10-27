@@ -1,0 +1,157 @@
+{
+  "task": "G17/UI01/readable-notifications",
+  "date": "2026-10-27",
+  "status": "passed",
+  "artifact": "artifacts/gba/DoK-port_UI01.gba",
+  "rom_sha256": "5743de7a5e7fa590a8d16e84c78f2b6f9cf989dd6b4887ed63540e1d4ee16bd0",
+  "rom_bytes": 16012340,
+  "build_dir": "build/ui01-readable-notifications/hardware/hw_v128_entity_rect",
+  "adaptations": [
+    {
+      "level": 1,
+      "object": 102,
+      "slot": 88,
+      "original_hex": "208a8e8298208688828e8920828e849b2084808b203130208b8592208688878d88",
+      "display_hex": "868882809f20828e84802084808b80203130208b8592208688878d88",
+      "characters": 28,
+      "glyph_width": 8,
+      "x": 8,
+      "y": 148
+    },
+    {
+      "level": 1,
+      "object": 103,
+      "slot": 88,
+      "original_hex": "20838e90988e8a20848e81908e89208a8098882084808b203135208b8592208688878d88",
+      "display_hex": "848e8190809f208a8098802084808b80203135208b8592208688878d88",
+      "characters": 29,
+      "glyph_width": 8,
+      "x": 4,
+      "y": 148
+    },
+    {
+      "level": 2,
+      "object": 103,
+      "slot": 88,
+      "original_hex": "208a8e8298208688828e8920828e849b2084808b203130208b8592208688878d88",
+      "display_hex": "868882809f20828e84802084808b80203130208b8592208688878d88",
+      "characters": 28,
+      "glyph_width": 8,
+      "x": 8,
+      "y": 148
+    },
+    {
+      "level": 2,
+      "object": 104,
+      "slot": 88,
+      "original_hex": "20838e90988e8a20848e81908e89208a8098882084808b203135208b8592208688878d88",
+      "display_hex": "848e8190809f208a8098802084808b80203135208b8592208688878d88",
+      "characters": 29,
+      "glyph_width": 8,
+      "x": 4,
+      "y": 148
+    },
+    {
+      "level": 3,
+      "object": 144,
+      "slot": 88,
+      "original_hex": "208a8e8298208688828e8920828e849b2084808b203130208b8592208688878d88",
+      "display_hex": "868882809f20828e84802084808b80203130208b8592208688878d88",
+      "characters": 28,
+      "glyph_width": 8,
+      "x": 8,
+      "y": 148
+    },
+    {
+      "level": 3,
+      "object": 145,
+      "slot": 88,
+      "original_hex": "20838e90988e8a20848e81908e89208a8098882084808b203135208b8592208688878d88",
+      "display_hex": "848e8190809f208a8098802084808b80203135208b8592208688878d88",
+      "characters": 29,
+      "glyph_width": 8,
+      "x": 4,
+      "y": 148
+    }
+  ],
+  "screens": {
+    "water_level1": {
+      "path": "build/ui01-readable-notifications/hardware/hw_v128_entity_rect/ui-check/water-level1.png",
+      "sha256": "249fee5dffcf3c82b69b42d9fdf29e2757054ce57fa404cf1ed6e01c8625e9be",
+      "framebuffer_sha256": "ef4a4794372a1006db016455b370b7b674a9418171afa61c41b3b212632c1eb9"
+    },
+    "porridge_level1": {
+      "path": "build/ui01-readable-notifications/hardware/hw_v128_entity_rect/ui-check/porridge-level1.png",
+      "sha256": "50eb2b18843e7f52ba28c4a7af4586a58248ace15cfffd891b37007549476b7f",
+      "framebuffer_sha256": "6e1ad7d6b97917bf2eec56f960eced9e59fd5552e14ca63bb4208c6007d38492"
+    },
+    "water_level2": {
+      "path": "build/ui01-readable-notifications/hardware/hw_v128_entity_rect/ui-check/water-level2.png",
+      "sha256": "249fee5dffcf3c82b69b42d9fdf29e2757054ce57fa404cf1ed6e01c8625e9be",
+      "framebuffer_sha256": "ef4a4794372a1006db016455b370b7b674a9418171afa61c41b3b212632c1eb9"
+    },
+    "porridge_level2": {
+      "path": "build/ui01-readable-notifications/hardware/hw_v128_entity_rect/ui-check/porridge-level2.png",
+      "sha256": "50eb2b18843e7f52ba28c4a7af4586a58248ace15cfffd891b37007549476b7f",
+      "framebuffer_sha256": "6e1ad7d6b97917bf2eec56f960eced9e59fd5552e14ca63bb4208c6007d38492"
+    },
+    "water_level3": {
+      "path": "build/ui01-readable-notifications/hardware/hw_v128_entity_rect/ui-check/water-level3.png",
+      "sha256": "249fee5dffcf3c82b69b42d9fdf29e2757054ce57fa404cf1ed6e01c8625e9be",
+      "framebuffer_sha256": "ef4a4794372a1006db016455b370b7b674a9418171afa61c41b3b212632c1eb9"
+    },
+    "porridge_level3": {
+      "path": "build/ui01-readable-notifications/hardware/hw_v128_entity_rect/ui-check/porridge-level3.png",
+      "sha256": "50eb2b18843e7f52ba28c4a7af4586a58248ace15cfffd891b37007549476b7f",
+      "framebuffer_sha256": "6e1ad7d6b97917bf2eec56f960eced9e59fd5552e14ca63bb4208c6007d38492"
+    }
+  },
+  "visual_review": "Both LEVEL1 captures inspected: original 8x8 glyphs, separate letters, centered within bevel",
+  "host_executed": true,
+  "host_assertions_enabled": true,
+  "linux_compiled_only": true,
+  "thumb_compiled": true,
+  "source_references": 532,
+  "distinct_source_level_messages": 88,
+  "system_messages": 14,
+  "ui_and_flow_passed": true,
+  "original_resources_unchanged": [
+    {
+      "path": "originals/pkr/RUS/PKR.RES",
+      "sha256": "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816"
+    },
+    {
+      "path": "originals/pkr/ENG/PKE.RES",
+      "sha256": "865da340621fa6f90548a84e9ae9bf0a85071befb32a40ca1d359e488f74d458"
+    }
+  ],
+  "ram": {
+    "ewram": 261436,
+    "iwram_before_stacks": 24424
+  },
+  "stack": {
+    "main_stack_low": 50356224,
+    "main_stack_top": 50364160,
+    "sentinel_word": 219540062,
+    "untouched_margin_bytes": 5352,
+    "high_water_bytes": 2584,
+    "irq_and_bios_excluded": true,
+    "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+  },
+  "reports": {
+    "build/ui01-readable-notifications/ui.json": "ad8387f45837c64b0128b6c91ca9d9b3d1c158134e99b2a7a7f209891f622216",
+    "build/ui01-readable-notifications/flow.json": "18a886e46f2b35498e566850e1846c4b90c4ceeb0b98bd7a09c8566908db1f69",
+    "build/ui01-readable-notifications/frontend-build.json": "3ec06876028aee7c5eff3a9c60b0577799a0774bda5c025222a5ff27f85662d2"
+  },
+  "sources": {
+    "src/ui.c": "2c647909e867bf868ae7404ed82c96406e2fe17d07e8ea7a47d4176fcc541453",
+    "tests/test_ui.c": "01cbe8f14c54bd43555bb98eb524105cf517e15d9bff1c41b393a92313ee5914",
+    "scripts/verify_ui_gba.py": "0914a9c12434829a4b8ffcab0c893c01111c401c75db13d87b8791f81602c9df"
+  },
+  "limitations": [
+    "No physical GBA/original BIOS run",
+    "No new complete DOS session",
+    "No new full audio/performance regression",
+    "No clean repeat build claimed"
+  ]
+}
