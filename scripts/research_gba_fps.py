@@ -20,15 +20,18 @@ from verify_audio_gba import sounds, irq_stack
 from verify_gba import sha, png
 from verify_renderer_gba import stack_usage
 from verify_sprites_gba import load_json
+from experiment_cleanup import clean_objects_after_build, record_object_output
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
 def command(args):
+    record_object_output(args)
     subprocess.run(list(map(str, args)), cwd=ROOT, check=True,
                    stdout=subprocess.DEVNULL)
 
 
+@clean_objects_after_build
 def builds(base, out, zig):
     motion = ('flow flow_backend ui ui_backend audio sound audio_backend ai ai_probe '
               'combat combat_probe items movement collision interactions movement_probe '
@@ -227,13 +230,14 @@ def main():
     parser.add_argument('--out',type=Path,default=Path('build/g20a-audit'))
     parser.add_argument('--report',type=Path,default=Path('analysis/g20a-fps-audit.json'))
     parser.add_argument('--skip-build',action='store_true')
+    parser.add_argument('--keep-objects',action='store_true',help='Retain experiment object files for manual relinking')
     a=parser.parse_args()
     os.chdir(ROOT)
     os.environ['ZIG_GLOBAL_CACHE_DIR']=str(ROOT/'build/zig-cache')
     os.environ['DOK_PROBE_FAST_VIDEO']='1'
     zig=Path(os.environ['LOCALAPPDATA'])/'Programs/Zig/0.13.0/zig.exe'
     core=Path(os.environ['LOCALAPPDATA'])/'Programs/mGBA/libretro-20261024/mgba_libretro.dll'
-    if not a.skip_build:builds(a.base,a.out,zig)
+    if not a.skip_build:builds(a.base,a.out,zig,keep_objects=a.keep_objects)
     previous=load_json('analysis/g20-cameras.json')['after']['rows']
     cameras=[]
     for level in range(3):

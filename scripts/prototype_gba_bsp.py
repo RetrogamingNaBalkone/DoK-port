@@ -13,6 +13,7 @@ import struct
 import sys
 
 from research_gba_fps import command
+from experiment_cleanup import clean_objects_after_build
 from gba_hw_bg_assets import hardware_background_tables
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -431,6 +432,7 @@ def tables(out, assets, include_sides=False, include_zero_spans=False, include_e
                 surface_side_columns=include_sides,entity_columns=include_entities,empty_column_metadata=include_empty,hardware_bg=hardware_bg)
 
 
+@clean_objects_after_build
 def build(base,out,variants):
     zig=Path(os.environ['LOCALAPPDATA'])/'Programs/Zig/0.13.0/zig.exe'
     out.mkdir(parents=True,exist_ok=True)
@@ -721,9 +723,10 @@ def main():
     p.add_argument('--base',type=Path,default=Path('build/select-menu-fix'))
     p.add_argument('--out',type=Path,default=Path('build/g20a-prototypes'))
     p.add_argument('--variants',nargs='+',choices=VARIANTS,default=list(VARIANTS))
+    p.add_argument('--keep-objects',action='store_true',help='Retain experiment object files for manual relinking')
     a=p.parse_args();os.chdir(ROOT)
     os.environ['ZIG_GLOBAL_CACHE_DIR']=str(ROOT/'build/zig-cache')
-    build(a.base,a.out,a.variants)
+    build(a.base,a.out,a.variants,keep_objects=a.keep_objects)
 
 
 if __name__=='__main__':main()

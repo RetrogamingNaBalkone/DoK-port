@@ -1,5 +1,12 @@
 # Сборка первых модулей и VS Code
 
+После [очистки 27 октября](tasks/CLEANUP.md) промежуточные `.o` опытов G20A
+и кэш Zig удалены. Их ROM/ELF/map, снимки исходников и отчёты сохранены.
+`prototype_gba_bsp.py` и `research_gba_fps.py` теперь удаляют собственные
+объекты после сборки; добавьте `--keep-objects`, если результат будет новой
+базой или нужен для ручной перелинковки. Объекты базовых `select-menu-fix`,
+`level1-fixes`, `g20` и пакет `build/gba/assets` оставлены.
+
 Новые отдельные quality prototypes G20A для сравнения:
 `artifacts/gba/DoK-port_hardware_rows96_prototype.gba` (97f0b3…57f81) и
 `artifacts/gba/DoK-port_hardware_rows72_prototype.gba` (176969…8888a).

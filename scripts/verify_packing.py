@@ -13,6 +13,7 @@ from pathlib import Path
 import struct
 import subprocess
 import sys
+from experiment_cleanup import temporary_workspace
 
 from analyze_levels import reference, W, L, C, I, A, S, T
 from analyze_resources import parse
@@ -345,8 +346,6 @@ class Package:
 
 def corruption_checks(data, package, tool):
     """Exercise production C reader against corruptions of the real package."""
-    output = CHECK_ROOT / "corruptions"
-    output.mkdir(parents=True, exist_ok=True)
     cases = [("truncated-header", data[:63]), ("truncated-payload", data[:-1])]
 
     def changed(name, offset, fmt, value):
@@ -383,13 +382,14 @@ def corruption_checks(data, package, tool):
     changed("english-view-numeric-profile-divergence", en_fields + 4, "i", package.unpack("i", en_fields + 4)[0] + 1)
     changed("english-view-shared-state-divergence", en_view + 52, "I", package.u32(view + 52) + 4)
     results = []
-    for name, payload in cases:
-        path = output / (name + ".bin")
-        path.write_bytes(payload)
-        completed = subprocess.run([str(tool.resolve()), str(path), "1", "ru"], cwd=ROOT, capture_output=True)
-        if completed.returncode != 1:
-            raise AssertionError(f"C reader corruption {name}: expected clean error exit 1, got {completed.returncode}")
-        results.append({"case": name, "exit_code": completed.returncode, "bytes": len(payload), "sha256": sha(payload)})
+    with temporary_workspace(CHECK_ROOT, "corruptions-") as temporary:
+        for name, payload in cases:
+            path = Path(temporary) / (name + ".bin")
+            path.write_bytes(payload)
+            completed = subprocess.run([str(tool.resolve()), str(path), "1", "ru"], cwd=ROOT, capture_output=True)
+            if completed.returncode != 1:
+                raise AssertionError(f"C reader corruption {name}: expected clean error exit 1, got {completed.returncode}")
+            results.append({"case": name, "exit_code": completed.returncode, "bytes": len(payload), "sha256": sha(payload)})
     return results
 
 
@@ -483,8 +483,13 @@ def main():
     parser.add_argument("--tool", type=Path, default=ROOT / "build/native/dok-rom-assets.exe")
     parser.add_argument("--tests", type=Path, default=ROOT / "build/native/dok-rom-assets-tests.exe")
     args = parser.parse_args()
+    with temporary_workspace(CHECK_ROOT, "repeat-") as temporary:
+        verify(args, Path(temporary))
+
+
+def verify(args, temporary):
     original = originals()
-    outputs = [CHECK_ROOT / "repeat-a", CHECK_ROOT / "repeat-b"]
+    outputs = [temporary / "repeat-a", temporary / "repeat-b"]
     commands = []
     for output in outputs:
         command = [sys.executable, str(args.packer.resolve()), "--output", str(output)]
