@@ -10,9 +10,9 @@ REPORT = ROOT / 'analysis/storage-cleanup-20261027.json'
 TEXT = {'.json', '.log', '.txt', '.md', '.csv', '.tsv', '.asm'}
 SOURCE = {'.c', '.h', '.inc', '.S', '.ld', '.py', '.ps1', '.java'}
 CONTROLS = ('research/experiments/g20a-hw-entity-final/hw_v128_entity_rect/',
-            'build/g20b-playtest2/hardware/hw_v128_entity_rect/')
-INPUTS = ('build/select-menu-fix/', 'build/level1-fixes/', 'build/g20/',
-          'build/gba/assets/', 'build/native/')
+            'build/gba/g20b-playtest2/hardware/hw_v128_entity_rect/')
+INPUTS = ('build/gba/select-menu-fix/', 'build/gba/level1-fixes/', 'build/gba/g20/',
+          'build/gba/assets/', 'build/gba/host/')
 ROMS = {'artifacts/gba/DoK-port_UI01.gba', 'artifacts/gba/DoK-port_hardware_cached_prototype.gba'}
 
 
@@ -33,15 +33,15 @@ def keep(path):
     name = path.relative_to(ROOT).as_posix()
     if name.startswith('artifacts/'):
         return path.suffix != '.gba' or name in ROMS
-    if name.startswith(('build/zig-cache/', 'build/gba/downloads/', 'scripts/__pycache__/')):
+    if name.startswith(('build/gba/zig-cache/', 'build/gba/downloads/', 'scripts/__pycache__/')):
         return False
     if name.startswith(INPUTS) or name.startswith(CONTROLS):
         return True
     # Frozen G18 is an independent pixel oracle, not a reconstructible latest build.
-    if name.startswith('build/g18/') and path.name in ('dok-diagnostic.gba', 'dok-diagnostic.elf', 'dok-diagnostic.map', 'build-report.json'):
+    if name.startswith('build/gba/g18/') and path.name in ('dok-diagnostic.gba', 'dok-diagnostic.elf', 'dok-diagnostic.map', 'build-report.json'):
         return True
     # Original DOS observations are distinct from generated GBA screenshots.
-    if name.startswith(('build/g20b/dos-ru/', 'build/g20b/dos-en/')):
+    if name.startswith(('build/gba/g20b/dos-ru/', 'build/gba/g20b/dos-en/')):
         return '/game/' not in name
     if name.startswith('build/') and path.parent == ROOT / 'build' and path.suffix == '.png':
         return True  # user-supplied playtest references

@@ -1,7 +1,7 @@
 {
   "summary_schema": 1,
   "full_report": {
-    "path": "analysis/g14-review.json",
+    "path": "analysis/gba/g14-review.json",
     "sha256": "b37bb0b4f52fcc5b011a54d1f24652f82dbd21ed6ec39984a51c36820040b6cc",
     "bytes": 94271
   },

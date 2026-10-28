@@ -1,7 +1,7 @@
 {
   "summary_schema": 1,
   "full_report": {
-    "path": "analysis/g20a-lowered-ceiling-trial.json",
+    "path": "analysis/gba/g20a-lowered-ceiling-trial.json",
     "sha256": "66b750d5e7d1f847aa13e146e36d397d4ff2de88dcd203b2b6e74a89b658f17f",
     "bytes": 78200
   },

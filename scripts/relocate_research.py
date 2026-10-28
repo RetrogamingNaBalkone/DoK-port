@@ -58,7 +58,7 @@ def source_files():
     ).decode('utf-8').split('\0')
     for name in sorted(set(paths)):
         path = ROOT / name
-        if (name.startswith(('scripts/', 'docs/', '.vscode/', 'tools/'))
+        if (name.startswith(('scripts/', 'docs/', '.vscode/', 'ports/gba/tools/'))
                 or name in ('README.md', 'AGENTS.md', '.gitignore')):
             if path.suffix in ('.py', '.ps1', '.java', '.md', '.json') and path.is_file():
                 if name not in ('scripts/relocate_research.py', 'scripts/relocate-research.ps1'):

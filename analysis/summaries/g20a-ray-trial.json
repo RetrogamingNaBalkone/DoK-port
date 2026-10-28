@@ -1,7 +1,7 @@
 {
   "summary_schema": 1,
   "full_report": {
-    "path": "analysis/g20a-ray-trial.json",
+    "path": "analysis/gba/g20a-ray-trial.json",
     "sha256": "8ea7dd124d393e3f9d4667918b1f9af00166d934bff9adeb07288ec4a6eee043",
     "bytes": 312379
   },

@@ -1,5 +1,7 @@
 # Передача контекста NDS между чатами
 
+28 октября 2026: выполнена [перестройка репозитория](../tasks/RESTRUCTURE.md). Будущий корень реализации — `ports/nds/`; документация остаётся в `docs/nds/`. Игровые статусы и следующий ID сохранены.
+
 ## Текущее состояние — 28 октября 2026 года
 
 **Фиксация документации завершена. Реализация NDS не начата.**
@@ -45,19 +47,19 @@ DS/DS Lite и запуск на флеш-картридже пока не под
 
 Точки входа, проверенные при подготовке документации:
 
-- [Декомпиляции и границы их достоверности](../decompilation.md): локальные
+- [Декомпиляции и границы их достоверности](../originals/decompilation.md): локальные
   `decompiled/ru/` и `decompiled/en/`, проекты Ghidra в
   `research/ghidra/projects/{ru,en}/Kremlin.gpr`. Их полноту проверяет N01.
 - Оригиналы: `originals/pkr/RUS/PKR.EXE`, `PKR.RES`,
   `originals/pkr/ENG/PKE.EXE`, `PKE.RES`; ожидаемые хеши —
-  [RU inventory](../../analysis/inventory-ru.json) и
-  [EN inventory](../../analysis/inventory-en.json). В текущей задаче EXE не анализировались,
+  [RU inventory](../../analysis/originals/inventory-ru.json) и
+  [EN inventory](../../analysis/originals/inventory-en.json). В текущей задаче EXE не анализировались,
   новая сверка SHA не выполнялась; её нельзя считать результатом N01.
-- [Исследования ресурсов](../resources.md), [проекции](../rendering-reference.md),
-  [времени](../original-cadence.md), [игрового цикла](../game-flow.md),
-  [карты](../ui01-dos-map.md), [GBA-профиля](../gba-balance-proposal.md).
+- [Исследования ресурсов](../originals/resources.md), [проекции](../originals/rendering-reference.md),
+  [времени](../originals/original-cadence.md), [игрового цикла](../gba/game-flow.md),
+  [карты](../gba/ui01-dos-map.md), [GBA-профиля](../gba/gba-balance-proposal.md).
   Документы содержат как исходные факты, так и поздние GBA-адаптации.
-- [Прежняя оценка NDS](../nds-feasibility.md) не является замером и содержит
+- [Прежняя оценка NDS](feasibility.md) не является замером и содержит
   устаревшую идею нижнего touchpad. Актуальное решение — карта из NDS-плана.
 
 Старые ссылки на `build/` могли пережить очистку. Проверять наличие входов

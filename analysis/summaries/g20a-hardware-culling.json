@@ -1,7 +1,7 @@
 {
   "summary_schema": 1,
   "full_report": {
-    "path": "analysis/g20a-hardware-culling.json",
+    "path": "analysis/gba/g20a-hardware-culling.json",
     "sha256": "b4265a6ec0caac6296f887747679cc6f90870d4290bac280275ae28fea6d16c5",
     "bytes": 251494
   },

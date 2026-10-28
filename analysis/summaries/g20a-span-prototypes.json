@@ -1,7 +1,7 @@
 {
   "summary_schema": 1,
   "full_report": {
-    "path": "analysis/g20a-span-prototypes.json",
+    "path": "analysis/gba/g20a-span-prototypes.json",
     "sha256": "98ea04dac89bb41d6505569d3fdd710010ea2724b317e51854e5a83b4a92b704",
     "bytes": 416442
   },

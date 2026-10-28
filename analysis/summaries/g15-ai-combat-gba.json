@@ -1,7 +1,7 @@
 {
   "summary_schema": 1,
   "full_report": {
-    "path": "analysis/g15-ai-combat-gba.json",
+    "path": "analysis/gba/g15-ai-combat-gba.json",
     "sha256": "5637caa4c213dd25154ea79499bd9e81038192996dfcfd353ea6a4c0de6342a8",
     "bytes": 56515
   },

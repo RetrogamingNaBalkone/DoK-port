@@ -1,7 +1,7 @@
 {
   "summary_schema": 1,
   "full_report": {
-    "path": "analysis/g20a-hardware-ppu.json",
+    "path": "analysis/gba/g20a-hardware-ppu.json",
     "sha256": "7d55d8c52f8fec3465fd3ef14d356b2b39ad9b89919b04d34e02a993ae8c3000",
     "bytes": 106018
   },

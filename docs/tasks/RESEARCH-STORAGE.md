@@ -51,11 +51,11 @@ reparse points и размеры, удаляет только перечисле
 frozen G18 как pixel oracle; исходники опытов и текстовые отчёты;
 Ghidra и исходные доказательства; все сохранения пользователя;
 базовые объекты `select-menu-fix`, `level1-fixes`, `g20`, общий
-`build/gba/assets` и host-инструменты `build/native`.
+`build/gba/assets` и host-инструменты `build/gba/host`.
 
 Удалить: остальные ROM из artifacts; прочие экспериментальные ROM/ELF/map,
 объекты и generated banks; старые GBA test PNG/WAV/IDX; Zig cache и downloads.
-Оригинальные наблюдения DOS в `build/g20b/dos-{ru,en}` сохранить без повторных
+Оригинальные наблюдения DOS в `build/gba/g20b/dos-{ru,en}` сохранить без повторных
 копий оригинальных игр. Старые JSON-отчёты не переписывать.
 
 Адресная система не меняется. Новый анализ EXE этой задачей не выполняется.
@@ -70,7 +70,7 @@ Ghidra и исходные доказательства; все сохранен
 требуют перенаправления. В `analysis/summaries/` сохранены компактные итоги
 (444 818 B) с SHA-256 и JSON Pointer к опущенным выборкам. Классификация —
 `analysis/report-policy.json`; команды публикации и проверки —
-`scripts/summarize_reports.py` и тот же скрипт с `--check`.
+`tools/reports/summarize_reports.py` и тот же скрипт с `--check`.
 
 Каталоги, структуры, параметры и различия оригиналов, в том числе большие
 inventory/balance/animation/level tables, не сокращались. Актуальные UI01

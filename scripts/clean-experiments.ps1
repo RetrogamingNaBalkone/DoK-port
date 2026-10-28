@@ -28,7 +28,7 @@ if (Test-Path -LiteralPath $buildRoot) {
         $targets += Get-ChildItem -LiteralPath $directory.FullName -Recurse -File -Filter '*.o'
     }
 }
-foreach ($relative in @('build/zig-cache', 'scripts/__pycache__',
+foreach ($relative in @('build/gba/zig-cache', 'scripts/__pycache__',
                          'build/gba/assets-check/corruptions',
                          'build/gba/assets-check/repeat-a', 'build/gba/assets-check/repeat-b')) {
     $path = Assert-LocalPath (Join-Path $taskRoot $relative)

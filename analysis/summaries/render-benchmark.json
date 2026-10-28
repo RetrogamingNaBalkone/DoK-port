@@ -1,7 +1,7 @@
 {
   "summary_schema": 1,
   "full_report": {
-    "path": "analysis/render-benchmark.json",
+    "path": "analysis/gba/render-benchmark.json",
     "sha256": "710fb176dc11164880d599a3937f4257e7099b2cf7013ed55d698e79a7f71059",
     "bytes": 42063
   },

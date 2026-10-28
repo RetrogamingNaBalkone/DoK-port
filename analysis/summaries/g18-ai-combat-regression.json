@@ -1,7 +1,7 @@
 {
   "summary_schema": 1,
   "full_report": {
-    "path": "analysis/g18-ai-combat-regression.json",
+    "path": "analysis/gba/g18-ai-combat-regression.json",
     "sha256": "0eaec7d370db4b7733083bbf59b4fbe06e2936521d102ec9b9c7b9151f969ece",
     "bytes": 56515
   },

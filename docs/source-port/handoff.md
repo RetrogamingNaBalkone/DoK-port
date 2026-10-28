@@ -1,5 +1,7 @@
 # Передача контекста Source Port
 
+28 октября 2026: выполнена [перестройка репозитория](../tasks/RESTRUCTURE.md). Будущий корень реализации — `ports/sdl2/`; документация остаётся в `docs/source-port/`. Игровые статусы и следующий ID сохранены.
+
 27 ???????: ??????? Ghidra ? ?????????????? ????????? ? `research/ghidra/`
 ? `research/evidence/`, ??? build ? Git. ???????????? ????????? ? ???????
 ?????? ? [???????](../tasks/RESEARCH-STORAGE.md). ??????? SP01?SP20 ?? ????????.
@@ -44,7 +46,7 @@
   отложены. Ориентир PortMaster — RK3326, цель 60 FPS.
 
 Принятые технические решения и контракты подробно перечислены в плане:
-C++17/CMake/SDL2, отдельное дерево `source-port/`, независимые слои ресурсов,
+C++17/CMake/SDL2, отдельное дерево `ports/sdl2/`, независимые слои ресурсов,
 симуляции, представления, платформы и сохранений. Код порта пока не создан.
 
 Следующий конкретный шаг SP01: оформить `docs/source-port/tasks/SP01.md`,
@@ -61,7 +63,7 @@ GBA-кода к этой задаче не относятся.
 Проверены все 19 локальных Markdown-ссылок в четырёх изменённых файлах,
 порядок SP01–SP20 и статусы «не начата»; SP01 отмечена следующей.
 `git diff --check -- AGENTS.md docs/source-port/plan.md docs/source-port/handoff.md docs/source-port/README.md`
-прошёл. SHA-256 `docs/gba-plan.md` и `docs/handoff.md` до/после совпали.
+прошёл. SHA-256 `docs/gba/plan.md` и `docs/gba/handoff.md` до/после совпали.
 Сборки и игровые проверки не запускались: изменена только документация.
 
 ## Историческая передача OG01/SP00 — до принятия нового плана
@@ -80,7 +82,7 @@ SDL2 Source Port для Old Gold, PKR и PKE. Подробные результ�
 
 Готово: Ghidra 12.1.2/MZ real mode, 889/889 функций; отдельный проект
 `research/ghidra/projects/old-gold-full/OldGold.gpr`, экспорт `decompiled/old-gold/`.
-Образцы не менялись; SHA-256 — `analysis/old-gold/verification.json`.
+Образцы не менялись; SHA-256 — `analysis/originals/old-gold/verification.json`.
 Там же хеши артефактов, метрики, предупреждения и повторный чистый импорт.
 Первые пробные проекты и журнал диагностического исследования сохранены
 локально в `research/ghidra/projects/old-gold/` и `research/evidence/old-gold/`.
@@ -89,7 +91,7 @@ SDL2 Source Port для Old Gold, PKR и PKE. Подробные результ�
 герой ctor/check/stats `1ae1:128f/15a2/18b9`, projectile reader `1ae1:21ea`,
 monster hit `1ae1:32ac`, world prepare `21b8:0d90`, main `20c4:03b0`,
 HUD `1f1d:0251/04c8/05c5`, Speaker IRQ `2b41:000f`, SB IRQ `2b41:0077`.
-Роли и основание каждой метки — `analysis/old-gold/seeds.tsv`.
+Роли и основание каждой метки — `analysis/originals/old-gold/seeds.tsv`.
 
 Перед автоанализом обязателен `PrepareOldGold.java`: четыре CS jump tables
 иначе разрешаются неверно. В C после overrides остаются адресные case labels;
@@ -112,8 +114,8 @@ animations; это первая практическая граница SP01. Ge
 Команды:
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/decompile-old-gold.ps1
-C:/Source/wasdify/.venv/Scripts/python.exe scripts/analyze_old_gold_port.py
+powershell -NoProfile -ExecutionPolicy Bypass -File tools/ghidra/decompile-old-gold.ps1
+C:/Source/wasdify/.venv/Scripts/python.exe tools/originals/analyze_old_gold_port.py
 ```
 
 Для повторного чистого импорта — параметр `-ProjectDirectory` с новым каталогом

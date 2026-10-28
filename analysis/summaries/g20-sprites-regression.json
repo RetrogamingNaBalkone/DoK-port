@@ -1,7 +1,7 @@
 {
   "summary_schema": 1,
   "full_report": {
-    "path": "analysis/g20-sprites-regression.json",
+    "path": "analysis/gba/g20-sprites-regression.json",
     "sha256": "a0e15bf6efdd7fc4790842d1162c33e19f68ed0fcda2c0c36bc4f4b0e7a6eb45",
     "bytes": 37427
   },

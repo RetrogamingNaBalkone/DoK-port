@@ -1,7 +1,7 @@
 {
   "summary_schema": 1,
   "full_report": {
-    "path": "analysis/g16-ai-combat-regression.json",
+    "path": "analysis/gba/g16-ai-combat-regression.json",
     "sha256": "e39096cb75d397602d36b67883850c456459db5625726afcf5727d3770df0456",
     "bytes": 56515
   },

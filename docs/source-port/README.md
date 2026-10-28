@@ -25,7 +25,7 @@ WASDify служит источником исследований; ECWolf — �
 - [Историческая оценка общего порта трёх вариантов — SP00](shared-port-assessment.md).
 - [Актуальный план SP01–SP20](plan.md) и [передача контекста](handoff.md).
 
-Предыдущее [сравнение комплектов Old Gold](../old-gold-version-comparison.md)
+Предыдущее [сравнение комплектов Old Gold](../originals/old-gold-version-comparison.md)
 подтверждает, что каталог `Old_Gold_Old_Version` не содержит другого движка:
 загружаемые байты совпадают. Для этой задачи использован только запрошенный
 `Old_Gold_3D`.

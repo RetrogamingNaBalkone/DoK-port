@@ -1,7 +1,7 @@
 {
   "summary_schema": 1,
   "full_report": {
-    "path": "analysis/g20a-fps-audit.json",
+    "path": "analysis/gba/g20a-fps-audit.json",
     "sha256": "08d090edfe027a7c4b12ce3e7952b0d1e8c3448c74881ebc6d1d63f375503734",
     "bytes": 624064
   },

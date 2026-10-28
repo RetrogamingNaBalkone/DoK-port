@@ -1,7 +1,7 @@
 {
   "summary_schema": 1,
   "full_report": {
-    "path": "analysis/g20a-hardware-fast.json",
+    "path": "analysis/gba/g20a-hardware-fast.json",
     "sha256": "fd3790492e5a0c8fbb25e9b7bbc603d9fbdce1fc8031e8d8e323ab4b1c80367a",
     "bytes": 1024232
   },

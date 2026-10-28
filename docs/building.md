@@ -1,5 +1,7 @@
 # Сборка первых модулей и VS Code
 
+28 октября 2026: GBA-модули, тесты и драйверы перенесены в `ports/gba/`; host-выходы — в `build/gba/host/`. Корневой CMake подключает GBA host-модули; независимый вход — `ports/gba/CMakeLists.txt`. Для NDS/SDL2 предназначены `ports/nds/` и `ports/sdl2/`, реализация пока не начата. Карта переноса — [паспорт](tasks/RESTRUCTURE.md).
+
 27 октября: хранение исследований вынесено в `research/`; после уточнения
 пользователя промежуточные сборки и повторы удаляются. Паспорт и границы —
 [tasks/RESEARCH-STORAGE.md](tasks/RESEARCH-STORAGE.md), итоговый учёт —
@@ -8,12 +10,12 @@
 не меняются; текущая UI01 и необходимые контрольные образцы сохраняются.
 
 
-27 октября [G20C sparse posts](gba-sparse-posts-trial.md) завершена отрицательно:
+27 октября [G20C sparse posts](gba/gba-sparse-posts-trial.md) завершена отрицательно:
 опытный ROM `artifacts/gba/DoK-port_sparse_posts_trial.gba` сохранён для сравнения,
 основным остаётся2775. Сборки/ROM/ELF/map — `research/experiments/g20c-sparse-posts/` и
 `research/experiments/g20c-sparse-repeat/`; команды измерения и collector — в документе опыта.
 
-После [очистки 27 октября](tasks/CLEANUP.md) промежуточные `.o` опытов G20A
+После [очистки 27 октября](gba/tasks/CLEANUP.md) промежуточные `.o` опытов G20A
 и кэш Zig удалены. Их ROM/ELF/map, снимки исходников и отчёты сохранены.
 `prototype_gba_bsp.py` и `research_gba_fps.py` теперь удаляют собственные
 объекты после сборки; добавьте `--keep-objects`, если результат будет новой
@@ -23,68 +25,68 @@
 Новые отдельные quality prototypes G20A для сравнения:
 `artifacts/gba/DoK-port_hardware_rows96_prototype.gba` (97f0b3…57f81) и
 `artifacts/gba/DoK-port_hardware_rows72_prototype.gba` (176969…8888a).
-[Результаты96/72](gba-row-quality-trial.md):96 экономит10–12% CPU,
+[Результаты96/72](gba/gba-row-quality-trial.md):96 экономит10–12% CPU,
 spatial440 min11,95/11,95/19,91.72 грубее; универсальные15+ не доказаны.
-Сборки воспроизводятся `scripts/prototype_gba_bsp.py` с variants `hw_rows96`
-и `hw_rows72`; сборщик проверочных результатов `scripts/report_gba_row_quality.py`.
+Сборки воспроизводятся `ports/gba/scripts/prototype_gba_bsp.py` с variants `hw_rows96`
+и `hw_rows72`; сборщик проверочных результатов `ports/gba/scripts/report_gba_row_quality.py`.
 Основной128-строчный artifact ниже автоматически не заменялся.
 
 Рекомендуемый отдельный аппаратный прототип G20A:
 `artifacts/gba/DoK-port_hardware_cached_prototype.gba`, SHA2775bd…edaab,
-15 938 936B. [Результаты и стоимость кадра](gba-render-costs.md):
+15 938 936B. [Результаты и стоимость кадра](gba/gba-render-costs.md):
 runtime turn12019,85/16,86/21,79 FPS, ходьба17,96/17,92/20,54 RU
 (EN L1 18,10). Spatial440 minimum9,954583/9,954583/14,931875; общая цель открыта.
 CPU128 строк растянуты в144;396+440 PPU кадров совпали с предыдущим e803 ROM,
 полные suites/512 rectangle ARM/48cache cases прошли. Прежние ROM сохранены.
-Воспроизведение: `scripts/prototype_gba_bsp.py --out research/experiments/g20a-hw-entity-final
+Воспроизведение: `ports/gba/scripts/prototype_gba_bsp.py --out research/experiments/g20a-hw-entity-final
 --variants hw_v128_entity_rect source_control`; collector —
-`scripts/report_gba_hardware_cache.py --copy-rom` после описанных QA-запусков.
-Прежний [быстрый128](gba-hardware-fast.md) остаётся отдельным артефактом.
+`ports/gba/scripts/report_gba_hardware_cache.py --copy-rom` после описанных QA-запусков.
+Прежний [быстрый128](gba/gba-hardware-fast.md) остаётся отдельным артефактом.
 
-Следующий [Mode2 ceiling experiment](gba-lowered-ceiling-trial.md) оставлен в
+Следующий [Mode2 ceiling experiment](gba/gba-lowered-ceiling-trial.md) оставлен в
 `research/experiments/g20a-hw-lowered-v6/hw_v128_lowered/`, SHA4f96b7…44d80; он не выбран.
-Сборка: `scripts/prototype_gba_bsp.py --out research/experiments/g20a-hw-lowered-final
+Сборка: `ports/gba/scripts/prototype_gba_bsp.py --out research/experiments/g20a-hw-lowered-final
 --variants hw_v128_lowered source_control`. Статус/контроль —
-`scripts/report_gba_lowered_trial.py`. Не подменять им рекомендованный ROM.
+`ports/gba/scripts/report_gba_lowered_trial.py`. Не подменять им рекомендованный ROM.
 
 Начальный, ещё медленный этап этой ветки описан в
-[gba-hardware-floor.md](gba-hardware-floor.md). Изображения проверяются по
+[gba-hardware-floor.md](gba/gba-hardware-floor.md). Изображения проверяются по
 настоящему PPU video, а не чтением Mode4 bitmap. Исторические сборки ниже
 остаются доступными для сравнения.
 
-27 октября: отдельные [G20A-прототипы спанов/HUD/уступов](gba-span-prototypes.md).
+27 октября: отдельные [G20A-прототипы спанов/HUD/уступов](gba/gba-span-prototypes.md).
 Текущий exact-ROM для сравнения — `artifacts/gba/DoK-port_optimized_prototype.gba`;
 SHA `b36472a0…eb42501`, 9 954 008 B, 488 точных кадров, live7,17/7,47/8,53 FPS.
 Пол/потолок4×2 — `DoK-port_floor_4x2_prototype.gba`, SHA `04dfe358…1b5d11`,
 9 888 624 B, live11,95/9,95/14,93. BSP первого прохода —
 `artifacts/gba/DoK-port_BSP_prototype.gba`. Изолированная повторная сборка:
-`C:/Source/wasdify/.venv/Scripts/python.exe scripts/prototype_gba_bsp.py --out research/experiments/g20a-sides-rebuild --variants baseline sides_exact sides_coarse`.
+`C:/Source/wasdify/.venv/Scripts/python.exe ports/gba/scripts/prototype_gba_bsp.py --out research/experiments/g20a-sides-rebuild --variants baseline sides_exact sides_coarse`.
 Она выполнена, ROM воспроизведены побайтно. Замеры:
-`scripts/benchmark_gba_prototypes.py`, aggregate — `scripts/report_gba_spans.py`;
+`ports/gba/scripts/benchmark_gba_prototypes.py`, aggregate — `ports/gba/scripts/report_gba_spans.py`;
 все команды/ограничения в документе. Прежние готовые ROM не заменены;
 15+ FPS пока нет. Банк масштабов отключён, исходные16 LIGHT rows сохранены.
 
 Текущая правка управления: язык переключается только в меню; Select в игре
-язык не меняет. Проверенная сборка `build/select-menu-fix/`, готовый ROM —
+язык не меняет. Проверенная сборка `build/gba/select-menu-fix/`, готовый ROM —
 `artifacts/gba/DoK-port_pre_alpha.gba`. Проверки UI/renderer/flow и SHA:
-[gba-fps-hypotheses.md](gba-fps-hypotheses.md#попутное-исправление-select).
+[gba-fps-hypotheses.md](gba/gba-fps-hypotheses.md#попутное-исправление-select).
 
 Основной сохранённый ROM для запуска — `artifacts/gba/DoK-port_pre_alpha.gba`.
-Он включает обновлённый HUD из `build/level1-fixes/` и последующую правку Select:
+Он включает обновлённый HUD из `build/gba/level1-fixes/` и последующую правку Select:
 уменьшенные offline иконки, центрированные однострочные сообщения, исправленную
-открытую дверь. История HUD — [level1-fixes.md](level1-fixes.md).
+открытую дверь. История HUD — [level1-fixes.md](gba/level1-fixes.md).
 ROM не включается в Git; ELF/map и отчёты остаются в `build/`.
 
 Актуальная сборка G20 и полный профиль без усечений:
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-gba-performance.ps1 -CrossChecks
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run-gba.ps1 -Rom build/g20/dok-diagnostic.gba
+powershell -NoProfile -ExecutionPolicy Bypass -File ports/gba/scripts/build-gba-performance.ps1 -CrossChecks
+powershell -NoProfile -ExecutionPolicy Bypass -File ports/gba/scripts/run-gba.ps1 -Rom build/gba/g20/dok-diagnostic.gba
 ```
 
-Полный driver выполнен одним вызовом; лог `build/g20/g20-validation-final.log`.
-ROM/ELF/map — `build/g20/`, бюджет — `analysis/gba-final-budget.json`,
-таблицы/ограничения — [gba-performance.md](gba-performance.md).
+Полный driver выполнен одним вызовом; лог `build/gba/g20/g20-validation-final.log`.
+ROM/ELF/map — `build/gba/g20/`, бюджет — `analysis/gba/gba-final-budget.json`,
+таблицы/ограничения — [gba-performance.md](gba/gba-performance.md).
 Для pixel oracle сохранять frozen G18 с SHA `46e4bfa4…eeb3c0`; текущая
 пересборка G18 из изменённых исходников не заменяет его. Нужны общие
 Zig/Python/mGBA и существующий Unicorn в `C:/Source/wasdify/build/research-deps`.
@@ -102,11 +104,11 @@ Zig/Python/mGBA и существующий Unicorn в `C:/Source/wasdify/build/
 Общий GBA-ROM этапа G18:
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-gba-flow.ps1 -CrossChecks -OriginalEvidence
+powershell -NoProfile -ExecutionPolicy Bypass -File ports/gba/scripts/build-gba-flow.ps1 -CrossChecks -OriginalEvidence
 ```
 
-Артефакты — `build/g18/`, методика/границы — [game-flow.md](game-flow.md),
-проверка и измерения — `analysis/g18-review.json`. Части pipeline выполняются отдельно,
+Артефакты — `build/gba/g18/`, методика/границы — [game-flow.md](gba/game-flow.md),
+проверка и измерения — `analysis/gba/g18-review.json`. Части pipeline выполняются отдельно,
 aggregate связывает их результаты; полный вызов воспроизводит тот же порядок. Старые описания первых
 статичных проб далее не обозначают текущее отсутствие движения/поверхностей/спрайтов.
 
@@ -125,19 +127,19 @@ ROM32881620bytes, EWRAM248688, IWRAM20684;30FPS остаются G20.
 
 Сейчас собираются читалка RES, декодеры изображений/анимаций/звука,
 загрузчик LEVEL, подготовка мира, компактный runtime, адаптер native-состояния и тесты.
-Приоритет — GBA: [позадачный план](gba-plan.md). G01 выполнена:
+Приоритет — GBA: [позадачный план](gba/plan.md). G01 выполнена:
 диагностический GBA-ROM собирается и запускается в mGBA;
-[команды и платформа](gba-platform.md). Общий GBA-ROM уже содержит движение,
+[команды и платформа](gba/gba-platform.md). Общий GBA-ROM уже содержит движение,
 коллизии, предметы, оружие, AI и игровой цикл G18. Исполняемого SDL2-движка пока нет.
 Команды первых проб ниже исторические.
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-gba.ps1 -Verify
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run-gba.ps1
+powershell -NoProfile -ExecutionPolicy Bypass -File ports/gba/scripts/build-gba.ps1 -Verify
+powershell -NoProfile -ExecutionPolicy Bypass -File ports/gba/scripts/run-gba.ps1
 # G02: ARM sizeof/map и выполнение синтетического reset компактного мира:
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-gba.ps1 -MemoryProbe -OutDir build/gba-memory -Verify
+powershell -NoProfile -ExecutionPolicy Bypass -File ports/gba/scripts/build-gba.ps1 -MemoryProbe -OutDir build/gba/gba-memory -Verify
 # G03: полный offline pipeline и единый двуязычный asset ROM:
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-gba-assets.ps1 -CrossChecks
+powershell -NoProfile -ExecutionPolicy Bypass -File ports/gba/scripts/build-gba-assets.ps1 -CrossChecks
 ```
 
 ## Один общий компилятор
@@ -146,7 +148,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-gba-assets.ps1
 `%LOCALAPPDATA%/Programs/Zig/0.13.0/zig.exe`.
 Копии toolchain в проекте нет; временный ZIP после проверки и переноса удалён.
 Общий кеш компилятора находится в стандартном пользовательском каталоге.
-Проект хранит исходники, настройки и результаты сборки в `build/native/`.
+Проект хранит исходники, настройки и результаты сборки в `build/gba/host/`.
 Системный PATH не менялся.
 
 Пакет получен с [официального сайта Zig](https://ziglang.org/download/):
@@ -163,40 +165,40 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-gba-assets.ps1
 ## Windows
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-native.ps1
+powershell -NoProfile -ExecutionPolicy Bypass -File ports/gba/scripts/build-native.ps1
 # Дополнительно проверить компиляцию под Linux и ARM7TDMI:
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-native.ps1 -CrossChecks
+powershell -NoProfile -ExecutionPolicy Bypass -File ports/gba/scripts/build-native.ps1 -CrossChecks
 # При другом расположении общего компилятора:
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-native.ps1 -ZigExe C:/Tools/Zig/zig.exe
+powershell -NoProfile -ExecutionPolicy Bypass -File ports/gba/scripts/build-native.ps1 -ZigExe C:/Tools/Zig/zig.exe
 ```
 
 Скрипт собирает C11 с `-Wall -Wextra -Werror` и запускает десять тестовых EXE.
-`build/native/dok-res.exe --list originals/pkr/RUS/PKR.RES` выводит каталог.
+`build/gba/host/dok-res.exe --list originals/pkr/RUS/PKR.RES` выводит каталог.
 Проверка двух реальных архивов и выгрузка всех блоков:
 
 ```powershell
-C:/Source/wasdify/.venv/Scripts/python.exe scripts/analyze_resources.py
+C:/Source/wasdify/.venv/Scripts/python.exe tools/originals/analyze_resources.py
 # После готового первого этапа анализа Ghidra:
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/annotate-stage2.ps1
+powershell -NoProfile -ExecutionPolicy Bypass -File tools/ghidra/annotate-stage2.ps1
 # Проверить и выгрузить анимации:
-C:/Source/wasdify/.venv/Scripts/python.exe scripts/analyze_animations.py
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/annotate-stage3.ps1
+C:/Source/wasdify/.venv/Scripts/python.exe tools/originals/analyze_animations.py
+powershell -NoProfile -ExecutionPolicy Bypass -File tools/ghidra/annotate-stage3.ps1
 # Проверить и выгрузить звук:
-C:/Source/wasdify/.venv/Scripts/python.exe scripts/analyze_sounds.py
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/annotate-stage4.ps1
+C:/Source/wasdify/.venv/Scripts/python.exe tools/originals/analyze_sounds.py
+powershell -NoProfile -ExecutionPolicy Bypass -File tools/ghidra/annotate-stage4.ps1
 # Восстановить метки LEVEL в Ghidra и сверить определения и карты:
-C:/Source/wasdify/.venv/Scripts/python.exe scripts/prepare_levels.py
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/annotate-stage5.ps1
-C:/Source/wasdify/.venv/Scripts/python.exe scripts/analyze_levels.py
+C:/Source/wasdify/.venv/Scripts/python.exe ports/gba/scripts/prepare_levels.py
+powershell -NoProfile -ExecutionPolicy Bypass -File tools/ghidra/annotate-stage5.ps1
+C:/Source/wasdify/.venv/Scripts/python.exe tools/originals/analyze_levels.py
 # Вывести модель уровня (строки CP866 представлены в hex):
 ./build/native/dok-level.exe research/evidence/resources/ru/0018.bin
 # Создать начальный мир из оригинального архива:
-C:/Source/wasdify/.venv/Scripts/python.exe scripts/prepare_world.py
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/annotate-stage6.ps1
-C:/Source/wasdify/.venv/Scripts/python.exe scripts/analyze_worlds.py
+C:/Source/wasdify/.venv/Scripts/python.exe ports/gba/scripts/prepare_world.py
+powershell -NoProfile -ExecutionPolicy Bypass -File tools/ghidra/annotate-stage6.ps1
+C:/Source/wasdify/.venv/Scripts/python.exe tools/originals/analyze_worlds.py
 ./build/native/dok-world.exe originals/pkr/RUS/PKR.RES LEVEL1
 # G02: конвертация/проверка всех шести миров без потери известности:
-C:/Source/wasdify/.venv/Scripts/python.exe scripts/analyze_runtime.py
+C:/Source/wasdify/.venv/Scripts/python.exe tools/originals/analyze_runtime.py
 ./build/native/dok-runtime.exe --layout
 ./build/native/dok-runtime.exe originals/pkr/RUS/PKR.RES LEVEL1
 ```
@@ -222,9 +224,9 @@ C:/Source/wasdify/.venv/Scripts/python.exe scripts/analyze_runtime.py
 Для обычного компилятора C11 добавлен `CMakeLists.txt`:
 
 ```sh
-cmake -S . -B build/cmake
-cmake --build build/cmake
-ctest --test-dir build/cmake --output-on-failure
+cmake -S . -B build/gba/cmake
+cmake --build build/gba/cmake
+ctest --test-dir build/gba/cmake --output-on-failure
 ```
 
 Сам запуск CMake в текущей среде не проверялся: CMake здесь не найден.
@@ -235,17 +237,17 @@ ELF x86_64 Linux для ресурсного инструмента и тест�
 `dok-sound-linux`. Эти артефакты не запускались
 на Linux/GBA. Эти compile-check objects не являются GBA ROM и не включены
 в платформенную диагностику автоматически. Отдельный настоящий ROM с startup,
-линковкой, видеовыводом и вводом добавлен в G01: [gba-platform.md](gba-platform.md).
+линковкой, видеовыводом и вводом добавлен в G01: [gba-platform.md](gba/gba-platform.md).
 Полноценного игрового цикла пока нет.
 
 Первый статический вид настоящего LEVEL1 (G05), единый RU/EN ROM:
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-gba-renderer.ps1 -CrossChecks
+powershell -NoProfile -ExecutionPolicy Bypass -File ports/gba/scripts/build-gba-renderer.ps1 -CrossChecks
 ```
 
-ROM, кадры и map — в `build/gba-renderer/`. Условия проверки и измеренная
-частота≈1,64 FPS при цели 30 FPS: [gba-renderer.md](gba-renderer.md).
+ROM, кадры и map — в `build/gba/gba-renderer/`. Условия проверки и измеренная
+частота≈1,64 FPS при цели 30 FPS: [gba-renderer.md](gba/gba-renderer.md).
 
 В G01 выяснено, что Zig 0.13.0 с `-target arm-freestanding-eabi -mthumb`
 в этой установке выдавал ARM-код; шесть native compile checks исправлены на
@@ -255,56 +257,56 @@ ROM, кадры и map — в `build/gba-renderer/`. Условия провер
 G06: проба времени и scheduler, отдельно и внутри общего LEVEL1-ROM:
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-gba.ps1 -TimeProbe -OutDir build/gba-time -Verify
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-gba.ps1 -RendererProbe -OutDir build/gba-renderer -Verify
+powershell -NoProfile -ExecutionPolicy Bypass -File ports/gba/scripts/build-gba.ps1 -TimeProbe -OutDir build/gba/gba-time -Verify
+powershell -NoProfile -ExecutionPolicy Bypass -File ports/gba/scripts/build-gba.ps1 -RendererProbe -OutDir build/gba/gba-renderer -Verify
 ```
 
 ARM-векторы, аппаратные таймеры и fixed steps:
-[time-events.md](time-events.md). Renderer build также запускает проверку G06.
+[time-events.md](gba/time-events.md). Renderer build также запускает проверку G06.
 
 Итоговые контрольные суммы оригиналов и артефактов, число сверенных ресурсов
-и аннотаций сохранены в [stage2-verification.json](../analysis/stage2-verification.json).
+и аннотаций сохранены в [stage2-verification.json](../analysis/originals/stage2-verification.json).
 
-Проверка LEVEL, полей и ссылок: [stage5-verification.json](../analysis/stage5-verification.json),
-[описание профиля и ограничений](levels.md).
+Проверка LEVEL, полей и ссылок: [stage5-verification.json](../analysis/originals/stage5-verification.json),
+[описание профиля и ограничений](originals/levels.md).
 
-Подготовка мира: [world.md](world.md), [stage6-verification.json](../analysis/stage6-verification.json).
+Подготовка мира: [world.md](originals/world.md), [stage6-verification.json](../analysis/originals/stage6-verification.json).
 Добавлены `dok-world-linux` и `world-arm7tdmi.o`; они только скомпилированы.
 
 ## Ранний renderer G06A
 
-`powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-gba-early.ps1 -CrossChecks`
+`powershell -NoProfile -ExecutionPolicy Bypass -File ports/gba/scripts/build-gba-early.ps1 -CrossChecks`
 собирает текущую пробу с 120 колонками сцены и 240 пикселями UI, затем запускает
 проверки. Функциональный отказ завершает команду ошибкой; превышение раннего
 бюджета 400 000 cycles выдаёт предупреждение по решению пользователя.
-Методика и отдельные команды: [gba-renderer-review.md](gba-renderer-review.md).
+Методика и отдельные команды: [gba-renderer-review.md](gba/gba-renderer-review.md).
 
 ## Ввод и движение G07
 
-`powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-gba-movement.ps1 -CrossChecks`
-строит общий ROM `build/g07/dok-diagnostic.gba` и проверяет движение, реальные
+`powershell -NoProfile -ExecutionPolicy Bypass -File ports/gba/scripts/build-gba-movement.ps1 -CrossChecks`
+строит общий ROM `build/gba/g07/dok-diagnostic.gba` и проверяет движение, реальные
 кнопки, графику и время. По указанию пользователя поступательная инерция удалена;
 коллизии ещё не подключены. Отдельные команды Ghidra/Unicorn, управление,
-измерения и ограничения — [movement.md](movement.md).
+измерения и ограничения — [movement.md](gba/movement.md).
 
 
 ## AI combat G15
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-gba-ai-combat.ps1 -CrossChecks -OriginalEvidence
+powershell -NoProfile -ExecutionPolicy Bypass -File ports/gba/scripts/build-gba-ai-combat.ps1 -CrossChecks -OriginalEvidence
 ```
 
-Общий ROM/ELF/map и кадры — `build/g15/`. Driver собирает Windows host,
+Общий ROM/ELF/map и кадры — `build/gba/g15/`. Driver собирает Windows host,
 Linux static/Thumb checks, общий renderer ROM, при `-OriginalEvidence`
 повторяет read-only Ghidra export с SHA до/после и native x86 slices,
 затем ARM28 enemy variants и renderer/interactions/time regressions.
 Части этого полного workflow выполнены отдельно с теми же аргументами;
-`scripts/report_ai_combat.py` связывает результаты с итоговым ROM/source.
+`ports/gba/scripts/report_ai_combat.py` связывает результаты с итоговым ROM/source.
 `-RegressionOnly` пропускает сборку; нужны готовые host/cross артефакты и
 native evidence. Общие Zig/Python/mGBA остаются по путям, указанным выше;
 копий toolchain в проекте нет.
 
-Acceptance: `analysis/g15-review.json`; source/ABI/матрица и ограничения:
-[ai-combat.md](ai-combat.md). EWRAM247872/free14272, IWRAM23980,
+Acceptance: `analysis/gba/g15-review.json`; source/ABI/матрица и ограничения:
+[ai-combat.md](gba/ai-combat.md). EWRAM247872/free14272, IWRAM23980,
 до8KiB stack reserve596 байт.30FPS остаются G20. Физическая GBA,
 оригинальный BIOS и полный DOS gameplay не проверены.

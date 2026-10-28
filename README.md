@@ -1,48 +1,37 @@
-# DoK-port: «Подземелья Кремля»
+# DoK-port
 
-Главная цель — GBA-порт «Подземелий Кремля» на основе анализа оригинальных
-PKR.EXE (RUS) и PKE.EXE (ENG). Windows/Linux используются для инструментов
-и проверки логики. SDL2 и PortMaster остаются последующими целями.
+Три независимых направления восстановления игр по декомпиляциям, ASM и проверкам оригинального поведения:
 
-Работа разбита на отдельные чаты: [позадачный план](docs/gba-plan.md),
-[текущая передача контекста](docs/handoff.md), [паспорта задач](docs/tasks/README.md).
+| Направление | Код и инструменты | План | Текущий контекст |
+|---|---|---|---|
+| GBA: «Подземелья Кремля» | [ports/gba](ports/gba/) | [План](docs/gba/plan.md) | [Handoff](docs/gba/handoff.md) |
+| Nintendo DS/DS Lite: «Подземелья Кремля» | [ports/nds](ports/nds/) | [План](docs/nds/plan.md) | [Handoff](docs/nds/handoff.md) |
+| SDL2: Old Gold/PKR/PKE; Windows/Linux/PortMaster | [ports/sdl2](ports/sdl2/) | [План](docs/source-port/plan.md) | [Handoff](docs/source-port/handoff.md) |
 
-Выполнены первичная декомпиляция и разбор контейнера RES. Добавлены собираемые
-модули C11 для ресурсов, изображений, анимаций, звука, LEVEL, подготовки мира
-и части native-состояния. Собираемого игрового
-движка и SDL2/GBA-портов пока нет. Декомпилятор не восстанавливает исходные имена,
-комментарии, классы и точные типы автоматически.
+GBA содержит реализацию и host-тесты. Для NDS и SDL2 подготовлены планы; реализация ещё не начата. Завершение одного направления не требуется для работы над другим. Игровые статусы и следующий ID определяются планом соответствующего порта.
 
-## Результаты
+## Структура
 
-- [Декомпиляция PKR](decompiled/ru/decompiled.c) и [PKE](decompiled/en/decompiled.c).
-- [PKR с типами и глобальными символами](decompiled/ru/with_types.c),
-  [PKE с типами и глобальными символами](decompiled/en/with_types.c).
-- Отдельные функции: `decompiled/ru/functions/` и `decompiled/en/functions/`.
-- В каждом каталоге: `listing.asm`, `functions.tsv`, `references.tsv`, `blocks.tsv`,
-  `unrecovered.tsv`, `summary.txt`, `ghidra.log`.
-- Сохраняемые проекты Ghidra: `research/ghidra/projects/ru/Kremlin.gpr` и
-  `research/ghidra/projects/en/Kremlin.gpr`. Они содержат оригинальные версии без ASM-патчей.
+- `ports/` — код, тесты, инструменты и сборочные сценарии каждого порта.
+- [docs/](docs/README.md) — планы, паспорта, описание восстановления и платформенных решений.
+- [docs/originals/](docs/originals/README.md) — сведения об оригинальных EXE, ресурсах и поведении.
+- [analysis/](analysis/README.md) — уникальные данные оригиналов и компактные результаты под контролем Git.
+- `tools/ghidra/`, `tools/originals/`, `tools/reports/` — общие инструменты анализа и публикации сводок.
+- `scripts/` — обслуживание репозитория и разрешение исторических путей.
+- `originals/`, `decompiled/`, `research/`, `build/` — локальные материалы вне Git и поставки.
+- `artifacts/<порт>/` — отобранные сборки; игровые ресурсы и ROM не включаются в Git.
 
-Исходные игровые файлы, полные экспорты, проекты Ghidra и рабочие копии исключены
-из Git через `.gitignore`. Скрипты, небольшие таблицы анализа и Markdown-документация
-предназначены для хранения в репозитории. Git-репозиторий здесь пока не инициализирован.
+Автоматический псевдокод хранится отдельно от редактируемых модулей и не считается собираемым или проверенным эквивалентом оригинала. Общий игровой движок между портами не выделен.
 
-## Документация
+## Сборка и проверки GBA
 
-- [Результаты и ограничения декомпиляции](docs/decompilation.md).
-- [Формат EXE, адреса и различия версий](docs/binary-format.md).
-- [Что перенесено из исследования WASDify](docs/wasdify-findings.md).
-- [Воспроизведение анализа](docs/reproducing.md).
-- [RES, изображения и различия ресурсов RUS/ENG](docs/resources.md).
-- [Частичные структуры игрока и событий](docs/native-state.md).
-- [Формат анимаций, декодер и проверенные кадры](docs/animations.md).
-- [Звуковые ресурсы, PCM-декодер и WAV](docs/sound.md).
-- [Грамматика LEVEL](docs/levels.md) и [подготовка мира](docs/world.md).
-- [Параметры врагов](docs/enemy-parameters.md), [сводные таблицы](docs/enemy-tables.md),
-  [оружие и снаряды](docs/weapon-parameters.md), [различия версий](docs/level-version-comparison.md).
-- [Сборка C-модулей и VS Code](docs/building.md).
+Используются общие пользовательские установки инструментов, описанные в [инструкции сборки](docs/building.md).
 
-Существенные результаты исследования фиксируются в Markdown. Для каждого вывода
-нужно указывать образец, систему адресов, доказательства и степень уверенности;
-гипотезы не должны превращаться в подтверждённые структуры или поведение порта.
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File ports/gba/scripts/build-native.ps1
+powershell -NoProfile -ExecutionPolicy Bypass -File ports/gba/scripts/build-gba.ps1 -Verify
+```
+
+Host-модули можно также собрать через CMake из корня или непосредственно из `ports/gba/`. Выходы сборки размещаются в `build/gba/`; исходные игровые данные предоставляет пользователь.
+
+Перед работой читать [AGENTS.md](AGENTS.md), план, handoff и паспорт выбранного направления. [Перестройка репозитория](docs/tasks/RESTRUCTURE.md) описывает переносы, проверки и сохранение исторических доказательств.

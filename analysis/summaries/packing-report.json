@@ -1,7 +1,7 @@
 {
   "summary_schema": 1,
   "full_report": {
-    "path": "analysis/packing-report.json",
+    "path": "analysis/gba/packing-report.json",
     "sha256": "94ddaaaf94bc8f88fd921b410064d06e8162b25664f489c166013670a9003d24",
     "bytes": 79363
   },

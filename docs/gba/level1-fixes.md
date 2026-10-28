@@ -1,0 +1,98 @@
+# Исправления после проверки первого уровня — 26 октября 2026 года
+
+Дополнение G17/G09 по скриншотам пользователя. Это правки GBA; статусы G20,
+G20A/G20B/G21 и SDL2-линия не меняются.
+
+## Иконки и нижняя строка
+
+Иконки уменьшены **при сборке ресурсов**, не во время кадра:
+`ports/gba/scripts/pack_ui_icons.py` читает неизменяемый G03-пакет и создаёт
+`build/gba/level1-fixes/ui-icons.S` с десятью готовыми изображениями RU/EN.
+Сердце — 12×8, заряд — 8×8, каждый ключ — 10×12. Все пять иконок на язык
+занимают 610 байт вместе с 18-байтовыми заголовками; оба языка — 1220 байт.
+Отдельные копии исходных ресурсов не изменены, RAM для пикселей не добавлена.
+В `ports/gba/src/ui.c::icon` только прямое чтение пикселей и пропуск прозрачного индекса 0;
+делений и масштабирования нет. Масштабирование nearest neighbour выполняет Python.
+
+Панели сверху имеют высоту 14, ширину HP `20+8N`, заряда `16+8N`.
+Иконки и цифры начинаются на y=3; сердце x=3, число HP x=17;
+заряд x=ex+3, число x=ex+13. Ключи сохраняют панели 16×16 на y=128,
+внутри иконка x+3/y=130. Поле 240×144 и полоса 240×16 сохранены.
+
+Сообщение центрируется по обеим осям относительно нижней панели: FONT8
+на y=148…155, допустимая ширина 234 пикселя между трёхпиксельными краями.
+Внешние пробелы исключаются только из компоновки. Если строка не помещается,
+ширина глифа уменьшается с 8 до `floor(234/N)`; высота 8 сохраняется.
+При объединении столбцов применяется OR, чтобы не терять тонкие штрихи.
+Маски столбцов вычисляются один раз на строку, вне цикла пикселей глифов.
+Это явное GBA-решение по уточнению пользователя «всё сообщение сразу»,
+а не исходная DOS-метрика. Оригинальные тексты не сокращаются.
+
+Все 532 ссылки на сообщения предметов/монстров в шести LEVEL проверены:
+88 различных строк, максимум 36 исходных байт. Каждая целиком выводится
+в одну строку; дополнительные 14 системных сообщений тоже проверены.
+Существующий предел 240 байт/страницы 60 сохранён для синтетического стресс-теста;
+ни одному реальному исходному сообщению эти страницы не нужны.
+Подсказка и номер страницы полноэкранных BINTRO/EINTRO/ENDTXT также объединены
+в одну центрированную нижнюю строку.
+
+## Открытая дверь: восстановленное поведение и отдельная коррекция
+
+Восстановленный исходный crop подтверждён прежними Ghidra/Unicorn материалами
+PKR/RUS и PKE/ENG, см. [doors-triggers.md](doors-triggers.md).
+Адреса там — Ghidra NE loader: `10F8:05C9` / `1060:06D9`, не файловые
+смещения или DPMI-селекторы. Новый анализ EXE не выполнялся.
+
+**Проверенный факт:** исходное целочисленное `dimension/extent*phase`
+оставляет полосу при terminal phase=29/extent=30. Для ширины 96 сдвиг 87,
+остаток 9 пикселей текстуры. В прежнем ROM это воспроизведено и спереди,
+и под углом у дверей `a/d/g` LEVEL1 на обоих языках. Это объясняет дефект
+на пользовательском кадре; точная позиция камеры пользователя не известна.
+
+**Намеренная коррекция представления GBA:** при extent>1 и phase>=extent−1
+центральная панель двери больше не добавляется в список поверхностей.
+Окружающие стены, пол/потолок и их перепады продолжают строиться.
+Начальный extent=1/phase=0 остаётся закрытой дверью.
+Промежуточный crop, scheduler, ключи, occupancy и момент разрешения прохода
+не изменены. Это устранение остаточной полосы, а не новое утверждение
+о пиксельной эквивалентности полностью открытой DOS-двери.
+
+Независимый парный тест `ports/gba/scripts/verify_open_door_gba.py` сравнивает с frozen
+`build/gba/g17-ui/`: закрытая и промежуточная фаза совпадают пиксель в пиксель;
+новая конечная фаза совпадает со старым raster при заведомо полностью нулевом
+crop (phase 32: `96/30*32=96`, аналогично высотам 128/192).
+12 комбинаций RU/EN × `a/d/g` × фронт/20° прошли; устранено 1038…1820
+видимых пикселей полосы на кадр. HUD исключён из сравнения сцены.
+
+## ROM и воспроизведение
+
+Готовый файл — `artifacts/gba/DoK-port.gba`, копия
+`build/gba/level1-fixes/dok-diagnostic.gba`. ELF/map и производные ресурсы рядом.
+ROM 32 891 196 байт; SHA-256
+`d5bdcd171cfbca8c95d3965757a3c586c07622ce74243f5edfdce3b84e27957e`.
+Прежние G17-UI/G18/G20 оставлены для сравнения.
+
+EWRAM 253668/free8476; IWRAM 24392/free184 до отдельного резерва стеков 8 KiB.
+Наблюдённый main stack 2368, margin 5568. Достигнутые 30 FPS не заявляются.
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File ports/gba/scripts/build-gba.ps1 -RendererProbe -HalfColumns -OutDir build/gba/level1-fixes
+$env:DOK_PROBE_FAST_VIDEO='1'
+C:/Source/wasdify/.venv/Scripts/python.exe ports/gba/scripts/verify_ui_gba.py --build-dir build/gba/level1-fixes --report analysis/gba/level1-ui-fixes.json
+C:/Source/wasdify/.venv/Scripts/python.exe ports/gba/scripts/verify_open_door_gba.py
+C:/Source/wasdify/.venv/Scripts/python.exe ports/gba/scripts/verify_interactions_gba.py --build-dir build/gba/level1-fixes --report analysis/gba/level1-interactions-regression.json
+C:/Source/wasdify/.venv/Scripts/python.exe ports/gba/scripts/verify_flow_gba.py --build-dir build/gba/level1-fixes --report analysis/gba/level1-flow-regression.json
+C:/Source/wasdify/.venv/Scripts/python.exe ports/gba/scripts/verify_renderer_gba.py --build-dir build/gba/level1-fixes --report analysis/gba/level1-renderer-regression.json
+C:/Source/wasdify/.venv/Scripts/python.exe ports/gba/scripts/verify_time_gba.py --build-dir build/gba/level1-fixes --report analysis/gba/level1-time-regression.json
+```
+
+Пройдены Windows host UI и Linux static compile check (Linux не запускался),
+ARM UI/flow/interactions/renderer/time, точные ROM-пиксели и указатели готовых
+малых иконок, все маски ключей, signed16 extremes, границы framebuffer,
+пауза/локализация и все шесть миров. Реальные PNG просмотрены; хэши —
+`analysis/gba/level1-visual-review.json`. SHA всех 22 файлов originals до/после
+парного теста совпали. Физическая GBA, новая полная DOS-сессия и повторный
+полный performance/AI/audio проход не проверялись. Повтор crop-векторов из
+старых Ghidra-экспортов не выполнен: Python получил отказ доступа к существующей
+общей зависимости Unicorn; вывод об оригинале опирается на сохранённые G09
+доказательства. Свежая проверка дефекта выполнена на двух ROM в mGBA.

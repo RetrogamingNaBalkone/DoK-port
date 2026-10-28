@@ -1,7 +1,7 @@
 {
   "summary_schema": 1,
   "full_report": {
-    "path": "analysis/g07-gba-verification.json",
+    "path": "analysis/gba/g07-gba-verification.json",
     "sha256": "33aec6355c4596b6ee95de424cd92291be8a93c64710512f0caf0fff7961d0b5",
     "bytes": 63831
   },

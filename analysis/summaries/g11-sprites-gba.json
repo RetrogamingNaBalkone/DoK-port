@@ -1,7 +1,7 @@
 {
   "summary_schema": 1,
   "full_report": {
-    "path": "analysis/g11-sprites-gba.json",
+    "path": "analysis/gba/g11-sprites-gba.json",
     "sha256": "abeafa052893ecae8acb9e592b96c6c925cdcac72866fd5c10e88167397e7b79",
     "bytes": 36205
   },

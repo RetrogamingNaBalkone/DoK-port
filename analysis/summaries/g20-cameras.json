@@ -1,7 +1,7 @@
 {
   "summary_schema": 1,
   "full_report": {
-    "path": "analysis/g20-cameras.json",
+    "path": "analysis/gba/g20-cameras.json",
     "sha256": "df31f90f9f866c4150265ceca36b8435e7e3f2ae31c6b100b04bbc189ba8888f",
     "bytes": 864354
   },

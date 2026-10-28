@@ -3,6 +3,6 @@
   "C_Cpp.default.compilerArgs": ["cc"],
   "C_Cpp.default.cStandard": "c11",
   "C_Cpp.default.intelliSenseMode": "windows-clang-x64",
-  "C_Cpp.default.includePath": ["${workspaceFolder}/include"],
+  "C_Cpp.default.includePath": ["${workspaceFolder}/ports/gba/include"],
   "C_Cpp.files.exclude": {"**/decompiled/**": true, "**/build/**": true, "**/research/**": true, "**/originals/**": true}
 }

@@ -1,7 +1,7 @@
 {
   "summary_schema": 1,
   "full_report": {
-    "path": "analysis/g07-camera-regression.json",
+    "path": "analysis/gba/g07-camera-regression.json",
     "sha256": "449ec0d172f8f0f31eb7e38290346f000e5b31f91fa527dfe3efebc1711c956b",
     "bytes": 897562
   },

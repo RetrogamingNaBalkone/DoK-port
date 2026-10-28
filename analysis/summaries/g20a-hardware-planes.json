@@ -1,7 +1,7 @@
 {
   "summary_schema": 1,
   "full_report": {
-    "path": "analysis/g20a-hardware-planes.json",
+    "path": "analysis/gba/g20a-hardware-planes.json",
     "sha256": "5337048e1a82b32d1390b6545fb9f47e54028b83c456364489496a30f571c86a",
     "bytes": 230865
   },

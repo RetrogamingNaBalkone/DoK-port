@@ -1,7 +1,7 @@
 {
   "summary_schema": 1,
   "full_report": {
-    "path": "analysis/g20a-vertex-trial.json",
+    "path": "analysis/gba/g20a-vertex-trial.json",
     "sha256": "b7ea3fb60dc4af95311941a534335e56311eaf72e54153bea34f1465eb3b8f47",
     "bytes": 416547
   },

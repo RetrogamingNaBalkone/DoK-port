@@ -1,7 +1,7 @@
 {
   "summary_schema": 1,
   "full_report": {
-    "path": "analysis/g20a-lookup-trial.json",
+    "path": "analysis/gba/g20a-lookup-trial.json",
     "sha256": "8b386001f89dd4bfbf720b717d005b26aaa9d528fbfc92c2317cebd022ce7f37",
     "bytes": 208903
   },

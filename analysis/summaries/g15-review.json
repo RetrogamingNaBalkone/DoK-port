@@ -1,7 +1,7 @@
 {
   "summary_schema": 1,
   "full_report": {
-    "path": "analysis/g15-review.json",
+    "path": "analysis/gba/g15-review.json",
     "sha256": "8314f320cb5cab130f5accc4dd20992849945f2e78e0962cb09b8ee0aa0e5e10",
     "bytes": 96143
   },

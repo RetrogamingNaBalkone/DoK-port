@@ -16,7 +16,7 @@
 Это DOS **MZ real mode**, язык `x86:LE:16:Real Mode`, compiler spec `default`.
 MZ объявляет 157442 байта, заголовок 9728 байт, 1589 перемещений.
 Последние 14 байт EXE не входят в загружаемый образ. Подробнее о хвосте —
-в [сравнении комплектов](../old-gold-version-comparison.md).
+в [сравнении комплектов](../originals/old-gold-version-comparison.md).
 Хеши всех четырёх исходных файлов, включая README/NFO, проверены повторно.
 
 ## Локальные артефакты
@@ -36,11 +36,11 @@ MZ объявляет 157442 байта, заголовок 9728 байт, 1589 
 
 Проекты и полный экспорт остаются локальными и исключены из Git, как для
 PKR/PKE. В коммите находятся скрипты, документация и компактные метаданные:
-[verification.json](../../analysis/old-gold/verification.json),
-[каталог RES](../../analysis/old-gold/resource-catalog.tsv),
-[форматы](../../analysis/old-gold/resource-formats.json),
-[сравнение данных](../../analysis/old-gold/data-comparison.json) и
-[смысловые метки](../../analysis/old-gold/seeds.tsv).
+[verification.json](../../analysis/originals/old-gold/verification.json),
+[каталог RES](../../analysis/originals/old-gold/resource-catalog.tsv),
+[форматы](../../analysis/originals/old-gold/resource-formats.json),
+[сравнение данных](../../analysis/originals/old-gold/data-comparison.json) и
+[смысловые метки](../../analysis/originals/old-gold/seeds.tsv).
 
 ## Адресация и ABI
 
@@ -136,22 +136,22 @@ C-декодеры и Python совпали для всех 49 изображе�
 Используется общая установка Ghidra/JDK пользователя, без новой toolchain.
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/decompile-old-gold.ps1
-C:/Source/wasdify/.venv/Scripts/python.exe scripts/analyze_old_gold_port.py
+powershell -NoProfile -ExecutionPolicy Bypass -File tools/ghidra/decompile-old-gold.ps1
+C:/Source/wasdify/.venv/Scripts/python.exe tools/originals/analyze_old_gold_port.py
 ```
 
 Повторный импорт с отдельным проектом и экспортом:
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/decompile-old-gold.ps1 -ProjectDirectory research/ghidra/projects/old-gold-clean-final -OutputDirectory research/evidence/old-gold/recheck-export
+powershell -NoProfile -ExecutionPolicy Bypass -File tools/ghidra/decompile-old-gold.ps1 -ProjectDirectory research/ghidra/projects/old-gold-clean-final -OutputDirectory research/evidence/old-gold/recheck-export
 ```
 
 При существующем проекте driver обрабатывает сохранённый `OG.EXE` без повторного
 общего автоанализа и заново выгружает результат. Для чистого импорта указать
 ещё не существующий каталог проекта; старый проект удалять не требуется.
-Verifier использует уже собранные `build/native/dok-res.exe`, `dok-anim.exe`,
+Verifier использует уже собранные `build/gba/host/dok-res.exe`, `dok-anim.exe`,
 `dok-sound.exe`, `dok-level.exe`. При их отсутствии сначала выполнить
-существующий `scripts/build-native.ps1`; хеши использованных EXE сохраняются.
+существующий `ports/gba/scripts/build-native.ps1`; хеши использованных EXE сохраняются.
 
 DOS-сессия, прохождение игры, сравнение аудио на реальном оборудовании
 и запуск SDL2 не выполнялись. Непроверенные C-типы, indirect calls,

@@ -5,7 +5,7 @@
       "label": "DoK: build and test C modules",
       "type": "process",
       "command": "powershell.exe",
-      "args": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "${workspaceFolder}/scripts/build-native.ps1"],
+      "args": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "${workspaceFolder}/ports/gba/scripts/build-native.ps1"],
       "options": {"cwd": "${workspaceFolder}"},
       "problemMatcher": ["$gcc"],
       "group": {"kind": "build", "isDefault": true}
@@ -14,7 +14,7 @@
       "label": "DoK: build GBA diagnostic",
       "type": "process",
       "command": "powershell.exe",
-      "args": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "${workspaceFolder}/scripts/build-gba.ps1"],
+      "args": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "${workspaceFolder}/ports/gba/scripts/build-gba.ps1"],
       "options": {"cwd": "${workspaceFolder}"},
       "problemMatcher": ["$gcc"],
       "group": "build"
@@ -23,7 +23,7 @@
       "label": "DoK: build and verify bilingual GBA asset ROM",
       "type": "process",
       "command": "powershell.exe",
-      "args": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "${workspaceFolder}/scripts/build-gba-assets.ps1"],
+      "args": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "${workspaceFolder}/ports/gba/scripts/build-gba-assets.ps1"],
       "options": {"cwd": "${workspaceFolder}"},
       "problemMatcher": ["$gcc"]
     },
@@ -31,7 +31,7 @@
       "label": "DoK: build and verify LEVEL1 GBA renderer",
       "type": "process",
       "command": "powershell.exe",
-      "args": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "${workspaceFolder}/scripts/build-gba-renderer.ps1"],
+      "args": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "${workspaceFolder}/ports/gba/scripts/build-gba-renderer.ps1"],
       "options": {"cwd": "${workspaceFolder}"},
       "problemMatcher": ["$gcc"]
     },
@@ -39,7 +39,7 @@
       "label": "DoK: build and verify GBA diagnostic",
       "type": "process",
       "command": "powershell.exe",
-      "args": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "${workspaceFolder}/scripts/build-gba.ps1", "-Verify"],
+      "args": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "${workspaceFolder}/ports/gba/scripts/build-gba.ps1", "-Verify"],
       "options": {"cwd": "${workspaceFolder}"},
       "problemMatcher": ["$gcc"]
     }

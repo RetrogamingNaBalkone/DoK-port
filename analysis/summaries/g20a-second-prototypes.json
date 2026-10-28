@@ -1,7 +1,7 @@
 {
   "summary_schema": 1,
   "full_report": {
-    "path": "analysis/g20a-second-prototypes.json",
+    "path": "analysis/gba/g20a-second-prototypes.json",
     "sha256": "aee12bd580b82e1cac8bd97c13606486536393b750b931a14bafe731934ca872",
     "bytes": 520269
   },

@@ -1,7 +1,7 @@
 {
   "summary_schema": 1,
   "full_report": {
-    "path": "analysis/g20-game-profile.json",
+    "path": "analysis/gba/g20-game-profile.json",
     "sha256": "b31ba955cf569d9a719047aa3c6f544556333598a52992df99c2129dc0cb21c0",
     "bytes": 181007
   },

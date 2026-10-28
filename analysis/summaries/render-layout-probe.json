@@ -1,7 +1,7 @@
 {
   "summary_schema": 1,
   "full_report": {
-    "path": "analysis/render-layout-probe.json",
+    "path": "analysis/gba/render-layout-probe.json",
     "sha256": "a22360df38987d7cfe48a792955d973b092652eb29ce4c76b300a86ece51db2f",
     "bytes": 110833
   },

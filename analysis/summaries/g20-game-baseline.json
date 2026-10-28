@@ -1,7 +1,7 @@
 {
   "summary_schema": 1,
   "full_report": {
-    "path": "analysis/g20-game-baseline.json",
+    "path": "analysis/gba/g20-game-baseline.json",
     "sha256": "27bca325e5db40fdd49d1897730b7d1bbc36588d9415fc509abb6d6195f1a40d",
     "bytes": 108238
   },
