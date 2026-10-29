@@ -1,0 +1,259 @@
+{
+  "schema_version": 1,
+  "task": "N12",
+  "date": "2026-10-29",
+  "status": "ready-emulator",
+  "passed": true,
+  "next_task": "N13",
+  "automatic_continuation_scope": "User authorized N12 -> N13 -> N13P; stop after architecture decision",
+  "host": {
+    "path": "research/evidence/nds/n12/host-ru.json",
+    "bytes": 232314,
+    "sha256": "1cc5d69101fb494e95a6c852002d842b1f4ad32febe22207b5fa12a565b2e651"
+  },
+  "native": {
+    "path": "research/evidence/nds/n12/original-report.json",
+    "bytes": 5875,
+    "sha256": "8a19b1044ab555ef174e8ac73b697ad80cc5232206420750f60bc37b2be6e00a"
+  },
+  "world_native": {
+    "path": "research/evidence/nds/n12/world-original-report.json",
+    "bytes": 1273,
+    "sha256": "7de9aeb296a4571ba5bd4035d81ebf60e63f6c32b6ebe138d7e0111060c1d32a"
+  },
+  "archive": {
+    "path": "research/evidence/nds/n12/archive-manifest.json",
+    "bytes": 7023,
+    "sha256": "791619eeda8cd4435198afa03f9b697fc5a14e495e0dd547b75d731d5ba48636"
+  },
+  "native_projection_vectors": 1240,
+  "native_constructor_cases": 12,
+  "native_world_poses": 4144,
+  "native_billboards": 1494,
+  "full_host_scan_poses": 65192,
+  "unit_checks": {
+    "checks": 24451,
+    "failures": 0,
+    "callbacks": 81,
+    "draws_60": 72,
+    "draws_30": 37
+  },
+  "maximum_sprites_by_level": [
+    39,
+    28,
+    82
+  ],
+  "variants": {
+    "ru": {
+      "rendered_frames": 1790,
+      "frame_texture_traces": 462,
+      "metrics": {
+        "intervals": 1285,
+        "histogram": {
+          "1": 807,
+          "2": 478
+        },
+        "virtual_fps": 43.60552257526028,
+        "median": 1,
+        "p95": 2,
+        "p99": 2,
+        "max": 2,
+        "fraction_over_one": 0.3719844357976654,
+        "fraction_over_two": 0.0,
+        "refresh_hz": 59.82609828808083,
+        "rendered_frames": 1296,
+        "minimum_new_frames_in_one_second": 29,
+        "checked_one_second_windows": 479,
+        "minimum_window_cadence_fps": 29.913049144040414,
+        "cadence_window_method": "Complete new-frame intervals spanning at least1s, enclosing timestamp duration; integer1s counts reported separately",
+        "prepare_ms": 10.795808261023968,
+        "submit_ms": 3.7294602305097455,
+        "uploads": 112,
+        "upload_bytes": 1699840,
+        "maximum_texture_bytes": 260096,
+        "maximum_palette_bytes": 512,
+        "budget_passed": true,
+        "goal_60_passed": false
+      },
+      "loading_boundaries": 11,
+      "memory": {
+        "static_bytes": 215196,
+        "heap_start_gap": 32,
+        "static_startup_bytes": 221184,
+        "managed_bytes": 2293760,
+        "sdk_heap_available": 499712,
+        "reserve_bytes": 655360,
+        "closure_bytes": 3670016
+      },
+      "masked_occlusion": {
+        "passed": true,
+        "compared_pixels": 21738,
+        "transparent_holes": 2542,
+        "foreground_pixels": 108,
+        "far_sprite_pixels": 34,
+        "wall_occlusion_pixels": 999
+      },
+      "framebuffer_coverage_cases": 8
+    },
+    "en": {
+      "rendered_frames": 1790,
+      "frame_texture_traces": 462,
+      "metrics": {
+        "intervals": 1285,
+        "histogram": {
+          "1": 805,
+          "2": 480
+        },
+        "virtual_fps": 43.556111218234484,
+        "median": 1,
+        "p95": 2,
+        "p99": 2,
+        "max": 2,
+        "fraction_over_one": 0.3735408560311284,
+        "fraction_over_two": 0.0,
+        "refresh_hz": 59.82609828808083,
+        "rendered_frames": 1296,
+        "minimum_new_frames_in_one_second": 29,
+        "checked_one_second_windows": 480,
+        "minimum_window_cadence_fps": 29.913049144040414,
+        "cadence_window_method": "Complete new-frame intervals spanning at least1s, enclosing timestamp duration; integer1s counts reported separately",
+        "prepare_ms": 10.824475452853717,
+        "submit_ms": 3.734351295562769,
+        "uploads": 112,
+        "upload_bytes": 1699840,
+        "maximum_texture_bytes": 260096,
+        "maximum_palette_bytes": 512,
+        "budget_passed": true,
+        "goal_60_passed": false
+      },
+      "loading_boundaries": 11,
+      "memory": {
+        "static_bytes": 215420,
+        "heap_start_gap": 32,
+        "static_startup_bytes": 221184,
+        "managed_bytes": 2293760,
+        "sdk_heap_available": 499712,
+        "reserve_bytes": 655360,
+        "closure_bytes": 3670016
+      },
+      "masked_occlusion": {
+        "passed": true,
+        "compared_pixels": 21738,
+        "transparent_holes": 2542,
+        "foreground_pixels": 108,
+        "far_sprite_pixels": 34,
+        "wall_occlusion_pixels": 999
+      },
+      "framebuffer_coverage_cases": 8
+    },
+    "audit": {
+      "rendered_frames": 1790,
+      "frame_texture_traces": 462,
+      "metrics": {
+        "intervals": 1285,
+        "histogram": {
+          "3": 455,
+          "4": 830
+        },
+        "virtual_fps": 16.409079252974145,
+        "median": 4,
+        "p95": 4,
+        "p99": 4,
+        "max": 4,
+        "fraction_over_one": 1.0,
+        "fraction_over_two": 1.0,
+        "refresh_hz": 59.82609828808083,
+        "rendered_frames": 1296,
+        "minimum_new_frames_in_one_second": 14,
+        "checked_one_second_windows": 940,
+        "minimum_window_cadence_fps": 14.956524572020207,
+        "cadence_window_method": "Complete new-frame intervals spanning at least1s, enclosing timestamp duration; integer1s counts reported separately",
+        "prepare_ms": 47.88455525688348,
+        "submit_ms": 3.6728961392076975,
+        "uploads": 112,
+        "upload_bytes": 1699840,
+        "maximum_texture_bytes": 260096,
+        "maximum_palette_bytes": 512,
+        "budget_passed": false,
+        "goal_60_passed": false
+      },
+      "loading_boundaries": 11,
+      "memory": {
+        "static_bytes": 215260,
+        "heap_start_gap": 32,
+        "static_startup_bytes": 221184,
+        "managed_bytes": 2293760,
+        "sdk_heap_available": 499712,
+        "reserve_bytes": 655360,
+        "closure_bytes": 3670016
+      },
+      "masked_occlusion": {
+        "passed": true,
+        "compared_pixels": 21738,
+        "transparent_holes": 2542,
+        "foreground_pixels": 108,
+        "far_sprite_pixels": 34,
+        "wall_occlusion_pixels": 999
+      },
+      "framebuffer_coverage_cases": 8
+    }
+  },
+  "artifacts": [
+    {
+      "path": "build/nds/n12/ru/dok_nds_sprites.nds",
+      "bytes": 198656,
+      "sha256": "bc035a51c906857ecb600bce70c4cee830faefb48a02d48d895b13e2b9827c53"
+    },
+    {
+      "path": "build/nds/n12/ru/dok_nds_sprites.elf",
+      "bytes": 1422808,
+      "sha256": "75e4a03d29ef458f8713843c23b16e1c65a837a76b4c8ce17a3b60132ea481d1"
+    },
+    {
+      "path": "build/nds/n12/ru/dok_nds_sprites.map",
+      "bytes": 758640,
+      "sha256": "d40af7e9791994b83491033e3f10b8011b9eaf47786bd31e244ffef0eeecdd30"
+    },
+    {
+      "path": "build/nds/n12/en/dok_nds_sprites.nds",
+      "bytes": 198656,
+      "sha256": "654d0f2293cc4824bd8e445333bbca6ea23c02f4952b9b27b4f6aa2e0a70d2be"
+    },
+    {
+      "path": "build/nds/n12/en/dok_nds_sprites.elf",
+      "bytes": 1423676,
+      "sha256": "500ee601a403670100810d88745719435b664beb49c7267f5b960ecd8e4e4946"
+    },
+    {
+      "path": "build/nds/n12/en/dok_nds_sprites.map",
+      "bytes": 758598,
+      "sha256": "baafc47cef3e952d58a6af40d4e5169b3d3bc00389850f7c037d6dc8f297dfb9"
+    },
+    {
+      "path": "build/nds/n12/audit/dok_nds_sprites.nds",
+      "bytes": 198656,
+      "sha256": "3ba2cbfb21befc6d4c0e9ca14d8dd63226b0bcbba5fe2f898ada601b21c7383d"
+    },
+    {
+      "path": "build/nds/n12/audit/dok_nds_sprites.elf",
+      "bytes": 1423140,
+      "sha256": "0c921d8b562b7efe945bc06d6299fae92ddd11b550edc9345d731635182db5d7"
+    },
+    {
+      "path": "build/nds/n12/audit/dok_nds_sprites.map",
+      "bytes": 762273,
+      "sha256": "1b8f510be3a4d39b0e057c40bdd74e61daad7b6e192b65e802e51a9c01768f4d"
+    }
+  ],
+  "metric_script": {
+    "path": "ports/nds/tools/render_metrics.py",
+    "bytes": 4281,
+    "sha256": "106b8cf81ea6c0325ee5815f02f568b21ad1453df77a1093a0f132883532b24e"
+  },
+  "limitations": [
+    "Physical DS/DS Lite and hardware FPS remain N24",
+    "Fixture object states; live AI/combat remain N16/N17",
+    "Every-frame asset walk is a separate stress test, not native animation cadence",
+    "LIGHT is identity until N13; combined actor/effect budget and architecture decision remain N13P"
+  ]
+}

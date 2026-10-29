@@ -3,8 +3,8 @@
 #include "dok/geometry.h"
 #include "dok/render_packet.h"
 
-#define DOK_RENDER_QUADS 1536u
-#define DOK_RENDER_CELLS 1536u
+#define DOK_RENDER_QUADS 1984u
+#define DOK_RENDER_CELLS 1984u
 
 typedef struct dok_render_gather_bounds {
     int32_t min_x, min_z, max_x, max_z;

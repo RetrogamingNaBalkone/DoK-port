@@ -1,5 +1,143 @@
 # Передача контекста NDS между чатами
 
+## Текущая передача после N13P — 29 октября 2026 года
+
+Поручение **N12 → N13 → N13P выполнено (эмулятор)**. После архитектурного решения
+остановиться. Следующий ID — **N14**, его реализация ещё не начата.
+[Паспорт N13P](tasks/N13P.md), [решение и команды](spec/N13P-architecture.md),
+[compact](../../analysis/nds-n13p-performance.json).
+
+Пользователь разрешил приближённое GPU-затемнение; цель — художественный замысел:
+дальние объекты скрываются во тьме, создавая пугающую неизвестность. Принято решение
+сохранить аппаратный3D, проекцию, UV, depth и streaming, заменить производственное
+разбиение/weld LIGHT чёрным аппаратным fog. Точный N13 остаётся reference.
+Кэш готовой LIGHT-геометрии дал только4,15/4,11 FPS при170640 B RAM и не выбран.
+
+Текущая RU ROM `build/nds/n13p/fog-ru/dok_nds_effects.nds`, SHA-256
+`71b7a7a031b3117c5774c2a9c8db362a5389e408f1c62e014c739c29ce6627d4`.
+RU/EN:41 cases/2740 новых presentations каждый,1849 штатных интервалов все≤2 VB,
+40,021/40,007 virtual FPS, minimum cadence29,913049. Audit15,80 FPS отдельно,
+его41 изображения совпали с обычной RU. Все462 source-frame hashes и callback
+traces совпали с baseline; состав объектов, source timing, вода и mirror UV
+сохранены. Три fade полностью чернят scene+HUD; FAT неизменён.
+
+GPU depth ramp: RGB255 при глубине≤1920,186 на2400,105 на3000,16 на3600,
+полный0 на4000/4800. Source index0 alpha сохранён; дополнительные LIGHT holes
+nonzero→0 заменены RGB-затемнением. Это согласованная адаптация, не точная LIGHT.
+Fog settings меняются на VBlank вместе с commit; исходная VGA6/fade сохранена.
+
+Max291 quads/287 GE polygons/1154 vertices, texture260096 B, palette8192 B.
+CPU effect pool128 КиБ вместо384 внутри прежнего1 МиБ asset slab. Освободившаяся
+RAM используется сырыми кадрами; весь bounded working set действующих анимаций
+проверяется/читается при загрузке уровня. Measured max raw cache554880 B.
+Static startup274432 B, managed2293760 B, SDK headroom446464 B,
+reserve655360 B не тронут. Source world slab уже379576/393216 B: дальнейшие
+состояния требуют проверки размещения; diagnostic traces можно убрать из production.
+Худшая сумма measured prepare/submit/upload30,45/30,52 мс RU/EN из33,43 мс
+двух VBlank; номинальные2,9 мс не включают probe/history и не гарантируют бой.
+
+Проверки:36 effects,10516 runtime/1500 sweeps,12 pinned replacement,
+7040 exact-cache/56 packets; повторены150 native crops на язык и540 actual phase
+pairs. Полные ARM9 histories/traces сохранены. Быстрые кадры могут опережать
+одиночный effect-metadata probe; его неполное покрытие не выдаётся за полный trace.
+Baseline/точные исходники/ROM/manifests — `research/evidence/nds/n13p/`.
+
+Следующему этапу брать fog-путь: N13P builder явно задаёт `EFFECT_GPU_FOG=1`;
+default N13 Makefile оставлен для точного reference. N14 не запускать автоматически.
+30-cadence принят только для накопленных fixtures. Живые AI/бой, звук и полная
+touch-карта ещё не реализованы; N17P/N21P остаются архитектурными проверками.
+Физическая DS/DS Lite — N24. Игровых сохранений нет; GBA/SDL2 не изменялись.
+
+## Историческая передача после N13 — 29 октября 2026 года
+
+Поручение — **N12 → N13 → N13P**, затем решение об архитектуре и остановка перед
+N14. **N12/N13 готовы (эмулятор)**. Следующий ID — N13P; он разрешён текущим
+поручением. Производительность совместного renderer ещё не принята.
+
+Текущая RU ROM `build/nds/n13/ru/dok_nds_effects.nds`, SHA-256
+`19254dd869147d5cd34fba757bd246c0cf995efa148d49cea98dd3b19409e916`.
+[Паспорт](tasks/N13.md), [spec](spec/N13-effects.md),
+[compact](../../analysis/nds-n13-effects.json), доказательства `research/evidence/nds/n13/`.
+Новая задача не должна считать старые full reports прогонами финальной HUD ROM:
+2350 presentations на вариант сняты до последней HUD-правки, после неё выполнены
+отдельные592-frame RU/EN/audit regressions. Точные старые ELF воспроизведены и
+сохранены; final ROM/ELF/manifests — `research/evidence/nds/n13/final/`.
+
+Native PKR/PKE LIGHT, unsigned clamp, after-LIGHT zero mask, VGA6 percentage
+доRGB555, water getters/callbacks и native fade sequences восстановлены.
+16 palette rows8192 B;384 КиБ variant cache внутри1 МиБ asset slab. Shared
+wall/floor edge partition устраняет DS T junction cracks; GE quad strips
+сохраняют все полигоны при меньшем числе вершин. Staging1984 quads укладывается
+в N03 scene slab на ARM9 и host; reserve не увеличивался и не использовался.
+
+- 2865 native LIGHT vectors и150 crops на язык;540 actual phase pairs;
+  9283 native band interiors;65192 host poses с объектами;1500 service sweeps.
+- RU/EN/audit:37/2350,462 frame hashes и5983 callbacks; финальный HUD:12/592
+  на вариант, весь верхний кадр чёрный на native1%. N12 regression26/1790 PASS.
+- Fresh DOS3 levels: same camera/phase tuples, Native crop=actual ARM9 bytes.
+  Наблюдённая LEVEL2 ВОДА1 phase3, остальные0. В LEVEL1/3 scrolling water
+  не размещена. Отдельный reflected-world pass не найден в reviewed normal PLAY;
+  door mirror UV отдельно от него.48 presentations real N08 clock PASS.
+- До HUD-правки:1476 normal presentations, RU2,78 virtual FPS, p99/max47 VB,
+  min cadence1,27; prepare314,05 ms, submit35,54 ms.60/30 цели не пройдены.
+  GPU325632 B, palette8192 B;5880 vertices/1569 polygons;
+  reserve655360 B, SDK headroom450560 B. Это не аппаратный FPS.
+
+Первый шаг N13P — проверить N07P/N12/N13 manifests, повторить полный накопленный
+набор уже с финальным HUD и добавить максимальные LIGHT poses из host-check.
+Фиксировать baseline до правок. Измерять geometry/LIGHT/weld preparation,
+cache variants и GE submission; source timing, изображения и мир не сокращать.
+Можно проверять точный кэш готовой геометрии; его RAM и промахи на поворотах
+обязательно учитывать. Решение о необходимости переработки принимать после
+парного профиля. N14 не запускать при нехватке бюджета.
+
+Команды и общий toolchain/core — в N13 spec/паспорте. Физические DS/DS Lite — N24.
+Игровых сохранений нет. GBA/SDL2 статусы этой работой не изменены.
+
+## Историческая передача после N12 — 29 октября 2026 года
+
+Пользователь поручил **N12 → N13 → N13P**, затем решение об архитектуре.
+**N12 готова (эмулятор)**; продолжать N13 и N13P, остановиться перед N14.
+Предыдущая остановка после N11 больше не блокирует эти три задачи.
+
+Текущая RU ROM — `build/nds/n12/ru/dok_nds_sprites.nds`, SHA-256
+`bc035a51c906857ecb600bce70c4cee830faefb48a02d48d895b13e2b9827c53`.
+[Паспорт](tasks/N12.md), [правила/команды](spec/N12-sprites.md),
+[compact](../../analysis/nds-n12-sprites.json); полные доказательства —
+`research/evidence/nds/n12/`. N07P ROM/reports теперь исторические, не переписаны.
+
+Независимые billboard/animation API, metadata bank, RAM cache с pins и GPU
+plan/submit/commit. Epoch/revision связаны с scene lease. Native initial frame0,
+SAR16, signed intervals и подавление MMap стеной проверены по x86. Состояния
+объектов fixtures; живые AI/бой ещё не добавлены.
+
+- 1240 native projection vectors,12 constructors;1494 placements/4144 poses.
+  24451 C checks; scan65192 poses/586728 checks; max sprites39/28/82.
+- RU/EN/audit:26 cases/1790 frames каждый;462 ARM9 hashes всех кадров на вариант;
+  actual N04 bytes, flat depth и21738 controlled masked pixels PASS. Контрольные
+  PNG просмотрены. FAT неизменен, игровых записей нет.
+- Штатные1296 presentations: RU/EN43,61/43,56 virtual FPS, все активные интервалы
+  ≤2 VBlank, minimum window cadence29,913049. Цель60 не принята. Loading и
+  artificial all-frame walk отдельно; audit16,41FPS. GPU max260096 B,
+  palette512 B, reserve655360 B, SDK headroom499712 B.
+- Timestamp cadence и integer1s count29 опубликованы отдельно: идеальные два
+  VBlank не отвергаются из-за59,826Hz. 8 boundary/stall metric checks прошли.
+- 439 исторических inputs и95 N07P pins проверены с точными архивами. Старый
+  backend — неизменённый префикс; N12 API добавлен после него. N13 архивирует
+  заменяемые N12 bytes до правок; integrity целиком не отключать.
+
+Команды: `check_sprites.py --runtime`, затем `--variant en --runtime`,
+`--variant audit --runtime`, `summarize_sprites.py`; Ghidra —
+`export_sprite_evidence.ps1`. Общие Python3.14.6/Unicorn2.1.4, Zig0.13.0,
+BlocksDS1.24.0-1/GCC16.2.0, melonDS DS libretro1.4.0; core SHA проверяется.
+Первый шаг N13 — сверить compact/manifests, восстановить LIGHT/after-LIGHT mask,
+водные фазы и реестр отражений/палитровых переходов. В N12 свет identity;
+совместное архитектурное решение ещё **не принято**: это N13P.
+Полная игра/карта/звук, аппаратный FPS и DS/DS Lite остаются последующим этапам/N24.
+GBA/SDL2 этой задачей не менялись.
+
+## Историческая передача N07P и более ранних задач
+
 После остановки на N11 пользователь 29 октября отдельно поручил анализ,
 оптимизацию вывода и оценку FPS текущего прототипа, затем добавление промежуточных
 оптимизаций в план. **N07P готова (эмулятор)**; последующие реализации не запущены.

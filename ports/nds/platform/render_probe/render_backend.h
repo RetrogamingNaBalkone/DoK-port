@@ -88,4 +88,26 @@ dok_nds_render_result dok_nds_render_cell_matrix(
     int32_t out[12]);
 dok_nds_render_result dok_nds_render_clip_matrix(int32_t out[16]);
 
+/* N12 demand residency. Plan allocates addresses without writing texels, then
+ * submit queues geometry using those addresses. Commit copies pending payloads
+ * only AFTER that geometry swaps at VBlank, before the GE raster starts.
+ * CPU payloads remain pinned through commit. No old-frame/new-texel mixture.
+ * reset is an explicit level loading boundary; its palette remains borrowed. */
+typedef struct dok_nds_stream_texture {
+    uint64_t key;
+    dok_nds_render_texture texture;
+} dok_nds_stream_texture;
+typedef struct dok_nds_stream_stats {
+    uint32_t hits, misses, evictions, rebuilds, uploads, upload_bytes;
+    uint32_t resident_bytes, resident_count, commit_start_line, commit_end_line;
+} dok_nds_stream_stats;
+dok_nds_render_result dok_nds_stream_reset(const uint16_t *palette,uint32_t colors);
+dok_nds_render_result dok_nds_stream_plan(const dok_nds_stream_texture *textures,
+    uint32_t count,dok_nds_stream_stats *stats);
+dok_nds_render_result dok_nds_stream_commit(dok_nds_stream_stats *stats);
+dok_nds_render_result dok_nds_stream_palette_dirty(void);
+/* N13P explicit artistic adaptation: black depth fog, uncut geometry.
+ * Configure between submissions. Source LIGHT remains the exact reference. */
+void dok_nds_render_darkness(int enabled);
+
 #endif

@@ -19,7 +19,7 @@ typedef struct dok_nds_render_quad {
     uint16_t flags; /* Reserved, must be zero for N07 opaque surfaces. */
     uint32_t source_surface_id;
     uint16_t color_rgb555; /* Used only by diagnostic texture_slot=UINT16_MAX. */
-    uint16_t reserved;
+    uint16_t reserved; /* N13 LIGHT row0..15 when the16-row palette is enabled; otherwise0. */
 } dok_nds_render_quad;
 
 typedef struct dok_nds_render_cell {

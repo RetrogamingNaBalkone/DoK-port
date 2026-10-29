@@ -1,0 +1,1211 @@
+{
+  "schema_version": 1,
+  "task": "N13P",
+  "date": "2026-10-29",
+  "status": "ready-emulator",
+  "passed": true,
+  "next_task": "N14",
+  "decision": "Keep hardware3D scene/GE/depth architecture; replace production LIGHT tessellation with black per-pixel GPU fog",
+  "user_authorization": "Approximate lighting explicitly authorized; artistic aim: distant objects vanish into frightening darkness",
+  "fidelity_changes": [
+    "Smooth black depth fog instead of16 source color-index remaps",
+    "Source index0 silhouettes retained; extra nonzero-to0 LIGHT holes are replaced by RGB darkening",
+    "No geometry splits/welds or prepared-light geometry cache on the GPU path",
+    "Exact N13 LIGHT remains a reference and controlled mask/depth fixtures remain exact"
+  ],
+  "variants": {
+    "baseline-ru": {
+      "metrics": {
+        "intervals": 1849,
+        "histogram": {
+          "1": 33,
+          "2": 60,
+          "3": 41,
+          "4": 6,
+          "5": 8,
+          "6": 7,
+          "7": 6,
+          "8": 12,
+          "9": 8,
+          "10": 133,
+          "11": 101,
+          "12": 35,
+          "13": 98,
+          "14": 34,
+          "15": 27,
+          "16": 133,
+          "17": 13,
+          "18": 29,
+          "19": 39,
+          "20": 28,
+          "21": 37,
+          "22": 31,
+          "23": 35,
+          "24": 23,
+          "25": 28,
+          "26": 38,
+          "27": 30,
+          "28": 20,
+          "29": 22,
+          "30": 11,
+          "31": 27,
+          "32": 101,
+          "33": 119,
+          "34": 34,
+          "35": 107,
+          "36": 18,
+          "37": 14,
+          "38": 70,
+          "39": 115,
+          "40": 22,
+          "41": 11,
+          "42": 4,
+          "43": 1,
+          "44": 4,
+          "45": 15,
+          "46": 29,
+          "47": 32
+        },
+        "virtual_fps": 2.5688780041025856,
+        "median": 23,
+        "p95": 41,
+        "p99": 47,
+        "max": 47,
+        "fraction_over_one": 0.9821525148729042,
+        "fraction_over_two": 0.9497025419145484,
+        "refresh_hz": 59.82609828808083,
+        "rendered_frames": 1866,
+        "minimum_new_frames_in_one_second": 1,
+        "checked_one_second_windows": 1753,
+        "minimum_window_cadence_fps": 1.272895708257039,
+        "cadence_window_method": "Complete new-frame intervals spanning at least1s, enclosing timestamp duration; integer1s counts reported separately",
+        "prepare_ms": 338.2234164557425,
+        "submit_ms": 40.134298367042916,
+        "uploads": 1828,
+        "upload_bytes": 28979200,
+        "maximum_texture_bytes": 325632,
+        "maximum_palette_bytes": 8192,
+        "budget_passed": false,
+        "goal_60_passed": false
+      },
+      "cases": 41,
+      "presentations": 2740,
+      "source_frame_hashes": 462,
+      "source_callbacks": 7372,
+      "memory": {
+        "static_bytes": 263516,
+        "heap_start_gap": 32,
+        "static_startup_bytes": 270336,
+        "managed_bytes": 2293760,
+        "sdk_heap_available": 450560,
+        "reserve_bytes": 655360,
+        "closure_bytes": 3670016
+      },
+      "max_quads": 1586,
+      "max_polygons": 1569,
+      "max_vertices": 5880,
+      "max_texture_bytes": 325632,
+      "max_palette_bytes": 8192,
+      "max_variant_bytes": 393216,
+      "max_cpu_source_bytes": 307520,
+      "cold_loads": 17,
+      "report": {
+        "path": "build/nds/n13p/baseline-ru/emulator/result.json",
+        "bytes": 5353455,
+        "sha256": "d3b89a78ae437e17c4b41cfe4318c01ed3f3a110d4622f8078fbce2becfbfc59"
+      },
+      "rom_sha256": "19254dd869147d5cd34fba757bd246c0cf995efa148d49cea98dd3b19409e916",
+      "max_measured_work_ms": 781.9961531279691,
+      "nominal_two_vblank_component_margin_ms": -748.5659269017929,
+      "work_margin_scope": "Sum of prepare/submit/upload; excludes probe/history publishing and does not guarantee future combat budget",
+      "effect_metadata_samples": 2740
+    },
+    "baseline-en": {
+      "metrics": {
+        "intervals": 1849,
+        "histogram": {
+          "1": 33,
+          "2": 55,
+          "3": 46,
+          "4": 6,
+          "5": 7,
+          "6": 6,
+          "7": 7,
+          "8": 13,
+          "9": 7,
+          "10": 130,
+          "11": 104,
+          "12": 32,
+          "13": 99,
+          "14": 31,
+          "15": 26,
+          "16": 139,
+          "17": 11,
+          "18": 24,
+          "19": 35,
+          "20": 36,
+          "21": 35,
+          "22": 35,
+          "23": 30,
+          "24": 26,
+          "25": 28,
+          "26": 37,
+          "27": 30,
+          "28": 20,
+          "29": 20,
+          "30": 15,
+          "31": 21,
+          "32": 96,
+          "33": 126,
+          "34": 35,
+          "35": 106,
+          "36": 18,
+          "37": 16,
+          "38": 69,
+          "39": 118,
+          "40": 17,
+          "41": 16,
+          "42": 6,
+          "43": 2,
+          "44": 3,
+          "45": 13,
+          "46": 32,
+          "47": 30,
+          "48": 2
+        },
+        "virtual_fps": 2.5574156317256542,
+        "median": 23,
+        "p95": 41,
+        "p99": 47,
+        "max": 48,
+        "fraction_over_one": 0.9821525148729042,
+        "fraction_over_two": 0.9524067063277447,
+        "refresh_hz": 59.82609828808083,
+        "rendered_frames": 1866,
+        "minimum_new_frames_in_one_second": 1,
+        "checked_one_second_windows": 1753,
+        "minimum_window_cadence_fps": 1.2594968060648595,
+        "cadence_window_method": "Complete new-frame intervals spanning at least1s, enclosing timestamp duration; integer1s counts reported separately",
+        "prepare_ms": 342.53289988995135,
+        "submit_ms": 39.446353148630884,
+        "uploads": 1828,
+        "upload_bytes": 28979200,
+        "maximum_texture_bytes": 325632,
+        "maximum_palette_bytes": 8192,
+        "budget_passed": false,
+        "goal_60_passed": false
+      },
+      "cases": 41,
+      "presentations": 2740,
+      "source_frame_hashes": 462,
+      "source_callbacks": 7372,
+      "memory": {
+        "static_bytes": 263676,
+        "heap_start_gap": 32,
+        "static_startup_bytes": 270336,
+        "managed_bytes": 2293760,
+        "sdk_heap_available": 450560,
+        "reserve_bytes": 655360,
+        "closure_bytes": 3670016
+      },
+      "max_quads": 1586,
+      "max_polygons": 1569,
+      "max_vertices": 5880,
+      "max_texture_bytes": 325632,
+      "max_palette_bytes": 8192,
+      "max_variant_bytes": 393216,
+      "max_cpu_source_bytes": 276544,
+      "cold_loads": 17,
+      "report": {
+        "path": "build/nds/n13p/baseline-en/emulator/result.json",
+        "bytes": 5352504,
+        "sha256": "c1ad794d2d742c5e876df511112aa71cf4a1579cc0c165736748bae0b1c53bb5"
+      },
+      "rom_sha256": "5ddb58588e3de40c351cd7f71c580846300fa33cba492a71f45633bdbc2e7fdc",
+      "max_measured_work_ms": 788.2893175749751,
+      "nominal_two_vblank_component_margin_ms": -754.8590913487989,
+      "work_margin_scope": "Sum of prepare/submit/upload; excludes probe/history publishing and does not guarantee future combat budget",
+      "effect_metadata_samples": 2740
+    },
+    "optimized-ru": {
+      "metrics": {
+        "intervals": 1849,
+        "histogram": {
+          "1": 63,
+          "2": 330,
+          "3": 45,
+          "4": 41,
+          "5": 7,
+          "6": 223,
+          "7": 187,
+          "8": 14,
+          "9": 6,
+          "10": 9,
+          "11": 12,
+          "12": 32,
+          "13": 36,
+          "14": 42,
+          "15": 75,
+          "16": 78,
+          "17": 10,
+          "18": 22,
+          "19": 34,
+          "20": 34,
+          "21": 35,
+          "22": 35,
+          "23": 31,
+          "24": 26,
+          "25": 28,
+          "26": 30,
+          "27": 35,
+          "28": 20,
+          "29": 20,
+          "30": 16,
+          "31": 17,
+          "32": 28,
+          "33": 39,
+          "34": 32,
+          "35": 27,
+          "36": 16,
+          "37": 17,
+          "38": 12,
+          "39": 11,
+          "40": 22,
+          "41": 20,
+          "42": 9,
+          "43": 4,
+          "44": 2,
+          "45": 4,
+          "46": 5,
+          "47": 2,
+          "48": 6
+        },
+        "virtual_fps": 4.151253639609016,
+        "median": 10,
+        "p95": 38,
+        "p99": 44,
+        "max": 48,
+        "fraction_over_one": 0.9659275283937263,
+        "fraction_over_two": 0.7874526771227691,
+        "refresh_hz": 59.82609828808083,
+        "rendered_frames": 1866,
+        "minimum_new_frames_in_one_second": 1,
+        "checked_one_second_windows": 1474,
+        "minimum_window_cadence_fps": 1.2463770476683507,
+        "cadence_window_method": "Complete new-frame intervals spanning at least1s, enclosing timestamp duration; integer1s counts reported separately",
+        "prepare_ms": 192.29008794720997,
+        "submit_ms": 39.18403185706346,
+        "uploads": 1828,
+        "upload_bytes": 28979200,
+        "maximum_texture_bytes": 325632,
+        "maximum_palette_bytes": 8192,
+        "budget_passed": false,
+        "goal_60_passed": false
+      },
+      "cases": 41,
+      "presentations": 2740,
+      "source_frame_hashes": 462,
+      "source_callbacks": 7372,
+      "memory": {
+        "static_bytes": 435844,
+        "heap_start_gap": 32,
+        "static_startup_bytes": 442368,
+        "managed_bytes": 2293760,
+        "sdk_heap_available": 278528,
+        "reserve_bytes": 655360,
+        "closure_bytes": 3670016
+      },
+      "max_quads": 1586,
+      "max_polygons": 1569,
+      "max_vertices": 5880,
+      "max_texture_bytes": 325632,
+      "max_palette_bytes": 8192,
+      "max_variant_bytes": 393216,
+      "max_cpu_source_bytes": 307520,
+      "cold_loads": 17,
+      "report": {
+        "path": "build/nds/n13p/optimized-ru/emulator/result.json",
+        "bytes": 5327832,
+        "sha256": "cd5c2a445e2f4e199519a1b14f67cc422487d7e46ee56a156419c38cbaad39d8"
+      },
+      "rom_sha256": "1e4f5e21f50d54653debd6f94d5a84d914364e0af9f6fec2af399f22db659d80",
+      "max_measured_work_ms": 797.2678985147154,
+      "nominal_two_vblank_component_margin_ms": -763.8376722885391,
+      "work_margin_scope": "Sum of prepare/submit/upload; excludes probe/history publishing and does not guarantee future combat budget",
+      "effect_metadata_samples": 2678
+    },
+    "optimized-en": {
+      "metrics": {
+        "intervals": 1849,
+        "histogram": {
+          "1": 59,
+          "2": 333,
+          "3": 46,
+          "4": 41,
+          "5": 7,
+          "6": 189,
+          "7": 221,
+          "8": 13,
+          "9": 5,
+          "10": 11,
+          "11": 11,
+          "12": 28,
+          "13": 36,
+          "14": 44,
+          "15": 76,
+          "16": 77,
+          "17": 8,
+          "18": 22,
+          "19": 33,
+          "20": 33,
+          "21": 35,
+          "22": 35,
+          "23": 28,
+          "24": 28,
+          "25": 26,
+          "26": 27,
+          "27": 35,
+          "28": 27,
+          "29": 22,
+          "30": 18,
+          "31": 11,
+          "32": 28,
+          "33": 35,
+          "34": 31,
+          "35": 31,
+          "36": 18,
+          "37": 18,
+          "38": 14,
+          "39": 13,
+          "40": 16,
+          "41": 20,
+          "42": 16,
+          "43": 3,
+          "44": 2,
+          "45": 3,
+          "46": 8,
+          "47": 1,
+          "48": 6,
+          "49": 1
+        },
+        "virtual_fps": 4.111293233281106,
+        "median": 10,
+        "p95": 38,
+        "p99": 45,
+        "max": 49,
+        "fraction_over_one": 0.9680908599242833,
+        "fraction_over_two": 0.7879935100054083,
+        "refresh_hz": 59.82609828808083,
+        "rendered_frames": 1866,
+        "minimum_new_frames_in_one_second": 1,
+        "checked_one_second_windows": 1475,
+        "minimum_window_cadence_fps": 1.233527799754244,
+        "cadence_window_method": "Complete new-frame intervals spanning at least1s, enclosing timestamp duration; integer1s counts reported separately",
+        "prepare_ms": 194.08665512519852,
+        "submit_ms": 39.98369890473461,
+        "uploads": 1828,
+        "upload_bytes": 28979200,
+        "maximum_texture_bytes": 325632,
+        "maximum_palette_bytes": 8192,
+        "budget_passed": false,
+        "goal_60_passed": false
+      },
+      "cases": 41,
+      "presentations": 2740,
+      "source_frame_hashes": 462,
+      "source_callbacks": 7372,
+      "memory": {
+        "static_bytes": 436004,
+        "heap_start_gap": 32,
+        "static_startup_bytes": 442368,
+        "managed_bytes": 2293760,
+        "sdk_heap_available": 278528,
+        "reserve_bytes": 655360,
+        "closure_bytes": 3670016
+      },
+      "max_quads": 1586,
+      "max_polygons": 1569,
+      "max_vertices": 5880,
+      "max_texture_bytes": 325632,
+      "max_palette_bytes": 8192,
+      "max_variant_bytes": 393216,
+      "max_cpu_source_bytes": 276544,
+      "cold_loads": 17,
+      "report": {
+        "path": "build/nds/n13p/optimized-en/emulator/result.json",
+        "bytes": 5328071,
+        "sha256": "7bf04673ade70f35931cd0b60a3f6662abd38e0a64f0aa7b66aa616cbf927ac9"
+      },
+      "rom_sha256": "02aa8744facc767b2d70897095bc674a57afae2daa037f2e4abc89327331bf38",
+      "max_measured_work_ms": 803.8947744257904,
+      "nominal_two_vblank_component_margin_ms": -770.4645481996141,
+      "work_margin_scope": "Sum of prepare/submit/upload; excludes probe/history publishing and does not guarantee future combat budget",
+      "effect_metadata_samples": 2678
+    },
+    "optimized-audit": {
+      "metrics": {
+        "intervals": 1849,
+        "histogram": {
+          "3": 46,
+          "4": 337,
+          "5": 53,
+          "6": 33,
+          "7": 17,
+          "8": 156,
+          "9": 252,
+          "10": 12,
+          "11": 8,
+          "12": 11,
+          "13": 9,
+          "14": 28,
+          "15": 37,
+          "16": 36,
+          "17": 83,
+          "18": 79,
+          "19": 8,
+          "20": 21,
+          "21": 33,
+          "22": 34,
+          "23": 33,
+          "24": 37,
+          "25": 29,
+          "26": 27,
+          "27": 29,
+          "28": 27,
+          "29": 37,
+          "30": 23,
+          "31": 23,
+          "32": 18,
+          "33": 12,
+          "34": 26,
+          "35": 37,
+          "36": 32,
+          "37": 31,
+          "38": 17,
+          "39": 18,
+          "40": 14,
+          "41": 11,
+          "42": 18,
+          "43": 21,
+          "44": 12,
+          "45": 4,
+          "46": 1,
+          "47": 4,
+          "48": 7,
+          "49": 1,
+          "50": 7
+        },
+        "virtual_fps": 3.609791663446725,
+        "median": 12,
+        "p95": 40,
+        "p99": 47,
+        "max": 50,
+        "fraction_over_one": 1.0,
+        "fraction_over_two": 1.0,
+        "refresh_hz": 59.82609828808083,
+        "rendered_frames": 1866,
+        "minimum_new_frames_in_one_second": 1,
+        "checked_one_second_windows": 1633,
+        "minimum_window_cadence_fps": 1.1965219657616166,
+        "cadence_window_method": "Complete new-frame intervals spanning at least1s, enclosing timestamp duration; integer1s counts reported separately",
+        "prepare_ms": 229.4359385288078,
+        "submit_ms": 39.17796554983051,
+        "uploads": 1828,
+        "upload_bytes": 28979200,
+        "maximum_texture_bytes": 325632,
+        "maximum_palette_bytes": 8192,
+        "budget_passed": false,
+        "goal_60_passed": false
+      },
+      "cases": 41,
+      "presentations": 2740,
+      "source_frame_hashes": 462,
+      "source_callbacks": 7372,
+      "memory": {
+        "static_bytes": 435940,
+        "heap_start_gap": 32,
+        "static_startup_bytes": 442368,
+        "managed_bytes": 2293760,
+        "sdk_heap_available": 278528,
+        "reserve_bytes": 655360,
+        "closure_bytes": 3670016
+      },
+      "max_quads": 1586,
+      "max_polygons": 1569,
+      "max_vertices": 5880,
+      "max_texture_bytes": 325632,
+      "max_palette_bytes": 8192,
+      "max_variant_bytes": 393216,
+      "max_cpu_source_bytes": 307520,
+      "cold_loads": 17,
+      "report": {
+        "path": "build/nds/n13p/optimized-audit/emulator/result.json",
+        "bytes": 5353553,
+        "sha256": "1ece89d87170556b76b50cd762306ea8aaa703a9bf458713442cc05dd784786f"
+      },
+      "rom_sha256": "f4d180e2abdfcd8eb6463847eb8ef69fb4857a8d00b272d684d3545aa041e298",
+      "max_measured_work_ms": 834.5138754326478,
+      "nominal_two_vblank_component_margin_ms": -801.0836492064715,
+      "work_margin_scope": "Sum of prepare/submit/upload; excludes probe/history publishing and does not guarantee future combat budget",
+      "effect_metadata_samples": 2740
+    },
+    "fog-ru": {
+      "metrics": {
+        "intervals": 1849,
+        "histogram": {
+          "1": 934,
+          "2": 915
+        },
+        "virtual_fps": 40.021148963336266,
+        "median": 1,
+        "p95": 2,
+        "p99": 2,
+        "max": 2,
+        "fraction_over_one": 0.494862087614927,
+        "fraction_over_two": 0.0,
+        "refresh_hz": 59.82609828808083,
+        "rendered_frames": 1866,
+        "minimum_new_frames_in_one_second": 29,
+        "checked_one_second_windows": 781,
+        "minimum_window_cadence_fps": 29.913049144040414,
+        "cadence_window_method": "Complete new-frame intervals spanning at least1s, enclosing timestamp duration; integer1s counts reported separately",
+        "prepare_ms": 12.366163881282104,
+        "submit_ms": 4.314470011599181,
+        "uploads": 1633,
+        "upload_bytes": 26570752,
+        "maximum_texture_bytes": 260096,
+        "maximum_palette_bytes": 8192,
+        "budget_passed": true,
+        "goal_60_passed": false
+      },
+      "cases": 41,
+      "presentations": 2740,
+      "source_frame_hashes": 462,
+      "source_callbacks": 7372,
+      "memory": {
+        "static_bytes": 267076,
+        "heap_start_gap": 32,
+        "static_startup_bytes": 274432,
+        "managed_bytes": 2293760,
+        "sdk_heap_available": 446464,
+        "reserve_bytes": 655360,
+        "closure_bytes": 3670016
+      },
+      "max_quads": 291,
+      "max_polygons": 287,
+      "max_vertices": 1154,
+      "max_texture_bytes": 260096,
+      "max_palette_bytes": 8192,
+      "max_variant_bytes": 131072,
+      "max_cpu_source_bytes": 554880,
+      "cold_loads": 17,
+      "report": {
+        "path": "build/nds/n13p/fog-ru/emulator/result.json",
+        "bytes": 5298529,
+        "sha256": "6437d18229c24c6fa8e36a50a71de653a5dab998596de114b0fd907bb84040e6"
+      },
+      "rom_sha256": "71b7a7a031b3117c5774c2a9c8db362a5389e408f1c62e014c739c29ce6627d4",
+      "max_measured_work_ms": 30.45182753872697,
+      "nominal_two_vblank_component_margin_ms": 2.9783986874493174,
+      "work_margin_scope": "Sum of prepare/submit/upload; excludes probe/history publishing and does not guarantee future combat budget",
+      "effect_metadata_samples": 2715
+    },
+    "fog-en": {
+      "metrics": {
+        "intervals": 1849,
+        "histogram": {
+          "1": 933,
+          "2": 916
+        },
+        "virtual_fps": 40.00667476841282,
+        "median": 1,
+        "p95": 2,
+        "p99": 2,
+        "max": 2,
+        "fraction_over_one": 0.49540292049756623,
+        "fraction_over_two": 0.0,
+        "refresh_hz": 59.82609828808083,
+        "rendered_frames": 1866,
+        "minimum_new_frames_in_one_second": 29,
+        "checked_one_second_windows": 781,
+        "minimum_window_cadence_fps": 29.913049144040414,
+        "cadence_window_method": "Complete new-frame intervals spanning at least1s, enclosing timestamp duration; integer1s counts reported separately",
+        "prepare_ms": 12.357598080473805,
+        "submit_ms": 4.355958826067339,
+        "uploads": 1633,
+        "upload_bytes": 26570752,
+        "maximum_texture_bytes": 260096,
+        "maximum_palette_bytes": 8192,
+        "budget_passed": true,
+        "goal_60_passed": false
+      },
+      "cases": 41,
+      "presentations": 2740,
+      "source_frame_hashes": 462,
+      "source_callbacks": 7372,
+      "memory": {
+        "static_bytes": 267236,
+        "heap_start_gap": 32,
+        "static_startup_bytes": 274432,
+        "managed_bytes": 2293760,
+        "sdk_heap_available": 446464,
+        "reserve_bytes": 655360,
+        "closure_bytes": 3670016
+      },
+      "max_quads": 291,
+      "max_polygons": 287,
+      "max_vertices": 1154,
+      "max_texture_bytes": 260096,
+      "max_palette_bytes": 8192,
+      "max_variant_bytes": 131072,
+      "max_cpu_source_bytes": 538496,
+      "cold_loads": 17,
+      "report": {
+        "path": "build/nds/n13p/fog-en/emulator/result.json",
+        "bytes": 5299116,
+        "sha256": "d1c6e83a7d2b27b16f1cabe64410b07749b162691d57ec4afa4d36dd56ea7b6d"
+      },
+      "rom_sha256": "8a970206abd0a1cc273056b00257ca27ebdd58db107a153fcc05f3f4e8601abd",
+      "max_measured_work_ms": 30.51669598676755,
+      "nominal_two_vblank_component_margin_ms": 2.913530239408736,
+      "work_margin_scope": "Sum of prepare/submit/upload; excludes probe/history publishing and does not guarantee future combat budget",
+      "effect_metadata_samples": 2715
+    },
+    "fog-audit": {
+      "metrics": {
+        "intervals": 1849,
+        "histogram": {
+          "3": 396,
+          "4": 1452,
+          "5": 1
+        },
+        "virtual_fps": 15.800379336474995,
+        "median": 4,
+        "p95": 4,
+        "p99": 4,
+        "max": 5,
+        "fraction_over_one": 1.0,
+        "fraction_over_two": 1.0,
+        "refresh_hz": 59.82609828808083,
+        "rendered_frames": 1866,
+        "minimum_new_frames_in_one_second": 14,
+        "checked_one_second_windows": 1416,
+        "minimum_window_cadence_fps": 14.71133564461004,
+        "cadence_window_method": "Complete new-frame intervals spanning at least1s, enclosing timestamp duration; integer1s counts reported separately",
+        "prepare_ms": 49.222663341466124,
+        "submit_ms": 4.294752177184656,
+        "uploads": 1633,
+        "upload_bytes": 26570752,
+        "maximum_texture_bytes": 260096,
+        "maximum_palette_bytes": 8192,
+        "budget_passed": false,
+        "goal_60_passed": false
+      },
+      "cases": 41,
+      "presentations": 2740,
+      "source_frame_hashes": 462,
+      "source_callbacks": 7372,
+      "memory": {
+        "static_bytes": 267172,
+        "heap_start_gap": 32,
+        "static_startup_bytes": 274432,
+        "managed_bytes": 2293760,
+        "sdk_heap_available": 446464,
+        "reserve_bytes": 655360,
+        "closure_bytes": 3670016
+      },
+      "max_quads": 291,
+      "max_polygons": 287,
+      "max_vertices": 1154,
+      "max_texture_bytes": 260096,
+      "max_palette_bytes": 8192,
+      "max_variant_bytes": 131072,
+      "max_cpu_source_bytes": 554880,
+      "cold_loads": 17,
+      "report": {
+        "path": "build/nds/n13p/fog-audit/emulator/result.json",
+        "bytes": 5312920,
+        "sha256": "e10d4b6ca2e052c5f59849cf42071dc02fe39dae6f0ba8c09eafe5a4877319f9"
+      },
+      "rom_sha256": "8c90072d9a7be82660675fb3b7142cc66e77f83d4cb0082dd425d883ed5e0535",
+      "max_measured_work_ms": 67.14925728610822,
+      "nominal_two_vblank_component_margin_ms": -33.719031059931936,
+      "work_margin_scope": "Sum of prepare/submit/upload; excludes probe/history publishing and does not guarantee future combat budget",
+      "effect_metadata_samples": 2740
+    }
+  },
+  "depth_quality": [
+    {
+      "depth": 600,
+      "rgb": [
+        255,
+        255,
+        255
+      ]
+    },
+    {
+      "depth": 1600,
+      "rgb": [
+        255,
+        255,
+        255
+      ]
+    },
+    {
+      "depth": 1920,
+      "rgb": [
+        255,
+        255,
+        255
+      ]
+    },
+    {
+      "depth": 2400,
+      "rgb": [
+        186,
+        186,
+        186
+      ]
+    },
+    {
+      "depth": 3000,
+      "rgb": [
+        105,
+        105,
+        105
+      ]
+    },
+    {
+      "depth": 3600,
+      "rgb": [
+        16,
+        16,
+        16
+      ]
+    },
+    {
+      "depth": 4000,
+      "rgb": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "depth": 4800,
+      "rgb": [
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  "quality": {
+    "path": "build/nds/n13p/quality/emulator/result.json",
+    "bytes": 1916,
+    "sha256": "2da729bbab6590fd82b64e6119e1819abd32b5c9d585470dedcb171c517752a3"
+  },
+  "host": {
+    "path": "research/evidence/nds/n13p/host-check.json",
+    "bytes": 7165,
+    "sha256": "894f4d3f255e732bc5d55311436b0387dc2125873aab48af7b9558a309530ef5"
+  },
+  "input_proof": {
+    "path": "research/evidence/nds/n13p/baseline-inputs.json",
+    "bytes": 40300,
+    "sha256": "be834cc4f2448b1a0a8fae8c1e67b37469baad765a9f8e58ebb9d4d8724c0cd5"
+  },
+  "additional_source_archives": {
+    "path": "research/evidence/nds/n13p/source-supersession-extra.json",
+    "bytes": 1745,
+    "sha256": "f90b55cb6cf0821a62a49ffc1c0ec47f73a04b958fab6fb6858f1ed91ef7f34d"
+  },
+  "fixture": {
+    "task": "N13P",
+    "cases": 41,
+    "presentations": 2740,
+    "artifact": {
+      "path": "build/nds/n13p/scene.dat",
+      "bytes": 33408,
+      "sha256": "d98897fd562c810cce703fb85e1c903b4dbdaa7ce588108f9ee936abd9000b30"
+    },
+    "inherited_cases": 37,
+    "new_cases": "3 maximum-LIGHT stationary poses90frames each; one native water turn120frames",
+    "source_clock": "N08 scheduler driven by explicit166tick fixture per service sweep; real-clock integration was tested in N13"
+  },
+  "artifacts": [
+    {
+      "path": "research/evidence/nds/n13p/final/baseline-ru/result.json",
+      "bytes": 5353455,
+      "sha256": "d3b89a78ae437e17c4b41cfe4318c01ed3f3a110d4622f8078fbce2becfbfc59"
+    },
+    {
+      "path": "research/evidence/nds/n13p/final/baseline-ru/build-manifest.json",
+      "bytes": 39889,
+      "sha256": "d46a8cb234c80ccbef42aaac7722086ebaf56045192b29eeeaec1086e6611e25"
+    },
+    {
+      "path": "research/evidence/nds/n13p/final/baseline-ru/dok_nds_effects.nds",
+      "bytes": 226304,
+      "sha256": "19254dd869147d5cd34fba757bd246c0cf995efa148d49cea98dd3b19409e916"
+    },
+    {
+      "path": "research/evidence/nds/n13p/final/baseline-ru/dok_nds_effects.elf",
+      "bytes": 1603284,
+      "sha256": "c53c4175e46b6cd69310d0252d6c9f2fa1d1649c31370508ea5c4d9f332945be"
+    },
+    {
+      "path": "research/evidence/nds/n13p/final/baseline-en/result.json",
+      "bytes": 5352504,
+      "sha256": "c1ad794d2d742c5e876df511112aa71cf4a1579cc0c165736748bae0b1c53bb5"
+    },
+    {
+      "path": "research/evidence/nds/n13p/final/baseline-en/build-manifest.json",
+      "bytes": 39889,
+      "sha256": "7be771d4f875965d37b815f7ef5c02c133655ebd528614e006c4438edd78bac6"
+    },
+    {
+      "path": "research/evidence/nds/n13p/final/baseline-en/dok_nds_effects.nds",
+      "bytes": 226304,
+      "sha256": "5ddb58588e3de40c351cd7f71c580846300fa33cba492a71f45633bdbc2e7fdc"
+    },
+    {
+      "path": "research/evidence/nds/n13p/final/baseline-en/dok_nds_effects.elf",
+      "bytes": 1604112,
+      "sha256": "c29c52e3a5fe6004716e022694c1b45b0644987b22de611e94d6c8487bdbdebe"
+    },
+    {
+      "path": "research/evidence/nds/n13p/final/optimized-ru/result.json",
+      "bytes": 5327832,
+      "sha256": "cd5c2a445e2f4e199519a1b14f67cc422487d7e46ee56a156419c38cbaad39d8"
+    },
+    {
+      "path": "research/evidence/nds/n13p/final/optimized-ru/build-manifest.json",
+      "bytes": 40411,
+      "sha256": "3a161e5a7461c665d143f67be3b8ef8bd24c148c12f2e6b861f1c25e8dae6517"
+    },
+    {
+      "path": "research/evidence/nds/n13p/final/optimized-ru/dok_nds_effects.nds",
+      "bytes": 227328,
+      "sha256": "1e4f5e21f50d54653debd6f94d5a84d914364e0af9f6fec2af399f22db659d80"
+    },
+    {
+      "path": "research/evidence/nds/n13p/final/optimized-ru/dok_nds_effects.elf",
+      "bytes": 1613464,
+      "sha256": "551c6eeff182f4f34066b39ad839ae2830eca04c6ce892794aa0cf2ae8e04867"
+    },
+    {
+      "path": "research/evidence/nds/n13p/final/optimized-en/result.json",
+      "bytes": 5328071,
+      "sha256": "7bf04673ade70f35931cd0b60a3f6662abd38e0a64f0aa7b66aa616cbf927ac9"
+    },
+    {
+      "path": "research/evidence/nds/n13p/final/optimized-en/build-manifest.json",
+      "bytes": 40411,
+      "sha256": "0d80ed2538ba2a57a480b3b17e68f2e213234524a7b918acbc387a1e87f812e4"
+    },
+    {
+      "path": "research/evidence/nds/n13p/final/optimized-en/dok_nds_effects.nds",
+      "bytes": 227328,
+      "sha256": "02aa8744facc767b2d70897095bc674a57afae2daa037f2e4abc89327331bf38"
+    },
+    {
+      "path": "research/evidence/nds/n13p/final/optimized-en/dok_nds_effects.elf",
+      "bytes": 1614296,
+      "sha256": "3a6b1c2f5f37ba005cfd5205d316a248a4ca884d0ad5d7f55c9a833c23c3a1ff"
+    },
+    {
+      "path": "research/evidence/nds/n13p/final/optimized-audit/result.json",
+      "bytes": 5353553,
+      "sha256": "1ece89d87170556b76b50cd762306ea8aaa703a9bf458713442cc05dd784786f"
+    },
+    {
+      "path": "research/evidence/nds/n13p/final/optimized-audit/build-manifest.json",
+      "bytes": 40419,
+      "sha256": "5b46814a49156ef8a84234749603abaa19890c803e43d2be1eade4e6ca530cb5"
+    },
+    {
+      "path": "research/evidence/nds/n13p/final/optimized-audit/dok_nds_effects.nds",
+      "bytes": 227328,
+      "sha256": "f4d180e2abdfcd8eb6463847eb8ef69fb4857a8d00b272d684d3545aa041e298"
+    },
+    {
+      "path": "research/evidence/nds/n13p/final/optimized-audit/dok_nds_effects.elf",
+      "bytes": 1614204,
+      "sha256": "2e55ead1f38e731e23a9f91e716988a23d211d10e9cb08852f30f135e3301547"
+    },
+    {
+      "path": "research/evidence/nds/n13p/final/fog-ru/result.json",
+      "bytes": 5298529,
+      "sha256": "6437d18229c24c6fa8e36a50a71de653a5dab998596de114b0fd907bb84040e6"
+    },
+    {
+      "path": "research/evidence/nds/n13p/final/fog-ru/build-manifest.json",
+      "bytes": 40758,
+      "sha256": "4d6beb06ea2faea6a258d5ef0a6cc88fe56202c35f99260245210db22c694178"
+    },
+    {
+      "path": "research/evidence/nds/n13p/final/fog-ru/dok_nds_effects.nds",
+      "bytes": 227328,
+      "sha256": "71b7a7a031b3117c5774c2a9c8db362a5389e408f1c62e014c739c29ce6627d4"
+    },
+    {
+      "path": "research/evidence/nds/n13p/final/fog-ru/dok_nds_effects.elf",
+      "bytes": 1613160,
+      "sha256": "e624f8bc472d2dc6aee2ffd9969931a138f27270ddcf98a596191a5726ccf897"
+    },
+    {
+      "path": "research/evidence/nds/n13p/final/fog-ru/case-01-top.png",
+      "bytes": 22988,
+      "sha256": "abb6b7d346b4b970bcc990f1efa32b36e889ab8cf3dabd8c917724095d97ea65"
+    },
+    {
+      "path": "research/evidence/nds/n13p/final/fog-ru/case-02-top.png",
+      "bytes": 2607,
+      "sha256": "02dad413bb241695f8b1fe141f68b1f15aac9aa70067019717933bbf79c8cbb9"
+    },
+    {
+      "path": "research/evidence/nds/n13p/final/fog-ru/case-03-top.png",
+      "bytes": 32022,
+      "sha256": "2cacc989fe1f494d4ecc993db54d846701a5c7b91db836d7928b528f97887511"
+    },
+    {
+      "path": "research/evidence/nds/n13p/final/fog-ru/case-04-top.png",
+      "bytes": 2654,
+      "sha256": "16a331751fb5474bf7b869436ef30db3b3a7cc0762471dda0850e0ea60155352"
+    },
+    {
+      "path": "research/evidence/nds/n13p/final/fog-ru/case-05-top.png",
+      "bytes": 22619,
+      "sha256": "f66827a8165626ae67e9529e538fde102fda3e792965b8c9f620024df18296df"
+    },
+    {
+      "path": "research/evidence/nds/n13p/final/fog-ru/case-06-top.png",
+      "bytes": 2880,
+      "sha256": "78daa6501eea58df857ac720ee4b52e5abfce26e78ca78a1ea5df7ffa04013cd"
+    },
+    {
+      "path": "research/evidence/nds/n13p/final/fog-ru/case-07-top.png",
+      "bytes": 23346,
+      "sha256": "ffdb56c334316bfc260646b8c6a082825306553459c9d7c886edcdd6f91c40c5"
+    },
+    {
+      "path": "research/evidence/nds/n13p/final/fog-ru/case-08-top.png",
+      "bytes": 2136,
+      "sha256": "354cb872f824d492e5c9a393466074b7280c140bc7903c2414335e197559da5a"
+    },
+    {
+      "path": "research/evidence/nds/n13p/final/fog-ru/case-09-top.png",
+      "bytes": 27391,
+      "sha256": "7a666128c57aaef0f3f24a7d9f719e262f4690dd6373b1a587f34acf50500952"
+    },
+    {
+      "path": "research/evidence/nds/n13p/final/fog-ru/case-10-top.png",
+      "bytes": 2696,
+      "sha256": "dadb4b0f722af6a20b64669f8150a4450df778d46607411756b482bf1eb21cb9"
+    },
+    {
+      "path": "research/evidence/nds/n13p/final/fog-ru/case-11-top.png",
+      "bytes": 22305,
+      "sha256": "8a1d72656cc6bc2b76e2b8592ce58f61caa0a58356e5648d6a88f4d86b17c3aa"
+    },
+    {
+      "path": "research/evidence/nds/n13p/final/fog-ru/case-12-top.png",
+      "bytes": 4205,
+      "sha256": "dd81aabb18edb1a04eccf4ab383f8ba91f53bd5a5913bd24ccddd678cb8ab7dd"
+    },
+    {
+      "path": "research/evidence/nds/n13p/final/fog-ru/case-13-top.png",
+      "bytes": 25020,
+      "sha256": "d4223c622f78eadae7578b711541e0e8bb7f26dfbaf7106f618c2fd384dce0b6"
+    },
+    {
+      "path": "research/evidence/nds/n13p/final/fog-ru/case-14-top.png",
+      "bytes": 24681,
+      "sha256": "e84d16415855bed2aef2f96826aa863f176f674b467296934c50e51d81fb9470"
+    },
+    {
+      "path": "research/evidence/nds/n13p/final/fog-ru/case-15-top.png",
+      "bytes": 2430,
+      "sha256": "9cd77ee0913849a3e171435926159f6fd433de1d590b33e83693d467a892169b"
+    },
+    {
+      "path": "research/evidence/nds/n13p/final/fog-ru/case-16-top.png",
+      "bytes": 23242,
+      "sha256": "76e54ce398f16ea138235b2d05643a024a5b0f40934dfe3f18e77869f953b9fb"
+    },
+    {
+      "path": "research/evidence/nds/n13p/final/fog-ru/case-17-top.png",
+      "bytes": 9197,
+      "sha256": "f3184be05f8d731d212a43775ce36653a1f728ef92bdceff0f014c4f424fc7d3"
+    },
+    {
+      "path": "research/evidence/nds/n13p/final/fog-ru/case-18-top.png",
+      "bytes": 1817,
+      "sha256": "22ffa628be51bbd30795e51a671ac980f804aaf59cfbe0c0b3858c70806efc9b"
+    },
+    {
+      "path": "research/evidence/nds/n13p/final/fog-ru/case-19-top.png",
+      "bytes": 9221,
+      "sha256": "77d659bf6375f390d68e87468da8ed7c1dfda9baa1713ab00182c5338e477aed"
+    },
+    {
+      "path": "research/evidence/nds/n13p/final/fog-ru/case-20-top.png",
+      "bytes": 23444,
+      "sha256": "1a50fba1b9b96b37e8346a2cf6fbbd5a041f706090480f56eb7c12bd944789f4"
+    },
+    {
+      "path": "research/evidence/nds/n13p/final/fog-ru/case-21-top.png",
+      "bytes": 22883,
+      "sha256": "b2d00c1619b935de9eac1f3339e7d5025aa497d5099477f45ea83d591e850cda"
+    },
+    {
+      "path": "research/evidence/nds/n13p/final/fog-ru/case-22-top.png",
+      "bytes": 21127,
+      "sha256": "f1addf855f30b52aa7d0541addf947dd358d1b8068bfa492095dca0368e13f6a"
+    },
+    {
+      "path": "research/evidence/nds/n13p/final/fog-ru/case-23-top.png",
+      "bytes": 20795,
+      "sha256": "dfd03ebf2e8d56aa386057ab4fe13fe3b2a3e22c7747987b596d06d4a1b001f3"
+    },
+    {
+      "path": "research/evidence/nds/n13p/final/fog-ru/case-24-top.png",
+      "bytes": 9234,
+      "sha256": "41601ae442e8d3ec34066dea07a2b1f5f3f5c39e2c9a53166a102cd2270da3f0"
+    },
+    {
+      "path": "research/evidence/nds/n13p/final/fog-ru/case-25-top.png",
+      "bytes": 9219,
+      "sha256": "b589f5b31859b1a2b616441f146a3b1735831e54b7309c7cc672fed1a9c79c08"
+    },
+    {
+      "path": "research/evidence/nds/n13p/final/fog-ru/case-26-top.png",
+      "bytes": 5588,
+      "sha256": "dccd54fb391659f525c1861e94ffa2752d170599187c860dd05a95671dd92a4b"
+    },
+    {
+      "path": "research/evidence/nds/n13p/final/fog-ru/case-27-top.png",
+      "bytes": 22988,
+      "sha256": "abb6b7d346b4b970bcc990f1efa32b36e889ab8cf3dabd8c917724095d97ea65"
+    },
+    {
+      "path": "research/evidence/nds/n13p/final/fog-ru/case-28-top.png",
+      "bytes": 32022,
+      "sha256": "2cacc989fe1f494d4ecc993db54d846701a5c7b91db836d7928b528f97887511"
+    },
+    {
+      "path": "research/evidence/nds/n13p/final/fog-ru/case-29-top.png",
+      "bytes": 22619,
+      "sha256": "f66827a8165626ae67e9529e538fde102fda3e792965b8c9f620024df18296df"
+    },
+    {
+      "path": "research/evidence/nds/n13p/final/fog-ru/case-30-top.png",
+      "bytes": 25817,
+      "sha256": "ec8169a8ab2f07fa013271da462955480730f9324d77bd3fd4409777c1a7ba57"
+    },
+    {
+      "path": "research/evidence/nds/n13p/final/fog-ru/case-31-top.png",
+      "bytes": 15783,
+      "sha256": "2f0811b4d53acfdadc2aa7d68b9382f3ecf4990777a7bfad80eaa3ebd5e0a476"
+    },
+    {
+      "path": "research/evidence/nds/n13p/final/fog-ru/case-32-top.png",
+      "bytes": 16560,
+      "sha256": "20c2b1924ea2dcf1be3f173e6ced1cfedaa5496b390c79508c89b7026c22aadf"
+    },
+    {
+      "path": "research/evidence/nds/n13p/final/fog-ru/case-33-top.png",
+      "bytes": 13586,
+      "sha256": "bd1d9210390c0681ae4e9699ed49b365aeed1fc6a3d897376e7b46005349d3e2"
+    },
+    {
+      "path": "research/evidence/nds/n13p/final/fog-ru/case-34-top.png",
+      "bytes": 2992,
+      "sha256": "d894183be7bce4d1eaaac699783a74e7ed453630a6318bffd7485fa4f48ad8c1"
+    },
+    {
+      "path": "research/evidence/nds/n13p/final/fog-ru/case-35-top.png",
+      "bytes": 223,
+      "sha256": "5203cd22e98be76a3fb269a501397c0e4d4e7f713b9799d1f32f0687d7b1cd54"
+    },
+    {
+      "path": "research/evidence/nds/n13p/final/fog-ru/case-36-top.png",
+      "bytes": 223,
+      "sha256": "5203cd22e98be76a3fb269a501397c0e4d4e7f713b9799d1f32f0687d7b1cd54"
+    },
+    {
+      "path": "research/evidence/nds/n13p/final/fog-ru/case-37-top.png",
+      "bytes": 223,
+      "sha256": "5203cd22e98be76a3fb269a501397c0e4d4e7f713b9799d1f32f0687d7b1cd54"
+    },
+    {
+      "path": "research/evidence/nds/n13p/final/fog-ru/case-38-top.png",
+      "bytes": 24065,
+      "sha256": "5831124965c9d41d137819d66ef390e2a686011b343436003effd9ca1c02e0e9"
+    },
+    {
+      "path": "research/evidence/nds/n13p/final/fog-ru/case-39-top.png",
+      "bytes": 27840,
+      "sha256": "d49dc9b4a48d5459a1b75a5116e6d04ad43ed2b531076ed8eecfed077441dc6f"
+    },
+    {
+      "path": "research/evidence/nds/n13p/final/fog-ru/case-40-top.png",
+      "bytes": 16455,
+      "sha256": "dde60aad079a6012f110f64a9ffd8301bf527a1198372d412a4b89f18d17c51b"
+    },
+    {
+      "path": "research/evidence/nds/n13p/final/fog-ru/case-41-top.png",
+      "bytes": 27263,
+      "sha256": "e8b5980159916b79f586595f3f02cbabbf41b8d0919e5ffccc980de12537f60a"
+    },
+    {
+      "path": "research/evidence/nds/n13p/final/fog-en/result.json",
+      "bytes": 5299116,
+      "sha256": "d1c6e83a7d2b27b16f1cabe64410b07749b162691d57ec4afa4d36dd56ea7b6d"
+    },
+    {
+      "path": "research/evidence/nds/n13p/final/fog-en/build-manifest.json",
+      "bytes": 40758,
+      "sha256": "bb489ed7204eea71696794bf67d037064d96a8b62ca7459aac6363b6cbdb7bcb"
+    },
+    {
+      "path": "research/evidence/nds/n13p/final/fog-en/dok_nds_effects.nds",
+      "bytes": 227328,
+      "sha256": "8a970206abd0a1cc273056b00257ca27ebdd58db107a153fcc05f3f4e8601abd"
+    },
+    {
+      "path": "research/evidence/nds/n13p/final/fog-en/dok_nds_effects.elf",
+      "bytes": 1614136,
+      "sha256": "8f38df6cf2d33a031b1df0ee521b57938fcefa625b63864f6481214773d5bf68"
+    },
+    {
+      "path": "research/evidence/nds/n13p/final/fog-audit/result.json",
+      "bytes": 5312920,
+      "sha256": "e10d4b6ca2e052c5f59849cf42071dc02fe39dae6f0ba8c09eafe5a4877319f9"
+    },
+    {
+      "path": "research/evidence/nds/n13p/final/fog-audit/build-manifest.json",
+      "bytes": 40766,
+      "sha256": "df6b1e7b774218a0a5e0a097fe2b478b9f5eba2994e4f064ed9b3af694779c7d"
+    },
+    {
+      "path": "research/evidence/nds/n13p/final/fog-audit/dok_nds_effects.nds",
+      "bytes": 227328,
+      "sha256": "8c90072d9a7be82660675fb3b7142cc66e77f83d4cb0082dd425d883ed5e0535"
+    },
+    {
+      "path": "research/evidence/nds/n13p/final/fog-audit/dok_nds_effects.elf",
+      "bytes": 1613920,
+      "sha256": "6912840e3e55128cb62716f7a44fe1f3bf87e52f6a49403502b972fe3acc3a46"
+    }
+  ],
+  "limitations": [
+    "DS-mode emulator only; physical DS/DS Lite remain N24",
+    "Deterministic166tick source fixture per sweep; no claim of full gameplay or real hardware FPS",
+    "Audit hashing overhead reported separately; no audio, live combat or full second-screen map yet",
+    "30 cadence accepted for normal accumulated fixtures;60 not accepted",
+    "Fast frames can outrun the single effect-metadata probe; presentation history, callback trace, case packets and462 source-frame hashes are complete",
+    "N14 is not started automatically; N17P/N21P retain architectural decision points"
+  ]
+}
