@@ -1,0 +1,165 @@
+{
+  "task": "N17",
+  "status": "ready-emulator",
+  "passed": true,
+  "host": {
+    "test_ai_combat": {
+      "checks": 11503,
+      "failures": 0,
+      "line": 0,
+      "scenarios": 268,
+      "callbacks": 2060,
+      "trace_hash": 3001418237,
+      "groups": 52,
+      "placed_definitions": 868,
+      "deaths": 104,
+      "melee": 104,
+      "ranged": 140,
+      "trace_count": 2060,
+      "negative_intervals": 56
+    },
+    "test_ai": {
+      "checks": 94532,
+      "failures": 0,
+      "line": 0,
+      "scenarios": 18,
+      "callbacks": 2152,
+      "trace_hash": 2560806509,
+      "considerations": 2980,
+      "motion_callbacks": 2152,
+      "course_trials": 1620,
+      "ai_bytes": 9880,
+      "stress_callbacks": 4374
+    },
+    "test_combat": {
+      "checks": 313608,
+      "failures": 0,
+      "line": 0,
+      "scenarios": 34,
+      "callbacks": 108,
+      "trace_hash": 1888275799,
+      "workspace_bytes": 1640256,
+      "combat_bytes": 12984
+    },
+    "test_sprites": {
+      "checks": 24451,
+      "failures": 0,
+      "callbacks": 81,
+      "draws_60": 72,
+      "draws_30": 37
+    }
+  },
+  "arm9": [
+    390286148,
+    1,
+    1,
+    11503,
+    0,
+    0,
+    268,
+    2060,
+    3001418237,
+    0,
+    1676228,
+    9844,
+    3,
+    13710,
+    52,
+    104
+  ],
+  "native": {
+    "task": "N17",
+    "passed": true,
+    "callback_records": 2060,
+    "languages": {
+      "1": {
+        "callbacks": 1030,
+        "groups": 13,
+        "burst_thresholds": 42,
+        "damage_words": 2005,
+        "sight_scripts": 7
+      },
+      "2": {
+        "callbacks": 1030,
+        "groups": 13,
+        "burst_thresholds": 42,
+        "damage_words": 2005,
+        "sight_scripts": 7
+      }
+    },
+    "whole_DOS_session": false,
+    "original_sha256_before": {
+      "ru": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+      "en": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b"
+    },
+    "original_sha256_after": {
+      "ru": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+      "en": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b"
+    },
+    "controlled": [
+      "source animation accessors from verified original RES metadata",
+      "front lookup and source sight result in full callback",
+      "scripted world lookup targets for sight body",
+      "heading and collision trial services",
+      "N09 motion call boundary",
+      "burst stopwatch sample/reset",
+      "projectile allocation",
+      "audio/UI services"
+    ],
+    "executed": [
+      "original full active callback control flow",
+      "original far copy helper CLD/REP/RETF8",
+      "nested original player event/stat signed clamp",
+      "state/frame/course/shot counters",
+      "death height/flags and map-write requests",
+      "source sight body100-unit double lookup/self/hero/flags/5000 bound"
+    ],
+    "limitations": [
+      "Geometry/motion were independently verified in N09/N10, not re-executed here",
+      "Native resource heap/far layout, audio/UI drivers and full DOS/DPMI session are not claimed"
+    ]
+  },
+  "artifacts": [
+    {
+      "path": "research/evidence/nds/n17/host-check.json",
+      "bytes": 59232,
+      "sha256": "c48f5ca291a485fc2eb8b56021b50fa79156240b85719a58ca3cd11d4a330815"
+    },
+    {
+      "path": "research/evidence/nds/n17/original-report.json",
+      "bytes": 1750,
+      "sha256": "a5dd487766e0b9d7b37b001e2f9f30c293d344b51927afcaf43a940589006a69"
+    },
+    {
+      "path": "research/evidence/nds/n17/emulator.json",
+      "bytes": 5906,
+      "sha256": "629d96f1598f53fc41c0faa9c8dda6fe79117e1c01a8a49858c13d5a63cc7db6"
+    },
+    {
+      "path": "build/nds/n17/arm9/build-manifest.json",
+      "bytes": 33811,
+      "sha256": "1cb30747aa1037d14a1d51c169c6383188dec8e24fe2871da27cd199e53fb861"
+    },
+    {
+      "path": "research/evidence/nds/n17/arm9/dok_nds_ai_combat.nds",
+      "bytes": 188416,
+      "sha256": "36bf8d15c2a5b23eea3ae16274fa0692ba1b92a11418b0dbb9791d8a84a4ccd9"
+    },
+    {
+      "path": "research/evidence/nds/n17/arm9/dok_nds_ai_combat.elf",
+      "bytes": 1302404,
+      "sha256": "185eba8eb727fdd7bc37a6ceb7ecfe0549a4aa4c9a813fd0338daad2204603f3"
+    },
+    {
+      "path": "research/evidence/nds/n17/arm9/dok_nds_ai_combat.map",
+      "bytes": 677955,
+      "sha256": "603ae28a872394e6c6120c1a33d0e92d949d6664bad27f291d2b8d392bedadeb"
+    }
+  ],
+  "limits": [
+    "Physical DS/DS Lite deferred N24",
+    "No full DOS session: original active callbacks execute with documented external boundaries",
+    "Game Over/restart N22; no saves",
+    "Renderer integration and live performance N17P"
+  ]
+}

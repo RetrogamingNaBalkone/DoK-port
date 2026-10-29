@@ -35,6 +35,8 @@ static uint32_t clear_at(const dok_collision_view *v,int32_t x,int32_t z,
     int32_t xs[2]={sub32(x,r),add32(x,r)},zs[2]={sub32(z,r),add32(z,r)};
     for(plane=0;plane<2u;++plane)for(i=0;i<4u;++i){
         uint32_t index=native_index(v,xs[i/2u],zs[i%2u]);
+        if(plane==0u&&v->projectile_occupied!=NULL&&
+           (v->projectile_occupied[index/8u]&(1u<<(index%8u)))!=0u)return 0;
         unsigned char g=plane==0u?(index==ignore?32u:v->mmap[index]):v->tmap[index];
         if(v->known[g]==0u||(v->flags[g]&0x10u)==0u)return 0;
     }
@@ -118,6 +120,7 @@ dok_status dok_collision_get_view(const dok_collision_state *s,dok_collision_vie
     v.min_distance=s->_world->definition->settings[DOK_LEVEL_MIN_DISTANCE];
     v.mmap=s->_world->maps[DOK_WORLD_MMAP];v.tmap=s->_world->maps[DOK_WORLD_TMAP];
     v.known=s->known;v.flags=s->flags;
+    v.projectile_occupied=s->_projectile_occupied;
     if(!valid_view(&v)||v.min_distance<0||2*(int32_t)v.min_distance>=v.cell_side)
         return DOK_STATUS_INVALID_STATE;
     *out=v;return DOK_STATUS_OK;
@@ -161,6 +164,12 @@ dok_status dok_collision_set_flags(dok_collision_state *s,dok_object_ref ref,uin
 { return setter(s,ref,flags,0); }
 dok_status dok_collision_set_door_count(dok_collision_state *s,dok_object_ref ref,uint16_t count)
 { return setter(s,ref,count,1); }
+dok_status dok_collision_projectiles(dok_collision_state *s,const unsigned char *bits)
+{
+    if(!valid_state(s)||s->_active!=NULL)return DOK_STATUS_INVALID_STATE;
+    if(s->_revision==UINT32_MAX)return DOK_STATUS_LIMIT_REACHED;
+    s->_projectile_occupied=bits;++s->_revision;return DOK_STATUS_OK;
+}
 static uint32_t bounded(const dok_collision_view *v,int32_t x,int32_t z)
 {
     int64_t r=v->min_distance;

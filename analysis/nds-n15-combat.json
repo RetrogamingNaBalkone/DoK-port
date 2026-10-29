@@ -1,0 +1,128 @@
+{
+  "task": "N15",
+  "status": "ready-emulator",
+  "passed": true,
+  "host": {
+    "checks": 313608,
+    "failures": 0,
+    "line": 0,
+    "scenarios": 34,
+    "callbacks": 108,
+    "trace_hash": 1888275799,
+    "workspace_bytes": 1640256,
+    "combat_bytes": 12984
+  },
+  "arm9": [
+    356731716,
+    1,
+    1,
+    313608,
+    0,
+    0,
+    34,
+    108,
+    1888275799,
+    0,
+    1638996,
+    12948,
+    2,
+    0,
+    0,
+    0
+  ],
+  "native": {
+    "task": "N15",
+    "passed": true,
+    "whole_DOS_session": false,
+    "languages": {
+      "ru": {
+        "weapon_callbacks": 600,
+        "readiness": 12,
+        "decay": 2000,
+        "distance": 400,
+        "slots": 36,
+        "normal_flight_repeat_callbacks": 3,
+        "sample_sha256": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28"
+      },
+      "en": {
+        "weapon_callbacks": 600,
+        "readiness": 12,
+        "decay": 2000,
+        "distance": 400,
+        "slots": 36,
+        "normal_flight_repeat_callbacks": 3,
+        "sample_sha256": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b"
+      }
+    },
+    "original_sha256_before": {
+      "ru": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+      "en": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b"
+    },
+    "original_sha256_after": {
+      "ru": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+      "en": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b"
+    },
+    "controlled_services": [
+      "animation accessor image/interval",
+      "scheduler cancel/set_interval",
+      "slot destructor",
+      "normal-flight empty world lookup and target pass-through",
+      "normal-flight timer read416 and stop/start"
+    ],
+    "source_folder": "research/evidence/nds/n14/original"
+  },
+  "regressions": {
+    "test_items": 1302672,
+    "test_collision": 107,
+    "test_collision_routes": 9909
+  },
+  "artifacts": [
+    {
+      "path": "research/evidence/nds/n15/host-check.json",
+      "bytes": 60493,
+      "sha256": "dad6ab1fa9c93e466ca76ea0aaf5aa4651c6ff50ae60edd9bc93c9d02a5ccebc"
+    },
+    {
+      "path": "research/evidence/nds/n15/emulator.json",
+      "bytes": 5879,
+      "sha256": "02e7b9e9c5560cb01ba72861b167d3367603e602380aace4f69366551e494812"
+    },
+    {
+      "path": "research/evidence/nds/n15/original-report.json",
+      "bytes": 1350,
+      "sha256": "c1247379fd76ea5ed6e06cc281af5cee7a73627612e580dbe49b459ebe47d6d9"
+    },
+    {
+      "path": "research/evidence/nds/n15/original-collision.json",
+      "bytes": 1094859,
+      "sha256": "40b582c342671a65b8a6398261a00fda66eb162d394f9d64b9b334bf1a262a1d"
+    },
+    {
+      "path": "research/evidence/nds/n15/source-supersession.json",
+      "bytes": 1575,
+      "sha256": "ef03bd91b6b6ed8ca9cb1c0b57c42c94887618467299a1f52f88622f40b326e7"
+    },
+    {
+      "path": "build/nds/n15/arm9/dok_nds_combat.elf",
+      "bytes": 1190096,
+      "sha256": "d101fcd9c395f22cf366e3fbe4536acd71bd24921c955e6d61c6b9f98ef4645f"
+    },
+    {
+      "path": "build/nds/n15/arm9/dok_nds_combat.map",
+      "bytes": 672942,
+      "sha256": "14fa9b36404021ba7538b1f529779ab936015087a899e0e08338c153a325055b"
+    },
+    {
+      "path": "build/nds/n15/arm9/dok_nds_combat.nds",
+      "bytes": 172032,
+      "sha256": "6a0a4b3d8a28846baa6b8054d7c59b5d588ddc5aefd797624841611bc7c9a57b"
+    }
+  ],
+  "limitations": [
+    "Physical DS/DS Lite:N24",
+    "Linux compiled only",
+    "Shared GPU gameplay integration/performance:N17P",
+    "Class9 hit fixture only; AI:N16/N17"
+  ],
+  "next_id": "N16"
+}

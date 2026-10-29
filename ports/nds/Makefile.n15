@@ -1,0 +1,15 @@
+.DEFAULT_GOAL := combat-all
+OUTDIR ?= ../../build/nds/n15/arm9
+include Makefile.n14
+COMBAT_OBJECTS := $(filter-out $(OUTDIR)/obj/main.o $(OUTDIR)/obj/items_cases.o,$(OBJECTS)) $(OUTDIR)/obj/combat_main.o $(OUTDIR)/obj/combat_cases.o $(OUTDIR)/obj/combat.o $(OUTDIR)/obj/sprites.o $(OUTDIR)/obj/sprite_assets.o $(OUTDIR)/obj/weapon_overlay.o
+.PHONY: combat-all
+combat-all: $(OUTDIR)/dok_nds_combat.nds
+$(OUTDIR)/dok_nds_combat.nds: $(OUTDIR)/dok_nds_combat.elf
+	$(BLOCKSDS)/tools/ndstool/ndstool -c $@ -9 $< -7 $(BLOCKSDS)/sys/arm7/main_core/arm7_maxmod.elf
+$(OUTDIR)/dok_nds_combat.elf: $(COMBAT_OBJECTS)
+	$(CC) $(ARCH) -o $@ $^ -L$(BLOCKSDS)/libs/libnds/lib -Wl,-Map,$(OUTDIR)/dok_nds_combat.map -Wl,--defsym=__usr_stack_size=12288 -Wl,--start-group -lnds9 -lc -Wl,--end-group
+$(OUTDIR)/obj/combat_main.o: platform/combat_probe/main.c tests/combat_cases.h | $(OUTDIR)/obj
+	$(CC) $(ARCH) $(FLAGS) $(SDK) -std=gnu11 -c $< -o $@
+$(OUTDIR)/obj/combat_cases.o: tests/combat_cases.c | $(OUTDIR)/obj
+	$(CC) $(ARCH) $(FLAGS) -pedantic-errors -c $< -o $@
+-include $(COMBAT_OBJECTS:.o=.d)

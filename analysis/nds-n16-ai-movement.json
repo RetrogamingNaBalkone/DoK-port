@@ -1,0 +1,135 @@
+{
+  "task": "N16",
+  "status": "ready-emulator",
+  "passed": true,
+  "host": {
+    "test_ai": {
+      "checks": 94532,
+      "failures": 0,
+      "line": 0,
+      "scenarios": 18,
+      "callbacks": 2152,
+      "trace_hash": 3234181331,
+      "considerations": 2980,
+      "motion_callbacks": 2152,
+      "course_trials": 1620,
+      "ai_bytes": 9848,
+      "stress_callbacks": 4374
+    },
+    "test_combat": {
+      "checks": 313608,
+      "failures": 0,
+      "line": 0,
+      "scenarios": 34,
+      "callbacks": 108,
+      "trace_hash": 1888275799,
+      "workspace_bytes": 1640256,
+      "combat_bytes": 12984
+    }
+  },
+  "arm9": [
+    373377860,
+    1,
+    1,
+    94532,
+    0,
+    0,
+    18,
+    2152,
+    3234181331,
+    0,
+    1676052,
+    9812,
+    2,
+    0,
+    0,
+    4374
+  ],
+  "cpu_profile": {
+    "normal_ticks": 34651901,
+    "normal_max_ticks": 43942,
+    "normal_callbacks": 2152,
+    "stress_ticks": 60776643,
+    "stress_max_ticks": 40111,
+    "stress_callbacks": 4374,
+    "clock_hz": 33513982,
+    "scope": "emulated ARM9 callback CPU only; diagnostics included; no renderer/audio, no physical FPS"
+  },
+  "native": {
+    "task": "N16",
+    "passed": true,
+    "languages": {
+      "ru": {
+        "heading": 2049,
+        "getters": 200,
+        "course": 42
+      },
+      "en": {
+        "heading": 2049,
+        "getters": 200,
+        "course": 42
+      }
+    },
+    "controlled": [
+      "signed32 abs helper",
+      "wake boundary"
+    ],
+    "limits": [
+      "No full active callback/FPU ctor/DOS session replay",
+      "Native course trial uses previously verified N10 resolver and N09 Q15 motion boundaries"
+    ],
+    "original_sha256_before": {
+      "ru": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+      "en": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b"
+    },
+    "original_sha256_after": {
+      "ru": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+      "en": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b"
+    },
+    "table_sha256": "a92818a63b437eddec2b082d6e6fa8017ff894f8ae657dd44e1c810af0e317f7"
+  },
+  "artifacts": [
+    {
+      "path": "research/evidence/nds/n16/host-check.json",
+      "bytes": 54848,
+      "sha256": "0eb0998a7bd89b93b00cfd2fd96452388774e53050d89cedd11af78e42525c31"
+    },
+    {
+      "path": "research/evidence/nds/n16/original-report.json",
+      "bytes": 965,
+      "sha256": "15fc2fee8612f65a79f3b34ae3fbc7f79b73c655bfe4213cdb1fe61c785ddf2d"
+    },
+    {
+      "path": "research/evidence/nds/n16/emulator.json",
+      "bytes": 6224,
+      "sha256": "7f579a3ed0aaa40c7058fe1529b4702f932f94c9fd9b03b747dd4f9596989d54"
+    },
+    {
+      "path": "research/evidence/nds/n16/source-supersession.json",
+      "bytes": 1031,
+      "sha256": "6261dad612e2f81b551700218666bebfa77b1d08e7be2e8d0260f2173951913b"
+    },
+    {
+      "path": "build/nds/n16/arm9/dok_nds_ai.elf",
+      "bytes": 1302404,
+      "sha256": "01e7fac40ff050c25a608eeb6fa59c5054d0c3b500b456e5c252968edd700835"
+    },
+    {
+      "path": "build/nds/n16/arm9/dok_nds_ai.map",
+      "bytes": 682753,
+      "sha256": "e5eefbd08664ba486bb7d5ce1bccb1f21d168e06d4d5fe85a781bb50e6bad174"
+    },
+    {
+      "path": "build/nds/n16/arm9/dok_nds_ai.nds",
+      "bytes": 189440,
+      "sha256": "9bb5f00724311a2dba1452d805eab241ed4ea1aa264591ca4e76562cebd9d1e6"
+    }
+  ],
+  "limitations": [
+    "Physical DS/DS Lite:N24",
+    "No full active callback/FPU ctor replay",
+    "Attacks/death:N17; integrated performance:N17P",
+    "No game saves"
+  ],
+  "next_id": "N17"
+}

@@ -71,6 +71,11 @@ typedef struct dok_sprite_list {
 dok_status dok_sprites_gather(const dok_sprite_snapshot *snapshot,
     const dok_nds_render_camera *camera, uint32_t heading,
     dok_sprite_list *candidate, const dok_sprite_list **out);
+/* N17 optional live flags and zero-visual-height bits, indexed by glyph.
+ * Borrowed only for this immutable gather. NULL preserves exact N12 behavior. */
+dok_status dok_sprites_gather_live(const dok_sprite_snapshot *,const uint16_t *runtime_flags,
+    const unsigned char *zero_height_bits,const dok_nds_render_camera *,uint32_t heading,
+    dok_sprite_list *candidate,const dok_sprite_list **out);
 /* Append to an acquired door/base scene using caller-assigned texture slots.
  * All validation/admission precedes mutation. Opaque color0 holes are handled
  * by the texture, shared Z buffer handles walls, doors and other billboards.

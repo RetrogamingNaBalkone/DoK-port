@@ -102,6 +102,7 @@ int main(void)
     count = (size_t)view.width * view.length;
     for (j = 0u; j < 3u; ++j) if (!bytes(maps[j], count)) return 2;
     view.mmap = maps[0]; view.tmap = maps[1]; view.known = known; view.flags = flags;
+    view.projectile_occupied = NULL;
     for (;;) {
         int32_t op, x, z, nx, nz;
         uint32_t clear = 0u;

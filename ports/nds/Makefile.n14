@@ -1,0 +1,27 @@
+BLOCKSDS ?= /opt/blocksds/core
+WONDERFUL_TOOLCHAIN ?= /opt/wonderful
+CC := $(WONDERFUL_TOOLCHAIN)/toolchain/gcc-arm-none-eabi/bin/arm-none-eabi-gcc
+OUTDIR ?= ../../build/nds/n14/arm9
+SDK := -I$(BLOCKSDS)/libs/libnds/include
+ARCH := -mthumb -mcpu=arm946e-s+nofp -specs=$(BLOCKSDS)/sys/crts/ds_arm9.specs
+FLAGS := -D__NDS__ -D__BLOCKSDS__ -DARM9 -Iinclude -I$(OUTDIR)/generated -std=c11 -O2 -g -Wall -Wextra -Werror -Wno-misleading-indentation -ffunction-sections -fdata-sections -fstack-usage -MMD -MP
+NAMES := items interactions events collision motion world balance assets sha256 contracts memory geometry materials scene projection
+OBJECTS := $(addprefix $(OUTDIR)/obj/,$(addsuffix .o,$(NAMES))) $(OUTDIR)/obj/main.o $(OUTDIR)/obj/items_cases.o $(OUTDIR)/obj/file_reader.o
+all: $(OUTDIR)/dok_nds_items.nds
+$(OUTDIR)/dok_nds_items.nds: $(OUTDIR)/dok_nds_items.elf
+	$(BLOCKSDS)/tools/ndstool/ndstool -c $@ -9 $< -7 $(BLOCKSDS)/sys/arm7/main_core/arm7_maxmod.elf
+$(OUTDIR)/dok_nds_items.elf: $(OBJECTS)
+	$(CC) $(ARCH) -o $@ $^ -L$(BLOCKSDS)/libs/libnds/lib -Wl,-Map,$(OUTDIR)/dok_nds_items.map -Wl,--defsym=__usr_stack_size=12288 -Wl,--start-group -lnds9 -lc -Wl,--end-group
+$(OUTDIR)/obj/%.o: core/%.c | $(OUTDIR)/obj
+	$(CC) $(ARCH) $(FLAGS) -pedantic-errors -c $< -o $@
+$(OUTDIR)/obj/%.o: render/%.c | $(OUTDIR)/obj
+	$(CC) $(ARCH) $(FLAGS) -pedantic-errors -c $< -o $@
+$(OUTDIR)/obj/items_cases.o: tests/items_cases.c | $(OUTDIR)/obj
+	$(CC) $(ARCH) $(FLAGS) -pedantic-errors -c $< -o $@
+$(OUTDIR)/obj/main.o: platform/items_probe/main.c tests/items_cases.h | $(OUTDIR)/obj
+	$(CC) $(ARCH) $(FLAGS) $(SDK) -std=gnu11 -c $< -o $@
+$(OUTDIR)/obj/file_reader.o: platform/assets/file_reader.c | $(OUTDIR)/obj
+	$(CC) $(ARCH) $(FLAGS) $(SDK) -c $< -o $@
+$(OUTDIR)/obj:
+	mkdir -p $@
+-include $(OBJECTS:.o=.d)

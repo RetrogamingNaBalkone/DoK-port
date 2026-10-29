@@ -1,0 +1,1207 @@
+{
+  "task": "N17P",
+  "status": "ready-emulator",
+  "passed": true,
+  "decision": "continue to N18 after this iteration stops",
+  "host": {
+    "test_frame_store": {
+      "checks": 7969561,
+      "failures": 0,
+      "frames": 168,
+      "packed_bytes": 283947,
+      "decoded_bytes": 1249728,
+      "water_pairs": 864
+    },
+    "test_geometry_cache": {
+      "checks": 145242,
+      "failures": 0
+    },
+    "test_gameplay_runtime": {
+      "checks": 178111,
+      "failures": 0,
+      "callbacks": 2464,
+      "world_hashes": [
+        1432390096,
+        3638979953,
+        1814864016
+      ]
+    },
+    "test_weapon_overlay_fast": {
+      "checks": 6000,
+      "failures": 0
+    }
+  },
+  "source_replay": {
+    "task": "N17P",
+    "passed": true,
+    "callbacks": 2464,
+    "languages": {
+      "1": 1232,
+      "2": 1232
+    },
+    "original_sha256_before": {
+      "ru": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+      "en": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b"
+    },
+    "original_sha256_after": {
+      "ru": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+      "en": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b"
+    },
+    "scope": "Original active/hero/stat control flow; same explicit external boundaries as N17; integrated moving world supplies actual front/sight and scalar state. Native N09/N10 movement/collision are pinned separate oracles, not re-executed here."
+  },
+  "water_gpu_pairs": 36,
+  "variants": {
+    "before-release-ru": {
+      "history": {
+        "intervals": 5077,
+        "histogram": {
+          "1": 861,
+          "2": 4074,
+          "3": 79,
+          "4": 41,
+          "5": 11,
+          "6": 5,
+          "7": 3,
+          "8": 3
+        },
+        "virtual_fps": 31.838270545973412,
+        "median": 2,
+        "p95": 2,
+        "p99": 4,
+        "max": 8,
+        "fraction_over_one": 0.8304116604293874,
+        "fraction_over_two": 0.02796927319283041,
+        "refresh_hz": 59.82609828808083,
+        "rendered_frames": 5106,
+        "minimum_new_frames_in_one_second": 15,
+        "checked_one_second_windows": 3747,
+        "minimum_window_cadence_fps": 15.692091354250708,
+        "cadence_window_method": "Complete new-frame intervals spanning at least1s, enclosing timestamp duration; integer1s counts reported separately",
+        "prepare_ms": 17.977253958369335,
+        "submit_ms": 3.3934646764183367,
+        "uploads": 3523,
+        "upload_bytes": 46786816,
+        "maximum_texture_bytes": 260096,
+        "maximum_palette_bytes": 8192,
+        "budget_passed": false,
+        "goal_60_passed": false,
+        "case_count": 41,
+        "cold_loading_records": 29
+      },
+      "live_routes": {
+        "intervals": 3228,
+        "histogram": {
+          "1": 382,
+          "2": 2704,
+          "3": 79,
+          "4": 41,
+          "5": 11,
+          "6": 5,
+          "7": 3,
+          "8": 3
+        },
+        "virtual_fps": 30.551913506395337,
+        "median": 2,
+        "p95": 2,
+        "p99": 4,
+        "max": 8,
+        "fraction_over_one": 0.8816604708798017,
+        "fraction_over_two": 0.04399008674101611,
+        "refresh_hz": 59.82609828808083,
+        "rendered_frames": 3240,
+        "minimum_new_frames_in_one_second": 15,
+        "checked_one_second_windows": 2835,
+        "minimum_window_cadence_fps": 15.692091354250708,
+        "cadence_window_method": "Complete new-frame intervals spanning at least1s, enclosing timestamp duration; integer1s counts reported separately",
+        "prepare_ms": 19.4241759257974,
+        "submit_ms": 2.9095090950368374,
+        "uploads": 2826,
+        "upload_bytes": 35494144,
+        "maximum_texture_bytes": 208896,
+        "maximum_palette_bytes": 8192,
+        "budget_passed": false,
+        "goal_60_passed": false,
+        "case_count": 12,
+        "cold_loading_records": 12
+      },
+      "all_awake": {
+        "intervals": 357,
+        "histogram": {
+          "1": 36,
+          "2": 232,
+          "3": 64,
+          "4": 16,
+          "5": 8,
+          "6": 1
+        },
+        "virtual_fps": 26.630819312774136,
+        "median": 2,
+        "p95": 4,
+        "p99": 5,
+        "max": 6,
+        "fraction_over_one": 0.8991596638655462,
+        "fraction_over_two": 0.24929971988795518,
+        "refresh_hz": 59.82609828808083,
+        "rendered_frames": 360,
+        "minimum_new_frames_in_one_second": 20,
+        "checked_one_second_windows": 287,
+        "minimum_window_cadence_fps": 20.939134400828287,
+        "cadence_window_method": "Complete new-frame intervals spanning at least1s, enclosing timestamp duration; integer1s counts reported separately",
+        "prepare_ms": 25.017635655363623,
+        "submit_ms": 2.917059265254826,
+        "uploads": 355,
+        "upload_bytes": 5408256,
+        "maximum_texture_bytes": 208896,
+        "maximum_palette_bytes": 8192,
+        "budget_passed": false,
+        "goal_60_passed": false,
+        "case_count": 3,
+        "cold_loading_records": 3
+      },
+      "controlled_death": {
+        "intervals": 717,
+        "histogram": {
+          "1": 6,
+          "2": 668,
+          "3": 28,
+          "4": 15
+        },
+        "virtual_fps": 28.866293723118407,
+        "median": 2,
+        "p95": 3,
+        "p99": 4,
+        "max": 4,
+        "fraction_over_one": 0.9916317991631799,
+        "fraction_over_two": 0.0599721059972106,
+        "refresh_hz": 59.82609828808083,
+        "rendered_frames": 720,
+        "minimum_new_frames_in_one_second": 22,
+        "checked_one_second_windows": 630,
+        "minimum_window_cadence_fps": 22.557381321735395,
+        "cadence_window_method": "Complete new-frame intervals spanning at least1s, enclosing timestamp duration; integer1s counts reported separately",
+        "prepare_ms": 20.111219348261997,
+        "submit_ms": 2.5121968396734227,
+        "uploads": 515,
+        "upload_bytes": 4468416,
+        "maximum_texture_bytes": 141312,
+        "maximum_palette_bytes": 8192,
+        "budget_passed": false,
+        "goal_60_passed": false,
+        "case_count": 3,
+        "cold_loading_records": 3
+      },
+      "audit_stress": {
+        "intervals": 1943,
+        "histogram": {
+          "1": 179,
+          "2": 1314,
+          "3": 219,
+          "4": 112,
+          "5": 26,
+          "6": 70,
+          "7": 2,
+          "8": 5,
+          "9": 16
+        },
+        "virtual_fps": 24.94465857805602,
+        "median": 2,
+        "p95": 5,
+        "p99": 8,
+        "max": 9,
+        "fraction_over_one": 0.9078744209984559,
+        "fraction_over_two": 0.23160061760164694,
+        "refresh_hz": 59.82609828808083,
+        "rendered_frames": 1954,
+        "minimum_new_frames_in_one_second": 7,
+        "checked_one_second_windows": 1470,
+        "minimum_window_cadence_fps": 7.478262286010104,
+        "cadence_window_method": "Complete new-frame intervals spanning at least1s, enclosing timestamp duration; integer1s counts reported separately",
+        "prepare_ms": 26.133917364092884,
+        "submit_ms": 3.624981019448232,
+        "uploads": 1881,
+        "upload_bytes": 23815680,
+        "maximum_texture_bytes": 217088,
+        "maximum_palette_bytes": 8192,
+        "budget_passed": false,
+        "goal_60_passed": false,
+        "scope": "Explicit walk through every original frame, one frame per presentation; not animation timing or a normal gameplay FPS route",
+        "case_count": 18,
+        "cold_loading_records": 11
+      },
+      "memory": {
+        "static_bytes": 328452,
+        "heap_start_gap": 32,
+        "static_startup_bytes": 335872,
+        "managed_bytes": 2293760,
+        "sdk_heap_available": 385024,
+        "reserve_bytes": 655360,
+        "closure_bytes": 3670016
+      },
+      "profile": {
+        "prepare_ms": {
+          "mean": 17.977253958369335,
+          "median": 17.205684481181617,
+          "p95": 23.6843237547839,
+          "p99": 52.57056592081478,
+          "maximum": 126.34771361994525
+        },
+        "submit_ms": {
+          "mean": 3.3934646764183367,
+          "median": 3.205259225835951,
+          "p95": 6.77165130660988,
+          "p99": 6.902820440734258,
+          "maximum": 7.957246023465669
+        },
+        "upload_ms": {
+          "mean": 0.36640256657879205,
+          "median": 0.03183745816895169,
+          "p95": 1.760697967791473,
+          "p99": 1.7803315643005357,
+          "maximum": 6.129620765446493
+        },
+        "component_sum_ms": {
+          "mean": 21.737121201366463,
+          "median": 20.991417850615303,
+          "p95": 29.556827953180854,
+          "p99": 56.06501787820976,
+          "maximum": 130.92311740216368
+        },
+        "simulation_ms": {
+          "mean": 0.6986804055970209,
+          "median": 0.7012595519088123,
+          "p95": 1.8344283887244435,
+          "p99": 3.1451649046060837,
+          "maximum": 5.428092668904578
+        },
+        "input_poll_to_service_max_ms": 34.82459947612313,
+        "normal_ai_high_water": 8,
+        "normal_projectiles_high_water": 3,
+        "all_awake_ai_high_water": 100,
+        "world_bytes": 383864,
+        "world_remaining": 9352,
+        "packed_bytes": 0,
+        "raw_cache_min_capacity": 529824,
+        "maximum_hardware_polygons": 287,
+        "maximum_hardware_vertices": 1154,
+        "largest_individual_stack_frames": [
+          {
+            "function": "platform/gameplay_probe/main.c:551:12:render_one",
+            "bytes": 4336,
+            "kind": "static"
+          },
+          {
+            "function": "render/scene.c:147:25:dok_render_scene_prepare",
+            "bytes": 2608,
+            "kind": "static"
+          },
+          {
+            "function": "render/door_render.c:110:25:dok_door_scene_prepare",
+            "bytes": 2528,
+            "kind": "static"
+          },
+          {
+            "function": "render/effects.c:260:17:weld_piece",
+            "bytes": 2080,
+            "kind": "static"
+          },
+          {
+            "function": "platform/gameplay_probe/effects_runtime.c:58:12:nds_effects_load",
+            "bytes": 992,
+            "kind": "static"
+          }
+        ],
+        "stack_scope": "Compiler .su per-function only; not a measured IRQ/SDK call-chain high-water mark. Physical validation N24."
+      },
+      "weapon_captures": 12,
+      "core_sha256": "c7e6b58c667075a2a9868f2c3ba7a98e24200410a6da3051a7c555f1f0eef8ef"
+    },
+    "final-release-ru": {
+      "history": {
+        "intervals": 5077,
+        "histogram": {
+          "1": 2349,
+          "2": 2728
+        },
+        "virtual_fps": 38.91570800878749,
+        "median": 2,
+        "p95": 2,
+        "p99": 2,
+        "max": 2,
+        "fraction_over_one": 0.5373251920425448,
+        "fraction_over_two": 0.0,
+        "refresh_hz": 59.82609828808083,
+        "rendered_frames": 5106,
+        "minimum_new_frames_in_one_second": 29,
+        "checked_one_second_windows": 3563,
+        "minimum_window_cadence_fps": 29.913049144040414,
+        "cadence_window_method": "Complete new-frame intervals spanning at least1s, enclosing timestamp duration; integer1s counts reported separately",
+        "prepare_ms": 14.021809666712377,
+        "submit_ms": 3.443774988015739,
+        "uploads": 966,
+        "upload_bytes": 7879488,
+        "maximum_texture_bytes": 309248,
+        "maximum_palette_bytes": 8192,
+        "budget_passed": true,
+        "goal_60_passed": false,
+        "case_count": 41,
+        "cold_loading_records": 29
+      },
+      "live_routes": {
+        "intervals": 3228,
+        "histogram": {
+          "1": 1752,
+          "2": 1476
+        },
+        "virtual_fps": 41.054133774218734,
+        "median": 1,
+        "p95": 2,
+        "p99": 2,
+        "max": 2,
+        "fraction_over_one": 0.45724907063197023,
+        "fraction_over_two": 0.0,
+        "refresh_hz": 59.82609828808083,
+        "rendered_frames": 3240,
+        "minimum_new_frames_in_one_second": 29,
+        "checked_one_second_windows": 2694,
+        "minimum_window_cadence_fps": 29.913049144040414,
+        "cadence_window_method": "Complete new-frame intervals spanning at least1s, enclosing timestamp duration; integer1s counts reported separately",
+        "prepare_ms": 13.599201308166178,
+        "submit_ms": 2.954730386229077,
+        "uploads": 759,
+        "upload_bytes": 4434752,
+        "maximum_texture_bytes": 258048,
+        "maximum_palette_bytes": 8192,
+        "budget_passed": true,
+        "goal_60_passed": false,
+        "case_count": 12,
+        "cold_loading_records": 12
+      },
+      "all_awake": {
+        "intervals": 357,
+        "histogram": {
+          "1": 59,
+          "2": 235,
+          "3": 35,
+          "4": 16,
+          "5": 11,
+          "6": 1
+        },
+        "virtual_fps": 28.139548206646715,
+        "median": 2,
+        "p95": 4,
+        "p99": 5,
+        "max": 6,
+        "fraction_over_one": 0.834733893557423,
+        "fraction_over_two": 0.17647058823529413,
+        "refresh_hz": 59.82609828808083,
+        "rendered_frames": 360,
+        "minimum_new_frames_in_one_second": 22,
+        "checked_one_second_windows": 283,
+        "minimum_window_cadence_fps": 22.557381321735395,
+        "cadence_window_method": "Complete new-frame intervals spanning at least1s, enclosing timestamp duration; integer1s counts reported separately",
+        "prepare_ms": 23.510531079421195,
+        "submit_ms": 2.9618930968206976,
+        "uploads": 70,
+        "upload_bytes": 767488,
+        "maximum_texture_bytes": 258048,
+        "maximum_palette_bytes": 8192,
+        "budget_passed": false,
+        "goal_60_passed": false,
+        "case_count": 3,
+        "cold_loading_records": 3
+      },
+      "controlled_death": {
+        "intervals": 717,
+        "histogram": {
+          "1": 462,
+          "2": 255
+        },
+        "virtual_fps": 44.13097991003493,
+        "median": 1,
+        "p95": 2,
+        "p99": 2,
+        "max": 2,
+        "fraction_over_one": 0.35564853556485354,
+        "fraction_over_two": 0.0,
+        "refresh_hz": 59.82609828808083,
+        "rendered_frames": 720,
+        "minimum_new_frames_in_one_second": 29,
+        "checked_one_second_windows": 572,
+        "minimum_window_cadence_fps": 29.913049144040414,
+        "cadence_window_method": "Complete new-frame intervals spanning at least1s, enclosing timestamp duration; integer1s counts reported separately",
+        "prepare_ms": 13.482386386441501,
+        "submit_ms": 2.5573682276119643,
+        "uploads": 224,
+        "upload_bytes": 792448,
+        "maximum_texture_bytes": 141312,
+        "maximum_palette_bytes": 8192,
+        "budget_passed": true,
+        "goal_60_passed": false,
+        "case_count": 3,
+        "cold_loading_records": 3
+      },
+      "audit_stress": {
+        "intervals": 1943,
+        "histogram": {
+          "1": 760,
+          "2": 903,
+          "3": 133,
+          "4": 124,
+          "5": 20,
+          "6": 3
+        },
+        "virtual_fps": 32.47893517008691,
+        "median": 2,
+        "p95": 4,
+        "p99": 5,
+        "max": 6,
+        "fraction_over_one": 0.6088522902727741,
+        "fraction_over_two": 0.14410705095213588,
+        "refresh_hz": 59.82609828808083,
+        "rendered_frames": 1954,
+        "minimum_new_frames_in_one_second": 14,
+        "checked_one_second_windows": 1362,
+        "minimum_window_cadence_fps": 14.956524572020207,
+        "cadence_window_method": "Complete new-frame intervals spanning at least1s, enclosing timestamp duration; integer1s counts reported separately",
+        "prepare_ms": 19.24981450117838,
+        "submit_ms": 3.680597139702571,
+        "uploads": 771,
+        "upload_bytes": 6766272,
+        "maximum_texture_bytes": 258048,
+        "maximum_palette_bytes": 8192,
+        "budget_passed": false,
+        "goal_60_passed": false,
+        "scope": "Explicit walk through every original frame, one frame per presentation; not animation timing or a normal gameplay FPS route",
+        "case_count": 18,
+        "cold_loading_records": 11
+      },
+      "memory": {
+        "static_bytes": 330724,
+        "heap_start_gap": 32,
+        "static_startup_bytes": 335872,
+        "managed_bytes": 2293760,
+        "sdk_heap_available": 385024,
+        "reserve_bytes": 655360,
+        "closure_bytes": 3670016
+      },
+      "profile": {
+        "prepare_ms": {
+          "mean": 14.021809666712375,
+          "median": 13.790035454455994,
+          "p95": 18.537367478445265,
+          "p99": 20.909601252396687,
+          "maximum": 27.822417521140878
+        },
+        "submit_ms": {
+          "mean": 3.4437749880157393,
+          "median": 3.254910144667381,
+          "p95": 6.881575576426579,
+          "p99": 7.030110596824931,
+          "maximum": 8.0404053448498
+        },
+        "upload_ms": {
+          "mean": 0.09064968491680414,
+          "median": 0.03177778158381776,
+          "p95": 0.6345411297290785,
+          "p99": 0.9369223866027021,
+          "maximum": 6.129053837887721
+        },
+        "component_sum_ms": {
+          "mean": 17.55623433964492,
+          "median": 17.233404254976325,
+          "p95": 25.058675510418308,
+          "p99": 27.810064468018155,
+          "maximum": 34.22103049407856
+        },
+        "simulation_ms": {
+          "mean": 0.6243891752188415,
+          "median": 0.2547593419367475,
+          "p95": 1.7771985435810045,
+          "p99": 2.962793260436793,
+          "maximum": 5.2135553453481
+        },
+        "input_poll_to_service_max_ms": 34.10236360453974,
+        "normal_ai_high_water": 8,
+        "normal_projectiles_high_water": 3,
+        "all_awake_ai_high_water": 100,
+        "world_bytes": 383864,
+        "world_remaining": 9352,
+        "packed_bytes": 283947,
+        "raw_cache_min_capacity": 245856,
+        "maximum_hardware_polygons": 287,
+        "maximum_hardware_vertices": 1154,
+        "largest_individual_stack_frames": [
+          {
+            "function": "platform/gameplay_probe/main.c:551:12:render_one",
+            "bytes": 4360,
+            "kind": "static"
+          },
+          {
+            "function": "render/scene.c:147:25:dok_render_scene_prepare",
+            "bytes": 2608,
+            "kind": "static"
+          },
+          {
+            "function": "render/door_render.c:110:25:dok_door_scene_prepare",
+            "bytes": 2528,
+            "kind": "static"
+          },
+          {
+            "function": "render/effects.c:260:17:weld_piece",
+            "bytes": 2080,
+            "kind": "static"
+          },
+          {
+            "function": "platform/gameplay_probe/effects_runtime.c:58:12:nds_effects_load",
+            "bytes": 992,
+            "kind": "static"
+          }
+        ],
+        "stack_scope": "Compiler .su per-function only; not a measured IRQ/SDK call-chain high-water mark. Physical validation N24."
+      },
+      "weapon_captures": 12,
+      "core_sha256": "c7e6b58c667075a2a9868f2c3ba7a98e24200410a6da3051a7c555f1f0eef8ef"
+    },
+    "final-release-en": {
+      "history": {
+        "intervals": 5077,
+        "histogram": {
+          "1": 2199,
+          "2": 2878
+        },
+        "virtual_fps": 38.18191087474373,
+        "median": 2,
+        "p95": 2,
+        "p99": 2,
+        "max": 2,
+        "fraction_over_one": 0.5668701989363798,
+        "fraction_over_two": 0.0,
+        "refresh_hz": 59.82609828808083,
+        "rendered_frames": 5106,
+        "minimum_new_frames_in_one_second": 29,
+        "checked_one_second_windows": 3596,
+        "minimum_window_cadence_fps": 29.913049144040414,
+        "cadence_window_method": "Complete new-frame intervals spanning at least1s, enclosing timestamp duration; integer1s counts reported separately",
+        "prepare_ms": 14.32509778552375,
+        "submit_ms": 3.4714550734138165,
+        "uploads": 994,
+        "upload_bytes": 7983232,
+        "maximum_texture_bytes": 309248,
+        "maximum_palette_bytes": 8192,
+        "budget_passed": true,
+        "goal_60_passed": false,
+        "case_count": 41,
+        "cold_loading_records": 29
+      },
+      "live_routes": {
+        "intervals": 3228,
+        "histogram": {
+          "1": 1627,
+          "2": 1601
+        },
+        "virtual_fps": 39.99143617186269,
+        "median": 1,
+        "p95": 2,
+        "p99": 2,
+        "max": 2,
+        "fraction_over_one": 0.4959727385377943,
+        "fraction_over_two": 0.0,
+        "refresh_hz": 59.82609828808083,
+        "rendered_frames": 3240,
+        "minimum_new_frames_in_one_second": 29,
+        "checked_one_second_windows": 2716,
+        "minimum_window_cadence_fps": 29.913049144040414,
+        "cadence_window_method": "Complete new-frame intervals spanning at least1s, enclosing timestamp duration; integer1s counts reported separately",
+        "prepare_ms": 13.885463749313162,
+        "submit_ms": 2.9783814296760127,
+        "uploads": 787,
+        "upload_bytes": 4538496,
+        "maximum_texture_bytes": 258048,
+        "maximum_palette_bytes": 8192,
+        "budget_passed": true,
+        "goal_60_passed": false,
+        "case_count": 12,
+        "cold_loading_records": 12
+      },
+      "all_awake": {
+        "intervals": 357,
+        "histogram": {
+          "1": 47,
+          "2": 240,
+          "3": 42,
+          "4": 20,
+          "5": 7,
+          "6": 1
+        },
+        "virtual_fps": 27.594208125122556,
+        "median": 2,
+        "p95": 4,
+        "p99": 5,
+        "max": 6,
+        "fraction_over_one": 0.8683473389355743,
+        "fraction_over_two": 0.19607843137254902,
+        "refresh_hz": 59.82609828808083,
+        "rendered_frames": 360,
+        "minimum_new_frames_in_one_second": 21,
+        "checked_one_second_windows": 283,
+        "minimum_window_cadence_fps": 21.93623603896297,
+        "cadence_window_method": "Complete new-frame intervals spanning at least1s, enclosing timestamp duration; integer1s counts reported separately",
+        "prepare_ms": 23.82750535087635,
+        "submit_ms": 2.9770672476717484,
+        "uploads": 72,
+        "upload_bytes": 796160,
+        "maximum_texture_bytes": 258048,
+        "maximum_palette_bytes": 8192,
+        "budget_passed": false,
+        "goal_60_passed": false,
+        "case_count": 3,
+        "cold_loading_records": 3
+      },
+      "controlled_death": {
+        "intervals": 717,
+        "histogram": {
+          "1": 459,
+          "2": 258
+        },
+        "virtual_fps": 43.995192279542515,
+        "median": 1,
+        "p95": 2,
+        "p99": 2,
+        "max": 2,
+        "fraction_over_one": 0.3598326359832636,
+        "fraction_over_two": 0.0,
+        "refresh_hz": 59.82609828808083,
+        "rendered_frames": 720,
+        "minimum_new_frames_in_one_second": 29,
+        "checked_one_second_windows": 572,
+        "minimum_window_cadence_fps": 29.913049144040414,
+        "cadence_window_method": "Complete new-frame intervals spanning at least1s, enclosing timestamp duration; integer1s counts reported separately",
+        "prepare_ms": 13.783780982117813,
+        "submit_ms": 2.5757238546280856,
+        "uploads": 233,
+        "upload_bytes": 1368064,
+        "maximum_texture_bytes": 172032,
+        "maximum_palette_bytes": 8192,
+        "budget_passed": true,
+        "goal_60_passed": false,
+        "case_count": 3,
+        "cold_loading_records": 3
+      },
+      "audit_stress": {
+        "intervals": 1943,
+        "histogram": {
+          "1": 728,
+          "2": 915,
+          "3": 156,
+          "4": 122,
+          "5": 18,
+          "6": 3,
+          "7": 1
+        },
+        "virtual_fps": 32.03144364115212,
+        "median": 2,
+        "p95": 4,
+        "p99": 5,
+        "max": 7,
+        "fraction_over_one": 0.6253216675244467,
+        "fraction_over_two": 0.15440041173443128,
+        "refresh_hz": 59.82609828808083,
+        "rendered_frames": 1954,
+        "minimum_new_frames_in_one_second": 14,
+        "checked_one_second_windows": 1365,
+        "minimum_window_cadence_fps": 14.956524572020207,
+        "cadence_window_method": "Complete new-frame intervals spanning at least1s, enclosing timestamp duration; integer1s counts reported separately",
+        "prepare_ms": 19.487556725478566,
+        "submit_ms": 3.707938890126294,
+        "uploads": 782,
+        "upload_bytes": 7370560,
+        "maximum_texture_bytes": 258048,
+        "maximum_palette_bytes": 8192,
+        "budget_passed": false,
+        "goal_60_passed": false,
+        "scope": "Explicit walk through every original frame, one frame per presentation; not animation timing or a normal gameplay FPS route",
+        "case_count": 18,
+        "cold_loading_records": 11
+      },
+      "memory": {
+        "static_bytes": 330884,
+        "heap_start_gap": 32,
+        "static_startup_bytes": 335872,
+        "managed_bytes": 2293760,
+        "sdk_heap_available": 385024,
+        "reserve_bytes": 655360,
+        "closure_bytes": 3670016
+      },
+      "profile": {
+        "prepare_ms": {
+          "mean": 14.32509778552375,
+          "median": 14.085046653065577,
+          "p95": 18.935708684214248,
+          "p99": 21.396412995626722,
+          "maximum": 25.431624329212806
+        },
+        "submit_ms": {
+          "mean": 3.4714550734138165,
+          "median": 3.3098424412831635,
+          "p95": 6.934598222318076,
+          "p99": 7.082536476865089,
+          "maximum": 8.10873503482815
+        },
+        "upload_ms": {
+          "mean": 0.09128378242746693,
+          "median": 0.03162859012098294,
+          "p95": 0.6345709680216454,
+          "p99": 0.9391304202526576,
+          "maximum": 6.128874808132319
+        },
+        "component_sum_ms": {
+          "mean": 17.887836641365034,
+          "median": 17.569651973913455,
+          "p95": 25.521586781302204,
+          "p99": 28.385108042368703,
+          "maximum": 35.26164094735147
+        },
+        "simulation_ms": {
+          "mean": 0.6200192317952485,
+          "median": 0.26648579091556474,
+          "p95": 1.7438990090762716,
+          "p99": 3.0477130410823756,
+          "maximum": 5.485232999170316
+        },
+        "input_poll_to_service_max_ms": 34.3580180952535,
+        "normal_ai_high_water": 8,
+        "normal_projectiles_high_water": 3,
+        "all_awake_ai_high_water": 100,
+        "world_bytes": 383864,
+        "world_remaining": 9352,
+        "packed_bytes": 283943,
+        "raw_cache_min_capacity": 221696,
+        "maximum_hardware_polygons": 287,
+        "maximum_hardware_vertices": 1154,
+        "largest_individual_stack_frames": [
+          {
+            "function": "platform/gameplay_probe/main.c:551:12:render_one",
+            "bytes": 4360,
+            "kind": "static"
+          },
+          {
+            "function": "render/scene.c:147:25:dok_render_scene_prepare",
+            "bytes": 2608,
+            "kind": "static"
+          },
+          {
+            "function": "render/door_render.c:110:25:dok_door_scene_prepare",
+            "bytes": 2528,
+            "kind": "static"
+          },
+          {
+            "function": "render/effects.c:260:17:weld_piece",
+            "bytes": 2080,
+            "kind": "static"
+          },
+          {
+            "function": "platform/gameplay_probe/effects_runtime.c:58:12:nds_effects_load",
+            "bytes": 992,
+            "kind": "static"
+          }
+        ],
+        "stack_scope": "Compiler .su per-function only; not a measured IRQ/SDK call-chain high-water mark. Physical validation N24."
+      },
+      "weapon_captures": 12,
+      "core_sha256": "c7e6b58c667075a2a9868f2c3ba7a98e24200410a6da3051a7c555f1f0eef8ef"
+    },
+    "final-release-audit": {
+      "history": {
+        "intervals": 5077,
+        "histogram": {
+          "2": 26,
+          "3": 972,
+          "4": 2175,
+          "5": 1743,
+          "6": 157,
+          "7": 4
+        },
+        "virtual_fps": 14.22456334044801,
+        "median": 4,
+        "p95": 5,
+        "p99": 6,
+        "max": 7,
+        "fraction_over_one": 1.0,
+        "fraction_over_two": 0.9948788654717353,
+        "refresh_hz": 59.82609828808083,
+        "rendered_frames": 5106,
+        "minimum_new_frames_in_one_second": 9,
+        "checked_one_second_windows": 4528,
+        "minimum_window_cadence_fps": 9.496206077473149,
+        "cadence_window_method": "Complete new-frame intervals spanning at least1s, enclosing timestamp duration; integer1s counts reported separately",
+        "prepare_ms": 58.03028065032625,
+        "submit_ms": 3.3936279201477713,
+        "uploads": 2186,
+        "upload_bytes": 16261312,
+        "maximum_texture_bytes": 309248,
+        "maximum_palette_bytes": 8192,
+        "budget_passed": false,
+        "goal_60_passed": false,
+        "case_count": 41,
+        "cold_loading_records": 29
+      },
+      "live_routes": {
+        "intervals": 3228,
+        "histogram": {
+          "3": 554,
+          "4": 1453,
+          "5": 1171,
+          "6": 50
+        },
+        "virtual_fps": 14.169685616987667,
+        "median": 4,
+        "p95": 5,
+        "p99": 6,
+        "max": 6,
+        "fraction_over_one": 1.0,
+        "fraction_over_two": 1.0,
+        "refresh_hz": 59.82609828808083,
+        "rendered_frames": 3240,
+        "minimum_new_frames_in_one_second": 9,
+        "checked_one_second_windows": 3065,
+        "minimum_window_cadence_fps": 9.971016381346805,
+        "cadence_window_method": "Complete new-frame intervals spanning at least1s, enclosing timestamp duration; integer1s counts reported separately",
+        "prepare_ms": 58.717621335564495,
+        "submit_ms": 2.9064322753144585,
+        "uploads": 1951,
+        "upload_bytes": 12357824,
+        "maximum_texture_bytes": 258048,
+        "maximum_palette_bytes": 8192,
+        "budget_passed": false,
+        "goal_60_passed": false,
+        "case_count": 12,
+        "cold_loading_records": 12
+      },
+      "all_awake": {
+        "intervals": 357,
+        "histogram": {
+          "4": 148,
+          "5": 105,
+          "6": 67,
+          "7": 33,
+          "8": 4
+        },
+        "virtual_fps": 11.985363125053231,
+        "median": 5,
+        "p95": 7,
+        "p99": 8,
+        "max": 8,
+        "fraction_over_one": 1.0,
+        "fraction_over_two": 1.0,
+        "refresh_hz": 59.82609828808083,
+        "rendered_frames": 360,
+        "minimum_new_frames_in_one_second": 9,
+        "checked_one_second_windows": 322,
+        "minimum_window_cadence_fps": 9.649370691625942,
+        "cadence_window_method": "Complete new-frame intervals spanning at least1s, enclosing timestamp duration; integer1s counts reported separately",
+        "prepare_ms": 72.52624598655595,
+        "submit_ms": 2.8851078866579507,
+        "uploads": 223,
+        "upload_bytes": 1864192,
+        "maximum_texture_bytes": 258048,
+        "maximum_palette_bytes": 8192,
+        "budget_passed": false,
+        "goal_60_passed": false,
+        "case_count": 3,
+        "cold_loading_records": 3
+      },
+      "controlled_death": {
+        "intervals": 717,
+        "histogram": {
+          "3": 298,
+          "4": 174,
+          "5": 243,
+          "6": 2
+        },
+        "virtual_fps": 15.227302972152629,
+        "median": 4,
+        "p95": 5,
+        "p99": 5,
+        "max": 6,
+        "fraction_over_one": 1.0,
+        "fraction_over_two": 1.0,
+        "refresh_hz": 59.82609828808083,
+        "rendered_frames": 720,
+        "minimum_new_frames_in_one_second": 11,
+        "checked_one_second_windows": 670,
+        "minimum_window_cadence_fps": 11.579244829951127,
+        "cadence_window_method": "Complete new-frame intervals spanning at least1s, enclosing timestamp duration; integer1s counts reported separately",
+        "prepare_ms": 55.67348175907318,
+        "submit_ms": 2.5164187291865585,
+        "uploads": 457,
+        "upload_bytes": 1317184,
+        "maximum_texture_bytes": 141312,
+        "maximum_palette_bytes": 8192,
+        "budget_passed": false,
+        "goal_60_passed": false,
+        "case_count": 3,
+        "cold_loading_records": 3
+      },
+      "audit_stress": {
+        "intervals": 1943,
+        "histogram": {
+          "3": 570,
+          "4": 473,
+          "5": 513,
+          "6": 210,
+          "7": 128,
+          "8": 40,
+          "9": 7,
+          "10": 1,
+          "11": 1
+        },
+        "virtual_fps": 13.319824564425467,
+        "median": 4,
+        "p95": 7,
+        "p99": 8,
+        "max": 11,
+        "fraction_over_one": 1.0,
+        "fraction_over_two": 1.0,
+        "refresh_hz": 59.82609828808083,
+        "rendered_frames": 1954,
+        "minimum_new_frames_in_one_second": 6,
+        "checked_one_second_windows": 1677,
+        "minimum_window_cadence_fps": 6.865289967484685,
+        "cadence_window_method": "Complete new-frame intervals spanning at least1s, enclosing timestamp duration; integer1s counts reported separately",
+        "prepare_ms": 63.69162862275176,
+        "submit_ms": 3.62231192812574,
+        "uploads": 1167,
+        "upload_bytes": 8551552,
+        "maximum_texture_bytes": 258048,
+        "maximum_palette_bytes": 8192,
+        "budget_passed": false,
+        "goal_60_passed": false,
+        "scope": "Explicit walk through every original frame, one frame per presentation; not animation timing or a normal gameplay FPS route",
+        "case_count": 18,
+        "cold_loading_records": 11
+      },
+      "memory": {
+        "static_bytes": 331716,
+        "heap_start_gap": 32,
+        "static_startup_bytes": 335872,
+        "managed_bytes": 2293760,
+        "sdk_heap_available": 385024,
+        "reserve_bytes": 655360,
+        "closure_bytes": 3670016
+      },
+      "profile": {
+        "prepare_ms": {
+          "mean": 58.030280650326254,
+          "median": 57.5123242591704,
+          "p95": 77.48628617154476,
+          "p99": 83.74495755234338,
+          "maximum": 96.25430365153267
+        },
+        "submit_ms": {
+          "mean": 3.3936279201477713,
+          "median": 3.2025439412123573,
+          "p95": 6.833237542468096,
+          "p99": 6.923050803094661,
+          "maximum": 7.959871793211562
+        },
+        "upload_ms": {
+          "mean": 0.15242051031469758,
+          "median": 0.031658428413549905,
+          "p95": 0.7070481806668035,
+          "p99": 1.195739736328557,
+          "maximum": 6.129083676180288
+        },
+        "component_sum_ms": {
+          "mean": 61.57632908078872,
+          "median": 60.43901318560116,
+          "p95": 81.82161105176938,
+          "p99": 90.32958244114351,
+          "maximum": 103.85187889639613
+        },
+        "simulation_ms": {
+          "mean": 1.3437010175508262,
+          "median": 1.0813695609193799,
+          "p95": 2.8047696630021464,
+          "p99": 4.452410340257389,
+          "maximum": 7.124399601336541
+        },
+        "input_poll_to_service_max_ms": 4.151998410693185,
+        "normal_ai_high_water": 8,
+        "normal_projectiles_high_water": 8,
+        "all_awake_ai_high_water": 100,
+        "world_bytes": 383864,
+        "world_remaining": 9352,
+        "packed_bytes": 283947,
+        "raw_cache_min_capacity": 245856,
+        "maximum_hardware_polygons": 287,
+        "maximum_hardware_vertices": 1154,
+        "largest_individual_stack_frames": [
+          {
+            "function": "platform/gameplay_probe/main.c:551:12:render_one",
+            "bytes": 4352,
+            "kind": "static"
+          },
+          {
+            "function": "render/scene.c:147:25:dok_render_scene_prepare",
+            "bytes": 2608,
+            "kind": "static"
+          },
+          {
+            "function": "render/door_render.c:110:25:dok_door_scene_prepare",
+            "bytes": 2528,
+            "kind": "static"
+          },
+          {
+            "function": "render/effects.c:260:17:weld_piece",
+            "bytes": 2080,
+            "kind": "static"
+          },
+          {
+            "function": "platform/gameplay_probe/effects_runtime.c:58:12:nds_effects_load",
+            "bytes": 992,
+            "kind": "static"
+          }
+        ],
+        "stack_scope": "Compiler .su per-function only; not a measured IRQ/SDK call-chain high-water mark. Physical validation N24."
+      },
+      "weapon_captures": 12,
+      "core_sha256": "c7e6b58c667075a2a9868f2c3ba7a98e24200410a6da3051a7c555f1f0eef8ef"
+    }
+  },
+  "artifacts": [
+    {
+      "path": "research/evidence/nds/n17p/release/before-release-ru/build-manifest.json",
+      "bytes": 55218,
+      "sha256": "d78b96a3c984885bbdc76649901a9061a19b36c7ccd9a6850731a730cb90064c"
+    },
+    {
+      "path": "research/evidence/nds/n17p/release/before-release-ru/dok_nds_gameplay.nds",
+      "bytes": 262144,
+      "sha256": "f7fa20b2d8ece1d9c2712dd1dddeeb48fa69963bdd63dcc456d31c062d6e44d4"
+    },
+    {
+      "path": "research/evidence/nds/n17p/release/before-release-ru/dok_nds_gameplay.elf",
+      "bytes": 1953224,
+      "sha256": "36c650d8c81699fc3fef16d23e8acc6d0f3801526d5c1681ffbd8662d1344ea8"
+    },
+    {
+      "path": "research/evidence/nds/n17p/release/before-release-ru/dok_nds_gameplay.map",
+      "bytes": 973133,
+      "sha256": "6fc79ed8326cef89f5c0aef396c3024931d30ed64c4d887429793795e5ef6966"
+    },
+    {
+      "path": "research/evidence/nds/n17p/release/before-release-ru/result.json",
+      "bytes": 16003648,
+      "sha256": "6a08df0740ec79097d4ecc199f0153a10293e390fa7df5f497d0cc8ee53f2152"
+    },
+    {
+      "path": "research/evidence/nds/n17p/release/final-release-ru/build-manifest.json",
+      "bytes": 55214,
+      "sha256": "064b31599601251078647a19a8bba5331ff239ecac92978b21fc9d98d0892679"
+    },
+    {
+      "path": "research/evidence/nds/n17p/release/final-release-ru/dok_nds_gameplay.nds",
+      "bytes": 264192,
+      "sha256": "5e07aa86d1e518fb0c419adb6c23bfaa88e14efacbcba93b76e4283bdd9f3e7f"
+    },
+    {
+      "path": "research/evidence/nds/n17p/release/final-release-ru/dok_nds_gameplay.elf",
+      "bytes": 1970824,
+      "sha256": "4a79bee16b053f412719d7106189e6f9c67da62ef1e26114a18eda373fd19406"
+    },
+    {
+      "path": "research/evidence/nds/n17p/release/final-release-ru/dok_nds_gameplay.map",
+      "bytes": 970606,
+      "sha256": "a673b056bb7c8936e9ff79ebb948371d5909bce69ab936cb701ca144f2d953bf"
+    },
+    {
+      "path": "research/evidence/nds/n17p/release/final-release-ru/result.json",
+      "bytes": 16146100,
+      "sha256": "a035dd267c99d19973014da19e865eea11fa51f369bd361f61ca508716552b14"
+    },
+    {
+      "path": "research/evidence/nds/n17p/release/final-release-en/build-manifest.json",
+      "bytes": 55214,
+      "sha256": "6a25ed4a10b741ce92addea5c9a2882005e89a645ee2b802ed852f60240c01c6"
+    },
+    {
+      "path": "research/evidence/nds/n17p/release/final-release-en/dok_nds_gameplay.nds",
+      "bytes": 264192,
+      "sha256": "e009fef01eb27541f3905b79c5ee8118bbf8239b6b5fcc04a66803e5835b26e9"
+    },
+    {
+      "path": "research/evidence/nds/n17p/release/final-release-en/dok_nds_gameplay.elf",
+      "bytes": 1971752,
+      "sha256": "948efb6f8daeea36214cfee2852ab019736b30b3fb99e5fea8f32475d59cd61d"
+    },
+    {
+      "path": "research/evidence/nds/n17p/release/final-release-en/dok_nds_gameplay.map",
+      "bytes": 970648,
+      "sha256": "258187f019d8fe95a01982797391315f3c1275c645f4310523459df3b62f9eaa"
+    },
+    {
+      "path": "research/evidence/nds/n17p/release/final-release-en/result.json",
+      "bytes": 16085164,
+      "sha256": "1cd37a88e9954d4298c31acd220a83983eb49dec8d6bc4ade413027aa61e7c3c"
+    },
+    {
+      "path": "research/evidence/nds/n17p/release/final-release-audit/build-manifest.json",
+      "bytes": 55226,
+      "sha256": "82f0d0c2d00d563e86691c62c6261b0b4fa20d0670311aae6c348f2253bae70b"
+    },
+    {
+      "path": "research/evidence/nds/n17p/release/final-release-audit/dok_nds_gameplay.nds",
+      "bytes": 265216,
+      "sha256": "ea3c07b1123129b1365419b6197bfe2b44e111896015ca56bd13a8a1d8be41f5"
+    },
+    {
+      "path": "research/evidence/nds/n17p/release/final-release-audit/dok_nds_gameplay.elf",
+      "bytes": 1976620,
+      "sha256": "7f79bd5d83f140ca47e1c98a844c29505ddf26376bb2985f9359e97183dea80a"
+    },
+    {
+      "path": "research/evidence/nds/n17p/release/final-release-audit/dok_nds_gameplay.map",
+      "bytes": 979932,
+      "sha256": "b7234c2f28a8b09116ef7517ce006130311e1e134d6ea23004f572b7bb008e7e"
+    },
+    {
+      "path": "research/evidence/nds/n17p/release/final-release-audit/result.json",
+      "bytes": 16962569,
+      "sha256": "884839d6a1b6cce61c2da7fef60797ca647c8a9ced6cce32acb20f8bb7e8fbe1"
+    },
+    {
+      "path": "research/evidence/nds/n17p/host-check.json",
+      "bytes": 55026,
+      "sha256": "8decf55af96bfa244f9529bad99d5252653d0beea3303d427fb28fb6e8619282"
+    },
+    {
+      "path": "research/evidence/nds/n17p/source-replay.json",
+      "bytes": 759,
+      "sha256": "3995ad573ea1bc24359f8aa3d895047cd29a82361333b588122d7ba8978aae12"
+    },
+    {
+      "path": "research/evidence/nds/n17p/water-raster.json",
+      "bytes": 21612,
+      "sha256": "a8e6f19e617528366bd9901cada8580cd6dd669c6a385f58f0f1157c9fd246e4"
+    },
+    {
+      "path": "build/nds/n17p/scene.dat",
+      "bytes": 34560,
+      "sha256": "13b4de7e0d773c1e3ca9bee4723334c737a6f934c1d2f90941bb57cdf5bfbc84"
+    },
+    {
+      "path": "build/nds/n17p/water-raster.dat",
+      "bytes": 33088,
+      "sha256": "3584e6e833f27b1ffce5cc16f825605259e766ba8341f48953be41e1b0dd54fa"
+    }
+  ],
+  "scope": "DS-mode emulator, fixed fixture/input scripts. Actual native-clock lateness is preserved; normalized source replay compares equal admitted poll/input sequences, not trajectories at equal presentation ordinal. No audio, final HUD/map, Game Over or physical DS FPS claim.",
+  "future_arm9_budget_ms": {
+    "audio_submission": 0.3,
+    "dirty_hud": 0.2,
+    "incremental_map": 0.5,
+    "total": 1.0,
+    "validation": "requirements for N18-N21P, not measured implemented features"
+  },
+  "remaining": "N18 next, not started. Physical DS/DS Lite/flashcart and measured stack/IRQ N24; full audio/UI budget N21P. All-awake and costly audit are explicitly outside normal cadence gate."
+}

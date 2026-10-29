@@ -1,0 +1,15 @@
+OUTDIR := ../../build/nds/n16/arm9
+include Makefile.n15
+.DEFAULT_GOAL := ai-all
+AI_OBJECTS := $(filter-out $(OUTDIR)/obj/combat_main.o,$(COMBAT_OBJECTS)) $(OUTDIR)/obj/ai_main.o $(OUTDIR)/obj/ai_cases.o $(OUTDIR)/obj/ai.o
+.PHONY: ai-all
+ai-all: $(OUTDIR)/dok_nds_ai.nds
+$(OUTDIR)/dok_nds_ai.nds: $(OUTDIR)/dok_nds_ai.elf
+	$(BLOCKSDS)/tools/ndstool/ndstool -c $@ -9 $< -7 $(BLOCKSDS)/sys/arm7/main_core/arm7_maxmod.elf
+$(OUTDIR)/dok_nds_ai.elf: $(AI_OBJECTS)
+	$(CC) $(ARCH) -o $@ $^ -L$(BLOCKSDS)/libs/libnds/lib -Wl,-Map,$(OUTDIR)/dok_nds_ai.map -Wl,--defsym=__usr_stack_size=12288 -Wl,--start-group -lnds9 -lc -Wl,--end-group
+$(OUTDIR)/obj/ai_main.o: platform/ai_probe/main.c tests/ai_cases.h | $(OUTDIR)/obj
+	$(CC) $(ARCH) $(FLAGS) $(SDK) -std=gnu11 -c $< -o $@
+$(OUTDIR)/obj/ai_cases.o: tests/ai_cases.c | $(OUTDIR)/obj
+	$(CC) $(ARCH) $(FLAGS) -pedantic-errors -c $< -o $@
+-include $(AI_OBJECTS:.o=.d)

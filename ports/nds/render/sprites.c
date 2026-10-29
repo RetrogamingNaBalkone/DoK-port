@@ -79,7 +79,8 @@ dok_status dok_sprite_project(const dok_nds_render_camera *c,const dok_sprite_po
     *out=r;return DOK_STATUS_OK;
 }
 static dok_status gather_one(const dok_sprite_snapshot *s,const dok_nds_render_camera *c,
-    uint32_t plane,uint32_t cell,uint32_t x,uint32_t z,dok_sprite_list *list)
+    uint32_t plane,uint32_t cell,uint32_t x,uint32_t z,dok_sprite_list *list,
+    const uint16_t *runtime_flags,const unsigned char *zero_height)
 {
     const dok_initial_world *w=s->world;
     const dok_level_definition *d=w->definition;
@@ -88,6 +89,7 @@ static dok_status gather_one(const dok_sprite_snapshot *s,const dok_nds_render_c
     dok_sprite_pose p={0};dok_sprite_projection projection;
     if(!index) return DOK_STATUS_INVALID_STATE;
     o=&d->objects[index-1u];
+    if(runtime_flags&&(runtime_flags[glyph]&0x400u))return DOK_STATUS_OK;
     /* PKR1098:42A9..42AE skips the entire remaining cell, including MMap,
      * for a solid TMap wall. An initial seed behind that wall is not drawn. */
     if(plane==DOK_WORLD_MMAP) {
@@ -109,10 +111,12 @@ static dok_status gather_one(const dok_sprite_snapshot *s,const dok_nds_render_c
         p.x=w->objects[seed-1u].x;p.z=w->objects[seed-1u].z;
     }
     p.y=word(-(int32_t)d->objects[fc-1u].height_parameter-o->height_parameter);
+    if(zero_height&&(zero_height[glyph/8u]&(1u<<(glyph%8u))))p.y=word(-(int32_t)d->objects[fc-1u].height_parameter);
     p.width=(int16_t)word((int64_t)b->frame.width*o->width_parameter);
     p.height=(int16_t)word((int64_t)b->frame.height*o->width_parameter);
     if(p.width<=0 || p.height<=0) return DOK_STATUS_UNSUPPORTED;
     p.image=b->frame.image;p.glyph=(uint16_t)glyph;p.flags=o->flags;
+    if(runtime_flags)p.flags=runtime_flags[glyph];
     p.texture_width=b->frame.width;p.texture_height=b->frame.height;
     p.source_id=UINT32_C(0x80000000)|(plane<<24)|cell;
     if(dok_sprite_project(c,&p,&projection)!=DOK_STATUS_OK) return DOK_STATUS_INVALID_STATE;
@@ -120,8 +124,9 @@ static dok_status gather_one(const dok_sprite_snapshot *s,const dok_nds_render_c
     if(list->count==DOK_SPRITE_LIMIT) return DOK_STATUS_LIMIT_REACHED;
     list->poses[list->count++]=p;return DOK_STATUS_OK;
 }
-dok_status dok_sprites_gather(const dok_sprite_snapshot *s,const dok_nds_render_camera *c,
-    uint32_t heading,dok_sprite_list *list,const dok_sprite_list **out)
+dok_status dok_sprites_gather_live(const dok_sprite_snapshot *s,const uint16_t *runtime_flags,
+    const unsigned char *zero_height,const dok_nds_render_camera *c,uint32_t heading,
+    dok_sprite_list *list,const dok_sprite_list **out)
 {
     dok_render_gather_bounds bounds;int32_t x,z;uint32_t plane,width;
     if(!s || !s->world || !s->world->definition || !s->bindings || !c || !list || !out ||
@@ -133,11 +138,14 @@ dok_status dok_sprites_gather(const dok_sprite_snapshot *s,const dok_nds_render_
     width=(uint32_t)s->world->definition->settings[DOK_LEVEL_WIDTH];
     for(z=bounds.min_z;z<=bounds.max_z;++z) for(x=bounds.min_x;x<=bounds.max_x;++x)
         for(plane=0;plane<2u;++plane) {
-            dok_status r=gather_one(s,c,plane,(uint32_t)z*width+(uint32_t)x,(uint32_t)x,(uint32_t)z,list);
+            dok_status r=gather_one(s,c,plane,(uint32_t)z*width+(uint32_t)x,(uint32_t)x,(uint32_t)z,list,runtime_flags,zero_height);
             if(r!=DOK_STATUS_OK) return r;
         }
     *out=list;return DOK_STATUS_OK;
 }
+dok_status dok_sprites_gather(const dok_sprite_snapshot *s,const dok_nds_render_camera *c,
+    uint32_t heading,dok_sprite_list *list,const dok_sprite_list **out)
+{return dok_sprites_gather_live(s,NULL,NULL,c,heading,list,out);}
 static dok_render_scene_result billboard(const dok_nds_render_camera *c,const dok_sprite_pose *p,
     uint16_t slot,dok_nds_render_quad *q,dok_nds_render_cell *cell)
 {

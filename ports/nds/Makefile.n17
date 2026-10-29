@@ -1,0 +1,15 @@
+OUTDIR := ../../build/nds/n17/arm9
+include Makefile.n15
+.DEFAULT_GOAL := ai-combat-all
+AI_COMBAT_OBJECTS := $(filter-out $(OUTDIR)/obj/combat_main.o $(OUTDIR)/obj/combat_cases.o,$(COMBAT_OBJECTS)) $(OUTDIR)/obj/ai_combat_main.o $(OUTDIR)/obj/ai_combat_cases.o $(OUTDIR)/obj/ai.o
+.PHONY: ai-combat-all
+ai-combat-all: $(OUTDIR)/dok_nds_ai_combat.nds
+$(OUTDIR)/dok_nds_ai_combat.nds: $(OUTDIR)/dok_nds_ai_combat.elf
+	$(BLOCKSDS)/tools/ndstool/ndstool -c $@ -9 $< -7 $(BLOCKSDS)/sys/arm7/main_core/arm7_maxmod.elf
+$(OUTDIR)/dok_nds_ai_combat.elf: $(AI_COMBAT_OBJECTS)
+	$(CC) $(ARCH) -o $@ $^ -L$(BLOCKSDS)/libs/libnds/lib -Wl,-Map,$(OUTDIR)/dok_nds_ai_combat.map -Wl,--defsym=__usr_stack_size=12288 -Wl,--start-group -lnds9 -lc -Wl,--end-group
+$(OUTDIR)/obj/ai_combat_main.o: platform/ai_combat_probe/main.c tests/ai_combat_cases.h | $(OUTDIR)/obj
+	$(CC) $(ARCH) $(FLAGS) $(SDK) -std=gnu11 -c $< -o $@
+$(OUTDIR)/obj/ai_combat_cases.o: tests/ai_combat_cases.c | $(OUTDIR)/obj
+	$(CC) $(ARCH) $(FLAGS) -pedantic-errors -c $< -o $@
+-include $(AI_COMBAT_OBJECTS:.o=.d)

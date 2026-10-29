@@ -1,6 +1,194 @@
 # Передача контекста NDS между чатами
 
-## Текущая передача после N13P — 29 октября 2026 года
+## Дополнение: статическая оценка GPU — 29 октября 2026 года
+
+[N17P-GPU](tasks/N17P-GPU.md) завершена как исследование,
+[выводы и порядок опытов](spec/gpu-offload-assessment.md).
+Основной renderer уже аппаратный; следующие кандидаты — retained lists/DMA,
+cyclic вода через два повторения 96 texels в extended POT texture и аппаратный
+overlay. Повторная подготовка статической геометрии требует также CPU-кэша.
+Вода 96×96 в storage128×128 не допускает простого hardware wrap без ошибки периода.
+RU mean prepare/submit/upload12,366/4,314/0,542 мс; worst sum30,452 мс.
+Даже условное удаление всего submit худшего кадра оставит23,917 мс: 60 FPS
+не доказаны. На этапе статической оценки алгоритм не реализовывался,
+старые отчёты пересчитаны offline; последующие опыты N17P описаны ниже.
+Повтор: `py -3.14 -B -X utf8 ports/nds/tools/audit_gpu_potential.py`;
+pins/отчёт — `research/evidence/nds/gpu-static-20261029/report.json`.
+Статическая оценка историческая; реализованные опыты и решение — в текущей
+передаче N17P ниже. Следующий ID **N18**, остановка перед ним.
+Живой бой проверен N17P; audio/UI и physical DS остаются N21P/N24.
+
+## Текущая передача N17P — 29 октября 2026 года
+
+**Итерация N14 → N15 → N16 → N17 → N17P завершена (эмулятор).**
+Остановиться перед **N18**. [Паспорт](tasks/N17P.md),
+[спецификация, кандидаты и команды](spec/N17P-performance.md),
+[compact/hashes](../../analysis/nds-n17p-performance.json).
+
+Единый N08 runtime героя/дверей/воды/AI/оружия/projectiles. Настоящий clock,
+native elapsed/deadlines без catch-up. Render read-only; рассмотрение эффектов
+и C2 на source-time service героя — явная NDS adaptation. При reload clear
+owners/events/projectiles, новый world epoch. Gameplay seeds/баланс — RU,
+presentation — RU/EN. Corpse owner удерживает старые снаряды до teardown.
+
+Учтён N17P-GPU: bounded geometry cache испытан и выключен, GPU cyclic water
+через две копии96 включена (36 raster pairs exact), overlay ускорен точным
+clipping (6000 comparisons). Lossless RAM store всех168 кадров устранил
+дисковые пики50–130 мс;283947/283943 B, внутри прежнего assets slab1 MiB.
+Аппаратный overlay и retained lists/DMA остаются измеряемыми кандидатами,
+не реализованными «обещаниями» ускорения. Мир уже использует textured billboards.
+
+59 cases/7060 presentations на вариант. Final RU/EN38.916/38.182 virtual FPS,
+все5077 normal intervals≤2 VB на язык, minimum window29.913049 FPS. Цель60
+не достигнута. Baseline minimum15.692, FAIL; audit функциональноPASS14.225 FPS,
+его стоимость отдельная. All-awake100 AI/до6 VB вне normal gate.
+Host178111 checks, native2464 actual callbacks, pack/texture/water7969561,
+cache145242, overlay6000. RU/EN×две cadence наблюдения одинаковы при одинаковых
+source poll/input; не заявлено равенство wall-clock траекторий при разных lateness.
+
+World383864/393216 B, static startup335872 B, SDK headroom385024 B,
+reserve655360 B; textures≤309248 B, GPU errors0, FAT unchanged. Audio slab262144 B
+сохранён. Следующий ARM9 budget audio/HUD/map≤1 мс как требование N18–N21P,
+а не измеренный запас полной игры; p99 component margin≈5.62 мс, worst-case
+постоянного запаса не доказан. Physical DS/flashcart/IRQ/stacks — N24.
+
+Сборки: build/nds/n17p/{before-release-ru,final-release-ru,final-release-en,
+final-release-audit}/. Контрольные артефакты и полные отчёты архивированы
+research/evidence/nds/n17p/release/, исходники — sources/<label>/.
+ROM RU264192 B/SHA5e07aa86d1e518fb0c419adb6c23bfaa88e14efacbcba93b76e4283bdd9f3e7f;
+EN264192 B/SHAe009fef01eb27541f3905b79c5ee8118bbf8239b6b5fcc04a66803e5835b26e9.
+
+Первый шаг нового чата N18: прочитать его паспорт/план/handoff, сверить эти
+pins и подготовленный CPU/RAM budget, восстановить original sound/music
+путь для ARM7. Звук, финальный HUD/карта, меню Game Over и полное прохождение
+ещё не реализованы соответствующими будущими задачами. Игровых сохранений нет.
+
+## Архив передачи N17 — 29 октября 2026 года
+
+**N14–N17 готовы (эмулятор)**. Продолжать N17P, затем остановиться перед N18.
+[Паспорт](tasks/N17.md), [spec/команды](spec/N17-ai-combat.md),
+[compact/hashes](../../analysis/nds-n17-ai-combat.json).
+
+Полный class9 combat/death и typed HERO_DEAD, shared next cursor между
+walk/hurt/attack, source sight/burst limits/allocation order. Corpse сохраняет
+owner для существующих снарядов; health0 hit проходит до cleanup. Runtime
+corpse bitset задаёт height0, immutable definitions сохранены. Signed negative
+last death interval wrap проверен явно. N16 AI trace изменён2560806509,
+остальные combat/sprite regression results прежние. Старые evidence pins целы.
+11503 checks/268 cases/2060 callbacks на host и ARM9, native replay всех2060
+PKR/PKE callbacks плюс4094 scalar/14 sight vectors. FAT unchanged. ARM ai9844 B.
+Full DOS session и physical DS не заявлены. Команды/ABI/boundaries — spec.
+
+Первый шаг N17P: читать её паспорт и performance-checkpoints; собрать совместный
+runtime с единым N08 scheduler, настоящими AI/combat и принятым GPU fog.
+Архивировать baseline до оптимизации; сравнить timestamps новых кадров, мир,
+reserve и бюджеты. Отдельные ROM не доказывают live budget.
+
+## Архив передачи N16 — 29 октября 2026 года
+
+**N14–N16 готовы (эмулятор)**. Продолжать **N17 → N17P**, затем остановиться
+перед N18. [N16](tasks/N16.md), [spec/команды](spec/N16-ai-movement.md),
+[compact](../../analysis/nds-n16-ai-movement.json).
+
+Независимый AI использует NDS motion/collision/events,128 bounded class9 owners
+с glyph-index lookup; в исходных movement/perception branches RNG нет.
+Getter wake: strict max(abs(dx),abs(dz))<activation, без LOS. Первый hit будит
+без SUB. Course N+1/до10 half-step native resolver probes, без commit/counters.
+Bank frame и source seed pose публикуются на simulation boundary.
+
+NDS consideration policy явно отличается от точного DOS draw interleaving:
+IDs берутся по N12 gather bounds/order в source-time service героя, не по
+частоте presentations. All-awake только отдельный stress. CONTACT пока seam
+без attacks; hurt/death completion — N17. До N17 не считать игру полностью боевой.
+
+94532 host/ARM9 checks/18 cases=12 normal+6 stress; trace3234181331 одинаков
+в RU/EN и двух render observation cadences. Native4582 angle/getter/course
+vectors; abs/wake контролируются, x87 ctor/полный active callback не заявлены.
+Normal2152 callbacks, stress4374. ARM9 CPU normal max43942 ticks≈1,311 мс,
+stress max40111≈1,197 мс,33513982Hz, без renderer/audio. AI9812 B ARM9.
+Повтор N15 в этой ROM313608 checks/trace1888275799 PASS.
+
+N16 уточнила live clock_start N15: projectile last_ticks читается в конце
+callback после animation/decay. Прежний combat.c и Makefile N15 архивированы
+в source-supersession, constant-clock N15 vectors сохранены. Старые artifacts
+N15 не переписывать. Sources/manifests/reports — `research/evidence/nds/n16/`.
+ROM `build/nds/n16/arm9/dok_nds_ai.nds` SHA
+`9bb5f00724311a2dba1452d805eab241ed4ea1aa264591ca4e76562cebd9d1e6`.
+FAT неизменён до/после unload; Linux compile-only. Physical DS/DS Lite — N24.
+
+Первый шаг N17: native active callback attacks/burst/sight/hurt/death/corpse;
+source base N14 actor/world/math и N16 AI, N15 spawn. Displayed и next cursors
+различать; смерть не делает corpse slot reusable (flags16, не400).
+Совместный renderer/gameplay и бюджет — N17P. Игровых saves нет, GBA/SDL2 не менялись.
+
+## Историческая передача N15 — 29 октября 2026 года
+
+Поручение N14–N17P продолжается, после N17P остановиться перед N18.
+**N14/N15 готовы (эмулятор)**, следующий ID **N16**.
+[N15](tasks/N15.md), [source/контракты/команды](spec/N15-combat.md),
+[compact](../../analysis/nds-n15-combat.json).
+
+N15: source weapon show/hide/readiness, safe Select consumer, charge,256-slot
+projectile pool с поколениями, native movement/decay/contact, effect playback,
+class9 hit seam, billboard append и screen weapon overlay API. ARM9 state12948 B.
+Pool service owners регистрируются до dispatch, новые instances используют
+generation parameter. Удаление owner снимает phase/occupancy; tombstone event
+внутри dispatch безопасно отменяется, clear мира удаляет всё и unbind overlay.
+
+**Новый факт:** обычный projectile callback сохраняет repeat416 ticks, не
+400/1500 из картинки. При попадании ставится прежний flight interval, затем
+интервалы effect frames. Проверено обеими EXE, не следовать GBA-описанию частоты.
+Другие source details: остаток до четвертей, template Y, ADD16/SAR decay после
+контакта, shared templates не меняются, corpse class9 hits обслужит N16/N17.
+
+313608 host/ARM9 checks/34 RU+EN cases/108 callbacks, trace1888275799;
+6096 source vectors +6 normal-flight callbacks;61824 collision queries/
+1152 wrappers. Regression N14/N10 прошла. Source supersession архивирует
+изменённые collision.c/h и collision_dump.c, старые ROM/reports не переписаны.
+ROM `build/nds/n15/arm9/dok_nds_combat.nds` SHA
+`6a0a4b3d8a28846baa6b8054d7c59b5d588ddc5aefd797624841611bc7c9a57b`.
+FAT неизменён. Это логическая ROM с pixel overlay tests, не игровой GPU/FPS run.
+Совместная оболочка и профиль — N17P. Physical DS/DS Lite — N24.
+
+Первый шаг N16: оригинальные getter-driven perception/course trial/N+1;
+принять deterministic consideration policy отдельно от точного DOS render/event
+interleaving. Использовать NDS motion/collision/events и N05 RU balance,
+без GBA-кода. Ghidra actor/world/math база — `n14/original/{ru,en}`.
+N13P world slab379576/393216: для AI+combat вынести diagnostic effect trace
+из resident world, сохранить reserve655360 B. Игровых saves нет, GBA/SDL2 не менялись.
+
+## Историческая передача N14 — 29 октября 2026 года
+
+Пользователь поручил **N14 → N15 → N16 → N17 → N17P**, затем остановку перед
+N18. Предыдущая остановка перед N14 снята. **N14 готова (эмулятор)**;
+следующий ID **N15**, продолжение разрешено в текущей итерации.
+[Паспорт](tasks/N14.md), [spec/команды](spec/N14-items.md),
+[compact](../../analysis/nds-n14-items.json).
+
+Независимые items/stats/inventory: исходные WORD overflow/clamp, max fill,
+keys OR, score/map, one-cell TMap removal, repeated weapon grants и pending.
+Перед N11 floor/motion вызывать `dok_items_pickup`; Use получает
+`items.inventory.keys`, FINISH — score. Sink синхронный, без reentry.
+HUD/automap разрешают локализованные text/sound по reference, stats языка не
+содержат. Карта не раскрывает visited. Новое состояние176 B на ARM9.
+
+Host и ARM9:626 placements/1 302 672 checks/1284 notifications, failures0;
+реальные key pickups проверены через N11 door events. Unicorn:9274 native
+stats vectors/16 callbacks PKR/PKE; HUD/text/sound перехвачены. Новый read-only
+Ghidra actor/world/math export с SHA до/после находится
+`research/evidence/nds/n14/original/{ru,en}/`; automatic.c не компилировать.
+ROM `build/nds/n14/arm9/dok_nds_items.nds` SHA
+`c459f8aba42ae2298d7740445ec1aafbb4a5962e9bdcc6d482125de7c0278b3f`.
+Это логическая тестовая ROM, без игрового renderer/FPS. FAT неизменён до/после
+unload. Полный совместный вывод и живой бой ещё предстоят N15–N17P.
+
+Первый шаг N15: принять weapon/projectile ownership и memory layout по исходным
+ASM, безопасный Select и lifecycle N08. Брать производственный fog N13P,
+не возвращать дорогое LIGHT-разбиение. В world slab N13P всего13 640 B запаса;
+диагностический trace можно вынести, reserve655360 B сохранять.
+Физическая DS/DS Lite остаётся N24. Игровых saves нет, GBA/SDL2 не менялись.
+
+## Историческая передача после N13P — 29 октября 2026 года
 
 Поручение **N12 → N13 → N13P выполнено (эмулятор)**. После архитектурного решения
 остановиться. Следующий ID — **N14**, его реализация ещё не начата.

@@ -1,0 +1,80 @@
+{
+  "task": "N14",
+  "status": "ready-emulator",
+  "passed": true,
+  "host": {
+    "checks": 1302672,
+    "failures": 0,
+    "line": 0,
+    "placements": 626,
+    "notifications": 1284,
+    "workspace_bytes": 1575856
+  },
+  "arm9": {
+    "checks": 1302672,
+    "placements": 626,
+    "notifications": 1284,
+    "workspace_bytes": 1574708,
+    "core_version": "1.4.0"
+  },
+  "native": {
+    "passed": true,
+    "languages": {
+      "ru": {
+        "vectors": 4637,
+        "callbacks": 8,
+        "sample": "originals/pkr/RUS/PKR.EXE",
+        "sha256": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+        "actor_sha256": "6a6fc29b1f204efd34a16538b678b7cd04ea6c992893f94283acc06329848b9f"
+      },
+      "en": {
+        "vectors": 4637,
+        "callbacks": 8,
+        "sample": "originals/pkr/ENG/PKE.EXE",
+        "sha256": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b",
+        "actor_sha256": "7a20ad9df5a6d759c486034c5465f41d7dab1cbaa433f5c0b77ab1755403e5dd"
+      }
+    },
+    "whole_DOS_session": false,
+    "intercepted": "HUD/text/sound far calls only"
+  },
+  "artifacts": [
+    {
+      "path": "research/evidence/nds/n14/host-check.json",
+      "bytes": 9891,
+      "sha256": "45a7b8ac55d094d057c998b29fd19676891dd170e2c7a725c7f2700e69213a0d"
+    },
+    {
+      "path": "research/evidence/nds/n14/emulator.json",
+      "bytes": 6129,
+      "sha256": "465e23c14c9367654adf73a6d41f332a2f26df94aaa37178ff0b69b6948985b9"
+    },
+    {
+      "path": "research/evidence/nds/n14/original-report.json",
+      "bytes": 707,
+      "sha256": "656c4fb9f6eac8db05fdc62de424879463e96c34523ba0caf8a82e18d49e5c2f"
+    },
+    {
+      "path": "build/nds/n14/arm9/dok_nds_items.elf",
+      "bytes": 1078092,
+      "sha256": "5bd630858c0663717e54f42dc9e066e2aed25131ddaa4fea8a9ac2f1660161a5"
+    },
+    {
+      "path": "build/nds/n14/arm9/dok_nds_items.map",
+      "bytes": 662860,
+      "sha256": "5e764b44ebd614eed3bd972c4f939d5a94b33d53c10e26420fd514c2919cb2e6"
+    },
+    {
+      "path": "build/nds/n14/arm9/dok_nds_items.nds",
+      "bytes": 157696,
+      "sha256": "c459f8aba42ae2298d7740445ec1aafbb4a5962e9bdcc6d482125de7c0278b3f"
+    }
+  ],
+  "limitations": [
+    "Physical DS/DS Lite: N24",
+    "Linux compiled only",
+    "No integrated gameplay FPS claim; N15-N17P",
+    "No game saves"
+  ],
+  "next_id": "N15"
+}

@@ -10,6 +10,8 @@ typedef struct dok_collision_view {
     int16_t cell_side, min_distance;
     const unsigned char *mmap, *tmap, *known;
     const uint16_t *flags;
+    /* Optional N15 borrowed 4096-cell bitset. NULL is exact static N10. */
+    const unsigned char *projectile_occupied;
 } dok_collision_view;
 struct dok_collision_context;
 typedef struct dok_collision_state {
@@ -18,6 +20,7 @@ typedef struct dok_collision_state {
     uint16_t flags[256], door_count[256];
     unsigned char known[256];
     uint32_t _tag, _revision, _epoch;
+    const unsigned char *_projectile_occupied;
 } dok_collision_state;
 enum {
     DOK_COLLISION_WORLD_EDGE=1u, DOK_COLLISION_LARGE_STEP=2u,
@@ -64,6 +67,8 @@ dok_status dok_collision_set_flags(dok_collision_state *state,
     dok_object_ref object, uint16_t flags);
 dok_status dok_collision_set_door_count(dok_collision_state *state,
     dok_object_ref object, uint16_t count);
+/* Bind/unbind outside an active context; storage outlives the binding. */
+dok_status dok_collision_projectiles(dok_collision_state *state,const unsigned char *bits);
 /* Admission before N09 update. One context exclusively borrows the world until
  * end; no render lease/world reset/other gameplay mutation may overlap it.
  * It validates scalar quarter-step before any occupancy write. Caller still
