@@ -17,7 +17,7 @@ from research_gba_fps import GameProbe, ROOT, freeze, live_measure
 from verify_gba import sha, VIDEO, scene_source_y
 
 
-def capture(build,core,cameras,force_low_mode=0):
+def capture(build,core,cameras,force_low_mode=0,save_images=True):
     p=GameProbe(core,build);rows=[];images={}
     try:
         p.video_callback=VIDEO(p.frontend.video)
@@ -58,7 +58,8 @@ def capture(build,core,cameras,force_low_mode=0):
                 size=120*(4 if p.words('g_hw_obj_diag',6)[5] in (64,48,36) else 5)*4
                 completed_coverage=__import__('hashlib').sha256(p.frontend.read(p.symbols['coverage_bits'],size)).hexdigest()
             p.frontend.run(2)
-            output=build/(case['name']+'-ppu.png');p.frontend.screenshot(output)
+            if save_images:p.frontend.screenshot(build/(case['name']+'-ppu.png'))
+            else:p.frontend.decode_video(p.frontend.last_video_raw)
             rgb=p.frontend.rgb;images[case['name']]=rgb
             assert len(rgb)==240*160*3,'Missing actual PPU video'
             if 'g_hw_bg_diag' in p.symbols:
@@ -83,7 +84,8 @@ def capture(build,core,cameras,force_low_mode=0):
             if 'g_hw_bg_prepare_cycles' in p.symbols:row['hardware_bg_prepare_cycles']=p.words('g_hw_bg_prepare_cycles',1)[0]
             if 'fixture' in case:row['fixture']=case['fixture']
             if completed_coverage is not None:row['coverage_sha256']=completed_coverage
-            rows.append(row);print(build.name,row,flush=True)
+            rows.append(row)
+            if save_images:print(build.name,row,flush=True)
         return dict(rom_sha256=sha(p.rom),rows=rows),images
     finally:p.close()
 

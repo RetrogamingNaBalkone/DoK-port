@@ -35,7 +35,8 @@ static DOK_NOINLINE unsigned raster_rect(dok_renderer_workspace *w,const dok_ren
     const uint8_t *source,*solid;
     if(prelit){source=dok_prelit_bank+prelit;solid=source-256;}
 #ifdef DOK_RENDER_HW_ANIMATION_COLUMNS_PROTOTYPE
-    else if(!light_index(f->depth0)){source=im->columns;solid=source-256;}
+    else if((source=animation_lit_columns(im->columns,light_index(f->depth0)))!=0 ||
+            (!light_index(f->depth0) && (source=im->columns)!=0)){solid=source-256;}
 #endif
     else return 0;
     int span=f->x1-f->x0;

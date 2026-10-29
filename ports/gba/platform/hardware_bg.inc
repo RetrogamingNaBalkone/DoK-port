@@ -36,6 +36,15 @@ static volatile unsigned hw_bg_front,hw_bg_enabled;
 static unsigned hw_bg_next,hw_bg_view,hw_bg_loaded_view,hw_bg_loaded;
 static int hw_bg_x,hw_bg_z,hw_bg_loaded_x,hw_bg_loaded_z;
 static unsigned hw_bg_blank_x,hw_bg_blank_z;
+#ifdef DOK_RENDER_HW_FLOOR_FILL_PROTOTYPE
+/* A wall still supplies an empty CEILING map cell for disabled rows. Its
+ * floor is retained behind CPU walls, sealing projection-rounding cracks. */
+#define HW_BG_BLANK_CONTROL 0xb682
+#define HW_BG_BLOCKED(plane,cell) ((plane) && dok_static_cells[hw_bg_view][0][cell]==2)
+#else
+#define HW_BG_BLANK_CONTROL 0xb082
+#define HW_BG_BLOCKED(plane,cell) (dok_static_cells[hw_bg_view][0][cell]==2)
+#endif
 static uint8_t hw_bg_phases[8];
 static unsigned hw_bg_cold_frame;
 volatile uint32_t g_hw_bg_diag[8]; /* magic,cold loads,map cells,texture KiB,overflows,exit VCOUNT,rows,wait cycles */
@@ -56,7 +65,7 @@ static void hw_bg_plan_cells(void) {
         unsigned cell=(unsigned)z*64+(unsigned)x,glyph=g_render_world.maps[8192+cell];
         c->offset=((unsigned)z&15)*256+((unsigned)x&15)*4;
         for(unsigned plane=0;plane<2;++plane) {
-            unsigned mat=dok_static_cells[hw_bg_view][0][cell]==2?255:dok_hw_bg_maps[hw_bg_view][plane][glyph];
+            unsigned mat=HW_BG_BLOCKED(plane,cell)?255:dok_hw_bg_maps[hw_bg_view][plane][glyph];
             for(unsigned band=0;band<3;++band)c->first[plane*3+band]=mat==255?0:
                 0x03020100u+(1+(mat+(band==1?dok_hw_bg_counts[hw_bg_view]:0))*16)*0x01010101u;
         }
@@ -201,7 +210,7 @@ static void hw_bg_fill_lut(hw_bg_frame *f) {
         hw_bg_row *r=&HW_BG_BASE(f,y);r->pb=r->pd=0;
         if(y<144 && dok_hw_bg_row_cnt[y]) {
             r->pa=lut[y].pa;r->pc=lut[y].pc;r->x=lut[y].x+cx;r->y=lut[y].y+cz;f->cnt[y]=dok_hw_bg_row_cnt[y];
-        }else {r->pa=r->pc=0;r->x=(int32_t)hw_bg_blank_x*256;r->y=(int32_t)hw_bg_blank_z*256;f->cnt[y]=0xb082;}
+        }else {r->pa=r->pc=0;r->x=(int32_t)hw_bg_blank_x*256;r->y=(int32_t)hw_bg_blank_z*256;f->cnt[y]=HW_BG_BLANK_CONTROL;}
     }
 }
 #ifdef DOK_RENDER_HW_LOW_ADAPTIVE_PROTOTYPE
@@ -212,7 +221,7 @@ static void hw_bg_fill_single(hw_bg_single_frame *f) {
         hw_bg_row *r=&f->rows[y];r->pb=r->pd=0;
         if(y<144 && dok_hw_bg_row_cnt[y]) {
             r->pa=lut[y].pa;r->pc=lut[y].pc;r->x=lut[y].x+cx;r->y=lut[y].y+cz;f->cnt[y]=dok_hw_bg_row_cnt[y];
-        }else {r->pa=r->pc=0;r->x=(int32_t)hw_bg_blank_x*256;r->y=(int32_t)hw_bg_blank_z*256;f->cnt[y]=0xb082;}
+        }else {r->pa=r->pc=0;r->x=(int32_t)hw_bg_blank_x*256;r->y=(int32_t)hw_bg_blank_z*256;f->cnt[y]=HW_BG_BLANK_CONTROL;}
     }
 }
 #endif
@@ -302,7 +311,7 @@ static __attribute__((target("arm"))) void hw_bg_prepare(void) {
 #endif
     for(unsigned y=0;y<161;++y) {
         hw_bg_row *row=&HW_BG_BASE(f,y);*row=(hw_bg_row){0,0,0,0,(int32_t)hw_bg_blank_x*256,(int32_t)hw_bg_blank_z*256};
-        f->cnt[y]=0xb082;
+        f->cnt[y]=HW_BG_BLANK_CONTROL;
         if(y>=144)continue;
         int dy=(int)y*10/9-camera.center_y,plane=dy<0;
         int height=plane?-951:0;
@@ -358,9 +367,8 @@ static __attribute__((target("arm"))) void hw_bg_prepare(void) {
 #ifndef DOK_RENDER_HW_BG_STREAM_PROTOTYPE
 static void hw_bg_cell(unsigned x,unsigned z) {
     unsigned cell=z*64+x,glyph=g_render_world.maps[8192+cell];
-    unsigned blocked=dok_static_cells[hw_bg_view][0][cell]==2;
     for(unsigned plane=0;plane<2;++plane) {
-        unsigned mat=blocked?255:dok_hw_bg_maps[hw_bg_view][plane][glyph];
+        unsigned mat=HW_BG_BLOCKED(plane,cell)?255:dok_hw_bg_maps[hw_bg_view][plane][glyph];
         for(unsigned band=0;band<3;++band) {
             unsigned screen=16+plane*6+band*2;
             volatile uint32_t *dst=(volatile uint32_t *)(uintptr_t)(0x06000000+screen*2048+((z&15)*4)*64+(x&15)*4);

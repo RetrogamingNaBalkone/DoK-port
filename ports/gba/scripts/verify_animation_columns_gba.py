@@ -16,7 +16,7 @@ from verify_sprites_gba import original_animations, load_json
 from probe_render_layout import frames
 
 
-def capture(build,core):
+def capture(build,core,light_rows=False):
     p=GameProbe(core,build);rows=[]
     try:
         p.video_callback=VIDEO(p.frontend.video);p.frontend.core.retro_set_video_refresh(p.video_callback)
@@ -34,7 +34,9 @@ def capture(build,core):
                 try:sequence=frames(raw)
                 except (ValueError,AssertionError,struct.error):continue
                 for index,(metadata,pixels) in enumerate(sequence):
-                    for depth in (600,2600):
+                    depths=(600,2460,2580,2700,2940,3180,3420,3660,3780) if light_rows else (600,2600)
+                    if light_rows and index not in (0,len(sequence)-1):continue
+                    for depth in depths:
                         p.present()
                         # A fixture billboard reuses the player definition's
                         # width scale; original maps and source images remain.
@@ -60,15 +62,17 @@ def main():
     ap=argparse.ArgumentParser(description=__doc__)
     ap.add_argument('--build-dir',type=Path,required=True)
     ap.add_argument('--reference-build',type=Path,required=True)
+    ap.add_argument('--light-rows',action='store_true',help='First/last frame at every cached LIGHT row plus fallback row5')
     ap.add_argument('--report',type=Path,required=True);args=ap.parse_args()
     os.chdir(ROOT);os.environ['DOK_PROBE_FAST_VIDEO']='1'
     core=Path(os.environ['LOCALAPPDATA'])/'Programs/mGBA/libretro-20261024/mgba_libretro.dll'
-    before=capture(args.reference_build,core);after=capture(args.build_dir,core)
+    before=capture(args.reference_build,core,args.light_rows);after=capture(args.build_dir,core,args.light_rows)
     assert before['rows']==after['rows'],'Animation PPU/coverage/geometry differs'
-    assert len(after['rows'])==616,len(after['rows'])
+    if not args.light_rows:assert len(after['rows'])==616,len(after['rows'])
     result=dict(status='passed',rom_sha256=after['rom_sha256'],script_sha256=sha(__file__),
-                core_sha256=sha(core),before=before,after=after,frame_cases=len(after['rows']),
-                scope='All 308 original localized animation frames at depths600/2600, '
+                core_sha256=sha(core),before=before,after=after,frame_cases=len(after['rows']),light_rows=args.light_rows,
+                scope=('First/last localized frames at cached LIGHT depths and row5 fallback, ' if args.light_rows else
+                       'All 308 original localized animation frames at depths600/2600, ')+
                       'actual PPU/coverage/geometry equality in a frozen original-map fixture. '
                       'Not a full game or physical GBA test.')
     args.report.write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8')

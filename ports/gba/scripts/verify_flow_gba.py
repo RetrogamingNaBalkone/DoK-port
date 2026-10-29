@@ -27,17 +27,30 @@ FLOW_NAMES = 'magic state level session lives score transitions resets pending t
 
 
 def screen_lines(data):
-    """Independent source-text layout, retaining original blank lines."""
-    data = data.split(b'$', 1)[0].split(b'\0', 1)[0].replace(b'\r', b'')
-    rows = [bytearray()]
-    for value in data:
-        if value == 10:
-            rows.append(bytearray())
-        else:
-            if len(rows[-1]) == 28:
-                rows.append(bytearray())
-            rows[-1].append(value if value >= 32 else 32)
-    return [bytes(row) for row in rows]
+    """Independent paragraph/word layout using Python's text wrapper."""
+    import re
+    import textwrap
+    source = data.split(b'$', 1)[0].split(b'\0', 1)[0].decode('cp866')
+    paragraphs = re.split(r'\n(?:[\t ]*\n)+', source.replace('\r', '').strip())
+    rows = []
+    for paragraph in paragraphs:
+        lines = textwrap.wrap(' '.join(paragraph.split()), 28, break_on_hyphens=False)
+        # Keep single-letter words with the following word, without changing
+        # any glyph or asking textwrap to understand CP866 character ranges.
+        for i in range(len(lines)-1):
+            words = lines[i].split()
+            if words and len(words[-1]) == 1 and words[-1].isalpha():
+                rest = ' '.join(lines[i+1:])
+                if len(rest.split()[0]) <= 26:
+                    letter = words.pop()
+                    lines[i] = ' '.join(words)
+                    lines[i+1:] = textwrap.wrap(letter+' '+rest, 28, break_on_hyphens=False)
+        lines=[line.encode('cp866') for line in lines if line]
+        if rows and len(rows)%14:rows.append(b'')
+        if len(lines)<=14 and len(rows)%14+len(lines)>14:
+            rows.extend([b'']*(14-len(rows)%14))
+        rows.extend(lines)
+    return rows or [b'']
 
 
 class FlowProbe(UIProbe):
@@ -165,7 +178,11 @@ class FlowProbe(UIProbe):
             for row in range(14):
                 index = page*14+row
                 line = rows[index] if index < len(rows) else b''
-                glyph_mask(raw, font, 8, 24+row*8, line.ljust(28, b' '), white)
+                try:
+                    glyph_mask(raw, font, 8, 24+row*8, line.ljust(28, b' '), white)
+                except AssertionError as error:
+                    self.screen(f'layout-failure-{name}-{language}-{page}')
+                    raise AssertionError((name,language,page,row,line.decode('cp866'))) from error
             hint = 'A/START: OK B: BACK' if language else 'A/START: OK B: НАЗАД'
             footer = f'{hint} {page+1}/{expected_pages}'.encode('cp866')
             message_mask(raw, font, footer, white)

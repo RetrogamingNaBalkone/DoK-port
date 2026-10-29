@@ -335,6 +335,9 @@ dok_gba_tiled_surface:
     ldr r12,[lr,#56]
     str r12,[sp,#4]
     ldmia lr,{r1,r2,r12}
+#ifdef DOK_HW_SURFACE_PRELIT
+    mov r1,#0 @ source is prelit: use the spare register for the pixel count
+#endif
     ldr r3,[lr,#32]
     ldr r4,[lr,#36]
     ldr r5,[lr,#40]
@@ -368,15 +371,13 @@ dok_gba_tiled_surface:
     orr r12,r12,r10
     str r12,[r9]
     mov r12,r3,asr #16
-    cmp r12,#0
-    movlt r12,#0
     cmp r12,r7
     movgt r12,r7
+    bic r12,r12,r12,asr #31
     mov lr,r4,asr #16
-    cmp lr,#0
-    movlt lr,#0
     cmp lr,r8
     movgt lr,r8
+    bic lr,lr,lr,asr #31
     mla lr,r7,lr,lr
     add lr,lr,r12
 #ifdef DOK_HW_SURFACE_PRELIT
@@ -403,9 +404,13 @@ dok_gba_tiled_surface:
 #ifdef DOK_HW_SURFACE_PAIR
 7:
 #endif
+#ifdef DOK_HW_SURFACE_PRELIT
+    add r1,r1,#1
+#else
     ldr r12,[sp]
     add r12,r12,#1
     str r12,[sp]
+#endif
 2:
     add r0,r0,#1
     and r12,r0,#7
@@ -420,7 +425,11 @@ dok_gba_tiled_surface:
     add r4,r4,r6
     subs r11,r11,#1
     bne 1b
+#ifdef DOK_HW_SURFACE_PRELIT
+    mov r0,r1
+#else
     ldr r0,[sp]
+#endif
     add sp,sp,#12
     pop {r4-r11,lr}
     bx lr

@@ -1,0 +1,374 @@
+{
+  "task": "G21/UI01 word wrapping, floor seams, renderer CPU optimization and independent audit",
+  "date": "2026-10-29",
+  "status": "completed-with-g21-release-and-g20-budget-open",
+  "artifact": "artifacts/gba/DoK-port_UI01.gba",
+  "rom_sha256": "71b47e8d5679fe587282f177553941cf8479549e0f57321dfe2932d4ac0efc8e",
+  "rom_bytes": 26645204,
+  "build_dir": "build/gba/ui01-text-floor/hardware/hw_v128_entity_rect",
+  "repeat_rom_exact": true,
+  "text": {
+    "font": "original FONT8 CP866 8x8",
+    "columns": 28,
+    "paragraph_reflow": true,
+    "whole_words": true,
+    "single_letter_glue": true,
+    "short_paragraph_kept_on_one_page": true,
+    "original_text_resources_checked": 14,
+    "world_language_combinations": 6
+  },
+  "floor": {
+    "status": "passed",
+    "rom_sha256": "71b47e8d5679fe587282f177553941cf8479549e0f57321dfe2932d4ac0efc8e",
+    "reference_rom_sha256": "eab2f2e18da87971ae50a7997136f47776d1cf3df68cdd59c02d9758b72d1ac5",
+    "script_sha256": "d6a19205c83864f3e5716522045306ae3dda7286e648e4f0ee2562fbe5ad6cf5",
+    "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+    "cases": 880,
+    "changed_views": 756,
+    "repaired_pixels": 63362,
+    "foreground_and_coverage_exact": true,
+    "only_black_floor_background_changed": true,
+    "rows": "Full per-pose rows are in the local report.",
+    "scope": "Original maps, 3 levels / RU+EN, 880 stationary PPU poses. Not physical GBA or a full playthrough."
+  },
+  "static_quality": {
+    "spatial": [
+      {
+        "language": 0,
+        "cases": 440,
+        "exact_ppu_coverage_stats": true,
+        "cpu_after_before": {
+          "minimum": 0.9355810126975257,
+          "median": 0.9992377597919341,
+          "maximum": 1.0014512335485162
+        },
+        "before_rom_sha256": "c996593f060e29eef7bee66823702ad9e2e5910c08ec61e68e59d776138097bc",
+        "after_rom_sha256": "87f3d1c71dfc439e0b0bf5affd597b03b55c59f570dbc8d30bf940ddc0d6a1f5"
+      },
+      {
+        "language": 1,
+        "cases": 440,
+        "exact_ppu_coverage_stats": true,
+        "cpu_after_before": {
+          "minimum": 0.9365987071108901,
+          "median": 0.9993015199333437,
+          "maximum": 1.0020470829068577
+        },
+        "before_rom_sha256": "c996593f060e29eef7bee66823702ad9e2e5910c08ec61e68e59d776138097bc",
+        "after_rom_sha256": "87f3d1c71dfc439e0b0bf5affd597b03b55c59f570dbc8d30bf940ddc0d6a1f5"
+      }
+    ],
+    "animation_cases": 616,
+    "animation_light_ppu_cases": 828,
+    "arm_animation_light_vectors": 3320
+  },
+  "limited_ceiling_variants": {
+    "insets": [
+      0,
+      10,
+      400
+    ],
+    "lowered_height": -561,
+    "lowered_cells": [
+      383,
+      995,
+      0
+    ],
+    "textures_per_level": [
+      1,
+      1,
+      1
+    ],
+    "exact_ceiling_light_rows": 16
+  },
+  "prelit_animations": {
+    "light_rows": [
+      0,
+      4,
+      6,
+      8,
+      10,
+      12,
+      14,
+      15
+    ],
+    "other_rows": "exact runtime LIGHT fallback",
+    "bank_bytes": 10305984,
+    "previous_bank_bytes": 533120
+  },
+  "live_crowded": [
+    {
+      "language": 0,
+      "cell": [
+        8,
+        8
+      ],
+      "heading": 225,
+      "before_fps": 9.95458342826764,
+      "after_fps": 10.745577313872113,
+      "samples": 120,
+      "audio_underruns": 0
+    },
+    {
+      "language": 0,
+      "cell": [
+        56,
+        56
+      ],
+      "heading": 225,
+      "before_fps": 9.968428467806259,
+      "after_fps": 10.03823538984972,
+      "samples": 120,
+      "audio_underruns": 0
+    },
+    {
+      "language": 0,
+      "cell": [
+        8,
+        8
+      ],
+      "heading": 90,
+      "before_fps": 11.985451619318898,
+      "after_fps": 13.998632946001367,
+      "samples": 120,
+      "audio_underruns": 0
+    },
+    {
+      "language": 1,
+      "cell": [
+        8,
+        8
+      ],
+      "heading": 225,
+      "before_fps": 9.95458342826764,
+      "after_fps": 10.745577313872113,
+      "samples": 120,
+      "audio_underruns": 0
+    },
+    {
+      "language": 1,
+      "cell": [
+        56,
+        56
+      ],
+      "heading": 225,
+      "before_fps": 9.968428467806259,
+      "after_fps": 10.03823538984972,
+      "samples": 120,
+      "audio_underruns": 0
+    },
+    {
+      "language": 1,
+      "cell": [
+        8,
+        8
+      ],
+      "heading": 90,
+      "before_fps": 11.985451619318898,
+      "after_fps": 13.998632946001367,
+      "samples": 120,
+      "audio_underruns": 0
+    }
+  ],
+  "live_conditions": "120 presented frames after6 warmups, real AI/maps, stationary input, test HP32767, camera follows placed player, PCM22050Hz; not paired PPU or whole-level minimum",
+  "measured_render_rom_sha256": "7a0046c9d8a55d013b9314c4018a51b5c2953cb684f5b9986485ee5708cbdf05",
+  "final_ui_change": "Final71b47e8d differs from measured7a0046c9 only by paragraph pagination; final ARM/flow/UI/story/frontend/sprites/AI-combat/transitions/floor gate rerun.",
+  "memory": {
+    "ewram_static_bytes": 261444,
+    "ewram_free_bytes": 700,
+    "iwram_code_data_bytes": 24428,
+    "iwram_free_before_stacks_bytes": 148,
+    "stack_bios_reserve_bytes": 8192,
+    "observed_main_stack_bytes": 2576,
+    "observed_main_margin_bytes": 5360,
+    "observed_irq_stack_bytes": 80,
+    "observed_irq_margin_bytes": 80
+  },
+  "independent_audit": {
+    "document": "docs/gba/ui01-cpu-audit.md",
+    "views": 8,
+    "steady_samples_per_view": 30,
+    "instrumented_samples_per_view": 12,
+    "measured_rom_sha256": "7a0046c9d8a55d013b9314c4018a51b5c2953cb684f5b9986485ee5708cbdf05",
+    "heavy_l1_raster_percent": "78-80",
+    "lowered_ceiling_inclusive_cycles": [
+      490432,
+      671040
+    ],
+    "new_unmeasured_implementation_adopted": false
+  },
+  "constraints": {
+    "physical_gba_tested": false,
+    "whole_playthrough": false,
+    "g20_budget_met": false,
+    "g21_release_accepted": false,
+    "next_id": "G21",
+    "nds_sdl2_changes": false
+  },
+  "reports": {
+    "build/gba/ui01-text-floor/ai-combat.json": {
+      "sha256": "ffdec5498248c07c36914987fe4b41b9845bd9ce8e71e4166cd1d8105b1da6cd",
+      "rom_sha256": "71b47e8d5679fe587282f177553941cf8479549e0f57321dfe2932d4ac0efc8e",
+      "status": "passed"
+    },
+    "build/gba/ui01-text-floor/animation-light-ppu.json": {
+      "sha256": "c035ac141dc2b9da032216c1541c5cdee8f925ef8f0843e965a2fb51ba47f86d",
+      "rom_sha256": "87f3d1c71dfc439e0b0bf5affd597b03b55c59f570dbc8d30bf940ddc0d6a1f5",
+      "status": "passed"
+    },
+    "build/gba/ui01-text-floor/arm.json": {
+      "sha256": "1d6c5d93446c518e0f3e9f9a70da0f54f8298caf1b0d725ae28e5fd1e3661f91",
+      "rom_sha256": "71b47e8d5679fe587282f177553941cf8479549e0f57321dfe2932d4ac0efc8e",
+      "status": "passed"
+    },
+    "build/gba/ui01-text-floor/barrels-optimization.json": {
+      "sha256": "82ad4ef7896533bc62cbf4d53c8854a73a318965f948bf3227084b827a17a6de",
+      "rom_sha256": "87f3d1c71dfc439e0b0bf5affd597b03b55c59f570dbc8d30bf940ddc0d6a1f5",
+      "status": "passed"
+    },
+    "build/gba/ui01-text-floor/ceiling.json": {
+      "sha256": "27941dc4a4b5352990b169a3c468dc84d1ece800d780164928c0916d8e75030a",
+      "rom_sha256": "7a0046c9d8a55d013b9314c4018a51b5c2953cb684f5b9986485ee5708cbdf05",
+      "status": "passed"
+    },
+    "build/gba/ui01-text-floor/crowded-final.json": {
+      "sha256": "ed686d8de0d2fa4512ab1073a4d8eb7b7be7bee1a81bc219139efaca513000cc",
+      "rom_sha256": "7a0046c9d8a55d013b9314c4018a51b5c2953cb684f5b9986485ee5708cbdf05",
+      "status": null
+    },
+    "build/gba/ui01-text-floor/crowded.json": {
+      "sha256": "487bc2462382d3c925aa2080adcded20af60a47867d3ec5a59f57e250eac41f6",
+      "rom_sha256": "87f3d1c71dfc439e0b0bf5affd597b03b55c59f570dbc8d30bf940ddc0d6a1f5",
+      "status": "passed"
+    },
+    "build/gba/ui01-text-floor/floor-compare.json": {
+      "sha256": "6087fe62f47880dfff780fe0f0f05b5d6f0a96363e1248cea5f035f1c7a40b4f",
+      "rom_sha256": null,
+      "status": "hardware-bringup-measurement"
+    },
+    "build/gba/ui01-text-floor/floor-seams-final.json": {
+      "sha256": "275b5829ff2074789bfc017c3dafc8313d780636527dfc7cd9dc9db2aa0a298b",
+      "rom_sha256": "71b47e8d5679fe587282f177553941cf8479549e0f57321dfe2932d4ac0efc8e",
+      "status": "passed"
+    },
+    "build/gba/ui01-text-floor/floor-seams.json": {
+      "sha256": "b856ecacdd98e2ce49e3ee39cf177dcf124b604fb8f1c3081e49569fd3410698",
+      "rom_sha256": "7a0046c9d8a55d013b9314c4018a51b5c2953cb684f5b9986485ee5708cbdf05",
+      "status": "passed"
+    },
+    "build/gba/ui01-text-floor/flow.json": {
+      "sha256": "5f0d404677559b1c4db7bb39ae867b7bb2791b1c50addff182d70644b0521231",
+      "rom_sha256": "71b47e8d5679fe587282f177553941cf8479549e0f57321dfe2932d4ac0efc8e",
+      "status": "passed"
+    },
+    "build/gba/ui01-text-floor/frontend-build.json": {
+      "sha256": "40d097793de0e4fb7e0eedb042c1b41002f7be934d7864290b21b5e20f1533ae",
+      "rom_sha256": "71b47e8d5679fe587282f177553941cf8479549e0f57321dfe2932d4ac0efc8e",
+      "status": null
+    },
+    "build/gba/ui01-text-floor/frontend.json": {
+      "sha256": "730504ac6708ca5d90a3d0ed263115847edca1d0b90fd3e7c6dfe2800b8e278a",
+      "rom_sha256": "71b47e8d5679fe587282f177553941cf8479549e0f57321dfe2932d4ac0efc8e",
+      "status": "passed"
+    },
+    "build/gba/ui01-text-floor/latency.json": {
+      "sha256": "f90c010524808e9c8330df1288abb2f0eb784cba182a834877fbf4f1f7c12f31",
+      "rom_sha256": "71b47e8d5679fe587282f177553941cf8479549e0f57321dfe2932d4ac0efc8e",
+      "status": "passed"
+    },
+    "build/gba/ui01-text-floor/live-turn.json": {
+      "sha256": "ffe1196c01bc46e689ad609b7fd07e2302991c3567fdde3b244f82a91a8b5061",
+      "rom_sha256": null,
+      "status": null
+    },
+    "build/gba/ui01-text-floor/sprites.json": {
+      "sha256": "66693e2baa7a70799e099676281080f6346891fb0a84b69cd6973c94fbc88dba",
+      "rom_sha256": "71b47e8d5679fe587282f177553941cf8479549e0f57321dfe2932d4ac0efc8e",
+      "status": "passed"
+    },
+    "build/gba/ui01-text-floor/story.json": {
+      "sha256": "8c80337a3d3aafe8afd2c105fa1f5fc7fb17eefb80aa2fbe860b6538649f10f8",
+      "rom_sha256": "71b47e8d5679fe587282f177553941cf8479549e0f57321dfe2932d4ac0efc8e",
+      "status": "passed"
+    },
+    "build/gba/ui01-text-floor/transitions.json": {
+      "sha256": "0c2c433629fd15330d462b5537af08c8a53176307e8eae256642a751328a1606",
+      "rom_sha256": "71b47e8d5679fe587282f177553941cf8479549e0f57321dfe2932d4ac0efc8e",
+      "status": "passed"
+    },
+    "build/gba/ui01-text-floor/ui.json": {
+      "sha256": "d4200591522082bc49d5b141c1afd5ebb045fad2c72bfc179d012371108f49f1",
+      "rom_sha256": "71b47e8d5679fe587282f177553941cf8479549e0f57321dfe2932d4ac0efc8e",
+      "status": "passed"
+    },
+    "build/gba/ui01-text-floor/water.json": {
+      "sha256": "1c86137b18ee64762c45a73bc6ca01eecbd63e487fd2f6fee41624294be74455",
+      "rom_sha256": "7a0046c9d8a55d013b9314c4018a51b5c2953cb684f5b9986485ee5708cbdf05",
+      "status": "passed"
+    },
+    "build/gba/ui01-text-seams/sweep-after-0.json": {
+      "sha256": "313c0f1badb9ec7aee74235ac59466543d3fd5327a5cde06c72c4d188beaebf3",
+      "rom_sha256": "87f3d1c71dfc439e0b0bf5affd597b03b55c59f570dbc8d30bf940ddc0d6a1f5",
+      "status": null
+    },
+    "build/gba/ui01-text-seams/sweep-after-1.json": {
+      "sha256": "ff0b5bb76f49986257795f98154dc7c117597e841dfed69c0dcccf9bb4d6726a",
+      "rom_sha256": "87f3d1c71dfc439e0b0bf5affd597b03b55c59f570dbc8d30bf940ddc0d6a1f5",
+      "status": null
+    },
+    "build/gba/ui01-text-seams/sweep-before-0.json": {
+      "sha256": "cd9fad014bbf8cd9f691d1c1ca5acf3f4a93aeb71b0aeb8f1eefb8d74f4b864d",
+      "rom_sha256": "c996593f060e29eef7bee66823702ad9e2e5910c08ec61e68e59d776138097bc",
+      "status": null
+    },
+    "build/gba/ui01-text-seams/sweep-before-1.json": {
+      "sha256": "a5bc81ba3e25014bd45577e8e22c4976be6700243c9de09ef700d4eaf615d2a9",
+      "rom_sha256": "c996593f060e29eef7bee66823702ad9e2e5910c08ec61e68e59d776138097bc",
+      "status": null
+    },
+    "build/gba/ui01-cpu-audit/profile.json": {
+      "sha256": "e643fd79d3036cafbee268e0b4a0b2660d69f1c67d89d875cbbbe3e593440a2e",
+      "rom_sha256": "7a0046c9d8a55d013b9314c4018a51b5c2953cb684f5b9986485ee5708cbdf05",
+      "status": null
+    },
+    "build/gba/ui01-cpu-audit/uninstrumented.json": {
+      "sha256": "80f5b8b93a5d6e37c28a0b396cb6ab9cb42d28720041209f49fa5f7c08a3ba2a",
+      "rom_sha256": "7a0046c9d8a55d013b9314c4018a51b5c2953cb684f5b9986485ee5708cbdf05",
+      "status": null
+    },
+    "build/gba/ui01-text-seams/animation-ppu.json": {
+      "sha256": "e2b80521b7f8a214aa338d6468d86d513ea9ab2cd352495aa41e9c0d3093da3c",
+      "rom_sha256": "87f3d1c71dfc439e0b0bf5affd597b03b55c59f570dbc8d30bf940ddc0d6a1f5",
+      "status": "passed"
+    },
+    "build/gba/ui01-text-floor/hardware/hw_v128_entity_rect/build-report.json": {
+      "sha256": "27c279cf0907eeab58fc2eac3a2b74f1fc396e274a4efd8e0e72950e9e2c7d21",
+      "rom_sha256": "71b47e8d5679fe587282f177553941cf8479549e0f57321dfe2932d4ac0efc8e",
+      "status": null
+    },
+    "build/gba/ui01-floor-control/prototype-build.json": {
+      "sha256": "230c7866495795ac79b6b9ad0736a22818ec0956a8232b1bd1f9a3df448aa5c9",
+      "rom_sha256": null,
+      "status": null
+    }
+  },
+  "sources": {
+    "ports/gba/platform/hardware_bg.inc": "41646d56c2aad5eb86f96705e93b8ec1f9a7233ea303572dfa68d54f8fe3b0ff",
+    "ports/gba/platform/tiled_scene.S": "f041a85d2519034f396941838d19f831e76487f56bb5f208dac1ea9e032c9df4",
+    "ports/gba/scripts/benchmark_barrels_gba.py": "e1d6f979d4178d8ebe8f19330a44ee91d6f7700ee5aebc3abd7d2e73ba261fac",
+    "ports/gba/scripts/benchmark_gba_hardware.py": "ef0b43476f142486dded01416abb59f50655952d61b93b9f5c9a8bbde517cc80",
+    "ports/gba/scripts/gba_animation_columns.py": "a2748a6fe7a11779a3dbc411fc0f930bcbdd82f319ff89b4e0fa9cede1f68c32",
+    "ports/gba/scripts/prototype_gba_bsp.py": "bd356e6edc4e9d64a9b1d0b0690b897d04e936105fdd6449bb0f2e015a6bc38d",
+    "ports/gba/scripts/verify_animation_columns_gba.py": "c2ee1cc80fe38df0dd88a1d00423ac57d79736e6cf1a3be50bd2b81323108f02",
+    "ports/gba/scripts/verify_floor_seams_gba.py": "d6a19205c83864f3e5716522045306ae3dda7286e648e4f0ee2562fbe5ad6cf5",
+    "ports/gba/scripts/verify_flow_gba.py": "ef6654feaa721836b4c682a207628ee31f280b8f309000108591d9936a55106c",
+    "ports/gba/scripts/verify_performance_arm.py": "98326dae6cd06b4b69b2e4e3ee5036d4a726d72fc8b00a8b632d5fc7c8fb1085",
+    "ports/gba/src/renderer.c": "9e071c1da1c43e68aa028680bae4bbae0fe19d2feff553433d3fb002c62ddabb",
+    "ports/gba/src/renderer_animation_columns.inc": "1ff9074467663c16110ee37dfbeff5e73150854231a9cfd2f816183019aa8108",
+    "ports/gba/src/renderer_rect.inc": "0acd1b94ef5478e0518bd457b8362c58f60207c685ec2386205f73248644c36b",
+    "ports/gba/src/ui.c": "c1d931431829c78b47cc7462481033e6f0a6b19bd8541e76497ece1e2e27ecea",
+    "ports/gba/tests/test_ui.c": "b858667ff506e281270a9376c7b56836d1b65e043be7ce1a0b3679d6e5261143"
+  },
+  "baseline_gba_source_commit": "aea2635635cf038b17ca03bc77223a013a6c31a3",
+  "baseline_gba_source_note": "GBA working tree was clean at task start. Existing unrelated NDS work was left untouched."
+}

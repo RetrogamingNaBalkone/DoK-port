@@ -1151,6 +1151,9 @@ static void raster(dok_renderer_workspace *w,const dok_runtime *r,const dok_rend
     }
     int cached_height=-1,cached_step=0;
 #endif
+#ifdef DOK_RENDER_HW_ANIMATION_COLUMNS_PROTOTYPE
+    unsigned animation_light=16;const uint8_t *animation_lit=0;
+#endif
 #ifdef DOK_RENDER_HW_AFFINE_U_PROTOTYPE
     int affine_u=q0==q1 && f.u0>=0 && f.u1>=0 && span<=16384 && q0<=128 && last-first>=14;
     edge_walk uv;
@@ -1365,6 +1368,14 @@ static void raster(dok_renderer_workspace *w,const dok_runtime *r,const dok_rend
         }
 #endif
         unsigned n;
+#ifdef DOK_RENDER_HW_ANIMATION_COLUMNS_PROTOTYPE
+        if(row!=animation_light){animation_lit=animation_lit_columns(im->columns,row);animation_light=row;}
+        if(animation_lit){
+            n=visible_column(w,(unsigned)x,(unsigned)begin,(unsigned)end,animation_lit+(unsigned)u*im->height,
+                (unsigned)vstart,(unsigned)vstep,COLUMN_MODE(im->flags,animation_lit[(int)u-256]),strip,(unsigned)(begin-top));
+            transparent+=n>>16;n&=65535u;pixels+=n;if(n)wrote=1;continue;
+        }
+#endif
 #ifdef DOK_RENDER_HW_SPARSE_POSTS_PROTOTYPE
         hw_column_posts=0;
 #endif

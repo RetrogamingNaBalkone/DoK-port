@@ -20,7 +20,7 @@ from verify_sprites_gba import load_json
 CELLS = ((42, 54), (43, 55), (44, 55), (46, 56))
 
 
-def measure(build, core, live_samples):
+def measure(build, core, live_samples, crowded=False):
     p = GameProbe(core, build)
     frozen = []; live = []
     try:
@@ -34,7 +34,8 @@ def measure(build, core, live_samples):
         for language in (0, 1):
             p.language(language)
             p.camera(1, 15120, -300, 22800, 90)
-            for x, z in CELLS:
+            cells=((8,8),(56,56),(2,35),(56,35)) if crowded else CELLS
+            for x, z in cells:
                 for heading in range(0, 360, 45):
                     p.write(p.symbols['g_camera_capture_hold'], struct.pack('<I', 1))
                     p.present()
@@ -61,7 +62,8 @@ def measure(build, core, live_samples):
             if not live_samples:
                 continue
             model = load_json('research/evidence/runtime/ru/LEVEL1-runtime.json')
-            for x,z,heading in ((42,54,0),(44,55,0),(46,56,90)):
+            live_cases=((8,8,225),(56,56,225),(8,8,90)) if crowded else ((42,54,0),(44,55,0),(46,56,90))
+            for x,z,heading in live_cases:
                 freeze(p, True)
                 p.write(p.symbols['g_camera_capture_hold'], struct.pack('<I', 1))
                 p.present()
@@ -99,12 +101,13 @@ def main():
     ap.add_argument('--reference-build', type=Path, required=True)
     ap.add_argument('--report', type=Path, required=True)
     ap.add_argument('--live-samples', type=int, default=120)
+    ap.add_argument('--crowded', action='store_true', help='Use skull/cross and low-ceiling LEVEL1 rooms')
     args = ap.parse_args()
     os.chdir(ROOT)
     os.environ['DOK_PROBE_FAST_VIDEO'] = '1'
     core = Path(os.environ['LOCALAPPDATA'])/'Programs/mGBA/libretro-20261024/mgba_libretro.dll'
-    before = measure(args.reference_build, core, args.live_samples)
-    after = measure(args.build_dir, core, args.live_samples)
+    before = measure(args.reference_build, core, args.live_samples,args.crowded)
+    after = measure(args.build_dir, core, args.live_samples,args.crowded)
     for old,new in zip(before['frozen'],after['frozen']):
         for key in ('language','cell','heading','video_sha256','coverage_sha256','geometry_fnv1a'):
             assert old[key] == new[key], (key,old,new)
@@ -113,6 +116,7 @@ def main():
     result = dict(status='passed',script_sha256=sha(__file__),core_sha256=sha(core),
                   rom_sha256=after['rom_sha256'],before=before,after=after,
                   cpu_ratio=dict(minimum=min(ratios),median=statistics.median(ratios),maximum=max(ratios)),
+                  crowded=args.crowded,
                   scope='64 frozen original-map views/PCM, exact actual PPU/coverage/geometry. '
                         'Live fixtures place the hero beside the barrel row, retain original AI and maps, '
                         'use test HP32767 and stationary input; differing frame times change AI poses. '

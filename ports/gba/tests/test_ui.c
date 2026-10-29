@@ -8,6 +8,11 @@
 static dok_runtime world;
 static uint8_t framebuffer[38402],font8[2048],font16[4096];
 static void release(dok_ui *u){dok_ui_input(u,0);dok_ui_game_keys(u,0);}
+static void screen_line(unsigned row,const char *expected){
+ for(unsigned x=0;x<28;++x){unsigned ch=x<strlen(expected)?(uint8_t)expected[x]:32;
+  for(unsigned bit=0;bit<8;++bit)assert((framebuffer[1+(24+row*8)*240+8+x*8+bit]==255)==!!(font8[ch*8]&(128u>>bit)));
+ }
+}
 int main(void){
  dok_ui u;dok_ui_init(&u);assert(u.state==DOK_UI_SPLASH);
  dok_ui_input(&u,1);assert(u.state==DOK_UI_TITLE && u.action==0);release(&u);
@@ -33,6 +38,18 @@ int main(void){
  uint8_t out[60];assert(dok_ui_text(&u,0,out)==60);assert(out[0]==' ' && out[32]==32);
  for(unsigned i=0;i<4;i++)dok_ui_tick(&u,0,0xfffff000u+(i+1)*30000u);
  assert(!u.active);
+ /* The renderer and page count share word/paragraph boundaries. Keep the
+  * original 8px glyphs; commas/periods never become a line on their own. */
+ for(unsigned ch=0;ch<256;++ch)font8[ch*8]=(uint8_t)ch;font8[32*8]=0;
+ const char *wrap="abcdefghijklmnopqrstuvwxyz,\r\nfoo.\r\n\r\n\r\nabcdefghijklmnopqrstuvwx \250 next.$ignored";
+ memset(framebuffer,0xa5,sizeof(framebuffer));
+ dok_ui_screen(framebuffer+1,font8,font16,255,0,(const uint8_t *)wrap,strlen(wrap),0,"",0);
+ screen_line(0,"abcdefghijklmnopqrstuvwxyz,");screen_line(1,"foo.");screen_line(2,"");
+ screen_line(3,"abcdefghijklmnopqrstuvwx");screen_line(4,"\250 next.");
+ assert(framebuffer[0]==0xa5 && framebuffer[38401]==0xa5);
+ uint8_t pages[15*29];memset(pages,'X',sizeof(pages));for(unsigned i=0;i<15;++i)pages[i*29+28]='\n';
+ assert(dok_ui_screen_pages(pages,14*29)==1 && dok_ui_screen_pages(pages,sizeof(pages))==2);
+ assert(dok_ui_screen_pages(pages,0)==1);
  dok_runtime_field field={0xbe,DOK_LEVEL_TEXT,0,{.bytes={0,120}}};
  dok_runtime_definition def={0};def.field_count=1;
  dok_runtime_level level={0};level.object_count=1;level.definitions=&def;level.fields=&field;level.text=long_text;level.text_size=120;world.level=&level;

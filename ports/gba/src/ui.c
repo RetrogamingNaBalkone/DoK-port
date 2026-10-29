@@ -349,16 +349,68 @@ void dok_ui_draw(dok_ui *u,uint8_t *frame,const dok_runtime *w,const uint8_t *f8
  }
 }
 
-/* Full-screen original CP866 text:28 columns inside an8-pixel inset.
- * CR ignored, LF line break, $/NUL end; pagination preserves source bytes. */
-unsigned dok_ui_screen_pages(const uint8_t *s,size_t n){unsigned row=0,col=0;for(size_t i=0;i<n && s[i] && s[i]!='$';i++){if(s[i]=='\r')continue;if(s[i]=='\n'){++row;col=0;}else{if(col==28){++row;col=0;}++col;}}return row/14+1;}
+/* Keep FONT8 legible on the original LCD. Reflow source lines into paragraphs,
+ * wrapping whole words inside the 8px margins; never shrink the glyphs.
+ * One shared layout owns drawing and pagination, including the last page. */
+static void screen_row(canvas *c,const uint8_t *line,unsigned used,unsigned row,unsigned page){
+ if(c && row/14==page)text(c,8,24+(row%14)*8,line,used,8);
+}
+static unsigned screen_paragraph(canvas *c,const uint8_t *s,size_t n,unsigned page,unsigned rows){
+ uint8_t line[28];unsigned used=0;size_t i=0;
+ while(i<n && s[i] && s[i]!='$'){
+  while(i<n && s[i] && s[i]!='$' && s[i]<=32)++i;
+  if(i==n || !s[i] || s[i]=='$')break;
+  size_t end=i;while(end<n && s[end]>32 && s[end]!='$')++end;
+  unsigned word=(unsigned)(end-i);
+  if(used && used+1+word>28){
+   /* Carry a single-letter word with the next word when it fits. CP866
+    * Russian letters occupy80..AF/E0..F1; punctuation stays attached. */
+   unsigned ch=line[used-1],carry=word<=26 && (used==1 || line[used-2]==' ') &&
+    ((ch>='A' && ch<='Z') || (ch>='a' && ch<='z') || (ch>=128 && ch<=175) || (ch>=224 && ch<=241));
+   if(carry)used=used>1?used-2:0;
+   if(used)screen_row(c,line,used,rows++,page);
+   used=0;if(carry)line[used++]=(uint8_t)ch;
+  }
+  if(used)line[used++]=' ';
+  /* Defensive fallback for a token wider than the screen. Original text
+   * words fit; malformed/user-supplied strings still progress in bounds. */
+  while(i<end){
+   if(used==28){screen_row(c,line,used,rows++,page);used=0;}
+   line[used++]=s[i++];
+  }
+ }
+ if(used)screen_row(c,line,used,rows++,page);
+ return rows;
+}
+static unsigned screen_layout(canvas *c,const uint8_t *s,size_t n,unsigned page){
+ size_t i=0;unsigned rows=0;
+ while(i<n && s[i] && s[i]!='$'){
+  while(i<n && s[i] && s[i]!='$' && s[i]<=32)++i;
+  if(i==n || !s[i] || s[i]=='$')break;
+  size_t start=i,end=i;
+  while(i<n && s[i] && s[i]!='$'){
+   if(s[i]>32){end=++i;continue;}
+   unsigned breaks=0;
+   while(i<n && s[i] && s[i]!='$' && s[i]<=32){if(s[i]=='\n')++breaks;++i;}
+   if(breaks>1)break;
+  }
+  unsigned count=screen_paragraph(0,s+start,end-start,0,0);
+  if(rows && rows%14)++rows; /* one blank line between paragraphs */
+  /* A short paragraph starts intact on the next page. In particular, do
+   * not strand the final sentence on an otherwise empty second page. */
+  if(count<=14 && rows%14+count>14)rows+=14-rows%14;
+  rows=screen_paragraph(c,s+start,end-start,page,rows);
+ }
+ return rows?(rows+13)/14:1;
+}
+unsigned dok_ui_screen_pages(const uint8_t *s,size_t n){return screen_layout(0,s,n,0);}
 void dok_ui_screen(uint8_t *f,const uint8_t *f8,const uint8_t *f16,unsigned fg,unsigned bg,const uint8_t *s,size_t n,unsigned page,const char *heading,unsigned language){
  canvas c={f,f8,f16,fg,bg};panel(&c,0,0,240,160);label(&c,8,4,heading,16);
- unsigned row=0,col=0;for(size_t i=0;i<n && s[i] && s[i]!='$';i++){unsigned ch=s[i];if(ch=='\r')continue;if(ch=='\n'){++row;col=0;continue;}if(col==28){++row;col=0;}if(row/14==page){uint8_t b=(uint8_t)(ch<32?' ':ch);text(&c,8+col*8,24+(row%14)*8,&b,1,8);}++col;}
+ unsigned pages=screen_layout(&c,s,n,page);
  uint8_t footer[60];const char *hint=language?"A/START: OK B: BACK":"A/START: OK B: \215\200\207\200\204";
  size_t count=length(hint);for(size_t i=0;i<count;i++)footer[i]=(uint8_t)hint[i];
  footer[count++]=' ';
- unsigned values[2]={page+1,dok_ui_screen_pages(s,n)};
+ unsigned values[2]={page+1,pages};
  for(unsigned i=0;i<2;i++){
   uint8_t digits[10];unsigned used=0,v=values[i];do{digits[used++]=(uint8_t)('0'+v%10);v/=10;}while(v);
   while(used)footer[count++]=digits[--used];if(!i)footer[count++]='/';

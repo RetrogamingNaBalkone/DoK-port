@@ -17,7 +17,6 @@ from pathlib import Path
 import random
 import struct
 import sys
-sys.path.insert(0, 'C:/Source/wasdify/build/research-deps')
 from unicorn import Uc, UC_ARCH_ARM, UC_MODE_ARM
 from unicorn import arm_const as R
 from gba_rom import elf_info
@@ -226,6 +225,8 @@ def main():
         cpu.mem_write(symbols['g_hw_tile_active'],struct.pack('<I',1))
         cpu.mem_write(symbols['g_hw_tile_black'],struct.pack('<I',223))
         cpu.mem_write(symbols['hw_tile_frame'],struct.pack('<I',frame_addr+4))
+        animation_bank=symbols.get('dok_animation_columns')
+        saved_animation=bytes(cpu.mem_read(animation_bank,132000)) if animation_bank else None
         for case in range(512):
             width=rng.choice((1,17,64,96,192,256));height=rng.choice((1,17,96,192,512))
             colors=bytearray(rng.randbytes(width*height))
@@ -245,12 +246,17 @@ def main():
             x0=rng.randrange(-128,230);x1=rng.randrange(max(x0+1,0),641)
             top=rng.randrange(-256,scene_rows+64);bottom=top+rng.randrange(513)
             depth=rng.choice((0,1,1920,2040,3720,32767,32768,65535))
-            raw_columns='HW_ANIMATION_COLUMNS' in defines and depth<=1920 and case%2==0
-            cpu.mem_write(table+16*4,struct.pack('<I',0 if raw_columns else offset))
+            raw_columns='HW_ANIMATION_COLUMNS' in defines and case%3==0 and (
+                'dok_animation_columns_end' in symbols or depth<=1920)
+            cpu.mem_write(table+16*4,struct.pack('<16I',*([0 if raw_columns else offset]*16)))
+            raw_pointer=bank+offset
+            if raw_columns and 'dok_animation_columns_end' in symbols:
+                raw_pointer=animation_bank+452
+                cpu.mem_write(raw_pointer-448,struct.pack('<48I',*([452]*48))+prefix+bytes(colors))
             u0,u1=rng.randrange(width),rng.randrange(width);v0=rng.randrange(-4,height+4);masked=case%2*8
             vend=rng.randrange(height) if case%3 else -1
             face=struct.pack('<11iHh',x0,x1,top,top,bottom,bottom,depth,depth,u0,u1,0,0,v0)
-            image=struct.pack('<3I4H',bank+offset,bank+offset,0,width,height,masked,1)
+            image=struct.pack('<3I4H',bank+offset,raw_pointer,0,width,height,masked,1)
             initial=rng.randbytes(38400);expected=bytearray(initial)
             bits=list(struct.unpack(cover_format,rng.randbytes(cover_bytes)))
             if case%4==0:bits=[0]*cover_count
@@ -284,6 +290,7 @@ def main():
             rectangle_vectors+=1
             rectangle_cropped_vectors+=vend>=0
             rectangle_raw_vectors+=raw_columns
+        if saved_animation:cpu.mem_write(animation_bank,saved_animation)
     geometry_copy_vectors=0;geometry_equal_vectors=0
     if 'dok_gba_geometry_copy' in symbols:
         for case in range(1024):
@@ -570,7 +577,7 @@ def main():
     from verify_sprites_gba import original_animations, load_json
     manifest=load_json('build/gba/assets/manifest.json')
     decoded_count=0;resource_count=0;animation_column_vectors=0;animation_index_vectors=0
-    indexed_pixels=set()
+    indexed_pixels=set();animation_light_vectors=0
     if 'animation_columns' in symbols:
         package=Path('build/gba/assets/assets.bin').read_bytes()
         cpu.mem_write(desc+128,struct.pack('<2I',symbols['dok_gba_assets'],len(package))+bytes(16))
@@ -582,6 +589,26 @@ def main():
             image=struct.pack('<I5H2xII',symbols['dok_gba_assets']+pixel,width,height,0,0,0,width*height,18+width*height)
             cpu.mem_write(desc+160,image)
             assert call('animation_columns',desc+128,desc+160)==symbols['dok_animation_columns']+offset
+            if 'dok_animation_columns_end' in symbols:
+                raw_column=bytes(cpu.mem_read(symbols['dok_animation_columns']+offset,width*height))
+                for level in range(3):
+                    view=struct.unpack_from('<I',package,28)[0]+level*160
+                    bindings=struct.unpack_from('<I',package,view+72)[0]
+                    binding_count=struct.unpack_from('<H',package,view+76)[0]
+                    rid=next(struct.unpack_from('<H',package,bindings+j*8+4)[0]
+                             for j in range(binding_count)
+                             if struct.unpack_from('<HH',package,bindings+j*8)==(65535,65524))
+                    record=struct.unpack_from('<I',package,24)[0]+(rid-1)*32+16
+                    start,size=struct.unpack_from('<II',package,record)
+                    light=package[start:start+size]
+                    for light_row in range(16):
+                        lit_offset=struct.unpack('<I',cpu.mem_read(symbols['dok_animation_columns']+offset-448+(level*16+light_row)*4,4))[0]
+                        if not lit_offset:continue  # exact runtime fallback
+                        lit=symbols['dok_animation_columns']+lit_offset
+                        expected=raw_column.translate(light[light_row*256:(light_row+1)*256])
+                        assert bytes(cpu.mem_read(lit,width*height))==expected,('animation LIGHT',i,level,light_row)
+                        assert bytes(cpu.mem_read(lit-256,width))==bytes(int(0 not in expected[x*height:(x+1)*height]) for x in range(width))
+                        animation_light_vectors+=1
             animation_index_vectors+=1
     for language in (0,1):
         originals,_=original_animations(language)
@@ -661,6 +688,7 @@ def main():
                 sampler_digest=summary.hexdigest(),original_animation_resources=resource_count,
                 original_animation_frames=decoded_count,animation_column_vectors=animation_column_vectors,
                 animation_column_index_vectors=animation_index_vectors,
+                animation_light_vectors=animation_light_vectors,
                 callee_saved_registers_and_stack_checked=True,
                 mutable_buffer_truncation_and_unchanged_error_output=True,
                 timing_measured=False,scope='ARM/Thumb execution in Unicorn; hardware timing checked separately in mGBA')

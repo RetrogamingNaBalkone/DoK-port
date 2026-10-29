@@ -211,7 +211,7 @@ VARIANTS['hw_v128_wide']=tuple(d for d in VARIANTS['hw_v128_combo_near'] if d!='
 # experiment variants keep their original flags; only the frontend selection
 # adopts the exact rectangle/animation-column path.
 VARIANTS['hw_v128_rect_control']=VARIANTS['hw_v128_entity_rect']
-VARIANTS['hw_v128_entity_rect']=VARIANTS['hw_v128_rect_animated']
+VARIANTS['hw_v128_entity_rect']=VARIANTS['hw_v128_rect_animated']+('HW_SURFACE_PRELIT','HW_FLOOR_FILL')
 
 
 def tables(out, assets, include_sides=False, include_zero_spans=False, include_entities=False, include_lowered=False, include_empty=False, scene_rows=128):
@@ -609,6 +609,7 @@ def build(base,out,variants,unreflected_control=False):
             if 'HW_PACK_ARM' in defines:main_defines+=['-DDOK_RENDER_HW_PACK_ARM_PROTOTYPE']
             if 'HW_DIRECT' in defines:main_defines+=['-DDOK_RENDER_HW_DIRECT_PROTOTYPE']
             if 'HW_BG' in defines:main_defines+=['-DDOK_RENDER_HW_BG_PROTOTYPE']
+            if 'HW_FLOOR_FILL' in defines:main_defines+=['-DDOK_RENDER_HW_FLOOR_FILL_PROTOTYPE']
             if 'HW_RAYS32' in defines:main_defines+=['-DDOK_RENDER_HW_RAYS32_PROTOTYPE']
             if 'HW_ROW_LUT' in defines:main_defines+=['-DDOK_RENDER_HW_ROW_LUT_PROTOTYPE']
             if 'HW_BG_STREAM' in defines:main_defines+=['-DDOK_RENDER_HW_BG_STREAM_PROTOTYPE']
@@ -765,7 +766,11 @@ def main():
     p.add_argument('--variants',nargs='+',choices=VARIANTS,default=list(VARIANTS))
     p.add_argument('--keep-objects',action='store_true',help='Retain experiment object files for manual relinking')
     p.add_argument('--unreflected-control',action='store_true',help='Diagnostic only: disable native central-plane reflection in the private source snapshot')
+    p.add_argument('--floor-control',action='store_true',help='Diagnostic only: retain the empty floor under walls for paired seam checks')
     a=p.parse_args();os.chdir(ROOT)
+    if a.floor_control:
+        for variant in a.variants:
+            VARIANTS[variant]=tuple(d for d in VARIANTS[variant] if d!='HW_FLOOR_FILL')
     os.environ['ZIG_GLOBAL_CACHE_DIR']=str(ROOT/'build/gba/zig-cache')
     build(a.base,a.out,a.variants,keep_objects=a.keep_objects,unreflected_control=a.unreflected_control)
 
