@@ -1,0 +1,655 @@
+{
+  "schema_version": 1,
+  "task": "N07P",
+  "date": "2026-10-29",
+  "passed": true,
+  "status": "ready-emulator",
+  "next_task": "N12",
+  "automatic_continuation": false,
+  "scope": "Early geometry renderer and N11 diagnostic route; not complete gameplay or physical DS FPS",
+  "refresh_hz": 59.82609828808083,
+  "renderer_comparison": [
+    {
+      "name": "level1-start-textured",
+      "frames": 32,
+      "before_fps": 59.82609828808083,
+      "after_fps": 59.82609828808083,
+      "before_work_ms": 15.289708038871657,
+      "after_work_ms": 12.5504138466745,
+      "work_reduction_percent": 17.9159352502542,
+      "submit_reduction_percent": 38.25095133226595
+    },
+    {
+      "name": "level1-start-flat",
+      "frames": 32,
+      "before_fps": 59.82609828808083,
+      "after_fps": 59.82609828808083,
+      "before_work_ms": 15.1757639915782,
+      "after_work_ms": 12.401752945979384,
+      "work_reduction_percent": 18.279218411265862,
+      "submit_reduction_percent": 40.31935399930055
+    },
+    {
+      "name": "level2-start-textured",
+      "frames": 32,
+      "before_fps": 59.82609828808083,
+      "after_fps": 59.82609828808083,
+      "before_work_ms": 12.526339939252816,
+      "after_work_ms": 10.63218927550895,
+      "work_reduction_percent": 15.1213416922234,
+      "submit_reduction_percent": 37.64661087393093
+    },
+    {
+      "name": "level2-start-flat",
+      "frames": 32,
+      "before_fps": 59.82609828808083,
+      "after_fps": 59.82609828808083,
+      "before_work_ms": 12.461933984747022,
+      "after_work_ms": 10.55151492442766,
+      "work_reduction_percent": 15.330036755592257,
+      "submit_reduction_percent": 39.24923894791783
+    },
+    {
+      "name": "level3-start-textured",
+      "frames": 32,
+      "before_fps": 59.82609828808083,
+      "after_fps": 59.82609828808083,
+      "before_work_ms": 10.652076497504833,
+      "after_work_ms": 8.982568081584576,
+      "work_reduction_percent": 15.673079481839302,
+      "submit_reduction_percent": 36.034028094013784
+    },
+    {
+      "name": "level3-start-flat",
+      "frames": 32,
+      "before_fps": 59.82609828808083,
+      "after_fps": 59.82609828808083,
+      "before_work_ms": 10.589934523447557,
+      "after_work_ms": 8.90293807074313,
+      "work_reduction_percent": 15.93018775488354,
+      "submit_reduction_percent": 37.71332057608894
+    },
+    {
+      "name": "level1-normal-to-low",
+      "frames": 64,
+      "before_fps": 31.38418270850142,
+      "after_fps": 59.82609828808083,
+      "before_work_ms": 17.136339823032667,
+      "after_work_ms": 13.77676300894355,
+      "work_reduction_percent": 19.604984779617673,
+      "submit_reduction_percent": 41.20836913777212
+    },
+    {
+      "name": "level1-low-flat",
+      "frames": 32,
+      "before_fps": 59.82609828808083,
+      "after_fps": 59.82609828808083,
+      "before_work_ms": 7.880629680173487,
+      "after_work_ms": 7.451288353320713,
+      "work_reduction_percent": 5.448058648573905,
+      "submit_reduction_percent": 32.819893780443564
+    },
+    {
+      "name": "level2-low-to-normal",
+      "frames": 64,
+      "before_fps": 59.82609828808083,
+      "after_fps": 59.82609828808083,
+      "before_work_ms": 13.793466391877875,
+      "after_work_ms": 11.68916416736155,
+      "work_reduction_percent": 15.255789695876732,
+      "submit_reduction_percent": 37.41610977617869
+    },
+    {
+      "name": "level2-low-flat",
+      "frames": 32,
+      "before_fps": 59.82609828808083,
+      "after_fps": 59.82609828808083,
+      "before_work_ms": 14.101075410853893,
+      "after_work_ms": 11.755603787995112,
+      "work_reduction_percent": 16.633281891772754,
+      "submit_reduction_percent": 39.76469017857994
+    },
+    {
+      "name": "level1-heavy-textured",
+      "frames": 32,
+      "before_fps": 29.913049144040414,
+      "after_fps": 29.913049144040414,
+      "before_work_ms": 24.63710519388594,
+      "after_work_ms": 18.168976458840376,
+      "work_reduction_percent": 26.253606842782506,
+      "submit_reduction_percent": 43.516770990587005
+    },
+    {
+      "name": "level1-heavy-flat",
+      "frames": 32,
+      "before_fps": 29.913049144040414,
+      "after_fps": 29.913049144040414,
+      "before_work_ms": 24.359144714585096,
+      "after_work_ms": 17.800973337038855,
+      "work_reduction_percent": 26.922831053339568,
+      "submit_reduction_percent": 46.16481635833479
+    },
+    {
+      "name": "level1-heavy-turn",
+      "frames": 120,
+      "before_fps": 30.291695335737128,
+      "after_fps": 44.86957371606062,
+      "before_work_ms": 20.834789442010603,
+      "after_work_ms": 16.128359998124566,
+      "work_reduction_percent": 22.58928249304091,
+      "submit_reduction_percent": 41.18987600507349
+    },
+    {
+      "name": "level2-heavy-textured",
+      "frames": 32,
+      "before_fps": 29.913049144040414,
+      "after_fps": 29.913049144040414,
+      "before_work_ms": 24.489838300921686,
+      "after_work_ms": 18.32259797567475,
+      "work_reduction_percent": 25.18285441278242,
+      "submit_reduction_percent": 42.81104364313262
+    },
+    {
+      "name": "level2-heavy-flat",
+      "frames": 32,
+      "before_fps": 29.913049144040414,
+      "after_fps": 29.913049144040414,
+      "before_work_ms": 24.210468894743695,
+      "after_work_ms": 17.949286435136237,
+      "work_reduction_percent": 25.861467148068396,
+      "submit_reduction_percent": 45.55882374986434
+    },
+    {
+      "name": "level2-heavy-turn",
+      "frames": 120,
+      "before_fps": 40.560066635987006,
+      "after_fps": 44.31562836154136,
+      "before_work_ms": 16.775743528974466,
+      "after_work_ms": 13.094455870189739,
+      "work_reduction_percent": 21.944110271038287,
+      "submit_reduction_percent": 42.09372543085469
+    },
+    {
+      "name": "level3-heavy-textured",
+      "frames": 32,
+      "before_fps": 29.913049144040414,
+      "after_fps": 59.82609828808083,
+      "before_work_ms": 19.985866458661942,
+      "after_work_ms": 15.51579278165155,
+      "work_reduction_percent": 22.36617404732556,
+      "submit_reduction_percent": 39.336689479051756
+    },
+    {
+      "name": "level3-heavy-flat",
+      "frames": 32,
+      "before_fps": 29.913049144040414,
+      "after_fps": 59.82609828808083,
+      "before_work_ms": 19.7727072912434,
+      "after_work_ms": 15.229526067657373,
+      "work_reduction_percent": 22.977031706720474,
+      "submit_reduction_percent": 41.85060201249492
+    },
+    {
+      "name": "level3-heavy-turn",
+      "frames": 120,
+      "before_fps": 37.5870774584801,
+      "after_fps": 59.82609828808083,
+      "before_work_ms": 16.784526181739114,
+      "after_work_ms": 13.550892977543917,
+      "work_reduction_percent": 19.265561441426083,
+      "submit_reduction_percent": 37.86460421502078
+    }
+  ],
+  "renderer_intervals": {
+    "baseline": {
+      "intervals": 936,
+      "histogram": {
+        "1": 441,
+        "2": 495
+      },
+      "virtual_fps": 39.13153598717236,
+      "median_vblank": 2,
+      "p95_vblank": 2,
+      "p99_vblank": 2,
+      "max_vblank": 2,
+      "fraction_over_one": 0.5288461538461539,
+      "fraction_over_two": 0.0
+    },
+    "optimized": {
+      "intervals": 936,
+      "histogram": {
+        "1": 726,
+        "2": 210
+      },
+      "virtual_fps": 48.86320069602413,
+      "median_vblank": 1,
+      "p95_vblank": 2,
+      "p99_vblank": 2,
+      "max_vblank": 2,
+      "fraction_over_one": 0.22435897435897437,
+      "fraction_over_two": 0.0
+    }
+  },
+  "identical_geometry_frames": 936,
+  "identical_renderer_top_pngs": 19,
+  "identical_closed_door_top_pngs_per_variant": 8,
+  "diagnostic": {
+    "before": {
+      "intervals": 1143,
+      "histogram": {
+        "3": 928,
+        "4": 212,
+        "5": 3
+      },
+      "virtual_fps": 18.74999461016627,
+      "median_vblank": 3,
+      "p95_vblank": 4,
+      "p99_vblank": 4,
+      "max_vblank": 5,
+      "fraction_over_one": 1.0,
+      "fraction_over_two": 1.0,
+      "cases": {
+        "1": {
+          "intervals": 279,
+          "histogram": {
+            "3": 274,
+            "4": 5
+          },
+          "virtual_fps": 19.823612140587354,
+          "median_vblank": 3,
+          "p95_vblank": 3,
+          "p99_vblank": 4,
+          "max_vblank": 4,
+          "fraction_over_one": 1.0,
+          "fraction_over_two": 1.0
+        },
+        "2": {
+          "intervals": 273,
+          "histogram": {
+            "3": 177,
+            "4": 95,
+            "5": 1
+          },
+          "virtual_fps": 17.830267284548107,
+          "median_vblank": 3,
+          "p95_vblank": 4,
+          "p99_vblank": 4,
+          "max_vblank": 5,
+          "fraction_over_one": 1.0,
+          "fraction_over_two": 1.0
+        },
+        "3": {
+          "intervals": 406,
+          "histogram": {
+            "3": 399,
+            "4": 7
+          },
+          "virtual_fps": 19.828078289763933,
+          "median_vblank": 3,
+          "p95_vblank": 3,
+          "p99_vblank": 4,
+          "max_vblank": 4,
+          "fraction_over_one": 1.0,
+          "fraction_over_two": 1.0
+        },
+        "4": {
+          "intervals": 106,
+          "histogram": {
+            "4": 104,
+            "5": 2
+          },
+          "virtual_fps": 14.886306146799454,
+          "median_vblank": 4,
+          "p95_vblank": 4,
+          "p99_vblank": 5,
+          "max_vblank": 5,
+          "fraction_over_one": 1.0,
+          "fraction_over_two": 1.0
+        },
+        "5": {
+          "intervals": 42,
+          "histogram": {
+            "3": 41,
+            "4": 1
+          },
+          "virtual_fps": 19.785008882672397,
+          "median_vblank": 3,
+          "p95_vblank": 3,
+          "p99_vblank": 4,
+          "max_vblank": 4,
+          "fraction_over_one": 1.0,
+          "fraction_over_two": 1.0
+        },
+        "6": {
+          "intervals": 37,
+          "histogram": {
+            "3": 37
+          },
+          "virtual_fps": 19.942032762693607,
+          "median_vblank": 3,
+          "p95_vblank": 3,
+          "p99_vblank": 3,
+          "max_vblank": 3,
+          "fraction_over_one": 1.0,
+          "fraction_over_two": 1.0
+        }
+      },
+      "minimum_new_frames_in_one_second": 14,
+      "checked_one_second_windows": 751,
+      "source_counts": {
+        "native_operations": 992,
+        "native_queue_deadlines": 16,
+        "operand_snapshot_bindings": 992,
+        "source_floor_lookups": 1181,
+        "source_floor_divisions": 36,
+        "source_conveyor_callbacks": 7,
+        "source_motion_callbacks": 1181,
+        "source_motion_substeps": 0,
+        "exact_mmap_bytes": 9658368,
+        "exact_counter_bytes": 1207296,
+        "source_finish_predicates": 29,
+        "sensor_entries": 4,
+        "cadence_updates": 2372,
+        "camera_renders": 1203,
+        "fixture_resets": 27
+      },
+      "frontend_frames": 4669,
+      "scope": "Active same-case/same-stage presentation-trace intervals; pauses/loading/transitions excluded. State-driven input route, not identical callback timelines."
+    },
+    "optimized": {
+      "intervals": 2850,
+      "histogram": {
+        "1": 2772,
+        "2": 78
+      },
+      "virtual_fps": 58.23237025991474,
+      "median_vblank": 1,
+      "p95_vblank": 1,
+      "p99_vblank": 2,
+      "max_vblank": 2,
+      "fraction_over_one": 0.02736842105263158,
+      "fraction_over_two": 0.0,
+      "cases": {
+        "1": {
+          "intervals": 798,
+          "histogram": {
+            "1": 791,
+            "2": 7
+          },
+          "virtual_fps": 59.30587134644534,
+          "median_vblank": 1,
+          "p95_vblank": 1,
+          "p99_vblank": 1,
+          "max_vblank": 2,
+          "fraction_over_one": 0.008771929824561403,
+          "fraction_over_two": 0.0
+        },
+        "2": {
+          "intervals": 790,
+          "histogram": {
+            "1": 784,
+            "2": 6
+          },
+          "virtual_fps": 59.37514779847218,
+          "median_vblank": 1,
+          "p95_vblank": 1,
+          "p99_vblank": 1,
+          "max_vblank": 2,
+          "fraction_over_one": 0.007594936708860759,
+          "fraction_over_two": 0.0
+        },
+        "3": {
+          "intervals": 790,
+          "histogram": {
+            "1": 783,
+            "2": 7
+          },
+          "virtual_fps": 59.30064949508639,
+          "median_vblank": 1,
+          "p95_vblank": 1,
+          "p99_vblank": 1,
+          "max_vblank": 2,
+          "fraction_over_one": 0.008860759493670886,
+          "fraction_over_two": 0.0
+        },
+        "4": {
+          "intervals": 211,
+          "histogram": {
+            "1": 153,
+            "2": 58
+          },
+          "virtual_fps": 46.926790850502066,
+          "median_vblank": 1,
+          "p95_vblank": 2,
+          "p99_vblank": 2,
+          "max_vblank": 2,
+          "fraction_over_one": 0.27488151658767773,
+          "fraction_over_two": 0.0
+        },
+        "5": {
+          "intervals": 140,
+          "histogram": {
+            "1": 140
+          },
+          "virtual_fps": 59.82609828808082,
+          "median_vblank": 1,
+          "p95_vblank": 1,
+          "p99_vblank": 1,
+          "max_vblank": 1,
+          "fraction_over_one": 0.0,
+          "fraction_over_two": 0.0
+        },
+        "6": {
+          "intervals": 121,
+          "histogram": {
+            "1": 121
+          },
+          "virtual_fps": 59.82609828808083,
+          "median_vblank": 1,
+          "p95_vblank": 1,
+          "p99_vblank": 1,
+          "max_vblank": 1,
+          "fraction_over_one": 0.0,
+          "fraction_over_two": 0.0
+        }
+      },
+      "minimum_new_frames_in_one_second": 38,
+      "checked_one_second_windows": 1562,
+      "source_counts": {
+        "native_operations": 654,
+        "native_queue_deadlines": 15,
+        "operand_snapshot_bindings": 654,
+        "source_floor_lookups": 990,
+        "source_floor_divisions": 37,
+        "source_conveyor_callbacks": 7,
+        "source_motion_callbacks": 990,
+        "source_motion_substeps": 0,
+        "exact_mmap_bytes": 8093696,
+        "exact_counter_bytes": 1011712,
+        "source_finish_predicates": 30,
+        "sensor_entries": 4,
+        "cadence_updates": 2893,
+        "camera_renders": 2941,
+        "fixture_resets": 27
+      },
+      "frontend_frames": 3860,
+      "scope": "Active same-case/same-stage presentation-trace intervals; pauses/loading/transitions excluded. State-driven input route, not identical callback timelines."
+    },
+    "audit": {
+      "intervals": 921,
+      "histogram": {
+        "3": 921
+      },
+      "virtual_fps": 19.942032762693607,
+      "median_vblank": 3,
+      "p95_vblank": 3,
+      "p99_vblank": 3,
+      "max_vblank": 3,
+      "fraction_over_one": 1.0,
+      "fraction_over_two": 1.0,
+      "cases": {
+        "1": {
+          "intervals": 264,
+          "histogram": {
+            "3": 264
+          },
+          "virtual_fps": 19.94203276269361,
+          "median_vblank": 3,
+          "p95_vblank": 3,
+          "p99_vblank": 3,
+          "max_vblank": 3,
+          "fraction_over_one": 1.0,
+          "fraction_over_two": 1.0
+        },
+        "2": {
+          "intervals": 261,
+          "histogram": {
+            "3": 261
+          },
+          "virtual_fps": 19.94203276269361,
+          "median_vblank": 3,
+          "p95_vblank": 3,
+          "p99_vblank": 3,
+          "max_vblank": 3,
+          "fraction_over_one": 1.0,
+          "fraction_over_two": 1.0
+        },
+        "3": {
+          "intervals": 262,
+          "histogram": {
+            "3": 262
+          },
+          "virtual_fps": 19.94203276269361,
+          "median_vblank": 3,
+          "p95_vblank": 3,
+          "p99_vblank": 3,
+          "max_vblank": 3,
+          "fraction_over_one": 1.0,
+          "fraction_over_two": 1.0
+        },
+        "4": {
+          "intervals": 55,
+          "histogram": {
+            "3": 55
+          },
+          "virtual_fps": 19.94203276269361,
+          "median_vblank": 3,
+          "p95_vblank": 3,
+          "p99_vblank": 3,
+          "max_vblank": 3,
+          "fraction_over_one": 1.0,
+          "fraction_over_two": 1.0
+        },
+        "5": {
+          "intervals": 42,
+          "histogram": {
+            "3": 42
+          },
+          "virtual_fps": 19.942032762693607,
+          "median_vblank": 3,
+          "p95_vblank": 3,
+          "p99_vblank": 3,
+          "max_vblank": 3,
+          "fraction_over_one": 1.0,
+          "fraction_over_two": 1.0
+        },
+        "6": {
+          "intervals": 37,
+          "histogram": {
+            "3": 37
+          },
+          "virtual_fps": 19.942032762693607,
+          "median_vblank": 3,
+          "p95_vblank": 3,
+          "p99_vblank": 3,
+          "max_vblank": 3,
+          "fraction_over_one": 1.0,
+          "fraction_over_two": 1.0
+        }
+      },
+      "minimum_new_frames_in_one_second": 19,
+      "checked_one_second_windows": 533,
+      "source_counts": {
+        "native_operations": 227,
+        "native_queue_deadlines": 17,
+        "operand_snapshot_bindings": 227,
+        "source_floor_lookups": 950,
+        "source_floor_divisions": 34,
+        "source_conveyor_callbacks": 6,
+        "source_motion_callbacks": 950,
+        "source_motion_substeps": 0,
+        "exact_mmap_bytes": 7766016,
+        "exact_counter_bytes": 970752,
+        "source_finish_predicates": 28,
+        "sensor_entries": 4,
+        "cadence_updates": 964,
+        "camera_renders": 982,
+        "fixture_resets": 27
+      },
+      "frontend_frames": 3747,
+      "scope": "Active same-case/same-stage presentation-trace intervals; pauses/loading/transitions excluded. State-driven input route, not identical callback timelines."
+    }
+  },
+  "admission_checks": {
+    "passed": true,
+    "scope": "Actual emulated ARM9/GE; admission boundaries",
+    "checks": 10,
+    "failures": 0,
+    "frontend_frames": 8,
+    "rom_sha256": "eaf48194fc91c7b5cb826aabaa2199fb096e60c75769d044961250e38f8fffde",
+    "elf_sha256": "150740be719f99ac8c7a10d554093b5851654ee67dce8edde52975fc33d12f71"
+  },
+  "host_checks": {
+    "path": "research/evidence/nds/perf/host-check.json",
+    "bytes": 36609,
+    "sha256": "2621108169f62800057e9ddf9d9a11a90aca14649095dab6cd8ce559ecb6939a"
+  },
+  "audit_host_checks": {
+    "path": "research/evidence/nds/perf/host-check-audit.json",
+    "bytes": 36549,
+    "sha256": "6d545c4257df55526ecbfba2f6652e2e5d9476f7242dd89cd9747f1597b16b21"
+  },
+  "archive_manifest": {
+    "path": "research/evidence/nds/perf/archive-manifest.json",
+    "bytes": 17097,
+    "sha256": "cdbb2bbbff3bf045be0c30cda06065167892797cd3168c3c6139b4942627ab4f"
+  },
+  "artifacts": [
+    {
+      "path": "build/nds/perf/n11-optimized/dok_nds_interactions.nds",
+      "bytes": 229376,
+      "sha256": "a355d7c1dabce6713c04f8c01cb41734271a5cb7db6e03546f93ea2a331364bf"
+    },
+    {
+      "path": "build/nds/perf/n11-optimized/dok_nds_interactions.elf",
+      "bytes": 1657236,
+      "sha256": "88ffb16bef5fd95bf9ac597b8f6344bb163b5ae94cead35b0c626bd6cc3dc1e5"
+    },
+    {
+      "path": "build/nds/perf/n11-optimized/dok_nds_interactions.map",
+      "bytes": 880001,
+      "sha256": "7183333a0cf2ec0cbc7d538268c3cb9cc589bce5e1cceffc378ed0294c6987a7"
+    },
+    {
+      "path": "build/nds/perf/n11-audit/dok_nds_interactions.nds",
+      "bytes": 230400,
+      "sha256": "7d748ffe7a11c9da7220114e939d09630093a0b4cbd397aa5cfe881fc778599e"
+    },
+    {
+      "path": "build/nds/perf/n11-audit/dok_nds_interactions.elf",
+      "bytes": 1659000,
+      "sha256": "ce59619198e0e4a335e58da1cec5e53665fac122ecd8af05c4ae1fd1fb69af3c"
+    },
+    {
+      "path": "build/nds/perf/n11-audit/dok_nds_interactions.map",
+      "bytes": 871341,
+      "sha256": "89bbcbdaf043798b7d644b22f5a010c3f2785679b22b6a0722ddd6f9d97bc179"
+    }
+  ],
+  "architecture_decision": "Continue to N12 when authorized; actor and combined LIGHT/water budgets remain unproven until N13P; physical acceptance N24",
+  "limitations": [
+    "No actors, complete LIGHT/water/reflective effects, full game/audio/map in this prototype",
+    "Large N11 FPS improvement includes moving expensive world/queue hashing into an explicit audit build",
+    "N07P is not the N23/N24 full-game performance acceptance"
+  ]
+}

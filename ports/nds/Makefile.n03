@@ -1,0 +1,56 @@
+# N03 core strict-C11 compilation and independent ARM9 memory probe.
+BLOCKSDS ?= /opt/blocksds/core
+WONDERFUL_TOOLCHAIN ?= /opt/wonderful
+ARM_NONE_EABI_PATH ?= $(WONDERFUL_TOOLCHAIN)/toolchain/gcc-arm-none-eabi/bin/
+ARM7ELF ?= $(BLOCKSDS)/sys/arm7/main_core/arm7_maxmod.elf
+
+OUTDIR := ../../build/nds/n03
+OBJDIR := $(OUTDIR)/obj
+NAME := dok_nds_memory
+ELF := $(OUTDIR)/$(NAME).elf
+MAP := $(OUTDIR)/$(NAME).map
+ROM := $(OUTDIR)/$(NAME).nds
+OBJECTS := $(OBJDIR)/main.o $(OBJDIR)/memory.o $(OBJDIR)/contracts.o
+COMPILE_CHECKS := $(OBJDIR)/test_memory.o $(OBJDIR)/test_contracts.o $(OBJDIR)/contracts_compile.o
+
+CC := $(ARM_NONE_EABI_PATH)arm-none-eabi-gcc
+NDSTOOL := $(BLOCKSDS)/tools/ndstool/ndstool
+ARCH := -mthumb -mcpu=arm946e-s+nofp
+SPECS := $(BLOCKSDS)/sys/crts/ds_arm9.specs
+CPPFLAGS := -D__NDS__ -D__BLOCKSDS__ -DARM9 -Iinclude
+CFLAGS := -Og -g3 -Wall -Wextra -Werror -ffunction-sections -fdata-sections
+CORE_CFLAGS := -std=c11 -pedantic-errors $(CFLAGS)
+PLATFORM_CPPFLAGS := $(CPPFLAGS) -I$(BLOCKSDS)/libs/libnds/include
+LDFLAGS := -L$(BLOCKSDS)/libs/libnds/lib -Wl,-Map,$(MAP) -Wl,--defsym=__usr_stack_size=12288
+
+.PHONY: all
+all: $(ROM) $(COMPILE_CHECKS)
+
+$(ROM): $(ELF) $(ARM7ELF)
+	"$(NDSTOOL)" -c "$@" -9 "$(ELF)" -7 "$(ARM7ELF)"
+
+$(ELF): $(OBJECTS)
+	"$(CC)" $(ARCH) -specs=$(SPECS) $(CPPFLAGS) -o "$@" $(OBJECTS) $(LDFLAGS) -Wl,--start-group -lnds9 -lc -Wl,--end-group
+
+$(OBJDIR)/main.o: platform/memory/main.c platform/memory/memory_probe.h include/dok/contracts.h include/dok/memory.h include/dok/memory_budget.h Makefile.n03 | $(OBJDIR)
+	"$(CC)" $(ARCH) -specs=$(SPECS) $(PLATFORM_CPPFLAGS) -std=gnu11 $(CFLAGS) -MMD -MP -c "$<" -o "$@"
+
+$(OBJDIR)/memory.o: core/memory.c include/dok/memory.h include/dok/contracts.h Makefile.n03 | $(OBJDIR)
+	"$(CC)" $(ARCH) -specs=$(SPECS) $(CPPFLAGS) $(CORE_CFLAGS) -MMD -MP -c "$<" -o "$@"
+
+$(OBJDIR)/contracts.o: core/contracts.c include/dok/contracts.h Makefile.n03 | $(OBJDIR)
+	"$(CC)" $(ARCH) -specs=$(SPECS) $(CPPFLAGS) $(CORE_CFLAGS) -MMD -MP -c "$<" -o "$@"
+
+$(OBJDIR)/test_memory.o: tests/test_memory.c include/dok/memory.h include/dok/memory_budget.h Makefile.n03 | $(OBJDIR)
+	"$(CC)" $(ARCH) -specs=$(SPECS) $(CPPFLAGS) $(CORE_CFLAGS) -MMD -MP -c "$<" -o "$@"
+
+$(OBJDIR)/test_contracts.o: tests/test_contracts.c include/dok/contracts.h Makefile.n03 | $(OBJDIR)
+	"$(CC)" $(ARCH) -specs=$(SPECS) $(CPPFLAGS) $(CORE_CFLAGS) -MMD -MP -c "$<" -o "$@"
+
+$(OBJDIR)/contracts_compile.o: tests/contracts_compile.c include/dok/contracts.h include/dok/memory.h include/dok/memory_budget.h Makefile.n03 | $(OBJDIR)
+	"$(CC)" $(ARCH) -specs=$(SPECS) $(CPPFLAGS) $(CORE_CFLAGS) -MMD -MP -c "$<" -o "$@"
+
+$(OBJDIR):
+	mkdir -p "$@"
+
+-include $(OBJECTS:.o=.d) $(COMPILE_CHECKS:.o=.d)

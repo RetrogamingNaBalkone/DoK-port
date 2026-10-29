@@ -1,0 +1,596 @@
+{
+  "schema_version": 1,
+  "task": "N11",
+  "date": "2026-10-29",
+  "status": "ready-emulator",
+  "passed": true,
+  "work_status": "stopped-after-N11-at-user-request",
+  "next_task": "N12",
+  "next_task_status": "unstarted-awaiting-user-resume",
+  "scope": "Original PKR/PKE Use, keys, OPEN/CLOSE/AUTO, FCMap sensors/conveyors/finish output; phase-consistent additive door renderer and two-latch SDK routing",
+  "source_manifest": {
+    "path": "research/evidence/nds/n11/source-manifest.json",
+    "bytes": 15576,
+    "sha256": "dfe09161b483e4004b3512f323c3fa4010339e0eb7ac4e5da6eb6a5a599c67ab"
+  },
+  "build_manifest": {
+    "path": "research/evidence/nds/n11/build-manifest.json",
+    "bytes": 4254,
+    "sha256": "2d3d8dc504ca3e58c7dc4861adfe31f45846b99654444777fcf770b8b378a5eb"
+  },
+  "toolchain_lock": {
+    "path": "ports/nds/toolchain_versions.json",
+    "bytes": 1497,
+    "sha256": "76906c4c1c07d6bd6cfcf3be02277477581fdab8fcabf7f85cfd8cc0dff472ef"
+  },
+  "reports": [
+    {
+      "path": "research/evidence/nds/n11/host-check.json",
+      "bytes": 180910,
+      "sha256": "e49d106f7423964e5b8dde2138eae69eb076423c87ef207575140a3ecc7edba6"
+    },
+    {
+      "path": "research/evidence/nds/n11/original-interactions.json",
+      "bytes": 8810120,
+      "sha256": "dd398f473c6f2e1463fcfc544c28588c5ad33f09ed1188179266cd2658dcc849"
+    },
+    {
+      "path": "research/evidence/nds/n11/fixture-report.json",
+      "bytes": 2375,
+      "sha256": "c9a4cef6ef530997f077b2d4c5b205c8e66851c32bfed096f81b78a1b4ff16f4"
+    },
+    {
+      "path": "research/evidence/nds/n11/initial-dependency-integrity.json",
+      "bytes": 77112,
+      "sha256": "cc581af689ff27e0eda5a44f376b5ccf625cadba5d2c0e02dc91a884adc873bf"
+    },
+    {
+      "path": "research/evidence/nds/n11/source-supersession.json",
+      "bytes": 2063,
+      "sha256": "fbe9ab32805be7bd371821d75379d5164ccf2e9e91da2db79a9a671be7bbea75"
+    },
+    {
+      "path": "research/evidence/nds/n11/final-review.json",
+      "bytes": 4748,
+      "sha256": "6c59a335ac0f4aaab0196630a811f0070493960e10b5836fe6f60f3bb7153a09"
+    },
+    {
+      "path": "research/evidence/nds/n11/offline-source-replay.json",
+      "bytes": 2499,
+      "sha256": "a359a2a882cfcce00a1210ad47bbe3fd12a32d9726ea738eb02b30f747526fdd"
+    },
+    {
+      "path": "research/evidence/nds/n11/visual-review.json",
+      "bytes": 14800,
+      "sha256": "5bc5841477030773417f01caeb3c6380faabc71b214ae672c3c00d2b7bb27181"
+    },
+    {
+      "path": "research/evidence/nds/n11/emulator/result.json",
+      "bytes": 66647449,
+      "sha256": "30b0da2f36fa1783b2a056ddbc608dcafc725f9c48a4389908af3906a22ced53"
+    },
+    {
+      "path": "research/evidence/nds/n11/emulator/archive-manifest.json",
+      "bytes": 30703,
+      "sha256": "41a748787c0768ca918b4f0940bf4b04e937faddafd7e662ffe750b18d842144"
+    },
+    {
+      "path": "research/evidence/nds/n11/final-integrity.json",
+      "bytes": 113421,
+      "sha256": "9d4d3ca52ddf6edf85b5daee63fa503be770224de4c9f648fbc4de9a4642cd2b"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "build/nds/n11/test_interactions.exe",
+      "bytes": 175616,
+      "sha256": "02443cfa6d68b7115c35f758fc71fd8e98b6c984f0d66336b0c439ec34c4d9b6"
+    },
+    {
+      "path": "build/nds/n11/test_interactions-linux-x86_64",
+      "bytes": 418656,
+      "sha256": "6599fca5f8d76bec93e1f3a6cf2661b6e611060fc2ea54e14d485377ee1a7959"
+    },
+    {
+      "path": "build/nds/n11/test_door_render.exe",
+      "bytes": 185856,
+      "sha256": "787a0c40717fd4dfbe9237aceca5a014fb7cd75502db4ac07525a3d6fd5cb21a"
+    },
+    {
+      "path": "build/nds/n11/test_door_render-linux-x86_64",
+      "bytes": 436096,
+      "sha256": "2b86e987cac101383c3160cd84815cbbf699150b8ce7820197e7a627e0f0c96f"
+    },
+    {
+      "path": "build/nds/n11/test_interaction_world.exe",
+      "bytes": 205824,
+      "sha256": "e2c87b5967ecb9db46c8229b23ebf0605d4254f93068690eaabec4a68c876084"
+    },
+    {
+      "path": "build/nds/n11/test_interaction_world-linux-x86_64",
+      "bytes": 557456,
+      "sha256": "4a8f192836d7316c04e1fe8f8bee727d73a5aff3200c39a255433d3c31b40910"
+    },
+    {
+      "path": "build/nds/n11/test_interaction_router.exe",
+      "bytes": 166400,
+      "sha256": "fc99057a6c708d201da50dc980de796ee8937a87590fb98cf171f49d0193b379"
+    },
+    {
+      "path": "build/nds/n11/test_interaction_router-linux-x86_64",
+      "bytes": 375712,
+      "sha256": "560f9163de5b4d6b1d86388fac6958ceeba7b5d036946fb25c1a40f3b75bd00d"
+    },
+    {
+      "path": "build/nds/n11/test_collision.exe",
+      "bytes": 167424,
+      "sha256": "7ee73a6c50747f0af2d487d14a5fce1597d764733483902c48c1918320f359e0"
+    },
+    {
+      "path": "build/nds/n11/test_collision-linux-x86_64",
+      "bytes": 363144,
+      "sha256": "54154f2f03e0238347e1c04db52e3ec363424505f924c1bc477866a40c5aa696"
+    },
+    {
+      "path": "build/nds/n11/test_collision_routes.exe",
+      "bytes": 212480,
+      "sha256": "0ff1ad1270b0025db06535dc7b28f440514d9e16cc6ead9900999db508927a9c"
+    },
+    {
+      "path": "build/nds/n11/test_collision_routes-linux-x86_64",
+      "bytes": 613208,
+      "sha256": "29200427b28bb1d4ec3303e10ff9bba2fd977b23c32e154600b2fdb611eb97cf"
+    },
+    {
+      "path": "build/nds/n11/interaction_dump.exe",
+      "bytes": 159232,
+      "sha256": "c8ec88a0024359470054ba5f40a4cc595817197d8b23bd2fd4d65e33abe4b455"
+    },
+    {
+      "path": "build/nds/n11/interaction_dump-linux-x86_64",
+      "bytes": 360256,
+      "sha256": "0581759cd657b3948a23b95b0493482478b11bf2bab56aa6e6991039597dcf00"
+    },
+    {
+      "path": "build/nds/n11/interaction_world_dump.exe",
+      "bytes": 163840,
+      "sha256": "2f0260720292bf94d535fb649eecf1672f98ae58114c7597ae7663599531cb2d"
+    },
+    {
+      "path": "build/nds/n11/interaction_world_dump-linux-x86_64",
+      "bytes": 311664,
+      "sha256": "a5048dd1f45cc9682b432485a4d960d567e83277d913e2d35ada1a2bc84196d8"
+    },
+    {
+      "path": "build/nds/n11/door_render_dump.exe",
+      "bytes": 204288,
+      "sha256": "b08eed9a9631300c7c57c16138ea1b51c5f609618b99ec8d9b2c31a1029db402"
+    },
+    {
+      "path": "build/nds/n11/door_render_dump-linux-x86_64",
+      "bytes": 565936,
+      "sha256": "7cbe32cb567833cda5f8422321a174e1016a0d7865920c2018d90bde33b74edd"
+    },
+    {
+      "path": "build/nds/n11/interactions_compile-native.o",
+      "bytes": 9317,
+      "sha256": "0380f5ca64ab6e9ecbb91025938b0b1c964dc1030056dcfa71d98826bcd97703"
+    },
+    {
+      "path": "build/nds/n11/interactions_compile-linux-x86_64.o",
+      "bytes": 2448,
+      "sha256": "59637b44cafaefa9319215377650d3afd706093b3154ed763149784e17b93229"
+    },
+    {
+      "path": "build/nds/n11/dok_nds_interactions.nds",
+      "bytes": 228352,
+      "sha256": "83ef8d4d629427febd96c0035ded9a255d4c93f908e43bbc8495ed9780e3e804"
+    },
+    {
+      "path": "build/nds/n11/dok_nds_interactions.elf",
+      "bytes": 1648700,
+      "sha256": "e2314a9397f696eec8b59745c3dc4edee132d002be7a77a47dbfa9e1684f727d"
+    },
+    {
+      "path": "build/nds/n11/dok_nds_interactions.map",
+      "bytes": 847229,
+      "sha256": "28fb09737a914793ad76cb4ebf5d6d146cdfbd5bfd08e0f6da28024bbb81a1f4"
+    }
+  ],
+  "source_evidence": {
+    "samples_before": {
+      "ru": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+      "en": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b"
+    },
+    "samples_after": {
+      "ru": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+      "en": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b"
+    },
+    "address_system": "Ghidra NE-loader addresses, distinct from file offsets/NE segment numbers/runtime DPMI selectors",
+    "whole_dos_session": false,
+    "comparison_counts": {
+      "door_base_sensor": 14400,
+      "cadence": 336,
+      "use_projection": 2166,
+      "direct_displacement": 768,
+      "floor": 6180,
+      "floor_controlled_guards": 6,
+      "source_crop": 3440,
+      "source_mirror_pairs": 16,
+      "render_geometry": 4590
+    }
+  },
+  "dependency_integrity": {
+    "preserved_count": 439,
+    "source_pins": 89,
+    "initial_snapshot": {
+      "path": "research/evidence/nds/n11/initial-dependency-integrity.json",
+      "bytes": 77112,
+      "sha256": "cc581af689ff27e0eda5a44f376b5ccf625cadba5d2c0e02dc91a884adc873bf"
+    },
+    "source_supersession": {
+      "path": "research/evidence/nds/n11/source-supersession.json",
+      "bytes": 2063,
+      "sha256": "fbe9ab32805be7bd371821d75379d5164ccf2e9e91da2db79a9a671be7bbea75"
+    },
+    "policy": "437 prior live pins plus 2 byte-exact archived N10 source versions; additive collision API current hashes and prefix/header proof separately verified. Future collector starts from frozen N11 initial snapshot plus accepted N11 compact/manifests; do not reflatten obsolete N10 source hashes with check_time."
+  },
+  "host": {
+    "passed": true,
+    "commands": 34,
+    "shared_suites": {
+      "interactions": {
+        "checks": 101,
+        "failures": 0,
+        "first_failed_line": 0,
+        "door_cases": 3,
+        "floor_cases": 4,
+        "guard_cases": 5,
+        "workspace_bytes": 174856
+      },
+      "door_render": {
+        "passed": true,
+        "checks": 1450,
+        "failures": 0,
+        "phase_cases": 136,
+        "sample_cases": 464,
+        "guard_cases": 5,
+        "wrapper_checks": 123,
+        "workspace_bytes": 284
+      },
+      "world": {
+        "checks": 73044,
+        "failures": 0
+      },
+      "router": {
+        "checks": 50,
+        "failures": 0,
+        "first_failed_line": 0,
+        "pulse_cases": 1,
+        "use_cases": 2,
+        "pause_cases": 2,
+        "workspace_bytes": 175704
+      },
+      "collision_regression": {
+        "checks": 107,
+        "failures": 0,
+        "first_failed_line": 0,
+        "native_cases": 17,
+        "transaction_cases": 6,
+        "camera_cases": 1
+      },
+      "collision_routes_regression": {
+        "checks": 9909,
+        "failures": 0,
+        "workspace_bytes": 113112
+      }
+    },
+    "checks": 84661,
+    "wrapper_checks_additional": 123,
+    "linux_static_links": 9,
+    "linux_executed": false,
+    "header_compiles": 2,
+    "sdk_packages": 20,
+    "static_scene_regression": [
+      {
+        "passed": true,
+        "poses": 24424,
+        "checks": 1956054,
+        "step": 1
+      },
+      {
+        "passed": true,
+        "poses": 21376,
+        "checks": 1664522,
+        "step": 1
+      },
+      {
+        "passed": true,
+        "poses": 19392,
+        "checks": 1317415,
+        "step": 1
+      }
+    ],
+    "phase_zero_poses": 65192,
+    "phase_zero_checks": 4937991
+  },
+  "emulator": {
+    "passed": true,
+    "core": "melonDS DS libretro",
+    "version": "1.4.0",
+    "core_sha256": "c7e6b58c667075a2a9868f2c3ba7a98e24200410a6da3051a7c555f1f0eef8ef",
+    "rom_sha256": "83ef8d4d629427febd96c0035ded9a255d4c93f908e43bbc8495ed9780e3e804",
+    "elf_sha256": "e2314a9397f696eec8b59745c3dc4edee132d002be7a77a47dbfa9e1684f727d",
+    "harness_sha256": "f915abd98d4e13a3830263ce4565c5a6ad1210ec20fff3916fb3f9ecfc15642f",
+    "abi_sha256": "3b8aaebfb35acd560e83d46663b088a7dfae1800bd14ec72635bcef2bd0309a8",
+    "frontend_frames": 4669,
+    "trace_records": 10641,
+    "snapshot_records": 3383,
+    "snapshot_file": {
+      "path": "research/evidence/nds/n11/emulator/snapshot-worlds.bin",
+      "bytes": 66036160,
+      "sha256": "a0014d7519362c0a336f8852151daa5af46f1b9dddee756100abc120d7a8cddb"
+    },
+    "sdk_input_samples": 2417,
+    "hero_callbacks": 1181,
+    "door_callbacks": 979,
+    "presentations": 1203,
+    "uses": 9,
+    "arm9_checks": 1601,
+    "failures": 0,
+    "error_bits": 0,
+    "render_overflows": 0,
+    "matrix_errors": 0,
+    "clock_input_checks": {
+      "rational_clock_transitions": 10635,
+      "input_samples": 2417,
+      "world_snapshots": 3383,
+      "pauses": 1,
+      "resumes": 1,
+      "pause_vblanks": [
+        49
+      ],
+      "cases": {
+        "1": {
+          "level": 1,
+          "renders": 304,
+          "callbacks": 287,
+          "stages": [
+            0,
+            1,
+            2,
+            4,
+            5,
+            6,
+            7,
+            10,
+            11
+          ]
+        },
+        "2": {
+          "level": 1,
+          "renders": 280,
+          "callbacks": 279,
+          "stages": [
+            11,
+            3,
+            4,
+            5,
+            6,
+            7,
+            10
+          ]
+        },
+        "3": {
+          "level": 1,
+          "renders": 413,
+          "callbacks": 412,
+          "stages": [
+            11,
+            3,
+            4,
+            5,
+            6,
+            7,
+            10
+          ]
+        },
+        "4": {
+          "level": 2,
+          "renders": 114,
+          "callbacks": 113,
+          "stages": [
+            11,
+            1,
+            2,
+            4,
+            5,
+            8,
+            9,
+            10
+          ]
+        },
+        "5": {
+          "level": 2,
+          "renders": 49,
+          "callbacks": 48,
+          "stages": [
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18
+          ]
+        },
+        "6": {
+          "level": 3,
+          "renders": 43,
+          "callbacks": 42,
+          "stages": [
+            18,
+            12,
+            13,
+            14,
+            15,
+            17
+          ]
+        }
+      }
+    },
+    "source_replay": {
+      "passed": true,
+      "counts": {
+        "native_operations": 992,
+        "native_queue_deadlines": 16,
+        "operand_snapshot_bindings": 992,
+        "source_floor_lookups": 1181,
+        "source_floor_divisions": 36,
+        "source_conveyor_callbacks": 7,
+        "source_motion_callbacks": 1181,
+        "source_motion_substeps": 0,
+        "exact_mmap_bytes": 9658368,
+        "exact_counter_bytes": 1207296,
+        "source_finish_predicates": 29,
+        "sensor_entries": 4,
+        "cadence_updates": 2372,
+        "camera_renders": 1203,
+        "fixture_resets": 27
+      },
+      "cases": {
+        "1": {
+          "native": 151,
+          "hero": 287,
+          "floor": 287,
+          "conveyor": 0,
+          "render": 304
+        },
+        "2": {
+          "native": 195,
+          "hero": 279,
+          "floor": 279,
+          "conveyor": 0,
+          "render": 280
+        },
+        "3": {
+          "native": 350,
+          "hero": 412,
+          "floor": 412,
+          "conveyor": 0,
+          "render": 413
+        },
+        "4": {
+          "native": 184,
+          "hero": 113,
+          "floor": 113,
+          "conveyor": 0,
+          "render": 114
+        },
+        "5": {
+          "native": 56,
+          "hero": 48,
+          "floor": 48,
+          "conveyor": 7,
+          "render": 49
+        },
+        "6": {
+          "native": 56,
+          "hero": 42,
+          "floor": 42,
+          "conveyor": 0,
+          "render": 43
+        }
+      },
+      "whole_dos_session": false,
+      "limitations": [
+        "Original queue operations with intercepted services; accepted N08 dispatch checked separately",
+        "Fixture rows explicitly replace controlled pose/inventory/occupancy baseline",
+        "FINISH event substitutes native health=-1, no campaign transition"
+      ]
+    },
+    "collision_requested": 7,
+    "collision_committed": 7,
+    "collision_adjusted": 0,
+    "collision_rejected": 0,
+    "fat_after_load_sha256": "5aeae6f4d058e693489a0a84483d43e4d6c2af31f4c294c7f74d33d0aadbf469",
+    "fat_after_unload_sha256": "5aeae6f4d058e693489a0a84483d43e4d6c2af31f4c294c7f74d33d0aadbf469",
+    "capture_sets": 20,
+    "png_files": 60,
+    "visual_review": {
+      "path": "research/evidence/nds/n11/visual-review.json",
+      "bytes": 14800,
+      "sha256": "5bc5841477030773417f01caeb3c6380faabc71b214ae672c3c00d2b7bb27181"
+    },
+    "byte_verified_archive_files": 68,
+    "raw_stdout": {
+      "path": "research/evidence/nds/n11/emulator/emulator-run.log",
+      "bytes": 3511423,
+      "sha256": "900bb04892b2cd268ac33c149eba05a15ccef1dea05ef227d8f1d66e7f996bb1"
+    }
+  },
+  "memory": {
+    "static_startup_bytes": 430080,
+    "managed_bytes": 2293760,
+    "sdk_heap_available": 290816,
+    "reserve_bytes": 655360,
+    "closure_bytes": 3670016,
+    "world_used": 273336,
+    "scratch_used": 105052,
+    "scene_used": 184408,
+    "assets_used": 360448,
+    "world_high_water": 273336,
+    "scratch_high_water": 105052,
+    "scene_high_water": 184408,
+    "assets_high_water": 385024,
+    "events_bank_bytes": 36864
+  },
+  "contracts": [
+    "One N05 mutable map owner, N10 flags/counters, N11 glyph-shared phase/state and previous FC reference; no duplicate authoritative world.",
+    "Native event cadence and measured preceding-service C2; signed LOWWORD/min8 door extent, signed DWORD conveyor divisor. No fixed30 substitute.",
+    "Separate ordered public action/motion controls latches retain short pulses; Use release outside dispatch and pause UI clears both.",
+    "Native OPEN/CLOSE/AUTO queue/occupancy/keys and sensor glyph identity preserved, owner registration occurs before dispatch.",
+    "Direct conveyor wrapper invokes native resolver and occupancy once, including legal displacement350 at C2=4; ordinary N09 quarter guard remains separate.",
+    "Render uses copied phase view, preserves phase0 N07 packets and source UV mirror/crop, never mutates simulation/camera history."
+  ],
+  "explicit_adaptations": [
+    "Fully-open panels are suppressed at extent>1 and phase>=extent-1 to eliminate native residual strips. Constructor phase0/extent1 stays visible.",
+    "Repeated ready-open Use may resample a smaller extent while phase stays larger; this legal source domain is hidden until subsequent CLOSE reaches a cropped phase. Public API regression and shared ARM9 renderer tests cover it.",
+    "Six controlled floor poses inside closed door L2 K are NDS bounded guards; not claimed native equivalence or admitted gameplay starts.",
+    "FINISH output substitutes native health=-1 without campaign transition or latch; other STAT/audio/UI consumers remain later tasks.",
+    "Keys/score/repositioning/controlled occupancy are explicit diagnostic fixtures; A advances probe stages, not gameplay."
+  ],
+  "limitations": [
+    "Physical DS/DS Lite, flashcart/loader, actual FPS/latency/IRQ/stack peak deferred to final N24.",
+    "Isolated original x86 instructions with intercepted services, not a complete DOS/DPMI game session.",
+    "N11 live route has zero ordinary motion substeps; N09/N10 supply navigation evidence. Seven actual conveyor callbacks replayed.",
+    "Linux x86_64-musl compiled/linked only, not executed in Windows.",
+    "0/30/60 comparisons use the same explicit input/service timeline; different polling schedules are not equated.",
+    "Vertical middle frames show upward texture/crossbar motion; visible intermediate gap is established by horizontal pairs, terminal clearance by all four open frames.",
+    "Bottom diagnostic console until N20/N21; pickups N14, audio N18, HUD N19 and full level flow N22 remain pending. No game saves or runtime FAT writes."
+  ],
+  "repository_validation": {
+    "passed": true,
+    "originals_unchanged": 22,
+    "historical_data_unchanged": 252,
+    "python_syntax": 207,
+    "cmake_source_paths": 64,
+    "markdown_files": 195,
+    "broken_links": 0,
+    "powershell_ast": 2,
+    "report_summaries": 42,
+    "diff_check": true,
+    "baseline_pins": 439,
+    "final_pin_records": 776,
+    "final_unique_files": 639,
+    "commands": [
+      "C:/Source/wasdify/.venv/Scripts/python.exe -B -X utf8 tools/reports/summarize_reports.py",
+      "C:/Source/wasdify/.venv/Scripts/python.exe -B -X utf8 tools/reports/summarize_reports.py --check",
+      "C:/Source/wasdify/.venv/Scripts/python.exe -B -X utf8 scripts/check_repository_layout.py",
+      "PowerShell Parser ParseFile build_interactions.ps1/export_interaction_evidence.ps1",
+      "git -c core.autocrlf=false diff --check"
+    ],
+    "integrity_report": "research/evidence/nds/n11/final-integrity.json"
+  }
+}

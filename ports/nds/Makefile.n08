@@ -1,0 +1,39 @@
+# N08 clocks/events diagnostic; accepted targets are read-only.
+BLOCKSDS ?= /opt/blocksds/core
+WONDERFUL_TOOLCHAIN ?= /opt/wonderful
+ARM_NONE_EABI_PATH ?= $(WONDERFUL_TOOLCHAIN)/toolchain/gcc-arm-none-eabi/bin/
+ARM7ELF ?= $(BLOCKSDS)/sys/arm7/main_core/arm7_maxmod.elf
+OUTDIR := ../../build/nds/n08
+OBJDIR := $(OUTDIR)/obj
+NAME := dok_nds_time
+ELF := $(OUTDIR)/$(NAME).elf
+MAP := $(OUTDIR)/$(NAME).map
+ROM := $(OUTDIR)/$(NAME).nds
+OBJECTS := $(addprefix $(OBJDIR)/,main.o clock.o time.o events.o contracts.o memory.o time_cases.o)
+CHECK_OBJECTS := $(addprefix $(OBJDIR)/,test_time.o events_vectors.o time_vectors.o time_compile.o)
+CC := $(ARM_NONE_EABI_PATH)arm-none-eabi-gcc
+NDSTOOL := $(BLOCKSDS)/tools/ndstool/ndstool
+ARCH := -mthumb -mcpu=arm946e-s+nofp
+SPECS := $(BLOCKSDS)/sys/crts/ds_arm9.specs
+CPPFLAGS := -D__NDS__ -D__BLOCKSDS__ -DARM9 -Iinclude -Itests -Iplatform/time -Iplatform/time_probe
+CFLAGS := -O2 -g3 -Wall -Wextra -Werror -ffunction-sections -fdata-sections -fstack-usage
+CORE_CFLAGS := -std=c11 -pedantic-errors $(CFLAGS)
+PLATFORM_CPPFLAGS := $(CPPFLAGS) -I$(BLOCKSDS)/libs/libnds/include
+LDFLAGS := -L$(BLOCKSDS)/libs/libnds/lib -Wl,-Map,$(MAP) -Wl,--defsym=__usr_stack_size=12288
+.PHONY: all
+all: $(ROM) $(CHECK_OBJECTS)
+$(ROM): $(ELF) $(ARM7ELF)
+	"$(NDSTOOL)" -c "$@" -9 "$(ELF)" -7 "$(ARM7ELF)"
+$(ELF): $(OBJECTS)
+	"$(CC)" $(ARCH) -specs=$(SPECS) $(CPPFLAGS) -o "$@" $(OBJECTS) $(LDFLAGS) -Wl,--start-group -lnds9 -lc -Wl,--end-group
+$(OBJDIR)/main.o: platform/time_probe/main.c platform/time_probe/time_probe.h Makefile.n08 | $(OBJDIR)
+	"$(CC)" $(ARCH) -specs=$(SPECS) $(PLATFORM_CPPFLAGS) -std=gnu11 $(CFLAGS) -MMD -MP -c "$<" -o "$@"
+$(OBJDIR)/clock.o: platform/time/clock.c platform/time/clock.h Makefile.n08 | $(OBJDIR)
+	"$(CC)" $(ARCH) -specs=$(SPECS) $(PLATFORM_CPPFLAGS) -std=gnu11 $(CFLAGS) -MMD -MP -c "$<" -o "$@"
+$(OBJDIR)/%.o: core/%.c Makefile.n08 | $(OBJDIR)
+	"$(CC)" $(ARCH) -specs=$(SPECS) $(CPPFLAGS) $(CORE_CFLAGS) -MMD -MP -c "$<" -o "$@"
+$(OBJDIR)/%.o: tests/%.c Makefile.n08 | $(OBJDIR)
+	"$(CC)" $(ARCH) -specs=$(SPECS) $(CPPFLAGS) $(CORE_CFLAGS) -MMD -MP -c "$<" -o "$@"
+$(OBJDIR):
+	mkdir -p "$@"
+-include $(OBJECTS:.o=.d) $(CHECK_OBJECTS:.o=.d)

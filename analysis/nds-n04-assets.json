@@ -1,0 +1,318 @@
+{
+  "schema_version": 1,
+  "task": "N04",
+  "date": "2026-10-29",
+  "status": "ready_emulator",
+  "next_task": "N05",
+  "scope": "Independent RU/EN offline asset package, bounded strict C11 reader/cache and FAT/DLDI ARM9 diagnostic; no gameplay renderer/world/audio playback.",
+  "toolchain": {
+    "python": "3.14.6",
+    "zig": "0.13.0",
+    "blocksds": "1.24.0-1",
+    "gcc": "16.2.0",
+    "make": "4.4.1",
+    "locked_packages": 20,
+    "lock": {
+      "path": "ports/nds/toolchain_versions.json",
+      "bytes": 1497,
+      "sha256": "76906c4c1c07d6bd6cfcf3be02277477581fdab8fcabf7f85cfd8cc0dff472ef"
+    },
+    "shared_root": "C:/Users/dspev/.local/msys64/opt/wonderful"
+  },
+  "commands": [
+    "C:/Source/wasdify/.venv/Scripts/python.exe -X utf8 ports/nds/tools/check_assets.py",
+    "C:/Source/wasdify/.venv/Scripts/python.exe -X utf8 ports/nds/tools/run_assets_emulator.py --core C:/Users/dspev/AppData/Local/Programs/melonDS-DS/1.4.0/melondsds_libretro-win32-x86_64-Release/cores/melondsds_libretro.dll"
+  ],
+  "package": {
+    "path": "build/nds/assets/dok-assets.ndspak",
+    "bytes": 9230016,
+    "sha256": "2f03ba02c9986b4e0bd321e94ca00df8a355f7dbb1dff5598a950d3366061511"
+  },
+  "catalog": {
+    "passed": true,
+    "entry_count": 1466,
+    "representation_counts": {
+      "1": 292,
+      "2": 154,
+      "3": 48,
+      "4": 308,
+      "5": 462,
+      "6": 14,
+      "7": 10,
+      "8": 46,
+      "9": 60,
+      "10": 18,
+      "11": 4,
+      "12": 6,
+      "13": 6,
+      "14": 6,
+      "15": 14,
+      "16": 18
+    },
+    "unique_payloads": 738,
+    "aliased_entries": 728,
+    "unique_payload_bytes": 9034898,
+    "largest_payload_bytes": 474397,
+    "largest_gpu_bytes": 131072,
+    "original_blocks": 292,
+    "standalone_images": 154,
+    "animation_frames": 308,
+    "max_pcm_sample_count": 474361,
+    "directory_workspace_range_bytes": 81920,
+    "directory_io_ceiling_bytes": 131072
+  },
+  "original_archives": [
+    {
+      "language": 1,
+      "path": "originals/pkr/RUS/PKR.RES",
+      "sha256": "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816",
+      "bytes": 2718099,
+      "trailing_hex": "00"
+    },
+    {
+      "language": 2,
+      "path": "originals/pkr/ENG/PKE.RES",
+      "sha256": "865da340621fa6f90548a84e9ae9bf0a85071befb32a40ca1d359e488f74d458",
+      "bytes": 2717872,
+      "trailing_hex": "b0782900"
+    }
+  ],
+  "reproducibility": {
+    "passed": true,
+    "full_byte_compare": true,
+    "converter_sha256": "08cd110c37c3839671b0e7aedb6138d739583d777c3b136f0d2a6fe227a7fb82",
+    "first_sha256": "2f03ba02c9986b4e0bd321e94ca00df8a355f7dbb1dff5598a950d3366061511",
+    "second_sha256": "2f03ba02c9986b4e0bd321e94ca00df8a355f7dbb1dff5598a950d3366061511",
+    "bytes": 9230016
+  },
+  "provenance": {
+    "passed": true,
+    "path": "research/evidence/nds/n04/provenance.json",
+    "sha256": "5b55d023ea2c1fd93c83c87b3f4b6911ae09d4950afbbedbdf94814b79cf3fab",
+    "source_records": 292,
+    "variant_records": 1466
+  },
+  "artifacts": [
+    {
+      "path": "build/nds/n04/dok_nds_assets.nds",
+      "bytes": 147456,
+      "sha256": "29422b9fe81b6b299f57088ceaa9c7f70ab12dccc87decd2b5cdd00283fa22ac"
+    },
+    {
+      "path": "build/nds/n04/dok_nds_assets.elf",
+      "bytes": 1033820,
+      "sha256": "1cd8411fcccdf34fe8143263ea1f31ce7195e878a8432bfe9519933278e547d5"
+    },
+    {
+      "path": "build/nds/n04/dok_nds_assets.map",
+      "bytes": 653398,
+      "sha256": "95d0d6e4503eddf65748b02464b3bfcfe882cdbb9e0bdd5ba2bdf2c614b7ab04"
+    }
+  ],
+  "oracle_report": {
+    "path": "research/evidence/nds/n04/audit-report.json",
+    "bytes": 8730,
+    "sha256": "8cb7ddb9ce0f1623caaea6b01a42d2e291df88cd93f07b8a78401d422f6a1280"
+  },
+  "host": {
+    "passed": true,
+    "assertions": {
+      "success": true,
+      "checks": 4759,
+      "entry_count": 1466,
+      "raw_count": 292,
+      "type_mask": 65535,
+      "largest_payload": 131072,
+      "long_sample_count": 474361,
+      "long_chunks": 8,
+      "long_read_samples": 474361,
+      "read_calls": 23529,
+      "read_bytes": 22139843,
+      "max_request": 65536,
+      "workspace_bytes": 114688,
+      "test_asset_pool_bytes": 262144
+    },
+    "report": {
+      "path": "research/evidence/nds/n04/host-check.json",
+      "bytes": 14864,
+      "sha256": "07c170689c497a57f6b016fee5cadbb2baed95bd01517f03077aa75cb73a6184"
+    },
+    "linux": "x86_64-linux-musl compiled and linked, not executed",
+    "arm9": "strict C11 core/headers/tests, GNU C11 SDK-facing main; all 20 package pins verified"
+  },
+  "emulator": {
+    "name": "melonDS DS",
+    "interface": "libretro",
+    "version": "1.4.0",
+    "core_sha256": "c7e6b58c667075a2a9868f2c3ba7a98e24200410a6da3051a7c555f1f0eef8ef",
+    "mode": "DS/direct/builtin replacement BIOS+firmware/software renderer; JIT, threads, network and folder sync disabled; FAT16 read-only",
+    "passed": true,
+    "report": {
+      "path": "research/evidence/nds/n04/emulator/result.json",
+      "bytes": 1245,
+      "sha256": "eed6dfd9910faa1066b81055ccb73da7c46d47d2076c47c409ae57323bb57065"
+    },
+    "scenarios": [
+      {
+        "scenario": "happy",
+        "passed": true,
+        "checks": 25,
+        "frontend_frames": 481,
+        "coherent_completed_observations": 30,
+        "status": 1,
+        "error_bits": 0,
+        "tests_pass_mask": 16383,
+        "type_mask": 65535,
+        "negative_pass_mask": 255,
+        "report": {
+          "path": "research/evidence/nds/n04/emulator/happy/result.json",
+          "bytes": 46013,
+          "sha256": "bbab27c946eb5f4b3fa52972666606462f31b35689c0abede97606a5cbdf9a1d"
+        }
+      },
+      {
+        "scenario": "missing-media",
+        "passed": true,
+        "checks": 13,
+        "frontend_frames": 32,
+        "coherent_completed_observations": 30,
+        "status": 3,
+        "error_bits": 0,
+        "tests_pass_mask": 8192,
+        "type_mask": 0,
+        "negative_pass_mask": 0,
+        "report": {
+          "path": "research/evidence/nds/n04/emulator/missing-media/result.json",
+          "bytes": 40562,
+          "sha256": "f716fde56a6f7149e31e7719b2639cac7248bf4d5f582ea421aad526c5ca6176"
+        }
+      },
+      {
+        "scenario": "missing-package",
+        "passed": true,
+        "checks": 13,
+        "frontend_frames": 32,
+        "coherent_completed_observations": 30,
+        "status": 4,
+        "error_bits": 0,
+        "tests_pass_mask": 8192,
+        "type_mask": 0,
+        "negative_pass_mask": 0,
+        "report": {
+          "path": "research/evidence/nds/n04/emulator/missing-package/result.json",
+          "bytes": 42382,
+          "sha256": "7bb2690fe753f8a52b9cf2fb1c1571e0f28e5638db3fc00952332b013accce1d"
+        }
+      }
+    ],
+    "happy_observation": {
+      "magic": 876694340,
+      "abi_version": 1,
+      "size_bytes": 144,
+      "sequence": 174,
+      "status": 1,
+      "error_bits": 0,
+      "frame": 86,
+      "tests_pass_mask": 16383,
+      "open_status": 0,
+      "type_mask": 65535,
+      "entry_count": 1466,
+      "raw_count": 292,
+      "file_bytes": 9230016,
+      "read_calls": 4478,
+      "read_bytes": 1918659,
+      "max_request": 65536,
+      "asset_pool_bytes": 1048576,
+      "asset_highwater": 262144,
+      "workspace_bytes": 114688,
+      "pinned_refusal": 13,
+      "generation": 2,
+      "long_sample_count": 474361,
+      "long_chunks": 8,
+      "long_read_samples": 474361,
+      "largest_gpu_bytes": 131072,
+      "negative_pass_mask": 255,
+      "heap_limit_before": 37699584,
+      "heap_limit_final": 36569088,
+      "reserve_bytes": 655360,
+      "sdk_heap_available": 1474560,
+      "static_bytes": 92692,
+      "case_id": 100,
+      "asset_pool_base": 33647168,
+      "cached_base": 33647168,
+      "cached_id": 1074534400,
+      "cached_bytes": 49152,
+      "frontend_frame": 481
+    },
+    "cached_image_independent_ram_compare_bytes": 49152,
+    "image_mutation_scope": "Direct boot core injects ROM before ARM9; after-load/run/unload image digests match.",
+    "fixture_guard": {
+      "path": "research/evidence/nds/n04/fixture-guard-final.json",
+      "bytes": 3364,
+      "sha256": "334081c425029dfa255b9bf4b221ff01b518852fc52f1b9084d5870d9f968f76"
+    }
+  },
+  "memory": {
+    "workspace_bytes": 114688,
+    "io_pool_bytes": 131072,
+    "asset_pool_bytes": 1048576,
+    "audio_staging_bytes": 262144,
+    "probe_candidate_and_backing_reserved_bytes": 262144,
+    "reservation_scope": "Fixed two 131072-byte probe partitions; not general allocator or full-game high-water.",
+    "max_read_request_bytes": 65536,
+    "static_bytes": 92692,
+    "heap_limit_before": "0x023F4000",
+    "arm9_policy_limit": "0x02380000",
+    "heap_limit_final": "0x022E0000",
+    "reserve_bytes": 655360,
+    "happy_sdk_heap_growth_headroom_bytes": 1474560
+  },
+  "visual_qa": {
+    "passed": true,
+    "runtime": {
+      "path": "research/evidence/nds/n04/visual-qa.json",
+      "bytes": 3263,
+      "sha256": "f80ee6a2ac72f50f416cf2febc086d289fe42621d25b1c1387930a77124705f4"
+    },
+    "offline_aspect": {
+      "path": "research/evidence/nds/n04/assets-visual-review.json",
+      "bytes": 3426,
+      "sha256": "fba1338f3b4baa7438bb447ae5cde4cec3164e0835c3f71e26877dd378c6be04"
+    },
+    "scope": "Seven original/target pairs and geometric control viewed; EN pairs byte-identical. Four final diagnostic screens viewed; final rerun screen bytes unchanged."
+  },
+  "source_manifest": {
+    "path": "research/evidence/nds/n04/source-manifest.json",
+    "bytes": 7257,
+    "sha256": "46e48831f122d252abeaf249cdd5139f7afab95edbf8978bcd2a44259c1d1f96"
+  },
+  "archive_manifest": {
+    "path": "research/evidence/nds/n04/emulator/archive-manifest.json",
+    "bytes": 4841,
+    "sha256": "d0b6317356b4707c04c4a6b5bd6002701b4af3daa3e2f7932265983b360d75be"
+  },
+  "independent_review": {
+    "path": "research/evidence/nds/n04/independent-review.json",
+    "bytes": 4945,
+    "sha256": "299ac2b595ccf27992e6d5b9afb9c16ea886038bde5c6939bd399cc4eb89b0d4"
+  },
+  "prior_and_next_integrity": {
+    "path": "research/evidence/nds/n04/prior-and-next-integrity.json",
+    "bytes": 1557,
+    "sha256": "9a4f808ae03e3d269d2862a628b7e6f12831a4d2bb16c2a8374683162ef19c34"
+  },
+  "decisions": [
+    "One external package, no gameplay bank in ROM. Full RAW/provenance and typed derivatives preserve both original languages.",
+    "Streaming catalog and reads, no whole package residency. Stable IDs, exact aliases, immutable session, caller-owned candidate/backing/cache pins and generation.",
+    "A failed unpublished candidate can change; old published backing, metadata and output lease are preserved.",
+    "RAW is verify-only. Generic reader validates integrity/schema; converter/oracle pin original archives.",
+    "Ru world selection/profile remains N05. GPU material/UV/LIGHT remain N06/N07/N13."
+  ],
+  "limits": [
+    "Physical DS/DS Lite, flashcart/loader/microSD, FPS and latency deferred to N24.",
+    "No original EXE analysis or new DOS execution in N04; resource conversion verified against immutable original RES.",
+    "No complete gameplay world, renderer, scheduler, PCM playback, full-game working-set peak or game saves.",
+    "Platform stdio adapter uses positive 32-bit LONG, limiting file size to less than 2 GiB; wire offsets are u32.",
+    "Synthetic palette controls test errors, not original gameplay equivalence."
+  ]
+}

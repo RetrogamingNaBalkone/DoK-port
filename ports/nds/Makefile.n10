@@ -1,0 +1,62 @@
+# N10 collision/occupancy diagnostic. N01-N09 targets stay read-only.
+BLOCKSDS ?= /opt/blocksds/core
+WONDERFUL_TOOLCHAIN ?= /opt/wonderful
+ARM_NONE_EABI_PATH ?= $(WONDERFUL_TOOLCHAIN)/toolchain/gcc-arm-none-eabi/bin/
+ARM7ELF ?= $(BLOCKSDS)/sys/arm7/main_core/arm7_maxmod.elf
+OUTDIR := ../../build/nds/n10
+OBJDIR := $(OUTDIR)/obj
+NAME := dok_nds_collision
+ELF := $(OUTDIR)/$(NAME).elf
+MAP := $(OUTDIR)/$(NAME).map
+ROM := $(OUTDIR)/$(NAME).nds
+OBJECT_NAMES := main contracts input controls motion camera time events clock nds_input \
+ render_backend scene materials geometry assets memory sha256 world balance \
+ file_reader collision collision_cases collision_routes
+CHECK_NAMES := test_collision collision_dump collision_compile test_collision_routes
+OBJECTS := $(addprefix $(OBJDIR)/,$(addsuffix .o,$(OBJECT_NAMES)))
+CHECK_OBJECTS := $(addprefix $(OBJDIR)/,$(addsuffix .o,$(CHECK_NAMES)))
+CC := $(ARM_NONE_EABI_PATH)arm-none-eabi-gcc
+NDSTOOL := $(BLOCKSDS)/tools/ndstool/ndstool
+ARCH := -mthumb -mcpu=arm946e-s+nofp
+RENDER_ARCH ?= -marm
+SPECS := $(BLOCKSDS)/sys/crts/ds_arm9.specs
+CPPFLAGS := -D__NDS__ -D__BLOCKSDS__ -DARM9 -Iinclude -Itests \
+ -Iplatform/assets -Iplatform/time -Iplatform/input -Iplatform/render_probe \
+ -Iplatform/collision_probe -I$(OUTDIR)/generated
+CFLAGS := -O2 -g3 -Wall -Wextra -Werror -ffunction-sections -fdata-sections -fstack-usage
+CORE_CFLAGS := -std=c11 -pedantic-errors $(CFLAGS)
+PLATFORM_CPPFLAGS := $(CPPFLAGS) -I$(BLOCKSDS)/libs/libnds/include
+LDFLAGS := -L$(BLOCKSDS)/libs/libnds/lib -Wl,-Map,$(MAP) -Wl,--defsym=__usr_stack_size=12288
+.PHONY: all
+all: $(ROM) $(CHECK_OBJECTS)
+$(ROM): $(ELF) $(ARM7ELF)
+	"$(NDSTOOL)" -c "$@" -9 "$(ELF)" -7 "$(ARM7ELF)"
+$(ELF): $(OBJECTS)
+	"$(CC)" $(ARCH) -specs=$(SPECS) $(CPPFLAGS) -o "$@" $(OBJECTS) $(LDFLAGS) -Wl,--start-group -lnds9 -lc -Wl,--end-group
+$(OBJDIR)/main.o: platform/collision_probe/main.c platform/collision_probe/collision_probe.h Makefile.n10 | $(OBJDIR)
+	"$(CC)" $(ARCH) -specs=$(SPECS) $(PLATFORM_CPPFLAGS) -std=gnu11 $(CFLAGS) -MMD -MP -c "$<" -o "$@"
+$(OBJDIR)/nds_input.o: platform/input/input.c platform/input/input.h Makefile.n10 | $(OBJDIR)
+	"$(CC)" $(ARCH) -specs=$(SPECS) $(PLATFORM_CPPFLAGS) -std=gnu11 $(CFLAGS) -MMD -MP -c "$<" -o "$@"
+$(OBJDIR)/clock.o: platform/time/clock.c platform/time/clock.h Makefile.n10 | $(OBJDIR)
+	"$(CC)" $(ARCH) -specs=$(SPECS) $(PLATFORM_CPPFLAGS) -std=gnu11 $(CFLAGS) -MMD -MP -c "$<" -o "$@"
+$(OBJDIR)/render_backend.o: platform/render_probe/render_backend.c platform/render_probe/render_backend.h Makefile.n10 | $(OBJDIR)
+	"$(CC)" $(RENDER_ARCH) -mcpu=arm946e-s+nofp -specs=$(SPECS) $(PLATFORM_CPPFLAGS) -std=gnu11 $(CFLAGS) -MMD -MP -c "$<" -o "$@"
+$(OBJDIR)/scene.o: render/scene.c Makefile.n10 | $(OBJDIR)
+	"$(CC)" $(RENDER_ARCH) -mcpu=arm946e-s+nofp -specs=$(SPECS) $(CPPFLAGS) $(CORE_CFLAGS) -MMD -MP -c "$<" -o "$@"
+$(OBJDIR)/geometry.o: render/geometry.c Makefile.n10 | $(OBJDIR)
+	"$(CC)" $(RENDER_ARCH) -mcpu=arm946e-s+nofp -specs=$(SPECS) $(CPPFLAGS) $(CORE_CFLAGS) -MMD -MP -c "$<" -o "$@"
+$(OBJDIR)/motion.o: core/motion.c Makefile.n10 | $(OBJDIR)
+	"$(CC)" $(RENDER_ARCH) -mcpu=arm946e-s+nofp -specs=$(SPECS) $(CPPFLAGS) $(CORE_CFLAGS) -MMD -MP -c "$<" -o "$@"
+$(OBJDIR)/camera.o: core/camera.c Makefile.n10 | $(OBJDIR)
+	"$(CC)" $(RENDER_ARCH) -mcpu=arm946e-s+nofp -specs=$(SPECS) $(CPPFLAGS) $(CORE_CFLAGS) -MMD -MP -c "$<" -o "$@"
+$(OBJDIR)/file_reader.o: platform/assets/file_reader.c Makefile.n10 | $(OBJDIR)
+	"$(CC)" $(ARCH) -specs=$(SPECS) $(PLATFORM_CPPFLAGS) $(CORE_CFLAGS) -MMD -MP -c "$<" -o "$@"
+$(OBJDIR)/%.o: render/%.c Makefile.n10 | $(OBJDIR)
+	"$(CC)" $(ARCH) -specs=$(SPECS) $(CPPFLAGS) $(CORE_CFLAGS) -MMD -MP -c "$<" -o "$@"
+$(OBJDIR)/%.o: core/%.c Makefile.n10 | $(OBJDIR)
+	"$(CC)" $(ARCH) -specs=$(SPECS) $(CPPFLAGS) $(CORE_CFLAGS) -MMD -MP -c "$<" -o "$@"
+$(OBJDIR)/%.o: tests/%.c Makefile.n10 | $(OBJDIR)
+	"$(CC)" $(ARCH) -specs=$(SPECS) $(CPPFLAGS) $(CORE_CFLAGS) -MMD -MP -c "$<" -o "$@"
+$(OBJDIR):
+	mkdir -p "$@"
+-include $(OBJECTS:.o=.d) $(CHECK_OBJECTS:.o=.d)

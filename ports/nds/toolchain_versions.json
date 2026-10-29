@@ -1,0 +1,26 @@
+{
+    "schema_version":  1,
+    "description":  "N02 shared BlocksDS Windows toolchain, actual installed packages",
+    "packages":  {
+                     "blocksds-docs":  "1.24.0-1",
+                     "blocksds-toolchain":  "1.24.0-1",
+                     "runtime-gcc-libs":  "0.1.0-14",
+                     "runtime-msys2-shell":  "0.1.0-4",
+                     "toolchain-gcc-arm-none-eabi-binutils":  "2.47-2",
+                     "toolchain-gcc-arm-none-eabi-gcc":  "1~16.2.0.r229124.be93d9d35bf-1",
+                     "toolchain-gcc-arm-none-eabi-gcc-libs":  "1~16.2.0.r229124.be93d9d35bf-1",
+                     "toolchain-gcc-arm-none-eabi-libstdcxx-picolibc":  "16.2.0.r229124.be93d9d35bf-1",
+                     "toolchain-gcc-arm-none-eabi-picolibc-generic":  "1.8.13.r26367.770d86889-1",
+                     "wf-lua":  "5.4.9-1",
+                     "wf-lua-filesystem":  "1.8.0.r352.912e067-1",
+                     "wf-lua-iconv":  "7.1.r101.5452834-1",
+                     "wf-lua-libdeflate":  "0.0.1.r3.d34711a-1",
+                     "wf-lua-penlight":  "1.15.0.r950.c317508-1",
+                     "wf-lua-plum":  "0.0.1.r9.6a60edc-1",
+                     "wf-lua-toml":  "0.4.0.r47.44a4056-1",
+                     "wf-pacman":  "7.1.0-3",
+                     "wf-tools":  "0.2.0-3",
+                     "wf-tools-lua":  "0.1.0.r183.ad72e38-1",
+                     "wf-tools-native":  "0.1.0.r180.3bf0d29-1"
+                 }
+}

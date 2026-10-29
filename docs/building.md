@@ -1,6 +1,175 @@
 # Сборка первых модулей и VS Code
 
-28 октября 2026: GBA-модули, тесты и драйверы перенесены в `ports/gba/`; host-выходы — в `build/gba/host/`. Корневой CMake подключает GBA host-модули; независимый вход — `ports/gba/CMakeLists.txt`. Для NDS/SDL2 предназначены `ports/nds/` и `ports/sdl2/`, реализация пока не начата. Карта переноса — [паспорт](tasks/RESTRUCTURE.md).
+Для текущих NDS-инструментов используется общий Python 3.14 из пользовательской
+установки, команда `py -3.14`. Зависимости ставятся в общий user site:
+
+```powershell
+py -3.14 -m pip install --user -r ports/nds/tools/requirements.txt
+```
+
+NDS-анализаторам нужен Unicorn 2.1.4; пути к окружениям других проектов
+в исполняемых NDS-скриптах отсутствуют. Пакет ресурсов, EXE и Ghidra-доказательства
+читаются из DoK-port. Прежние отчёты/журналы сохраняют реальные исторические команды.
+
+29 октября: после N11 выполнена [N07P](nds/tasks/N07P.md).
+Актуальные NDS source/ROM pins и воспроизводимые команды находятся в этом
+паспорте и [handoff](nds/handoff.md). Оптимизированный интерактивный прототип
+собирается/проверяется `ports/nds/tools/check_render_performance.py --core <DLL>`
+в `build/nds/perf/n11-optimized/`, полный hash-audit — той же командой с `--audit`
+в отдельном `n11-audit/`. Используются прежние общие SDK и 20 package pins.
+Исторические команды N07/N11 ниже относятся к прежним accepted hashes;
+их frozen gates не предназначены для перезаписи исходных доказательств новой сборкой.
+
+28 октября 2026: GBA-модули, тесты и драйверы перенесены в `ports/gba/`; host-выходы — в `build/gba/host/`. Корневой CMake подключает GBA host-модули; независимый вход — `ports/gba/CMakeLists.txt`. Корни независимых NDS/SDL2-направлений — `ports/nds/` и `ports/sdl2/`. Карта переноса — [паспорт](tasks/RESTRUCTURE.md).
+
+## Nintendo DS: общий SDK и диагностика N02
+
+29 октября 2026: установлен общий BlocksDS `1.24.0-1` с GCC 16.2.0 в
+`C:/Users/dspev/.local/msys64/opt/wonderful`. Версии 20 пакетов закреплены в
+[toolchain_versions.json](../ports/nds/toolchain_versions.json). Драйвер
+загружает `wf-env` в дочернем UCRT64 shell; `BLOCKSDS` указывает на
+`/opt/wonderful/thirdparty/blocksds/core`.
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File ports/nds/tools/build_diag.ps1 -Rebuild
+```
+
+Выходы — `build/nds/n02/`. Две чистые сборки совпали по .nds/ELF/map;
+все три эмуляторных сценария прошли. N02 готова с пометкой «эмулятор». Подробности,
+GNU C11 только для libnds-платформы, команда melonDS DS libretro core 1.4.0,
+очистка и ограничения — [N02-building](nds/spec/N02-building.md).
+Аппаратная проверка итоговой игры перенесена пользователем в N24;
+эмуляторные результаты не доказывают FPS настоящей DS.
+
+## Nintendo DS: ядро и memory probe N03
+
+N03 готова (эмулятор). Общие Zig 0.13.0 и BlocksDS используются из указанных
+пользовательских каталогов; core/headers компилируются strict C11, SDK-facing
+платформа — GNU C11. Независимая команда из корня репозитория:
+
+```powershell
+py -3.14 -X utf8 ports/nds/tools/check_core.py
+```
+
+Она выполняет Windows host tests, Linux cross-build и ARM9 probe build.
+Эмуляторный запуск — отдельный `tools/run_memory_emulator.py` с core DLL.
+Выходы — `build/nds/n03/`; архитектура, бюджет, точные команды и границы
+измерений — [N03-architecture](nds/spec/N03-architecture.md).
+
+## Nintendo DS: пакет и runtime N04
+
+N04 готова (эмулятор). Независимый конвертер и oracle сверяют все ресурсы
+PKR.RES/PKE.RES, затем выполняются host tests, Linux cross-build и ARM9 build:
+
+```powershell
+py -3.14 -X utf8 ports/nds/tools/check_assets.py
+py -3.14 -X utf8 ports/nds/tools/run_assets_emulator.py --core C:/Users/dspev/AppData/Local/Programs/melonDS-DS/1.4.0/melondsds_libretro-win32-x86_64-Release/cores/melondsds_libretro.dll
+```
+
+Пакет — `build/nds/assets/dok-assets.ndspak`, отдельный ROM и FAT-образы —
+`build/nds/n04/`. Источники, формат, точные SHA и ограничения —
+[паспорт N04](nds/tasks/N04.md), [runtime](nds/spec/N04-runtime.md).
+Пакет и исходные игровые payload в Git не включаются.
+
+## Nintendo DS: RU-мир и профиль N05
+
+N05 готова (эмулятор). Отдельный target использует тот же пакет N04 и общий SDK:
+
+```powershell
+py -3.14 -X utf8 ports/nds/tools/check_world.py
+py -3.14 -X utf8 ports/nds/tools/run_world_emulator.py --core C:/Users/dspev/AppData/Local/Programs/melonDS-DS/1.4.0/melondsds_libretro-win32-x86_64-Release/cores/melondsds_libretro.dll
+```
+
+Первый драйвер выполняет Windows tests, независимую сверку всех LEVEL/полей,
+Linux cross-checks и чистую ARM9-сборку. Второй сверяет полные actual RAM exports
+шести комбинаций LEVEL1–3/RU–EN, без записи emulated RAM. Выходы — `build/nds/n05/`;
+точные SHA/лимиты и границы готовности — [паспорт N05](nds/tasks/N05.md).
+
+## Nintendo DS: проекция и эталоны N06
+
+N06 готова (эмулятор). Проверка использует подготовленный пакет N04 и исходные DOS
+контрольные кадры N06; команды их получения и ограничения —
+[паспорт N06](nds/tasks/N06.md). Host/ARM9 gate готовит полные RU/EN страницы,
+HUD, пары экранов и отдельный bitmap viewer:
+
+```powershell
+py -3.14 -X utf8 ports/nds/tools/check_visuals.py
+# Только повторная сборка viewer из уже подготовленных входов:
+powershell -NoProfile -ExecutionPolicy Bypass -File ports/nds/tools/build_visual.ps1 -Rebuild
+```
+
+Выходы — `build/nds/n06/dok_nds_visual.nds`, `.elf`, `.map`, `build-report.json`;
+пары — `build/nds/n06/frames/`, полные UI-макеты — `build/nds/n06/ui/`.
+Внешний `index.dat` содержит SHA подготовленных `vNNtop.bin`/`vNNbot.bin`:
+по 98304 байта RGB555 на экран. Данные читаются через FAT/DLDI и не включены
+в ROM. Viewer подтверждает предъявление эталонов на двух экранах, а не
+аппаратный 3D renderer N07, работающий UI N19 или скорость полной игры.
+
+Пять независимых эмуляторных сценариев:
+
+```powershell
+$ndsCore = 'C:/Users/dspev/AppData/Local/Programs/melonDS-DS/1.4.0/melondsds_libretro-win32-x86_64-Release/cores/melondsds_libretro.dll'
+foreach ($scenario in @('happy', 'bad-index', 'bad-hash', 'short-frame', 'bad-pixel')) {
+    py -3.14 -X utf8 ports/nds/tools/run_visual_emulator.py --core $ndsCore --scenario $scenario
+    if ($LASTEXITCODE -ne 0) { throw "N06 emulator scenario failed: $scenario" }
+}
+```
+
+`happy` предъявляет все подготовленные пары по обычной кнопке A. Остальные
+проверяют повреждённый индекс, digest, короткий файл и сброшенный обязательный bit15;
+при отказе следующего кадра прежний display сохраняется. Каждый report
+записывается в `build/nds/n06/emulator/<scenario>/result.json`; сравнение
+охватывает 196608 байт RAM и 98304 RGB555 пикселя пары. Итоговый PASS до
+фактического запуска не предполагается. Реальная DS/DS Lite остаётся N24.
+
+## Nintendo DS: ранний 3D renderer N07
+
+N07 принята на эмуляторе. Требуются принятый N04-пакет и локальные исходные
+доказательства N05/N06. Полная проверка сама готовит trig/diagnostic fixture,
+проверяет native geometry/scene/merge, Linux cross-link, строгие ARM9 headers
+и модули, 20 закреплённых SDK packages, затем собирает аппаратный renderer:
+
+```powershell
+py -3.14 -X utf8 ports/nds/tools/check_renderer.py
+$ndsCore = 'C:/Users/dspev/AppData/Local/Programs/melonDS-DS/1.4.0/melondsds_libretro-win32-x86_64-Release/cores/melondsds_libretro.dll'
+py -3.14 -X utf8 ports/nds/tools/run_renderer_emulator.py --core $ndsCore
+```
+
+Только SDK rebuild после подготовки входов:
+`powershell -NoProfile -ExecutionPolicy Bypass -File ports/nds/tools/build_renderer.ps1 -Rebuild`.
+Выходы — `build/nds/n07/dok_nds_renderer.nds`, `.elf`, `.map`, `scene.dat`,
+`scene-manifest.json`; `generated/render_trig.inc` создаётся из математического
+генератора с проверкой всех 722 исходных runtime words. ROM не содержит игровой
+банк или baked mesh: ARM9 читает точный `assets.ndp` и строит поверхности.
+
+В математических модулях renderer используется ARM mode, общий SDK остаётся прежним;
+воспроизводимый Thumb experiment задаётся `make -C ports/nds -f Makefile.n07 RENDER_ARCH=-mthumb`
+в общей MSYS2/wf-env среде. Старые принятые NDS targets не пересобираются.
+Полные reports/PNG/history — `research/evidence/nds/n07/` после приёмки;
+реальные FPS DS/DS Lite проверяются в N24. [Паспорт N07](nds/tasks/N07.md).
+
+## Nintendo DS: часы и события N08
+
+N08 принята на host/эмуляторе. Новый strict C11 clock/scheduler собирается
+независимо от renderer и игрового пакета. Original-instruction oracle требует
+целевых Ghidra exports; при их отсутствии сначала выполнить
+`ports/nds/tools/export_time_evidence.ps1`. Общий SDK и инструменты прежние.
+
+```powershell
+py -3.14 -X utf8 ports/nds/tools/check_time.py
+$ndsCore = 'C:/Users/dspev/AppData/Local/Programs/melonDS-DS/1.4.0/melondsds_libretro-win32-x86_64-Release/cores/melondsds_libretro.dll'
+py -3.14 -X utf8 ports/nds/tools/run_time_emulator.py --core $ndsCore
+```
+
+Gate не пересобирает N01–N07: проверяет их pins, native vectors,
+независимую rational модель, strict host/Linux/ARM9 и Rebuild только N08.
+Linux binaries только связываются. Runtime читает ARM9 traces без записи RAM,
+проверяет точный clock, порядок callbacks и pause/resume через реальный Start.
+Outputs — `build/nds/n08/`, доказательства — `research/evidence/nds/n08/`.
+Timer2 занят SDK counter; callbacks не выполняются в IRQ. Сохранений и FAT I/O
+в probe нет. Реальная аппаратура остаётся N24. [Паспорт N08](nds/tasks/N08.md).
+
+## История сборок GBA
 
 27 октября: хранение исследований вынесено в `research/`; после уточнения
 пользователя промежуточные сборки и повторы удаляются. Паспорт и границы —
@@ -60,7 +229,7 @@ SHA `b36472a0…eb42501`, 9 954 008 B, 488 точных кадров, live7,17/7
 Пол/потолок4×2 — `DoK-port_floor_4x2_prototype.gba`, SHA `04dfe358…1b5d11`,
 9 888 624 B, live11,95/9,95/14,93. BSP первого прохода —
 `artifacts/gba/DoK-port_BSP_prototype.gba`. Изолированная повторная сборка:
-`C:/Source/wasdify/.venv/Scripts/python.exe ports/gba/scripts/prototype_gba_bsp.py --out research/experiments/g20a-sides-rebuild --variants baseline sides_exact sides_coarse`.
+`py -3.14 ports/gba/scripts/prototype_gba_bsp.py --out research/experiments/g20a-sides-rebuild --variants baseline sides_exact sides_coarse`.
 Она выполнена, ROM воспроизведены побайтно. Замеры:
 `ports/gba/scripts/benchmark_gba_prototypes.py`, aggregate — `ports/gba/scripts/report_gba_spans.py`;
 все команды/ограничения в документе. Прежние готовые ROM не заменены;
@@ -177,34 +346,34 @@ powershell -NoProfile -ExecutionPolicy Bypass -File ports/gba/scripts/build-nati
 Проверка двух реальных архивов и выгрузка всех блоков:
 
 ```powershell
-C:/Source/wasdify/.venv/Scripts/python.exe tools/originals/analyze_resources.py
+py -3.14 tools/originals/analyze_resources.py
 # После готового первого этапа анализа Ghidra:
 powershell -NoProfile -ExecutionPolicy Bypass -File tools/ghidra/annotate-stage2.ps1
 # Проверить и выгрузить анимации:
-C:/Source/wasdify/.venv/Scripts/python.exe tools/originals/analyze_animations.py
+py -3.14 tools/originals/analyze_animations.py
 powershell -NoProfile -ExecutionPolicy Bypass -File tools/ghidra/annotate-stage3.ps1
 # Проверить и выгрузить звук:
-C:/Source/wasdify/.venv/Scripts/python.exe tools/originals/analyze_sounds.py
+py -3.14 tools/originals/analyze_sounds.py
 powershell -NoProfile -ExecutionPolicy Bypass -File tools/ghidra/annotate-stage4.ps1
 # Восстановить метки LEVEL в Ghidra и сверить определения и карты:
-C:/Source/wasdify/.venv/Scripts/python.exe ports/gba/scripts/prepare_levels.py
+py -3.14 ports/gba/scripts/prepare_levels.py
 powershell -NoProfile -ExecutionPolicy Bypass -File tools/ghidra/annotate-stage5.ps1
-C:/Source/wasdify/.venv/Scripts/python.exe tools/originals/analyze_levels.py
+py -3.14 tools/originals/analyze_levels.py
 # Вывести модель уровня (строки CP866 представлены в hex):
 ./build/native/dok-level.exe research/evidence/resources/ru/0018.bin
 # Создать начальный мир из оригинального архива:
-C:/Source/wasdify/.venv/Scripts/python.exe ports/gba/scripts/prepare_world.py
+py -3.14 ports/gba/scripts/prepare_world.py
 powershell -NoProfile -ExecutionPolicy Bypass -File tools/ghidra/annotate-stage6.ps1
-C:/Source/wasdify/.venv/Scripts/python.exe tools/originals/analyze_worlds.py
+py -3.14 tools/originals/analyze_worlds.py
 ./build/native/dok-world.exe originals/pkr/RUS/PKR.RES LEVEL1
 # G02: конвертация/проверка всех шести миров без потери известности:
-C:/Source/wasdify/.venv/Scripts/python.exe tools/originals/analyze_runtime.py
+py -3.14 tools/originals/analyze_runtime.py
 ./build/native/dok-runtime.exe --layout
 ./build/native/dok-runtime.exe originals/pkr/RUS/PKR.RES LEVEL1
 ```
 
 Для `analyze_resources.py` нужен только Python 3.11+ и стандартная библиотека.
-Путь venv выше — удобство текущей машины, а не зависимость C-модуля от WASDify.
+Примеры используют общий Python; окружение соседнего проекта не требуется.
 
 ## VS Code
 
@@ -310,3 +479,85 @@ Acceptance: `analysis/gba/g15-review.json`; source/ABI/матрица и огр�
 [ai-combat.md](gba/ai-combat.md). EWRAM247872/free14272, IWRAM23980,
 до8KiB stack reserve596 байт.30FPS остаются G20. Физическая GBA,
 оригинальный BIOS и полный DOS gameplay не проверены.
+
+
+## Nintendo DS: ввод и движение N09
+
+Диагностическая сборка связывает новый timestamped input/controls, исходную
+кинематику и отдельную camera history с принятыми N07 renderer и N08 clock/events.
+Это free flight до N10; команды Use/fire/оружия ещё не исполняют игровые эффекты.
+Use X/B срабатывает при отпускании, как consuming reader оригинала.
+
+```powershell
+py -3.14 -X utf8 ports/nds/tools/check_movement.py
+$ndsCore = 'C:/Users/dspev/AppData/Local/Programs/melonDS-DS/1.4.0/melondsds_libretro-win32-x86_64-Release/cores/melondsds_libretro.dll'
+py -3.14 -X utf8 ports/nds/tools/run_movement_emulator.py --core $ndsCore
+```
+
+Первый gate проверяет сохранность N01–N08, strict C11 host/Linux links, исходные
+PKR/PKE инструкции и общие ARM9 suites; Rebuild выполняется только для N09.
+Он копирует точные принятые N04 package и N07 trig/scene.dat, не регенерируя
+предыдущие результаты. Нужны уже принятые локальные входы N04/N07 и сохранённые
+Ghidra exports. Второй gate подаёт обычные кнопки/touch, проверяет живые callbacks,
+камеру и UI suppression через read-only seqlock observations. ROM/ELF/map —
+`build/nds/n09/`, постоянные доказательства — `research/evidence/nds/n09/`.
+Общий SDK и 20 закреплённых пакетов остаются прежними; отдельная копия не нужна.
+Политика аппаратной приёмки — N24. [Паспорт N09](nds/tasks/N09.md).
+
+## Nintendo DS: столкновения N10
+
+Диагностика соединяет N09 input/motion, N08 events/clock и N07 renderer с новым
+collision/occupancy над N05 RU-миром. Проверяется навигация по трём уровням;
+автоматическая смена диагностических уровней не является игровой кампанией.
+
+```powershell
+py -3.14 -B ports/nds/tools/check_collision.py
+py -3.14 ports/nds/tools/run_collision_emulator.py --core C:/Users/dspev/AppData/Local/Programs/melonDS-DS/1.4.0/melondsds_libretro-win32-x86_64-Release/cores/melondsds_libretro.dll
+```
+
+Gate сверяет347 принятых pins N01–N09, выполняет host/native checks и чистую
+ARM9 Rebuild через общий SDK/20 packages. Linux static targets только собираются.
+Выходы — `build/nds/n10/`; package/trig/scene копируются из принятых N04/N07
+без регенерации. Исходные Ghidra-экспорты должны существовать; команда экспорта,
+точные версии, итоговые hashes и ограничения — [паспорт N10](nds/tasks/N10.md).
+Emulator observer только читает ABI и подаёт физические frontend buttons/touch.
+Архив — `research/evidence/nds/n10/emulator/`, компактный итог —
+[analysis/nds-n10-collision.json](../analysis/nds-n10-collision.json).
+Физическая DS/DS Lite проверяется в N24 на итоговом хеше.
+
+## Nintendo DS: взаимодействия и двери N11
+
+N11 — отдельный target `Makefile.n11`, `platform/interactions_probe/` и
+`tools/build_interactions.ps1`. Он связывает source Use/keys/door events,
+сенсоры/conveyor/FINISH output с N08 events, N09 controls/motion и N10 collision.
+N11 добавляет прямой public displacement API для source conveyor350 при C2=4;
+прежние N10 функции сохранены байтами и отдельно проходят регрессию.
+Финальные gate и runtime после renderer-fix прошли; итоговый ROM228352 B,
+SHA`83ef8d4d629427febd96c0035ded9a255d4c93f908e43bbc8495ed9780e3e804`.
+
+```powershell
+py -3.14 -B -X utf8 ports/nds/tools/check_interactions.py --pins-only
+py -3.14 -B -X utf8 ports/nds/tools/check_interactions.py
+$ndsCore = 'C:/Users/dspev/AppData/Local/Programs/melonDS-DS/1.4.0/melondsds_libretro-win32-x86_64-Release/cores/melondsds_libretro.dll'
+py -3.14 -B -X utf8 ports/nds/tools/run_interactions_emulator.py --core $ndsCore
+py -3.14 -B -X utf8 ports/nds/tools/verify_interactions_trace.py build/nds/n11/emulator/result.json build/nds/n11/emulator/snapshot-worlds.bin
+```
+
+Gate проверяет frozen439 dependencies и source supersession proof, strict host
+suites, Linux static links, исходные PKR/PKE инструкции и ARM9 Rebuild через
+общий SDK/20 packages. Linux binaries в Windows не исполняются. Нужны принятые
+N04 package/N07 trig/scene bytes и свежие read-only Ghidra exports; экспорт:
+`powershell -NoProfile -ExecutionPolicy Bypass -File ports/nds/tools/export_interaction_evidence.ps1`.
+Fixtures копируются без регенерации. Старые N10 outputs не пересобираются.
+
+ROM/ELF/map и временный runtime — `build/nds/n11/`; постоянные отчёты,
+полные snapshots и кадры — `research/evidence/nds/n11/`. Offline verifier
+только читает сохранённый trace и snapshots, повторяет source x86 comparisons;
+он не запускает эмулятор. Точные команды, versions, hashes, scope fixtures
+и ограничения — [паспорт N11](nds/tasks/N11.md).
+
+После приёмки N11 работа остановлена по просьбе пользователя; N12
+без нового указания не начинать. Для её будущего dependency audit базой служат
+frozen N11 initial439 + принятый compact + новые source/build manifests;
+старый recursive `check_time.preserved_inputs()` не учитывает обоснованное
+расширение collision API. Реальное железо и аппаратные FPS остаются N24.

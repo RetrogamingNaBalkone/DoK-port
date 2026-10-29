@@ -1,0 +1,147 @@
+{
+  "schema_version": 1,
+  "task": "N02",
+  "status": "ready_emulator",
+  "date": "2026-10-29",
+  "next_task": "N03",
+  "scope": "Independent NDS platform diagnostics, no game implementation",
+  "toolchain": {
+    "blocksds": "1.24.0-1",
+    "gcc": "16.2.0",
+    "make": "4.4.1",
+    "lock": "ports/nds/toolchain_versions.json",
+    "lock_sha256": "76906c4c1c07d6bd6cfcf3be02277477581fdab8fcabf7f85cfd8cc0dff472ef",
+    "shared_root": "C:/Users/dspev/.local/msys64/opt/wonderful",
+    "locked_packages": 20
+  },
+  "artifacts": [
+    {
+      "path": "build/nds/n02/dok_nds_diag.nds",
+      "bytes": 146432,
+      "sha256": "5f65eaa46114e5821eae3614a746d890f045ea3cd51d6e50c7d79c41c7194577"
+    },
+    {
+      "path": "build/nds/n02/dok_nds_diag.elf",
+      "bytes": 1013612,
+      "sha256": "3c11e8dd25f5e2848c4908a9b819d9d7b4527ea88eb418c69d7788fd505e2b41"
+    },
+    {
+      "path": "build/nds/n02/dok_nds_diag.map",
+      "bytes": 652491,
+      "sha256": "56cab9f995e09252159b5c71a73e852e42d0da931dde228ba89c486c7f821f4a"
+    }
+  ],
+  "reproducibility": {
+    "passed": true,
+    "clean_builds": 2,
+    "artifacts_match": true,
+    "package_versions_match": true,
+    "report": "research/evidence/nds/n02/rebuild-check.json",
+    "report_sha256": "5a809475b483056b74e0229b267e850385f023ef507bb39ba912dbcbe1350cd6"
+  },
+  "emulator": {
+    "name": "melonDS DS",
+    "interface": "libretro",
+    "version": "1.4.0",
+    "core_sha256": "c7e6b58c667075a2a9868f2c3ba7a98e24200410a6da3051a7c555f1f0eef8ef",
+    "python": "3.14.6",
+    "harness_sha256": "960a656a76e82663a19f56df4da727728207877928a5d13b9cc47b79ca26e5c7",
+    "report": "research/evidence/nds/n02/emulator/result.json",
+    "report_sha256": "cbcf80d177023c0b00c069595a617dcbffed88221ad17bcc819846476a4e86f4",
+    "mode": "DS; direct boot; builtin replacement BIOS/firmware; software renderer; no JIT/threads/network",
+    "all_passed": true,
+    "scenarios": [
+      {
+        "scenario": "happy",
+        "passed": true,
+        "checks": 67,
+        "frames": 592,
+        "storage_result": 6,
+        "frame_interval_us": {
+          "min": 16713,
+          "median": 16715.0,
+          "max": 16715
+        },
+        "cpu_work_us": {
+          "min": 2632,
+          "median": 3119.0,
+          "max": 3503
+        },
+        "tone": {
+          "sample_frames": 16412,
+          "sample_rate": 32728.498046875,
+          "peak": 8817.0,
+          "rms": 5675.77743247697,
+          "positive_crossing_hz_active": 440.22191063294815
+        },
+        "quiet": {
+          "sample_frames": 8753,
+          "sample_rate": 32728.498046875,
+          "peak": 0.0,
+          "rms": 0.0,
+          "positive_crossing_hz_active": 0
+        },
+        "full_report": "research/evidence/nds/n02/emulator/happy/result.json",
+        "fat_runtime_unchanged": true
+      },
+      {
+        "scenario": "missing-marker",
+        "passed": true,
+        "checks": 18,
+        "frames": 132,
+        "storage_result": 2,
+        "frame_interval_us": {
+          "min": 16713,
+          "median": 16715.0,
+          "max": 16715
+        },
+        "cpu_work_us": {
+          "min": 2631,
+          "median": 3119.0,
+          "max": 3434
+        },
+        "tone": null,
+        "quiet": null,
+        "full_report": "research/evidence/nds/n02/emulator/missing-marker/result.json",
+        "fat_runtime_unchanged": true
+      },
+      {
+        "scenario": "missing-media",
+        "passed": true,
+        "checks": 17,
+        "frames": 132,
+        "storage_result": 1,
+        "frame_interval_us": {
+          "min": 16713,
+          "median": 16715.0,
+          "max": 16715
+        },
+        "cpu_work_us": {
+          "min": 2631,
+          "median": 3119.0,
+          "max": 3434
+        },
+        "tone": null,
+        "quiet": null,
+        "full_report": "research/evidence/nds/n02/emulator/missing-media/result.json"
+      }
+    ]
+  },
+  "visual_qa": {
+    "passed": true,
+    "report": "research/evidence/nds/n02/visual-qa.json",
+    "report_sha256": "e588f9ba6ecfda9c0d13a747e51836f09fb39e80ecb9005d30d212a823fa9d55"
+  },
+  "decisions": [
+    "Platform uses GNU C11 due to SDK inline asm; independent core stays strict C11.",
+    "Input/time/probe run each VBlank; dashboard presentation is separate at about 10 Hz.",
+    "PSG API receives 3520 sample steps per second for 440 Hz eight-step waveform.",
+    "Read-only ROM file access; emulator direct-boot ROM injection and host stdio flush precede immutable runtime FAT baseline."
+  ],
+  "evidence_manifest": "research/evidence/nds/n02/emulator/manifest.json",
+  "limits": [
+    "Physical DS/DS Lite, controls/stylus, flashcart/loader, microSD and audio output deferred to N24.",
+    "Virtual frame/work times are not physical DS FPS or I/O latency.",
+    "No original game logic/assets/renderer or N03 full memory budget are tested."
+  ]
+}

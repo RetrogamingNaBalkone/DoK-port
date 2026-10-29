@@ -1,0 +1,263 @@
+{
+  "schema_version": 1,
+  "task": "N08",
+  "date": "2026-10-29",
+  "status": "ready-emulator",
+  "passed": true,
+  "next_task": "N09",
+  "scope": "Native clock/scheduler contracts, exact rational DS world clock, independent original-instruction conformance and ARM9 diagnostic; gameplay loop not yet integrated",
+  "source_manifest": {
+    "path": "research/evidence/nds/n08/source-manifest.json",
+    "bytes": 4119,
+    "sha256": "2ea803dd9b8607b9e9c2a7e7ee9e847d87534608b7be9c32892dfde1e2b33a08"
+  },
+  "build_manifest": {
+    "path": "research/evidence/nds/n08/build-manifest.json",
+    "bytes": 1975,
+    "sha256": "abe68e9d2af0fb197e7ac0cc2ee20164e31289a3646864c9e51d33af9fd8d5bb"
+  },
+  "toolchain_lock": {
+    "path": "ports/nds/toolchain_versions.json",
+    "bytes": 1497,
+    "sha256": "76906c4c1c07d6bd6cfcf3be02277477581fdab8fcabf7f85cfd8cc0dff472ef"
+  },
+  "reports": [
+    {
+      "path": "research/evidence/nds/n08/host-check.json",
+      "bytes": 131639,
+      "sha256": "2f7bd554b268e042c9b7716a7a31cae8b5f055295aa40d871deebf2eda6d7b34"
+    },
+    {
+      "path": "research/evidence/nds/n08/original-vectors.json",
+      "bytes": 95704,
+      "sha256": "bd8dd1d1b6f6788f01bda254f1404b21c8a95e8c05cdcd6b6ccff40be92d6a42"
+    },
+    {
+      "path": "research/evidence/nds/n08/sdk-counter.json",
+      "bytes": 3979,
+      "sha256": "2e001c045ff34eaee53e70acd627654c47edb953add722ffa2bf5cc67bc17d29"
+    },
+    {
+      "path": "research/evidence/nds/n08/core-independent-review.json",
+      "bytes": 4668,
+      "sha256": "5cc18342588df3e3a9a3675873eb3c0327b7f39c26c7be18fb765ee291ddf827"
+    },
+    {
+      "path": "research/evidence/nds/n08/emulator/result.json",
+      "bytes": 1024654,
+      "sha256": "fe1ee346d15a10f9d562746ed8b3e4bceec1b2f76f14fe0692823cf5bfa2fe3a"
+    },
+    {
+      "path": "research/evidence/nds/n08/emulator/archive-manifest.json",
+      "bytes": 5797,
+      "sha256": "880047f2f2dade244c07d98fa2b6fd45c932ed145a0d8d871b3aca6126fe8a98"
+    },
+    {
+      "path": "research/evidence/nds/n08/emulator/pre-runtime-manifest.json",
+      "bytes": 1811,
+      "sha256": "3202fcb5a1a82d68f7051fbb60b7511c57746aa9440bf9807eec01ff894ca68b"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "build/nds/n08/dok_nds_time.nds",
+      "bytes": 109056,
+      "sha256": "41eba541a417f99bb39d48f0c241199b6b596a1feca4b8040034547e4e7adcf8"
+    },
+    {
+      "path": "build/nds/n08/dok_nds_time.elf",
+      "bytes": 677124,
+      "sha256": "0a25efeef4027762a9c3246eb5e932519fd5a005b1be8cf96d1c8d9befe20203"
+    },
+    {
+      "path": "build/nds/n08/dok_nds_time.map",
+      "bytes": 642794,
+      "sha256": "6b82cb15c54041732fef3847265e0efae355a05b98ee36ed27dcd6bcac3ebeb9"
+    },
+    {
+      "path": "build/nds/n08/build-report.json",
+      "bytes": 2785,
+      "sha256": "c6e1970d5f13026ab64eea0f84b42e901cda2cf540b9901eeb8be0c5b42f46b8"
+    }
+  ],
+  "tools": {
+    "python": "3.14.6",
+    "zig": "0.13.0",
+    "blocksds": "1.24.0-1",
+    "gcc": "16.2.0",
+    "make": "4.4.1",
+    "ghidra": "12.1.2",
+    "java": "21",
+    "unicorn": "2.1.4",
+    "sdk_locked_packages": 20,
+    "emulator": "melonDS DS libretro core 1.4.0",
+    "emulator_sha256": "c7e6b58c667075a2a9868f2c3ba7a98e24200410a6da3051a7c555f1f0eef8ef",
+    "linux_executed": false,
+    "physical_hardware_tested": false
+  },
+  "host": {
+    "commands": 13,
+    "preserved_pins": 246,
+    "source_pins": 24,
+    "shared_suite": {
+      "checks": 17974,
+      "failures": 0,
+      "first_failed_line": 0,
+      "clock_cases": 3,
+      "event_cases": 7,
+      "bank_bytes": 36864
+    },
+    "numerical": {
+      "cases": 48,
+      "steps": 720,
+      "scalar_checks": 5760,
+      "seed": "0x4e3038",
+      "model": "Python arbitrary-precision divmod; uint32 native tick reduction only"
+    },
+    "native_cases": 32,
+    "native_actual_clock_reads": 242,
+    "linux_cross_builds_only": true
+  },
+  "original": {
+    "counts": {
+      "languages": 2,
+      "scheduler_cases_per_language": 16,
+      "pit_cases_per_language": 8,
+      "stopwatch_steps_per_language": 11,
+      "callbacks_per_language": 24
+    },
+    "address_system": "Ghidra NE-loader source addresses; execution segments are fixture relocations, not runtime DPMI selectors",
+    "method": "Unicorn executes original Ghidra-exported whole scheduler functions and native compiler memcpy, controlled clock/callback/allocator boundaries; PIT and stopwatch instruction vectors separately",
+    "status": "passed",
+    "source_sha256_before": {
+      "ru": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+      "en": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b"
+    },
+    "source_sha256_after": {
+      "ru": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+      "en": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b"
+    },
+    "limitations": [
+      "Not a complete DOS/DPMI run; controlled clock samples and callback bodies.",
+      "No GBA or NDS scheduler serves as expected-value oracle.",
+      "Allocator-free boundary records frees without releasing fixture storage.",
+      "Unsafe current-owner destruction/empty-owner activation are ASM findings, not safe conformance vectors."
+    ]
+  },
+  "independent_core_review": {
+    "status": "passed with documented native difference",
+    "counts": {
+      "math_cases": 12000,
+      "fallback_cases": 5112,
+      "direct_cases": 6888,
+      "lifecycle_seeds": 1024,
+      "lifecycle_steps": 4194304
+    },
+    "scope": "Current core and header hashes match the independent review snapshot; stress invariants are not a native conformance oracle."
+  },
+  "runtime": {
+    "frontend_frames": 398,
+    "trace_records": 556,
+    "ring_capacity": 512,
+    "trace_record_bytes": 116,
+    "coherent_trace_without_loss": true,
+    "synthetic": [
+      {
+        "scenario": 1,
+        "fps": 15,
+        "callbacks": 30,
+        "render_reads": 12,
+        "passed": true
+      },
+      {
+        "scenario": 2,
+        "fps": 30,
+        "callbacks": 30,
+        "render_reads": 24,
+        "passed": true
+      },
+      {
+        "scenario": 3,
+        "fps": 60,
+        "callbacks": 30,
+        "render_reads": 48,
+        "passed": true
+      }
+    ],
+    "live_callbacks": 62,
+    "before_pause_callbacks": 30,
+    "paused_callbacks": 0,
+    "resumed_callbacks": 32,
+    "exact_clock_transitions": 378,
+    "pause_vblanks": 126,
+    "paused_world_ticks": 15343,
+    "resume_world_ticks": 15343,
+    "pending_deadline": 15425,
+    "first_resumed_callback_tick": 15511,
+    "counter_cadence": {
+      "vblanks": 314,
+      "counts": 2748368,
+      "expected_counts_numerator": 43974915,
+      "expected_counts_denominator": 16,
+      "relative_tolerance": "1/50"
+    },
+    "complete_status": 5,
+    "failures": 0
+  },
+  "clock": {
+    "counter_hz_numerator": 33513982,
+    "counter_hz_denominator": 64,
+    "native_hz_numerator": 1193182,
+    "native_hz_denominator": 119,
+    "reduced_ticks_per_count_numerator": 38181824,
+    "reduced_ticks_per_count_denominator": 1994081929,
+    "platform_counter_bits": 64,
+    "native_tick_bits": 32,
+    "sdk_timer_index": 2,
+    "sdk_counter_divider": 64,
+    "all_nonzero_uint32_rational_frequencies_supported": true,
+    "pause_preserves_fraction": true,
+    "backward_counter_rejected": true
+  },
+  "memory": {
+    "passed": true,
+    "static_startup_bytes": 118784,
+    "managed_bytes": 2293760,
+    "sdk_heap_available": 602112,
+    "reserve_bytes": 655360,
+    "events_bank_bytes": 36864,
+    "closure_bytes": 3670016,
+    "owner_capacity": 512,
+    "event_slots_per_owner": 3,
+    "owner_bytes": 72,
+    "events_slab_bytes": 65536,
+    "stack_reserved_bytes": 12288,
+    "full_sdk_irq_stack_peak_proven": false,
+    "full_game_peak_proven": false
+  },
+  "native_preserved": [
+    "Unsigned deadline >= comparison including early/late rollover anomalies and negative interval bit patterns.",
+    "Owner ring insertion order, event insertion order, live append and shrinking owner-count bound.",
+    "Copy read slot into compacted write slot before callback; update source/read deadline after callback.",
+    "Set interval changes array[0], not currently executing source slot.",
+    "Re-read clock after callback, repeat from now_after+interval without missed-period catchup.",
+    "Native constructor capacity4 admits3 events; clear preserves registered owner identities."
+  ],
+  "explicit_adaptations": [
+    "Logical object refs and callback IDs replace DOS far pointers; adapter explicitly passes parameter/context.",
+    "Deferred current-owner destroy and pending activation of preregistered empty owners prevent native UAF/cursor corruption.",
+    "Register/reset/clear/reentrant dispatch and callback-local helpers outside their valid phase are rejected.",
+    "One dispatch(0) sweep: mid-dispatch uint32 wrap does not repeat native busy wait. Dedicated shared regression verifies one sweep, four reads and empty ring.",
+    "Exact monotonic rational clock with fraction and explicit pause/resume replaces PIT I/O/truncation/reset-phase discontinuities."
+  ],
+  "limitations": [
+    "No complete gameplay loop, actors or input/movement integration yet; N09 onward own actual service cadence.",
+    "Same explicit dispatch/clock timeline is independent of render observations; arbitrary changes to native polling samples are not equivalent. No update60 or GBA100tick grid introduced.",
+    "512 owners is bounded NDS storage, not a recovered native world limit. Actor/projectile pools must preregister owners or defer creation until sweep end.",
+    "Native unsafe lifetime paths and mid-dispatch rollover are intentional corrections, not exact original conformance.",
+    "SDK timer2 IRQ must be serviced within a full low16 overflow period (~125ms); real IRQ latency/quartz/FPS/hardware deferred to N24.",
+    "Short emulator run observes many low16 rollovers, not natural uint32/uint64 SDK uptime rollover. Large deltas/native wrap use injection.",
+    "Linux binaries compile/link only; full SDK/IRQ stack and full-game memory peaks remain unproven.",
+    "No game saves and no microSD I/O in N08."
+  ]
+}

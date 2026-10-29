@@ -1,0 +1,494 @@
+{
+  "schema_version": 1,
+  "task": "N09",
+  "date": "2026-10-29",
+  "status": "ready-emulator",
+  "passed": true,
+  "next_task": "N10",
+  "scope": "Ordered physical input and release Use, original PKR/PKE motion, native N08 services and pure camera; N07 ARM9 free-flight diagnostic before N10 collision",
+  "source_manifest": {
+    "path": "research/evidence/nds/n09/source-manifest.json",
+    "bytes": 11234,
+    "sha256": "a6b52daefd229267addb3e944081dc07410be59c607c140f2c09384569b2e029"
+  },
+  "build_manifest": {
+    "path": "research/evidence/nds/n09/build-manifest.json",
+    "bytes": 2717,
+    "sha256": "85639c8cb5eba2e8fc86ff654cc84d3e13bb297cf3e080054691e2e4307cde96"
+  },
+  "toolchain_lock": {
+    "path": "ports/nds/toolchain_versions.json",
+    "bytes": 1497,
+    "sha256": "76906c4c1c07d6bd6cfcf3be02277477581fdab8fcabf7f85cfd8cc0dff472ef"
+  },
+  "reports": [
+    {
+      "path": "research/evidence/nds/n09/host-check.json",
+      "bytes": 106601,
+      "sha256": "cf321cb2d080e74f27905e246abcf27c7d1789a630379a4c4f2553a59ce5a131"
+    },
+    {
+      "path": "research/evidence/nds/n09/original-motion.json",
+      "bytes": 14404151,
+      "sha256": "71a80f6ba49353c8a44c62673b3e6d120e8e31ff7ee8c3743f776de5e7ff9168"
+    },
+    {
+      "path": "research/evidence/nds/n09/fixture-report.json",
+      "bytes": 2375,
+      "sha256": "57fbb8aed5db78a56af9217560fe53862527961eb07d474c1744acd7cddbc287"
+    },
+    {
+      "path": "research/evidence/nds/n09/initial-dependency-integrity.json",
+      "bytes": 48884,
+      "sha256": "26c9db7d24878e400de84725bfb616c0d3e0b47a9420b911e2b9df17161ab5f0"
+    },
+    {
+      "path": "research/evidence/nds/n09/input-runtime-review.json",
+      "bytes": 6668,
+      "sha256": "1f22f3c32cc73a4e4192369e3c2a52b24651d673f3024f1a2d5d85f7a861168a"
+    },
+    {
+      "path": "research/evidence/nds/n09/final-review.json",
+      "bytes": 23617,
+      "sha256": "09b8b15a00c8c192619c9e78ce549ae7ba74115b10b154c7690290d33bd908d2"
+    },
+    {
+      "path": "research/evidence/nds/n09/emulator/result.json",
+      "bytes": 4151418,
+      "sha256": "36087174e894855a6f1041a80b881dd71f190075372b3187c02bac4f1bcd6aa5"
+    },
+    {
+      "path": "research/evidence/nds/n09/emulator/archive-manifest.json",
+      "bytes": 5736,
+      "sha256": "996e4b4803d5bb7a7b7e4f8af6223ba3745331cda13bb471d7bbafcb35536940"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "build/nds/n09/test_input.exe",
+      "bytes": 168960,
+      "sha256": "8b4f12dd3b1459914b011d16a610ecff1d79602622d823dfa097560af4355460"
+    },
+    {
+      "path": "build/nds/n09/test_input-linux-x86_64",
+      "bytes": 303056,
+      "sha256": "061d4a99a261a1404564ea98ffbd7b7d17f24d259f2ea00efe30efe75e13a2c6"
+    },
+    {
+      "path": "build/nds/n09/test_motion.exe",
+      "bytes": 160768,
+      "sha256": "49456b3657fb6fd63c09931701df18874d3119aaa7c44d8603d90dc9d5d896f9"
+    },
+    {
+      "path": "build/nds/n09/test_motion-linux-x86_64",
+      "bytes": 290744,
+      "sha256": "947917ed17c5c3d1372da643addc6dbac79e9f48d71592a4700eaed3da153c0d"
+    },
+    {
+      "path": "build/nds/n09/test_movement_replay.exe",
+      "bytes": 173056,
+      "sha256": "c596fdf06cfa4c7e470173987d811f9f71fcbf891acc180c61a911f1ee09776d"
+    },
+    {
+      "path": "build/nds/n09/test_movement_replay-linux-x86_64",
+      "bytes": 370816,
+      "sha256": "69482d43a120844f33f8530ad8ef731f7f0c824fb75bdb436dad22f6a99ae929"
+    },
+    {
+      "path": "build/nds/n09/motion_dump.exe",
+      "bytes": 153600,
+      "sha256": "45f4062696db832844b8417c5f49bbc57d364cfd6580375889394247526f68cd"
+    },
+    {
+      "path": "build/nds/n09/motion_dump-linux-x86_64",
+      "bytes": 305384,
+      "sha256": "d5e6c759dd258f59d060a069941ea6e5b029460faba4cbeb026cea193e2d0181"
+    },
+    {
+      "path": "build/nds/n09/input_compile-native.o",
+      "bytes": 9205,
+      "sha256": "93106e1f189d84a81dd96a02b7e3e890640b9f5c85c15422a266a69a2699e69a"
+    },
+    {
+      "path": "build/nds/n09/input_compile-linux-x86_64.o",
+      "bytes": 2416,
+      "sha256": "f5593613217fb080e0dccecb470bdd1dc8ee97aabebdea3781a1f45f3bff1f07"
+    },
+    {
+      "path": "build/nds/n09/movement_compile-native.o",
+      "bytes": 9228,
+      "sha256": "6af0b5b4f2684d110dad152dbb544ad9e77ddb62653debe6bb36ce89b96712f4"
+    },
+    {
+      "path": "build/nds/n09/movement_compile-linux-x86_64.o",
+      "bytes": 2432,
+      "sha256": "909f913cefa839fc169c324be1a1021090c0fcc9df2dcf4bb04f165620e54047"
+    },
+    {
+      "path": "build/nds/n09/dok_nds_movement.nds",
+      "bytes": 222208,
+      "sha256": "90ab2eccf3d82bd0c1e6188e84ed120ce2d4387f826f680924abe28ab5061a75"
+    },
+    {
+      "path": "build/nds/n09/dok_nds_movement.elf",
+      "bytes": 1539980,
+      "sha256": "1abb4e8342656aaf4f035a5079a1b140e190e44e3fb2070c0683dcd73c0b73d5"
+    },
+    {
+      "path": "build/nds/n09/dok_nds_movement.map",
+      "bytes": 815469,
+      "sha256": "0d1882fced43d2dd0897f292fc2a2f79324c14f31ff14decb3fb75ce7be71c19"
+    }
+  ],
+  "tools": {
+    "python": "3.14.6",
+    "zig": {
+      "path": "C:\\Users\\dspev\\AppData\\Local\\Programs\\Zig\\0.13.0\\zig.exe",
+      "version": "0.13.0",
+      "sha256": "2e44af5bbf7a72ef8cbdae370284687c95d65a19affa469d2ad0364d905b8e84"
+    },
+    "blocksds": "1.24.0-1",
+    "gcc": "16.2.0",
+    "make": "4.4.1",
+    "sdk_locked_packages": 20,
+    "ghidra": "12.1.2",
+    "java": "21",
+    "unicorn": "2.1.4",
+    "emulator": {
+      "name": "melonDS DS",
+      "version": "1.4.0",
+      "sha256": "c7e6b58c667075a2a9868f2c3ba7a98e24200410a6da3051a7c555f1f0eef8ef"
+    }
+  },
+  "host": {
+    "commands": 20,
+    "preserved_pins": 282,
+    "source_pins": 65,
+    "shared_checks": 118511,
+    "shared_suites": {
+      "input": {
+        "checks": 99038,
+        "failures": 0,
+        "first_failed_line": 0,
+        "mapping_masks": 4096,
+        "ordered_samples": 1024,
+        "suppression_masks": 4096,
+        "integration_cases": 5,
+        "buffer_bytes": 2624
+      },
+      "motion": {
+        "checks": 19001,
+        "failures": 0,
+        "first_failed_line": 0,
+        "motion_cases": 2,
+        "camera_cases": 2,
+        "prediction_observations": 864
+      },
+      "replay": {
+        "checks": 472,
+        "failures": 0,
+        "first_failed_line": 0,
+        "runs": 3,
+        "service_calls": 128,
+        "callbacks": 20,
+        "input_samples": 31,
+        "observations_30": 30,
+        "observations_60": 60,
+        "trace_hash": 3237372460,
+        "final_hash": 2034872508,
+        "first_elapsed": 0,
+        "short_fire_pulses": 4,
+        "use_pulses": 3,
+        "pause_callbacks": 0,
+        "workspace_bytes": 73520,
+        "final": {
+          "x": 15090,
+          "y": -300,
+          "z": 22821,
+          "heading": 88,
+          "movement_accumulator": 471,
+          "turn_accumulator": 0
+        }
+      }
+    },
+    "linux_links_only": 4,
+    "strict_header_objects": 4
+  },
+  "original": {
+    "address_system": "Ghidra NE-loader segments; fixture CPU segments5000/6000/7000 are test relocations, not DPMI selectors",
+    "isolated_vectors_per_language": 9960,
+    "sequence_calls_per_language": 106,
+    "substeps_per_language": 30087,
+    "output_fields": 17,
+    "keyboard_masks_per_language": 256,
+    "use_poll_combinations_per_language": 4,
+    "actual_irq_sequences_per_language": 4,
+    "actual_reader_states_per_language": 8,
+    "languages": [
+      {
+        "language": "ru",
+        "sample": {
+          "path": "originals/pkr/RUS/PKR.EXE",
+          "bytes": 324824,
+          "sha256": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28"
+        },
+        "sha256_before": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+        "sha256_after": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+        "use_semantics": "IRQ make3; heldUse poll false; break AND2; Use reader consumes state2 on release; no held-repeat"
+      },
+      {
+        "language": "en",
+        "sample": {
+          "path": "originals/pkr/ENG/PKE.EXE",
+          "bytes": 340616,
+          "sha256": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b"
+        },
+        "sha256_before": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b",
+        "sha256_after": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b",
+        "use_semantics": "IRQ make3; heldUse poll false; break AND2; Use reader consumes state2 on release; no held-repeat"
+      }
+    ],
+    "trig": {
+      "source": {
+        "path": "research/evidence/reference/ru-03/level1-memory.bin",
+        "bytes": 16777216,
+        "sha256": "c8ff1347518aae86af31b8ed2c6f6443c4c63c9157b4a52bf76d53c7f5c95629"
+      },
+      "linear_address": "0x1CA9B0",
+      "words": 722,
+      "initializer_executed": false,
+      "en_uses_ru_table": true
+    },
+    "boundaries": {
+      "clock": "stop/read/start intercepted; uint32 elapsed injected inDX:AX",
+      "collision": "accept original candidate x/z; no obstacle resolution",
+      "wrapper": "actual original instructions including3substeps and controlled occupancy writes",
+      "fixture": "64x64 empty tile0/class0 world, cell480; no door callbacks",
+      "commands": "actual original routine; keyboard held/edge readers intercepted",
+      "dos_game_session": false
+    }
+  },
+  "runtime": {
+    "frontend_frames": 1173,
+    "trace_records": 1085,
+    "trace_capacity": 512,
+    "trace_record_bytes": 288,
+    "coherent_trace_without_loss": true,
+    "input_samples": 444,
+    "render_reads": 444,
+    "active_frames": 400,
+    "trace_checks": {
+      "original_x86_callbacks": 192,
+      "input_samples": 444,
+      "presentation_predictions": 441,
+      "rational_clock_transitions": 1084,
+      "pauses": 2,
+      "resumes": 2,
+      "uses": 4,
+      "next_weapon": 1,
+      "short_fire_taps": [
+        {
+          "before": 186,
+          "after": 191,
+          "buttons": 256,
+          "before_service_tick": 20495,
+          "source_ticks": [
+            20829,
+            21164
+          ],
+          "after_service_tick": 21165
+        }
+      ]
+    },
+    "final_pose": {
+      "x": 13413,
+      "y": -300,
+      "z": 21726,
+      "heading": 68
+    },
+    "pauses": [
+      {
+        "vblank_duration": 44,
+        "world_tick": 38930,
+        "fraction": 224151518,
+        "callbacks_frozen": true
+      },
+      {
+        "vblank_duration": 44,
+        "world_tick": 76974,
+        "fraction": 1639168546,
+        "callbacks_frozen": true
+      }
+    ],
+    "buttons_seen": 4095,
+    "touch_seen": 7,
+    "renderer_errors": 0,
+    "matrix_errors": 0,
+    "hud_rgb555_pixels_per_capture": 9728,
+    "hud_captures": 5,
+    "images": [
+      {
+        "path": "research/evidence/nds/n09/emulator/start.png",
+        "bytes": 22818,
+        "sha256": "2f2c391ee1e619b3dc376c3da23b864721e36cdde62f4d202421a5809c175f46"
+      },
+      {
+        "path": "research/evidence/nds/n09/emulator/moving.png",
+        "bytes": 28511,
+        "sha256": "6fe76dabc05b326338ba263d7129a35815e0b4d620eabad9c350926dcad1f65a"
+      },
+      {
+        "path": "research/evidence/nds/n09/emulator/paused.png",
+        "bytes": 27554,
+        "sha256": "95a787d2cacdecc96dab3a8692a0aefac87505a313672016a38767bcf15188a9"
+      },
+      {
+        "path": "research/evidence/nds/n09/emulator/resumed.png",
+        "bytes": 27713,
+        "sha256": "a1a54e4dd53143749715d741fb18f84ebd103fad76201361ece58eb1f38774f1"
+      },
+      {
+        "path": "research/evidence/nds/n09/emulator/complete.png",
+        "bytes": 24113,
+        "sha256": "9716f540c3060796df80ef8c58445d7d0fa63d0768a44edeb2503f9a1d267777"
+      }
+    ],
+    "fat_after_load_sha256": "6769e92afd704c741e5b6a0da29d24f3dbee97222c65f4f287bb2bc2f59e688d",
+    "fat_after_unload_sha256": "6769e92afd704c741e5b6a0da29d24f3dbee97222c65f4f287bb2bc2f59e688d",
+    "core_options": {
+      "melonds_console_mode": "ds",
+      "melonds_slot2_device": "auto",
+      "melonds_boot_mode": "direct",
+      "melonds_sysfile_mode": "builtin",
+      "melonds_rumble_intensity": "65535",
+      "melonds_rumble_type": "both",
+      "melonds_solar_sensor_host_sensor": "enabled",
+      "melonds_ds_battery_ok_threshold": "20",
+      "melonds_battery_update_interval": "15",
+      "melonds_start_time_mode": "absolute",
+      "melonds_start_time_relative_year_offset": "0",
+      "melonds_start_time_relative_day_offset": "0",
+      "melonds_start_time_relative_hour_offset": "0",
+      "melonds_start_time_relative_minute_offset": "0",
+      "melonds_start_time_absolute_year": "2004",
+      "melonds_start_time_absolute_month": "1",
+      "melonds_start_time_absolute_day": "1",
+      "melonds_start_time_absolute_hour": "0",
+      "melonds_start_time_absolute_minute": "0",
+      "melonds_start_time_absolute_second": "0",
+      "melonds_show_unsupported_features": "enabled",
+      "melonds_show_mic_state": "enabled",
+      "melonds_show_camera_state": "enabled",
+      "melonds_show_bios_warnings": "enabled",
+      "melonds_show_current_layout": "enabled",
+      "melonds_show_lid_state": "enabled",
+      "melonds_show_sensor_reading": "enabled",
+      "melonds_jit_enable": "disabled",
+      "melonds_jit_block_size": "32",
+      "melonds_jit_branch_optimisations": "enabled",
+      "melonds_jit_literal_optimisations": "enabled",
+      "melonds_jit_fast_memory": "enabled",
+      "melonds_homebrew_readonly": "enabled",
+      "melonds_homebrew_sync_sdcard_to_host": "disabled",
+      "melonds_homebrew_sdcard": "enabled",
+      "melonds_dsi_sdcard_readonly": "disabled",
+      "melonds_dsi_sdcard_sync_sdcard_to_host": "disabled",
+      "melonds_dsi_sdcard": "enabled",
+      "melonds_dsi_nand_path": "/auto",
+      "melonds_firmware_nds_path": "/notfound",
+      "melonds_firmware_dsi_path": "/notfound",
+      "melonds_firmware_language": "auto",
+      "melonds_firmware_favorite_color": "0",
+      "melonds_firmware_username": "guess_username",
+      "melonds_firmware_enable_alarm": "default",
+      "melonds_firmware_alarm_hour": "default",
+      "melonds_firmware_alarm_minute": "default",
+      "melonds_firmware_birth_month": "default",
+      "melonds_firmware_birth_day": "default",
+      "melonds_firmware_wfc_dns": "178.62.43.212",
+      "melonds_mic_input_active": "hold",
+      "melonds_mic_input": "silence",
+      "melonds_audio_bitdepth": "auto",
+      "melonds_audio_interpolation": "disabled",
+      "melonds_network_mode": "disabled",
+      "melonds_direct_network_interface": "auto",
+      "melonds_mac_address_mode": "firmware",
+      "melonds_screen_gap": "0",
+      "melonds_secondary_screen_scale": "100",
+      "melonds_secondary_screen_filtering": "nearest",
+      "melonds_cursor_timeout": "3",
+      "melonds_touch_mode": "touch",
+      "melonds_joystick_cursor_deadzone": "5",
+      "melonds_joystick_cursor_maxspeed": "3",
+      "melonds_joystick_cursor_response": "200",
+      "melonds_joystick_cursor_speedup": "200",
+      "melonds_show_cursor": "disabled",
+      "melonds_hybrid_ratio": "2",
+      "melonds_hybrid_small_screen": "both",
+      "melonds_number_of_screen_layouts": "1",
+      "melonds_screen_layout1": "top-bottom",
+      "melonds_screen_layout2": "left-right",
+      "melonds_screen_layout3": "largescreen-top",
+      "melonds_screen_layout4": "largescreen-bottom",
+      "melonds_screen_layout5": "hybrid-top",
+      "melonds_screen_layout6": "hybrid-bottom",
+      "melonds_screen_layout7": "top",
+      "melonds_screen_layout8": "bottom",
+      "melonds_opengl_filtering": "nearest",
+      "melonds_threaded_renderer": "disabled",
+      "melonds_render_mode": "software",
+      "melonds_opengl_resolution": "1",
+      "melonds_opengl_better_polygons": "enabled",
+      "melonds_compute_hires_coordinates": "enabled"
+    }
+  },
+  "memory": {
+    "static_startup_bytes": 327680,
+    "managed_bytes": 2293760,
+    "sdk_heap_available": 393216,
+    "reserve_bytes": 655360,
+    "closure_bytes": 3670016,
+    "world_bytes": 268704,
+    "scratch_bytes": 105056,
+    "scene_bytes": 184408,
+    "assets_bytes": 344064,
+    "events_bank_bytes": 36864,
+    "input_buffer_bytes": 2624,
+    "replay_workspace_bytes": 73520,
+    "stack_bytes": 12288,
+    "stack_scope": "Per-function .su evidence only, not full SDK/IRQ peak"
+  },
+  "contracts": {
+    "input": "64 ordered timestamped samples; no overwrite; explicit refusal before next SDK poll",
+    "use": "X/B release-only consumed Use; simultaneous releases collapse once per sample",
+    "ui": "Clear queue/latch at enter/every UI poll/return; suppress held and release until fresh input",
+    "hero": "Native event416; first elapsed0; restart stopwatch after movement; rebuild command bits00182a3c each callback",
+    "camera": "Two committed poses; pure bounded prediction<=416; shortest angle arc; interpolation/reset; nearest integer N07 heading<=0.5degree",
+    "presentation_comparison": "Same explicit input/service timeline with0/30/60 camera observations; different polling timelines are not equivalent"
+  },
+  "explicit_adaptations": [
+    "Safe initial last_flags0 where native constructor leaves unspecified storage; inactive initial accumulators preserve effective behavior.",
+    "Caller-owned typed storage, bounded queues and transactional input refusal replace DOS pointers/unbounded implicit state.",
+    "Observed short edges persist across native services; source physical polls cannot reconstruct unseen transitions."
+  ],
+  "limitations": [
+    "DS/DS Lite, flashcart/loader, physical FPS/IRQ/latency/full stack peak deferred by user to final N24.",
+    "Free-flight candidate acceptance is a diagnostic; original collision/occupancy effects remain N10.",
+    "Use/fire/weapon are commands until N11/N15; no gameplay saves or microSD writes.",
+    "Bottom map remains N20 and final UI N21; temporary console captures can show partial redraw.",
+    "Functional emulator with builtin firmware/software rasterizer, no JIT/threaded renderer, does not certify physical hardware.",
+    "Full DOS sessions, arbitrary different polling rates and long uptime are not proved.",
+    "SDK timer2 IRQ must be serviced within one low16 period (~125ms)."
+  ],
+  "repository_validation": {
+    "report_summaries": 42,
+    "originals_unchanged": 22,
+    "historical_data_unchanged": 252,
+    "python_ast": 198,
+    "markdown_files": 187,
+    "broken_links": 0,
+    "powershell_ast_files": 2,
+    "recursive_N01_N09_pins": 347,
+    "git_diff_check": "passed"
+  }
+}

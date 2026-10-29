@@ -1,0 +1,1179 @@
+{
+  "schema_version": 1,
+  "task": "N05",
+  "date": "2026-10-29",
+  "status": "ready_emulator",
+  "next_task": "N06",
+  "scope": "Complete source definitions, explicit profile, confirmed initial RU world data/seeds and independent localization; not a playable engine.",
+  "toolchain": {
+    "python": "3.14.6",
+    "zig": "0.13.0",
+    "blocksds": "1.24.0-1",
+    "gcc": "16.2.0",
+    "make": "4.4.1",
+    "lock": {
+      "path": "ports/nds/toolchain_versions.json",
+      "bytes": 1497,
+      "sha256": "76906c4c1c07d6bd6cfcf3be02277477581fdab8fcabf7f85cfd8cc0dff472ef"
+    },
+    "locked_packages": 20,
+    "shared_root": "C:/Users/dspev/.local/msys64/opt/wonderful"
+  },
+  "commands": [
+    "C:/Source/wasdify/.venv/Scripts/python.exe -X utf8 ports/nds/tools/check_world.py",
+    "C:/Source/wasdify/.venv/Scripts/python.exe -X utf8 ports/nds/tools/run_world_emulator.py --core C:/Users/dspev/AppData/Local/Programs/melonDS-DS/1.4.0/melondsds_libretro-win32-x86_64-Release/cores/melondsds_libretro.dll"
+  ],
+  "package": {
+    "path": "build/nds/assets/dok-assets.ndspak",
+    "bytes": 9230016,
+    "sha256": "2f03ba02c9986b4e0bd321e94ca00df8a355f7dbb1dff5598a950d3366061511"
+  },
+  "artifacts": [
+    {
+      "path": "build/nds/n05/dok_nds_world.nds",
+      "bytes": 161792,
+      "sha256": "ee3c09d770963540794108dfcfa954779c9234696375aff793b2b210414ed592"
+    },
+    {
+      "path": "build/nds/n05/dok_nds_world.elf",
+      "bytes": 1117520,
+      "sha256": "bcfa753219a3c67921bfd554739dd88ad232b63c974211f51acf112d17e1e243"
+    },
+    {
+      "path": "build/nds/n05/dok_nds_world.map",
+      "bytes": 674883,
+      "sha256": "1260cad308372c94cae9a702c7c0315e60687a0233d6bbd828aa9a8170ad6b9b"
+    }
+  ],
+  "profile": {
+    "identity": 1313100597,
+    "revision": 1,
+    "changed_fields": 39,
+    "retained_conditions": 35,
+    "schema_version": 1,
+    "task": "N05",
+    "origin": {
+      "archive": "originals/pkr/RUS/PKR.RES",
+      "archive_sha256": "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816",
+      "source_index": 18,
+      "file_offset": 403242,
+      "source_bytes": 24384,
+      "source_sha256": "21872af6fa49bf8c0c8fe89dfe2ca5dd040912b3f141c306258c9a4f6cb9e856"
+    },
+    "coordinate_system": "native_offset means byte offset in documented original class9, not RES offset; 0x17 is common image scale",
+    "semantic_groups": {
+      "boyars": [
+        128,
+        129,
+        130,
+        131,
+        132,
+        133,
+        134,
+        135,
+        136,
+        137,
+        138,
+        139,
+        140,
+        141,
+        142,
+        143,
+        144,
+        145,
+        146,
+        147,
+        148,
+        149,
+        150,
+        151,
+        152,
+        153,
+        154,
+        155,
+        156,
+        157,
+        158,
+        159,
+        165
+      ],
+      "mice": [
+        161,
+        162,
+        163,
+        164,
+        166,
+        167,
+        168,
+        169,
+        170,
+        171,
+        172,
+        173,
+        174,
+        175,
+        224,
+        225,
+        226,
+        227,
+        228,
+        229,
+        230,
+        231,
+        232,
+        233,
+        234,
+        235,
+        236,
+        237,
+        238,
+        239
+      ]
+    },
+    "accepted_changes": [
+      {
+        "glyph": 129,
+        "native_offset": 56,
+        "old": 60,
+        "new": 20,
+        "reason": "accepted_english_boyar_speed"
+      },
+      {
+        "glyph": 129,
+        "native_offset": 186,
+        "old": 20000,
+        "new": 9000,
+        "reason": "accepted_english_boyar_wake"
+      },
+      {
+        "glyph": 134,
+        "native_offset": 56,
+        "old": 60,
+        "new": 20,
+        "reason": "accepted_english_boyar_speed"
+      },
+      {
+        "glyph": 134,
+        "native_offset": 186,
+        "old": 20000,
+        "new": 9000,
+        "reason": "accepted_english_boyar_wake"
+      },
+      {
+        "glyph": 140,
+        "native_offset": 164,
+        "old": 42,
+        "new": 12,
+        "reason": "accepted_english_boyar_health"
+      },
+      {
+        "glyph": 128,
+        "native_offset": 174,
+        "old": 10,
+        "new": 24,
+        "reason": "accepted_english_boyar_course"
+      },
+      {
+        "glyph": 129,
+        "native_offset": 174,
+        "old": 10,
+        "new": 24,
+        "reason": "accepted_english_boyar_course"
+      },
+      {
+        "glyph": 130,
+        "native_offset": 174,
+        "old": 10,
+        "new": 24,
+        "reason": "accepted_english_boyar_course"
+      },
+      {
+        "glyph": 131,
+        "native_offset": 174,
+        "old": 10,
+        "new": 24,
+        "reason": "accepted_english_boyar_course"
+      },
+      {
+        "glyph": 132,
+        "native_offset": 174,
+        "old": 10,
+        "new": 24,
+        "reason": "accepted_english_boyar_course"
+      },
+      {
+        "glyph": 133,
+        "native_offset": 174,
+        "old": 10,
+        "new": 24,
+        "reason": "accepted_english_boyar_course"
+      },
+      {
+        "glyph": 165,
+        "native_offset": 174,
+        "old": 10,
+        "new": 24,
+        "reason": "accepted_english_boyar_course"
+      },
+      {
+        "glyph": 134,
+        "native_offset": 174,
+        "old": 10,
+        "new": 24,
+        "reason": "accepted_english_boyar_course"
+      },
+      {
+        "glyph": 135,
+        "native_offset": 174,
+        "old": 10,
+        "new": 24,
+        "reason": "accepted_english_boyar_course"
+      },
+      {
+        "glyph": 136,
+        "native_offset": 174,
+        "old": 10,
+        "new": 24,
+        "reason": "accepted_english_boyar_course"
+      },
+      {
+        "glyph": 137,
+        "native_offset": 174,
+        "old": 10,
+        "new": 24,
+        "reason": "accepted_english_boyar_course"
+      },
+      {
+        "glyph": 138,
+        "native_offset": 174,
+        "old": 10,
+        "new": 24,
+        "reason": "accepted_english_boyar_course"
+      },
+      {
+        "glyph": 139,
+        "native_offset": 174,
+        "old": 10,
+        "new": 24,
+        "reason": "accepted_english_boyar_course"
+      },
+      {
+        "glyph": 140,
+        "native_offset": 174,
+        "old": 10,
+        "new": 24,
+        "reason": "accepted_english_boyar_course"
+      },
+      {
+        "glyph": 141,
+        "native_offset": 174,
+        "old": 10,
+        "new": 24,
+        "reason": "accepted_english_boyar_course"
+      },
+      {
+        "glyph": 142,
+        "native_offset": 174,
+        "old": 10,
+        "new": 24,
+        "reason": "accepted_english_boyar_course"
+      },
+      {
+        "glyph": 143,
+        "native_offset": 174,
+        "old": 10,
+        "new": 24,
+        "reason": "accepted_english_boyar_course"
+      },
+      {
+        "glyph": 144,
+        "native_offset": 174,
+        "old": 10,
+        "new": 24,
+        "reason": "accepted_english_boyar_course"
+      },
+      {
+        "glyph": 145,
+        "native_offset": 174,
+        "old": 10,
+        "new": 24,
+        "reason": "accepted_english_boyar_course"
+      },
+      {
+        "glyph": 146,
+        "native_offset": 174,
+        "old": 10,
+        "new": 24,
+        "reason": "accepted_english_boyar_course"
+      },
+      {
+        "glyph": 147,
+        "native_offset": 174,
+        "old": 10,
+        "new": 24,
+        "reason": "accepted_english_boyar_course"
+      },
+      {
+        "glyph": 148,
+        "native_offset": 174,
+        "old": 10,
+        "new": 24,
+        "reason": "accepted_english_boyar_course"
+      },
+      {
+        "glyph": 149,
+        "native_offset": 174,
+        "old": 10,
+        "new": 24,
+        "reason": "accepted_english_boyar_course"
+      },
+      {
+        "glyph": 150,
+        "native_offset": 174,
+        "old": 10,
+        "new": 24,
+        "reason": "accepted_english_boyar_course"
+      },
+      {
+        "glyph": 151,
+        "native_offset": 174,
+        "old": 10,
+        "new": 24,
+        "reason": "accepted_english_boyar_course"
+      },
+      {
+        "glyph": 152,
+        "native_offset": 174,
+        "old": 10,
+        "new": 24,
+        "reason": "accepted_english_boyar_course"
+      },
+      {
+        "glyph": 153,
+        "native_offset": 174,
+        "old": 10,
+        "new": 24,
+        "reason": "accepted_english_boyar_course"
+      },
+      {
+        "glyph": 154,
+        "native_offset": 174,
+        "old": 10,
+        "new": 24,
+        "reason": "accepted_english_boyar_course"
+      },
+      {
+        "glyph": 155,
+        "native_offset": 174,
+        "old": 10,
+        "new": 24,
+        "reason": "accepted_english_boyar_course"
+      },
+      {
+        "glyph": 156,
+        "native_offset": 174,
+        "old": 10,
+        "new": 24,
+        "reason": "accepted_english_boyar_course"
+      },
+      {
+        "glyph": 157,
+        "native_offset": 174,
+        "old": 10,
+        "new": 24,
+        "reason": "accepted_english_boyar_course"
+      },
+      {
+        "glyph": 158,
+        "native_offset": 174,
+        "old": 10,
+        "new": 24,
+        "reason": "accepted_english_boyar_course"
+      },
+      {
+        "glyph": 159,
+        "native_offset": 174,
+        "old": 10,
+        "new": 24,
+        "reason": "accepted_english_boyar_course"
+      },
+      {
+        "glyph": 160,
+        "native_offset": 56,
+        "old": 80,
+        "new": 60,
+        "reason": "accepted_hybrid_baba_speed"
+      }
+    ],
+    "retained_assertions": [
+      {
+        "glyph": 129,
+        "native_offset": 164,
+        "old": 42,
+        "new": 42,
+        "reason": "accepted_special_boyar_health_retained"
+      },
+      {
+        "glyph": 134,
+        "native_offset": 164,
+        "old": 42,
+        "new": 42,
+        "reason": "accepted_special_boyar_health_retained"
+      },
+      {
+        "glyph": 161,
+        "native_offset": 174,
+        "old": 8,
+        "new": 8,
+        "reason": "accepted_russian_mouse_course_retained"
+      },
+      {
+        "glyph": 162,
+        "native_offset": 174,
+        "old": 8,
+        "new": 8,
+        "reason": "accepted_russian_mouse_course_retained"
+      },
+      {
+        "glyph": 163,
+        "native_offset": 174,
+        "old": 8,
+        "new": 8,
+        "reason": "accepted_russian_mouse_course_retained"
+      },
+      {
+        "glyph": 164,
+        "native_offset": 174,
+        "old": 8,
+        "new": 8,
+        "reason": "accepted_russian_mouse_course_retained"
+      },
+      {
+        "glyph": 166,
+        "native_offset": 174,
+        "old": 8,
+        "new": 8,
+        "reason": "accepted_russian_mouse_course_retained"
+      },
+      {
+        "glyph": 167,
+        "native_offset": 174,
+        "old": 8,
+        "new": 8,
+        "reason": "accepted_russian_mouse_course_retained"
+      },
+      {
+        "glyph": 168,
+        "native_offset": 174,
+        "old": 8,
+        "new": 8,
+        "reason": "accepted_russian_mouse_course_retained"
+      },
+      {
+        "glyph": 169,
+        "native_offset": 174,
+        "old": 8,
+        "new": 8,
+        "reason": "accepted_russian_mouse_course_retained"
+      },
+      {
+        "glyph": 170,
+        "native_offset": 174,
+        "old": 8,
+        "new": 8,
+        "reason": "accepted_russian_mouse_course_retained"
+      },
+      {
+        "glyph": 171,
+        "native_offset": 174,
+        "old": 8,
+        "new": 8,
+        "reason": "accepted_russian_mouse_course_retained"
+      },
+      {
+        "glyph": 172,
+        "native_offset": 174,
+        "old": 8,
+        "new": 8,
+        "reason": "accepted_russian_mouse_course_retained"
+      },
+      {
+        "glyph": 173,
+        "native_offset": 174,
+        "old": 8,
+        "new": 8,
+        "reason": "accepted_russian_mouse_course_retained"
+      },
+      {
+        "glyph": 174,
+        "native_offset": 174,
+        "old": 8,
+        "new": 8,
+        "reason": "accepted_russian_mouse_course_retained"
+      },
+      {
+        "glyph": 175,
+        "native_offset": 174,
+        "old": 8,
+        "new": 8,
+        "reason": "accepted_russian_mouse_course_retained"
+      },
+      {
+        "glyph": 224,
+        "native_offset": 174,
+        "old": 8,
+        "new": 8,
+        "reason": "accepted_russian_mouse_course_retained"
+      },
+      {
+        "glyph": 225,
+        "native_offset": 174,
+        "old": 8,
+        "new": 8,
+        "reason": "accepted_russian_mouse_course_retained"
+      },
+      {
+        "glyph": 226,
+        "native_offset": 174,
+        "old": 8,
+        "new": 8,
+        "reason": "accepted_russian_mouse_course_retained"
+      },
+      {
+        "glyph": 227,
+        "native_offset": 174,
+        "old": 8,
+        "new": 8,
+        "reason": "accepted_russian_mouse_course_retained"
+      },
+      {
+        "glyph": 228,
+        "native_offset": 174,
+        "old": 8,
+        "new": 8,
+        "reason": "accepted_russian_mouse_course_retained"
+      },
+      {
+        "glyph": 229,
+        "native_offset": 174,
+        "old": 8,
+        "new": 8,
+        "reason": "accepted_russian_mouse_course_retained"
+      },
+      {
+        "glyph": 230,
+        "native_offset": 174,
+        "old": 8,
+        "new": 8,
+        "reason": "accepted_russian_mouse_course_retained"
+      },
+      {
+        "glyph": 231,
+        "native_offset": 174,
+        "old": 8,
+        "new": 8,
+        "reason": "accepted_russian_mouse_course_retained"
+      },
+      {
+        "glyph": 232,
+        "native_offset": 174,
+        "old": 8,
+        "new": 8,
+        "reason": "accepted_russian_mouse_course_retained"
+      },
+      {
+        "glyph": 233,
+        "native_offset": 174,
+        "old": 8,
+        "new": 8,
+        "reason": "accepted_russian_mouse_course_retained"
+      },
+      {
+        "glyph": 234,
+        "native_offset": 174,
+        "old": 8,
+        "new": 8,
+        "reason": "accepted_russian_mouse_course_retained"
+      },
+      {
+        "glyph": 235,
+        "native_offset": 174,
+        "old": 8,
+        "new": 8,
+        "reason": "accepted_russian_mouse_course_retained"
+      },
+      {
+        "glyph": 236,
+        "native_offset": 174,
+        "old": 8,
+        "new": 8,
+        "reason": "accepted_russian_mouse_course_retained"
+      },
+      {
+        "glyph": 237,
+        "native_offset": 174,
+        "old": 8,
+        "new": 8,
+        "reason": "accepted_russian_mouse_course_retained"
+      },
+      {
+        "glyph": 238,
+        "native_offset": 174,
+        "old": 8,
+        "new": 8,
+        "reason": "accepted_russian_mouse_course_retained"
+      },
+      {
+        "glyph": 239,
+        "native_offset": 174,
+        "old": 8,
+        "new": 8,
+        "reason": "accepted_russian_mouse_course_retained"
+      },
+      {
+        "glyph": 160,
+        "native_offset": 164,
+        "old": 54,
+        "new": 54,
+        "reason": "accepted_hybrid_baba_health_retained"
+      },
+      {
+        "glyph": 160,
+        "native_offset": 23,
+        "old": 7,
+        "new": 7,
+        "reason": "accepted_hybrid_baba_scale_retained"
+      },
+      {
+        "glyph": 160,
+        "native_offset": 186,
+        "old": 3400,
+        "new": 3400,
+        "reason": "accepted_hybrid_baba_wake_retained"
+      }
+    ],
+    "unmodified_levels": [
+      2,
+      3
+    ],
+    "validation": "independently derived from original byte scanner; all rows equal separate source research; actual C effective model fully equals oracle"
+  },
+  "original_data": {
+    "report": {
+      "path": "research/evidence/nds/n05/source-evidence.json",
+      "bytes": 512284,
+      "sha256": "eec054a929adeb8f6bbc8115e1b747bb679997e4f99ee27cb2b0e8468071ae4e"
+    },
+    "level_definitions": [
+      115,
+      117,
+      158
+    ],
+    "boyar_definitions_level1": 33,
+    "boyar_placements_level1": 31,
+    "mouse_definitions_level1": 30,
+    "mouse_placements_level1": 30,
+    "source_groups_selected_by": "class9 and exact CP866 current animation; counts validate sample, never positional membership",
+    "address_systems": "RES and source-line byte offsets separate from Ghidra NE-loader addresses and original native field offsets"
+  },
+  "host": {
+    "passed": true,
+    "parser_seed_checks": 5694,
+    "profile_binding": {
+      "passed": true,
+      "checks": 21236,
+      "accepted_changes": 39,
+      "retained_assertions": 35,
+      "presentation_bindings": 5000,
+      "rejected_models": 19,
+      "resigned_package_cases": 2
+    },
+    "total_checks": 26930,
+    "oracle_complete_cases": 6,
+    "report": {
+      "path": "research/evidence/nds/n05/host-check.json",
+      "bytes": 27322,
+      "sha256": "776163bea5b9e1f92a919e14d4937f5e4fad96f4f778d8be9f885b0189d58325"
+    },
+    "oracle": {
+      "path": "research/evidence/nds/n05/oracle-report.json",
+      "bytes": 17238,
+      "sha256": "25368a2c3ca06a824ebff771c842b8f56d40fc30c677f39ac5833ceea28435b3"
+    },
+    "model_fingerprints": [
+      {
+        "language": 1,
+        "source_index": 18,
+        "source_sha256": "21872af6fa49bf8c0c8fe89dfe2ca5dd040912b3f141c306258c9a4f6cb9e856",
+        "definitions": 115,
+        "fields": 1069,
+        "model_sha256": "f1253dd0121027cc4a1e4491d73fb6c2f80df817436bb5a50f29fc597cb2ff59",
+        "effective_model_sha256": "6ced33e56473c43ab64284f0af28e506c06aa8005873b982c643246c0e1fda2b"
+      },
+      {
+        "language": 1,
+        "source_index": 19,
+        "source_sha256": "f8bb9c934f2cf96e3164fbce6f0c2e3f0c666f9527642584d646899b6084fc99",
+        "definitions": 117,
+        "fields": 1081,
+        "model_sha256": "562980ac2dd3df9fdeb692aeb33b9bd552b2ce232d24a27154bd697d9cce0500",
+        "effective_model_sha256": "562980ac2dd3df9fdeb692aeb33b9bd552b2ce232d24a27154bd697d9cce0500"
+      },
+      {
+        "language": 1,
+        "source_index": 20,
+        "source_sha256": "15e99cb968333c6998c7e9fc56e7de57de56c7013b98e5d7ea8f52f25478a66a",
+        "definitions": 158,
+        "fields": 1655,
+        "model_sha256": "ea8e6e48887f68798171e1e55217dd1683ad78b0513e44359bf0f6acf20bdb8f",
+        "effective_model_sha256": "ea8e6e48887f68798171e1e55217dd1683ad78b0513e44359bf0f6acf20bdb8f"
+      },
+      {
+        "language": 2,
+        "source_index": 18,
+        "source_sha256": "ff9354074b91d020ab26892c803b984fd6367875efd190202927840afb39c089",
+        "definitions": 115,
+        "fields": 1069,
+        "model_sha256": "5b021b9b05033fc644420352b2fad961e2dbf49be70114d425d815367358eabc"
+      },
+      {
+        "language": 2,
+        "source_index": 19,
+        "source_sha256": "65869d72be30ccc30cb673a8a66ec1b3ebe12681a7beb5a6aa365b07fc0ced91",
+        "definitions": 117,
+        "fields": 1081,
+        "model_sha256": "d1683569724ddb825ddaed9a3f672c16d5f8139c4914bfe5fb79365edf164982"
+      },
+      {
+        "language": 2,
+        "source_index": 20,
+        "source_sha256": "f70efbcdf0801d59ccad30017b8953af7ecd80df9a87b6ef378a6d7bbfd5e6e7",
+        "definitions": 158,
+        "fields": 1655,
+        "model_sha256": "102fa33cfe3104b75f9d284665bde733e93a0c013b40dca7f4424d37d081c7f2"
+      }
+    ],
+    "linux": "Three binaries and public headers compiled/linked, not executed",
+    "arm9": "Clean build; strict C11 core/headers/tests/exporter, GNU C11 SDK main; SDK lock verified"
+  },
+  "emulator": {
+    "name": "melonDS DS",
+    "interface": "libretro",
+    "version": "1.4.0",
+    "core_sha256": "c7e6b58c667075a2a9868f2c3ba7a98e24200410a6da3051a7c555f1f0eef8ef",
+    "report": {
+      "path": "research/evidence/nds/n05/emulator/result.json",
+      "bytes": 52390,
+      "sha256": "7b2556d31e004dfbac74a1559d64a7a85bf87d59979d3bb1f37e90723c04061b"
+    },
+    "passed": true,
+    "assertions": 38,
+    "frontend_frames": 1048,
+    "cases": [
+      {
+        "case_id": 1,
+        "level": 1,
+        "language": 1,
+        "passed": true,
+        "json_bytes": 335499,
+        "json_sha256": "604d53af5407ede2c9e464f466c14f44a5d0f4568280ba39ab7688657753fcda",
+        "observation": {
+          "magic": 894913348,
+          "abi_version": 1,
+          "size_bytes": 148,
+          "sequence": 16,
+          "status": 1,
+          "error_bits": 0,
+          "frame": 7,
+          "case_id": 1,
+          "case_count": 6,
+          "level": 1,
+          "language": 1,
+          "tests_pass_mask": 63,
+          "negative_pass_mask": 63,
+          "json_base": 34513176,
+          "json_bytes": 335499,
+          "world_base": 33661184,
+          "world_bytes": 346332,
+          "scratch_bytes": 105052,
+          "asset_pool_bytes": 1048576,
+          "io_bytes": 114688,
+          "heap_limit_before": 37699584,
+          "heap_limit_final": 36569088,
+          "sdk_heap_available": 1200128,
+          "reserve_bytes": 655360,
+          "static_bytes": 106716,
+          "entry_count": 1466,
+          "read_calls": 4787,
+          "read_bytes": 626097,
+          "max_request": 24384,
+          "changes": 39,
+          "retained_assertions": 35,
+          "boyars": 33,
+          "mice": 30,
+          "actor_placements": 63,
+          "placed_actors": 61,
+          "startup_overhead": 0,
+          "allocated_slabs": 1703936
+        },
+        "coherent_states": 8
+      },
+      {
+        "case_id": 2,
+        "level": 1,
+        "language": 2,
+        "passed": true,
+        "json_bytes": 383691,
+        "json_sha256": "db15673e9b00098644c675d61745388c0522fdf5245bb8794a096dd2981a771f",
+        "observation": {
+          "magic": 894913348,
+          "abi_version": 1,
+          "size_bytes": 148,
+          "sequence": 44,
+          "status": 1,
+          "error_bits": 0,
+          "frame": 20,
+          "case_id": 2,
+          "case_count": 6,
+          "level": 1,
+          "language": 2,
+          "tests_pass_mask": 63,
+          "negative_pass_mask": 63,
+          "json_base": 34513176,
+          "json_bytes": 383691,
+          "world_base": 33661184,
+          "world_bytes": 346332,
+          "scratch_bytes": 105052,
+          "asset_pool_bytes": 1048576,
+          "io_bytes": 114688,
+          "heap_limit_before": 37699584,
+          "heap_limit_final": 36569088,
+          "sdk_heap_available": 1200128,
+          "reserve_bytes": 655360,
+          "static_bytes": 106716,
+          "entry_count": 1466,
+          "read_calls": 7656,
+          "read_bytes": 993329,
+          "max_request": 24384,
+          "changes": 39,
+          "retained_assertions": 35,
+          "boyars": 33,
+          "mice": 30,
+          "actor_placements": 63,
+          "placed_actors": 61,
+          "startup_overhead": 0,
+          "allocated_slabs": 1703936
+        },
+        "coherent_states": 8
+      },
+      {
+        "case_id": 3,
+        "level": 2,
+        "language": 1,
+        "passed": true,
+        "json_bytes": 337818,
+        "json_sha256": "342f30f283be0f06bc8c3c70b9451d163c9b6e68297b2c7f76abcd51e60d9f40",
+        "observation": {
+          "magic": 894913348,
+          "abi_version": 1,
+          "size_bytes": 148,
+          "sequence": 70,
+          "status": 1,
+          "error_bits": 0,
+          "frame": 32,
+          "case_id": 3,
+          "case_count": 6,
+          "level": 2,
+          "language": 1,
+          "tests_pass_mask": 63,
+          "negative_pass_mask": 63,
+          "json_base": 34513176,
+          "json_bytes": 337818,
+          "world_base": 33661184,
+          "world_bytes": 346332,
+          "scratch_bytes": 105052,
+          "asset_pool_bytes": 1048576,
+          "io_bytes": 114688,
+          "heap_limit_before": 37699584,
+          "heap_limit_final": 36569088,
+          "sdk_heap_available": 1200128,
+          "reserve_bytes": 655360,
+          "static_bytes": 106716,
+          "entry_count": 1466,
+          "read_calls": 10544,
+          "read_bytes": 1423347,
+          "max_request": 24384,
+          "changes": 0,
+          "retained_assertions": 0,
+          "boyars": 0,
+          "mice": 0,
+          "actor_placements": 60,
+          "placed_actors": 58,
+          "startup_overhead": 0,
+          "allocated_slabs": 1703936
+        },
+        "coherent_states": 8
+      },
+      {
+        "case_id": 4,
+        "level": 2,
+        "language": 2,
+        "passed": true,
+        "json_bytes": 385871,
+        "json_sha256": "10d54ffaf77947cbda6b4c4e4fd64c17ab33326446f56a4b532ead7befa0a230",
+        "observation": {
+          "magic": 894913348,
+          "abi_version": 1,
+          "size_bytes": 148,
+          "sequence": 96,
+          "status": 1,
+          "error_bits": 0,
+          "frame": 44,
+          "case_id": 4,
+          "case_count": 6,
+          "level": 2,
+          "language": 2,
+          "tests_pass_mask": 63,
+          "negative_pass_mask": 63,
+          "json_base": 34513176,
+          "json_bytes": 385871,
+          "world_base": 33661184,
+          "world_bytes": 346332,
+          "scratch_bytes": 105052,
+          "asset_pool_bytes": 1048576,
+          "io_bytes": 114688,
+          "heap_limit_before": 37699584,
+          "heap_limit_final": 36569088,
+          "sdk_heap_available": 1200128,
+          "reserve_bytes": 655360,
+          "static_bytes": 106716,
+          "entry_count": 1466,
+          "read_calls": 13413,
+          "read_bytes": 1790579,
+          "max_request": 24384,
+          "changes": 0,
+          "retained_assertions": 0,
+          "boyars": 0,
+          "mice": 0,
+          "actor_placements": 60,
+          "placed_actors": 58,
+          "startup_overhead": 0,
+          "allocated_slabs": 1703936
+        },
+        "coherent_states": 8
+      },
+      {
+        "case_id": 5,
+        "level": 3,
+        "language": 1,
+        "passed": true,
+        "json_bytes": 419606,
+        "json_sha256": "6b626524ac7b611d4cae7036af50b4744edce1bb3af4b95b26be7d78dd5f1fd7",
+        "observation": {
+          "magic": 894913348,
+          "abi_version": 1,
+          "size_bytes": 148,
+          "sequence": 124,
+          "status": 1,
+          "error_bits": 0,
+          "frame": 57,
+          "case_id": 5,
+          "case_count": 6,
+          "level": 3,
+          "language": 1,
+          "tests_pass_mask": 63,
+          "negative_pass_mask": 63,
+          "json_base": 34513176,
+          "json_bytes": 419606,
+          "world_base": 33661184,
+          "world_bytes": 346332,
+          "scratch_bytes": 105052,
+          "asset_pool_bytes": 1048576,
+          "io_bytes": 114688,
+          "heap_limit_before": 37699584,
+          "heap_limit_final": 36569088,
+          "sdk_heap_available": 1200128,
+          "reserve_bytes": 655360,
+          "static_bytes": 106716,
+          "entry_count": 1466,
+          "read_calls": 16307,
+          "read_bytes": 2228841,
+          "max_request": 27997,
+          "changes": 0,
+          "retained_assertions": 0,
+          "boyars": 0,
+          "mice": 0,
+          "actor_placements": 102,
+          "placed_actors": 101,
+          "startup_overhead": 0,
+          "allocated_slabs": 1703936
+        },
+        "coherent_states": 8
+      },
+      {
+        "case_id": 6,
+        "level": 3,
+        "language": 2,
+        "passed": true,
+        "json_bytes": 475246,
+        "json_sha256": "95db2371874e7453a964f7cdbac8f2096c4db0a877471184ea2f1f6753445fd9",
+        "observation": {
+          "magic": 894913348,
+          "abi_version": 1,
+          "size_bytes": 148,
+          "sequence": 150,
+          "status": 1,
+          "error_bits": 0,
+          "frame": 69,
+          "case_id": 6,
+          "case_count": 6,
+          "level": 3,
+          "language": 2,
+          "tests_pass_mask": 63,
+          "negative_pass_mask": 63,
+          "json_base": 34513176,
+          "json_bytes": 475246,
+          "world_base": 33661184,
+          "world_bytes": 346332,
+          "scratch_bytes": 105052,
+          "asset_pool_bytes": 1048576,
+          "io_bytes": 114688,
+          "heap_limit_before": 37699584,
+          "heap_limit_final": 36569088,
+          "sdk_heap_available": 1200128,
+          "reserve_bytes": 655360,
+          "static_bytes": 106716,
+          "entry_count": 1466,
+          "read_calls": 19176,
+          "read_bytes": 2596073,
+          "max_request": 27997,
+          "changes": 0,
+          "retained_assertions": 0,
+          "boyars": 0,
+          "mice": 0,
+          "actor_placements": 102,
+          "placed_actors": 101,
+          "startup_overhead": 0,
+          "allocated_slabs": 1703936
+        },
+        "coherent_states": 8
+      }
+    ],
+    "completed_coherent_observations": 30,
+    "last_observation": {
+      "magic": 894913348,
+      "abi_version": 1,
+      "size_bytes": 148,
+      "sequence": 228,
+      "status": 3,
+      "error_bits": 0,
+      "frame": 107,
+      "case_id": 6,
+      "case_count": 6,
+      "level": 3,
+      "language": 2,
+      "tests_pass_mask": 127,
+      "negative_pass_mask": 63,
+      "json_base": 34513176,
+      "json_bytes": 475246,
+      "world_base": 33661184,
+      "world_bytes": 346332,
+      "scratch_bytes": 105052,
+      "asset_pool_bytes": 1048576,
+      "io_bytes": 114688,
+      "heap_limit_before": 37699584,
+      "heap_limit_final": 36569088,
+      "sdk_heap_available": 1200128,
+      "reserve_bytes": 655360,
+      "static_bytes": 106716,
+      "entry_count": 1466,
+      "read_calls": 19176,
+      "read_bytes": 2596073,
+      "max_request": 27997,
+      "changes": 0,
+      "retained_assertions": 0,
+      "boyars": 0,
+      "mice": 0,
+      "actor_placements": 102,
+      "placed_actors": 101,
+      "startup_overhead": 3876,
+      "allocated_slabs": 1703936
+    },
+    "full_ram_json_compared": true,
+    "max_export_bytes": 475246,
+    "mode": "DS/direct/builtin BIOS+firmware/software renderer; no JIT/threads/network/folder sync; read-only FAT16",
+    "advancement": "Standard libretro A input, no emulated RAM writes",
+    "fat_runtime_unchanged": true,
+    "fat_scope": "Core injects ROM before ARM9 direct boot; post-load/run/unload digests match"
+  },
+  "memory": {
+    "region_bytes": 3670016,
+    "world_allocated_bytes": 393216,
+    "world_resident_bytes": 346332,
+    "scratch_allocated_bytes": 131072,
+    "scratch_used_bytes": 105052,
+    "io_allocated_bytes": 131072,
+    "io_workspace_bytes": 114688,
+    "asset_pool_bytes": 1048576,
+    "test_export_capacity_bytes": 524288,
+    "static_bytes": 106716,
+    "startup_sdk_alignment_bytes": 3876,
+    "allocated_slabs_bytes": 1703936,
+    "sdk_heap_growth_headroom_bytes": 1200128,
+    "unallocated_events_scene_audio_bytes": 589824,
+    "minimum_sdk_bytes": 196608,
+    "static_startup_slack_bytes": 413696,
+    "reserve_bytes": 655360,
+    "heap_limit_before": "0x023F4000",
+    "policy_limit": "0x02380000",
+    "heap_limit_final": "0x022E0000",
+    "max_actual_read_request": 27997,
+    "closure_verified": true,
+    "scope": "Diagnostic actual usage, not full-game peak; source slots and test export are inside asset pool."
+  },
+  "source_manifest": {
+    "path": "research/evidence/nds/n05/source-manifest.json",
+    "bytes": 12785,
+    "sha256": "780816016a982b0a648a0353c129900659683e94cf08b9ef5a84c1a48c2ed998"
+  },
+  "archive_manifest": {
+    "path": "research/evidence/nds/n05/emulator/archive-manifest.json",
+    "bytes": 3757,
+    "sha256": "6420beaf5e14b4a0043a6cd97160b5974b384f4bf2257900c67cd22e6243f5a9"
+  },
+  "visual_qa": {
+    "path": "research/evidence/nds/n05/visual-qa.json",
+    "bytes": 2261,
+    "sha256": "199d574a332e8ac3a837ea321f609e980f630e6495559daf8e01d3b16b4779c7"
+  },
+  "independent_implementation_review": {
+    "path": "research/evidence/nds/n05/independent-review.json",
+    "bytes": 6513,
+    "sha256": "b9adbbbb984c93e38675002e30a79ae35d47ad425d081ee51f719155616fdefe"
+  },
+  "harness_review": {
+    "path": "research/evidence/nds/n05/harness-review.json",
+    "bytes": 2657,
+    "sha256": "2eb804da977a6b30c68e2b034e7bb2f8a9ca9042954c31d1589c364f13e76b7d"
+  },
+  "prior_and_next_integrity": {
+    "path": "research/evidence/nds/n05/prior-and-next-integrity.json",
+    "bytes": 2662,
+    "sha256": "5ae589c4ef7adb4f39a1c054c32ef0c945cbf8f2dadb19793d3666c88befa6c5"
+  },
+  "decisions": [
+    "Immutable CP866 source and complete base definitions, separate effective copy. No source rewrite or packed DOS structures.",
+    "Exact source sizes before hashing plus actual source SHA and deterministic fieldwise model fingerprint guard the accepted samples.",
+    "Only LEVEL1 receives the accepted 39 numeric mutations; 35 retained conditions checked; LEVEL2/3 and all other fields/maps remain RU.",
+    "One initial seed per definition, preserved repeated/unplaced references and confirmed stage6 transforms; unknown constructor values not invented.",
+    "World construction has no language argument. Separate presentation exposes only refs/text, matching glyph/class/slot; numerics remain RU.",
+    "Outputs and published world/base/diff survive failures; typed caller-owned candidate may change. No core malloc or game saves."
+  ],
+  "limits": [
+    "Physical DS/DS Lite, flashcart/loader/microSD, real FPS and latency deferred to N24.",
+    "No new EXE analysis or DOS execution; preserved original Ghidra C/ASM plus immutable RES provide evidence.",
+    "No scheduler, AI semantics of N, collisions, full native constructor effects, game renderer, audio output or playable loop.",
+    "Linux binaries were not run. Full-game working-set/stack/performance profile remains later tasks/N23.",
+    "Fingerprints validate known samples and semantic models, not authentication of hostile packages."
+  ]
+}

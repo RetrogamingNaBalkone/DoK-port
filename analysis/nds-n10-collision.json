@@ -1,0 +1,749 @@
+{
+  "schema_version": 1,
+  "task": "N10",
+  "date": "2026-10-29",
+  "status": "ready-emulator",
+  "passed": true,
+  "next_task": "N11",
+  "scope": "Original PKR/PKE horizontal footprint, sliding and occupancy; bounded NDS actor transactions, read-only interpolated camera and navigation on three RU levels",
+  "source_manifest": {
+    "path": "research/evidence/nds/n10/source-manifest.json",
+    "bytes": 11995,
+    "sha256": "931e90a5d6718c4667702f80050fdb34adca2488fa11259f453e5e5dadfe6c3e"
+  },
+  "build_manifest": {
+    "path": "research/evidence/nds/n10/build-manifest.json",
+    "bytes": 2029,
+    "sha256": "97ec531c31987070eeec3e707793d132a2088a640bd59c470b6d3b8ea54f6e40"
+  },
+  "toolchain_lock": {
+    "path": "ports/nds/toolchain_versions.json",
+    "bytes": 1497,
+    "sha256": "76906c4c1c07d6bd6cfcf3be02277477581fdab8fcabf7f85cfd8cc0dff472ef"
+  },
+  "reports": [
+    {
+      "path": "research/evidence/nds/n10/host-check.json",
+      "bytes": 120550,
+      "sha256": "660673eeadf3714b00eaee91d6bf65278ca5acb39355b9d7496fc5b1e33773ae"
+    },
+    {
+      "path": "research/evidence/nds/n10/original-collision.json",
+      "bytes": 1094859,
+      "sha256": "8605be8d0c17b4746974a35e9e1217885ed0076e6d6f652d3a7a872fc7b327c1"
+    },
+    {
+      "path": "research/evidence/nds/n10/fixture-report.json",
+      "bytes": 2375,
+      "sha256": "1fbf5914450a4af2aa9b7066422c8b4c4bb74233b30f5279945d5cacb75c3852"
+    },
+    {
+      "path": "research/evidence/nds/n10/initial-dependency-integrity.json",
+      "bytes": 60141,
+      "sha256": "0f3fcc9276004bffcf4fbe6adc1110be0e577a6f97b9c948ff270c83447bb9b8"
+    },
+    {
+      "path": "research/evidence/nds/n10/final-review.json",
+      "bytes": 5927,
+      "sha256": "cebd33caab5647bbd0e900939b6fc696ab84f582dbfd1d3c5c3662a5c0e742b1"
+    },
+    {
+      "path": "research/evidence/nds/n10/emulator/result.json",
+      "bytes": 11098376,
+      "sha256": "3035df324620c580967e6c82c6f5932b610053efb7f427070a3e5deb34f64bb2"
+    },
+    {
+      "path": "research/evidence/nds/n10/emulator/archive-manifest.json",
+      "bytes": 16068,
+      "sha256": "96798a296552ee493d14282df34d0958b87f721cfdd8bd961b2e095ec7e42a11"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "build/nds/n10/test_collision.exe",
+      "bytes": 167424,
+      "sha256": "d239f090d716e461d5e19f040f77c9acc0b50d42f21f43dad00f2007e5dff2b0"
+    },
+    {
+      "path": "build/nds/n10/test_collision-linux-x86_64",
+      "bytes": 362336,
+      "sha256": "2562812b7fa33bb19bfef16ec6d485c2e66a3f3ac6fbd8e126b2320ece41d36e"
+    },
+    {
+      "path": "build/nds/n10/test_collision_routes.exe",
+      "bytes": 212480,
+      "sha256": "0e22de35fbdb4d9372d6a54eca643f6b755138c955be2d9f0b053e89dfc4a521"
+    },
+    {
+      "path": "build/nds/n10/test_collision_routes-linux-x86_64",
+      "bytes": 612400,
+      "sha256": "5f86a67318c9472022705cec4a703c0de6784548a31c4323c445822352311527"
+    },
+    {
+      "path": "build/nds/n10/collision_dump.exe",
+      "bytes": 160768,
+      "sha256": "d87de05eedb47fb44be58f46413c5b9357cf7eb39a0156416c58d153a7776482"
+    },
+    {
+      "path": "build/nds/n10/collision_dump-linux-x86_64",
+      "bytes": 287384,
+      "sha256": "fdec34637b389eec1435a552b89c162b564035d94bcc96c3e3bebd54396bd9e2"
+    },
+    {
+      "path": "build/nds/n10/collision_compile-native.o",
+      "bytes": 9287,
+      "sha256": "a7184f794fa58a4a17ab152f684ee8694d9d331f337cfdd17c02a12d660ceb95"
+    },
+    {
+      "path": "build/nds/n10/collision_compile-linux-x86_64.o",
+      "bytes": 2440,
+      "sha256": "be7bb74c1bc814ca51d9f623fa9c1efd07e566bc055495977ad5573b89140618"
+    },
+    {
+      "path": "build/nds/n10/dok_nds_collision.nds",
+      "bytes": 218112,
+      "sha256": "9ac4e82ccf5b17a882d1eff83e4e111114028e326cce2fa91c14050f4883deba"
+    },
+    {
+      "path": "build/nds/n10/dok_nds_collision.elf",
+      "bytes": 1568048,
+      "sha256": "a5a5f762f87fb7347af5b0026fde91436e3f4f23b292cadd6feb5d3c52ccc2a4"
+    },
+    {
+      "path": "build/nds/n10/dok_nds_collision.map",
+      "bytes": 820659,
+      "sha256": "da95506337709913031e07b87ca1843a63ba95bedd7360e30c76be76fbef312a"
+    },
+    {
+      "path": "research/evidence/nds/n10/emulator/snapshot-worlds.bin",
+      "bytes": 5212032,
+      "sha256": "4042b606685515da5eb8e8523202fe1adea26bc276023136e510ef36a3027a6e"
+    },
+    {
+      "path": "research/evidence/nds/n10/emulator/level1-moving-bottom.png",
+      "bytes": 2706,
+      "sha256": "e3baa42b08df469d5c1f6544ce2c6fc7798b1a6e8cb35f5259d1607f41af1173"
+    },
+    {
+      "path": "research/evidence/nds/n10/emulator/level1-moving-top.png",
+      "bytes": 24460,
+      "sha256": "39798d01cadf3ec05e44952296006678908ebd4828faf374d54223badcaabb2b"
+    },
+    {
+      "path": "research/evidence/nds/n10/emulator/level1-moving.png",
+      "bytes": 27851,
+      "sha256": "31b9be941799989ca814307429ddd2ba978d68681039cd42a5c5863ef91f503a"
+    },
+    {
+      "path": "research/evidence/nds/n10/emulator/level1-paused-bottom.png",
+      "bytes": 2729,
+      "sha256": "c2971f09e1623278daa26db8048993a9e6865a9813d63f4593277c76e4141ac8"
+    },
+    {
+      "path": "research/evidence/nds/n10/emulator/level1-paused-top.png",
+      "bytes": 29754,
+      "sha256": "fd2011fd4b83103ee133fe03a481864cebc8b78e82dc526689f7698458b678a0"
+    },
+    {
+      "path": "research/evidence/nds/n10/emulator/level1-paused.png",
+      "bytes": 33313,
+      "sha256": "8571b12d0fcd5a3f9f67b809c46166f06cc5cfa827d5425094e5b731f4c1d3c0"
+    },
+    {
+      "path": "research/evidence/nds/n10/emulator/level1-start-bottom.png",
+      "bytes": 2706,
+      "sha256": "e3baa42b08df469d5c1f6544ce2c6fc7798b1a6e8cb35f5259d1607f41af1173"
+    },
+    {
+      "path": "research/evidence/nds/n10/emulator/level1-start-top.png",
+      "bytes": 19821,
+      "sha256": "62af139261dcf8e606c2218a3f7590ee1183fde21f02a06ad909dde8b53e6ebd"
+    },
+    {
+      "path": "research/evidence/nds/n10/emulator/level1-start.png",
+      "bytes": 23084,
+      "sha256": "67aad57bd407f6b1c94d8bbb5e76a11de6ebb50b226b672612c0ca2d601ea362"
+    },
+    {
+      "path": "research/evidence/nds/n10/emulator/level2-moving-bottom.png",
+      "bytes": 2724,
+      "sha256": "d3a190aefe83f4447ff4ab79cda87917715ae81dd9c16f443c43ec898446bf4b"
+    },
+    {
+      "path": "research/evidence/nds/n10/emulator/level2-moving-top.png",
+      "bytes": 23549,
+      "sha256": "857715a432fd09245cfd1301a05a12669e5a627151e38b7e25b4d22258f9bdc5"
+    },
+    {
+      "path": "research/evidence/nds/n10/emulator/level2-moving.png",
+      "bytes": 26970,
+      "sha256": "44601b5ef743a0d53505fdfaf0454f5487a69952d40524cbe647ec06b65ddc12"
+    },
+    {
+      "path": "research/evidence/nds/n10/emulator/level2-paused-bottom.png",
+      "bytes": 2718,
+      "sha256": "7e72164da754f4bac41067bc29b12ae8e7788d99b5c8477f51c5e1df240ac469"
+    },
+    {
+      "path": "research/evidence/nds/n10/emulator/level2-paused-top.png",
+      "bytes": 28633,
+      "sha256": "75f3543300e6efada1f376fa303872321d88f74f62a8098bf15579e8d9bc2e30"
+    },
+    {
+      "path": "research/evidence/nds/n10/emulator/level2-paused.png",
+      "bytes": 32122,
+      "sha256": "e50b01848392d31f8ca33974c3c6418a6984df2fcf1570724998b6b82ed44e3d"
+    },
+    {
+      "path": "research/evidence/nds/n10/emulator/level2-start-bottom.png",
+      "bytes": 2685,
+      "sha256": "39162aa78c7d349f57e6f6f97066e458897f06a038b79c33319df099c427b3f2"
+    },
+    {
+      "path": "research/evidence/nds/n10/emulator/level2-start-top.png",
+      "bytes": 24400,
+      "sha256": "fa174af21e8d8816f542b4b735d6c11b0dd32534e90d34101ffaab55fd56762f"
+    },
+    {
+      "path": "research/evidence/nds/n10/emulator/level2-start.png",
+      "bytes": 27764,
+      "sha256": "e696e37b15b306632f55987c3a8eda21a16a6b5b5274fb275f4958bf8cc3fca0"
+    },
+    {
+      "path": "research/evidence/nds/n10/emulator/level3-moving-bottom.png",
+      "bytes": 2739,
+      "sha256": "0edc6e04b0e20fccd347ac54f95d119e272619b2c9df0026ca9eace0e0d905f9"
+    },
+    {
+      "path": "research/evidence/nds/n10/emulator/level3-moving-top.png",
+      "bytes": 17688,
+      "sha256": "1761e73a54977cb591a53e0dd436306a39b5afac4f2522c59d7318bb0fc23793"
+    },
+    {
+      "path": "research/evidence/nds/n10/emulator/level3-moving.png",
+      "bytes": 20866,
+      "sha256": "8c578d82194fe434b1bdd73df04ef2eb846ba9a75c1c8191f31109fada83a628"
+    },
+    {
+      "path": "research/evidence/nds/n10/emulator/level3-paused-bottom.png",
+      "bytes": 2755,
+      "sha256": "db65f36c971e7c91f78c10aa99167524eba8b77cab9c41564eaf07a67c549948"
+    },
+    {
+      "path": "research/evidence/nds/n10/emulator/level3-paused-top.png",
+      "bytes": 19318,
+      "sha256": "46cfe9d88b95c950871e0cbd41dea41430d872f23730e319cef3cb0649d0e495"
+    },
+    {
+      "path": "research/evidence/nds/n10/emulator/level3-paused.png",
+      "bytes": 22549,
+      "sha256": "575f966f446f041e84fd194a370c06bd09056650daa0636ee8e141a51f17f1fd"
+    },
+    {
+      "path": "research/evidence/nds/n10/emulator/level3-start-bottom.png",
+      "bytes": 2739,
+      "sha256": "c4682187178f6ae98a3fc015fa271fa409e7e770a0d3a2db6a45b20d611d472d"
+    },
+    {
+      "path": "research/evidence/nds/n10/emulator/level3-start-top.png",
+      "bytes": 17876,
+      "sha256": "fb4be7cf18a2f39ee8e9ef9cb82b54f31a886dd83d3b22a9ae591ae1b1661d64"
+    },
+    {
+      "path": "research/evidence/nds/n10/emulator/level3-start.png",
+      "bytes": 21045,
+      "sha256": "7cc1b5a7c5a3bbb2d975bd54dbeafefa5f114d84285553319abe9fac294a328f"
+    },
+    {
+      "path": "research/evidence/runtime/ru/LEVEL1-runtime.json",
+      "bytes": 268094,
+      "sha256": "8d5a485ca5a33ef72bccad1db6140a69157be2ba22eccce874e7532cd27c4ab0"
+    },
+    {
+      "path": "research/evidence/nds/n05/oracle/level1-lang1.json",
+      "bytes": 335499,
+      "sha256": "5a0f254d2969a4c289ac301bc121cb75bd073e9f30403c8740c89959fa0c7df8"
+    },
+    {
+      "path": "research/evidence/nds/n10/original/ru/analysis-manifest.json",
+      "bytes": 1198,
+      "sha256": "0b3c6433fc6cf3b8c70896408ec5ffd4efc0eba2cd97a1fe054dd75f38086b9a"
+    },
+    {
+      "path": "research/evidence/nds/n10/original/ru/evidence.asm",
+      "bytes": 70887,
+      "sha256": "7cd69680538d4244d20900b127e11a3a4d543eec1f0e0bbd4d088cfe175d4a2e"
+    },
+    {
+      "path": "research/evidence/nds/n10/original/ru/automatic.c",
+      "bytes": 36949,
+      "sha256": "dd65a9ec98590c5e128798e08682c5ef209363d52f32d1d4905535228103fc87"
+    },
+    {
+      "path": "research/evidence/nds/n10/original/ru/1068.bin",
+      "bytes": 17490,
+      "sha256": "6a6fc29b1f204efd34a16538b678b7cd04ea6c992893f94283acc06329848b9f"
+    },
+    {
+      "path": "research/evidence/nds/n10/original/ru/1098.bin",
+      "bytes": 21834,
+      "sha256": "44937d68d6e03f426afd77c6e0427af1f7cfcc42e6946d23d0e00618701f91f9"
+    },
+    {
+      "path": "research/evidence/reference/ru-03/level1-memory.bin",
+      "bytes": 16777216,
+      "sha256": "c8ff1347518aae86af31b8ed2c6f6443c4c63c9157b4a52bf76d53c7f5c95629"
+    },
+    {
+      "path": "research/evidence/runtime/ru/LEVEL2-runtime.json",
+      "bytes": 271320,
+      "sha256": "acf29d78e6befe75a91342bf26d8ac6648ea17597f5b5fedcbb81bf056c97c9c"
+    },
+    {
+      "path": "research/evidence/nds/n05/oracle/level2-lang1.json",
+      "bytes": 337818,
+      "sha256": "5602d3461f6b0b6304b14cc4497249deb2b8e6e949f0c3294f126a1092382f3c"
+    },
+    {
+      "path": "research/evidence/runtime/ru/LEVEL3-runtime.json",
+      "bytes": 377012,
+      "sha256": "7b74616754f16fd29234cc18ab1773b6d5dd79d4bc6e16cd716974ccb040d748"
+    },
+    {
+      "path": "research/evidence/nds/n05/oracle/level3-lang1.json",
+      "bytes": 419606,
+      "sha256": "2b37e532f4ce2b49396b0675ba164f40a4d3a4e15040a72fcabf98ac56087ebb"
+    },
+    {
+      "path": "research/evidence/runtime/en/LEVEL1-runtime.json",
+      "bytes": 267807,
+      "sha256": "500bdf3c490233e2437b9d52b89bc22917f1720376e5a66768611cf2d345b1b2"
+    },
+    {
+      "path": "research/evidence/nds/n05/oracle/level1-lang2.json",
+      "bytes": 383691,
+      "sha256": "bc51ed658626f8e6599dea30fd3345f667e625c937d0da821b2eac4a4e346cae"
+    },
+    {
+      "path": "research/evidence/nds/n10/original/en/analysis-manifest.json",
+      "bytes": 1198,
+      "sha256": "48ba46e89e77411f2384a17a38573b905efdafc83ea858062dddb26983f65176"
+    },
+    {
+      "path": "research/evidence/nds/n10/original/en/evidence.asm",
+      "bytes": 72311,
+      "sha256": "227596bffe31a4d3636e242a80be3b363a97898bc56af4b8d596ffaef42364fa"
+    },
+    {
+      "path": "research/evidence/nds/n10/original/en/automatic.c",
+      "bytes": 37786,
+      "sha256": "b62582f1bb0615fdd1f69cb1b7f539225925f06cf10e476a5b54f5be326e59a1"
+    },
+    {
+      "path": "research/evidence/nds/n10/original/en/1020.bin",
+      "bytes": 20665,
+      "sha256": "7a20ad9df5a6d759c486034c5465f41d7dab1cbaa433f5c0b77ab1755403e5dd"
+    },
+    {
+      "path": "research/evidence/nds/n10/original/en/1030.bin",
+      "bytes": 26267,
+      "sha256": "6565a5b49788f7f5d3e7613e9e6609f858b8935b89d88beecd2e7ea4ed5b6ac1"
+    },
+    {
+      "path": "research/evidence/runtime/en/LEVEL2-runtime.json",
+      "bytes": 271067,
+      "sha256": "2c062ae47e05d71646edd88e28033e811f43dd76b111e3862bf4a9252ff5dbb5"
+    },
+    {
+      "path": "research/evidence/nds/n05/oracle/level2-lang2.json",
+      "bytes": 385871,
+      "sha256": "75d62286f527bc1efe4ddeefcd10bad1d128083875b19382cd557eab75c055c8"
+    },
+    {
+      "path": "research/evidence/runtime/en/LEVEL3-runtime.json",
+      "bytes": 376830,
+      "sha256": "858df2bebb53df1036c13d4c928be949b42f93c244aa04d2abad5261bd52bbf5"
+    },
+    {
+      "path": "research/evidence/nds/n05/oracle/level3-lang2.json",
+      "bytes": 475246,
+      "sha256": "a33c5b055291462a053d35cd0f941c8bc3cce213d6a65e2a954d1b1bd7599314"
+    },
+    {
+      "path": "ports/nds/tools/audit_collision.py",
+      "bytes": 25396,
+      "sha256": "fa395e27c40587f1756786f73137e0a3c7bd2cb022e6e64061e3934128bff171"
+    },
+    {
+      "path": "ports/nds/tests/collision_dump.c",
+      "bytes": 7281,
+      "sha256": "38962c9a4f849d77d10f3bd5df76dbd8575cf875f6365a15ba4271912b9de7e1"
+    },
+    {
+      "path": "build/nds/n10/generated/render_trig.inc",
+      "bytes": 5084,
+      "sha256": "409f2a9340587f9affc1589d982371fa60daa5817df8bd24a142f255f03438e1"
+    }
+  ],
+  "tools": {
+    "python": "3.14.6 (tags/v3.14.6:c63aec6, Jun 10 2026, 10:26:10) [MSC v.1944 64 bit (AMD64)]",
+    "zig": {
+      "path": "C:\\Users\\dspev\\AppData\\Local\\Programs\\Zig\\0.13.0\\zig.exe",
+      "version": "0.13.0",
+      "sha256": "2e44af5bbf7a72ef8cbdae370284687c95d65a19affa469d2ad0364d905b8e84"
+    },
+    "blocksds": "1.24.0-1",
+    "gcc": "16.2.0",
+    "sdk_packages": 20,
+    "unicorn": "2.1.4",
+    "core_name": "melonDS DS",
+    "core_version": "1.4.0",
+    "core_sha256": "c7e6b58c667075a2a9868f2c3ba7a98e24200410a6da3051a7c555f1f0eef8ef"
+  },
+  "host": {
+    "preserved_count": 347,
+    "source_count": 69,
+    "commands": 15,
+    "unit": {
+      "checks": 107,
+      "failures": 0,
+      "first_failed_line": 0,
+      "native_cases": 17,
+      "transaction_cases": 6,
+      "camera_cases": 1
+    },
+    "routes": {
+      "levels": [
+        {
+          "level": 1,
+          "language": 1,
+          "checks": 1643,
+          "failures": 0,
+          "first_failed_line": 0,
+          "callbacks": 73,
+          "trace_hash": 2025190245,
+          "final_hash": 1385366125,
+          "map_hash": 2206223748,
+          "counter_hash": 3360709283,
+          "requested": 396,
+          "committed": 396,
+          "adjusted": 297,
+          "rejected": 0,
+          "observations_30": 149,
+          "observations_60": 298,
+          "x": 13198,
+          "y": -300,
+          "z": 23761,
+          "heading": 89
+        },
+        {
+          "level": 1,
+          "language": 2,
+          "checks": 1643,
+          "failures": 0,
+          "first_failed_line": 0,
+          "callbacks": 73,
+          "trace_hash": 2025190245,
+          "final_hash": 1385366125,
+          "map_hash": 2206223748,
+          "counter_hash": 3360709283,
+          "requested": 396,
+          "committed": 396,
+          "adjusted": 297,
+          "rejected": 0,
+          "observations_30": 149,
+          "observations_60": 298,
+          "x": 13198,
+          "y": -300,
+          "z": 23761,
+          "heading": 89
+        },
+        {
+          "level": 2,
+          "language": 1,
+          "checks": 1643,
+          "failures": 0,
+          "first_failed_line": 0,
+          "callbacks": 73,
+          "trace_hash": 1572281257,
+          "final_hash": 4240169234,
+          "map_hash": 1653365525,
+          "counter_hash": 2227264602,
+          "requested": 396,
+          "committed": 396,
+          "adjusted": 297,
+          "rejected": 0,
+          "observations_30": 149,
+          "observations_60": 298,
+          "x": 18478,
+          "y": -300,
+          "z": 4081,
+          "heading": 89
+        },
+        {
+          "level": 2,
+          "language": 2,
+          "checks": 1643,
+          "failures": 0,
+          "first_failed_line": 0,
+          "callbacks": 73,
+          "trace_hash": 1572281257,
+          "final_hash": 4240169234,
+          "map_hash": 1653365525,
+          "counter_hash": 2227264602,
+          "requested": 396,
+          "committed": 396,
+          "adjusted": 297,
+          "rejected": 0,
+          "observations_30": 149,
+          "observations_60": 298,
+          "x": 18478,
+          "y": -300,
+          "z": 4081,
+          "heading": 89
+        },
+        {
+          "level": 3,
+          "language": 1,
+          "checks": 1643,
+          "failures": 0,
+          "first_failed_line": 0,
+          "callbacks": 73,
+          "trace_hash": 1257084807,
+          "final_hash": 1080117072,
+          "map_hash": 3790033288,
+          "counter_hash": 3533021202,
+          "requested": 396,
+          "committed": 396,
+          "adjusted": 297,
+          "rejected": 0,
+          "observations_30": 149,
+          "observations_60": 298,
+          "x": 4530,
+          "y": -300,
+          "z": 29521,
+          "heading": 89
+        },
+        {
+          "level": 3,
+          "language": 2,
+          "checks": 1643,
+          "failures": 0,
+          "first_failed_line": 0,
+          "callbacks": 73,
+          "trace_hash": 1257084807,
+          "final_hash": 1080117072,
+          "map_hash": 3790033288,
+          "counter_hash": 3533021202,
+          "requested": 396,
+          "committed": 396,
+          "adjusted": 297,
+          "rejected": 0,
+          "observations_30": 149,
+          "observations_60": 298,
+          "x": 4530,
+          "y": -300,
+          "z": 29521,
+          "heading": 89
+        }
+      ],
+      "checks": 9909,
+      "failures": 0,
+      "workspace_bytes": 113112
+    },
+    "arm9_shared_checks": 5036,
+    "linux_static_links": 3,
+    "linux_executed": false,
+    "header_objects": 2
+  },
+  "original": {
+    "address_system": "Ghidra NE loader; valid real-mode relocation for execution",
+    "original_sha256_before": {
+      "ru": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+      "en": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b"
+    },
+    "original_sha256_after": {
+      "ru": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+      "en": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b"
+    },
+    "map_queries": 61824,
+    "scalar_width_queries": 3456,
+    "queries": 65280,
+    "wrapper_calls": 1152,
+    "wrapper_substeps": 3456,
+    "controlled_fixtures": 24,
+    "unexpected_guards": 0
+  },
+  "runtime": {
+    "frontend_frames": 2753,
+    "trace_records": 1651,
+    "checks": {
+      "original_x86_callbacks": 291,
+      "input_samples": 675,
+      "presentation_interpolations": 672,
+      "rational_clock_transitions": 1648,
+      "world_snapshots": 291,
+      "mutable_map_bytes": 4767744,
+      "door_counter_bytes": 148992,
+      "pauses": 3,
+      "resumes": 3,
+      "levels": {
+        "1": {
+          "callbacks": 99,
+          "renders": 224,
+          "adjusted": 163,
+          "substeps": 246,
+          "epoch": 111
+        },
+        "2": {
+          "callbacks": 99,
+          "renders": 224,
+          "adjusted": 169,
+          "substeps": 246,
+          "epoch": 112
+        },
+        "3": {
+          "callbacks": 93,
+          "renders": 224,
+          "adjusted": 20,
+          "substeps": 228,
+          "epoch": 113
+        }
+      },
+      "uses": 9,
+      "next_weapon": 3
+    },
+    "snapshot_records": 294,
+    "arm9_checks": 5036,
+    "failures": 0,
+    "collision_requested": 720,
+    "collision_committed": 720,
+    "collision_adjusted": 352,
+    "collision_rejected": 0,
+    "pause_vblanks": [
+      48,
+      48,
+      48
+    ],
+    "fractional_alpha_observations": 370,
+    "camera_fallbacks": 0,
+    "buttons_seen": 4095,
+    "touch_seen": 7,
+    "fat_after_load_sha256": "c7e7c68e6a1635a10644c59d5d7e167776816eecb4450a9a0d3e5936e7b13dc2",
+    "fat_after_unload_sha256": "c7e7c68e6a1635a10644c59d5d7e167776816eecb4450a9a0d3e5936e7b13dc2",
+    "screenshots": 27,
+    "navigation": [
+      {
+        "level": 1,
+        "callbacks": 99,
+        "distinct_xz": 81,
+        "x_range": [
+          12238,
+          15120
+        ],
+        "z_range": [
+          22318,
+          22801
+        ],
+        "adjusted_callbacks": 55,
+        "adjusted_steps": 163,
+        "substeps": 246
+      },
+      {
+        "level": 2,
+        "callbacks": 99,
+        "distinct_xz": 65,
+        "x_range": [
+          18958,
+          20880
+        ],
+        "z_range": [
+          2158,
+          3121
+        ],
+        "adjusted_callbacks": 59,
+        "adjusted_steps": 169,
+        "substeps": 246
+      },
+      {
+        "level": 3,
+        "callbacks": 93,
+        "distinct_xz": 77,
+        "x_range": [
+          12918,
+          17520
+        ],
+        "z_range": [
+          27861,
+          29521
+        ],
+        "adjusted_callbacks": 7,
+        "adjusted_steps": 20,
+        "substeps": 228
+      }
+    ]
+  },
+  "memory": {
+    "static_startup_bytes": 335872,
+    "managed_bytes": 2293760,
+    "sdk_heap_available": 385024,
+    "reserve_bytes": 655360,
+    "closure_bytes": 3670016,
+    "world_used": 270064,
+    "scratch_used": 113040,
+    "scene_used": 184408,
+    "assets_used": 360448,
+    "world_high_water": 270064,
+    "scratch_high_water": 113040,
+    "scene_high_water": 184408,
+    "assets_high_water": 385024,
+    "events_bank_bytes": 36864
+  },
+  "contracts": [
+    "One N05 mutable map owner; immutable effective RU definitions; exclusive revision-checked collision query/commit within native motion callback.",
+    "Four square corners, MMap before TMap, flag bit 0x10, source signed WORD/low32/IDIV and axis order preserved.",
+    "Each native quarter step updates occupancy and class7 shared WORD counter in source order.",
+    "Presentation interpolates actual committed history interval and independently admits footprint without simulation writes.",
+    "Identical explicit input/service timelines with 0/30/60 presentation observations and RU/EN bindings produce equal physics."
+  ],
+  "explicit_adaptations": [
+    "Native lookup clamps map indices and can allow coordinates beyond open edges; NDS actor admission separately rejects resolved poses outside real world.",
+    "Foreign origin glyph, invalid references/epochs, oversized quarter step and occupied resolved pose are bounded actor guards, not claimed DOS behavior.",
+    "Diagnostic SDK sequence automatically reloads levels 1/2/3; it is not a campaign flow."
+  ],
+  "limitations": [
+    "DS-mode emulator only; physical DS/DS Lite and actual FPS remain N24.",
+    "Static original blockers; full door state machine N11, billboard actors N12, floor gameplay effects N13.",
+    "Bottom screen diagnostic text until N20; no game saves or FAT writes.",
+    "Not a full live DOS/DPMI session",
+    "No x87 trig initializer replay; pinned original runtime trig table",
+    "Door state machine not executed; native WORD occupancy counters execute",
+    "Geometry queries ignore FCMap/y/bounds; full hero callback still handles FCMap class12/13 effects",
+    "Horizontal geometry/wrapper ignore y/bounds/FCMap; full hero class12/13 floor effects remain N13.",
+    "Linux targets compiled and linked only, not executed.",
+    "30/60 checks share the same input/service timeline; different polling schedules are not claimed equivalent.",
+    "Full raw emulator stdout was not saved; archive run.log is an explicitly derived verification log.",
+    "Bottom console is temporary and can show partial redraw/stale periodic metrics until N21; gameplay map N20.",
+    "Physical DS/DS Lite, flashcart/loader, real FPS/latency/IRQ/stack peak deferred to final N24."
+  ],
+  "repository_validation": {
+    "passed": true,
+    "originals_unchanged": 22,
+    "historical_data_unchanged": 252,
+    "python_syntax": 202,
+    "cmake_source_paths": 64,
+    "markdown_files": 190,
+    "broken_links": 0,
+    "powershell_ast": 2,
+    "report_summaries": 42,
+    "diff_check": true,
+    "commands": [
+      "C:/Source/wasdify/.venv/Scripts/python.exe -X utf8 tools/reports/summarize_reports.py",
+      "C:/Source/wasdify/.venv/Scripts/python.exe -X utf8 tools/reports/summarize_reports.py --check",
+      "C:/Source/wasdify/.venv/Scripts/python.exe -X utf8 scripts/check_repository_layout.py",
+      "PowerShell System.Management.Automation.Language.Parser ParseFile build_collision.ps1/export_collision_evidence.ps1",
+      "git -c core.autocrlf=false diff --check"
+    ],
+    "preserved_with_n10": 439
+  }
+}

@@ -1,0 +1,10 @@
+# Additional N07P admission checks, using the same shared SDK/backend flags.
+include Makefile.n07
+
+$(OBJDIR)/admission_gate.o: tests/render_backend_gate.c platform/render_probe/render_backend.h | $(OBJDIR)
+	"$(CC)" $(ARCH) -specs=$(SPECS) $(PLATFORM_CPPFLAGS) -std=gnu11 $(CFLAGS) -c "$<" -o "$@"
+$(OUTDIR)/dok_nds_admission.elf: $(OBJDIR)/admission_gate.o $(OBJDIR)/render_backend.o Makefile.render-check
+	"$(CC)" $(ARCH) -specs=$(SPECS) $(CPPFLAGS) -o "$@" $(OBJDIR)/admission_gate.o $(OBJDIR)/render_backend.o -L$(BLOCKSDS)/libs/libnds/lib -Wl,-Map,$(OUTDIR)/dok_nds_admission.map -Wl,--defsym=__usr_stack_size=12288 -Wl,--start-group -lnds9 -lc -Wl,--end-group
+$(OUTDIR)/dok_nds_admission.nds: $(OUTDIR)/dok_nds_admission.elf $(ARM7ELF)
+	"$(NDSTOOL)" -c "$@" -9 "$<" -7 "$(ARM7ELF)"
+all: $(OUTDIR)/dok_nds_admission.nds

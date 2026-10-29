@@ -1,0 +1,61 @@
+{
+  "schema": 1,
+  "task": "N01",
+  "date": "2026-10-28",
+  "audit_command": "C:/Source/wasdify/.venv/Scripts/python.exe ports/nds/tools/audit_evidence.py --phase after",
+  "python": "3.14.6",
+  "report": "research/evidence/nds/n01/audit-after.json",
+  "report_sha256": "e3d3ed16b9e503079fa0910649192db65ee9f843613db38dd3a36e6d11915c87",
+  "integrity_passed": true,
+  "originals_unchanged": true,
+  "samples": [
+    {
+      "path": "originals/pkr/RUS/PKR.EXE",
+      "expected_sha256": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+      "sha256": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+      "bytes": 324824,
+      "matches_inventory": true
+    },
+    {
+      "path": "originals/pkr/RUS/PKR.RES",
+      "expected_sha256": "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816",
+      "sha256": "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816",
+      "bytes": 2718099,
+      "matches_inventory": true
+    },
+    {
+      "path": "originals/pkr/ENG/PKE.EXE",
+      "expected_sha256": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b",
+      "sha256": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b",
+      "bytes": 340616,
+      "matches_inventory": true
+    },
+    {
+      "path": "originals/pkr/ENG/PKE.RES",
+      "expected_sha256": "865da340621fa6f90548a84e9ae9bf0a85071befb32a40ca1d359e488f74d458",
+      "sha256": "865da340621fa6f90548a84e9ae9bf0a85071befb32a40ca1d359e488f74d458",
+      "bytes": 2717872,
+      "matches_inventory": true
+    }
+  ],
+  "function_counts": {
+    "ru": 921,
+    "en": 930
+  },
+  "recorded_export_hash_matches": 18,
+  "recorded_export_hash_total": 18,
+  "dos_runs_available": 7,
+  "dos_index_frames_verified": 76,
+  "door_mirror_preservation": {
+    "path": "research/evidence/nds/n01/door-mirror/preservation.json",
+    "sha256": "f2158a23b55d52cf8828e0e1f42a412dae12e4e03d176e74d519ed2b5961b513",
+    "verified_files": 6
+  },
+  "registry": "docs/nds/spec/N01-evidence.md",
+  "limitations": [
+    "No new EXE analysis; projects checked on disk, not opened",
+    "Export hash differences are reported, not silently accepted",
+    "DOS coverage and open scenarios are in the registry",
+    "No NDS ROM, SDK or hardware verification in N01"
+  ]
+}

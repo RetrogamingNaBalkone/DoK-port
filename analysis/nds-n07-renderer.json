@@ -1,0 +1,396 @@
+{
+  "schema_version": 1,
+  "task": "N07",
+  "date": "2026-10-29",
+  "status": "ready-emulator",
+  "passed": true,
+  "next_task": "N08",
+  "scope": "Independent static RU-world ARM9 3D renderer and bounded presentation benchmark; not a gameplay loop",
+  "source_manifest": {
+    "path": "research/evidence/nds/n07/source-manifest.json",
+    "bytes": 5770,
+    "sha256": "ab760804a9c34404b0b96671e492a99d2c1116e8d31fec4849700a325ad3cf60"
+  },
+  "build_manifest": {
+    "path": "research/evidence/nds/n07/build-manifest.json",
+    "bytes": 2876,
+    "sha256": "815b582ddf6817d941b019a021c43cbff6a5ae7373aea0d4813dbab34bf93dd6"
+  },
+  "toolchain_lock": {
+    "path": "ports/nds/toolchain_versions.json",
+    "bytes": 1497,
+    "sha256": "76906c4c1c07d6bd6cfcf3be02277477581fdab8fcabf7f85cfd8cc0dff472ef"
+  },
+  "package": {
+    "path": "build/nds/assets/dok-assets.ndspak",
+    "bytes": 9230016,
+    "sha256": "2f03ba02c9986b4e0bd321e94ca00df8a355f7dbb1dff5598a950d3366061511"
+  },
+  "reports": [
+    {
+      "path": "research/evidence/nds/n07/host-check.json",
+      "bytes": 62546,
+      "sha256": "d5f2da9fa04e1bc5d3bc4f15a4089f09d3b705df27c4638b2a5d854154422073"
+    },
+    {
+      "path": "research/evidence/nds/n07/geometry-native-report.json",
+      "bytes": 236127,
+      "sha256": "5ae572c10118b3cd02bbfad401d4bf9740a790b5686ac020dde94bf334749ce5"
+    },
+    {
+      "path": "research/evidence/nds/n07/scene-host-report.json",
+      "bytes": 13785,
+      "sha256": "ba82cf917c9311ea82c02a00a99232318c15a02d42063524105f050e5c8ddfc7"
+    },
+    {
+      "path": "research/evidence/nds/n07/merge-tests.json",
+      "bytes": 3076,
+      "sha256": "81ccc8abb8cedc32bd571e110f4addad901b6d37e4545e54410815c1035bc080"
+    },
+    {
+      "path": "research/evidence/nds/n07/sdk-gpu-sources.json",
+      "bytes": 3016,
+      "sha256": "6267a1010c0d29d57bd2feea41170ed4e0efec5a2070a112ea0991d18a99d493"
+    },
+    {
+      "path": "research/evidence/nds/n07/generator-independent-review.json",
+      "bytes": 4262,
+      "sha256": "dd54a22d333bb831d866cc14a11cfcf76582e7f71b3420b386c23e3dd30ff798"
+    },
+    {
+      "path": "research/evidence/nds/n07/host-independent-review.json",
+      "bytes": 13563,
+      "sha256": "66d2dd1dd37e85dc1240a7b91da073f5f22e0e9dea7802ed3953a0aee782a4cc"
+    },
+    {
+      "path": "research/evidence/nds/n07/presentation-phase-diagnosis.json",
+      "bytes": 3740,
+      "sha256": "93e667ebb7a68121b27b9b5ee87226f99c45826c01be60d4f11d205d6c2c8df1"
+    },
+    {
+      "path": "research/evidence/nds/n07/arm-thumb-comparison.json",
+      "bytes": 5733,
+      "sha256": "62eca7c61c4a2d9ab754ce88591730934ce8df6a400ef4f274d01099f785ebd0"
+    },
+    {
+      "path": "research/evidence/nds/n07/diagnostic-phase-comparison.json",
+      "bytes": 5383,
+      "sha256": "8b57c044b439e12aa801fc9cde5265de5f710249960b4f41d8aeba441f87bb4f"
+    },
+    {
+      "path": "research/evidence/nds/n07/sync-presentation-comparison.json",
+      "bytes": 5490,
+      "sha256": "2e6b928b3ea4519bce15764b79388a4dad611f3c05667a2497b0bcb729dc29a0"
+    },
+    {
+      "path": "research/evidence/nds/n07/runtime-review.json",
+      "bytes": 2056,
+      "sha256": "ae250d09b2cf1a0da83a375139b8b00825c43023fedfd9f502fb2343740bd194"
+    },
+    {
+      "path": "research/evidence/nds/n07/emulator/result.json",
+      "bytes": 979609,
+      "sha256": "14162c4b7dbbe61877a8fd69642dc5d9a32d5356de628b4058a3f6e4ce2b415f"
+    },
+    {
+      "path": "research/evidence/nds/n07/emulator/archive-manifest.json",
+      "bytes": 29382,
+      "sha256": "db486e150e1490de6a03017616adad2d0455ada78d7bd276ed39a8441967f6ba"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "build/nds/n07/dok_nds_renderer.nds",
+      "bytes": 186368,
+      "sha256": "6815321607c94e1dcc20116819504de62175c94cf2647cdaf9003327ff8f5f04"
+    },
+    {
+      "path": "build/nds/n07/dok_nds_renderer.elf",
+      "bytes": 1344784,
+      "sha256": "4753c7b3353c1e488c54cbc55f6ace422e9460b7eb246964a4dbd4c0a0e10283"
+    },
+    {
+      "path": "build/nds/n07/dok_nds_renderer.map",
+      "bytes": 735534,
+      "sha256": "75e6982a1ca8c0b4715a938d9574667a2cf7d49a182c8981e3f66c853742e6f0"
+    },
+    {
+      "path": "build/nds/n07/scene.dat",
+      "bytes": 32000,
+      "sha256": "e56652e249f391d5ca2cfa940834702a5fef881c71b56ef32fa4119aaef67a74"
+    },
+    {
+      "path": "build/nds/n07/scene-manifest.json",
+      "bytes": 10101,
+      "sha256": "d7289dd8c6a7d4b8f954a140e4664f10e470efb4b42fb3d30903adf62c467fd0"
+    },
+    {
+      "path": "build/nds/n07/generated/render_trig.inc",
+      "bytes": 5084,
+      "sha256": "409f2a9340587f9affc1589d982371fa60daa5817df8bd24a142f255f03438e1"
+    },
+    {
+      "path": "build/nds/n07/build-report.json",
+      "bytes": 2802,
+      "sha256": "7afc4ee12ad81c7d02492ece3f0e66e1ab3940f0397f5d0e8bb3f29ee71d11ae"
+    }
+  ],
+  "tools": {
+    "python": "3.14.6",
+    "zig": "0.13.0",
+    "blocksds": "1.24.0-1",
+    "gcc": "16.2.0",
+    "make": "4.4.1",
+    "sdk_locked_packages": 20,
+    "emulator_name": "melonDS DS",
+    "emulator_version": "1.4.0",
+    "emulator_sha256": "c7e6b58c667075a2a9868f2c3ba7a98e24200410a6da3051a7c555f1f0eef8ef",
+    "physical_hardware_tested": false,
+    "linux_executed": false
+  },
+  "host": {
+    "commands": 19,
+    "preserved_pins": 133,
+    "current_source_pins": 33,
+    "geometry_checks": 2831,
+    "merge_checks": 20762,
+    "synthetic_positive_merges": 11,
+    "synthetic_scene_merges": 8,
+    "negative_merge_cases": 28,
+    "linux_cross_links": 4
+  },
+  "original_geometry": {
+    "method": "isolated original x86 static builder branches",
+    "cells": 12288,
+    "quads": 23371,
+    "scalar_values": 677759,
+    "synthetic_door_branches": 512,
+    "aabb_cases": 1444,
+    "levels": [
+      {
+        "level": 1,
+        "cells": 4096,
+        "quads": 8208,
+        "scalar_values": 238032,
+        "kinds": {
+          "4": 716,
+          "0": 1282,
+          "2": 3053,
+          "3": 3053,
+          "1": 104
+        },
+        "max_cell_quads": 6
+      },
+      {
+        "level": 2,
+        "cells": 4096,
+        "quads": 8877,
+        "scalar_values": 257433,
+        "kinds": {
+          "4": 1216,
+          "0": 2026,
+          "2": 2672,
+          "3": 2672,
+          "1": 291
+        },
+        "max_cell_quads": 5
+      },
+      {
+        "level": 3,
+        "cells": 4096,
+        "quads": 6286,
+        "scalar_values": 182294,
+        "kinds": {
+          "4": 248,
+          "0": 1116,
+          "2": 2424,
+          "3": 2424,
+          "1": 74
+        },
+        "max_cell_quads": 3
+      }
+    ],
+    "originals_before": {
+      "originals/pkr/RUS/PKR.EXE": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+      "originals/pkr/RUS/PKR.RES": "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816",
+      "originals/pkr/ENG/PKE.EXE": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b",
+      "originals/pkr/ENG/PKE.RES": "865da340621fa6f90548a84e9ae9bf0a85071befb32a40ca1d359e488f74d458"
+    },
+    "originals_after": {
+      "originals/pkr/RUS/PKR.EXE": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+      "originals/pkr/RUS/PKR.RES": "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816",
+      "originals/pkr/ENG/PKE.EXE": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b",
+      "originals/pkr/ENG/PKE.RES": "865da340621fa6f90548a84e9ae9bf0a85071befb32a40ca1d359e488f74d458"
+    },
+    "limitations": [
+      "Isolated original x86 builder with controlled constructor/getter stubs; not full DOS raster/DPMI."
+    ]
+  },
+  "scene_scan": {
+    "poses": 65192,
+    "scope": "non-wall runtime cell centers on step1 lattice, eight headings; measured candidate ranking, not exhaustive continuous worst case",
+    "full_packets": 22,
+    "lifecycle_checks": 48,
+    "merge_candidates": 5720309,
+    "actual_merges": 0,
+    "heavy": [
+      {
+        "level": 1,
+        "x": 23760,
+        "z": 6480,
+        "heading": 135,
+        "published_quads": 279
+      },
+      {
+        "level": 2,
+        "x": 28560,
+        "z": 8880,
+        "heading": 45,
+        "published_quads": 267
+      },
+      {
+        "level": 3,
+        "x": 7440,
+        "z": 18480,
+        "heading": 225,
+        "published_quads": 198
+      }
+    ],
+    "levels": [
+      {
+        "level": 1,
+        "bindings": 35,
+        "materials": 12,
+        "gpu_texture_bytes": 278528,
+        "asset_bytes": 344064
+      },
+      {
+        "level": 2,
+        "bindings": 47,
+        "materials": 16,
+        "gpu_texture_bytes": 319488,
+        "asset_bytes": 385024
+      },
+      {
+        "level": 3,
+        "bindings": 34,
+        "materials": 13,
+        "gpu_texture_bytes": 294912,
+        "asset_bytes": 360448
+      }
+    ]
+  },
+  "runtime": {
+    "cases": 19,
+    "frontend_frames": 2614,
+    "history_records": 982,
+    "steady_frames": 936,
+    "moving_frames": 488,
+    "loading_frames": 8,
+    "diagnostic_records": 19,
+    "sync_records": 19,
+    "max_sync_ticks": 559720,
+    "total_sync_ticks": 9870960,
+    "max_diagnostic_ticks": 172339,
+    "total_diagnostic_ticks": 3066860,
+    "max_vblank_delta": 2,
+    "max_total_ticks": 1120380,
+    "max_loading_ticks": 56636685,
+    "timer_source_hz": 33513982,
+    "timer_divider": 1,
+    "budget_passed": true,
+    "budget_violations": [],
+    "timer_scope": "emulated ARM9/GE counters; not physical DS FPS or complete rasterizer GPU time",
+    "sync_links_verified": 19,
+    "rdlines_min": 46,
+    "rdlines_max": 46,
+    "rdlines_samples": 936,
+    "disp3d_sticky": 0,
+    "gxstat_sticky": 0,
+    "negative_admission_mask": 255,
+    "ge_position_records": 24,
+    "shared_endpoint_pairs": 6,
+    "flat_passes": 8,
+    "union_interior_pixels": 286544,
+    "exact_color_interior_pixels": 161212,
+    "coverage_guard_pixels": 2,
+    "hud_pixels_per_case": 9728,
+    "immutable_packet_bytes": 32000,
+    "packet_sha256": "e56652e249f391d5ca2cfa940834702a5fef881c71b56ef32fa4119aaef67a74",
+    "scene_manifest_sha256": "d7289dd8c6a7d4b8f954a140e4664f10e470efb4b42fb3d30903adf62c467fd0",
+    "fat_unchanged": true,
+    "cache_misses": 0,
+    "cache_evictions": 0,
+    "uploads_total": 110,
+    "upload_bytes_total": 2387968
+  },
+  "memory": {
+    "static_bytes": 164740,
+    "heap_start_gap": 32,
+    "static_startup_bytes": 172032,
+    "managed_bytes": 2293760,
+    "sdk_heap_available": 548864,
+    "reserve_bytes": 655360,
+    "closure_bytes": 3670016,
+    "world_used": 265864,
+    "scratch_used": 105052,
+    "scene_used": 184408,
+    "assets_high_water": 385024,
+    "texture_capacity_bytes": 393216,
+    "palette_capacity_bytes": 16384,
+    "stack_reserved_bytes": 12288,
+    "full_sdk_irq_stack_peak_proven": false,
+    "full_game_peak_proven": false
+  },
+  "projection": {
+    "world_units_per_gpu_unit": 512,
+    "local_vertex16_per_world_unit": 8,
+    "viewport": [
+      0,
+      38,
+      255,
+      191
+    ],
+    "top_scene_rows": 154,
+    "hud_rows": 38,
+    "projection_q12": [
+      5120,
+      0,
+      0,
+      0,
+      0,
+      -10240,
+      0,
+      0,
+      -13,
+      26,
+      4129,
+      4096,
+      0,
+      0,
+      -3213,
+      0
+    ],
+    "effective_near_world": 200.0068085106383,
+    "effective_far_world": 49850.181818181816,
+    "q15_to_q12_approximation": true
+  },
+  "adaptations": [
+    "Conservative gather retains all four source control points, correcting lost p1 max contribution.",
+    "Uniform GE horizontal near clipping replaces conditional native SAR20 branch; N13 evaluates water/reflections interaction.",
+    "Whole-frame capacity refusal; exact affine UV merges preserve source provenance; no arbitrary geometry truncation.",
+    "Whole static level texture set admitted before loading; no active scene uploads.",
+    "ARM instruction mode for geometry/scene/backend; no C geometry change from Thumb experiment.",
+    "Odd seqlock sequence flush precedes payload writes; even follows complete payload flush.",
+    "One measured inactive-to-ACTIVE SYNC per case; common boundary sampler for SYNC/render, last tail included in DIAGNOSTIC."
+  ],
+  "limitations": [
+    "No physical DS/DS Lite, flashcart/loader or real DS FPS validation; deferred to N24.",
+    "Identity LIGHT and temporary water/palette; N13 owns light, water, reflections, source backdrop/far fill. Black outside finite gather is not claimed native DOS backdrop.",
+    "Static initial doors only; dynamics N11, actors N12, gameplay HUD N19, map N20.",
+    "65,192 cell-center/eight-heading scan poses and selected moving routes are not an exhaustive continuous-camera or full-game budget proof.",
+    "RDLINES and FIFO/GE counters are not complete rasterizer GPU time.",
+    "No game saves or gameplay loop. Only later settings persistence is authorized.",
+    "Early generator/host review reports are historical snapshots; final source/build/runtime pins are above."
+  ]
+}

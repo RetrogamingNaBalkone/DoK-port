@@ -1,0 +1,40 @@
+# N06 external reference bitmap viewer, not the N07 hardware 3D renderer.
+BLOCKSDS ?= /opt/blocksds/core
+WONDERFUL_TOOLCHAIN ?= /opt/wonderful
+ARM_NONE_EABI_PATH ?= $(WONDERFUL_TOOLCHAIN)/toolchain/gcc-arm-none-eabi/bin/
+ARM7ELF ?= $(BLOCKSDS)/sys/arm7/main_core/arm7_maxmod.elf
+OUTDIR := ../../build/nds/n06
+OBJDIR := $(OUTDIR)/obj
+NAME := dok_nds_visual
+ELF := $(OUTDIR)/$(NAME).elf
+MAP := $(OUTDIR)/$(NAME).map
+ROM := $(OUTDIR)/$(NAME).nds
+OBJECTS := $(addprefix $(OBJDIR)/,main.o sha256.o)
+CHECK_OBJECTS := $(addprefix $(OBJDIR)/,projection.o test_projection.o projection_compile.o)
+CC := $(ARM_NONE_EABI_PATH)arm-none-eabi-gcc
+NDSTOOL := $(BLOCKSDS)/tools/ndstool/ndstool
+ARCH := -mthumb -mcpu=arm946e-s+nofp
+SPECS := $(BLOCKSDS)/sys/crts/ds_arm9.specs
+CPPFLAGS := -D__NDS__ -D__BLOCKSDS__ -DARM9 -Iinclude
+CFLAGS := -Og -g3 -Wall -Wextra -Werror -ffunction-sections -fdata-sections
+PLATFORM_CPPFLAGS := $(CPPFLAGS) -I$(BLOCKSDS)/libs/libnds/include
+LDFLAGS := -L$(BLOCKSDS)/libs/libnds/lib -Wl,-Map,$(MAP) -Wl,--defsym=__usr_stack_size=12288
+.PHONY: all
+all: $(ROM) $(CHECK_OBJECTS)
+$(ROM): $(ELF) $(ARM7ELF)
+	"$(NDSTOOL)" -c "$@" -9 "$(ELF)" -7 "$(ARM7ELF)"
+$(ELF): $(OBJECTS)
+	"$(CC)" $(ARCH) -specs=$(SPECS) $(CPPFLAGS) -o "$@" $(OBJECTS) $(LDFLAGS) -Wl,--start-group -lnds9 -lc -Wl,--end-group
+$(OBJDIR)/main.o: platform/visual/main.c platform/visual/visual_probe.h Makefile.n06 | $(OBJDIR)
+	"$(CC)" $(ARCH) -specs=$(SPECS) $(PLATFORM_CPPFLAGS) -std=gnu11 $(CFLAGS) -MMD -MP -c "$<" -o "$@"
+$(OBJDIR)/sha256.o: core/sha256.c Makefile.n06 | $(OBJDIR)
+	"$(CC)" $(ARCH) -specs=$(SPECS) $(CPPFLAGS) -std=c11 -pedantic-errors $(CFLAGS) -MMD -MP -c "$<" -o "$@"
+$(OBJDIR)/projection.o: core/projection.c Makefile.n06 | $(OBJDIR)
+	"$(CC)" $(ARCH) -specs=$(SPECS) $(CPPFLAGS) -std=c11 -pedantic-errors $(CFLAGS) -MMD -MP -c "$<" -o "$@"
+$(OBJDIR)/test_projection.o: tests/test_projection.c Makefile.n06 | $(OBJDIR)
+	"$(CC)" $(ARCH) -specs=$(SPECS) $(CPPFLAGS) -std=c11 -pedantic-errors $(CFLAGS) -MMD -MP -c "$<" -o "$@"
+$(OBJDIR)/projection_compile.o: tests/projection_compile.c Makefile.n06 | $(OBJDIR)
+	"$(CC)" $(ARCH) -specs=$(SPECS) $(CPPFLAGS) -std=c11 -pedantic-errors $(CFLAGS) -MMD -MP -c "$<" -o "$@"
+$(OBJDIR):
+	mkdir -p "$@"
+-include $(OBJECTS:.o=.d) $(CHECK_OBJECTS:.o=.d)

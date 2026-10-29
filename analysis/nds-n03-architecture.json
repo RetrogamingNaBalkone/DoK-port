@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "task": "N03",
+  "date": "2026-10-29",
+  "status": "ready_emulator",
+  "next_task": "N04",
+  "scope": "Minimal native C11 contracts/lifecycle, bounded byte arenas and work stacks, ARM9 memory budget/probe; no game mechanics.",
+  "toolchain": {
+    "zig": "0.13.0",
+    "blocksds": "1.24.0-1",
+    "gcc": "16.2.0",
+    "python": "3.14.6",
+    "lock_sha256": "76906c4c1c07d6bd6cfcf3be02277477581fdab8fcabf7f85cfd8cc0dff472ef"
+  },
+  "artifacts": [
+    {
+      "path": "build/nds/n03/dok_nds_memory.nds",
+      "bytes": 97792,
+      "sha256": "e2d75b0d1ed158f4f2523cb3cce781b679585bfad0c37b7da9c4745d3ff6d431"
+    },
+    {
+      "path": "build/nds/n03/dok_nds_memory.elf",
+      "bytes": 603800,
+      "sha256": "886a8e707f261024c4993cb4c32594171785ecfa46eb42720a166e5874fd9d07"
+    },
+    {
+      "path": "build/nds/n03/dok_nds_memory.map",
+      "bytes": 619036,
+      "sha256": "2dd5b7d39e6bdad12bb27158f26f6e490f394f0f88103c0caabf97702ef6cab7"
+    }
+  ],
+  "host": {
+    "passed": true,
+    "scope": "host_and_arm9_build",
+    "memory_checks": 28459,
+    "contracts": "lifecycle/refusals/identities/input",
+    "linux": "x86_64-musl compiled/linked, not executed",
+    "arm9": "core/headers/tests strict C11 compiled; SDK platform GNU C11",
+    "report": "research/evidence/nds/n03/host-check.json",
+    "report_sha256": "20f8ca0e89fa7c008864c0060c9daea7161942624482fe687264443178f76f7c"
+  },
+  "emulator": {
+    "passed": true,
+    "core": "melonDS DS",
+    "version": "1.4.0",
+    "core_sha256": "c7e6b58c667075a2a9868f2c3ba7a98e24200410a6da3051a7c555f1f0eef8ef",
+    "checks": 42,
+    "coherent_observations": 120,
+    "frontend_frames": 171,
+    "abi_bytes": 344,
+    "test_mask": 511,
+    "managed_bytes_checked": 2293760,
+    "report": "research/evidence/nds/n03/emulator/result.json",
+    "report_sha256": "b7ce07cce0420976306e1b7c7e873cddc2d61f67eb7dd8c6e7044eb0888b2b98"
+  },
+  "budget": {
+    "physical_main_bytes": 4194304,
+    "arm9_policy_bytes": 3670016,
+    "sdk_arm7_excluded_bytes": 524288,
+    "static_bytes": 42048,
+    "startup_overhead_bytes": 7104,
+    "static_and_startup_bytes": 49152,
+    "managed_bytes": 2293760,
+    "sdk_heap_growth_headroom_bytes": 671744,
+    "reserve_bytes": 655360,
+    "reserve_percent_arm9": 17.857142857142858,
+    "code_envelope_headroom_bytes": 475136,
+    "sdk_runtime_limit_before": 37699584,
+    "sdk_runtime_exclusion_bytes": 475136,
+    "heap_limit_policy": 37224448,
+    "heap_limit_after_reserve": 36569088,
+    "closure_bytes": 3670016
+  },
+  "stack": {
+    "user_stack_config_bytes": 12288,
+    "paint_before": 0,
+    "paint_after": 544,
+    "guard_ok": true,
+    "scope": "Bounded user-stack paint span; not total call-stack, IRQ/SVC or full-game peak",
+    "work_stack_capacity": 8,
+    "work_stack_high_water": 8,
+    "work_stack_failures": 1
+  },
+  "visual_qa": {
+    "passed": true,
+    "report": "research/evidence/nds/n03/visual-qa.json",
+    "report_sha256": "1ba7a82de5922bba6d965cbc565437288bdb6878b102ffa20c9deece31ef4b70"
+  },
+  "source_manifest": "research/evidence/nds/n03/source-manifest.json",
+  "source_manifest_sha256": "663ee304012c11f7c54c746e0621b952224e05b5ef0de55567fe79c405cb77b9",
+  "sdk_evidence": [
+    "research/evidence/nds/n03/sdk-memory-layout.json",
+    "research/evidence/nds/n03/sdk-runtime-heap-evidence.json"
+  ],
+  "decisions": [
+    "IDs use world epoch and slot generation; descriptors borrow immutable data.",
+    "Typed caller-owned GameState shell is initialized metadata, not a loaded world.",
+    "Scene lease/effects boundary preserves room for original visibility/wake order; no pure-render assumption.",
+    "One startup untyped platform malloc, bounded core byte arenas/work stacks, no per-frame core malloc.",
+    "Clamp SDK dynamic heap to accepted linker policy before removing 640KiB emergency reserve.",
+    "Explicit whole-line cache ownership is a platform responsibility; probe flushes slab and observation."
+  ],
+  "limits": [
+    "Hardware DS/DS Lite acceptance deferred to N24.",
+    "Ceilings and current probe are not full-game working-set/FPS measurements.",
+    "No packed DOS layout, GBA implementation, scheduler, renderer, complete world or game saves added."
+  ]
+}

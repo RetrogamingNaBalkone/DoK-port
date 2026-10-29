@@ -1,0 +1,634 @@
+{
+  "schema_version": 1,
+  "task": "N06",
+  "date": "2026-10-29",
+  "status": "ready-emulator",
+  "passed": true,
+  "next_task": "N07",
+  "scope": "projection contract, offline target UI/text and ARM9 bitmap reference viewer",
+  "source_manifest": {
+    "path": "research/evidence/nds/n06/source-manifest.json",
+    "bytes": 2821,
+    "sha256": "bb381ce7daf68a412d11d1df7821801c5c270a3dc4bc998939efe8343af36adc"
+  },
+  "reports": [
+    {
+      "path": "research/evidence/nds/n06/host-check.json",
+      "bytes": 31073,
+      "sha256": "ecfdefb21c9a0d9d22b5e67223af332351b6f947915f402a4f3362b28e59bfb7"
+    },
+    {
+      "path": "research/evidence/nds/n06/build-report.json",
+      "bytes": 2793,
+      "sha256": "7d688423c3bdf36286bc495f5dc9c362387425dc298678a2c180c22e91640334"
+    },
+    {
+      "path": "research/evidence/nds/n06/camera-audit.json",
+      "bytes": 17523,
+      "sha256": "7cb126ee31efd69b024e8445c73cf851218e3356d7ee70c7abe808bbef3c0abe"
+    },
+    {
+      "path": "research/evidence/nds/n06/height-near-fixtures.json",
+      "bytes": 34688,
+      "sha256": "4b3c52c64b0722f13f018a84159d994d4c3efa2bfe0dcc89349837b40dd10d86"
+    },
+    {
+      "path": "research/evidence/nds/n06/ui-layout-report.json",
+      "bytes": 1885394,
+      "sha256": "622929b18a7f17ebeea1a2510f7a3677650a714cde532de0165bff68f2690636"
+    },
+    {
+      "path": "research/evidence/nds/n06/ui-independent-review.json",
+      "bytes": 1172,
+      "sha256": "26ca6d8fe5c081f0a52c8889774f552b40924b4548ec811798d39a76776e1f31"
+    },
+    {
+      "path": "research/evidence/nds/n06/compositor-review.json",
+      "bytes": 2287,
+      "sha256": "b4576de8f43410764908ba1cb175e1219612e53e5a1656c121ffefbb2cd6f1b4"
+    },
+    {
+      "path": "research/evidence/nds/n06/visual-review.json",
+      "bytes": 7666,
+      "sha256": "64174bdaf5454ff7308ca555c52d6482d44c4e9dd9e256da2af0e7df42626249"
+    },
+    {
+      "path": "research/evidence/nds/n06/ui-output-guards.json",
+      "bytes": 511,
+      "sha256": "205b48313b7b7d88e583bf6ea7287234de6d0f4a84299949de20844dc9f04e35"
+    },
+    {
+      "path": "research/evidence/nds/n06/ui-contrast.json",
+      "bytes": 1614,
+      "sha256": "027466d783c42c56170cccccb02078398fb51ee2b221d3b4def4a38b16987257"
+    },
+    {
+      "path": "research/evidence/nds/n06/ui-initial-hud.json",
+      "bytes": 4094,
+      "sha256": "f97c52b4b7814d8a5affa6927da70608bebef070ff3803d1abbd5bb4218e26df"
+    },
+    {
+      "path": "research/evidence/nds/n06/dos/manifest.json",
+      "bytes": 59799,
+      "sha256": "c927c6f6afb3f62531850c378bcef086e9f79fd62a31e2207ffcc88e73826579"
+    },
+    {
+      "path": "research/evidence/nds/n06/dos/clean-source-palette.json",
+      "bytes": 1530,
+      "sha256": "29923d5789d82edc8ee8eee7ecf2ad868e6db7b2dd471d6cd11bb5f7a0301c30"
+    },
+    {
+      "path": "research/evidence/nds/n06/emulator-provenance.json",
+      "bytes": 2305,
+      "sha256": "ca190c396f08136b7caa4abe9e54abfa42b9558b60a15c6fff2edd17851724e6"
+    },
+    {
+      "path": "research/evidence/nds/n06/rgb-expansion-provenance.json",
+      "bytes": 7340,
+      "sha256": "56bb172d13bc29a4a339c6064ee775af62f3e6c07bb36c277214a06cfb933f26"
+    },
+    {
+      "path": "research/evidence/nds/n06/runtime-review.json",
+      "bytes": 4910,
+      "sha256": "eb44bd26ca0baccdbc265d17cc31fcab67d5ba9bb9b6a51b519ed33e03c90b58"
+    },
+    {
+      "path": "research/evidence/nds/n06/emulator/visual-review.json",
+      "bytes": 2176,
+      "sha256": "40e807027952728ec79c9c31aa1f732787125d8a54173857d4aebe7b2d819078"
+    },
+    {
+      "path": "research/evidence/nds/n06/emulator/archive.json",
+      "bytes": 26761,
+      "sha256": "3fbc4fa19f334f968cc5980473d0f27899887023a799746eeb58f4b06f839c38"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "build/nds/n06/dok_nds_visual.nds",
+      "bytes": 140288,
+      "sha256": "517891c891ef3719cefb98a23c6d9ab5a0f8d3218920c5360cd233b379c200f2"
+    },
+    {
+      "path": "build/nds/n06/dok_nds_visual.elf",
+      "bytes": 976800,
+      "sha256": "3f45cc29544ad947f5ab59f8cc1a2a634f4249ee9a7b7e321722694a1976c755"
+    },
+    {
+      "path": "build/nds/n06/dok_nds_visual.map",
+      "bytes": 631648,
+      "sha256": "8173470ca261f11b466b0770b7152011705926e24da9bbfdcb4d06caefdcb145"
+    },
+    {
+      "path": "build/nds/n06/frames/index.dat",
+      "bytes": 1104,
+      "sha256": "85b7af9f79ebe24c7214755592607dcc03c491d6ea3743edba17a0dff5146015"
+    },
+    {
+      "path": "build/nds/n06/frames/manifest.json",
+      "bytes": 44612,
+      "sha256": "525808a561e4c89f1e610b73b2949ad5b0ad3c5a6bb1d7fe0279ea7da6a37f06"
+    },
+    {
+      "path": "build/nds/n06/frames/v00top.bin",
+      "bytes": 98304,
+      "sha256": "9864a816d1240d4b2b02fb7cceb020a225194283d49fa3e20ccd08215c64d8fc"
+    },
+    {
+      "path": "build/nds/n06/frames/v00bot.bin",
+      "bytes": 98304,
+      "sha256": "f639bec025d3bdbf5260e9dca545283a9a90eb785a098df91512471209e497e2"
+    },
+    {
+      "path": "build/nds/n06/frames/v01top.bin",
+      "bytes": 98304,
+      "sha256": "3b618c3ad85764f269dbe5f9e5cf8b2fc9a91c7031c2c31e049c9c31142aec01"
+    },
+    {
+      "path": "build/nds/n06/frames/v01bot.bin",
+      "bytes": 98304,
+      "sha256": "314caf4a5d7d5c24f68702a36edd830d559cdea95895ae987d5cc2fd656a2ddf"
+    },
+    {
+      "path": "build/nds/n06/frames/v02top.bin",
+      "bytes": 98304,
+      "sha256": "1014476a6d70469f4dd36221cb7254d8637045e2dc9734bcac6ae0605557767a"
+    },
+    {
+      "path": "build/nds/n06/frames/v02bot.bin",
+      "bytes": 98304,
+      "sha256": "f639bec025d3bdbf5260e9dca545283a9a90eb785a098df91512471209e497e2"
+    },
+    {
+      "path": "build/nds/n06/frames/v03top.bin",
+      "bytes": 98304,
+      "sha256": "8d5974cbed586b0c3ba105eb98f24478f255806bc07779330f848a29a2df8e5c"
+    },
+    {
+      "path": "build/nds/n06/frames/v03bot.bin",
+      "bytes": 98304,
+      "sha256": "314caf4a5d7d5c24f68702a36edd830d559cdea95895ae987d5cc2fd656a2ddf"
+    },
+    {
+      "path": "build/nds/n06/frames/v04top.bin",
+      "bytes": 98304,
+      "sha256": "0dbbec08a16c31996528dc077c00a8b5be5533c69fbf2ab47e26941eb86ce487"
+    },
+    {
+      "path": "build/nds/n06/frames/v04bot.bin",
+      "bytes": 98304,
+      "sha256": "f639bec025d3bdbf5260e9dca545283a9a90eb785a098df91512471209e497e2"
+    },
+    {
+      "path": "build/nds/n06/frames/v05top.bin",
+      "bytes": 98304,
+      "sha256": "88fbc352e6b83920a11926c4b9fb8b90a7b6ad2c2315e26ffb88de3f95192352"
+    },
+    {
+      "path": "build/nds/n06/frames/v05bot.bin",
+      "bytes": 98304,
+      "sha256": "314caf4a5d7d5c24f68702a36edd830d559cdea95895ae987d5cc2fd656a2ddf"
+    },
+    {
+      "path": "build/nds/n06/frames/v06top.bin",
+      "bytes": 98304,
+      "sha256": "3673491740514350247eab999d460e21b7b60b8e53c4ddae0b5313db65571054"
+    },
+    {
+      "path": "build/nds/n06/frames/v06bot.bin",
+      "bytes": 98304,
+      "sha256": "0e7772c6719e5fdb93a981239c5bdb31ecbf735c2fd986755ebf49cf3387b809"
+    },
+    {
+      "path": "build/nds/n06/frames/v07top.bin",
+      "bytes": 98304,
+      "sha256": "3673491740514350247eab999d460e21b7b60b8e53c4ddae0b5313db65571054"
+    },
+    {
+      "path": "build/nds/n06/frames/v07bot.bin",
+      "bytes": 98304,
+      "sha256": "55a4898a4728de557ba39d9a00d98cbca22c9e1fa387ad97967a37e64d06369e"
+    },
+    {
+      "path": "build/nds/n06/frames/v08top.bin",
+      "bytes": 98304,
+      "sha256": "76fc45ad63fc192b41727b115c318661e5c25d01f782d0b2ac206f4eac5d5018"
+    },
+    {
+      "path": "build/nds/n06/frames/v08bot.bin",
+      "bytes": 98304,
+      "sha256": "f639bec025d3bdbf5260e9dca545283a9a90eb785a098df91512471209e497e2"
+    },
+    {
+      "path": "build/nds/n06/frames/v09top.bin",
+      "bytes": 98304,
+      "sha256": "72fa65c1255e04d96d44256f2a81e3070dd8411249b026da30d654b81a2ed725"
+    },
+    {
+      "path": "build/nds/n06/frames/v09bot.bin",
+      "bytes": 98304,
+      "sha256": "314caf4a5d7d5c24f68702a36edd830d559cdea95895ae987d5cc2fd656a2ddf"
+    },
+    {
+      "path": "build/nds/n06/frames/v10top.bin",
+      "bytes": 98304,
+      "sha256": "be980c54c201f5732dd1e58d2e4dad26303bc3cddb6a92f0e88b734c4c1fe7c6"
+    },
+    {
+      "path": "build/nds/n06/frames/v10bot.bin",
+      "bytes": 98304,
+      "sha256": "992567b2cb0070cc5f4c83a6e398acb64ca40b6f44441920c96e105aa1e15149"
+    },
+    {
+      "path": "build/nds/n06/frames/v11top.bin",
+      "bytes": 98304,
+      "sha256": "be980c54c201f5732dd1e58d2e4dad26303bc3cddb6a92f0e88b734c4c1fe7c6"
+    },
+    {
+      "path": "build/nds/n06/frames/v11bot.bin",
+      "bytes": 98304,
+      "sha256": "d1236bf2b0afdb6e69f5625863cf89ee0875d27f437c4b078f47799f7b5c78a7"
+    },
+    {
+      "path": "build/nds/n06/frames/v12top.bin",
+      "bytes": 98304,
+      "sha256": "be980c54c201f5732dd1e58d2e4dad26303bc3cddb6a92f0e88b734c4c1fe7c6"
+    },
+    {
+      "path": "build/nds/n06/frames/v12bot.bin",
+      "bytes": 98304,
+      "sha256": "a13fa36a8d9e546c579d561957eac4f71bea917f03d7dfb0e1d51b98a8ca3a8f"
+    },
+    {
+      "path": "build/nds/n06/frames/v13top.bin",
+      "bytes": 98304,
+      "sha256": "be980c54c201f5732dd1e58d2e4dad26303bc3cddb6a92f0e88b734c4c1fe7c6"
+    },
+    {
+      "path": "build/nds/n06/frames/v13bot.bin",
+      "bytes": 98304,
+      "sha256": "ed0b0500acc5187c6e6e71b8d72f7302b664172a04945ab34fbf7efc42d22b48"
+    },
+    {
+      "path": "build/nds/n06/frames/v14top.bin",
+      "bytes": 98304,
+      "sha256": "3308fd31da4bc431752ab6f15444d74315c53a7912e12d78a2bcfeb4abe67632"
+    },
+    {
+      "path": "build/nds/n06/frames/v14bot.bin",
+      "bytes": 98304,
+      "sha256": "0c7dca1b8af3a6f6ed71e1f4ea21cb64e58b341938cdf1c622bf160026fc06bd"
+    },
+    {
+      "path": "build/nds/n06/frames/v15top.bin",
+      "bytes": 98304,
+      "sha256": "3173804e24174e36f252f311e69e685d89d45110d1fd3f313f4f80e30629c99d"
+    },
+    {
+      "path": "build/nds/n06/frames/v15bot.bin",
+      "bytes": 98304,
+      "sha256": "73ba961d880739c1e43023bb4e3f1af9e5d14b830dc1147e167845e5ccf44538"
+    }
+  ],
+  "projection": {
+    "native": {
+      "distance": 200,
+      "viewport_scale": 8,
+      "focal_q12": 4096,
+      "principal": [
+        159,
+        79
+      ],
+      "clip": [
+        0,
+        0,
+        319,
+        159
+      ],
+      "height_argument": 161
+    },
+    "target": {
+      "screen": [
+        256,
+        192
+      ],
+      "scene": [
+        256,
+        154
+      ],
+      "hud": [
+        256,
+        38
+      ],
+      "principal": [
+        127.1,
+        76.01875
+      ],
+      "focal": [
+        160,
+        192.5
+      ],
+      "horizontal_fov": 77.31940348121861,
+      "vertical_fov": 43.60260607304559,
+      "vertical_rounding_percent": 0.2604166666666667,
+      "view_expansion": false
+    },
+    "native_checks": 19626,
+    "asm_derived_vectors": 5002,
+    "band_map_vectors": 1525,
+    "runtime_arithmetic": "low32 multiply/add/sub; SAR15; signed IDIV truncation to zero; explicit fault"
+  },
+  "originals": {
+    "report": {
+      "path": "research/evidence/nds/n06/dos/manifest.json",
+      "bytes": 59799,
+      "sha256": "c927c6f6afb3f62531850c378bcef086e9f79fd62a31e2207ffcc88e73826579"
+    },
+    "sessions": 12,
+    "observations": 48,
+    "clean_play_sessions": 6,
+    "source_integrity": true,
+    "guest_memory_writes": false,
+    "globally_paused": false,
+    "effect_phase": "unknown",
+    "measured_palette": "DAC6=max(0,GAMEPn-1), observed match only; fade cause not proven",
+    "world": "both languages use captured RU scenes; original EN differences remain evidence"
+  },
+  "ui": {
+    "story_texts": 16,
+    "story_pages": 34,
+    "message_bindings": 546,
+    "hud_stress_frames": 48,
+    "signed16_width_domain": 65536,
+    "hud_transition_scene_guard_cases": 960,
+    "independent_glyph_bytes": 14233,
+    "independent_numeric_pixels": 73728,
+    "full_text_and_order_preserved": true,
+    "map": "unknown-cell layout only; reveal/touch N20"
+  },
+  "references": {
+    "pairs": 16,
+    "screen_frames": 32,
+    "index": {
+      "path": "build/nds/n06/frames/index.dat",
+      "bytes": 1104,
+      "sha256": "85b7af9f79ebe24c7214755592607dcc03c491d6ea3743edba17a0dff5146015"
+    },
+    "manifest": {
+      "path": "build/nds/n06/frames/manifest.json",
+      "bytes": 44612,
+      "sha256": "525808a561e4c89f1e610b73b2949ad5b0ad3c5a6bb1d7fe0279ea7da6a37f06"
+    },
+    "independent_rgb555_pixels": 1572864,
+    "independent_scene_pixels": 236544,
+    "root_visual_review": {
+      "path": "research/evidence/nds/n06/visual-review.json",
+      "bytes": 7666,
+      "sha256": "64174bdaf5454ff7308ca555c52d6482d44c4e9dd9e256da2af0e7df42626249"
+    }
+  },
+  "toolchain": {
+    "python": "3.14.6",
+    "zig": "0.13.0",
+    "blocksds": "1.24.0-1",
+    "gcc": "16.2.0",
+    "lock_sha256": "76906c4c1c07d6bd6cfcf3be02277477581fdab8fcabf7f85cfd8cc0dff472ef",
+    "pinned_packages": 20
+  },
+  "emulator": {
+    "name": "melonDS DS libretro",
+    "version": "1.4.0",
+    "core_sha256": "c7e6b58c667075a2a9868f2c3ba7a98e24200410a6da3051a7c555f1f0eef8ef",
+    "software_renderer": true,
+    "screen_layout": "top-bottom",
+    "ram_bytes_per_pair": 196608,
+    "displayed_rgb555_pixels_per_pair": 98304,
+    "rgb8_formula": "(c5<<3)|(c5>>3)",
+    "all32_channel_values_verified": true,
+    "scenarios": [
+      {
+        "scenario": "happy",
+        "report": {
+          "path": "research/evidence/nds/n06/emulator/happy/result.json",
+          "bytes": 123677,
+          "sha256": "402a6be2ce757bef40b2544d8f3dec9217a765796e4730c22fab57e609701ef1"
+        },
+        "frames_run": 673,
+        "cases": 16,
+        "checks": 56,
+        "last_observation": {
+          "magic": 911625028,
+          "abi_version": 1,
+          "size_bytes": 104,
+          "sequence": 382,
+          "frame": 159,
+          "status": 3,
+          "error": 0,
+          "ordinal": 15,
+          "case_id": 16,
+          "case_count": 16,
+          "top_base": 33643512,
+          "bottom_base": 33741816,
+          "top_bytes": 98304,
+          "bottom_bytes": 98304,
+          "heap_limit_before": 37699584,
+          "heap_limit_final": 36569088,
+          "reserve_bytes": 655360,
+          "static_bytes": 89044,
+          "startup_overhead": 28,
+          "asset_pool_bytes": 1048576,
+          "staging_bytes": 196608,
+          "sdk_heap_available": 1871872,
+          "read_calls": 66,
+          "read_bytes": 3146832,
+          "max_request": 65536,
+          "displayed": 16
+        },
+        "unchanged_fixture": true
+      },
+      {
+        "scenario": "bad-index",
+        "report": {
+          "path": "research/evidence/nds/n06/emulator/bad-index/result.json",
+          "bytes": 7328,
+          "sha256": "887fb2129e587b07a10e07a4b86b3f0700d2aa586977361b9501f60330bf2a01"
+        },
+        "frames_run": 9,
+        "cases": 0,
+        "checks": 5,
+        "last_observation": {
+          "magic": 911625028,
+          "abi_version": 1,
+          "size_bytes": 104,
+          "sequence": 16,
+          "frame": 8,
+          "status": 2,
+          "error": 3,
+          "ordinal": 0,
+          "case_id": 0,
+          "case_count": 16,
+          "top_base": 33643512,
+          "bottom_base": 33741816,
+          "top_bytes": 98304,
+          "bottom_bytes": 98304,
+          "heap_limit_before": 37699584,
+          "heap_limit_final": 36569088,
+          "reserve_bytes": 655360,
+          "static_bytes": 89044,
+          "startup_overhead": 28,
+          "asset_pool_bytes": 1048576,
+          "staging_bytes": 196608,
+          "sdk_heap_available": 1871872,
+          "read_calls": 2,
+          "read_bytes": 1104,
+          "max_request": 1088,
+          "displayed": 0
+        },
+        "unchanged_fixture": true
+      },
+      {
+        "scenario": "bad-hash",
+        "report": {
+          "path": "research/evidence/nds/n06/emulator/bad-hash/result.json",
+          "bytes": 18650,
+          "sha256": "e4e1f128bf6bc151ea22bf5d6a11d760d60485f87d49d10adee5c720c6f45236"
+        },
+        "frames_run": 81,
+        "cases": 1,
+        "checks": 10,
+        "last_observation": {
+          "magic": 911625028,
+          "abi_version": 1,
+          "size_bytes": 104,
+          "sequence": 38,
+          "frame": 16,
+          "status": 2,
+          "error": 4,
+          "ordinal": 0,
+          "case_id": 1,
+          "case_count": 16,
+          "top_base": 33643512,
+          "bottom_base": 33741816,
+          "top_bytes": 98304,
+          "bottom_bytes": 98304,
+          "heap_limit_before": 37699584,
+          "heap_limit_final": 36569088,
+          "reserve_bytes": 655360,
+          "static_bytes": 89044,
+          "startup_overhead": 28,
+          "asset_pool_bytes": 1048576,
+          "staging_bytes": 196608,
+          "sdk_heap_available": 1871872,
+          "read_calls": 10,
+          "read_bytes": 394320,
+          "max_request": 65536,
+          "displayed": 1
+        },
+        "unchanged_fixture": true
+      },
+      {
+        "scenario": "short-frame",
+        "report": {
+          "path": "research/evidence/nds/n06/emulator/short-frame/result.json",
+          "bytes": 18677,
+          "sha256": "57c0c706f05d40ddc3ea3ae94e7257cb22ba18a0520f929aedf056ffeeb8c8aa"
+        },
+        "frames_run": 67,
+        "cases": 1,
+        "checks": 10,
+        "last_observation": {
+          "magic": 911625028,
+          "abi_version": 1,
+          "size_bytes": 104,
+          "sequence": 40,
+          "frame": 17,
+          "status": 2,
+          "error": 4,
+          "ordinal": 0,
+          "case_id": 1,
+          "case_count": 16,
+          "top_base": 33643512,
+          "bottom_base": 33741816,
+          "top_bytes": 98304,
+          "bottom_bytes": 98304,
+          "heap_limit_before": 37699584,
+          "heap_limit_final": 36569088,
+          "reserve_bytes": 655360,
+          "static_bytes": 89044,
+          "startup_overhead": 28,
+          "asset_pool_bytes": 1048576,
+          "staging_bytes": 196608,
+          "sdk_heap_available": 1871872,
+          "read_calls": 10,
+          "read_bytes": 394319,
+          "max_request": 65536,
+          "displayed": 1
+        },
+        "unchanged_fixture": true
+      },
+      {
+        "scenario": "bad-pixel",
+        "report": {
+          "path": "research/evidence/nds/n06/emulator/bad-pixel/result.json",
+          "bytes": 18659,
+          "sha256": "8d95f9ddbacfb8f0f8e337d3bc644cbe82e3d2c9dab4d71ea49a289ce67e6c2e"
+        },
+        "frames_run": 81,
+        "cases": 1,
+        "checks": 10,
+        "last_observation": {
+          "magic": 911625028,
+          "abi_version": 1,
+          "size_bytes": 104,
+          "sequence": 38,
+          "frame": 16,
+          "status": 2,
+          "error": 4,
+          "ordinal": 0,
+          "case_id": 1,
+          "case_count": 16,
+          "top_base": 33643512,
+          "bottom_base": 33741816,
+          "top_bytes": 98304,
+          "bottom_bytes": 98304,
+          "heap_limit_before": 37699584,
+          "heap_limit_final": 36569088,
+          "reserve_bytes": 655360,
+          "static_bytes": 89044,
+          "startup_overhead": 28,
+          "asset_pool_bytes": 1048576,
+          "staging_bytes": 196608,
+          "sdk_heap_available": 1871872,
+          "read_calls": 10,
+          "read_bytes": 394320,
+          "max_request": 65536,
+          "displayed": 1
+        },
+        "unchanged_fixture": true
+      }
+    ]
+  },
+  "memory": {
+    "static_bytes": 89044,
+    "startup_overhead": 28,
+    "asset_pool_bytes": 1048576,
+    "staging_bytes": 196608,
+    "sdk_heap_available": 1871872,
+    "reserve_bytes": 655360,
+    "heap_limit_before": 37699584,
+    "heap_limit_final": 36569088,
+    "max_request": 65536,
+    "static_plus_startup_bytes": 89072,
+    "sdk_allocation_alignment_residual_bytes": 5136
+  },
+  "limitations": [
+    "Bitmap viewer is not N07 3D renderer or N19 runtime HUD.",
+    "Linux linked, not executed; no physical DS/DS Lite or LCD/readability/FPS measurement.",
+    "Physical final build verification deferred to N24 by user instruction.",
+    "Synthetic height controls are ASM/data-derived, not executed DOS low-corridor captures.",
+    "GPU raster interpolation/clipping precision, geometry working set and near/far need N07.",
+    "LIGHT, palette timing, water/reflections need N13; gameplay cadence and UI need N08/N19.",
+    "Viewer heap headroom is not full-game RAM peak; other N03 regions not allocated by viewer.",
+    "No game saves added; previous N03-N05 artifacts and package preserved."
+  ]
+}
