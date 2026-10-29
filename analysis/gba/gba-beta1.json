@@ -1,0 +1,42 @@
+{
+  "release": "Dungeons of Kremlin - GBA Beta 1",
+  "tag": "gba-beta1",
+  "date": "2026-10-29",
+  "prerelease": true,
+  "repository": "RetrogamingNaBalkone/DoK-port",
+  "release_url": "https://github.com/RetrogamingNaBalkone/DoK-port/releases/tag/gba-beta1",
+  "notes": "docs/gba/releases/beta1.md",
+  "rom": {
+    "name": "Dungeons.of.Kremlin.Beta1.gba",
+    "path": "build/gba/releases/gba-beta1/Dungeons.of.Kremlin.Beta1.gba",
+    "bytes": 26645528,
+    "sha256": "cf30cf8ab1e21c35b2da1f13d3fb5cda8224b27efe32041ac9893fce5727df57",
+    "verified_source": "artifacts/gba/DoK-port_UI01.gba"
+  },
+  "checksum": {
+    "name": "Dungeons.of.Kremlin.Beta1.sha256",
+    "path": "build/gba/releases/gba-beta1/Dungeons.of.Kremlin.Beta1.sha256",
+    "sha256": "28dbe9c00d0e4951b85e442ae7d598ccd21ed5d4695a1d6708f47adc6fbc53a7"
+  },
+  "validation_summary": "analysis/gba/ui01-credits-20261029.json",
+  "validation_summary_sha256": "31f844c1158e65000ccd2a9e6270a069e5934e963f548241d12a92dbb7d35309",
+  "verified_reports": [
+    "credits",
+    "story",
+    "flow",
+    "ui",
+    "frontend",
+    "frontend_latency"
+  ],
+  "source_pins_verified": true,
+  "renaming_changes_bytes": false,
+  "scope": "GBA only; unrelated NDS working tree excluded",
+  "release_authorized_with_known_limits": true,
+  "limits": [
+    "No stable 30 FPS guarantee",
+    "No game saves",
+    "Physical GBA and original BIOS not tested",
+    "Full manual playthrough not tested"
+  ],
+  "gba_task_status": "G21 in progress; G20 budget open; beta publication does not close final acceptance"
+}

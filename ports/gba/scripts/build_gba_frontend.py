@@ -50,13 +50,14 @@ def main():
         for name,script,extra in (
             ('latency','verify_frontend_latency.py',[]),
             ('frontend','verify_frontend_gba.py',[]),('ui','verify_ui_gba.py',[]),('flow','verify_flow_gba.py',[]),
+            ('credits','verify_credits_gba.py',[]),
             ('audio','verify_audio_gba.py',[]),('time','verify_time_gba.py',[]),('arm','verify_performance_arm.py',[]),
             ('water','verify_gba_hardware_water.py',[]),('sprites','verify_sprites_gba.py',[]),
             ('transitions','verify_gba_hardware_transitions.py',['--mode4-transitions'])):
             run(name,[sys.executable,'ports/gba/scripts/'+script,'--build-dir',build,'--report',args.out/(name+'.json'),*extra])
     sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
     sources=[p for folder in ('ports/gba/src','ports/gba/platform','ports/gba/include/dok') for p in (ROOT/folder).rglob('*') if p.suffix in ('.c','.h','.inc','.S','.ld')]
-    sources += [ROOT/'ports/gba/scripts'/name for name in ('ui_copy.py','build_gba_frontend.py','prototype_gba_bsp.py','build-gba.ps1','verify_frontend_gba.py')]
+    sources += [ROOT/'ports/gba/scripts'/name for name in ('ui_copy.py','build_gba_frontend.py','prototype_gba_bsp.py','build-gba.ps1','verify_frontend_gba.py','verify_credits_gba.py','verify_flow_gba.py')]
     result=dict(task='G20B/UI01',rom_sha256=sha(build/'dok-diagnostic.gba'),rom_bytes=(build/'dok-diagnostic.gba').stat().st_size,
                 build_dir=build.as_posix(),renderer='hw_v128_entity_rect / selected2775 architecture',verified=args.verify,
                 host_executed=True,linux_compiled_only=True,thumb_compiled=True,commands=commands,

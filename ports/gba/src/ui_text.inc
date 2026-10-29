@@ -2,6 +2,8 @@
 static const char *const ui_title[2]={"\217\216\204\207\205\214\205\213\234\237 \212\220\205\214\213\237","KREMLIN DUNGEONS"};
 static const char *const ui_start[2]={"\215\200\227\200\222\234 \210\203\220\223","START GAME"};
 static const char *const ui_story[2]={"\217\220\205\204\233\221\222\216\220\210\237","STORY"};
+static const char *const ui_about[2]={"\216\201 \200\202\222\216\220\200\225","CREDITS"};
+static const char *const ui_port_credit[2]={"GBA-\257\256\340\342\012\012\220\245\342\340\256\243\245\251\254\250\255\243 \255\240 \241\240\253\252\256\255\245","GBA port by\012\012Retrogaming Na Balkone"};
 static const char *const ui_choose[2]={"\202\233\201\216\220 \223\220\216\202\215\237","SELECT LEVEL"};
 static const char *const ui_level_hint[2]={"B: \215\200\207\200\204  SELECT: \237\207\233\212","B: BACK  SELECT: LANG"};
 static const char *const ui_levels[2][3]={{"\225\216\220\216\214\233 \215\205\227\210\221\222\210","\217\216\204\207\205\214\215\200\237 \220\205\212\200","\217\216\204\202\200\213\233 \212\220\205\214\213\237"},{"PALACE OF EVIL","SACRED RIVER","UNDERGROUND KREMLIN"}};

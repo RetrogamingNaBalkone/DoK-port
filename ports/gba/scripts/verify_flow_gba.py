@@ -167,8 +167,12 @@ class FlowProbe(UIProbe):
         source = data[name.encode().hex()]
         rows = screen_lines(source)
         expected_pages = (len(rows)+13)//14
+        credits = name == 'ENDTXT'
+        if credits:
+            assert expected_pages == 1, 'Original authors must fit the first credits screen'
+        display_pages = 2 if credits else expected_pages
         f = self.flow()
-        assert f['text_size'] == len(source) and f['pages'] == expected_pages, (name, f, expected_pages)
+        assert f['text_size'] == len(source) and f['pages'] == display_pages, (name, f, display_pages)
         assert f['page'] == 0
         pages = []
         for page in range(expected_pages):
@@ -184,7 +188,7 @@ class FlowProbe(UIProbe):
                     self.screen(f'layout-failure-{name}-{language}-{page}')
                     raise AssertionError((name,language,page,row,line.decode('cp866'))) from error
             hint = 'A/START: OK B: BACK' if language else 'A/START: OK B: НАЗАД'
-            footer = f'{hint} {page+1}/{expected_pages}'.encode('cp866')
+            footer = f'{hint} {page+1}/{display_pages}'.encode('cp866')
             message_mask(raw, font, footer, white)
             assert self.flow()['page'] == page
             pages.append(self.screen(f'{name.lower()}-{language}-page{page}'))
@@ -203,6 +207,20 @@ class FlowProbe(UIProbe):
                            source=origin, source_sha256=hashlib.sha256(source).hexdigest(),
                            all_original_text_pixels=True))
         self.press(8)
+        if credits:
+            assert self.flow()['state'] == 5 and self.flow()['page'] == 1
+            raw, palette = self.frame()
+            _, white = ui_colors(palette)
+            text = ('GBA port by\n\nRetrogaming Na Balkone' if language else
+                    'GBA-порт\n\nРетрогейминг на балконе').encode('cp866')
+            rows = screen_lines(text)
+            for row in range(14):
+                line = rows[row] if row < len(rows) else b''
+                glyph_mask(raw, font, 8, 24+row*8, line.ljust(28, b' '), white)
+            message_mask(raw, font, f'{hint} 2/2'.encode('cp866'), white)
+            output.append(dict(resource='GBA port attribution', language=language,
+                               text=text.decode('cp866'), screen=self.screen(f'credits-port-{language}')))
+            self.press(8)
 
     def to_title(self):
         self.press(2, 3)
@@ -330,8 +348,7 @@ def main():
                                    score_collection_required=False, score=0, total=0,
                                    completed_to_title=True, fresh_inventory_on_start=True,
                                    retired_world_event_projectile_audio_cleanup=True))
-            # Original ENDTXT belongs to leaving the title menu, not a newly
-            # invented campaign after LEVEL3.
+            # Credits retain original ENDTXT, followed by the GBA attribution.
             p.menu_focus(4)
             p.press(8)
             p.wait_flow(5)
@@ -371,12 +388,20 @@ def main():
         assert p.world_sha()==world_before and p.owners_snapshot()==owners_before
         assert p.frontend.read(p.symbols['g_combat']+12,10240+512)==slots_before
         assert p.words('g_audio_diag',2)[1]==1
-        # END means close the run even when entered from a suspended session.
-        p.to_title();p.menu_focus(4);p.press(8);p.wait_flow(5)
-        assert p.flow()['session']==0
-        assert p.owner_counts()==dict(ai=0,visual=0,interactions=0),p.owner_counts()
-        assert not p.active_slots() and p.words('g_audio_diag',2)[1]==0
+        # Credits are menu information, including over a suspended live world.
+        p.to_title();p.menu_focus(4)
+        world_before=p.world_sha();owners_before=p.owners_snapshot()
+        slots_before=p.frontend.read(p.symbols['g_combat']+12,10240+512)
+        starts=p.words('g_audio_diag',19)[7]
+        p.press(8);p.wait_flow(5)
+        assert p.flow()['session']==1
+        assert p.world_sha()==world_before and p.owners_snapshot()==owners_before
+        assert p.frontend.read(p.symbols['g_combat']+12,10240+512)==slots_before
+        assert p.words('g_audio_diag',19)[18]==0x20000001
         p.source_screens('ENDTXT',0,screens);p.wait_flow(0)
+        assert p.world_sha()==world_before and p.owners_snapshot()==owners_before
+        assert p.frontend.read(p.symbols['g_combat']+12,10240+512)==slots_before
+        assert p.words('g_audio_diag',19)[7]==starts
         # Starting a new world over a live suspended world also discards its
         # actors, dynamic occupancy, owners and DMA stream.
         p.new_game(0,0);p.source_screens('BINTRO1',0,screens);p.wait_flow(2)
@@ -396,9 +421,9 @@ def main():
         assert sha(p.rom) == p.metadata['rom_sha256'], 'ROM changed during verification'
         report = dict(task='G18',status='passed',rom_sha256=sha(p.rom),script_sha256=sha(__file__),
                       levels=levels,retries=retries,screens=screens,ui_screens=ui_screens,gameover_three_lives=True,
-                      new_game_after_gameover=True,ending_from_title=True,
+                      new_game_after_gameover=True,credits_from_title=True,
                       pause_continue_preserved_world_events_projectiles=True,
-                      ending_discarded_suspended_world_streams=True,
+                      credits_preserved_suspended_world_events_projectiles=True,
                       new_game_replaced_live_world_without_old_owners=True,
                       negative_hp_native_finish_sentinel=True,
                       source_flow_independent_levels=True,no_automatic_campaign_or_inventory_carry=True,

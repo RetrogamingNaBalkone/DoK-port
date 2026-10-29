@@ -12,6 +12,8 @@ COPY = {
  "ui_title": ["ПОДЗЕМЕЛЬЯ КРЕМЛЯ", "KREMLIN DUNGEONS"],
  "ui_start": ["НАЧАТЬ ИГРУ", "START GAME"],
  "ui_story": ["ПРЕДЫСТОРИЯ", "STORY"],
+ "ui_about": ["ОБ АВТОРАХ", "CREDITS"],
+ "ui_port_credit": ["GBA-порт\n\nРетрогейминг на балконе", "GBA port by\n\nRetrogaming Na Balkone"],
  "ui_choose": ["ВЫБОР УРОВНЯ", "SELECT LEVEL"],
  "ui_level_hint": ["B: НАЗАД  SELECT: ЯЗЫК", "B: BACK  SELECT: LANG"],
  "ui_levels": [["ХОРОМЫ НЕЧИСТИ", "ПОДЗЕМНАЯ РЕКА", "ПОДВАЛЫ КРЕМЛЯ"],

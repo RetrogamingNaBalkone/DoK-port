@@ -38,7 +38,7 @@ void gba_flow_menu(void){
  if(legacy){g_ui.action=0;return;}
  if(g_ui.action){unsigned action=g_ui.action;g_ui.action=0;
   if(action==DOK_UI_STORY){change(STORY);g_ui.state=DOK_UI_TITLE;select_text();}
-  else if(action==DOK_UI_CREDITS){session=0;pending=5;resume=FINAL;change(FINAL);g_ui.state=DOK_UI_PLAY;select_text();}
+  else if(action==DOK_UI_CREDITS){change(FINAL);g_ui.state=DOK_UI_TITLE;select_text();}
   else if(action==DOK_UI_NEW_GAME){pending=1;g_ui.state=DOK_UI_TITLE;}
   else {change(resume);g_ui.state=DOK_UI_PLAY;select_text();}
  }
@@ -49,14 +49,14 @@ unsigned gba_flow_input(uint16_t keys){
  g_ui.last_keys=keys;
  if(pressed&4){g_ui.language^=1;changed=1;select_text();}
  if((pressed&2) && page){--page;}
- else if(pressed&2){resume=state;change(TITLE);g_ui.state=DOK_UI_TITLE;g_ui.focus=resume==STORY?3:0;g_ui.blocked|=keys;}
+ else if(pressed&2){resume=state;change(TITLE);g_ui.state=DOK_UI_TITLE;g_ui.focus=resume==STORY?3:resume==FINAL?4:0;g_ui.blocked|=keys;}
  else if(pressed&(1|8)){
-  unsigned pages=screen.data?dok_ui_screen_pages(screen.data,screen.size):1;
+  unsigned pages=state==FINAL?2:screen.data?dok_ui_screen_pages(screen.data,screen.size):1;
   if(page+1<pages)++page;
   else if(state==INTRO){change(PLAY);g_ui.state=DOK_UI_PLAY;g_ui.blocked|=keys;}
   else if(state==DEATH){pending=3;}
   else if(state==OUTRO){session=0;resume=PLAY;change(TITLE);g_ui.state=DOK_UI_LEVELS;g_ui.focus=g_ui.start_level;g_ui.blocked|=keys;select_text();}
-  else {unsigned story=state==STORY;if(!story)session=0;resume=PLAY;change(TITLE);g_ui.state=DOK_UI_TITLE;g_ui.focus=story?3:0;g_ui.blocked|=keys;}
+  else {unsigned menu_text=state==STORY || state==FINAL,focus=state==STORY?3:state==FINAL?4:0;if(!menu_text)session=0;resume=PLAY;change(TITLE);g_ui.state=DOK_UI_TITLE;g_ui.focus=focus;g_ui.blocked|=keys;}
  }
  return changed;
 }
@@ -71,20 +71,19 @@ void gba_flow_update(void){
   if(pending==1){legacy=0;session=1;gba_flow_load(g_ui.start_level,0);++g_flow_diag.resets;change(INTRO);g_ui.state=DOK_UI_PLAY;select_text();}
   else if(pending==2){gba_flow_quiet();change(OUTRO);resume=OUTRO;select_text();}
   else if(pending==3){if(!dok_flow_retry(&g_render_world))++g_flow_diag.errors;change(PLAY);g_ui.state=DOK_UI_PLAY;g_ui.blocked|=previous;gba_motion_hold(previous);}
-  else if(pending==5){gba_flow_quiet();}
   pending=0;
   if(state==PLAY && g_render_world.player.health==0){
    g_render_world.player.lives=(int16_t)(uint16_t)((uint16_t)g_render_world.player.lives-1u);
    gba_audio_event((uint16_t)(g_render_world.player_index-1),0xa6,0);change(g_render_world.player.lives!=0?DEATH:GAMEOVER);resume=state;if(state==GAMEOVER){session=0;gba_flow_quiet();}select_text();
   }
  }
- gba_audio_menu(!legacy && ((state==TITLE && dok_ui_frontend(&g_ui)) || state==STORY));
+ gba_audio_menu(!legacy && ((state==TITLE && dok_ui_frontend(&g_ui)) || state==STORY || state==FINAL));
  gba_time_pause(!gba_flow_active());
  if(!gba_flow_active())gba_motion_hold(previous);
  g_flow_diag.state=state;g_flow_diag.level=gba_flow_level();g_flow_diag.session=session;
  g_flow_diag.lives=(uint32_t)(int32_t)g_render_world.player.lives;g_flow_diag.score=(uint32_t)(int32_t)g_render_world.player.score;
  g_flow_diag.pending=pending;g_flow_diag.text_id=screen_id;g_flow_diag.text_size=screen.size;g_flow_diag.page=page;
- g_flow_diag.pages=screen.data?dok_ui_screen_pages(screen.data,screen.size):1;
+ g_flow_diag.pages=state==FINAL?2:screen.data?dok_ui_screen_pages(screen.data,screen.size):1;
 }
 void gba_flow_draw(uint8_t *f,const uint8_t *f8,const uint8_t *f16,unsigned fg,unsigned bg){
  if(!gba_flow_screen())return;
@@ -92,6 +91,7 @@ void gba_flow_draw(uint8_t *f,const uint8_t *f8,const uint8_t *f16,unsigned fg,u
  static const uint8_t retry_ru[]={0x8f,0x8e,0x82,0x92,0x8e,0x90,0x20,0x8f,0x8e,0x8f,0x9b,0x92,0x8a,0x88};
  static const uint8_t over_ru[]={0x88,0x83,0x90,0x80,0x20,0x8e,0x8a,0x8e,0x8d,0x97,0x85,0x8d,0x80};
  const uint8_t *text=screen.data;size_t size=screen.size;
+ if(state==FINAL){dok_ui_credits(f,f8,f16,fg,bg,text,size,page,g_ui.language);return;}
  if(!text){if(state==DEATH){text=g_ui.language?(const uint8_t *)"TRY AGAIN":retry_ru;size=g_ui.language?9:sizeof(retry_ru);}else{text=g_ui.language?(const uint8_t *)"GAME OVER":over_ru;size=g_ui.language?9:sizeof(over_ru);}}
  dok_ui_screen(f,f8,f16,fg,bg,text,size,page,state==STORY?(g_ui.language?"STORY":"\217\220\205\204\233\221\222\216\220\210\237"):headings[g_ui.language][state==INTRO?0:state==OUTRO?1:state==FINAL?2:state==DEATH?3:4],g_ui.language);
 }

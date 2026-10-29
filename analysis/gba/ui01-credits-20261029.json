@@ -1,0 +1,126 @@
+{
+  "task": "G20B/G21/UI01 credits",
+  "date": "2026-10-29",
+  "status": "completed scoped menu change; G21 in progress",
+  "rom": {
+    "path": "artifacts/gba/DoK-port_UI01.gba",
+    "bytes": 26645528,
+    "sha256": "cf30cf8ab1e21c35b2da1f13d3fb5cda8224b27efe32041ac9893fce5727df57",
+    "build_dir": "build/gba/ui01-credits/hardware/hw_v128_entity_rect"
+  },
+  "menu": {
+    "ru": "Об авторах",
+    "en": "Credits",
+    "screens": 2,
+    "original_resource": "ENDTXT",
+    "port_ru": "Ретрогейминг на балконе",
+    "port_en": "Retrogaming Na Balkone"
+  },
+  "checks": {
+    "host_ui_executed": true,
+    "linux_and_thumb_compiled": true,
+    "credits_exit_cases": 54,
+    "original_and_port_font_pixels": true,
+    "menu_pixels_and_palette_restored": true,
+    "locale_preserves_page": true,
+    "world_session_and_resets_preserved": true,
+    "suspended_events_and_projectiles_preserved": true,
+    "menu_music_uninterrupted": true,
+    "frontend_music": {
+      "wav": "build/gba/ui01-credits/hardware/hw_v128_entity_rect/audio-check/ui01-menu-two-loops.wav",
+      "sha256": "c2939261ee1bc0e268de637858757ca70120434f9e7beba3825b4a01450e862b",
+      "seconds": 86.17718505859375,
+      "loops": 2,
+      "starts": 1,
+      "underruns": 0,
+      "max_irq_gap": 412,
+      "repeat_correlation": 0.9938049626928829,
+      "stereo_channels_equal": true,
+      "stop_before_intro": true,
+      "no_menu_music_in_pause": true,
+      "restart_on_return": true
+    },
+    "flow_worlds": 6,
+    "story_regression": true,
+    "ui_regression": true,
+    "latency_cases": 16,
+    "boot_vblank": 10,
+    "max_ui_frames": 5,
+    "repeat_rom_byte_exact": true,
+    "screens_visually_reviewed": [
+      "credits-menu-0",
+      "endtxt-0-page0",
+      "credits-port-0",
+      "credits-port-1",
+      "credits-menu-1",
+      "endtxt-1-page0"
+    ],
+    "original_res_sha256_unchanged": true
+  },
+  "memory": {
+    "ewram_static_bytes": 261444,
+    "iwram_bytes": 24428,
+    "stack": {
+      "main_stack_low": 50356224,
+      "main_stack_top": 50364160,
+      "sentinel_word": 219540062,
+      "untouched_margin_bytes": 5360,
+      "high_water_bytes": 2576,
+      "irq_and_bios_excluded": true,
+      "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+    }
+  },
+  "reports": {
+    "credits": {
+      "path": "build/gba/ui01-credits/credits.json",
+      "sha256": "227d346967500fdadbd8d121b73a41eea254c23054463153b3fde7582dd5d428",
+      "status": "passed"
+    },
+    "story": {
+      "path": "build/gba/ui01-credits/story.json",
+      "sha256": "849ce1249ce3cd019295c0c2205ce8e79e7aa108f68c43dca8000d84e3acaa33",
+      "status": "passed"
+    },
+    "flow": {
+      "path": "build/gba/ui01-credits/flow.json",
+      "sha256": "2b30afe9e2ced32b4ef7b81ecc64ae9e20ce7008ab43371e181f9de400dcbdbd",
+      "status": "passed"
+    },
+    "ui": {
+      "path": "build/gba/ui01-credits/ui.json",
+      "sha256": "f91b9cea17878b4a157ceaf034100c11ff15e449d3e334784d16dffb255764fd",
+      "status": "passed"
+    },
+    "frontend": {
+      "path": "build/gba/ui01-credits/frontend.json",
+      "sha256": "083ee95d6eeca5e308d964ca905986dc38be8595309e6f6b3a37c0bf7b5131b6",
+      "status": "passed"
+    },
+    "frontend_latency": {
+      "path": "build/gba/ui01-credits/frontend_latency.json",
+      "sha256": "8f0c69f20f8899c78c6fc11c2d98fab03d68fcb983a51f1269b32a8c8bfab9db",
+      "status": "passed"
+    }
+  },
+  "sources": {
+    "ports/gba/include/dok/ui.h": "f46a7d4ff6eac2269321af2205bc701e15b041c6565b05e960f9048e71cde55d",
+    "ports/gba/platform/flow_backend.c": "57802756a19ea889b738d317deed2a93408505f91707e4fa4b4a20f73acbf8d2",
+    "ports/gba/src/ui.c": "659c717142b4d24cabd3143c3a4b5ad18e1db38266ccbd071c91cb89bb2579df",
+    "ports/gba/src/ui_text.inc": "a239b8e76d34a86eac13aafa7fb3914fb0f2e0dba24e9782f08a7e02797a7fbf",
+    "ports/gba/scripts/ui_copy.py": "d10b06171ee165a9a4cffe5219e1cc53cf13c117fe924cd0fdf5f7ee17f3db62",
+    "ports/gba/scripts/build_gba_frontend.py": "6a7d8466bc7ecbefcac2597bcddcc32a7a34d57bd7d59df1fc55167148ca7efe",
+    "ports/gba/scripts/verify_credits_gba.py": "c6f34759822500739132958d7e15da8c04e61230eba5ee4cfc22311e6e9f17f1",
+    "ports/gba/scripts/verify_flow_gba.py": "dab97d804dcb24f8dcfd8fbbefa5c396af34d88a883eee80f286d5e51f9b8e26"
+  },
+  "repeat": {
+    "manifest": "build/gba/ui01-credits-repeat/frontend-build.json",
+    "sha256": "64951b78546ed68f075979d1fd7dad34a270c4c22436eea443c253920a4fe1f4",
+    "rom_sha256": "cf30cf8ab1e21c35b2da1f13d3fb5cda8224b27efe32041ac9893fce5727df57"
+  },
+  "limitations": [
+    "physical GBA not tested",
+    "full playthrough not tested",
+    "G20 budget open; G21 release acceptance open"
+  ],
+  "next_task": "G21 then G22"
+}

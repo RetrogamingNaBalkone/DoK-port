@@ -24,6 +24,8 @@ typedef struct {
  int16_t map_x,map_y;uint16_t map_centered,map_repeat;
 } dok_ui;
 void dok_ui_screen(uint8_t *,const uint8_t *,const uint8_t *,unsigned,unsigned,const uint8_t *,size_t,unsigned,const char *,unsigned);
+/* Two screens: original ENDTXT, then localized GBA port attribution. */
+void dok_ui_credits(uint8_t *,const uint8_t *,const uint8_t *,unsigned,unsigned,const uint8_t *,size_t,unsigned,unsigned);
 unsigned dok_ui_screen_pages(const uint8_t *,size_t);
 void dok_ui_init(dok_ui *);
 /* GBA map discovery, using the already reserved visited plane. */

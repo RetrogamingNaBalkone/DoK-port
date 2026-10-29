@@ -250,7 +250,6 @@ void dok_ui_explore(dok_runtime *w){
 }
 #include "ui_map.inc"
 #include "ui_text.inc"
-static const char *const ui_end[2]={"\202\233\225\216\204", "END / CREDITS"};
 #ifdef DOK_RENDER_HW_UI_REUSE_PROTOTYPE
 unsigned g_hw_ui_changed;
 static unsigned hw_ui_valid,hw_ui_key[11];
@@ -341,7 +340,7 @@ void dok_ui_draw(dok_ui *u,uint8_t *frame,const dok_runtime *w,const uint8_t *f8
   unsigned rows=u->state==DOK_UI_TITLE?5:4,spacing=u->state==DOK_UI_TITLE?14:17;
   for(unsigned i=0;i<rows;i++){
    if(i==u->focus){box(&c,14,44+i*spacing,212,12,fg);c.fg=bg;}
-   label(&c,18,46+i*spacing,(i==0 && u->state==DOK_UI_TITLE)?ui_start[en]:(i==3 && u->state==DOK_UI_TITLE)?ui_story[en]:(i==4 && u->state==DOK_UI_TITLE)?ui_end[en]:ui_menu[en][i],8);
+   label(&c,18,46+i*spacing,(i==0 && u->state==DOK_UI_TITLE)?ui_start[en]:(i==3 && u->state==DOK_UI_TITLE)?ui_story[en]:(i==4 && u->state==DOK_UI_TITLE)?ui_about[en]:ui_menu[en][i],8);
    if(i==1)label(&c,184,46+i*spacing,en?"ENG":"RUS",8);
    c.fg=fg;
   }
@@ -404,16 +403,26 @@ static unsigned screen_layout(canvas *c,const uint8_t *s,size_t n,unsigned page)
  return rows?(rows+13)/14:1;
 }
 unsigned dok_ui_screen_pages(const uint8_t *s,size_t n){return screen_layout(0,s,n,0);}
-void dok_ui_screen(uint8_t *f,const uint8_t *f8,const uint8_t *f16,unsigned fg,unsigned bg,const uint8_t *s,size_t n,unsigned page,const char *heading,unsigned language){
+static void screen_draw(uint8_t *f,const uint8_t *f8,const uint8_t *f16,unsigned fg,unsigned bg,const uint8_t *s,size_t n,unsigned page,const char *heading,unsigned language,unsigned display_page,unsigned pages){
  canvas c={f,f8,f16,fg,bg};panel(&c,0,0,240,160);label(&c,8,4,heading,16);
- unsigned pages=screen_layout(&c,s,n,page);
+ unsigned text_pages=screen_layout(&c,s,n,page);if(!pages)pages=text_pages;
  uint8_t footer[60];const char *hint=language?"A/START: OK B: BACK":"A/START: OK B: \215\200\207\200\204";
  size_t count=length(hint);for(size_t i=0;i<count;i++)footer[i]=(uint8_t)hint[i];
  footer[count++]=' ';
- unsigned values[2]={page+1,pages};
+ unsigned values[2]={display_page+1,pages};
  for(unsigned i=0;i<2;i++){
   uint8_t digits[10];unsigned used=0,v=values[i];do{digits[used++]=(uint8_t)('0'+v%10);v/=10;}while(v);
   while(used)footer[count++]=digits[--used];if(!i)footer[count++]='/';
  }
  message_line(&c,footer,count);
+}
+void dok_ui_screen(uint8_t *f,const uint8_t *f8,const uint8_t *f16,unsigned fg,unsigned bg,const uint8_t *s,size_t n,unsigned page,const char *heading,unsigned language){
+ screen_draw(f,f8,f16,fg,bg,s,n,page,heading,language,page,0);
+}
+void dok_ui_credits(uint8_t *f,const uint8_t *f8,const uint8_t *f16,unsigned fg,unsigned bg,const uint8_t *original,size_t n,unsigned page,unsigned language){
+ /* Original ENDTXT fits one screen in both locales. Keep its ROM bytes;
+  * the second screen is the explicitly requested GBA attribution. */
+ const uint8_t *s=page?(const uint8_t *)ui_port_credit[language]:original;
+ if(page)n=length((const char *)s);
+ screen_draw(f,f8,f16,fg,bg,s,n,0,ui_about[language],language,page,2);
 }
