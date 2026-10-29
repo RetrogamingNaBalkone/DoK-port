@@ -165,7 +165,7 @@ def main():
             assert call('dok_gba_coverage_span',desc+first*16+word*4,mask,count)==changed
             assert bytes(cpu.mem_read(desc-4,1928))==b'HEAD'+expected+b'TAIL'
             coverage_span_vectors+=1
-    rectangle_vectors=0
+    rectangle_vectors=0;rectangle_cropped_vectors=0;rectangle_raw_vectors=0
     sparse_vectors=0
     def sparse_records(colors,width,height):
         blob=bytearray(4+width*4)
@@ -245,7 +245,10 @@ def main():
             x0=rng.randrange(-128,230);x1=rng.randrange(max(x0+1,0),641)
             top=rng.randrange(-256,scene_rows+64);bottom=top+rng.randrange(513)
             depth=rng.choice((0,1,1920,2040,3720,32767,32768,65535))
+            raw_columns='HW_ANIMATION_COLUMNS' in defines and depth<=1920 and case%2==0
+            cpu.mem_write(table+16*4,struct.pack('<I',0 if raw_columns else offset))
             u0,u1=rng.randrange(width),rng.randrange(width);v0=rng.randrange(-4,height+4);masked=case%2*8
+            vend=rng.randrange(height) if case%3 else -1
             face=struct.pack('<11iHh',x0,x1,top,top,bottom,bottom,depth,depth,u0,u1,0,0,v0)
             image=struct.pack('<3I4H',bank+offset,bank+offset,0,width,height,masked,1)
             initial=rng.randbytes(38400);expected=bytearray(initial)
@@ -256,8 +259,9 @@ def main():
             cpu.mem_write(symbols['coverage_count'],bytes(128 if any(bits[x*cover_words:(x+1)*cover_words]) else 0 for x in range(120)))
             written=transparent=0
             if bottom>=0 and top<scene_rows:
-                begin=max(0,top);end=min(scene_rows-1,bottom);start=max(0,min(height-1,v0))
-                step=((height-1-start)<<16)//(bottom-top) if bottom>top else 0
+                begin=max(0,top);end=min(scene_rows-1,bottom);limit=height-1 if vend<0 else vend
+                start=max(0,min(limit,v0))
+                step=((limit-start)<<16)//(bottom-top) if bottom>top else 0
                 q=max(1,(6553600//(depth+200))>>8);span=x1-x0
                 for x in range((max(0,x0)+1)&~1,min(239,x1)+1,2):
                     i=x-x0;u=min(width-1,(u0*q*(span-i)+u1*q*i)//(q*span))
@@ -270,7 +274,7 @@ def main():
                         expected[at]=color or 223;bits[b]|=mask;written+=1
             cpu.mem_write(frame_addr,b'HEAD'+initial+b'TAIL')
             cpu.mem_write(desc,face);cpu.mem_write(desc+64,image);cpu.mem_write(desc+96,bytes(44))
-            assert call('raster_rect',frame_addr,desc,desc+64,desc+96)==1,('rect handled',case)
+            assert call('raster_rect',frame_addr,desc,desc+64,desc+96,vend&0xffffffff)==1,('rect handled',case)
             actual_frame=bytes(cpu.mem_read(frame_addr+4,38400))
             assert actual_frame==expected,('rect frame',case,(width,height,x0,x1,top,bottom,depth,u0,u1,v0,masked),[(i,a,expected[i]) for i,a in enumerate(actual_frame) if a!=expected[i]][:8])
             assert bytes(cpu.mem_read(symbols['coverage_bits'],cover_bytes))==struct.pack(cover_format,*bits),('rect coverage',case)
@@ -278,6 +282,8 @@ def main():
             assert stats[4]==int(written>0) and stats[7]==written and stats[8]==transparent,('rect stats',case,stats,written,transparent)
             assert bytes(cpu.mem_read(frame_addr,4))==b'HEAD' and bytes(cpu.mem_read(frame_addr+38404,4))==b'TAIL'
             rectangle_vectors+=1
+            rectangle_cropped_vectors+=vend>=0
+            rectangle_raw_vectors+=raw_columns
     geometry_copy_vectors=0;geometry_equal_vectors=0
     if 'dok_gba_geometry_copy' in symbols:
         for case in range(1024):
@@ -563,7 +569,20 @@ def main():
     # then use G03's manifest solely to locate their unchanged embedded copies.
     from verify_sprites_gba import original_animations, load_json
     manifest=load_json('build/gba/assets/manifest.json')
-    decoded_count=0;resource_count=0
+    decoded_count=0;resource_count=0;animation_column_vectors=0;animation_index_vectors=0
+    indexed_pixels=set()
+    if 'animation_columns' in symbols:
+        package=Path('build/gba/assets/assets.bin').read_bytes()
+        cpu.mem_write(desc+128,struct.pack('<2I',symbols['dok_gba_assets'],len(package))+bytes(16))
+        table=symbols['dok_animation_columns_index']
+        n=struct.unpack('<I',cpu.mem_read(table,4))[0]
+        for i in range(n):
+            pixel,dims,offset=struct.unpack('<3I',cpu.mem_read(table+4+i*12,12))
+            width,height=dims&65535,dims>>16;indexed_pixels.add(pixel)
+            image=struct.pack('<I5H2xII',symbols['dok_gba_assets']+pixel,width,height,0,0,0,width*height,18+width*height)
+            cpu.mem_write(desc+160,image)
+            assert call('animation_columns',desc+128,desc+160)==symbols['dok_animation_columns']+offset
+            animation_index_vectors+=1
     for language in (0,1):
         originals,_=original_animations(language)
         for row in manifest['resources']:
@@ -586,6 +605,23 @@ def main():
                 pixel_ptr=struct.unpack_from('<I',actual,16)[0]
                 assert offset==metadata['image_offset'] and pixel_ptr==pointer+offset+18
                 assert bytes(cpu.mem_read(pixel_ptr,len(pixels)))==pixels
+                if 'animation_columns' in symbols:
+                    column=call('animation_columns',desc+128,desc+80)
+                    assert bool(column)==(pixel_ptr-symbols['dok_gba_assets'] in indexed_pixels)
+                    if not column:
+                        decoded_count+=1
+                        continue
+                    width,height=metadata['width'],metadata['height']
+                    expected=bytes(pixels[y*width+x] for x in range(width) for y in range(height))
+                    assert bytes(cpu.mem_read(column,len(expected)))==expected
+                    assert bytes(cpu.mem_read(column-256,width))==bytes(int(0 not in expected[x*height:(x+1)*height]) for x in range(width))
+                    good=bytes(cpu.mem_read(desc+80,24))
+                    cpu.mem_write(desc+84,struct.pack('<H',width+1))
+                    assert call('animation_columns',desc+128,desc+80)==0
+                    cpu.mem_write(desc+80,struct.pack('<I',symbols['dok_gba_assets']-1))
+                    assert call('animation_columns',desc+128,desc+80)==0
+                    cpu.mem_write(desc+80,good)
+                    animation_column_vectors+=1
                 decoded_count+=1
             cpu.mem_write(desc+64,b'\xa5'*40)
             assert call('dok_animation_frame_at',desc,len(sequence),desc+64)==5
@@ -604,6 +640,8 @@ def main():
                 exact_plane_division_vectors=plane_division_vectors,
                 scalar_projection_vectors=projection_vectors,
                 rectangle_raster_vectors=rectangle_vectors,
+                rectangle_cropped_vectors=rectangle_cropped_vectors,
+                rectangle_raw_column_vectors=rectangle_raw_vectors,
                 sparse_post_vectors=sparse_vectors,
                 coverage_span_vectors=coverage_span_vectors,
                 unsigned_texture_division_vectors=unsigned_division_vectors,
@@ -621,7 +659,9 @@ def main():
                 coverage_scene_rows=scene_rows,
                 empty_column_vectors=empty_column_vectors,
                 sampler_digest=summary.hexdigest(),original_animation_resources=resource_count,
-                original_animation_frames=decoded_count,callee_saved_registers_and_stack_checked=True,
+                original_animation_frames=decoded_count,animation_column_vectors=animation_column_vectors,
+                animation_column_index_vectors=animation_index_vectors,
+                callee_saved_registers_and_stack_checked=True,
                 mutable_buffer_truncation_and_unchanged_error_output=True,
                 timing_measured=False,scope='ARM/Thumb execution in Unicorn; hardware timing checked separately in mGBA')
     a.report.write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8')

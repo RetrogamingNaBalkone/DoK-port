@@ -79,6 +79,7 @@ static DOK_COLD dok_renderer_status SIDES_NAME(dok_renderer_workspace *w,const d
         if(x0==x1 || (x0<0 && x1<0) || (x0>239 && x1>239) || (b0<0 && b1<0) || (t0>143 && t1>143)) continue;
         if(w->surface_count>=DOK_RENDER_SURFACE_CAPACITY) return DOK_RENDER_CAPACITY;
         dok_renderer_surface f;f.object=(uint16_t)object;f.plane=2;f.cell_x=(uint16_t)x;f.cell_z=(uint16_t)z;
+        /* For plane2 v0 stores the native inclusive V end, with V start=0. */
         f.key=(pa.depth+pb.depth)/2;f.u0=(int16_t)u0;f.u1=(int16_t)u1;f.v0=word(im->height*inset/960);f.reserved=0;
         f.x[0]=f.x[3]=x0;f.x[1]=f.x[2]=x1;f.y[0]=t0;f.y[1]=t1;f.y[2]=b1;f.y[3]=b0;
         f.depth[0]=f.depth[3]=pa.depth;f.depth[1]=f.depth[2]=pb.depth;

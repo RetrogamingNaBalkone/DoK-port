@@ -429,7 +429,9 @@ __attribute__((noreturn)) void gba_main(void)
             if(g_camera_capture_hold){uint32_t held=g_vblanks;while(g_vblanks==held){}}
             continue;
         }
-        ui_key=frontend?key:UINT32_MAX;ui_messages=g_ui.messages;ui_page=page_key;
+        /* Flow text can retain the title UI state/focus. It must not seed
+         * the static-menu cache, or returning from STORY leaves text in VRAM. */
+        ui_key=(frontend && !text_screen)?key:UINT32_MAX;ui_messages=g_ui.messages;ui_page=page_key;
         dok_renderer_status status=(frontend || text_screen)?DOK_RENDER_OK:dok_renderer_draw(&g_render_frame,&g_render_world,&package,g_render_diag.level,
             g_render_diag.language,&camera,&g_render_stats);
         g_render_diag.status=status;

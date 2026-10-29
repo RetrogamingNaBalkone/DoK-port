@@ -133,8 +133,8 @@ static void occupy(dok_combat *c,dok_combat_projectile *p) {
  int pos=cell(c,p->x,p->z);if(pos<0 || c->world->maps[pos]!=' ' || dok_combat_blocked(c,p->x,p->z))return;
  c->occupied[pos>>3]|=(uint8_t)(1u<<(pos&7));p->state|=0x40;
 }
-static int target(dok_combat *c,dok_combat_projectile *p) {
- dok_runtime *w=c->world;int pos=cell(c,p->x,p->z);if(pos<0)return -2;
+static int target_cell(dok_combat *c,dok_combat_projectile *p,int pos) {
+ dok_runtime *w=c->world;if(pos<0)return -2;
  /* Test actors before walls, mirroring native MMap then TMap fallback. */
  for(unsigned i=0;i<w->object_count;i++) {
   unsigned cls=w->level->definitions[i].class_id;if((cls!=1 && cls!=9) || (w->objects[i].flags&0x400))continue;
@@ -146,6 +146,24 @@ static int target(dok_combat *c,dok_combat_projectile *p) {
  if(tok) {unsigned cls=w->level->definitions[tok-1].class_id,flags=w->objects[tok-1].flags;
   if((cls==7 && !(flags&8)) || (cls!=7 && !(flags&0x18)))return (int)(tok-1);}
  return -1;
+}
+/* A quarter-cell diagonal can enter and leave a cell between its endpoints.
+ * Test that intermediate cell in crossing order; an exact corner touches no
+ * extra cell. Products are bounded by one quarter-cell on valid maps. */
+static int crossed_target(dok_combat *c,dok_combat_projectile *p,int32_t x,int32_t z) {
+ int old=cell(c,x,z),next=cell(c,p->x,p->z);
+ const dok_runtime_level *l=c->world->level;
+ int width=l->settings[DOK_LEVEL_WIDTH],side=l->settings[DOK_LEVEL_CELL_SIDE];
+ if(old>=0 && next>=0 && old%width!=next%width && old/width!=next/width) {
+  int dx=p->x-x,dz=p->z-z;
+  int bx=dx>0?side-x%side:x%side,bz=dz>0?side-z%side:z%side;
+  int tx=bx*(dz<0?-dz:dz),tz=bz*(dx<0?-dx:dx);
+  if(tx!=tz) {
+   int middle=tx<tz?old/width*width+next%width:next/width*width+old%width;
+   int hit=target_cell(c,p,middle);if(hit!=-1)return hit;
+  }
+ }
+ return target_cell(c,p,next);
 }
 static void update(dok_combat *c,uint16_t id) {
  dok_combat_projectile *p=&c->slots[id];dok_animation_frame f;uint16_t count;
@@ -160,11 +178,14 @@ static void update(dok_combat *c,uint16_t id) {
  int elapsed=(int)(((c->now-p->last)*256u)/416u);if(elapsed<256)elapsed=256;if(elapsed>2048)elapsed=2048;
  int speed=(int)c->world->objects[p->object].state.projectile.velocity;
  int distance=sar(word(speed)*elapsed,8),quarter=-(int)c->world->level->settings[DOK_LEVEL_CELL_SIDE]/4;
- int whole=distance/quarter,remainder=distance%quarter;int hit=-1;
- for(int step=0;step<=whole;step++) {
+ int whole=distance/quarter,remainder=distance%quarter;
+ /* Include the spawn/current cell before a nonzero laser remainder leaves it. */
+ int hit=target_cell(c,p,cell(c,p->x,p->z));
+ for(int step=0;hit==-1 && step<=whole;step++) {
   dok_runtime_actor a={0};a.x=p->x;a.z=p->z;a.heading=p->heading;
+  int32_t x=p->x,z=p->z;
   dok_motion_free(&a,(int16_t)(step==0?remainder:quarter),0,0);p->x=a.x;p->z=a.z;
-  hit=target(c,p);if(hit!=-1)break;
+  hit=crossed_target(c,p,x,z);
  }
  if(hit!=-1) {
   int impact=hit>=0 && dok_combat_damage(c,(uint16_t)hit,p->owner,p->damage);

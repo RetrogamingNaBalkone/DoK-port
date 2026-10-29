@@ -163,6 +163,8 @@ VARIANTS['hw_v128_entity_batch']=VARIANTS['hw_v128_entity_prelit']+('HW_MASKED_B
 VARIANTS['hw_v128_entity_affine']=tuple(d for d in VARIANTS['hw_v128_entity_batch'] if d!='HW_HOT_IMAGE')+('HW_AFFINE_U',)
 VARIANTS['hw_v128_entity_wide']=tuple(d for d in VARIANTS['hw_v128_entity_batch'] if d!='HW_HOT_IMAGE')+('HW_U_WIDE',)
 VARIANTS['hw_v128_entity_rect']=tuple(d for d in VARIANTS['hw_v128_entity_batch'] if d!='HW_HOT_IMAGE')+('HW_RECT_RASTER',)
+VARIANTS['hw_v128_rect_batch']=VARIANTS['hw_v128_entity_rect']+('HW_RECT_BATCH',)
+VARIANTS['hw_v128_rect_animated']=VARIANTS['hw_v128_rect_batch']+('HW_ANIMATION_COLUMNS',)
 VARIANTS['hw_v128_sparse_control']=tuple(d for d in VARIANTS['hw_v128_entity_rect'] if d!='HW_EDGE_RAM_CALL')
 VARIANTS['hw_v128_sparse_posts']=VARIANTS['hw_v128_sparse_control']+('HW_SPARSE_POSTS',)
 VARIANTS['hw_v128_world_obj_probe']=VARIANTS['hw_v128_entity_rect']+('HW_WORLD_OBJ_PROBE',)
@@ -204,6 +206,12 @@ VARIANTS['hw_v128_contains']=VARIANTS['hw_v128_box']+('HW_CONTAINS_CALL',)
 VARIANTS['hw_v128_combo']=VARIANTS['hw_v128_box']+('HW_CONTAINS_CALL','HW_U_RECIP','HW_SURFACE_PRELIT')
 VARIANTS['hw_v128_combo_near']=VARIANTS['hw_v128_combo']+('HW_NEAR_FC',)
 VARIANTS['hw_v128_wide']=tuple(d for d in VARIANTS['hw_v128_combo_near'] if d!='HW_U_RECIP')+('HW_U_WIDE',)
+
+# Preserve the preceding accepted renderer for controlled comparisons. Earlier
+# experiment variants keep their original flags; only the frontend selection
+# adopts the exact rectangle/animation-column path.
+VARIANTS['hw_v128_rect_control']=VARIANTS['hw_v128_entity_rect']
+VARIANTS['hw_v128_entity_rect']=VARIANTS['hw_v128_rect_animated']
 
 
 def tables(out, assets, include_sides=False, include_zero_spans=False, include_entities=False, include_lowered=False, include_empty=False, scene_rows=128):
@@ -455,6 +463,10 @@ def build(base,out,variants,unreflected_control=False):
     startup=['cc','-target','arm-freestanding-eabi','-mcpu=arm7tdmi',
              '-DDOK_RENDERER_PROBE','-DDOK_RENDER_HALF_COLUMNS','-c']
     command([zig,*startup,out/'tables.S','-o',out/'tables.o'])
+    if any('HW_ANIMATION_COLUMNS' in VARIANTS[v] for v in variants):
+        from gba_animation_columns import build_animation_columns
+        metadata['animation_columns']=build_animation_columns(out,(ROOT/'build/gba/assets/assets.bin').read_bytes())
+        command([zig,*startup,out/'animation-columns.S','-o',out/'animation-columns.o'])
     if any('HW_SPARSE_POSTS' in VARIANTS[v] for v in variants):
         from gba_sparse_posts import build_posts
         metadata['sparse_posts']=build_posts(out,ROOT/'build/gba/assets/assets.bin')
@@ -640,6 +652,9 @@ def build(base,out,variants,unreflected_control=False):
             if 'SECTOR_GPU' in defines:tiled_flags+=['-DDOK_SECTOR_GPU']
             command([zig,*startup,*tiled_flags,ROOT/'ports/gba/platform/tiled_scene.S','-o',dest/'tiled-columns.o'])
             objects.append(dest/'tiled-columns.o')
+            if 'HW_RECT_BATCH' in defines:
+                command([zig,*startup,ROOT/'ports/gba/platform/rect_tiled.S','-o',dest/'rect-columns.o'])
+                objects.append(dest/'rect-columns.o')
         if 'UI_CACHE' in defines or 'UI_CONTROL' in defines:
             for name in ('ui.c','ui_map.inc','ui_text.inc','ui_native_text.inc','ui_panel_cache.inc','ui_tiled.inc'):
                 (private/name).write_bytes((ROOT/'ports/gba/src'/name).read_bytes())
@@ -665,6 +680,7 @@ def build(base,out,variants,unreflected_control=False):
             objects[names.index('assets-data')]=dest/'assets-data.o'
         if variant not in ('baseline','no_scales'):
             objects.append(out/'tables.o')
+        if 'HW_ANIMATION_COLUMNS' in defines:objects.append(out/'animation-columns.o')
         if 'HW_SPARSE_POSTS' in defines:objects.append(out/'sparse-posts.o')
         if 'STREAM_BSP' in defines:objects.append(out/'stream-tables.o')
         if 'SECTOR_CLIP' in defines:
@@ -737,7 +753,8 @@ def build(base,out,variants,unreflected_control=False):
                            Path('ports/gba/scripts/gba_world_obj_assets.py'),Path('ports/gba/scripts/gba_sector_scene.py'),Path('ports/gba/platform/sector_planes.S'),Path('ports/gba/platform/sector_bitmap.S'),Path('ports/gba/platform/hardware_sector_bitmap.inc'),Path(__file__),Path('ports/gba/scripts/gba_hw_bg_assets.py'),Path('ports/gba/scripts/compile_gba_render_scene.py'),
                            Path('ports/gba/scripts/gba_sector_gpu_assets.py'),Path('ports/gba/platform/sector_gpu.S'),Path('ports/gba/platform/hardware_sector_gpu.inc'),Path('ports/gba/include/dok/gba_sector_gpu.h'),
                            Path('ports/gba/scripts/gba_stream_scene.py'),Path('ports/gba/include/dok/gba_hw_scratch.h'),
-                           Path('ports/gba/scripts/gba_sparse_posts.py')]})
+                           Path('ports/gba/scripts/gba_sparse_posts.py'),Path('ports/gba/scripts/gba_animation_columns.py'),
+                           Path('ports/gba/platform/rect_tiled.S')]})
     (out/'prototype-build.json').write_text(json.dumps(manifest,indent=2)+'\n',encoding='utf-8')
 
 

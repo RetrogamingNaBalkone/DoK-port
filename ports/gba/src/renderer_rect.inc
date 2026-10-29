@@ -1,7 +1,19 @@
 /* Lossless constant-depth rectangle path. Other faces retain the general
  * perspective rasterizer, including moving/cropped doors and animation. */
+#ifdef DOK_RENDER_HW_RECT_BATCH_PROTOTYPE
+typedef struct {
+    uint8_t *dst;const uint8_t *pixels,*solid;uint32_t *bits;uint8_t *counts;
+    unsigned x,last,width,height,numerator;int delta;
+    unsigned reciprocal,span,v,step,count,begin,black,masked;
+    unsigned first_word,last_word,first_mask,last_mask,bit_stride;
+} rect_batch;
+_Static_assert(sizeof(rect_batch)==96 && offsetof(rect_batch,bit_stride)==92,"ARM rectangle capsule ABI");
+extern unsigned dok_gba_tiled_rectangle(rect_batch *);
+static DOK_COLD unsigned raster_rect(dok_renderer_workspace *w,const dok_renderer_face *f,
+#else
 static DOK_NOINLINE unsigned raster_rect(dok_renderer_workspace *w,const dok_renderer_face *f,
-    const dok_renderer_image *im,dok_renderer_stats *s) {
+#endif
+    const dok_renderer_image *im,dok_renderer_stats *s,int vend) {
 #ifdef DOK_RENDER_HW_ROWS96_PROTOTYPE
     enum {rect_rows=96};
 #elif defined(DOK_RENDER_HW_ROWS72_PROTOTYPE)
@@ -20,7 +32,12 @@ static DOK_NOINLINE unsigned raster_rect(dok_renderer_workspace *w,const dok_ren
 #else
     unsigned prelit=prelit_view[im->resource_id*16+light_index(f->depth0)];
 #endif
-    if(!prelit)return 0;
+    const uint8_t *source,*solid;
+    if(prelit){source=dok_prelit_bank+prelit;solid=source-256;}
+#ifdef DOK_RENDER_HW_ANIMATION_COLUMNS_PROTOTYPE
+    else if(!light_index(f->depth0)){source=im->columns;solid=source-256;}
+#endif
+    else return 0;
     int span=f->x1-f->x0;
     if(span<=0 || span>16384)return 0;
     int top=f->top0,bottom=f->bottom0;
@@ -34,8 +51,10 @@ static DOK_NOINLINE unsigned raster_rect(dok_renderer_workspace *w,const dok_ren
         if(begin>end)return 1;
     }
 #endif
-    int vstart=clamp(f->v0,0,im->height-1);
-    unsigned step=bottom>top?(unsigned)VSTEP_DIV((im->height-1-vstart)<<16,bottom-top):0;
+    /* Caller supplies a bounded end, or -1 for the whole image. */
+    if(vend<0)vend=im->height-1;
+    int vstart=clamp(f->v0,0,vend);
+    unsigned step=bottom>top?(unsigned)VSTEP_DIV((vend-vstart)<<16,bottom-top):0;
     unsigned v=((unsigned)vstart<<16)+(begin-top)*step;
     int first=(clamp(f->x0,0,239)+1)&~1,last=clamp(f->x1,0,239);
 #ifdef DOK_RENDER_STREAM_BSP_PROTOTYPE
@@ -45,6 +64,17 @@ static DOK_NOINLINE unsigned raster_rect(dok_renderer_workspace *w,const dok_ren
     }
 #endif
     unsigned pixels=0,transparent=0;
+#ifdef DOK_RENDER_HW_RECT_BATCH_PROTOTYPE
+    if(first>last || begin>end)return 1;
+    extern const uint32_t dok_exact_plane_reciprocal[];
+    rect_batch batch={scene_pointer(w->frame,(unsigned)first,begin),source,
+        solid,&coverage_bits[(unsigned)first>>1][0],&coverage_count[(unsigned)first>>1],
+        (unsigned)first,(unsigned)last,im->width,im->height,
+        (unsigned)(f->u0*(span-(first-f->x0))+f->u1*(first-f->x0)),(f->u1-f->u0)*2,
+        dok_exact_plane_reciprocal[span],(unsigned)span,v,step,end-begin+1,begin,g_hw_tile_black,im->flags&8u,
+        begin>>5,end>>5,UINT32_MAX<<(begin&31),UINT32_MAX>>(31-(end&31)),sizeof(coverage_bits[0])};
+    unsigned result=dok_gba_tiled_rectangle(&batch);pixels=result&65535u;transparent=result>>16;
+#else
     for(int x=first;x<=last;x+=2) {
         if(
 #ifdef DOK_RENDER_SECTOR_CLIP_PROTOTYPE
@@ -54,13 +84,14 @@ static DOK_NOINLINE unsigned raster_rect(dok_renderer_workspace *w,const dok_ren
         int i=x-f->x0;
         unsigned u=(unsigned)((f->u0*(span-i)+f->u1*i)/span);
         if(u>=im->width)u=im->width-1;
-        unsigned mode=PRELIT_COLUMN_MODE(im->flags,prelit,u);
+        unsigned mode=prelit?PRELIT_COLUMN_MODE(im->flags,prelit,u):COLUMN_MODE(im->flags,solid[u]);
 #ifdef DOK_RENDER_HW_SPARSE_POSTS_PROTOTYPE
         SET_COLUMN_POSTS(im,prelit,u);
 #endif
-        unsigned n=visible_column(w,(unsigned)x,begin,end,dok_prelit_bank+prelit+u*im->height,v,step,mode,0,0);
+        unsigned n=visible_column(w,(unsigned)x,begin,end,source+u*im->height,v,step,mode,0,0);
         transparent+=n>>16;pixels+=n&65535u;
     }
+#endif
     s->pixels_written+=pixels;s->transparent_pixels+=transparent;
     if(pixels)++s->faces_drawn;
     return 1;

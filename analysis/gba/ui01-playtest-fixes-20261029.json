@@ -1,0 +1,123 @@
+{
+  "task": "G21/UI01 playtest fixes",
+  "date": "2026-10-29",
+  "status": "passed",
+  "artifact": "artifacts/gba/DoK-port_UI01.gba",
+  "rom_sha256": "c12fff7033d02c6bc6cd2ddfd3d0c65ec5880ce2419b6cf50ac497973ab86844",
+  "rom_bytes": 16015212,
+  "build_dir": "build/gba/ui01-playtest-fixes/hardware/hw_v128_entity_rect",
+  "fixes": [
+    "Invalidate static-menu cache on flow text screens",
+    "Use native ceiling-rim V start=0 and inclusive V end, preserving full column stride and prelit/rectangle paths"
+  ],
+  "story_exit_cases": 54,
+  "ceiling_original_vectors": 8,
+  "ceiling_ppu_cases": 12,
+  "ceiling_ppu_pixels": 7496,
+  "rectangle_vectors": 512,
+  "rectangle_cropped_vectors": 341,
+  "hardware_transitions": 294,
+  "hardware_video_callbacks": 5002,
+  "renderer_comparison": {
+    "cases": 18,
+    "coverage_equal": true,
+    "hud_unchanged": true,
+    "min_cpu_change_percent": 0.021242697822621004,
+    "max_cpu_change_percent": 0.1844791538556212
+  },
+  "ram": {
+    "ewram_bytes": 261444,
+    "ewram_free": 700,
+    "iwram_code_data_bytes": 24576,
+    "stack_bios_reserved_bytes": 8192,
+    "observed_main_stack_bytes": 2576,
+    "observed_main_stack_margin_bytes": 5360
+  },
+  "original_evidence": [
+    {
+      "sample": "originals/pkr/RUS/PKR.EXE",
+      "sha256_before": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+      "sha256_after": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+      "geometry_sha256": "07d6f400a523e53236047e68c08f9e70d9b05b1fc4efc87a4e9afda26fb54e8f",
+      "listing_sha256": "0bd594ca690ae400f34f839832c86879ea2d44d4dfc32bfdc7f8cbe8928c3ea2"
+    },
+    {
+      "sample": "originals/pkr/ENG/PKE.EXE",
+      "sha256_before": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b",
+      "sha256_after": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b",
+      "geometry_sha256": "30cd4c14d46bb0ad8319a65c8fddd1d010176ab9d9a1c94eacfee14276e558a0",
+      "listing_sha256": "484c456619194d40611ef9778bf63c9421b41d4dcb8fd8c2bc62ec9a12fac6b5"
+    }
+  ],
+  "reports": {
+    "story": {
+      "path": "build/gba/ui01-playtest-fixes/story.json",
+      "sha256": "8a640fe7337cec46efb2948c1848f93b0a2959ce318b5e3fb999a66162d2e7a0"
+    },
+    "ceiling": {
+      "path": "build/gba/ui01-playtest-fixes/ceiling.json",
+      "sha256": "854452273a59b03748550febb1b962567ae39c9b8e4f4e1a322b38f8275c12c3"
+    },
+    "arm": {
+      "path": "build/gba/ui01-playtest-fixes/arm.json",
+      "sha256": "b04972c36098ab084bac1538b9d1d84892c263a545f81fb9f0f508551b4c2f7b"
+    },
+    "latency": {
+      "path": "build/gba/ui01-playtest-fixes/latency.json",
+      "sha256": "34c80257978d39f810a073c6dc975e2061fdf57188fd02f9b28b354120667820"
+    },
+    "flow": {
+      "path": "build/gba/ui01-playtest-fixes/flow.json",
+      "sha256": "13f7730af768f66e24da2fb17ad7117e46f4097968f49c13347fb1997de708c7"
+    },
+    "ui": {
+      "path": "build/gba/ui01-playtest-fixes/ui.json",
+      "sha256": "5c9eb8bf17592abf1c9de9cc99629c5d66c57a7dad38300c6245702770a526ab"
+    },
+    "water": {
+      "path": "build/gba/ui01-playtest-fixes/water.json",
+      "sha256": "7749f53341d3f980dea59eafe10cc0f56b70a4d126d6726d7a25aeaae12cfa03"
+    },
+    "transitions": {
+      "path": "build/gba/ui01-playtest-fixes/transitions.json",
+      "sha256": "37d6ceedddfe39d3f7cb1e033d17a7532368be10610e7764fccf27b52e77f682"
+    },
+    "renderer_comparison": {
+      "path": "build/gba/ui01-playtest-fixes/renderer-comparison.json",
+      "sha256": "2ad90a8a0fae2a845c5e1d5cac7c4ccc2c5dd08fa1c8221f806000d728425d07"
+    },
+    "host-renderer": {
+      "path": "build/gba/ui01-playtest-fixes/host-renderer.json",
+      "sha256": "a25ee9b18056ea3f3deda0ba3ffed9bd2af06b18ee5b83858c39b1c47ec3424f"
+    },
+    "reproductions": {
+      "path": "build/gba/ui01-playtest-fixes/reproductions.json",
+      "sha256": "ff05c8981cd0603928bbf9502a812fabc25e7809e2e97282d9a51ddec1b4aab8"
+    }
+  },
+  "sources": {
+    "ports/gba/include/dok/renderer.h": "5316888666134313ac734f8c3a2ef816b52673437032f068d9dd9f2d7456bc62",
+    "ports/gba/platform/renderer_probe.c": "fabe99e4560f0d3bf7e76ee5c4ec6ef1283c8b7dfe9a49f8715ce24e7d280eda",
+    "ports/gba/src/renderer.c": "906acaf476709be7ebf14a2560a5c3e7dc97b5fdb8909e7de8582818dcc2511f",
+    "ports/gba/src/renderer_rect.inc": "695073d9f9fe4ed719a83ef4d1f2a3f863dd1d4bce28e4a25ca891f528a68799",
+    "ports/gba/src/renderer_opaque.inc": "a5dadee7bbdcf50624d1018f88114e2e4da6c378535c65b1dec1e4d563d818e3",
+    "ports/gba/src/renderer_opaque_arm.inc": "5d0fc29da8009480140f16511449e894ed3b97cc199903b2a52f712e3950761a",
+    "ports/gba/src/renderer_stream.inc": "45d8900211369f8374a075f1b7d6f182e55ee116f2642c92088e4cf6808fb2f4",
+    "ports/gba/src/renderer_stream_state.inc": "6fa397b1ada2e79d4e7da432a1f2085678d0733a2bd922340cf1d85a7d0abfa9",
+    "ports/gba/src/renderer_sector.inc": "326fd3850326e09c0003b5cefafcb4b4169690dc41fd1402241a9c6374dc5305",
+    "ports/gba/src/renderer_surface_raster_body.inc": "b98103c5e8be75e6d52275d58b5b268633ec1094d7eb40c7eadea0ffa1e296b6",
+    "ports/gba/src/renderer_surface_sides.inc": "b6f6fa3735116085aa282ba09e5dc3fcbc8f0d9fe1648fb4d85ff44346562261",
+    "ports/gba/scripts/verify_story_gba.py": "383c02e98d02ef8f0d6c5299fae1370b5b622f7f8d9cc3de09060294ab2a2247",
+    "ports/gba/scripts/verify_ceiling_sides_gba.py": "86fcd5f1c8f53445d12b1972197fde221579ce6a05df4d658316bba9cbba064c",
+    "ports/gba/scripts/verify_performance_arm.py": "256415a65b53621f0586f353bacd1931aa0338eddecde7273c542bb59a75f1bd"
+  },
+  "limitations": [
+    "No physical GBA or original BIOS run",
+    "Saved Ghidra exports and G00 DOS capture; no new full DOS session",
+    "No full audio/performance acceptance; G20 frame budget remains open",
+    "Unselected experimental renderer backends not reaccepted"
+  ],
+  "next_task": "G21",
+  "g20b_status": "complete",
+  "g21_status": "in_progress"
+}

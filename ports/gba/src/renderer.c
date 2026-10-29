@@ -285,6 +285,9 @@ static int neighbor_class(const dok_runtime *r,int x,int z,unsigned *out) {
 #else
 #define IMAGE_NAME image
 #endif
+#ifdef DOK_RENDER_HW_ANIMATION_COLUMNS_PROTOTYPE
+#include "renderer_animation_columns.inc"
+#endif
 #ifdef DOK_RENDER_HW_HOT_IMAGE_PROTOTYPE
 static DOK_NOINLINE dok_renderer_status IMAGE_NAME(dok_renderer_workspace *w,const dok_runtime *r,const dok_rom_assets *a,
 #else
@@ -319,6 +322,9 @@ static DOK_COLD dok_renderer_status IMAGE_NAME(dok_renderer_workspace *w,const d
     w->images[object].pixels=v.pixels;w->images[object].width=v.width;w->images[object].height=v.height;
     w->images[object].flags=animated?8:(uint16_t)(v.stored_flags|d->sprite_flags);w->images[object].resource_id=id;
     w->images[object].columns=0;w->images[object].scales=0;
+#ifdef DOK_RENDER_HW_ANIMATION_COLUMNS_PROTOTYPE
+    if(animated)w->images[object].columns=animation_columns(a,&v);
+#endif
 #ifdef DOK_RENDERER_PROBE
     if(!animated) {
     extern const uint8_t dok_render_bank[],dok_render_bank_end[];
@@ -1059,7 +1065,7 @@ static unsigned visible_column(dok_renderer_workspace *w,unsigned x,unsigned beg
     return visible_column_unclipped(w,x,begin,end,pixels,v,step,masked,record,strip_first);
 }
 #endif
-static void raster(dok_renderer_workspace *,const dok_runtime *,const dok_renderer_face *,const uint8_t *,dok_renderer_stats *);
+static void raster(dok_renderer_workspace *,const dok_runtime *,const dok_renderer_face *,const uint8_t *,dok_renderer_stats *,int);
 #include "renderer_surface_raster.inc"
 #ifdef DOK_RENDER_HW_FACE_BOX_PROTOTYPE
 volatile uint32_t g_hw_face_box[2]; /* cumulative tests/rejected faces */
@@ -1087,14 +1093,16 @@ static DOK_COLD int face_box_covered(const dok_renderer_face *f,unsigned first,u
 #include "renderer_world_obj.inc"
 #endif
 #if defined(DOK_RENDER_FAST_OPAQUE_PROTOTYPE) || defined(DOK_RENDER_FAST_OPAQUE_ARM_PROTOTYPE)
-static DOK_COLD void raster_general(dok_renderer_workspace *w,const dok_runtime *r,const dok_renderer_face *original,const uint8_t *light,dok_renderer_stats *s) {
+static DOK_COLD void raster_general(dok_renderer_workspace *w,const dok_runtime *r,const dok_renderer_face *original,const uint8_t *light,dok_renderer_stats *s,int vend) {
 #elif defined(DOK_RENDER_COLUMN_PIPELINE_PROTOTYPE) || defined(DOK_RENDER_SECTOR_CLIP_PROTOTYPE)
-static DOK_COLD void raster(dok_renderer_workspace *w,const dok_runtime *r,const dok_renderer_face *original,const uint8_t *light,dok_renderer_stats *s) {
+static DOK_COLD void raster(dok_renderer_workspace *w,const dok_runtime *r,const dok_renderer_face *original,const uint8_t *light,dok_renderer_stats *s,int vend) {
 #else
-static void raster(dok_renderer_workspace *w,const dok_runtime *r,const dok_renderer_face *original,const uint8_t *light,dok_renderer_stats *s) {
+static void raster(dok_renderer_workspace *w,const dok_runtime *r,const dok_renderer_face *original,const uint8_t *light,dok_renderer_stats *s,int vend) {
 #endif
     (void)light;
     dok_renderer_face f=*original;const dok_renderer_image *im=face_image(w,f.image_index);
+    /* -1 selects the full source; ceiling rims supply the native V end. */
+    if(vend<0 || vend>=im->height)vend=im->height-1;
     int x,first,last,span,q0,q1;int wrote=0;unsigned pixels=0,transparent=0;
     if(f.x0>f.x1) {
         swap32(&f.x0,&f.x1);swap32(&f.top0,&f.top1);swap32(&f.bottom0,&f.bottom1);
@@ -1124,7 +1132,7 @@ static void raster(dok_renderer_workspace *w,const dok_runtime *r,const dok_rend
 #endif
     if(g_hw_tile_active &&
        (f.image_index>=r->object_count || r->level->definitions[f.image_index].class_id!=7) &&
-       raster_rect(w,&f,im,s))return;
+       raster_rect(w,&f,im,s,vend))return;
 #endif
     /* Bounded Q7 reciprocal approximation is a G05 raster choice. Projection,
      * face vertices and depth remain G04 exact. Constant-depth doors retain
@@ -1289,11 +1297,11 @@ static void raster(dok_renderer_workspace *w,const dok_runtime *r,const dok_rend
                 u-=shift;
             } else if(im->flags&0x100) crop_y=(im->height/divisor)*(int16_t)o->frame;
         }
-        vstart=clamp(f.v0,0,im->height-1);
+        vstart=clamp(f.v0,0,vend);
 #ifdef DOK_RENDERER_PROBE
         const uint8_t *strip=0;
 #if !defined(DOK_RENDER_NO_SCALES_PROTOTYPE) && !defined(DOK_RENDER_NO_SCALES_RUNTIME_PROTOTYPE)
-        if(!crop_y && im->scales && im->scales[vstart] && bottom>top) {
+        if(vend==im->height-1 && !crop_y && im->scales && im->scales[vstart] && bottom>top) {
             extern const uint8_t dok_render_bank[];
             const uint32_t *spans=(const uint32_t *)(const void *)(dok_render_bank+im->scales[vstart]);
             if((unsigned)(bottom-top)<=spans[0]) {
@@ -1307,9 +1315,9 @@ static void raster(dok_renderer_workspace *w,const dok_runtime *r,const dok_rend
         {
 #ifdef DOK_RENDER_HW_COLUMN_CACHE_PROTOTYPE
         if(bottom-top==cached_height)vstep=cached_step;
-        else {vstep=bottom>top?VSTEP_DIV((im->height-1-vstart)<<16,bottom-top):0;cached_height=bottom-top;cached_step=vstep;}
+        else {vstep=bottom>top?VSTEP_DIV((vend-vstart)<<16,bottom-top):0;cached_height=bottom-top;cached_step=vstep;}
 #else
-        vstep=bottom>top?VSTEP_DIV((im->height-1-vstart)<<16,bottom-top):0;
+        vstep=bottom>top?VSTEP_DIV((vend-vstart)<<16,bottom-top):0;
 #endif
         vstart=(vstart<<16)+(begin-top)*vstep;
         if(crop_y) {
@@ -1561,6 +1569,9 @@ dok_renderer_status dok_renderer_draw(dok_renderer_workspace *w,const dok_runtim
                dok_animation_frame_at(&av,w->sprite_frame[i],&af)!=DOK_ASSET_OK) {status=DOK_RENDER_RESOURCE;goto done;}
             dok_renderer_image *im=&w->instance_images[i];
             *im=(dok_renderer_image){af.image.pixels,0,0,af.image.width,af.image.height,8,w->sprite_resource[i]};
+#ifdef DOK_RENDER_HW_ANIMATION_COLUMNS_PROTOTYPE
+            im->columns=animation_columns(a,&af.image);
+#endif
             status=billboard_image(w,r,c,&s,sp->object,(uint16_t)(256+i),im,sp->x,sp->y,sp->z);
         } else status=billboard(w,r,a,level,language,c,&s,sp->object,sp->x,sp->y,sp->z);
         if(status) goto done;
@@ -1651,7 +1662,7 @@ dok_renderer_status dok_renderer_draw(dok_renderer_workspace *w,const dok_runtim
 #endif
 #endif
         } else {
-            raster(w,r,&w->faces[index],w->lights,&s);--walls;
+            raster(w,r,&w->faces[index],w->lights,&s,-1);--walls;
 #ifdef DOK_RENDER_HW_FACE_CLASS_PROFILE_PROTOTYPE
             if(g_render_work[0]) {
                 unsigned group=(face_image(w,w->faces[index].image_index)->flags&8u)?0:1;

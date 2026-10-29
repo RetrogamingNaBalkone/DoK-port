@@ -24,6 +24,6 @@ static stream_fragment *stream_fragments;
 static unsigned stream_fragment_count;
 volatile uint32_t g_stream_work[8]; /* active,visited,culled,atoms,leaves,dynamic fragments,fallbacks,capacity */
 volatile uint32_t g_stream_ticks[6]; /* when render_work[0]:validation,partition,box tests,dynamics,static atoms,ceilings */
-static void raster(dok_renderer_workspace *,const dok_runtime *,const dok_renderer_face *,const uint8_t *,dok_renderer_stats *);
+static void raster(dok_renderer_workspace *,const dok_runtime *,const dok_renderer_face *,const uint8_t *,dok_renderer_stats *,int);
 static void stream_emit_face(dok_renderer_workspace *,const dok_renderer_face *,dok_renderer_stats *);
 static void stream_record(unsigned,int,int,int,int,int,int);

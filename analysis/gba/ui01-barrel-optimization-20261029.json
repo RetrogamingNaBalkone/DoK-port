@@ -1,0 +1,208 @@
+{
+  "task": "G21/UI01 barrel room optimization",
+  "date": "2026-10-29",
+  "status": "passed",
+  "artifact": "artifacts/gba/DoK-port_UI01.gba",
+  "rom_sha256": "297be4687e30ce96d2ab86135d05ad11e19400d9233b49fd1d57797a05b04273",
+  "rom_bytes": 16551104,
+  "build_dir": "build/gba/ui01-barrel-optimization/hardware/hw_v128_entity_rect",
+  "baseline_rom_sha256": "c12fff7033d02c6bc6cd2ddfd3d0c65ec5880ce2419b6cf50ac497973ab86844",
+  "changes": [
+    "Exact ARM batched rectangle rasterization",
+    "Lossless column-major animation frames; LIGHT0 direct rectangle path"
+  ],
+  "animation_bank": {
+    "resources": 24,
+    "frames": 157,
+    "source_texels": 526662,
+    "unique_images": 148,
+    "bank_bytes": 533120,
+    "index_bytes": 1888,
+    "bank_sha256": "850b7348b2698f551e92a45f8c96361c598bdc66a0c45a29d4c7ed9d62bb1f86",
+    "lossless": true
+  },
+  "ppu_exact_cases": {
+    "animation": 616,
+    "barrel": 64,
+    "spatial": 880,
+    "hud_weapon": 396,
+    "static_cache": 48
+  },
+  "arm_vectors": {
+    "rectangle_raster_vectors": 512,
+    "rectangle_cropped_vectors": 341,
+    "rectangle_raw_column_vectors": 98,
+    "original_animation_frames": 308,
+    "animation_column_vectors": 302,
+    "animation_column_index_vectors": 157
+  },
+  "live": [
+    {
+      "language": 0,
+      "cell": [
+        42,
+        54
+      ],
+      "fps_before": 12.464869684091653,
+      "fps_after": 15.821854455524726,
+      "improvement_percent": 26.931567328918327,
+      "samples": 120,
+      "max_ai_owners": 5,
+      "audio_underruns": 0
+    },
+    {
+      "language": 0,
+      "cell": [
+        44,
+        55
+      ],
+      "fps_before": 12.045882467819665,
+      "fps_after": 15.962806388313364,
+      "improvement_percent": 32.516703786191535,
+      "samples": 120,
+      "max_ai_owners": 5,
+      "audio_underruns": 0
+    },
+    {
+      "language": 0,
+      "cell": [
+        46,
+        56
+      ],
+      "fps_before": 12.35741391095293,
+      "fps_after": 15.347537619598928,
+      "improvement_percent": 24.19700214132763,
+      "samples": 120,
+      "max_ai_owners": 3,
+      "audio_underruns": 0
+    },
+    {
+      "language": 1,
+      "cell": [
+        42,
+        54
+      ],
+      "fps_before": 12.464869684091653,
+      "fps_after": 15.821854455524726,
+      "improvement_percent": 26.931567328918327,
+      "samples": 120,
+      "max_ai_owners": 5,
+      "audio_underruns": 0
+    },
+    {
+      "language": 1,
+      "cell": [
+        44,
+        55
+      ],
+      "fps_before": 12.045882467819665,
+      "fps_after": 15.962806388313364,
+      "improvement_percent": 32.516703786191535,
+      "samples": 120,
+      "max_ai_owners": 5,
+      "audio_underruns": 0
+    },
+    {
+      "language": 1,
+      "cell": [
+        46,
+        56
+      ],
+      "fps_before": 12.35741391095293,
+      "fps_after": 15.347537619598928,
+      "improvement_percent": 24.19700214132763,
+      "samples": 120,
+      "max_ai_owners": 3,
+      "audio_underruns": 0
+    }
+  ],
+  "barrel_frozen_cpu_ratio": {
+    "minimum": 0.9450789118883337,
+    "median": 0.977310710192787,
+    "maximum": 1.0012525374681467
+  },
+  "spatial_cpu_ratio": {
+    "minimum": 0.9300956239106882,
+    "median": 0.9941524908702097,
+    "maximum": 1.0078654284675634
+  },
+  "spatial_raster_ratio": {
+    "minimum": 0.8881731705490226,
+    "median": 0.9907781133153228,
+    "maximum": 1.0093955173194475
+  },
+  "ram": {
+    "ewram_bytes": 261444,
+    "ewram_free": 700,
+    "iwram_code_data_bytes": 24324,
+    "stack_bios_reserved_bytes": 8192,
+    "observed_main_stack": {
+      "main_stack_low": 50356224,
+      "main_stack_top": 50364160,
+      "sentinel_word": 219540062,
+      "untouched_margin_bytes": 5360,
+      "high_water_bytes": 2576,
+      "irq_and_bios_excluded": true,
+      "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+    },
+    "observed_irq_stack": {
+      "low": 50364160,
+      "top": 50364320,
+      "untouched_margin_bytes": 80,
+      "high_water_bytes": 80,
+      "includes_bios_irq_saves": true
+    }
+  },
+  "passed_checks": [
+    "arm",
+    "sprites",
+    "ui",
+    "flow",
+    "latency",
+    "story",
+    "water",
+    "transitions",
+    "ceiling",
+    "cache",
+    "ai-combat"
+  ],
+  "limits": [
+    "mGBA and Unicorn, no physical GBA",
+    "Live fixtures use stationary input, test HP32767 and original AI; poses diverge with frame timing",
+    "No whole-level minimum or full playthrough claimed",
+    "G21 remains in progress; G20 budget open; next G21 then G22"
+  ],
+  "reports": {
+    "build/gba/ui01-barrel-optimization/arm.json": "4b72c26d9633960bf89b97a9bf83e3b918566d7f217e7629bce5ecde0a0ab49d",
+    "build/gba/ui01-barrel-optimization/sprites.json": "1ea20c6161fb3d768245ae5596a0668c0ed461cdeb8accd54496308b0586dc19",
+    "build/gba/ui01-barrel-optimization/ui.json": "6f9b5cd82b9297e9c491343718e687e39cd85063f2ce4748e941c129b59a92b2",
+    "build/gba/ui01-barrel-optimization/flow.json": "bdec930237f53d571f2324006113133807af650a4c7a08dd6dee1d32bedd1749",
+    "build/gba/ui01-barrel-optimization/latency.json": "c97e4ec232a2a795b3413aa5a939c861a367005cbe867c10b39d26d5472ca859",
+    "build/gba/ui01-barrel-optimization/story.json": "dda8de230d31e6df230fdcab9739edb5617d7db3652b7dd8af7fb36cb4f6fb57",
+    "build/gba/ui01-barrel-optimization/water.json": "d6ed1da1ba31ec608f5e05cceb67eb40fd9d5e44cb6217ce594f32bde235cb79",
+    "build/gba/ui01-barrel-optimization/transitions.json": "ff29a382c9d45de1e5ebe2322aaea0f582cc8bd080b962452d27df56a111b7f2",
+    "build/gba/ui01-barrel-optimization/ceiling.json": "3ef3c6fa2a23c47aa0829bab84667a2a7de315def47c970e9fcdc1496f4463db",
+    "build/gba/ui01-barrel-optimization/cache.json": "96ded1f265e61e63608abb72120bce984ce855fedc9d7d7b2d4685e762b27dac",
+    "build/gba/ui01-barrel-optimization/ai-combat.json": "c22b5a540c86c965942eadae8443cc85bd76db3c986143ffb90085e3395d8dcd",
+    "build/gba/ui01-barrel-optimization/hardware.json": "a75867df41787a3c71fe4a6a5e9a63df5111a3abdfd362c5f21d2ea8528e3184",
+    "build/gba/ui01-barrel-optimization/barrels.json": "5b1b1f380142e012c72fe5590fd4f7c1ebbf855a3fb9e480436f053c62637658",
+    "build/gba/ui01-barrel-optimization/animation-ppu.json": "6fffed66fb6956df4f2e14ec18e03c102b0d21ff009ad596f32097d0f8712fab",
+    "build/gba/ui01-barrel-optimization/frontend-build.json": "7c22d989ba7084b0a7239d6e854e2a0e50d62aceb08caddbed4e2a6e6c6e7428",
+    "build/gba/ui01-barrel-optimization/hardware/prototype-build.json": "91d00973e7392dbd6779900aecadb3d03fd49e11ee1a6da5bf1afe174455e034",
+    "build/gba/ui01-barrel-optimization/sweep-before-0.json": "0c1728bdc6d350948339a4644c328216fd58a6c191381c2388b827511f55d9f1",
+    "build/gba/ui01-barrel-optimization/sweep-before-1.json": "a0fd888bde7662097290b23406cfc56ec7f77afe1fb32f6230dff9f9b423c268",
+    "build/gba/ui01-barrel-optimization/sweep-after-0.json": "45694a5f7d2392c05f2db3c0f50e156a69cbc48ec5bd1b8d762be746bcf87aa6",
+    "build/gba/ui01-barrel-optimization/sweep-after-1.json": "d730ee3c02691918ee77d87ad8ed4ecfb165c8a1af45c2621e7176288e57d0d0"
+  },
+  "sources": {
+    "ports/gba/platform/rect_tiled.S": "14600419e93697923e0768fdc43be5de3d4688bb36525cac91e856593f5354fa",
+    "ports/gba/src/renderer_rect.inc": "578e3f55d5a0bcab040d0891872ae8569cf12cbea051c279612f7b694bfcad64",
+    "ports/gba/src/renderer_animation_columns.inc": "8217266579b1d781861e6fb059a6c9ec87f7dd9c983c85110b8972299dc234c4",
+    "ports/gba/src/renderer.c": "983e378e6f9a3fe677594593eacf89ab16dab8b25493f639fe4807fd3b981bc7",
+    "ports/gba/scripts/gba_animation_columns.py": "f279488354e4f0f37c209565cc358c5529aab1db546c5b516dd7003a5dc02c48",
+    "ports/gba/scripts/prototype_gba_bsp.py": "55bcfcbd688ebcdc7c571c6f57659d169cad0d6dc944df6197f3b49d79c36227",
+    "ports/gba/scripts/benchmark_barrels_gba.py": "e83fbf7c95d39793ab1dffcddf0e6801947ea39c1773807599c3b5f057ed5df3",
+    "ports/gba/scripts/verify_animation_columns_gba.py": "4812a5392222c4aac0db2de0ef1aa701ec5808110dbb0d59db5a56820cc40187",
+    "ports/gba/scripts/verify_performance_arm.py": "20b1daaf9e36b151f9b240ec097c3dbf674c5b2b9f546cf55df65c73a2ab8135"
+  }
+}

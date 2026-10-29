@@ -1,0 +1,23 @@
+{
+  "task": "G21/UI01 close-hit investigation",
+  "date": "2026-10-29",
+  "status": "reported-scenario-not-reproduced",
+  "production_changed": false,
+  "accepted_rom_sha256": "297be4687e30ce96d2ab86135d05ad11e19400d9233b49fd1d57797a05b04273",
+  "reference_rom_sha256": "c12fff7033d02c6bc6cd2ddfd3d0c65ec5880ce2419b6cf50ac497973ab86844",
+  "cases_per_rom": 16,
+  "all_targets_damaged_and_killed": true,
+  "report": "build/gba/ui01-close-hits/close-hits.json",
+  "report_sha256": "f369cd06df629b570d24c58041e5d3cbc6b53f39315a4d586b01d6daf60909cc",
+  "script": "ports/gba/scripts/verify_close_hits_gba.py",
+  "script_sha256": "ec30836821cd5540c6d01c14c77e1cb12e0ba86e083f914e1d0ea459a37a11f8",
+  "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+  "model_sha256": "8d5a485ca5a33ef72bccad1db6140a69157be2ba22eccce874e7532cd27c4ab0",
+  "scope": "Live original LEVEL1 bats35..38, both weapons/locales; real held A, hero placed480 units east and given HP32767/ammo1000. AI/maps/resources active; frame timing can alter AI poses. Does not reproduce or dismiss the reported unregistered-hit scenario.",
+  "pending_user_details": [
+    "weapon",
+    "location of bat",
+    "new game or restored emulator state"
+  ],
+  "next_task": "G21, then G22"
+}

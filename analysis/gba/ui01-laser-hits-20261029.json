@@ -1,0 +1,200 @@
+{
+  "task": "G21/UI01 close-range laser collision fix",
+  "date": "2026-10-29",
+  "status": "passed",
+  "artifact": "artifacts/gba/DoK-port_UI01.gba",
+  "rom_sha256": "c996593f060e29eef7bee66823702ad9e2e5910c08ec61e68e59d776138097bc",
+  "rom_bytes": 16551604,
+  "build_dir": "build/gba/ui01-laser-hits/hardware/hw_v128_entity_rect",
+  "user_details": {
+    "weapon": "laser",
+    "start": "new game",
+    "location": "LEVEL1 first rooms",
+    "symptom": "close shots miss; stepping back restores hits"
+  },
+  "changes": [
+    "Check initial projectile cell before moving",
+    "Check diagonally crossed intermediate cell in exact crossing order; no side-cell hit for exact corner touch"
+  ],
+  "semantics": "Intentional GBA collision correction; unchanged trajectory/damage/cadence/class immunity/ABI; not newly established DOS equivalence",
+  "controlled_regressions": {
+    "cases": 330,
+    "old_failures": 122,
+    "new_failures": 0,
+    "reference_rom_sha256": "c12fff7033d02c6bc6cd2ddfd3d0c65ec5880ce2419b6cf50ac497973ab86844",
+    "close_before": [
+      {
+        "name": "close-corner",
+        "observed": "clear",
+        "health": 24
+      },
+      {
+        "name": "back60",
+        "observed": "hit",
+        "health": 20
+      },
+      {
+        "name": "spawn-cell",
+        "observed": "clear",
+        "health": 24
+      }
+    ],
+    "close_after": [
+      {
+        "name": "close-corner",
+        "observed": "hit",
+        "health": 20
+      },
+      {
+        "name": "back60",
+        "observed": "hit",
+        "health": 20
+      },
+      {
+        "name": "spawn-cell",
+        "observed": "hit",
+        "health": 20
+      }
+    ],
+    "scope": "Controlled original actors/resources, empty-map fixtures; rational grid-segment oracle, walls/order/corner/spawn and416/832/3328 tick delays, RU/EN. Not the exact user session or physical GBA."
+  },
+  "live_ordinary_pickup": {
+    "cases_per_rom": 16,
+    "all_targets_damaged_and_killed": true,
+    "scope": "Live original LEVEL1 bats35..38, both weapons/locales; real held A, hero placed480 units east and given HP32767. Original weapon pickup/ammo/show at original TMap cells. AI/maps/resources active; frame timing can alter AI poses. Does not reproduce or dismiss the reported unregistered-hit scenario."
+  },
+  "barrel": {
+    "ppu_exact_cases": 64,
+    "cpu_ratio": {
+      "minimum": 0.9998473670821674,
+      "median": 1.0,
+      "maximum": 1.000194401244168
+    },
+    "live_fps": [
+      {
+        "language": 0,
+        "cell": [
+          42,
+          54
+        ],
+        "before": 15.821854455524726,
+        "after": 15.821854455524726
+      },
+      {
+        "language": 0,
+        "cell": [
+          44,
+          55
+        ],
+        "before": 15.962806388313364,
+        "after": 15.962806388313364
+      },
+      {
+        "language": 0,
+        "cell": [
+          46,
+          56
+        ],
+        "before": 15.347537619598928,
+        "after": 15.347537619598928
+      },
+      {
+        "language": 1,
+        "cell": [
+          42,
+          54
+        ],
+        "before": 15.821854455524726,
+        "after": 15.821854455524726
+      },
+      {
+        "language": 1,
+        "cell": [
+          44,
+          55
+        ],
+        "before": 15.962806388313364,
+        "after": 15.962806388313364
+      },
+      {
+        "language": 1,
+        "cell": [
+          46,
+          56
+        ],
+        "before": 15.347537619598928,
+        "after": 15.347537619598928
+      }
+    ]
+  },
+  "ram": {
+    "ewram_bytes": 261444,
+    "ewram_free": 700,
+    "iwram_code_data_bytes": 24324,
+    "stack_bios_reserved_bytes": 8192,
+    "observed_main_stack": {
+      "main_stack_low": 50356224,
+      "main_stack_top": 50364160,
+      "sentinel_word": 219540062,
+      "untouched_margin_bytes": 5360,
+      "high_water_bytes": 2576,
+      "irq_and_bios_excluded": true,
+      "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+    },
+    "observed_irq_stack": {
+      "low": 50364160,
+      "top": 50364320,
+      "untouched_margin_bytes": 80,
+      "high_water_bytes": 80,
+      "includes_bios_irq_saves": true
+    }
+  },
+  "host_combat": {
+    "status": "passed",
+    "binary_sha256": "18cdad4ac9bd08ddb3bd2645282456984362008be6ff5e8de58560c2116c52c0"
+  },
+  "passed_checks": [
+    "projectile-cells",
+    "pickup-hits",
+    "combat",
+    "ai-combat",
+    "arm",
+    "barrels",
+    "flow",
+    "ui",
+    "story",
+    "ceiling",
+    "transitions"
+  ],
+  "reports": {
+    "build/gba/ui01-laser-hits/projectile-cells.json": "0cedb82069c08f620714757ba86c622d3b46e88b9b62e971310b35ef2c9c4481",
+    "build/gba/ui01-laser-hits/pickup-hits.json": "0b2cf04ec44274eef8f966d06da9d134260523e0b279b8d6e7f9d0dc7be05537",
+    "build/gba/ui01-laser-hits/combat.json": "d83cfe156620be6661bbf1fa35ba0d952602c60c6ad871831a761997f8cbdb11",
+    "build/gba/ui01-laser-hits/ai-combat.json": "00ef37ca2f85433759b40af45f22e9484697640ecfd4f8cf0d115875248e0b93",
+    "build/gba/ui01-laser-hits/arm.json": "bf81e95e7f435861a3774122924d6f6c2b2dff42f2b4cce926c115d68f0a2f40",
+    "build/gba/ui01-laser-hits/barrels.json": "c1d2e4a8e10984d9d40d9ab33a32dcd7f79470fe2cda67878d68d05ea5899fe0",
+    "build/gba/ui01-laser-hits/flow.json": "576fc5e095dae13a7f1a83c575a967d6185fa7f294e77543796065ce0a32ae02",
+    "build/gba/ui01-laser-hits/ui.json": "a5baa5b0c4d2914f338b1b83d2e8610e8d9e68d6a98d31849fae1d926465ccb2",
+    "build/gba/ui01-laser-hits/story.json": "9b19616436f9afac9214d358e55f12c6e6980206eec1bdf0168aaeb36a041c0d",
+    "build/gba/ui01-laser-hits/ceiling.json": "d23cbb06b3e7900d46d857e12e46ce07766e896f4847d81cce86a994c1dc352b",
+    "build/gba/ui01-laser-hits/transitions.json": "8817a53252ee0d0ce6b1c69e59cf1fb8db578b1b65c4f90b344649ddd3e1e94a",
+    "build/gba/ui01-laser-hits/frontend-build.json": "17f61de814f3ac6f28601e21824bee6f1f942cdd80acf8756f5ee24807dca8e8",
+    "build/gba/ui01-laser-hits/hardware/prototype-build.json": "762d7a7af454cf30e56e74aa2c1bf648191c7131a5d71215f84fd2ce7f538a9b"
+  },
+  "sources": {
+    "ports/gba/src/combat.c": "ef5aaf7af0608808a14f1fddb841687f637adcc471792a2acf15d466749f99c7",
+    "ports/gba/scripts/verify_projectile_cells_gba.py": "f086384b512caca3eb2c6b2efb86769bf06f451f1c615f4e9385278d69a52dd9",
+    "ports/gba/scripts/verify_close_hits_gba.py": "63d28cada8e4dc251e331d0a45fe11b0cdf76e3f46127be8e010fbe251ab12dd"
+  },
+  "existing_native_evidence": {
+    "path": "research/evidence/combat/ru/evidence.asm",
+    "sha256": "1057656c7fa5277851509c323365a63b7eac5e5c7b183f74aacf5a6366a3a331",
+    "address_system": "NE loader Ghidra",
+    "slice": "1068:294d-2986",
+    "new_exe_analysis": false
+  },
+  "physical_gba_tested": false,
+  "full_playthrough_tested": false,
+  "exact_user_session_recorded": false,
+  "next_task": "G21, then G22; G20 budget open"
+}

@@ -25,10 +25,11 @@ static DOK_COLD unsigned raster_opaque_arm(dok_renderer_workspace *w,const dok_r
     return dok_gba_opaque_tiled(&capsule);
 }
 #ifdef DOK_RENDER_OPAQUE_GAPS_PROTOTYPE
-static DOK_COLD void raster(dok_renderer_workspace *w,const dok_runtime *r,const dok_renderer_face *f,const uint8_t *light,dok_renderer_stats *stats) {
+static DOK_COLD void raster(dok_renderer_workspace *w,const dok_runtime *r,const dok_renderer_face *f,const uint8_t *light,dok_renderer_stats *stats,int vend) {
 #else
-static void raster(dok_renderer_workspace *w,const dok_runtime *r,const dok_renderer_face *f,const uint8_t *light,dok_renderer_stats *stats) {
+static void raster(dok_renderer_workspace *w,const dok_runtime *r,const dok_renderer_face *f,const uint8_t *light,dok_renderer_stats *stats,int vend) {
 #endif
+    if(vend>=0) {raster_general(w,r,f,light,stats,vend);return;}
     const dok_renderer_image *im=face_image(w,f->image_index);
     if(g_hw_tile_active && !(im->flags&8) && im->columns && im->resource_id &&
         f->depth0>=0 && f->depth1>=0 && f->depth0<32768 && f->depth1<32768 &&
@@ -38,5 +39,5 @@ static void raster(dok_renderer_workspace *w,const dok_runtime *r,const dok_rend
     }
     ++g_opaque_work[1];g_opaque_work[3]|=(im->flags&8?1u:0u)|(!im->columns?2u:0u)|(!im->resource_id?4u:0u)|
         (f->depth0<0 || f->depth1<0 || f->depth0>=32768 || f->depth1>=32768?8u:0u);
-    raster_general(w,r,f,light,stats);
+    raster_general(w,r,f,light,stats,vend);
 }

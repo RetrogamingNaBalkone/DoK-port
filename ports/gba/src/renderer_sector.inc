@@ -303,7 +303,7 @@ static DOK_COLD dok_renderer_status sector_draw(dok_renderer_workspace *w,const 
         sector->dx0=f->x0<f->x1?f->depth0:f->depth1;sector->dx1=f->x0<f->x1?f->depth1:f->depth0;
         sector->dq0=(6553600/(sector->dx0+200))>>8;sector->dq1=(6553600/(sector->dx1+200))>>8;
         if(sector->dq0<1)sector->dq0=1;if(sector->dq1<1)sector->dq1=1;
-        raster(w,r,f,w->lights,stats);
+        raster(w,r,f,w->lights,stats,-1);
     }
     sector_dynamic=0;if(g_render_work[0])g_sector_ticks[3]+=render_ticks()-stamp;
     w->surface_count=0;return DOK_RENDER_OK;

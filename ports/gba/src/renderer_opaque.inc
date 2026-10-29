@@ -30,12 +30,13 @@ static DOK_NOINLINE void raster_opaque(dok_renderer_workspace *w,const dok_rende
     }
     stats->pixels_written+=written;if(written)++stats->faces_drawn;
 }
-static void raster(dok_renderer_workspace *w,const dok_runtime *r,const dok_renderer_face *f,const uint8_t *light,dok_renderer_stats *stats) {
+static void raster(dok_renderer_workspace *w,const dok_runtime *r,const dok_renderer_face *f,const uint8_t *light,dok_renderer_stats *stats,int vend) {
+    if(vend>=0) {raster_general(w,r,f,light,stats,vend);return;}
     const dok_renderer_image *im=face_image(w,f->image_index);
     if(!(im->flags&8) && im->columns && im->resource_id &&
         !(f->image_index<r->object_count && r->level->definitions[f->image_index].class_id==7)) {
         const uint32_t *rows=prelit_view+im->resource_id*16;
         if(rows[0]){raster_opaque(w,f,im,rows,stats);return;}
     }
-    raster_general(w,r,f,light,stats);
+    raster_general(w,r,f,light,stats,vend);
 }

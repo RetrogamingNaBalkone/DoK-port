@@ -26,7 +26,7 @@ typedef struct {
 typedef struct {
     int32_t x[4],y[4],depth[4],key;
     uint16_t object,plane,cell_x,cell_z;
-    int16_t u0,u1,v0,reserved;
+    int16_t u0,u1,v0,reserved; /* plane2: v0 is inclusive V end, V start=0 */
 } dok_renderer_surface;
 #define DOK_RENDER_SPRITE_CAPACITY 256
 typedef struct {int32_t x,y,z;uint16_t object,reserved;} dok_renderer_sprite;

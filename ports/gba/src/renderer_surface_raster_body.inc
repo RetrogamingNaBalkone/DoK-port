@@ -10,6 +10,8 @@ static SURFACE_RASTER_ATTR void SURFACE_RASTER_NAME(dok_renderer_workspace *w,co
     if(SURFACE_RASTER_PLANE==2) {
         dok_renderer_image saved=w->images[f->object];
         dok_renderer_image image={im->pixels,0,0,im->width,im->height,im->stored_flags,0};
+        /* Native edge-plane arguments are V top=0, V bottom=height*inset/960.
+         * Keep the full texture/column stride while limiting the sampled V. */
 #ifdef DOK_RENDER_SIDES_PRELIT_PROTOTYPE
         extern const uint16_t dok_side_resources[6][256];
         extern const uint8_t dok_prelit_bank[];
@@ -20,9 +22,9 @@ static SURFACE_RASTER_ATTR void SURFACE_RASTER_NAME(dok_renderer_workspace *w,co
         }
 #endif
         dok_renderer_face face={f->x[0],f->x[1],f->y[0],f->y[1],f->y[3],f->y[2],
-            f->depth[0],f->depth[1],f->u0,f->u1,f->key,f->object,f->v0};
+            f->depth[0],f->depth[1],f->u0,f->u1,f->key,f->object,0};
         unsigned drawn=stats->faces_drawn;
-        w->images[f->object]=image;raster(w,r,&face,w->lights,stats);stats->faces_drawn=drawn;
+        w->images[f->object]=image;raster(w,r,&face,w->lights,stats,f->v0?f->v0:-1);stats->faces_drawn=drawn;
         w->images[f->object]=saved;return;
     }
 #ifndef DOK_RENDER_WORLD_PLANES_PROTOTYPE

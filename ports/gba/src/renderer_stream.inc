@@ -31,7 +31,7 @@ static DOK_COLD void stream_record(unsigned index,int ax,int az,int bx,int bz,in
     stream_xy[index][0]=ax;stream_xy[index][1]=az;stream_xy[index][2]=bx;stream_xy[index][3]=bz;
 }
 static DOK_COLD void stream_emit_face(dok_renderer_workspace *w,const dok_renderer_face *f,dok_renderer_stats *s) {
-    raster(w,stream_runtime,f,w->lights,s);
+    raster(w,stream_runtime,f,w->lights,s,-1);
 }
 static DOK_COLD int stream_link(unsigned bucket,unsigned face,unsigned first,unsigned last) {
     if(first>last || first>239 || last<first)return 1;
@@ -99,7 +99,7 @@ static DOK_COLD void stream_dynamic(dok_renderer_workspace *w,const dok_runtime 
     for(unsigned i=stream_heads[bucket];i!=UINT16_MAX;i=stream_fragments[i].next) {
         const stream_fragment *part=&stream_fragments[i];
         stream_clip_first=part->first;stream_clip_last=part->last;
-        raster(w,r,&w->faces[part->face],w->lights,s);
+        raster(w,r,&w->faces[part->face],w->lights,s,-1);
     }
     stream_vertical_clip=0;stream_clip_first=0;stream_clip_last=239;
     if(g_render_work[0])g_stream_ticks[3]+=render_ticks()-stamp;
