@@ -1,5 +1,224 @@
 # Передача контекста NDS между чатами
 
+## Текущее состояние — 30 октября 2026 года
+
+**Цикл N18 → N19 → N20 → N21 → N21P завершён (эмулятор). Остановиться перед
+N22; полного FINISH/death/gameflow ещё нет.** Пользователь требует новых
+субагентов для новых задач. Physical DS и прослушивание RU/EN audio/music
+остаются N24; численные PCM проверки приняты его явным ответом.
+
+[Паспорт N21P](tasks/N21P.md), [архитектура/ABI](spec/N21P-performance.md),
+[Git summary](../../analysis/summaries/nds-n21p-performance.json).
+Локальный полный агрегат `analysis/nds-n21p-performance.json`; root103reports
+PASS — `research/evidence/nds/n21p/root-acceptance.json`. Final archive:
+452sources/28buildfiles/14generated/2734results/781artifacts. Root final-review
+повторил11 266 file-pin checks, семь current manifests строгие, overrides0.
+
+Полный накопленный RU/EN:63cases/12 880presentations+profiles на банк,
+normal6637intervals/stage samples. RU15,514626→44,800385 FPS,
+EN15,310037→44,689456; все интервалы≤2VB, minimum29,913049. Production live
+LEVEL1–3 RU58,094290/min49,855082, EN57,903817/min48,857980. Goal60 false.
+34pages/2completePCM/POPAL/restore12points/early32/settings4/combat-touch и
+дорогой audit перепроверены; восемь strict map/GPU DMA captures прошли.
+Audit15,072343 FPS/min8,158104 отделён от normal budget.
+
+Карта idle не raster/DMA, dynamic dirty имеет12Hz deadline, drag/zoom/button
+changes immediate. Input/native disclosure каждый кадр; мир не паузится при
+touch. LASTSHOWN PRE/POST отделён от live input; PRE follow-up и class1 writes
+не теряются. Normal CPU54,53/55,13→16,13/16,15 мс, map25,30/25,57→1,384/1,385,
+discovery10,08/10,22→3,447 мс. Map redraw260/6637samples, skipped6377.
+
+Приняты transient private geometry, exact native math, field54 per-call table,
+packed StripDraw, blank-only overlay skip и штатное hotcode ITCM размещение.
+Persistent mesh/world cache и новые epoch journals не вводились. CPU raster
+до SwapBuffers; map DMA first после boundary, затем GPU/HUD и поздняя
+diagnostic publication. Pixel clean прежний; p6/p7/stream spans считают всю
+CPU-работу. Map strict192≤start≤end≤262, GPU прежнее192…262/0…47 плюс epoch
+guard. Pending GPU cache clean до submit имеет явный immutable lease;
+original public commit contract сохранён. Все объекты/эффекты/fog/source
+precision и source constructor quirks прежние.
+
+SCN normal/audit startup495616 +managed2293760 +SDK225280 +reserve655360
+=3670016 B. Production/fixture startup491520/SDK229376, остальные части те же.
+Minimum SDK196608 соблюдён. ITCM29 160/32 768 B, запас3608, DTCMdata0.
+Native workspace47 556 B внутри scratch131 072 B, persistent allocation0;
+scene stack2488 B, compiler `.su` не high-water. Все I/O/private UI области N21
+сохранены. Reserve не расходовать. На microSD только настройки, saves нет.
+
+Touch whole-map LCD upper bound6VB/100,291 мс; live level-loading upper
+RU10,497 с/EN9,828 с, язык≤1,020/0,969 с. Это observer bounds и отдельная
+loading стоимость, не hardware timing. Physical flashcart/IRQ/LCD/stacks — N24.
+Текущий бюджет доказывает прототипные routes, не весь будущий N22 gameplay.
+
+Frozen final targets `build/nds/n21p/candidate21-{ru,en,audit-ru,frontend-ru,frontend-en,fixture-ru,fixture-en}`.
+Full ROM/ELF hashes в `hotcode-variant-layout.json`, manifests и archive.
+RU ROM `beffba6bac637af2b3dfe9b6e9b0da84c9bf4bbfb8f96525dcdcfd0bdc150635`;
+EN ROM `f1d20539cbfc0e7ae534174a60ccfffebcb0612d56b41323d64a28855a831cd4`.
+Build/run/archive/summary команды в паспорте; exact private FAT/driver/input
+commands в `research/evidence/nds/n21p/matrix21/`. Не перезаписывать frozen
+targets/snapshots. Все root launchers завершены. GBA/SDL2 не менялись.
+
+Current452 source/tool inputs и final runtime строго проверены. Полная
+сохранность каждого nested historical byte не заявляется:3 metadata versions
+и7 intermediate host execution outputs имеют отдельный immutable
+[retention policy](spec/N21P-historical-artifact-retention.md). Saved source,
+tests, tools, commands доступны;24 replay source pins проверены. No source or
+performance waivers, старые JSON не переписаны. После archive verification
+root удалил179 непинованных промежуточных build-файлов (142800189 B),
+по точным resolved paths/SHA; рекурсивных операций не было. Последующая
+проверка8018 source/archive pins прошла; текущие сборки и evidence сохранены.
+Результаты: `research/evidence/nds/n21p/cleanup-result.json` и
+`post-cleanup-verification.json`. Reports/source evidence не удалять.
+
+## История итерации N18–N21P до финальной приёмки
+
+Пользователь поручил **N18 → N19 → N20 → N21 → N21P** с запуском субагентов
+для новых задач. Остановка перед N18 снята; после N21P остановиться перед N22.
+Одновременно ведётся один ID, следующий начинается после проверки текущего.
+**N18–N21 готовы функционально (эмулятор), текущая задача N21P.**
+
+[N21: паспорт](tasks/N21.md), [спецификация](spec/N21-frontend.md),
+[сводка](../../analysis/nds-n21-frontend.json). Root2181pins PASS —
+`research/evidence/nds/n21/final-review.json`.42 независимых runtime reports:
+полный RU/EN frontend/34 страницы/20447232 INDEX8 и LCD RGB pixels;
+32 однокадровых A/Start при загрузке;2 production world smokes;
+4 settings cases;2 independent HUD/map restore gates с12 точками на трёх уровнях
+и обоих языках. В restore233472 HUD и1179648 map pixels плюс столько же RGB
+совпали с исходными ресурсами и native-x86 map oracle. Два43-секундных PCM110
+на каждом языке (title и README once) имеют coefficient≈0.9924 без underrun.
+
+Настройки `fat:/dok/settings.dat`:16 B DOKS/version1/length16/language/
+FNV1a(first12). DefaultsRU, actualrestart restoresEN без игрового прогресса,
+corrupt даётRU и чинится при смене языка; core-readonly вызывает writefailure,
+но сохраняет выбранныйEN вRAM. На диск пишутся только настройки.
+Крупный original FONT16 30×9 сохранён, меню/controls FONT8; весь текстCP866.
+Серый86 на чёрном отклонён (contrast≈1.85), body/focus используют исходный2
+(≈15.3). Frontend static frames dirty-only; top/bottom scratch borrowed only
+внеPLAY. Paused world clocks, world+simulation hashes неизменны при языке.
+
+Единственный ingame art delta —3 pixels последнего POPAL frame5.
+Render-only alias выбирает actual N04 ID0x42441405/0x82441405 поUIязыку;
+world/bank IDs не меняются. Alternate frame добавляется в lossless frame_store
+при load до raw-cache partition, без FAT при игре.12 actual submitted descriptors
+и393216 cachebytes сверены с RAW RES обоих языков/трёх уровней.
+Select+Y display pose и Select+Start OUTRO доступны только FRONTEND_FIXTURES=1;
+production default0. ENDTXT вызывается настоящим пунктом «Выход».
+Полный FINISH/death/gameflow остаётся N22, автоматически не начинать.
+
+Текущая память N21: startup524288 + managed2293760 + SDK196608 + reserve655360
+=3670016 B. **SDK ровно minimum, дополнительного запаса0 B**; N21P нельзя
+увеличивать startup без компенсации. Frontend state в I/O offset61440..65535,
+top/bottom/text используют131072 scratch только внеPLAY. Map/UI области N20
+сохраняются. Frontend probe публикует even PLAY metadata между кадрами,
+odd — только frontend buffer writes/cache mutation/metadata copy: blanketodd
+на всёмPLAY prepare отвергнут, observer не видел ни одного кадра.
+
+Принятые targets `build/nds/n21/fixture-visual-{ru,en}` и
+`frontend-visual-{ru,en}`; команды/ROM hashes в паспорте и сводке.
+Первый шаг N21P — новый субагент, прочитать паспорт/общий P-протокол,
+сохранить точный baseline с текущими features и отдельно profile discovery,
+2D raster/DMA и audit snapshot/memcmp. Накопленный N20 combat/touch набор
+обязателен вместе с N21 frontend/restore/settings gates. Цель —≥99% normal≤2VB
+и minimum1s window≥29.913049, без упрощения мира/эффектов. Частоту карты
+пользователь разрешил снижать: idle dirty-only, dynamic≈10–15Hz, drag/zoom
+сразу, input каждый игровой кадр; disclosure не должен терять исходные клетки.
+Общий performance budget всё ещё открыт, 60FPS не заявлены.
+
+Ниже — N20 и исторические подробности N19/N18.
+
+[N20: паспорт](tasks/N20.md), [спецификация](spec/N20-map.md),
+[сводка](../../analysis/nds-n20-map.json). По63cases/12880presentations RU/EN,
+94touch stages и665HUD stages;31,014,912/31,653,888 INDEX8 и LCD RGB pixels
+совпали с native-source oracle. Disclosure доказано отдельно по конструкторам,
+sort и320-column visibility оригинала. Actual combat+touch и Start pause/resume
+проверены; clocks/AI стоят только на паузе. Root3565pins PASS —
+`research/evidence/nds/n20/final-review.json`.
+
+**Бюджет не принят:** normal RU15.417/EN15.469 virtual FPS против N19≈35.7,
+minimum window11.965, p99=5VB. Карта сейчас полностью raster/DMA каждый кадр,
+плюс native disclosure shadow producer и дорогие audit copies/VRAMmemcmp.
+В N21P отдельно профилировать эти затраты. Пользователь29 октября уточнил:
+не обновлять карту60Гц; idle не перерисовывать, dirty state, динамические отметки
+ориентировочно10–15Гц, drag/zoom сразу; ввод каждый игровой кадр.
+
+Startup520192 + managed2293760 + SDK200704 + reserve655360 =3670016 B;
+сверх SDK minimum196608 осталось4096 B. Map staging49152 B живёт в I/O
+offset65536..114687; stable planes12288 в49152..61439, postvisited4096
+в45056..49151. UI private bank после114688 не затрагивать. Map state живёт
+после HUD mirror в scene tail. Четыре bounded512-byte audio service opportunities
+за presentation устранили starvation; обе полные43-секундные title110 корреляции
+0.9924338014, underrun/stale/fault0, FAT после unload неизменён.
+RU ROM d6cdf5b4b835b97fdb2d34b82eaa981140a0a47bb227bb079c2c3081bb25f57e;
+EN743832ab52ef22622acd94d38297e622d8fdb9fa91181fcc26e1762221c89cf9.
+
+Первый шаг N21: прочитать паспорт, сверить исходные title/menu/text paths,
+создать frontend и settings-only I/O. Сейчас Start обрабатывает `nds_map_input`:
+нужен единый владелец pause, поглощение held keys/touch до отпускания.
+При возврате из статических экранов восстановить lower VRAM C/palette и HUD.
+UI descriptor отделён от simulation; язык не пересоздаёт мир. Общие immutable
+audio banks не освобождать на STOP ACK. Новая N21 передаётся новому субагенту;
+N21P начинается после её приёмки.
+
+Ниже сохранены подробные результаты N19/N18 и исторические входы N20.
+[N19: паспорт](tasks/N19.md), [спецификация](spec/N19-hud.md),
+[сводка](../../analysis/nds-n19-hud.json). HUD ровно256×38, числа слева сразу
+после иконок с видимым зазором2–3px по уточнению пользователя. Полные CP866
+RU/EN сообщения, все signed16 значения и665 display stages на трёх уровнях
+проверены. По62 сценария/11280 presentations;872/869 наблюдений HUD,
+8482816/8453632 INDEX8 и фактических RGB-пикселей совпали с oracle исходных
+ресурсов. UI имеет собственный presentation descriptor: смена языка сохраняет
+мир, игровые bindings и animation bank. Старый общий descriptor был отвергнут
+живым прогоном; actual runtime host gate и mutation control закрепляют исправление.
+Root проверил3078 pins сводки и архива: `research/evidence/nds/n19/final-review.json`.
+
+Функциональные проверки PASS, общий performance budget ещё не принят:
+у RU/EN один normal интервал3VB, minimum window29.422671289 virtual FPS;
+живые routes все≤2VB/min29.913049144. Это вход для N21P, не скрытый PASS.
+Startup516096 + managed2293760 + SDK204800 + reserve655360 =3670016 B.
+Сверх SDK minimum196608 остаётся8192 B; UI bank/private descriptor живут в
+I/O tail после114688, HUD mirror9728 B — в scene tail после238176.
+
+Первый шаг N20: прочитать паспорт и доказать исходные disclosure/render records,
+затем нижняя карта256×160 и32px кнопок, touch без влияния на камеру/бой.
+Наследовать `Makefile.n19`, ARM7 audio и обязательный `ui.dat`. Возможный
+map staging49152 B — I/O offset65536…114687: сначала доказать отсутствие
+живого borrow catalog workspace и packet overlap. VRAM C сейчас занята
+временной console; её заменяет карта. SDK reserve не тратить. Новая задача
+передаётся новому субагенту; N21/N21P пока не начаты.
+
+[N18: паспорт](tasks/N18.md),
+[архитектура и команды](spec/N18-audio.md), [компактный отчёт](../../analysis/nds-n18-audio.json).
+Пользователь29 октября явно ответил: «Достаточно численных проверок;
+прослушивание перенести в N24». После ответа выполнена
+`summarize_audio.py --accept-listening-deferred`: `passed=true`,
+`software_checks_passed=true`. Прослушивание не объявляется выполненным.
+
+ARM7 producer распаковывает resident lossless PCM блоками1024; ARM9 передаёт IPC.
+Все22 эффекта487165 B представлены314352 B без потерь. Все23 once и нечётный loop
+захвачены на каждом языке и сравнены с независимыми RES. Титул110 once полностью
+прошёл под живой нагрузкой: корреляция0.9924338 RU/EN. Пауза сохраняет звучание
+по проверенному modal DOS path; исходной музыки меню нет. Смена языка использует
+общие неизменяемые PCM, совпадение23 пар доказано; игровые bindings локализованы.
+
+RU/EN:59 сценариев/8620 presentations, по6637 штатных интервалов, все≤2 VBlank;
+35.8654/35.8492 virtual FPS, minimum window29.913049. Underrun/stale/fault0,
+FAT неизменён после unload. ARM9 service max0.730113 мс: цель0.3 мс не достигнута,
+общий бюджет audio/HUD/map ещё проверяет N21P. Startup507904 + managed2293760 +
+SDK212992 + reserve655360 =3670016 B; SDK margin16384 B сверх минимума.
+Новые UI-буферы должны учитывать этот ограниченный запас и владение ресурсами.
+Два ранних варианта отклонены по cadence, их числа сохранены отдельно.
+
+Команды: `check_audio_codec.py`, `check_audio_host.py`, `check_audio.py prepare/host`,
+`run_audio_emulator.py --target build/nds/n18/final-release-{ru,en}` (для EN добавить
+`--language 2`), `summarize_audio.py`. Полные команды/версии/hashes — в паспорте/spec.
+Архив — `research/evidence/nds/n18/release/`; чистая пересборка RU совпала по ROM.
+Исторический вход N19, теперь выполнен: оригинальный DOS-HUD 256×38, полный RU/EN текст,
+исходный шрифт и сообщения, dirty updates без пересоздания мира. Первый шаг —
+сверить N06/N14/N15, макет и исходные UI ASM/text semantics, принять VRAM/RAM lifetime.
+N20 принята функционально; N21 в работе, N21P ещё не начата. Приёмка промежуточных задач — host/эмулятор;
+физическая DS/DS Lite остаётся N24. Игровых сохранений нет, запись только настроек.
+Входная техническая передача — принятая N17P ниже; прежняя остановка историческая.
+
 ## Дополнение: статическая оценка GPU — 29 октября 2026 года
 
 [N17P-GPU](tasks/N17P-GPU.md) завершена как исследование,

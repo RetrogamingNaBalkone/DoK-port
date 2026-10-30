@@ -316,7 +316,10 @@ dok_balance_status dok_presentation_bind(const dok_level_definition *effective,
     if(effective->language!=1u || localized->source_index!=effective->source_index)
         return DOK_BALANCE_WRONG_SAMPLE;
     status=validate_sample(effective,1u);if(status!=DOK_BALANCE_OK) return status;
-    status=validate_sample(localized,0u);if(status!=DOK_BALANCE_OK) return status;
+    /* N19 may use the accepted RU model itself as its text catalog. It has
+     * exactly the same original source spans; no third105KiB model is needed.
+     * Aliasing is admitted only through the existing full profile digest. */
+    status=validate_sample(localized,localized==effective?1u:0u);if(status!=DOK_BALANCE_OK) return status;
     if(dok_assets_catalog(session,&catalog)!=DOK_ASSET_OK ||
        !hash_matches(session->_source_sha256[0],archive_hash[0]) ||
        !hash_matches(session->_source_sha256[1],archive_hash[1])) return DOK_BALANCE_WRONG_SAMPLE;

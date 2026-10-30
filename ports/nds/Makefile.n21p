@@ -1,0 +1,21 @@
+# N21P paired two-screen performance checkpoint. Accepted N21 source baseline
+# is archived under research/evidence/nds/n21p/initial before modifications.
+include Makefile.n21
+N21P_AUDIT ?= 0
+N21P_GEOMETRY_PROFILE ?= 0
+# SCN's inherited trace reader is frozen at512 entries. Production frontend
+# keeps a smaller rolling diagnostic history; simulation/guards are identical.
+N21P_TRACE_CAPACITY ?= $(if $(filter 1,$(GAMEPLAY_FRONTEND)),384u,512u)
+CPPFLAGS += -DN21P_PROFILE=1 -DN21P_AUDIT=$(N21P_AUDIT) -DNDS_EFFECT_TRACE_CAPACITY=$(N21P_TRACE_CAPACITY)
+PLATFORM_CPPFLAGS += -DN21P_PROFILE=1 -DN21P_AUDIT=$(N21P_AUDIT) -DNDS_EFFECT_TRACE_CAPACITY=$(N21P_TRACE_CAPACITY)
+CPPFLAGS += -DN21P_GEOMETRY_PROFILE=$(N21P_GEOMETRY_PROFILE)
+PLATFORM_CPPFLAGS += -DN21P_GEOMETRY_PROFILE=$(N21P_GEOMETRY_PROFILE)
+# Branch-dense exact INDEX8 code benefits from ARM conditional instructions.
+# The public ABI and raster algorithm are unchanged; SDK interworks with Thumb.
+$(OBJDIR)/map_raster.o $(OBJDIR)/map_runtime.o: ARCH := -marm -mcpu=arm946e-s+nofp
+
+# Placement-only hot code experiment; SDK linker already owns ITCM.
+N21P_ITCM ?= 1
+CPPFLAGS += -DN21P_ITCM=$(N21P_ITCM)
+CPPFLAGS += -I$(BLOCKSDS)/libs/libnds/include
+PLATFORM_CPPFLAGS += -DN21P_ITCM=$(N21P_ITCM)

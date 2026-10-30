@@ -1,3 +1,4 @@
+#include "dok/hotcode.h"
 #include "render_backend.h"
 
 #include <limits.h>
@@ -28,20 +29,31 @@ static int initialized;
 static int loading;
 static uint32_t light_palette_rows, light_palette_base;
 static uint32_t darkness, applied_darkness;
-typedef struct StripDraw {unsigned char order[4],reuse;} StripDraw;
+/* Four2-bit vertex indices and one reuse bit; capacity is unchanged. */
+typedef struct StripDraw {uint16_t packed;} StripDraw;
+_Static_assert(sizeof(StripDraw)==2u,"bounded strip metadata");
 static StripDraw strip_draw[DOK_NDS_RENDER_POLYGON_LIMIT];
-static int shared_strip(const dok_nds_render_quad *a,const StripDraw *ad,
+DOK_NDS_HOT_CODE static unsigned strip_order(const StripDraw *d,unsigned k)
+{return (d->packed>>(2u*k))&3u;}
+DOK_NDS_HOT_CODE static unsigned strip_reuse(const StripDraw *d)
+{return (d->packed>>8u)&1u;}
+_Static_assert(sizeof(dok_nds_render_vertex)==5u*sizeof(int32_t),"strip vertex has no padding");
+DOK_NDS_HOT_CODE static int strip_vertex_equal(const dok_nds_render_vertex *a,const dok_nds_render_vertex *b)
+{
+    return a->x==b->x && a->y==b->y && a->z==b->z &&
+           a->u_q16==b->u_q16 && a->v_q16==b->v_q16;
+}
+DOK_NDS_HOT_CODE static int shared_strip(const dok_nds_render_quad *a,const StripDraw *ad,
     const dok_nds_render_quad *b,StripDraw *bd)
 {
-    bd->order[0]=0;bd->order[1]=1;bd->order[2]=3;bd->order[3]=2;bd->reuse=0;
+    bd->packed=UINT16_C(0x00b4);
     if(!a || a->texture_slot!=b->texture_slot || a->color_rgb555!=b->color_rgb555)return 0;
     for(uint32_t i=0;i<4u;++i)for(uint32_t reverse=0;reverse<2u;++reverse) {
         uint32_t j=(i+(reverse?3u:1u))%4u;
-        if(memcmp(&a->vertex[ad->order[2]],&b->vertex[i],sizeof(b->vertex[i])) ||
-           memcmp(&a->vertex[ad->order[3]],&b->vertex[j],sizeof(b->vertex[j])))continue;
-        bd->order[0]=(unsigned char)i;bd->order[1]=(unsigned char)j;
-        bd->order[2]=(unsigned char)((i+(reverse?1u:3u))%4u);
-        bd->order[3]=(unsigned char)((i+2u)%4u);bd->reuse=1;return 1;
+        if(!strip_vertex_equal(&a->vertex[strip_order(ad,2u)],&b->vertex[i]) ||
+           !strip_vertex_equal(&a->vertex[strip_order(ad,3u)],&b->vertex[j]))continue;
+        bd->packed=(uint16_t)(i|(j<<2u)|(((i+(reverse?1u:3u))%4u)<<4u)|
+            (((i+2u)%4u)<<6u)|256u);return 1;
     }
     return 0;
 }
@@ -59,7 +71,7 @@ static int32_t nearest_div(int32_t value, int32_t divisor)
                       : -((-value + divisor / 2) / divisor);
 }
 
-static dok_nds_render_result fence(uint32_t *iterations)
+DOK_NDS_HOT_CODE static dok_nds_render_result fence(uint32_t *iterations)
 {
     uint32_t n = 0;
     while (GFX_STATUS & (1u << 27)) {
@@ -69,7 +81,7 @@ static dok_nds_render_result fence(uint32_t *iterations)
     return DOK_NDS_RENDER_OK;
 }
 
-void dok_nds_render_observe(dok_nds_render_stats *stats)
+DOK_NDS_HOT_CODE void dok_nds_render_observe(dok_nds_render_stats *stats)
 {
     uint32_t control = GFX_CONTROL;
     uint32_t gxstat = GFX_STATUS;
@@ -97,7 +109,7 @@ void dok_nds_render_darkness(int enabled)
 {
     darkness=enabled!=0;
 }
-static void commit_darkness(void)
+DOK_NDS_HOT_CODE static void commit_darkness(void)
 {
     if(darkness==applied_darkness)return;
     /* Z-buffer mode and the accepted Q12 projection are retained. At a fog
@@ -116,7 +128,7 @@ static void commit_darkness(void)
     applied_darkness=darkness;set_control(GL_TEXTURE_2D);
 }
 
-static dok_nds_render_result modelview(
+DOK_NDS_HOT_CODE static dok_nds_render_result modelview(
     const dok_nds_render_camera *camera, const dok_nds_render_cell *cell,
     m4x3 *matrix)
 {
@@ -157,7 +169,7 @@ typedef struct CameraPlan {
     int32_t anchor_x, anchor_y, anchor_z;
 } CameraPlan;
 
-static dok_nds_render_result camera_plan(
+DOK_NDS_HOT_CODE static dok_nds_render_result camera_plan(
     const dok_nds_render_camera *camera, CameraPlan *plan)
 {
     dok_nds_render_cell anchor;
@@ -196,7 +208,7 @@ static dok_nds_render_result camera_plan(
     return DOK_NDS_RENDER_OK;
 }
 
-static dok_nds_render_result planned_cell_clip(
+DOK_NDS_HOT_CODE static dok_nds_render_result planned_cell_clip(
     const CameraPlan *plan, const dok_nds_render_cell *cell, m4x4 *clip)
 {
     int64_t shift[3];
@@ -228,7 +240,7 @@ static dok_nds_render_result cell_clip(
     return planned_cell_clip(&plan,cell,clip);
 }
 
-static void load_cell_clip(const m4x4 *clip)
+DOK_NDS_HOT_CODE static void load_cell_clip(const m4x4 *clip)
 {
     glMatrixMode(GL_PROJECTION);
     glLoadMatrix4x4(clip);
@@ -236,7 +248,7 @@ static void load_cell_clip(const m4x4 *clip)
     glLoadIdentity();
 }
 
-static int vertex_valid(const dok_nds_render_vertex *vertex,
+DOK_NDS_HOT_CODE static int vertex_valid(const dok_nds_render_vertex *vertex,
                         const ResidentTexture *texture)
 {
     if (vertex->x < -4096 || vertex->x > 4095 ||
@@ -271,7 +283,7 @@ static int vertex_inside(const m4x4 *clip,
            out[2] > -out[3] + 4 && out[2] < out[3] - 4;
 }
 
-static int clip_range_bounded(const m4x4 *clip)
+DOK_NDS_HOT_CODE static int clip_range_bounded(const m4x4 *clip)
 {
     unsigned row, col;
     for (row = 0; row < 4; ++row) {
@@ -409,7 +421,7 @@ void dok_nds_render_present(void)
     }
 }
 
-dok_nds_render_result dok_nds_render_submit(
+DOK_NDS_HOT_CODE dok_nds_render_result dok_nds_render_submit(
     const dok_nds_render_frame *frame, dok_nds_render_stats *stats)
 {
     uint32_t i, j, k, quads = 0, vertex_bound = 0;
@@ -486,7 +498,7 @@ dok_nds_render_result dok_nds_render_submit(
              * Fully interior quads require four. No capacity truncation. */
             StripDraw *draw=&strip_draw[quads-cell->quad_count+j];
             shared_strip(previous_inside && inside?previous_quad:NULL,previous_draw,q,draw);
-            vertex_bound += worst_case_fits ? 10u : inside ? 4u-2u*draw->reuse : outside_all?0u:4u+(uint32_t)__builtin_popcount(outside_any);
+            vertex_bound += worst_case_fits ? 10u : inside ? 4u-2u*strip_reuse(draw) : outside_all?0u:4u+(uint32_t)__builtin_popcount(outside_any);
             previous_quad=q;previous_draw=draw;previous_inside=inside;
             if (vertex_bound > DOK_NDS_RENDER_VERTEX_LIMIT)
                 return DOK_NDS_RENDER_CAPACITY;
@@ -516,7 +528,7 @@ dok_nds_render_result dok_nds_render_submit(
         for (j = 0; j < cell->quad_count; ++j) {
             const dok_nds_render_quad *q = &cell->quads[j];
             const StripDraw *draw=&strip_draw[draw_index++];
-            if(!draw->reuse){if(j)glEnd();glBegin(GL_QUAD_STRIP);}
+            if(!strip_reuse(draw)){if(j)glEnd();glBegin(GL_QUAD_STRIP);}
             uint32_t color = q->texture_slot == UINT16_MAX
                 ? q->color_rgb555 : RGB15(31, 31, 31);
             if (bound_slot != q->texture_slot) {
@@ -531,8 +543,8 @@ dok_nds_render_result dok_nds_render_submit(
                 bound_palette=palette_row;
             }
             if (bound_color != color) { glColor(color); bound_color = color; }
-            for (k = draw->reuse?2u:0u; k < 4; ++k) {
-                const dok_nds_render_vertex *v = &q->vertex[draw->order[k]];
+            for (k = strip_reuse(draw)?2u:0u; k < 4; ++k) {
+                const dok_nds_render_vertex *v = &q->vertex[strip_order(draw,k)];
                 glTexCoord2t16((t16)nearest_div(v->u_q16, 4096),
                               (t16)nearest_div(v->v_q16, 4096));
                 glVertex3v16((v16)(v->x * 8), (v16)(v->y * 8), (v16)(v->z * 8));
@@ -746,7 +758,18 @@ dok_nds_render_result dok_nds_stream_plan(const dok_nds_stream_texture *textures
     result.resident_bytes=resident_bytes=used;resident_count=count;
     stream_planned=1;*stats=result;return DOK_NDS_RENDER_OK;
 }
-dok_nds_render_result dok_nds_stream_commit(dok_nds_stream_stats *stats)
+dok_nds_render_result dok_nds_stream_prepare_uploads(void)
+{
+    if(!stream_planned)return DOK_NDS_RENDER_ARGUMENT;
+    for(uint32_t i=0;i<DOK_NDS_RENDER_TEXTURE_CAPACITY;++i) {
+        StreamSlot *s=&stream_slots[i];
+        if(s->valid&&s->pending)DC_FlushRange(s->texture.pixels,s->texture.bytes);
+    }
+    if(stream_palette_pending)DC_FlushRange(stream_palette,stream_colors*2u);
+    return DOK_NDS_RENDER_OK;
+}
+
+static dok_nds_render_result stream_commit(dok_nds_stream_stats *stats,uint32_t clean_sources)
 {
     uint32_t i,old;
     if(!stats || !stream_planned) return DOK_NDS_RENDER_ARGUMENT;
@@ -757,14 +780,14 @@ dok_nds_render_result dok_nds_stream_commit(dok_nds_stream_stats *stats)
     for(i=0;i<DOK_NDS_RENDER_TEXTURE_CAPACITY;++i) {
         StreamSlot *s=&stream_slots[i];
         if(s->valid && s->pending) {
-            DC_FlushRange(s->texture.pixels,s->texture.bytes);
+            if(clean_sources)DC_FlushRange(s->texture.pixels,s->texture.bytes);
             dmaCopy(s->texture.pixels,glGetTexturePointer(s->sdk_id),s->texture.bytes);s->pending=0;
         }
     }
     vramRestorePrimaryBanks(old);
     if(stream_palette_pending) {
         uint8_t oldf=VRAM_F_CR;vramSetBankF(VRAM_F_LCD);
-        DC_FlushRange(stream_palette,stream_colors*2u);
+        if(clean_sources)DC_FlushRange(stream_palette,stream_colors*2u);
         dmaCopy(stream_palette,glGetColorTablePointer(stream_palette_id),stream_colors*2u);
         if(stream_colors==4096u)dmaCopy(stream_palette,BG_PALETTE,512u);
         VRAM_F_CR=oldf;stream_palette_pending=0;
@@ -774,3 +797,8 @@ dok_nds_render_result dok_nds_stream_commit(dok_nds_stream_stats *stats)
     if(loading)powerOn(POWER_3D_CORE);
     set_control(GL_TEXTURE_2D);return DOK_NDS_RENDER_OK;
 }
+
+dok_nds_render_result dok_nds_stream_commit(dok_nds_stream_stats *stats)
+{return stream_commit(stats,1u);}
+dok_nds_render_result dok_nds_stream_commit_prepared(dok_nds_stream_stats *stats)
+{return stream_commit(stats,0u);}

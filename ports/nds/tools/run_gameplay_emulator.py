@@ -318,8 +318,8 @@ def main():
             digest=struct.pack('<8I',*row[6:]).hex();entry=entries[image_id]
             assert (row[0],row[2],row[3],row[4],row[5],digest)==(image_id,case_id,entry['width'],entry['height'],len(entry['pixels']),hashlib.sha256(entry['pixels']).hexdigest())
             report['frame_texture_traces'].append(dict(case_id=case_id,image_id=image_id,frame_id=row[1],sha256=digest))
-        normal=[c for c in cases if c['source_kind'] not in (12,13,14,17,18,25,26,28)]
-        stress=[c for c in cases if c['source_kind'] in (12,13,14,17,18,25,26,28)]
+        normal=[c for c in cases if c['source_kind'] not in (12,13,14,17,18,25,26,28,29)]
+        stress=[c for c in cases if c['source_kind'] in (12,13,14,17,18,25,26,28,29)]
         normal_ids={c['case_id'] for c in normal};stress_ids={c['case_id'] for c in stress}
         if normal:report['history']=summarize([r for r in report['history_records'] if r['case_id'] in normal_ids],probe,normal,quad_strips=True)
         for label,kinds in (('live_routes',{22,23,24,27}),('all_awake',{25}),('controlled_death',{26})):

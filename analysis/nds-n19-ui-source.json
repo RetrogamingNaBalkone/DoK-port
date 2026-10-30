@@ -1,0 +1,40 @@
+{
+  "task": "N19",
+  "passed": true,
+  "counts": {
+    "messages": 546,
+    "level_messages": 532,
+    "native_messages": 14,
+    "max_message_bytes": 36,
+    "message_pages": 589,
+    "stories": 16,
+    "story_pages": 34,
+    "fonts": 4,
+    "icons": 12
+  },
+  "outputs": [
+    {
+      "path": "build/nds/n19/ui.dat",
+      "bytes": 16416,
+      "sha256": "5e5f6b24f5e387eb49e54e5d42b1e3bedada58a3482442e9816e08746cc583e9"
+    },
+    {
+      "path": "build/nds/n19/generated/ui_native.inc",
+      "bytes": 1855,
+      "sha256": "08d2fe4c077380187c7a6d14e4d898304034a7a4014ade20b7f38b91d53aa3a4"
+    }
+  ],
+  "fonts_equal_between_languages": true,
+  "all_banks_equal_between_languages": true,
+  "script_sha256": "2ba58b2310b0ba2beb22eb09bbd5331337926813a3198d02d6833e99033d359a",
+  "catalog": {
+    "path": "research/evidence/nds/n19/ui-catalog.json",
+    "sha256": "65c4377505b7675bf7c26226ba146ae5375b55b76213e37b58c5e6886c959e63"
+  },
+  "source_sha256": {
+    "originals/pkr/RUS/PKR.RES": "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816",
+    "originals/pkr/ENG/PKE.RES": "865da340621fa6f90548a84e9ae9bf0a85071befb32a40ca1d359e488f74d458",
+    "originals/pkr/RUS/PKR.EXE": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+    "originals/pkr/ENG/PKE.EXE": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b"
+  }
+}

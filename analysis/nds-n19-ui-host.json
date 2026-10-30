@@ -1,0 +1,214 @@
+{
+  "task": "N19",
+  "passed": true,
+  "architecture": "Windows x86_64 host; same C as ARM9, not ARM9 execution",
+  "counts": {
+    "unsigned_cp866_glyphs": 1024,
+    "catalog_messages": 546,
+    "message_pages": 589,
+    "story_pages": 34,
+    "synthetic_pages": 1697,
+    "key_weapon_extreme_layout_cases": 864,
+    "maximum_bar_cases": 56,
+    "retained_output_shrink_key_cleanup_cases": 80,
+    "number_strings": 65536,
+    "guarded_hud_renders": 132669
+  },
+  "fixed_left_anchors": [
+    {
+      "language": 1,
+      "value": 0,
+      "cell_anchors": {
+        "health": 23,
+        "charge": 97
+      },
+      "original_ink_adjacency": {
+        "health": {
+          "icon_right": 20,
+          "number_left": 23,
+          "optical_gap": 2
+        },
+        "charge": {
+          "icon_right": 94,
+          "number_left": 97,
+          "optical_gap": 2
+        }
+      }
+    },
+    {
+      "language": 1,
+      "value": 9,
+      "cell_anchors": {
+        "health": 23,
+        "charge": 97
+      },
+      "original_ink_adjacency": {
+        "health": {
+          "icon_right": 20,
+          "number_left": 23,
+          "optical_gap": 2
+        },
+        "charge": {
+          "icon_right": 94,
+          "number_left": 97,
+          "optical_gap": 2
+        }
+      }
+    },
+    {
+      "language": 1,
+      "value": 100,
+      "cell_anchors": {
+        "health": 23,
+        "charge": 97
+      },
+      "original_ink_adjacency": {
+        "health": {
+          "icon_right": 20,
+          "number_left": 24,
+          "optical_gap": 3
+        },
+        "charge": {
+          "icon_right": 94,
+          "number_left": 98,
+          "optical_gap": 3
+        }
+      }
+    },
+    {
+      "language": 1,
+      "value": -32768,
+      "cell_anchors": {
+        "health": 23,
+        "charge": 97
+      },
+      "original_ink_adjacency": {
+        "health": {
+          "icon_right": 20,
+          "number_left": 24,
+          "optical_gap": 3
+        },
+        "charge": {
+          "icon_right": 94,
+          "number_left": 98,
+          "optical_gap": 3
+        }
+      }
+    },
+    {
+      "language": 2,
+      "value": 0,
+      "cell_anchors": {
+        "health": 23,
+        "charge": 97
+      },
+      "original_ink_adjacency": {
+        "health": {
+          "icon_right": 20,
+          "number_left": 23,
+          "optical_gap": 2
+        },
+        "charge": {
+          "icon_right": 94,
+          "number_left": 97,
+          "optical_gap": 2
+        }
+      }
+    },
+    {
+      "language": 2,
+      "value": 9,
+      "cell_anchors": {
+        "health": 23,
+        "charge": 97
+      },
+      "original_ink_adjacency": {
+        "health": {
+          "icon_right": 20,
+          "number_left": 23,
+          "optical_gap": 2
+        },
+        "charge": {
+          "icon_right": 94,
+          "number_left": 97,
+          "optical_gap": 2
+        }
+      }
+    },
+    {
+      "language": 2,
+      "value": 100,
+      "cell_anchors": {
+        "health": 23,
+        "charge": 97
+      },
+      "original_ink_adjacency": {
+        "health": {
+          "icon_right": 20,
+          "number_left": 24,
+          "optical_gap": 3
+        },
+        "charge": {
+          "icon_right": 94,
+          "number_left": 98,
+          "optical_gap": 3
+        }
+      }
+    },
+    {
+      "language": 2,
+      "value": -32768,
+      "cell_anchors": {
+        "health": 23,
+        "charge": 97
+      },
+      "original_ink_adjacency": {
+        "health": {
+          "icon_right": 20,
+          "number_left": 24,
+          "optical_gap": 3
+        },
+        "charge": {
+          "icon_right": 94,
+          "number_left": 98,
+          "optical_gap": 3
+        }
+      }
+    }
+  ],
+  "signed16_sweep": {
+    "1": {
+      "cases": 65536,
+      "fields": [
+        "health",
+        "charge",
+        "lives",
+        "score"
+      ],
+      "all_bytes_per_case": 9728,
+      "validated_bytes": 637534208,
+      "raster_sha256": "8b11c744b40885e538cdbed6ba5953324b6ac623ac92bb4d3067faecce3723e0",
+      "source_oracle_cross_checks": 75
+    },
+    "2": {
+      "cases": 65536,
+      "fields": [
+        "health",
+        "charge",
+        "lives",
+        "score"
+      ],
+      "all_bytes_per_case": 9728,
+      "validated_bytes": 637534208,
+      "raster_sha256": "a2060146bd83e2938b40869cf74852fffcff9ae289fca781aba4aa4567a36654",
+      "source_oracle_cross_checks": 75
+    }
+  },
+  "representative_raster_sha256": "34f4a31bae7379f1e81b63ec7b91b1f4cc625077f69bba9100137a3faa02e6a8",
+  "runtime_seconds": 5.484120500041172,
+  "report": {
+    "path": "research/evidence/nds/n19/host-ui-check.json",
+    "bytes": 7295,
+    "sha256": "6ebdc92c296f3061a7d33639b89fbd043e2ce904b2842efdb30344dfd5d6d3f8"
+  }
+}

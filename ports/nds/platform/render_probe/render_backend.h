@@ -105,6 +105,14 @@ dok_nds_render_result dok_nds_stream_reset(const uint16_t *palette,uint32_t colo
 dok_nds_render_result dok_nds_stream_plan(const dok_nds_stream_texture *textures,
     uint32_t count,dok_nds_stream_stats *stats);
 dok_nds_render_result dok_nds_stream_commit(dok_nds_stream_stats *stats);
+
+/* Optional normal-frame pair: clean planned CPU sources before SwapBuffers,
+ * then perform the same bounded VRAM commit after swap. Between these calls
+ * the caller must preserve all source bytes, allocations, palette and pending
+ * identities. No DMA, VRAM remapping or publication occurs in prepare.
+ * Existing commit retains its complete source-cleaning contract. */
+dok_nds_render_result dok_nds_stream_prepare_uploads(void);
+dok_nds_render_result dok_nds_stream_commit_prepared(dok_nds_stream_stats *stats);
 dok_nds_render_result dok_nds_stream_palette_dirty(void);
 /* N13P explicit artistic adaptation: black depth fog, uncut geometry.
  * Configure between submissions. Source LIGHT remains the exact reference. */

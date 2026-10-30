@@ -1,55 +1,62 @@
+#include "dok/hotcode.h"
 #include "dok/render_scene.h"
+#include "geometry_private.h"
 #include <limits.h>
 #include <string.h>
+#if N21P_GEOMETRY_PROFILE
+/* libnds nds/timers.h declares u32 cpuGetTiming(void). Keep the optional
+ * profiler's SDK symbol out of this portable module's include dependency. */
+extern uint32_t cpuGetTiming(void);
+#endif
 #include "render_trig.inc"
 
 #define SCENE_TAG UINT32_C(0x4E303753)
 
-static int32_t wrap32(int64_t value)
+DOK_NDS_HOT_CODE static int32_t wrap32(int64_t value)
 {
     uint32_t low=(uint32_t)(uint64_t)value;
     return low<=INT32_MAX ? (int32_t)low:(int32_t)((int64_t)low-INT64_C(4294967296));
 }
-static int32_t sar15(int32_t value)
+DOK_NDS_HOT_CODE static int32_t sar15(int32_t value)
 {
     int64_t wide=value;
     return wide>=0 ? (int32_t)(wide/32768):-(int32_t)((-wide+32767)/32768);
 }
-static int32_t word(int32_t value)
+DOK_NDS_HOT_CODE static int32_t word(int32_t value)
 {
     uint32_t low=(uint32_t)value&65535u;
     return low<=32767u ? (int32_t)low:(int32_t)low-65536;
 }
-int dok_render_trig(uint32_t heading,int32_t *sine,int32_t *cosine)
+DOK_NDS_HOT_CODE int dok_render_trig(uint32_t heading,int32_t *sine,int32_t *cosine)
 {
     if(heading>360u || !sine || !cosine) return 0;
     *sine=dok_render_sine[heading];*cosine=dok_render_cosine[heading];return 1;
 }
-void dok_render_scene_init(dok_render_scene *scene)
+DOK_NDS_HOT_CODE void dok_render_scene_init(dok_render_scene *scene)
 {
     if(scene) { memset(scene,0,sizeof(*scene));scene->tag=SCENE_TAG; }
 }
-static int same_vertex(const dok_nds_render_vertex *a,const dok_nds_render_vertex *b)
+DOK_NDS_HOT_CODE static int same_vertex(const dok_nds_render_vertex *a,const dok_nds_render_vertex *b)
 {
     return a->x==b->x && a->y==b->y && a->z==b->z &&
            a->u_q16==b->u_q16 && a->v_q16==b->v_q16;
 }
-static int64_t component(const dok_nds_render_vertex *v,uint32_t index)
+DOK_NDS_HOT_CODE static int32_t component(const dok_nds_render_vertex *v,uint32_t index)
 {
     return index==0u?v->x:index==1u?v->y:index==2u?v->z:index==3u?v->u_q16:v->v_q16;
 }
-static int vertex_range(const dok_nds_render_vertex *v)
+DOK_NDS_HOT_CODE static int vertex_range(const dok_nds_render_vertex *v)
 {
     return v->x>=-4096 && v->x<=4095 && v->y>=-4096 && v->y<=4095 &&
            v->z>=-4096 && v->z<=4095 &&
            v->u_q16>=-134217728 && v->u_q16<=134213632 &&
            v->v_q16>=-134217728 && v->v_q16<=134213632;
 }
-int dok_render_merge(const dok_nds_render_quad *a,const dok_nds_render_quad *b,
+DOK_NDS_HOT_CODE int dok_render_merge(const dok_nds_render_quad *a,const dok_nds_render_quad *b,
     dok_nds_render_quad *out)
 {
     uint32_t i,axis=3u;
-    int64_t aw[5],bw[5],height[3],cross[3];
+    int32_t aw[5],bw[5],height[3],cross[3];
     dok_nds_render_quad result;
     if(!a || !b || !out || a->texture_slot!=b->texture_slot || a->flags!=b->flags ||
        a->color_rgb555!=b->color_rgb555 || a->reserved!=b->reserved ||
@@ -68,7 +75,7 @@ int dok_render_merge(const dok_nds_render_quad *a,const dok_nds_render_quad *b,
         if(i<3u && aw[i]!=0 && axis==3u) axis=i;
     }
     if(axis==3u || aw[axis]*bw[axis]<=0) return 0;
-    for(i=0;i<5u;++i) if(aw[i]*bw[axis]!=bw[i]*aw[axis]) return 0;
+    for(i=0;i<5u;++i) if((int64_t)aw[i]*bw[axis]!=(int64_t)bw[i]*aw[axis]) return 0;
     for(i=0;i<3u;++i) height[i]=component(&a->vertex[3],i)-component(&a->vertex[0],i);
     cross[0]=aw[1]*height[2]-aw[2]*height[1];
     cross[1]=aw[2]*height[0]-aw[0]*height[2];
@@ -78,7 +85,7 @@ int dok_render_merge(const dok_nds_render_quad *a,const dok_nds_render_quad *b,
     *out=result;return 1;
 }
 
-dok_render_scene_result dok_render_bounds(const dok_initial_world *world,
+DOK_NDS_HOT_CODE dok_render_scene_result dok_render_bounds(const dok_initial_world *world,
     const dok_nds_render_camera *camera,uint32_t heading,dok_render_gather_bounds *out)
 {
     int32_t s,c,r,t,bx,bz,side;
@@ -119,23 +126,29 @@ dok_render_scene_result dok_render_bounds(const dok_initial_world *world,
     *out=result;return DOK_RENDER_SCENE_OK;
 }
 
-static int visible(const dok_geometry_quad *quad,const dok_nds_render_camera *camera)
+typedef struct scene_camera_dot { int64_t lateral,depth; } scene_camera_dot;
+DOK_NDS_HOT_CODE static int visible(const dok_geometry_quad *quad,const dok_nds_render_camera *camera,
+    const scene_camera_dot *dot)
 {
     uint32_t vertex,common_outside=31u;
     /* Two target-pixel guard band for Q12 matrix/raster quantization. It only
      * retains extra candidates; the GPU clips at the actual N06 viewport. */
     for(vertex=0;vertex<4u;++vertex) {
         const dok_geometry_vertex *v=&quad->vertices[vertex];
-        int64_t dx=(int64_t)v->x-camera->x,dz=(int64_t)v->z-camera->z;
-        int64_t lateral=dx*camera->cos_q15+dz*camera->sin_q15;
-        int64_t depth=dz*camera->cos_q15-dx*camera->sin_q15;
+        int64_t depth=(int64_t)v->z*camera->cos_q15-(int64_t)v->x*camera->sin_q15-dot->depth;
         int64_t eye=depth+INT64_C(200)*32768;
-        int64_t dy=((int64_t)v->y-camera->y)*32768;
-        uint32_t outside=(depth+32768<0 ? 1u:0u) |
-            (400*lateral+324*eye<0 ? 2u:0u) |
-            (326*eye-400*lateral<0 ? 4u:0u) |
-            (164*eye+400*dy<0 ? 8u:0u) |
-            (166*eye-400*dy<0 ? 16u:0u);
+        uint32_t outside=0;
+        if(common_outside&1u)outside|=depth+32768<0?1u:0u;
+        if(common_outside&6u) {
+            int64_t lateral=(int64_t)v->x*camera->cos_q15+(int64_t)v->z*camera->sin_q15-dot->lateral;
+            if(common_outside&2u)outside|=400*lateral+324*eye<0?2u:0u;
+            if(common_outside&4u)outside|=326*eye-400*lateral<0?4u:0u;
+        }
+        if(common_outside&24u) {
+            int64_t dy=((int64_t)v->y-camera->y)*32768;
+            if(common_outside&8u)outside|=164*eye+400*dy<0?8u:0u;
+            if(common_outside&16u)outside|=166*eye-400*dy<0?16u:0u;
+        }
         common_outside&=outside;
         /* Intersection can only lose bits. Once no plane rejects all seen
          * vertices, later vertices cannot reject the quad either. */
@@ -144,24 +157,41 @@ static int visible(const dok_geometry_quad *quad,const dok_nds_render_camera *ca
     return common_outside==0u;
 }
 
-dok_render_scene_result dok_render_scene_prepare(dok_render_scene *scene,
+DOK_NDS_HOT_CODE dok_render_scene_result dok_render_scene_prepare(dok_render_scene *scene,
     const dok_initial_world *world,const dok_geometry_binding bindings[256],
     const dok_nds_render_camera *camera,uint32_t heading,const dok_nds_render_frame **out)
 {
+#if GAMEPLAY_GEOMETRY_CACHE
     dok_geometry_cell scratch,cell;
+#else
+    dok_geometry_cell cell;
+    dok_geometry_field54 prepared[DOK_LEVEL_MAX_OBJECTS];
+#endif
+    scene_camera_dot dot;
     dok_render_gather_bounds bounds;
     int32_t x,z,side;
     uint32_t quad_count=0,cell_count=0;
     uint32_t previous[5];
     int32_t previous_x[5],previous_origin_x[5],previous_origin_z[5];
     dok_render_scene_result status;
+#if N21P_GEOMETRY_PROFILE
+    uint32_t profile_stamp;
+#endif
     if(!scene || scene->tag!=SCENE_TAG || !world || !world->definition ||
        !bindings || !camera || !out || !world->epoch) return DOK_RENDER_SCENE_ARGUMENT;
     if(scene->leased) return DOK_RENDER_SCENE_BUSY;
     if(scene->generation==UINT32_MAX) return DOK_RENDER_SCENE_LIMIT;
     status=dok_render_bounds(world,camera,heading,&bounds);
     if(status!=DOK_RENDER_SCENE_OK) return status;
+#if !GAMEPLAY_GEOMETRY_CACHE
+    dok_geometry_prepare_fields(world->definition,prepared);
+#endif
+    dot.lateral=(int64_t)camera->x*camera->cos_q15+(int64_t)camera->z*camera->sin_q15;
+    dot.depth=(int64_t)camera->z*camera->cos_q15-(int64_t)camera->x*camera->sin_q15;
     memset(&scene->counts,0,sizeof(scene->counts));scene->counts.bounds=bounds;
+#if N21P_GEOMETRY_PROFILE
+    memset(scene->profile_ticks,0,sizeof(scene->profile_ticks));
+#endif
     side=world->definition->settings[DOK_LEVEL_CELL_SIDE];
     for(z=bounds.min_z;z<=bounds.max_z;++z) for(x=bounds.min_x;x<=bounds.max_x;++x) {
         uint32_t i,start=quad_count;
@@ -172,14 +202,31 @@ dok_render_scene_result dok_render_scene_prepare(dok_render_scene *scene,
             for(k=0;k<5u;++k) previous[k]=UINT32_MAX;
         }
         ++scene->counts.gathered_cells;
+#if N21P_GEOMETRY_PROFILE
+        profile_stamp=cpuGetTiming();
+#endif
+#if GAMEPLAY_GEOMETRY_CACHE
         if(dok_geometry_build_cell(world,bindings,(uint32_t)x,(uint32_t)z,&scratch,&cell)!=DOK_GEOMETRY_OK)
+#else
+        if(dok_geometry_build_cell_prepared(world,bindings,(uint32_t)x,(uint32_t)z,&cell,prepared)!=DOK_GEOMETRY_OK)
+#endif
             return DOK_RENDER_SCENE_GEOMETRY;
+#if N21P_GEOMETRY_PROFILE
+        scene->profile_ticks[0]+=cpuGetTiming()-profile_stamp;
+#endif
         scene->counts.source_quads+=cell.count;
         for(i=0;i<cell.count;++i) {
             const dok_geometry_quad *source=&cell.quads[i];
             dok_nds_render_quad *dest;
             uint32_t j;
-            if(!visible(source,camera)) { ++scene->counts.frustum_rejected;continue; }
+#if N21P_GEOMETRY_PROFILE
+            profile_stamp=cpuGetTiming();
+#endif
+            int source_visible=visible(source,camera,&dot);
+#if N21P_GEOMETRY_PROFILE
+            scene->profile_ticks[1]+=cpuGetTiming()-profile_stamp;
+#endif
+            if(!source_visible) { ++scene->counts.frustum_rejected;continue; }
             if(!source->material) return DOK_RENDER_SCENE_GEOMETRY;
             if(quad_count==DOK_RENDER_QUADS) return DOK_RENDER_SCENE_LIMIT;
             dest=&scene->quads[quad_count];memset(dest,0,sizeof(*dest));
@@ -202,8 +249,15 @@ dok_render_scene_result dok_render_scene_prepare(dok_render_scene *scene,
                     shifted.vertex[j].z+=origin_z-previous_origin_z[kind];
                 }
                 ++scene->counts.merge_candidates;
-                if(dok_render_merge(&scene->quads[previous[kind]],&shifted,
-                     &scene->quads[previous[kind]])) {
+#if N21P_GEOMETRY_PROFILE
+                profile_stamp=cpuGetTiming();
+#endif
+                int merged=dok_render_merge(&scene->quads[previous[kind]],&shifted,
+                     &scene->quads[previous[kind]]);
+#if N21P_GEOMETRY_PROFILE
+                scene->profile_ticks[2]+=cpuGetTiming()-profile_stamp;
+#endif
+                if(merged) {
                     dok_render_merge_record *record;
                     if(scene->counts.merged_quads==DOK_RENDER_QUADS) return DOK_RENDER_SCENE_LIMIT;
                     record=&scene->merges[scene->counts.merged_quads++];
@@ -233,7 +287,7 @@ dok_render_scene_result dok_render_scene_prepare(dok_render_scene *scene,
     scene->leased=1;scene->world_epoch=world->epoch;*out=&scene->frame;
     return DOK_RENDER_SCENE_OK;
 }
-dok_render_scene_result dok_render_scene_release(dok_render_scene *scene,uint32_t generation)
+DOK_NDS_HOT_CODE dok_render_scene_result dok_render_scene_release(dok_render_scene *scene,uint32_t generation)
 {
     if(!scene || scene->tag!=SCENE_TAG || !scene->leased || generation!=scene->generation)
         return DOK_RENDER_SCENE_ARGUMENT;

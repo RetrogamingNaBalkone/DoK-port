@@ -1,0 +1,110 @@
+# N07 independent hardware 3D renderer; accepted N03-N06 sources are read-only.
+BLOCKSDS ?= /opt/blocksds/core
+WONDERFUL_TOOLCHAIN ?= /opt/wonderful
+ARM_NONE_EABI_PATH ?= $(WONDERFUL_TOOLCHAIN)/toolchain/gcc-arm-none-eabi/bin/
+ARM7ELF = ../../build/nds/n18/arm7/dok_audio_arm7.elf
+OUTDIR ?= ../../build/nds/n19/final-release-ru
+OBJDIR := $(OUTDIR)/obj
+NAME := dok_nds_gameplay
+ELF := $(OUTDIR)/$(NAME).elf
+MAP := $(OUTDIR)/$(NAME).map
+ROM := $(OUTDIR)/$(NAME).nds
+OBJECTS := $(addprefix $(OBJDIR)/,main.o frame_store.o water_texture.o geometry_cache.o gameplay.o ai.o combat.o items.o collision.o motion.o controls.o input.o interactions.o interactions_move.o weapon_overlay.o door_render.o effects_runtime.o effects.o effect_cache.o clock.o time.o events.o contracts.o sprites.o sprite_assets.o texture_cache.o render_backend.o scene.o materials.o geometry.o assets.o memory.o sha256.o world.o balance.o file_reader.o)
+CHECK_OBJECTS :=
+CC := $(ARM_NONE_EABI_PATH)arm-none-eabi-gcc
+NDSTOOL := $(BLOCKSDS)/tools/ndstool/ndstool
+ARCH := -mthumb -mcpu=arm946e-s+nofp
+# Fixed-point scene/GE math uses ARM's native long multiply instructions.
+# Loader, shell and accepted core modules retain their original Thumb build.
+RENDER_ARCH ?= -marm
+EFFECT_REAL_CLOCK ?= 1
+EFFECT_LIGHT_CACHE ?= 0
+EFFECT_GPU_FOG ?= 1
+EFFECT_WATER_PHASES ?= 4294967295u
+SPRITE_LANGUAGE ?= 1
+SPRITE_AUDIT ?= 0
+SPECS := $(BLOCKSDS)/sys/crts/ds_arm9.specs
+CPPFLAGS := -D__NDS__ -D__BLOCKSDS__ -DARM9 -Iinclude -DSPRITE_LANGUAGE=$(SPRITE_LANGUAGE) -DSPRITE_AUDIT=$(SPRITE_AUDIT) -DEFFECT_REAL_CLOCK=$(EFFECT_REAL_CLOCK) -DEFFECT_LIGHT_CACHE=$(EFFECT_LIGHT_CACHE) -DEFFECT_WATER_PHASES=$(EFFECT_WATER_PHASES) -Iplatform/gameplay_probe -Iplatform/time -Iplatform/assets -Iplatform/render_probe -Iplatform/sprites_probe -I$(OUTDIR)/generated
+CPPFLAGS += -DEFFECT_GPU_FOG=$(EFFECT_GPU_FOG)
+GAMEPLAY_GEOMETRY_CACHE ?= 0
+GAMEPLAY_WATER_UV ?= 0
+GAMEPLAY_FRAME_STORE ?= 0
+GAMEPLAY_FAST_OVERLAY ?= 0
+CPPFLAGS += -DGAMEPLAY_GEOMETRY_CACHE=$(GAMEPLAY_GEOMETRY_CACHE) -DGAMEPLAY_WATER_UV=$(GAMEPLAY_WATER_UV) -DGAMEPLAY_FRAME_STORE=$(GAMEPLAY_FRAME_STORE)
+CPPFLAGS += -DGAMEPLAY_FAST_OVERLAY=$(GAMEPLAY_FAST_OVERLAY)
+OBJECTS += $(OBJDIR)/weapon_overlay_fast.o
+OBJECTS += $(OBJDIR)/audio_arm9.o $(OBJDIR)/audio_runtime.o $(OBJDIR)/audio_codec.o
+CPPFLAGS += -DGAMEPLAY_AUDIO=1 -Iplatform/audio
+CPPFLAGS += -DGAMEPLAY_UI=1 -Iplatform/ui -I../../build/nds/n19/generated
+OBJECTS += $(OBJDIR)/ui_hud.o $(OBJDIR)/ui_runtime.o
+CFLAGS := -O2 -g3 -Wall -Wextra -Werror -Wno-misleading-indentation -ffunction-sections -fdata-sections -fstack-usage
+CORE_CFLAGS := -std=c11 -pedantic-errors $(CFLAGS)
+PLATFORM_CPPFLAGS := $(CPPFLAGS) -I$(BLOCKSDS)/libs/libnds/include
+LDFLAGS := -L$(BLOCKSDS)/libs/libnds/lib -Wl,-Map,$(MAP) -Wl,--defsym=__usr_stack_size=12288
+.PHONY: all backend-check geometry-gate
+all: $(ROM) $(CHECK_OBJECTS)
+backend-check: $(OBJDIR)/render_backend.o
+geometry-gate: $(OUTDIR)/dok_nds_geometry.nds
+$(OUTDIR)/dok_nds_geometry.nds: $(OUTDIR)/dok_nds_geometry.elf $(ARM7ELF)
+	"$(NDSTOOL)" -c "$@" -9 "$<" -7 "$(ARM7ELF)"
+$(OUTDIR)/dok_nds_geometry.elf: $(OBJDIR)/geometry_gate.o $(OBJDIR)/render_backend.o
+	"$(CC)" $(ARCH) -specs=$(SPECS) $(CPPFLAGS) -o "$@" $^ -L$(BLOCKSDS)/libs/libnds/lib -Wl,-Map,$(OUTDIR)/dok_nds_geometry.map -Wl,--defsym=__usr_stack_size=12288 -Wl,--start-group -lnds9 -lc -Wl,--end-group
+$(OBJDIR)/geometry_gate.o: platform/render_probe/geometry_gate.c platform/render_probe/render_probe.h Makefile.n19 | $(OBJDIR)
+	"$(CC)" $(ARCH) -specs=$(SPECS) $(PLATFORM_CPPFLAGS) -std=gnu11 $(CFLAGS) -MMD -MP -c "$<" -o "$@"
+$(ROM): $(ELF) $(ARM7ELF)
+	"$(NDSTOOL)" -c "$@" -9 "$(ELF)" -7 "$(ARM7ELF)"
+$(ELF): $(OBJECTS)
+	"$(CC)" $(ARCH) -specs=$(SPECS) $(CPPFLAGS) -o "$@" $(OBJECTS) $(LDFLAGS) -Wl,--start-group -lnds9 -lc -Wl,--end-group
+$(OBJDIR)/main.o: platform/gameplay_probe/main.c platform/render_probe/render_probe.h platform/sprites_probe/sprites_probe.h Makefile.n19 | $(OBJDIR)
+	"$(CC)" $(ARCH) -specs=$(SPECS) $(PLATFORM_CPPFLAGS) -std=gnu11 $(CFLAGS) -MMD -MP -c "$<" -o "$@"
+$(OBJDIR)/render_backend.o: platform/render_probe/render_backend.c platform/render_probe/render_backend.h Makefile.n19 | $(OBJDIR)
+	"$(CC)" $(RENDER_ARCH) -mcpu=arm946e-s+nofp -specs=$(SPECS) $(PLATFORM_CPPFLAGS) -std=gnu11 $(CFLAGS) -MMD -MP -c "$<" -o "$@"
+$(OBJDIR)/scene.o: render/scene.c Makefile.n19 | $(OBJDIR)
+	"$(CC)" $(RENDER_ARCH) -mcpu=arm946e-s+nofp -specs=$(SPECS) $(CPPFLAGS) $(CORE_CFLAGS) -MMD -MP -c "$<" -o "$@"
+$(OBJDIR)/geometry.o: render/geometry.c Makefile.n19 | $(OBJDIR)
+	"$(CC)" $(RENDER_ARCH) -mcpu=arm946e-s+nofp -specs=$(SPECS) $(CPPFLAGS) $(CORE_CFLAGS) -Ddok_geometry_build_cell=dok_geometry_build_cell_uncached -MMD -MP -c "$<" -o "$@"
+$(OBJDIR)/file_reader.o: platform/assets/file_reader.c Makefile.n19 | $(OBJDIR)
+	"$(CC)" $(ARCH) -specs=$(SPECS) $(PLATFORM_CPPFLAGS) $(CORE_CFLAGS) -MMD -MP -c "$<" -o "$@"
+$(OBJDIR)/%.o: render/%.c Makefile.n19 | $(OBJDIR)
+	"$(CC)" $(RENDER_ARCH) -mcpu=arm946e-s+nofp -specs=$(SPECS) $(CPPFLAGS) $(CORE_CFLAGS) -MMD -MP -c "$<" -o "$@"
+$(OBJDIR)/%.o: core/%.c Makefile.n19 | $(OBJDIR)
+	"$(CC)" $(ARCH) -specs=$(SPECS) $(CPPFLAGS) $(CORE_CFLAGS) -MMD -MP -c "$<" -o "$@"
+$(OBJDIR)/%.o: tests/%.c Makefile.n19 | $(OBJDIR)
+	"$(CC)" $(ARCH) -specs=$(SPECS) $(CPPFLAGS) $(CORE_CFLAGS) -MMD -MP -c "$<" -o "$@"
+$(OBJDIR):
+	mkdir -p "$@"
+-include $(OBJECTS:.o=.d) $(CHECK_OBJECTS:.o=.d)
+
+include Makefile.n18arm7
+$(OBJDIR)/ui_hud.o: ui/hud.c include/dok/ui.h | $(OBJDIR)
+	"$(CC)" $(ARCH) -specs=$(SPECS) $(CPPFLAGS) $(CORE_CFLAGS) -MMD -MP -c "$<" -o "$@"
+$(OBJDIR)/ui_runtime.o: platform/ui/runtime.c platform/ui/runtime.h | $(OBJDIR)
+	"$(CC)" $(ARCH) -specs=$(SPECS) $(PLATFORM_CPPFLAGS) -std=gnu11 $(CFLAGS) -MMD -MP -c "$<" -o "$@"
+$(OBJDIR)/audio_arm9.o: platform/audio/arm9.c platform/audio/arm9.h platform/audio/audio_ipc.h | $(OBJDIR)
+	"$(CC)" $(ARCH) -specs=$(SPECS) $(PLATFORM_CPPFLAGS) -std=gnu11 $(CFLAGS) -MMD -MP -c "$<" -o "$@"
+$(OBJDIR)/audio_runtime.o: platform/audio/runtime.c platform/audio/runtime.h | $(OBJDIR)
+	"$(CC)" $(ARCH) -specs=$(SPECS) $(PLATFORM_CPPFLAGS) -std=gnu11 $(CFLAGS) -MMD -MP -c "$<" -o "$@"
+
+$(OBJDIR)/effects_runtime.o: platform/gameplay_probe/effects_runtime.c Makefile.n19 | $(OBJDIR)
+	"$(CC)" $(RENDER_ARCH) -mcpu=arm946e-s+nofp -specs=$(SPECS) $(PLATFORM_CPPFLAGS) -std=gnu11 $(CFLAGS) -MMD -MP -c "$<" -o "$@"
+$(OBJDIR)/clock.o: platform/time/clock.c Makefile.n19 | $(OBJDIR)
+	"$(CC)" $(ARCH) -specs=$(SPECS) $(PLATFORM_CPPFLAGS) -std=gnu11 $(CFLAGS) -MMD -MP -c "$<" -o "$@"
+
+ifeq ($(EFFECT_LIGHT_CACHE),1)
+OBJECTS += $(OBJDIR)/light_cache.o
+$(ELF): $(OBJDIR)/light_cache.o
+-include $(OBJDIR)/light_cache.d
+endif
+
+.PHONY: darkness-gate
+darkness-gate: $(OUTDIR)/dok_nds_darkness.nds
+$(OBJDIR)/darkness_gate.o: platform/gameplay_probe/darkness_gate.c Makefile.n19 | $(OBJDIR)
+	"$(CC)" $(ARCH) -specs=$(SPECS) $(PLATFORM_CPPFLAGS) -std=gnu11 $(CFLAGS) -MMD -MP -c "$<" -o "$@"
+$(OUTDIR)/dok_nds_darkness.elf: $(OBJDIR)/darkness_gate.o $(OBJDIR)/render_backend.o
+	"$(CC)" $(ARCH) -specs=$(SPECS) $(CPPFLAGS) -o "$@" $^ $(LDFLAGS) -Wl,--start-group -lnds9 -lc -Wl,--end-group
+$(OUTDIR)/dok_nds_darkness.nds: $(OUTDIR)/dok_nds_darkness.elf $(ARM7ELF)
+	"$(NDSTOOL)" -c "$@" -9 "$<" -7 "$(ARM7ELF)"
+
+$(OBJDIR)/gameplay.o: platform/gameplay_probe/gameplay.c Makefile.n19 | $(OBJDIR)
+	"$(CC)" $(ARCH) -specs=$(SPECS) $(PLATFORM_CPPFLAGS) -std=gnu11 $(CFLAGS) -MMD -MP -c "$<" -o "$@"
+

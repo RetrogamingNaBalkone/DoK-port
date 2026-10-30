@@ -1,0 +1,352 @@
+{
+  "task": "N20",
+  "status": "ready-emulator",
+  "passed": true,
+  "software_checks_passed": true,
+  "gates": {
+    "source": {
+      "path": "research/evidence/nds/n20/source-discovery.json",
+      "bytes": 25931,
+      "sha256": "415360973b581b51b4f6b2deb90f15fc0d61c5c15d6edb80010b6cd2adb2012b"
+    },
+    "raster": {
+      "path": "research/evidence/nds/n20/raster-check.json",
+      "bytes": 255597,
+      "sha256": "794d49b6b5a42551380a45c9278694bfc27098c64392f61580523084dad1fa32"
+    },
+    "postvisited": {
+      "path": "research/evidence/nds/n20/postvisited-check.json",
+      "bytes": 4327,
+      "sha256": "f4600146b83cc7e03a9c22b54f3cd405b4dfea26331df4d54525d857b7f7e42c"
+    },
+    "controller": {
+      "path": "research/evidence/nds/n20/host-control.json",
+      "bytes": 1224,
+      "sha256": "e5f3081df706c6b306f83251f209ca8b290448d61e919fe5abbd411cc4a30f92"
+    },
+    "frozen_sources": {
+      "path": "research/evidence/nds/n20/frozen-source-check.json",
+      "bytes": 565,
+      "sha256": "391926330078e63be4492ab7915bb35067869ae696bfb6773b2596ef609651b4"
+    },
+    "host_test_extension": {
+      "path": "research/evidence/nds/n20/host-test-extension.json",
+      "bytes": 857,
+      "sha256": "28efdd9e14e2b7086240643ec3331c776e7fcce187f8e767bd3c44a128145c47"
+    },
+    "combat_touch": {
+      "path": "build/nds/n20/combat-touch-ru/map/combat-result.json",
+      "bytes": 393,
+      "sha256": "e191d0e1c92829f841e14cb0fb39e1292f4431b2cf900a7977000b6d01d769ca"
+    },
+    "title_stream": {
+      "path": "build/nds/n20/title-smoke-ru/audio/title-gate.json",
+      "bytes": 12464,
+      "sha256": "55cb4929513f038da3ea5610aa8bef6d1d6676f71163f832f99690df4129a40c"
+    },
+    "visual": {
+      "path": "research/evidence/nds/n20/visual-review.json",
+      "bytes": 2858,
+      "sha256": "583f8c5aec3fa338d9ae342df6cbeb0ecbe77d82c83aef68383201760e8f44a5"
+    }
+  },
+  "runtime": [
+    {
+      "language": "ru",
+      "rom": {
+        "path": "build/nds/n20/final-release-ru/dok_nds_gameplay.nds",
+        "bytes": 264704,
+        "sha256": "d6cdf5b4b835b97fdb2d34b82eaa981140a0a47bb227bb079c2c3081bb25f57e"
+      },
+      "elf": {
+        "path": "build/nds/n20/final-release-ru/dok_nds_gameplay.elf",
+        "bytes": 2125200,
+        "sha256": "18003348f915f1621800eb6c4dacd64f1c0c66ee781ed953927d9e8739ee7392"
+      },
+      "reports": {
+        "map": {
+          "path": "build/nds/n20/final-release-ru/map/result.json",
+          "bytes": 436607,
+          "sha256": "bae04203d9dca743f42357aacfd622bc75f6aad3d6a3e6b861cc1596d89d0600"
+        },
+        "hud": {
+          "path": "build/nds/n20/final-release-ru/hud/result.json",
+          "bytes": 1658942,
+          "sha256": "529e424a49a35e905688efd82e766d1664f3c47789f5374dfed366c558766047"
+        },
+        "audio": {
+          "path": "build/nds/n20/final-release-ru/audio/result.json",
+          "bytes": 761709,
+          "sha256": "dc99db60afb4edbd62fb9cc5b0b8c5deb15796f7330cfd2fa2a06b660662387b"
+        },
+        "emulator": {
+          "path": "build/nds/n20/final-release-ru/emulator/result.json",
+          "bytes": 29432741,
+          "sha256": "0ed16c2fac40efc26e9313ca1ff7e0f7d632b3d96c7783f0ec252666d2cc466f"
+        }
+      },
+      "cases": 63,
+      "presentations": 12880,
+      "input_stages": 94,
+      "map_states": 631,
+      "map_index8_checks": 31014912,
+      "map_rgb_checks": 31014912,
+      "hud_index8_checks": 10350592,
+      "hud_rgb_checks": 10350592,
+      "audio_captures": 24,
+      "live_title_gate": {
+        "path": "build/nds/n20/final-release-ru/audio/title-gate.json",
+        "bytes": 12467,
+        "sha256": "a5db6845dd33f2075241e40248b95ca6e705fae649c7947309e5a3986b2bf803"
+      },
+      "live_title_coefficient": 0.9924338014084911,
+      "memory": {
+        "static_bytes": 348524,
+        "heap_start_gap": 32,
+        "static_startup_bytes": 520192,
+        "managed_bytes": 2293760,
+        "sdk_heap_available": 200704,
+        "reserve_bytes": 655360,
+        "closure_bytes": 3670016
+      },
+      "history": {
+        "intervals": 6637,
+        "histogram": {
+          "3": 1034,
+          "4": 5362,
+          "5": 241
+        },
+        "virtual_fps": 15.41703802515987,
+        "median": 4,
+        "p95": 4,
+        "p99": 5,
+        "max": 5,
+        "fraction_over_one": 1.0,
+        "fraction_over_two": 1.0,
+        "refresh_hz": 59.82609828808083,
+        "rendered_frames": 6666,
+        "minimum_new_frames_in_one_second": 11,
+        "checked_one_second_windows": 6045,
+        "minimum_window_cadence_fps": 11.965219657616165,
+        "cadence_window_method": "Complete new-frame intervals spanning at least1s, enclosing timestamp duration; integer1s counts reported separately",
+        "prepare_ms": 25.223432927580895,
+        "submit_ms": 3.4367857277847143,
+        "uploads": 2227,
+        "upload_bytes": 14906432,
+        "maximum_texture_bytes": 309248,
+        "maximum_palette_bytes": 8192,
+        "budget_passed": false,
+        "goal_60_passed": false
+      },
+      "live_routes": {
+        "intervals": 4788,
+        "histogram": {
+          "3": 661,
+          "4": 4125,
+          "5": 2
+        },
+        "virtual_fps": 15.48950189819559,
+        "median": 4,
+        "p95": 4,
+        "p99": 4,
+        "max": 5,
+        "fraction_over_one": 1.0,
+        "fraction_over_two": 1.0,
+        "refresh_hz": 59.82609828808083,
+        "rendered_frames": 4800,
+        "minimum_new_frames_in_one_second": 14,
+        "checked_one_second_windows": 4607,
+        "minimum_window_cadence_fps": 14.71133564461004,
+        "cadence_window_method": "Complete new-frame intervals spanning at least1s, enclosing timestamp duration; integer1s counts reported separately",
+        "prepare_ms": 24.65521516790689,
+        "submit_ms": 3.1127331172550474,
+        "uploads": 2001,
+        "upload_bytes": 11150400,
+        "maximum_texture_bytes": 258048,
+        "maximum_palette_bytes": 8192,
+        "budget_passed": false,
+        "goal_60_passed": false
+      }
+    },
+    {
+      "language": "en",
+      "rom": {
+        "path": "build/nds/n20/final-release-en/dok_nds_gameplay.nds",
+        "bytes": 263680,
+        "sha256": "743832ab52ef22622acd94d38297e622d8fdb9fa91181fcc26e1762221c89cf9"
+      },
+      "elf": {
+        "path": "build/nds/n20/final-release-en/dok_nds_gameplay.elf",
+        "bytes": 2125004,
+        "sha256": "119254fba8a89888450baedd7520320aaf41298ca84ac929b47532264f050a4b"
+      },
+      "reports": {
+        "map": {
+          "path": "build/nds/n20/final-release-en/map/result.json",
+          "bytes": 442300,
+          "sha256": "db2acc6fcbbe4502b7366db0ed2184ef89045c215b7a23e5fc655c8264230208"
+        },
+        "hud": {
+          "path": "build/nds/n20/final-release-en/hud/result.json",
+          "bytes": 1654994,
+          "sha256": "4a6c93a486f21f8333a5c629a0a6e921fa6d781e3d4bc47db6e58bc8fae87794"
+        },
+        "audio": {
+          "path": "build/nds/n20/final-release-en/audio/result.json",
+          "bytes": 785008,
+          "sha256": "605a032b7a3dd0bb4abc8a2bf08a491f15e6391a232917f6bea05ebcb62a87dd"
+        },
+        "emulator": {
+          "path": "build/nds/n20/final-release-en/emulator/result.json",
+          "bytes": 29442114,
+          "sha256": "411ffa147c8f6eff38346795c4dc6783bd820ea1952a7ac4fc4cfb5f28efde07"
+        }
+      },
+      "cases": 63,
+      "presentations": 12880,
+      "input_stages": 94,
+      "map_states": 644,
+      "map_index8_checks": 31653888,
+      "map_rgb_checks": 31653888,
+      "hud_index8_checks": 10311680,
+      "hud_rgb_checks": 10311680,
+      "audio_captures": 24,
+      "live_title_gate": {
+        "path": "build/nds/n20/final-release-en/audio/title-gate.json",
+        "bytes": 12469,
+        "sha256": "0540595319473c9da7763782f5e48e2e1b126027397b1806b9450f777cb4e7d0"
+      },
+      "live_title_coefficient": 0.9924338014084911,
+      "memory": {
+        "static_bytes": 348396,
+        "heap_start_gap": 32,
+        "static_startup_bytes": 520192,
+        "managed_bytes": 2293760,
+        "sdk_heap_available": 200704,
+        "reserve_bytes": 655360,
+        "closure_bytes": 3670016
+      },
+      "history": {
+        "intervals": 6637,
+        "histogram": {
+          "3": 1119,
+          "4": 5279,
+          "5": 239
+        },
+        "virtual_fps": 15.469293062879556,
+        "median": 4,
+        "p95": 4,
+        "p99": 5,
+        "max": 5,
+        "fraction_over_one": 1.0,
+        "fraction_over_two": 1.0,
+        "refresh_hz": 59.82609828808083,
+        "rendered_frames": 6666,
+        "minimum_new_frames_in_one_second": 11,
+        "checked_one_second_windows": 6044,
+        "minimum_window_cadence_fps": 11.965219657616165,
+        "cadence_window_method": "Complete new-frame intervals spanning at least1s, enclosing timestamp duration; integer1s counts reported separately",
+        "prepare_ms": 25.24816755486417,
+        "submit_ms": 3.4788864526422087,
+        "uploads": 2214,
+        "upload_bytes": 14902080,
+        "maximum_texture_bytes": 309248,
+        "maximum_palette_bytes": 8192,
+        "budget_passed": false,
+        "goal_60_passed": false
+      },
+      "live_routes": {
+        "intervals": 4788,
+        "histogram": {
+          "3": 745,
+          "4": 4041,
+          "5": 2
+        },
+        "virtual_fps": 15.5601802707008,
+        "median": 4,
+        "p95": 4,
+        "p99": 4,
+        "max": 5,
+        "fraction_over_one": 1.0,
+        "fraction_over_two": 1.0,
+        "refresh_hz": 59.82609828808083,
+        "rendered_frames": 4800,
+        "minimum_new_frames_in_one_second": 14,
+        "checked_one_second_windows": 4606,
+        "minimum_window_cadence_fps": 14.71133564461004,
+        "cadence_window_method": "Complete new-frame intervals spanning at least1s, enclosing timestamp duration; integer1s counts reported separately",
+        "prepare_ms": 24.683806409294032,
+        "submit_ms": 3.149626178040974,
+        "uploads": 1988,
+        "upload_bytes": 11146048,
+        "maximum_texture_bytes": 258048,
+        "maximum_palette_bytes": 8192,
+        "budget_passed": false,
+        "goal_60_passed": false
+      }
+    }
+  ],
+  "source_summary": {
+    "path": "analysis/nds-n20-discovery-source.json",
+    "bytes": 4098,
+    "sha256": "641ab1bb6b8ef9a5de7dad9c6556c551744cb34c63db91ecfd569b5264066ab9"
+  },
+  "fixture": {
+    "path": "build/nds/n20/scene.dat",
+    "bytes": 34816,
+    "sha256": "95e9829fbc7ee4ca370961823678a56f1aa68360fe5f0c56842aba49ef482ffa"
+  },
+  "archive": {
+    "path": "research/evidence/nds/n20/final-archive.json",
+    "bytes": 807311,
+    "sha256": "5d40fb20cef5c6e5f60a6ac0c020c55eb132ca464f7a8621a9f408a94c214483"
+  },
+  "supersession": {
+    "path": "research/evidence/nds/n20/supersession.json",
+    "bytes": 1028,
+    "sha256": "8a13c064edc17c1f584bf763fc6165e2e1303c3072170f0f422f0e482f2097a7"
+  },
+  "audio_service_fix": {
+    "path": "research/evidence/nds/n20/audio-service-supersession.json",
+    "bytes": 2610,
+    "sha256": "0b3a63ce9c6c2f2beb255c285b7c61c39a29fb267856faf3c7525d1ff946c147"
+  },
+  "concurrent_combat": {
+    "report": {
+      "path": "build/nds/n20/combat-touch-ru/map/combat-result.json",
+      "bytes": 393,
+      "sha256": "e191d0e1c92829f841e14cb0fb39e1292f4431b2cf900a7977000b6d01d769ca"
+    },
+    "input_report": {
+      "path": "build/nds/n20/combat-touch-ru/map/result.json",
+      "bytes": 104857,
+      "sha256": "90d7dec2013f7789ec5db7598520e3b0d66e2899996a838c38a2557eb3bb0780"
+    },
+    "audio_report": {
+      "path": "build/nds/n20/combat-touch-ru/audio/result.json",
+      "bytes": 550894,
+      "sha256": "d3d52b3bb454f0c77aab5a636bc76debc72c66691f9feabf6a48c6f56e322f48"
+    },
+    "fixture": {
+      "path": "build/nds/n20/scene-combat-touch.dat",
+      "bytes": 30848,
+      "sha256": "f6852bbab427711b314dc8e8422e735bff11c2d67e895d28271c4a6aa563cfc9"
+    },
+    "scope": "Separate source_kind24 case from accepted combat49: real pickups, live firing during touch/drag and after resume; full map pixels remain main RU/EN gates"
+  },
+  "joint_performance_budget_passed": false,
+  "adaptations": [
+    "Permanent bottom256x160 map plus32px buttons; five scales and independent touch gestures",
+    "Center anchor survives zoom with follow offset; Center explicitly resets this offset",
+    "Original map paints hero once after traversal, excluding undefined stale-stack arrow residue",
+    "Explicit bugfix: global projectile low-WORD world-coordinate clamp cannot reveal cell4095 without world-cell provenance"
+  ],
+  "physical_hardware": false,
+  "next_task": "N21",
+  "limits": [
+    "Original constructor/record/column and raster isolated execution is verified; a complete live DOS session is not claimed",
+    "Physical DS/DSLite, actual LCD readability/FPS/DMA/touch/IRQ/stacks remain N24",
+    "Joint full renderer/audio/HUD/map/menu performance budget remains N21P",
+    "No gameplay saves; runtime FAT unchanged, settings-only writes belong to N21"
+  ]
+}

@@ -1,0 +1,111 @@
+{
+  "task": "N20 source disclosure",
+  "passed": true,
+  "report": {
+    "path": "research/evidence/nds/n20/source-discovery.json",
+    "sha256": "415360973b581b51b4f6b2deb90f15fc0d61c5c15d6edb80010b6cd2adb2012b"
+  },
+  "generator": {
+    "path": "ports/nds/tools/map/check_discovery.py",
+    "sha256": "2ee5e80c442df32fa71480028a5c0ec849dff29ecb0616dd02afe61ccd74ae1e"
+  },
+  "original_executable_sha256": {
+    "ru": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+    "en": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b"
+  },
+  "native_bounds_cases": 1444,
+  "geometry_constructor_vectors": 121776,
+  "sprite_constructor_vectors": 280,
+  "synthetic_column_cases": 88,
+  "synthetic_column_records": 26042,
+  "combined_actual_update_cases": 54,
+  "combined_records": 6078,
+  "sprite_provenance_negative_cases": 5,
+  "projectile_negative_update_cases": 54,
+  "source_pins": [
+    {
+      "path": "ports/nds/ui/map_discovery.c",
+      "sha256": "206d6a5f7eb8624fe5ad6f45269107a5b68e5868378e390959ba75a41a96f184"
+    },
+    {
+      "path": "ports/nds/include/dok/map_discovery.h",
+      "sha256": "4dd2e1c532931468450415904297d04abc4e93fb535a8021bbae1ae903a566b4"
+    },
+    {
+      "path": "ports/nds/tests/map_discovery_dump.c",
+      "sha256": "399935aa8a42b5fab6eabcf3a8a614d78d555c5835ad562ca8d34faf1827c0ce"
+    },
+    {
+      "path": "ports/nds/tools/map/audit_discovery.py",
+      "sha256": "abf0d0355b39855fc98ac522723d39325fcca8b12cf7bb79b88f06f3a9752062"
+    },
+    {
+      "path": "ports/nds/render/geometry.c",
+      "sha256": "03c7d1d8dcbc817cd58e9d95344a50bdc811cf9b38227b3e69abd0039467fe9e"
+    },
+    {
+      "path": "ports/nds/render/scene.c",
+      "sha256": "25db511d719cd049776819b976a46b6826b2b0dd28f36a9de749d84378a2833e"
+    },
+    {
+      "path": "ports/nds/render/sprites.c",
+      "sha256": "8f4792ddad52e110d4f5a3e114b27d35e9ac964b66b1716f3934ddbee313012d"
+    },
+    {
+      "path": "ports/nds/core/world.c",
+      "sha256": "bfd4adbf3b95e6d92fdf1fc69547d4caeb70afdf8c6a6401a7b6de748db62ac2"
+    },
+    {
+      "path": "ports/nds/core/sha256.c",
+      "sha256": "1779bfd418cb14f1331d6cf17b102358d772327e436a49f28b7287093a70bde7"
+    },
+    {
+      "path": "ports/nds/tools/audit_geometry.py",
+      "sha256": "18d47d2600ae090448b4409d1865cd79379e67e31416544ee78849d718fe6703"
+    },
+    {
+      "path": "ports/nds/tools/audit_sprites.py",
+      "sha256": "d5d49e6ad01370a024f93a0af35fb44bc551b016fe64e5bf34b16e47cc03df70"
+    },
+    {
+      "path": "tools/ghidra/ExportNdsMap.java",
+      "sha256": "e4fe6ed67234c093d36e9050b3dac15f8f911b777e3b0534ce50c782d93bab16"
+    },
+    {
+      "path": "ports/nds/tools/export_map_evidence.ps1",
+      "sha256": "8ae6a64d6eb5b265433eb9239675e6d5cf3f0be3e1ed3c4d2b713b4a6f74adb5"
+    }
+  ],
+  "native_manifests": [
+    {
+      "path": "research/evidence/nds/n20/original/ru/analysis-manifest.json",
+      "sha256": "e387d2631245cc842096197eac8eca1c1ca46d966a5c34be9db501504b211e77"
+    },
+    {
+      "path": "research/evidence/nds/n20/original/en/analysis-manifest.json",
+      "sha256": "53b007ce6a9f5840f95247055a02fc20b65eb1cd2d3a9e977d0428e69e366f5c"
+    }
+  ],
+  "workspace_bytes": 35268,
+  "persistent_bytes": 0,
+  "scope": "fresh original per-cell static builder + native constructor + native sort/column versus actual C update; no live DOS session",
+  "explicit_correction": {
+    "native_entry": "PKR1098:52B7..5335",
+    "native_spawn_sets_flag": "PKR1068:2681",
+    "actor_pose": [
+      15120,
+      -300,
+      23280
+    ],
+    "native_tag": 4095,
+    "native_record_visited_sha256": "6c5de134c73c3dfd32c35ca90acc9ab4e4808a3af7db0f82637050b8c4510255",
+    "native_visited_indices": [
+      4095
+    ],
+    "nds_negative_update_cases": 54,
+    "nds_policy": "Ignore sprite IDs without N12 world-cell provenance; source projectile/synthetic pool IDs do not disclose cells",
+    "adaptation": true
+  },
+  "whole_live_DOS_session": false,
+  "physical_DS_tested": false
+}

@@ -79,6 +79,8 @@ typedef struct dok_presentation_value {
 } dok_presentation_value;
 /* Build validates matching (glyph,class,field slot/kind), original localized
  * source bytes and every reference against exact CP866 name/language/kind.
+ * localized may equal effective for the exact accepted RU profile; this uses
+ * its original immutable source spans, never localized numeric state.
  * candidate may change on failure, out remains unchanged. No allocation.
  * Keep both models, source leases and session live until descriptor expires. */
 dok_balance_status dok_presentation_bind(const dok_level_definition *effective,

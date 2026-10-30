@@ -1,0 +1,25 @@
+{
+  "task": "N19",
+  "passed": true,
+  "whole_DOS_session": false,
+  "unicorn_version": "2.1.4",
+  "script_sha256": "83a3496e0b9d0250419371f7b63fae3f90d0670dbe7354266f18c23b1f4da447",
+  "report": {
+    "path": "research/evidence/nds/n19/original-ui-check.json",
+    "sha256": "c94db593a921b8db1857cd5abd8fb7ad1db58d7f07e559663e5f658a19844060"
+  },
+  "counts": {
+    "ru": {
+      "glyph_vectors": 2048,
+      "string_vectors": 60,
+      "copy_vectors": 18,
+      "countdown_vectors": 7
+    },
+    "en": {
+      "glyph_vectors": 2048,
+      "string_vectors": 60,
+      "copy_vectors": 18,
+      "countdown_vectors": 7
+    }
+  }
+}

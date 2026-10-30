@@ -11,7 +11,9 @@ typedef struct NdsEffectTrace {
     uint32_t magic,sequence,ordinal,epoch,case_id,frame_id,source_ticks,kind,glyph;
     uint32_t counter,displayed,interval,cancel;
 } NdsEffectTrace;
+#ifndef NDS_EFFECT_TRACE_CAPACITY
 #define NDS_EFFECT_TRACE_CAPACITY 512u
+#endif
 typedef struct NdsEffectsRuntime {
     unsigned char light[4096],rgb6[768];
     uint16_t palette[4096];

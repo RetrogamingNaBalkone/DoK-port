@@ -3,6 +3,9 @@
 #include "dok/ai.h"
 #include "dok/interactions_move.h"
 typedef struct NdsGameplay {
+#if GAMEPLAY_UI
+    struct NdsUiRuntime *ui;
+#endif
     dok_ai ai;
     dok_combat combat;
     dok_items items;

@@ -1,0 +1,24 @@
+{
+  "task": "N18-source-audio",
+  "status": "passed",
+  "report": "research/evidence/nds/n18/source/report.json",
+  "report_sha256": "10944c9e93778de9cbcc6744bed7cd6ee872269d1c005593346c3a6ca532a4b5",
+  "script": "ports/nds/tools/audit_audio_source.py",
+  "catalog_count": 23,
+  "samples_each_language": 961526,
+  "all_ru_en_blocks_identical": true,
+  "native_cases_each_language": 13,
+  "native_pause_polls_each_language": 8,
+  "native_trigger_slices_each_language": 18,
+  "exe_sha256_before": {
+    "ru": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+    "en": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b"
+  },
+  "exe_sha256_after": {
+    "ru": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+    "en": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b"
+  },
+  "source_only": true,
+  "whole_DOS_session": false,
+  "listening": false
+}

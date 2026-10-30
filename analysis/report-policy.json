@@ -42,6 +42,7 @@
     "analysis/gba/render-benchmark.json",
     "analysis/gba/render-early-benchmark.json",
     "analysis/gba/render-layout-probe.json",
+    "analysis/nds-n21p-performance.json",
     "analysis/research-relocation-20261027.json"
   ],
   "retained_large_data": [

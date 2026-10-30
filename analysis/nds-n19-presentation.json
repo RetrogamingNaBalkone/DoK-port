@@ -1,0 +1,35 @@
+{
+  "task": "N19",
+  "passed": true,
+  "scope": "Windows host alias bind and original N05 regression; no ARM9/DOS execution",
+  "test_presentation_alias": {
+    "passed": true,
+    "checks": 126255,
+    "levels": 3,
+    "language_binds": 9,
+    "bindings": 10024,
+    "texts": 1064,
+    "resources": 8960,
+    "numeric_rejections": 9900,
+    "alias_rejections": 22
+  },
+  "test_balance": {
+    "passed": true,
+    "checks": 21236,
+    "accepted_changes": 39,
+    "retained_assertions": 35,
+    "presentation_bindings": 5000,
+    "rejected_models": 19,
+    "resigned_package_cases": 2
+  },
+  "test_world": {
+    "passed": true,
+    "stdout": "N05 world: 5694 checks, 0 failures; level=105056 seed=27168 workspace=105056 resident=237280"
+  },
+  "n05_reports_unchanged": true,
+  "report": {
+    "path": "research/evidence/nds/n19/presentation-check.json",
+    "bytes": 7284,
+    "sha256": "0ff7b416deca582e85bd58ffb25eb456360e1bf4a917665aa043887da13b4377"
+  }
+}

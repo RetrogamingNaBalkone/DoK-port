@@ -1,0 +1,851 @@
+{
+  "task": "N21",
+  "status": "ready-emulator",
+  "passed": true,
+  "software_checks_passed": true,
+  "gates": {
+    "assets.json": {
+      "path": "research/evidence/nds/n21/assets.json",
+      "bytes": 350845,
+      "sha256": "62c5de9fc9fd5fc6850e63bd18484da5341f684192baf0e6956e3df83f0dc709"
+    },
+    "original-selector.json": {
+      "path": "research/evidence/nds/n21/original-selector.json",
+      "bytes": 21711,
+      "sha256": "98fed721d9d4e033d0cdd003adba22408e07f18835547718aaebdc6faaefa080"
+    },
+    "visual-source.json": {
+      "path": "research/evidence/nds/n21/visual-source.json",
+      "bytes": 43652,
+      "sha256": "290302dcea71c19936c7b37972f639be28f8fe99ad32eeaaa3ee650ab4a1672e"
+    },
+    "host-state-settings.json": {
+      "path": "research/evidence/nds/n21/host-state-settings.json",
+      "bytes": 1560,
+      "sha256": "7fef369dc0690fc8e9acefc08094cc9a21cad7812a04782fb68be1196799e7c1"
+    },
+    "host-visual.json": {
+      "path": "research/evidence/nds/n21/host-visual.json",
+      "bytes": 5484,
+      "sha256": "49887919f46ae9c4ae0d3c04984828e50e61c7c6f46940bafaaccf68b0998d58"
+    },
+    "visual-review.json": {
+      "path": "research/evidence/nds/n21/visual-review.json",
+      "bytes": 4376,
+      "sha256": "f29d21b566ccd47c2056f835e47c3f8664c981397843355a90056261276cdf01"
+    }
+  },
+  "root_acceptance": {
+    "path": "research/evidence/nds/n21/root-acceptance.json",
+    "bytes": 12910,
+    "sha256": "aad789fdcfd2ddc7a0ea9ffb7fe54ea4f1ff9ee2d02cffc3fc1ccb3647dab886"
+  },
+  "builds": [
+    {
+      "path": "build/nds/n21/fixture-visual-ru",
+      "rom": {
+        "path": "build/nds/n21/fixture-visual-ru/dok_nds_gameplay.nds",
+        "bytes": 271872,
+        "sha256": "c82dc3ab451d1914f6603eb87dc6c1099e6e676b9d81ce2fcc82673d47e25dec"
+      },
+      "elf": {
+        "path": "build/nds/n21/fixture-visual-ru/dok_nds_gameplay.elf",
+        "bytes": 2190660,
+        "sha256": "7567c2f1d52889125b6ebf3b0d8680bd8c35d65b52685d2cc800b1f5bc78a22d"
+      },
+      "manifest": {
+        "path": "build/nds/n21/fixture-visual-ru/build-manifest.json",
+        "bytes": 49106,
+        "sha256": "8b3bc861e0838ae50acb2f4682ae5f33c5dce24f85edd10dee7b7a8339eb8621"
+      },
+      "fixtures": true
+    },
+    {
+      "path": "build/nds/n21/fixture-visual-en",
+      "rom": {
+        "path": "build/nds/n21/fixture-visual-en/dok_nds_gameplay.nds",
+        "bytes": 271872,
+        "sha256": "31dd8f4b63c836217c832b3c220d97336a8180bb56e681be7d08cbb537088a2d"
+      },
+      "elf": {
+        "path": "build/nds/n21/fixture-visual-en/dok_nds_gameplay.elf",
+        "bytes": 2190588,
+        "sha256": "734e0bfb0efde91f5aee8d514188fa063a2ec7cd2715887457af72f667bcd74e"
+      },
+      "manifest": {
+        "path": "build/nds/n21/fixture-visual-en/build-manifest.json",
+        "bytes": 49106,
+        "sha256": "2a94a98d782cc4920b5ad2488014fd4513f43e39a5e42eafa16e630b5098961a"
+      },
+      "fixtures": true
+    },
+    {
+      "path": "build/nds/n21/frontend-visual-ru",
+      "rom": {
+        "path": "build/nds/n21/frontend-visual-ru/dok_nds_gameplay.nds",
+        "bytes": 270848,
+        "sha256": "146f482bb8b9a1cd72472cf176d198d60cd1319faf7a3920d43661e2c9a7ae43"
+      },
+      "elf": {
+        "path": "build/nds/n21/frontend-visual-ru/dok_nds_gameplay.elf",
+        "bytes": 2187332,
+        "sha256": "fa353cf2241bcdb56448e48936ff75e3b5d3f9a06d59029e143424b3226c61bc"
+      },
+      "manifest": {
+        "path": "build/nds/n21/frontend-visual-ru/build-manifest.json",
+        "bytes": 49112,
+        "sha256": "399aab259cc1ce6c0eb5ac595efcae47e357d96d9d3e461c0da733b2ffd88460"
+      },
+      "fixtures": false
+    },
+    {
+      "path": "build/nds/n21/frontend-visual-en",
+      "rom": {
+        "path": "build/nds/n21/frontend-visual-en/dok_nds_gameplay.nds",
+        "bytes": 270848,
+        "sha256": "02fbf7d3915372c0cbad21474255d29311b95fcb8bf5f232a626c5237ea2bb8d"
+      },
+      "elf": {
+        "path": "build/nds/n21/frontend-visual-en/dok_nds_gameplay.elf",
+        "bytes": 2183200,
+        "sha256": "e74b3df2550611c588da479d556aefe8bc8d5064e566154f83983a9b5f79bbb4"
+      },
+      "manifest": {
+        "path": "build/nds/n21/frontend-visual-en/build-manifest.json",
+        "bytes": 49112,
+        "sha256": "29493dcfc6320ffcd0cde8067e892ececf39d2a677c571c27900d127e2aa3777"
+      },
+      "fixtures": false
+    }
+  ],
+  "runtime": [
+    {
+      "report": {
+        "path": "build/nds/n21/fixture-visual-ru/frontend-full/result.json",
+        "bytes": 98482,
+        "sha256": "944ce92ddbdd57de10fbfe3a38e158e6ae8137b73acd1ce944fffef89dc48aad"
+      },
+      "target": "build/nds/n21/fixture-visual-ru",
+      "mode": "frontend-full",
+      "index8_checks": 10125312,
+      "rgb_checks": 10125312,
+      "states": 103,
+      "language": 1,
+      "original_pages": 16,
+      "visual_rows": 6,
+      "visual_decoded_bytes": 196608,
+      "language_switches": 6,
+      "pcm_coefficients": [
+        0.9924338014084911,
+        0.9924338018686111
+      ],
+      "memory": [
+        {
+          "static_bytes": 352140,
+          "heap_start_gap": 32,
+          "static_startup_bytes": 524288,
+          "managed_bytes": 2293760,
+          "sdk_heap_available": 196608,
+          "reserve_bytes": 655360,
+          "closure_bytes": 3670016
+        },
+        {
+          "static_bytes": 352140,
+          "heap_start_gap": 32,
+          "static_startup_bytes": 524288,
+          "managed_bytes": 2293760,
+          "sdk_heap_available": 196608,
+          "reserve_bytes": 655360,
+          "closure_bytes": 3670016
+        },
+        {
+          "static_bytes": 352140,
+          "heap_start_gap": 32,
+          "static_startup_bytes": 524288,
+          "managed_bytes": 2293760,
+          "sdk_heap_available": 196608,
+          "reserve_bytes": 655360,
+          "closure_bytes": 3670016
+        }
+      ]
+    },
+    {
+      "report": {
+        "path": "build/nds/n21/fixture-visual-ru/frontend-early-A-0/result.json",
+        "bytes": 6961,
+        "sha256": "12ea87b7014b3f8b583316810190997dddec8564203806ab9f1a9aaf3ee5de1f"
+      },
+      "target": "build/nds/n21/fixture-visual-ru",
+      "mode": "frontend-early-A-0",
+      "index8_checks": 98304,
+      "rgb_checks": 98304,
+      "states": 1
+    },
+    {
+      "report": {
+        "path": "build/nds/n21/fixture-visual-ru/frontend-early-A-1/result.json",
+        "bytes": 6961,
+        "sha256": "36d09129c1ec6f3b9caf1352fb13451713506792b46b1145a4df7b11770a362e"
+      },
+      "target": "build/nds/n21/fixture-visual-ru",
+      "mode": "frontend-early-A-1",
+      "index8_checks": 98304,
+      "rgb_checks": 98304,
+      "states": 1
+    },
+    {
+      "report": {
+        "path": "build/nds/n21/fixture-visual-ru/frontend-early-A-2/result.json",
+        "bytes": 6961,
+        "sha256": "ec20a3147c7878b794f5bec8abd4a1d0a4b7b7fb37e5ba4ae7008d67c137e4db"
+      },
+      "target": "build/nds/n21/fixture-visual-ru",
+      "mode": "frontend-early-A-2",
+      "index8_checks": 98304,
+      "rgb_checks": 98304,
+      "states": 1
+    },
+    {
+      "report": {
+        "path": "build/nds/n21/fixture-visual-ru/frontend-early-A-3/result.json",
+        "bytes": 6961,
+        "sha256": "86084477800659dfa05a36b62994f1281f0e09f7ef588b8c761c353ebad23154"
+      },
+      "target": "build/nds/n21/fixture-visual-ru",
+      "mode": "frontend-early-A-3",
+      "index8_checks": 98304,
+      "rgb_checks": 98304,
+      "states": 1
+    },
+    {
+      "report": {
+        "path": "build/nds/n21/fixture-visual-ru/frontend-early-A-4/result.json",
+        "bytes": 6961,
+        "sha256": "699eff810eecdbc36c9e8f2aa604031bdb55656c142db511fb14fe4d538b6555"
+      },
+      "target": "build/nds/n21/fixture-visual-ru",
+      "mode": "frontend-early-A-4",
+      "index8_checks": 98304,
+      "rgb_checks": 98304,
+      "states": 1
+    },
+    {
+      "report": {
+        "path": "build/nds/n21/fixture-visual-ru/frontend-early-A-5/result.json",
+        "bytes": 6961,
+        "sha256": "4e7099c0a3ff5054163e84a48c72b1d9b3951dce8fe13bf8911d66ff2463b619"
+      },
+      "target": "build/nds/n21/fixture-visual-ru",
+      "mode": "frontend-early-A-5",
+      "index8_checks": 98304,
+      "rgb_checks": 98304,
+      "states": 1
+    },
+    {
+      "report": {
+        "path": "build/nds/n21/fixture-visual-ru/frontend-early-A-6/result.json",
+        "bytes": 6961,
+        "sha256": "74e628f17343e93dfc332b8d3edba04909b73e39f30b8a50a6c6ad0e188089a3"
+      },
+      "target": "build/nds/n21/fixture-visual-ru",
+      "mode": "frontend-early-A-6",
+      "index8_checks": 98304,
+      "rgb_checks": 98304,
+      "states": 1
+    },
+    {
+      "report": {
+        "path": "build/nds/n21/fixture-visual-ru/frontend-early-A-7/result.json",
+        "bytes": 6961,
+        "sha256": "e182dd709ef92ba0a2f07f0eeced7312d465472181b36eb57567b294fc984441"
+      },
+      "target": "build/nds/n21/fixture-visual-ru",
+      "mode": "frontend-early-A-7",
+      "index8_checks": 98304,
+      "rgb_checks": 98304,
+      "states": 1
+    },
+    {
+      "report": {
+        "path": "build/nds/n21/fixture-visual-ru/frontend-early-Start-0/result.json",
+        "bytes": 6977,
+        "sha256": "b2537b525dadb85e8551d773c38489a0895b17a862e50e8c1b3ae3e9ec45befd"
+      },
+      "target": "build/nds/n21/fixture-visual-ru",
+      "mode": "frontend-early-Start-0",
+      "index8_checks": 98304,
+      "rgb_checks": 98304,
+      "states": 1
+    },
+    {
+      "report": {
+        "path": "build/nds/n21/fixture-visual-ru/frontend-early-Start-1/result.json",
+        "bytes": 6977,
+        "sha256": "0f23785c2c9e87032c7acff9a47216b5ef175d15689e018c7f991157f9771362"
+      },
+      "target": "build/nds/n21/fixture-visual-ru",
+      "mode": "frontend-early-Start-1",
+      "index8_checks": 98304,
+      "rgb_checks": 98304,
+      "states": 1
+    },
+    {
+      "report": {
+        "path": "build/nds/n21/fixture-visual-ru/frontend-early-Start-2/result.json",
+        "bytes": 6977,
+        "sha256": "9377c746ec5f1d8166e06ea35ed9ffa8ce0a7d79d791d7037206cc529e9d4d17"
+      },
+      "target": "build/nds/n21/fixture-visual-ru",
+      "mode": "frontend-early-Start-2",
+      "index8_checks": 98304,
+      "rgb_checks": 98304,
+      "states": 1
+    },
+    {
+      "report": {
+        "path": "build/nds/n21/fixture-visual-ru/frontend-early-Start-3/result.json",
+        "bytes": 6977,
+        "sha256": "53ea4060d0b159eb08055821a6c35e1ab5a2060da0943c727ad7ab1577326148"
+      },
+      "target": "build/nds/n21/fixture-visual-ru",
+      "mode": "frontend-early-Start-3",
+      "index8_checks": 98304,
+      "rgb_checks": 98304,
+      "states": 1
+    },
+    {
+      "report": {
+        "path": "build/nds/n21/fixture-visual-ru/frontend-early-Start-4/result.json",
+        "bytes": 6977,
+        "sha256": "d160e561e8ea2b543e800ee4f6b11241cbc0dda0241202ee47f0d70bdf2455be"
+      },
+      "target": "build/nds/n21/fixture-visual-ru",
+      "mode": "frontend-early-Start-4",
+      "index8_checks": 98304,
+      "rgb_checks": 98304,
+      "states": 1
+    },
+    {
+      "report": {
+        "path": "build/nds/n21/fixture-visual-ru/frontend-early-Start-5/result.json",
+        "bytes": 6977,
+        "sha256": "0449f0106f5535a7d9cea2225e6408ba976459d01bf1152590dca3ce00c1f934"
+      },
+      "target": "build/nds/n21/fixture-visual-ru",
+      "mode": "frontend-early-Start-5",
+      "index8_checks": 98304,
+      "rgb_checks": 98304,
+      "states": 1
+    },
+    {
+      "report": {
+        "path": "build/nds/n21/fixture-visual-ru/frontend-early-Start-6/result.json",
+        "bytes": 6977,
+        "sha256": "c3781068462c3fcccfbbd85421ff2dd2adf8488f13bb7818e3d1b67ff116e0fb"
+      },
+      "target": "build/nds/n21/fixture-visual-ru",
+      "mode": "frontend-early-Start-6",
+      "index8_checks": 98304,
+      "rgb_checks": 98304,
+      "states": 1
+    },
+    {
+      "report": {
+        "path": "build/nds/n21/fixture-visual-ru/frontend-early-Start-7/result.json",
+        "bytes": 6977,
+        "sha256": "5c6a7b9b10019c964e378ca437958110686d789e0d21f65ac09abd6a886f781d"
+      },
+      "target": "build/nds/n21/fixture-visual-ru",
+      "mode": "frontend-early-Start-7",
+      "index8_checks": 98304,
+      "rgb_checks": 98304,
+      "states": 1
+    },
+    {
+      "report": {
+        "path": "build/nds/n21/frontend-visual-ru/frontend-world-smoke/result.json",
+        "bytes": 19031,
+        "sha256": "fb66b57a1b677cb8f44ebd7353f2da97130cb819fdae8da45079ba7497721950"
+      },
+      "target": "build/nds/n21/frontend-visual-ru",
+      "mode": "frontend-world-smoke",
+      "index8_checks": 1277952,
+      "rgb_checks": 1277952,
+      "states": 13
+    },
+    {
+      "report": {
+        "path": "build/nds/n21/frontend-visual-ru/frontend-restore/result.json",
+        "bytes": 74474,
+        "sha256": "48849acc27b793035dbb923c356db31aefce2cf32a9c0949faae2a1488a75621"
+      },
+      "target": "build/nds/n21/frontend-visual-ru",
+      "mode": "frontend-restore",
+      "index8_checks": 5701632,
+      "rgb_checks": 5701632,
+      "states": 58,
+      "restore_points": 6,
+      "hud_index8_checks": 116736,
+      "hud_rgb_checks": 116736,
+      "map_index8_checks": 589824,
+      "map_rgb_checks": 589824
+    },
+    {
+      "report": {
+        "path": "build/nds/n21/fixture-visual-en/frontend-full/result.json",
+        "bytes": 100651,
+        "sha256": "5f3d71a5d689e0e45d8e466f6351d7c57d30b11c29d65b3605293fe46873074a"
+      },
+      "target": "build/nds/n21/fixture-visual-en",
+      "mode": "frontend-full",
+      "index8_checks": 10321920,
+      "rgb_checks": 10321920,
+      "states": 105,
+      "language": 2,
+      "original_pages": 18,
+      "visual_rows": 6,
+      "visual_decoded_bytes": 196608,
+      "language_switches": 6,
+      "pcm_coefficients": [
+        0.9924338014084911,
+        0.9924338018686111
+      ],
+      "memory": [
+        {
+          "static_bytes": 352076,
+          "heap_start_gap": 32,
+          "static_startup_bytes": 524288,
+          "managed_bytes": 2293760,
+          "sdk_heap_available": 196608,
+          "reserve_bytes": 655360,
+          "closure_bytes": 3670016
+        },
+        {
+          "static_bytes": 352076,
+          "heap_start_gap": 32,
+          "static_startup_bytes": 524288,
+          "managed_bytes": 2293760,
+          "sdk_heap_available": 196608,
+          "reserve_bytes": 655360,
+          "closure_bytes": 3670016
+        },
+        {
+          "static_bytes": 352076,
+          "heap_start_gap": 32,
+          "static_startup_bytes": 524288,
+          "managed_bytes": 2293760,
+          "sdk_heap_available": 196608,
+          "reserve_bytes": 655360,
+          "closure_bytes": 3670016
+        }
+      ]
+    },
+    {
+      "report": {
+        "path": "build/nds/n21/fixture-visual-en/frontend-early-A-0/result.json",
+        "bytes": 7109,
+        "sha256": "2fd75827b1cae3582125f8ae1fdd2536e0c0782f8a2df0c5086fc3ccb9b73e2c"
+      },
+      "target": "build/nds/n21/fixture-visual-en",
+      "mode": "frontend-early-A-0",
+      "index8_checks": 98304,
+      "rgb_checks": 98304,
+      "states": 1
+    },
+    {
+      "report": {
+        "path": "build/nds/n21/fixture-visual-en/frontend-early-A-1/result.json",
+        "bytes": 7109,
+        "sha256": "0cb4b561d39a4d2119cebfc568c51456930d868a4f7d75425f6bafd75ff20ee2"
+      },
+      "target": "build/nds/n21/fixture-visual-en",
+      "mode": "frontend-early-A-1",
+      "index8_checks": 98304,
+      "rgb_checks": 98304,
+      "states": 1
+    },
+    {
+      "report": {
+        "path": "build/nds/n21/fixture-visual-en/frontend-early-A-2/result.json",
+        "bytes": 7109,
+        "sha256": "ec7d187064e15825b8ef2af66a0f8db8ca1261b5fdad450dddb9404e0546ec5a"
+      },
+      "target": "build/nds/n21/fixture-visual-en",
+      "mode": "frontend-early-A-2",
+      "index8_checks": 98304,
+      "rgb_checks": 98304,
+      "states": 1
+    },
+    {
+      "report": {
+        "path": "build/nds/n21/fixture-visual-en/frontend-early-A-3/result.json",
+        "bytes": 7109,
+        "sha256": "e877c116d4cd6ab505dd0e6d75d45b0b98483edf64d4e479008141d47d705d9d"
+      },
+      "target": "build/nds/n21/fixture-visual-en",
+      "mode": "frontend-early-A-3",
+      "index8_checks": 98304,
+      "rgb_checks": 98304,
+      "states": 1
+    },
+    {
+      "report": {
+        "path": "build/nds/n21/fixture-visual-en/frontend-early-A-4/result.json",
+        "bytes": 7109,
+        "sha256": "d786a9222350ccbf4af754f4e94688b8961623770d67c4b702f86493b3d91217"
+      },
+      "target": "build/nds/n21/fixture-visual-en",
+      "mode": "frontend-early-A-4",
+      "index8_checks": 98304,
+      "rgb_checks": 98304,
+      "states": 1
+    },
+    {
+      "report": {
+        "path": "build/nds/n21/fixture-visual-en/frontend-early-A-5/result.json",
+        "bytes": 7109,
+        "sha256": "a5e553c4fc005c2b5414083287bff1835d1c773b153fad174b25d62b2970ca33"
+      },
+      "target": "build/nds/n21/fixture-visual-en",
+      "mode": "frontend-early-A-5",
+      "index8_checks": 98304,
+      "rgb_checks": 98304,
+      "states": 1
+    },
+    {
+      "report": {
+        "path": "build/nds/n21/fixture-visual-en/frontend-early-A-6/result.json",
+        "bytes": 7109,
+        "sha256": "28b29c25fe8bfbc07192586d1a59e2735e497e09fe4a66ce1a6f8566dda107a2"
+      },
+      "target": "build/nds/n21/fixture-visual-en",
+      "mode": "frontend-early-A-6",
+      "index8_checks": 98304,
+      "rgb_checks": 98304,
+      "states": 1
+    },
+    {
+      "report": {
+        "path": "build/nds/n21/fixture-visual-en/frontend-early-A-7/result.json",
+        "bytes": 7109,
+        "sha256": "9614b2a145a9bdc5006f02ebc72690f1c7de4d0cab5f692baea60232b5231d42"
+      },
+      "target": "build/nds/n21/fixture-visual-en",
+      "mode": "frontend-early-A-7",
+      "index8_checks": 98304,
+      "rgb_checks": 98304,
+      "states": 1
+    },
+    {
+      "report": {
+        "path": "build/nds/n21/fixture-visual-en/frontend-early-Start-0/result.json",
+        "bytes": 7125,
+        "sha256": "dd3e40024ac25145fa78cf17a3e39aaeb722955e37b3fffb9e7466fd8279f990"
+      },
+      "target": "build/nds/n21/fixture-visual-en",
+      "mode": "frontend-early-Start-0",
+      "index8_checks": 98304,
+      "rgb_checks": 98304,
+      "states": 1
+    },
+    {
+      "report": {
+        "path": "build/nds/n21/fixture-visual-en/frontend-early-Start-1/result.json",
+        "bytes": 7125,
+        "sha256": "c40bbd6d254cd5ffb9f0fc8b10b8efee72c6704bed9ebf0463aacbbeb5192d94"
+      },
+      "target": "build/nds/n21/fixture-visual-en",
+      "mode": "frontend-early-Start-1",
+      "index8_checks": 98304,
+      "rgb_checks": 98304,
+      "states": 1
+    },
+    {
+      "report": {
+        "path": "build/nds/n21/fixture-visual-en/frontend-early-Start-2/result.json",
+        "bytes": 7125,
+        "sha256": "9af0df0ceaa825d5544980971bb48b597ca8b8ad50d746dd371e73a04f913e38"
+      },
+      "target": "build/nds/n21/fixture-visual-en",
+      "mode": "frontend-early-Start-2",
+      "index8_checks": 98304,
+      "rgb_checks": 98304,
+      "states": 1
+    },
+    {
+      "report": {
+        "path": "build/nds/n21/fixture-visual-en/frontend-early-Start-3/result.json",
+        "bytes": 7125,
+        "sha256": "a0b320e47dd847d622e8f006da7d8ce74334fd0bcc3fdcbc959074399f83b7f7"
+      },
+      "target": "build/nds/n21/fixture-visual-en",
+      "mode": "frontend-early-Start-3",
+      "index8_checks": 98304,
+      "rgb_checks": 98304,
+      "states": 1
+    },
+    {
+      "report": {
+        "path": "build/nds/n21/fixture-visual-en/frontend-early-Start-4/result.json",
+        "bytes": 7125,
+        "sha256": "ddef6187c978304eec295218601048281d98d882d9d5d1d83150e8cb33cd3aac"
+      },
+      "target": "build/nds/n21/fixture-visual-en",
+      "mode": "frontend-early-Start-4",
+      "index8_checks": 98304,
+      "rgb_checks": 98304,
+      "states": 1
+    },
+    {
+      "report": {
+        "path": "build/nds/n21/fixture-visual-en/frontend-early-Start-5/result.json",
+        "bytes": 7125,
+        "sha256": "58deefcd3395971bef62c1984654c472249c0c9048abf5a34b22259077c78748"
+      },
+      "target": "build/nds/n21/fixture-visual-en",
+      "mode": "frontend-early-Start-5",
+      "index8_checks": 98304,
+      "rgb_checks": 98304,
+      "states": 1
+    },
+    {
+      "report": {
+        "path": "build/nds/n21/fixture-visual-en/frontend-early-Start-6/result.json",
+        "bytes": 7125,
+        "sha256": "17b2323218ddccd86b1d03c86b0f3db31ed8e016efc2e185ba4e1c34a803f404"
+      },
+      "target": "build/nds/n21/fixture-visual-en",
+      "mode": "frontend-early-Start-6",
+      "index8_checks": 98304,
+      "rgb_checks": 98304,
+      "states": 1
+    },
+    {
+      "report": {
+        "path": "build/nds/n21/fixture-visual-en/frontend-early-Start-7/result.json",
+        "bytes": 7125,
+        "sha256": "942bf88a94bcbc1a0a02443c93b4cf1542e2226c49aa02afeff638a3f21ec65a"
+      },
+      "target": "build/nds/n21/fixture-visual-en",
+      "mode": "frontend-early-Start-7",
+      "index8_checks": 98304,
+      "rgb_checks": 98304,
+      "states": 1
+    },
+    {
+      "report": {
+        "path": "build/nds/n21/frontend-visual-en/frontend-world-smoke/result.json",
+        "bytes": 20302,
+        "sha256": "d31920d1bd3417a6fff6d9f42376b6097e9a3233629771feaadabf199509fda5"
+      },
+      "target": "build/nds/n21/frontend-visual-en",
+      "mode": "frontend-world-smoke",
+      "index8_checks": 1376256,
+      "rgb_checks": 1376256,
+      "states": 14
+    },
+    {
+      "report": {
+        "path": "build/nds/n21/frontend-visual-en/frontend-restore/result.json",
+        "bytes": 76680,
+        "sha256": "e53e2695a0b1be9bcabb2b13bde27a8bd535384904276f2bdcd77ebd3dc6f25f"
+      },
+      "target": "build/nds/n21/frontend-visual-en",
+      "mode": "frontend-restore",
+      "index8_checks": 5898240,
+      "rgb_checks": 5898240,
+      "states": 60,
+      "restore_points": 6,
+      "hud_index8_checks": 116736,
+      "hud_rgb_checks": 116736,
+      "map_index8_checks": 589824,
+      "map_rgb_checks": 589824
+    },
+    {
+      "report": {
+        "path": "build/nds/n21/frontend-visual-ru/frontend-settings/result.json",
+        "bytes": 13361,
+        "sha256": "1b28b0bd1b088b6c0faa51631cd8c3c21a717dbb76dca746c5d55bf66666f9fc"
+      },
+      "target": "build/nds/n21/frontend-visual-ru",
+      "mode": "frontend-settings",
+      "index8_checks": 589824,
+      "rgb_checks": 589824,
+      "states": 6
+    },
+    {
+      "report": {
+        "path": "build/nds/n21/frontend-visual-ru/frontend-restart/result.json",
+        "bytes": 6862,
+        "sha256": "ffcb77f7e61f5dc48a839791b10281d0532e85c8499c2d8f91edc8d60289abd2"
+      },
+      "target": "build/nds/n21/frontend-visual-ru",
+      "mode": "frontend-restart",
+      "index8_checks": 98304,
+      "rgb_checks": 98304,
+      "states": 1
+    },
+    {
+      "report": {
+        "path": "build/nds/n21/frontend-visual-ru/frontend-corrupt/result.json",
+        "bytes": 13348,
+        "sha256": "6bc57ce808e0f9441d6626372a42275dd220b73ea2c5306d5576776411bf4cac"
+      },
+      "target": "build/nds/n21/frontend-visual-ru",
+      "mode": "frontend-corrupt",
+      "index8_checks": 589824,
+      "rgb_checks": 589824,
+      "states": 6
+    },
+    {
+      "report": {
+        "path": "build/nds/n21/frontend-visual-ru/frontend-readonly/result.json",
+        "bytes": 13180,
+        "sha256": "813cd811487a44c0c5fd8febfe2c9e14fa5a903a5926ab30f73893e20d6faf2e"
+      },
+      "target": "build/nds/n21/frontend-visual-ru",
+      "mode": "frontend-readonly",
+      "index8_checks": 589824,
+      "rgb_checks": 589824,
+      "states": 6
+    }
+  ],
+  "full": [
+    {
+      "report": {
+        "path": "build/nds/n21/fixture-visual-ru/frontend-full/result.json",
+        "bytes": 98482,
+        "sha256": "944ce92ddbdd57de10fbfe3a38e158e6ae8137b73acd1ce944fffef89dc48aad"
+      },
+      "target": "build/nds/n21/fixture-visual-ru",
+      "mode": "frontend-full",
+      "index8_checks": 10125312,
+      "rgb_checks": 10125312,
+      "states": 103,
+      "language": 1,
+      "original_pages": 16,
+      "visual_rows": 6,
+      "visual_decoded_bytes": 196608,
+      "language_switches": 6,
+      "pcm_coefficients": [
+        0.9924338014084911,
+        0.9924338018686111
+      ],
+      "memory": [
+        {
+          "static_bytes": 352140,
+          "heap_start_gap": 32,
+          "static_startup_bytes": 524288,
+          "managed_bytes": 2293760,
+          "sdk_heap_available": 196608,
+          "reserve_bytes": 655360,
+          "closure_bytes": 3670016
+        },
+        {
+          "static_bytes": 352140,
+          "heap_start_gap": 32,
+          "static_startup_bytes": 524288,
+          "managed_bytes": 2293760,
+          "sdk_heap_available": 196608,
+          "reserve_bytes": 655360,
+          "closure_bytes": 3670016
+        },
+        {
+          "static_bytes": 352140,
+          "heap_start_gap": 32,
+          "static_startup_bytes": 524288,
+          "managed_bytes": 2293760,
+          "sdk_heap_available": 196608,
+          "reserve_bytes": 655360,
+          "closure_bytes": 3670016
+        }
+      ]
+    },
+    {
+      "report": {
+        "path": "build/nds/n21/fixture-visual-en/frontend-full/result.json",
+        "bytes": 100651,
+        "sha256": "5f3d71a5d689e0e45d8e466f6351d7c57d30b11c29d65b3605293fe46873074a"
+      },
+      "target": "build/nds/n21/fixture-visual-en",
+      "mode": "frontend-full",
+      "index8_checks": 10321920,
+      "rgb_checks": 10321920,
+      "states": 105,
+      "language": 2,
+      "original_pages": 18,
+      "visual_rows": 6,
+      "visual_decoded_bytes": 196608,
+      "language_switches": 6,
+      "pcm_coefficients": [
+        0.9924338014084911,
+        0.9924338018686111
+      ],
+      "memory": [
+        {
+          "static_bytes": 352076,
+          "heap_start_gap": 32,
+          "static_startup_bytes": 524288,
+          "managed_bytes": 2293760,
+          "sdk_heap_available": 196608,
+          "reserve_bytes": 655360,
+          "closure_bytes": 3670016
+        },
+        {
+          "static_bytes": 352076,
+          "heap_start_gap": 32,
+          "static_startup_bytes": 524288,
+          "managed_bytes": 2293760,
+          "sdk_heap_available": 196608,
+          "reserve_bytes": 655360,
+          "closure_bytes": 3670016
+        },
+        {
+          "static_bytes": 352076,
+          "heap_start_gap": 32,
+          "static_startup_bytes": 524288,
+          "managed_bytes": 2293760,
+          "sdk_heap_available": 196608,
+          "reserve_bytes": 655360,
+          "closure_bytes": 3670016
+        }
+      ]
+    }
+  ],
+  "totals": {
+    "original_pages": 34,
+    "early_short_press_cases": 32,
+    "production_world_smokes": 2,
+    "settings_cases": 4,
+    "controller_host_checks": 142931,
+    "visual_host_checks": 1049583,
+    "full_index8_checks": 20447232,
+    "full_rgb_checks": 20447232,
+    "visual_cache_bytes": 393216,
+    "restored_hud_index8_checks": 233472,
+    "restored_hud_rgb_checks": 233472,
+    "restored_map_index8_checks": 1179648,
+    "restored_map_rgb_checks": 1179648
+  },
+  "archive": {
+    "path": "research/evidence/nds/n21/final-archive.json",
+    "bytes": 522236,
+    "sha256": "07b04efebaf65211e3da8604c987fa4f8cc5c2775c0711402b10214d547d6b52"
+  },
+  "supersession": {
+    "path": "research/evidence/nds/n21/supersession.json",
+    "bytes": 638,
+    "sha256": "62ab1cd9c79e4bf2b9269dd4387d47fa2b7f664dbed4d2cd37760b24f23dd9b0"
+  },
+  "joint_performance_budget_passed": false,
+  "physical_hardware": false,
+  "listening_deferred_by_user": true,
+  "next_task": "N21P",
+  "limits": [
+    "DS/DSLite, physical LCD/touch/IRQ/stack and subjective listening remain N24",
+    "N22 consumes real FINISH/death; EINTRO and POPAL display poses here are explicitly compiled diagnostic fixtures",
+    "No game saves; only versioned language settings are written to microSD",
+    "N20/N21 joint performance remains open for N21P; idle/dirty map and immediate gestures requested by user",
+    "SDK heap is exactly196608bytes at the final fixture, so further code/state must reclaim budget rather than spending reserve"
+  ]
+}

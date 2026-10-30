@@ -1,12 +1,16 @@
+#include "dok/hotcode.h"
 #include "dok/door_render.h"
 #include <string.h>
+#if N21P_PROFILE && N21P_GEOMETRY_PROFILE
+extern uint32_t cpuGetTiming(void);
+#endif
 
-static int64_t nearest(int64_t numerator,int32_t denominator)
+DOK_NDS_HOT_CODE static int64_t nearest(int64_t numerator,int32_t denominator)
 {
     return numerator>=0 ? (numerator+denominator/2)/denominator
         : -((-numerator+denominator/2)/denominator);
 }
-static dok_geometry_vertex intersection(const dok_geometry_vertex *a,
+DOK_NDS_HOT_CODE static dok_geometry_vertex intersection(const dok_geometry_vertex *a,
     const dok_geometry_vertex *b,int32_t numerator,int32_t denominator)
 {
     dok_geometry_vertex v;
@@ -18,7 +22,7 @@ static dok_geometry_vertex intersection(const dok_geometry_vertex *a,
     return v;
 }
 
-dok_door_geometry_result dok_door_geometry_build(const dok_geometry_quad *source,
+DOK_NDS_HOT_CODE dok_door_geometry_result dok_door_geometry_build(const dok_geometry_quad *source,
     const dok_geometry_image *image,int16_t phase,int16_t extent,
     dok_geometry_quad *out)
 {
@@ -86,7 +90,7 @@ static const dok_geometry_quad *source_quad(source_cache *cache,uint32_t id,
  * published surfaces are floor/wall/ceiling: their cell need not be built
  * again merely to discover that they have no movable door. source IDs are
  * produced by the base builder immediately above, with a fixed stride64. */
-static uint32_t source_door_class(uint32_t id,const dok_initial_world *world)
+DOK_NDS_HOT_CODE static uint32_t source_door_class(uint32_t id,const dok_initial_world *world)
 {
     uint32_t cell=(id-1u)/DOK_GEOMETRY_CELL_MAX,x=cell%64u,z=cell/64u;
     uint32_t width=(uint32_t)world->definition->settings[DOK_LEVEL_WIDTH];
@@ -94,7 +98,7 @@ static uint32_t source_door_class(uint32_t id,const dok_initial_world *world)
     uint32_t index=world->definition->glyph_index[glyph];
     return world->definition->objects[index-1u].class_id;
 }
-static int changed(const dok_geometry_quad *q,const dok_initial_world *world,
+DOK_NDS_HOT_CODE static int changed(const dok_geometry_quad *q,const dok_initial_world *world,
     const dok_geometry_binding bindings[256],const dok_interaction_phase_view *phases)
 {
     uint32_t index=world->definition->glyph_index[q->source_glyph];
@@ -107,7 +111,7 @@ static int changed(const dok_geometry_quad *q,const dok_initial_world *world,
     return result!=DOK_DOOR_GEOMETRY_KEEP || memcmp(q,&cropped,sizeof(cropped))!=0;
 }
 
-dok_render_scene_result dok_door_scene_prepare(dok_render_scene *scene,
+DOK_NDS_HOT_CODE dok_render_scene_result dok_door_scene_prepare(dok_render_scene *scene,
     const dok_initial_world *world,const dok_geometry_binding bindings[256],
     const dok_nds_render_camera *camera,uint32_t heading,
     const dok_interaction_phase_view *phases,dok_door_render_counts *counts,
@@ -117,14 +121,25 @@ dok_render_scene_result dok_door_scene_prepare(dok_render_scene *scene,
     dok_door_render_counts result={0};
     source_cache cache={0};
     uint32_t i,j,quads=0,cells=0;
+#if N21P_PROFILE && N21P_GEOMETRY_PROFILE
+    uint32_t door_start;
+#endif
     dok_render_scene_result status;
     if(!out || !counts || !world || !world->definition ||
        (phases && (phases->world_epoch!=world->epoch || !phases->revision)))
         return DOK_RENDER_SCENE_ARGUMENT;
     status=dok_render_scene_prepare(scene,world,bindings,camera,heading,&base);
     if(status!=DOK_RENDER_SCENE_OK) return status;
+#if N21P_PROFILE && N21P_GEOMETRY_PROFILE
+    door_start=cpuGetTiming();
+#endif
     result.world_epoch=world->epoch;result.revision=phases ? phases->revision:0;
-    if(!phases) { *counts=result;*out=base;return DOK_RENDER_SCENE_OK; }
+    if(!phases) {
+#if N21P_PROFILE && N21P_GEOMETRY_PROFILE
+        scene->profile_ticks[3]=cpuGetTiming()-door_start;
+#endif
+        *counts=result;*out=base;return DOK_RENDER_SCENE_OK;
+    }
     for(i=0;i<scene->counts.merged_quads;++i) {
         const dok_render_merge_record *m=&scene->merges[i];
         const dok_geometry_quad *q;
@@ -141,13 +156,16 @@ dok_render_scene_result dok_door_scene_prepare(dok_render_scene *scene,
         dok_nds_render_cell old=scene->cells[i];
         uint32_t start=quads;
         for(j=0;j<old.quad_count;++j) {
-            dok_nds_render_quad dest=old.quads[j];
-            uint32_t source_class=source_door_class(dest.source_surface_id,world);
+            const dok_nds_render_quad *source=&old.quads[j];
+            dok_nds_render_quad *dest=&scene->quads[quads];
+            uint32_t copied=0;
+            uint32_t source_class=source_door_class(source->source_surface_id,world);
             if(source_class==4u || source_class==7u) {
-                const dok_geometry_quad *q=source_quad(&cache,dest.source_surface_id,world,bindings);
+                const dok_geometry_quad *q=source_quad(&cache,source->source_surface_id,world,bindings);
                 if(!q) goto failed;
                 if(q->kind!=DOK_GEOMETRY_DOOR) {
-                    scene->quads[quads++]=dest;continue;
+                    if(dest!=source)*dest=*source;
+                    ++quads;continue;
                 }
                 uint32_t index=world->definition->glyph_index[q->source_glyph];
                 ++result.doors;
@@ -161,17 +179,20 @@ dok_render_scene_result dok_door_scene_prepare(dok_render_scene *scene,
                     if(r!=DOK_DOOR_GEOMETRY_KEEP) goto failed;
                     if(memcmp(q,&cropped,sizeof(cropped))) {
                         ++result.cropped;
+                        if(dest!=source)*dest=*source;
+                        copied=1;
                         for(k=0;k<4u;++k) {
-                            dest.vertex[k].x=cropped.vertices[k].x-old.origin_x;
-                            dest.vertex[k].y=cropped.vertices[k].y-old.origin_y;
-                            dest.vertex[k].z=cropped.vertices[k].z-old.origin_z;
-                            dest.vertex[k].u_q16=cropped.vertices[k].u_q16;
-                            dest.vertex[k].v_q16=cropped.vertices[k].v_q16;
+                            dest->vertex[k].x=cropped.vertices[k].x-old.origin_x;
+                            dest->vertex[k].y=cropped.vertices[k].y-old.origin_y;
+                            dest->vertex[k].z=cropped.vertices[k].z-old.origin_z;
+                            dest->vertex[k].u_q16=cropped.vertices[k].u_q16;
+                            dest->vertex[k].v_q16=cropped.vertices[k].v_q16;
                         }
                     }
                 }
             }
-            scene->quads[quads++]=dest;
+            if(!copied && dest!=source)*dest=*source;
+            ++quads;
         }
         if(quads!=start) {
             old.quads=scene->quads+start;old.quad_count=quads-start;
@@ -179,8 +200,14 @@ dok_render_scene_result dok_door_scene_prepare(dok_render_scene *scene,
         }
     }
     scene->counts.published_quads=quads;scene->frame.cell_count=cells;
+#if N21P_PROFILE && N21P_GEOMETRY_PROFILE
+    scene->profile_ticks[3]=cpuGetTiming()-door_start;
+#endif
     *counts=result;*out=&scene->frame;return DOK_RENDER_SCENE_OK;
 failed:
     (void)dok_render_scene_release(scene,scene->generation);
+#if N21P_PROFILE && N21P_GEOMETRY_PROFILE
+    scene->profile_ticks[3]=cpuGetTiming()-door_start;
+#endif
     return DOK_RENDER_SCENE_GEOMETRY;
 }

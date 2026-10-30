@@ -1,0 +1,31 @@
+{
+  "task": "N19",
+  "passed": true,
+  "scope": "Actual runtime language/message/update C, host nds cache/DMA/palette stubs; no hardware claims",
+  "actual_runtime": {
+    "passed": true,
+    "checks": 35622,
+    "scenarios": 6,
+    "actual_language_calls": 18,
+    "actual_text_draws": 1596,
+    "animation_player_steps": 4644,
+    "localized_text_differences": 1596
+  },
+  "mutation_control": {
+    "rejected": true,
+    "fault": "UI bind publishes into world.presentation",
+    "exit_code": 1,
+    "stderr": "N19 actual language line 31: memcmp(after,world_before,32)==0\nN19 actual language line 111: unchanged()",
+    "stdout": "{\"passed\":false,\"checks\":1747,\"scenarios\":6,\"actual_language_calls\":2,\"actual_text_draws\":75,\"animation_player_steps\":228,\"localized_text_differences\":75}",
+    "source": {
+      "path": "build/nds/n19/ui-language-runtime/faulty-runtime.c",
+      "bytes": 8417,
+      "sha256": "f1f860c399985f5eec79f793f3c9ee877ffb53982dda2796a910d68b02099fd1"
+    }
+  },
+  "report": {
+    "path": "research/evidence/nds/n19/ui-language-runtime-check.json",
+    "bytes": 8682,
+    "sha256": "38b99fcd677f402c090060374555631870f3d4b6d3da50b3c0dde535332bcf7c"
+  }
+}

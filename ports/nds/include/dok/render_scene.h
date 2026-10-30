@@ -28,6 +28,10 @@ typedef struct dok_render_scene {
     dok_render_merge_record merges[DOK_RENDER_QUADS];
     dok_render_scene_counts counts;
     uint32_t tag, leased, generation, world_epoch;
+#if N21P_GEOMETRY_PROFILE
+    /* Existing scene slab only; per-presentation diagnostic CPU spans. */
+    uint32_t profile_ticks[4];
+#endif
 } dok_render_scene;
 _Static_assert(sizeof(dok_render_scene)<=DOK_NDS_SCENE_BYTES,
                "N07 scene fits N03 scene region on host and ARM9");

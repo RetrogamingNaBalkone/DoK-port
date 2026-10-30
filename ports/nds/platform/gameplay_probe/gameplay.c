@@ -1,5 +1,11 @@
 #include "gameplay.h"
 #include "effects_runtime.h"
+#if GAMEPLAY_UI
+#include "../ui/runtime.h"
+#endif
+#if GAMEPLAY_AUDIO
+#include "../audio/runtime.h"
+#endif
 #include <string.h>
 #if defined(ARM9)
 #include <nds.h>
@@ -10,14 +16,41 @@ static int trig(void *p,uint32_t h,int32_t *s,int32_t *c)
 static dok_status hit(void *p,dok_object_ref t,dok_object_ref s,int16_t d,uint32_t *a)
 {return dok_ai_hit(&((NdsGameplay *)p)->ai,t,s,d,a);}
 static void combat_output(void *p,const dok_combat_output *o)
-{NdsGameplay *g=p;if(o->kind<16u)++g->outputs[o->kind];}
+{NdsGameplay *g=p;if(o->kind<16u)++g->outputs[o->kind];
+#if GAMEPLAY_AUDIO
+nds_audio_runtime_combat(&g->combat,o);
+#endif
+}
 static void ai_output(void *p,const dok_ai_output *o)
-{NdsGameplay *g=p;if(o->kind<16u)++g->ai_outputs[o->kind];}
+{NdsGameplay *g=p;if(o->kind<16u)++g->ai_outputs[o->kind];
+#if GAMEPLAY_UI
+if(o->kind==DOK_AI_DEAD&&o->object.object_id&&o->object.object_id<=g->items.world->object_count)
+    nds_ui_notice(g->ui,1,g->items.world->definition->objects[o->object.object_id-1u].glyph,0xbe);
+#endif
+#if GAMEPLAY_AUDIO
+nds_audio_runtime_ai(&g->ai,o);
+#endif
+}
 static void item_output(void *p,const dok_item_output *o)
-{NdsGameplay *g=p;(void)o;++g->outputs[10];}
+{NdsGameplay *g=p;(void)o;++g->outputs[10];
+#if GAMEPLAY_UI
+if(o->kind==DOK_ITEM_PICKUP&&o->object.object_id&&o->object.object_id<=g->items.world->object_count)
+    nds_ui_notice(g->ui,1,g->items.world->definition->objects[o->object.object_id-1u].glyph,0x58);
+#endif
+#if GAMEPLAY_AUDIO
+nds_audio_runtime_item(o);
+#endif
+}
 static void interaction_output(void *p,const dok_interaction_output *o)
 {
     NdsGameplay *g=p;++g->outputs[11];
+#if GAMEPLAY_UI
+    if(o->kind==DOK_INTERACTION_LOCKED){uint32_t id=o->key_mask==1u?2u:o->key_mask==2u?3u:o->key_mask==4u?4u:o->key_mask==8u?5u:6u;nds_ui_notice(g->ui,2,id,0);}
+    if(o->kind==DOK_INTERACTION_STATUS)nds_ui_notice(g->ui,2,o->value==1?0u:1u,0);
+#endif
+#if GAMEPLAY_AUDIO
+    nds_audio_runtime_interaction(o);
+#endif
     if(o->kind==DOK_INTERACTION_STAT){
         if(g->pending_count==4u){g->fault=1;return;}
         g->pending_category[g->pending_count]=o->category;
@@ -110,6 +143,9 @@ static dok_status hero_service(NdsGameplay *g,NdsEffectsRuntime *r)
 dok_status nds_gameplay_callback(NdsGameplay *g,NdsEffectsRuntime *r,dok_object_ref owner,uint16_t kind,uint32_t parameter)
 {
     dok_status s;
+#if GAMEPLAY_UI
+    if(g->ui)g->ui->ticks=r->clock._ticks;
+#endif
 #if defined(ARM9)
     uint32_t start=cpuGetTiming();
 #endif

@@ -24,6 +24,41 @@
 #include "dok/frame_store.h"
 #include "dok/weapon_overlay.h"
 #include "clock.h"
+#ifndef GAMEPLAY_FRONTEND
+#define GAMEPLAY_FRONTEND 0
+#endif
+#if GAMEPLAY_FRONTEND
+#include "../frontend/runtime.h"
+static NdsFrontend *frontend;
+static uint32_t frontend_keys,frontend_touch;
+static int16_t frontend_x,frontend_y;
+#endif
+#ifndef GAMEPLAY_MAP
+#define GAMEPLAY_MAP 0
+#endif
+#if GAMEPLAY_MAP
+#include "../map/runtime.h"
+#include "dok/map_discovery.h"
+static NdsMapRuntime *map_ui;
+static unsigned char *map_pixels;
+static int map_bg;
+#endif
+#ifndef GAMEPLAY_UI
+#define GAMEPLAY_UI 0
+#endif
+#if GAMEPLAY_UI
+#include "../ui/runtime.h"
+static NdsUiRuntime *ui;
+static unsigned char *ui_pixels;
+#endif
+#ifndef GAMEPLAY_AUDIO
+#define GAMEPLAY_AUDIO 0
+#endif
+#if GAMEPLAY_AUDIO
+#include "../audio/runtime.h"
+static unsigned char *audio_backing;
+static unsigned char *audio_extra;
+#endif
 #ifndef EFFECT_LIGHT_CACHE
 #define EFFECT_LIGHT_CACHE 0
 #endif
@@ -48,6 +83,9 @@ typedef union ProbeIO {
     unsigned char fixture[65536];
 } ProbeIO;
 _Static_assert(sizeof(ProbeIO)<=DOK_NDS_IO_BYTES,"N07 I/O region");
+#if GAMEPLAY_UI
+_Static_assert(((sizeof(ProbeIO)+31u)&~31u)+sizeof(NdsUiRuntime)<=DOK_NDS_IO_BYTES,"N19 UI in I/O tail");
+#endif
 extern unsigned char __end__, __eheap_end;
 _Alignas(32) volatile NdsRenderProbe g_nds_render_probe;
 _Alignas(32) volatile NdsRenderHistoryRecord g_nds_render_history[NDS_RENDER_HISTORY_CAPACITY];
@@ -100,11 +138,17 @@ static dok_render_case cases[DOK_RENDER_FIXTURE_CASES];
 static uint32_t fixture_bytes, fixture_count;
 static uint32_t previous_present_ticks, previous_present_vblank;
 static int hud_bg;
+#if !GAMEPLAY_MAP
 static PrintConsole bottom;
+#endif
 static dok_nds_render_stats last_render_stats;
 
 static uint32_t address(const void *p) { return (uint32_t)(uintptr_t)p; }
-static void vblank_irq(void) { ++vblank_counter; }
+static void vblank_irq(void) { ++vblank_counter;
+#if GAMEPLAY_FRONTEND
+    nds_frontend_early_sample();
+#endif
+}
 static uint32_t le32(const unsigned char *p)
 { return (uint32_t)p[0]|(uint32_t)p[1]<<8|(uint32_t)p[2]<<16|(uint32_t)p[3]<<24; }
 static int32_t signed_word(uint32_t value)
@@ -164,9 +208,43 @@ static int memory_setup(void)
     storage->effects.trace_total=0;storage->effects.traces=effect_traces;
     scratch=(dok_render_workspace *)(void *)(managed+cursor);cursor+=DOK_NDS_SCRATCH_BYTES;
     scene=(dok_render_scene *)(void *)(managed+cursor);cursor+=DOK_NDS_SCENE_BYTES;
+#if GAMEPLAY_UI
+    _Static_assert(((sizeof(dok_render_scene)+31u)&~31u)+DOK_UI_HUD_BYTES<=DOK_NDS_SCENE_BYTES,"N19 HUD in scene tail");
+    ui_pixels=(unsigned char *)(void *)scene+((sizeof(dok_render_scene)+31u)&~31u);
+#endif
+#if GAMEPLAY_MAP
+    _Static_assert(((sizeof(dok_render_scene)+31u)&~31u)+DOK_UI_HUD_BYTES+sizeof(NdsMapRuntime)<=DOK_NDS_SCENE_BYTES,"N20 map state in scene tail");
+    map_ui=(NdsMapRuntime *)(void *)(ui_pixels+DOK_UI_HUD_BYTES);
+    memset(map_ui,0,sizeof(*map_ui));
+#endif
     assets=managed+cursor;cursor+=DOK_NDS_ASSETS_BYTES;
+#if GAMEPLAY_AUDIO
+    audio_backing=managed+cursor;
+#endif
     cursor+=DOK_NDS_AUDIO_BYTES;
-    io=(ProbeIO *)(void *)(managed+cursor);cursor+=DOK_NDS_IO_BYTES;
+    io=(ProbeIO *)(void *)(managed+cursor);
+#if GAMEPLAY_UI
+    ui=(NdsUiRuntime *)(void *)((unsigned char *)io+((sizeof(ProbeIO)+31u)&~31u));
+#endif
+#if GAMEPLAY_MAP
+    /* Catalog scratch ceases to exist after assets_open. Session only retains
+     * its reader/header; fixture is at most64+64*64+3*10240=34880 bytes.
+     * This disjoint post-open region remains a persistent display mirror. */
+    _Static_assert(65536u+DOK_MAP_SCREEN_BYTES<=sizeof(ProbeIO),"N20 map mirror I/O gap");
+    map_pixels=(unsigned char *)io+65536u;
+    _Static_assert(64u+64u*64u+3u*10240u<=45056u,"N20 snapshots beyond packet");
+    map_ui->post_visited=(unsigned char *)io+45056u;
+    map_ui->planes=(unsigned char *)io+49152u;
+#endif
+#if GAMEPLAY_FRONTEND
+    _Static_assert(sizeof(NdsFrontend)<=4096u,"N21 state in disjoint I/O gap");
+    frontend=(NdsFrontend *)(void *)((unsigned char *)io+61440u);
+#endif
+    cursor+=DOK_NDS_IO_BYTES;
+#if GAMEPLAY_AUDIO
+    audio_extra=malloc(163840u);
+    if(!audio_extra)return 0;
+#endif
     if(cursor!=DOK_NDS_SLAB_BYTES) do{if(!g_nds_effect_probe[31])g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);{g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return 0;}}while(0);
     obs.world_used=obs.world_high_water=sizeof(*storage);
     obs.scratch_used=obs.scratch_high_water=sizeof(*scratch);
@@ -222,7 +300,7 @@ static int position(uint32_t case_id, const dok_nds_render_camera *camera,
 }
 
 
-static int fixture_load(void)
+static __attribute__((unused)) int fixture_load(void)
 {
     FILE *file=fopen("fat:/dok/scene.dat","rb");
     unsigned char digest[32];dok_sha256 hash;
@@ -253,7 +331,7 @@ static int fixture_load(void)
         c->cell_x=le32(p+48);c->cell_z=le32(p+52);
         c->reserved0=le32(p+56);c->reserved1=le32(p+60);
         if(!c->id || c->level<1 || c->level>3 || c->heading>360 ||
-           !c->frames || c->frames>1024 || c->flags>7 || c->reserved0 || c->reserved1)
+           !c->frames || c->frames>(GAMEPLAY_UI?16384u:(GAMEPLAY_AUDIO?2048u:1024u)) || c->flags>7 || c->reserved0 || c->reserved1)
             do{if(!g_nds_effect_probe[31])g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);{g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return 0;}}while(0);
         for(j=0;j<i;++j) if(cases[j].id==c->id) do{if(!g_nds_effect_probe[31])g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);{g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return 0;}}while(0);
     }
@@ -263,20 +341,26 @@ static int fixture_load(void)
     return 1;
 }
 
-static const unsigned char *level_block(uint32_t level)
+static __attribute__((unused)) const unsigned char *level_block(uint32_t level)
 { return io->fixture+64u+fixture_count*64u+(level-1u)*10240u; }
 
 static void draw_hud(uint32_t level)
 {
+#if GAMEPLAY_FRONTEND
+    (void)level;ui->dirty=1;
+    dmaFillHalfWords(0,bgGetGfxPtr(hud_bg),65536);
+#else
     const unsigned char *block=level_block(level);
     DC_FlushRange(block,10240);
     dmaCopy(block,BG_PALETTE,512);
     dmaFillHalfWords(0,bgGetGfxPtr(hud_bg),65536);
     dmaCopy(block+512,(unsigned char *)bgGetGfxPtr(hud_bg)+154u*256u,9728);
+#endif
 }
 
 static void diagnostics(const dok_nds_render_stats *stats)
 {
+    #if !GAMEPLAY_MAP
     consoleSelect(&bottom);consoleClear();
     printf("N13 DS effects / LEVEL %lu\ncase %lu/%lu frame %lu\n\n",
         (unsigned long)obs.level,(unsigned long)obs.case_id,
@@ -289,6 +373,9 @@ static void diagnostics(const dok_nds_render_stats *stats)
     printf("flags %04lX / %04lX\nRAM reserve %lu\n\nA: next case\n%s\nPhysical DS: N24\n",
         (unsigned long)obs.disp3d_sticky,(unsigned long)obs.gxstat_sticky,
         (unsigned long)obs.reserve_bytes,obs.flat_diagnostic?"FLAT COVERAGE":"ORIGINAL TEXTURES");
+    #else
+    (void)stats;
+    #endif
 }
 
 static void history(NdsRenderHistoryRecord *record)
@@ -322,6 +409,12 @@ static dok_status texture_require(const dok_asset_entry *entry)
 
 static int level_load(uint32_t level)
 {
+#if GAMEPLAY_UI
+    ui->overlay_blank=0;
+#endif
+#if GAMEPLAY_MAP
+    nds_map_begin();
+#endif
     NdsRenderHistoryRecord row={0};
     mask_identity_count=0;dok_geometry_cache_reset();
 #if EFFECT_LIGHT_CACHE
@@ -329,6 +422,9 @@ static int level_load(uint32_t level)
 #endif
     uint32_t start=cpuGetTiming(),i;
     if(world_serial){
+#if GAMEPLAY_AUDIO
+        nds_audio_runtime_clear();
+#endif
         if(dok_combat_clear(&storage->game.combat)!=DOK_STATUS_OK ||
            dok_ai_clear(&storage->game.ai)!=DOK_STATUS_OK ||
            dok_events_reset(&storage->effects.scheduler,world_serial+1u)!=DOK_STATUS_OK)return 0;
@@ -338,7 +434,7 @@ static int level_load(uint32_t level)
     row.vblank_start=vblank_counter;
     if(dok_render_world_load(&session,level,++world_serial,world,scratch,assets,
         DOK_NDS_ASSETS_BYTES)!=DOK_STATUS_OK) do{if(!g_nds_effect_probe[31])g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);{g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return 0;}}while(0);
-    if(SPRITE_LANGUAGE==2) {
+    if(SPRITE_LANGUAGE==2 || GAMEPLAY_UI) {
         uint32_t off=(world->asset_bytes+31u)&~31u;dok_asset_view view;
         dok_asset_id id=UINT32_C(2)<<30|(17u+level)<<18|(uint32_t)DOK_ASSET_LEVEL_CP866<<10;
         if(dok_assets_load(&session,id,assets+off,DOK_RENDER_SOURCE_BYTES,&view)!=DOK_ASSET_OK ||
@@ -347,6 +443,14 @@ static int level_load(uint32_t level)
             do{if(!g_nds_effect_probe[31])g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);{g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return 0;}}while(0);
         world->asset_bytes=off+view.entry.bytes;
     }
+#if GAMEPLAY_UI
+    ui->level=level;ui->message_kind=0;ui->stage_count=0;
+    /* The simulation and its sprite bank keep one stable resource-ID catalog.
+     * UI localization has a separate descriptor and cannot invalidate it. */
+    if(SPRITE_LANGUAGE==1 && dok_presentation_bind(&world->effective,&world->effective,&session,
+        &scratch->presentation,&world->presentation)!=DOK_BALANCE_OK)return 0;
+    if(!nds_ui_language(ui,world,scratch,SPRITE_LANGUAGE))return 0;
+#endif
     i=(world->asset_bytes+31u)&~31u;
     if(dok_sprite_assets_load(&world->presentation,&storage->bank,assets+i,DOK_NDS_ASSETS_BYTES-i)!=DOK_STATUS_OK)
         do{if(!g_nds_effect_probe[31])g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);{g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return 0;}}while(0);
@@ -357,6 +461,10 @@ static int level_load(uint32_t level)
         uint32_t available=DOK_NDS_ASSETS_BYTES-i-EFFECT_POOL_BYTES;
         if(available<=196608u || dok_frame_store_load(&storage->frames,&storage->bank,&session,assets+i,
             available-196608u,(unsigned char *)(void *)scratch,DOK_NDS_SCRATCH_BYTES)!=DOK_STATUS_OK){g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return 0;}
+#if GAMEPLAY_FRONTEND
+        if(dok_frontend_visual_append_store(&frontend->visual,&storage->frames,&session,
+            assets+i,available-196608u,(unsigned char *)(void *)scratch,DOK_NDS_SCRATCH_BYTES)!=DOK_STATUS_OK)return 0;
+#endif
         packed=(storage->frames.bytes+31u)&~31u;
     }
     dok_texture_cache_init(&storage->cache,assets+i+packed,DOK_NDS_ASSETS_BYTES-i-EFFECT_POOL_BYTES-packed);
@@ -396,7 +504,19 @@ static int level_load(uint32_t level)
     }
     storage->effects.simulation_list=&storage->list;
     if(nds_gameplay_bind(&storage->game,&storage->effects)!=DOK_STATUS_OK){g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return 0;}
+#if GAMEPLAY_AUDIO
+    nds_audio_runtime_world(&world->presentation,world->initial.epoch);
+#endif
     if(dok_nds_stream_reset(storage->effects.palette,4096)!=DOK_NDS_RENDER_OK)do{if(!g_nds_effect_probe[31])g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);{g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return 0;}}while(0);
+#if GAMEPLAY_UI
+    storage->game.ui=ui;
+    ui->ticks=storage->effects.clock._ticks;ui->message_start=ui->ticks;
+#endif
+#if GAMEPLAY_MAP
+    nds_map_load(map_ui,world,&storage->game,level);
+    for(uint32_t n=0;n<256u;++n){const unsigned char *rgb=storage->effects.rgb6+n*3u;
+        BG_PALETTE_SUB[n]=RGB15(rgb[0]>>1,rgb[1]>>1,rgb[2]>>1);}
+#endif
     stream_ready=0;
     draw_hud(level);
     for(uint32_t n=1;n<256u;++n)BG_PALETTE[n]=storage->effects.palette[n];
@@ -435,6 +555,22 @@ static int sprites_prepare(const dok_render_case *c,const dok_nds_render_camera 
     uint32_t i,j,base_demands;
     uint16_t material_map[DOK_RENDER_MATERIALS];
     if(dok_sprites_gather_live(&snapshot,storage->game.collision.flags,storage->game.ai.corpses,camera,heading,&storage->list,&list)!=DOK_STATUS_OK)do{if(!g_nds_effect_probe[31])g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);{g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return 0;}}while(0);
+#if GAMEPLAY_MAP
+    if(!map_ui->paused){
+        uint32_t discovery_start=cpuGetTiming();
+        dok_map_discovery_stats discovery;
+        if(dok_map_discovery_update(&world->initial,world->bindings,list,storage->game.collision.flags,
+            camera,heading,(dok_map_discovery_workspace *)(void *)scratch,world->initial.maps[DOK_WORLD_VISITED],
+            &discovery)!=DOK_STATUS_OK){map_ui->fault=5;return 0;}
+        map_ui->profile[8]=cpuGetTiming()-discovery_start;
+        map_ui->discovery_records=discovery.records;map_ui->discovery_marked+=discovery.newly_visited;
+    }
+#endif
+#if GAMEPLAY_AUDIO && GAMEPLAY_MAP
+    /* Native shadow records are a bounded but substantial CPU phase. A title
+     * part must receive its512-byte slices independently of presentation FPS. */
+    if(!nds_audio_runtime_service())return 0;
+#endif
     sprite_obs.frame_fixture=0;
     if(c->source_kind==13u || c->source_kind==17u) {
         dok_sprite_frame f;
@@ -478,7 +614,28 @@ static int sprites_prepare(const dok_render_case *c,const dok_nds_render_camera 
         }
     }
     if(dok_combat_append_sprites(&storage->game.combat,camera,&storage->list)!=DOK_STATUS_OK){g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return 0;}
+#if GAMEPLAY_FRONTEND && FRONTEND_FIXTURES
+    if(frontend->visual_fixture){
+        if(storage->list.count==DOK_SPRITE_LIMIT)return 0;
+        /* Explicit display-only source frame, never a world actor or event. */
+        dok_sprite_pose p={0};p.x=camera->x-(camera->sin_q15*720)/32768;
+        p.z=camera->z+(camera->cos_q15*720)/32768;p.y=-40;
+        p.width=158*3;p.height=70*3;p.texture_width=158;p.texture_height=70;
+        p.image=((uint32_t)SPRITE_LANGUAGE<<30)|(145u<<18)|(DOK_ASSET_FRAME_INDEX8<<10)|5u;
+        p.glyph=256;p.source_id=0xc2100000u;
+        storage->list.poses[storage->list.count++]=p;
+    }
+#endif
     demand_count=0;
+#if GAMEPLAY_FRONTEND
+    /* An advertised POPAL pixel pointer borrows the raw cache. Geometry and
+     * visibility preparation may keep the old PLAY descriptor readable, but
+     * compaction/decode must invalidate that pointer until next publication. */
+    if(frontend->visual_pixels){
+        if(!(g_nds_frontend_probe[2]&1u))++g_nds_frontend_probe[2];
+        DC_FlushRange((void *)g_nds_frontend_probe,32);
+    }
+#endif
     if(dok_texture_cache_begin(&storage->cache)!=DOK_STATUS_OK)do{if(!g_nds_effect_probe[31])g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);{g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return 0;}}while(0);
     for(i=0;i<DOK_RENDER_MATERIALS;++i)material_map[i]=UINT16_MAX;
     for(i=0;i<scene->counts.published_quads;++i) {
@@ -500,6 +657,9 @@ static int sprites_prepare(const dok_render_case *c,const dok_nds_render_camera 
     for(i=0;i<storage->list.count;++i) {
         const dok_sprite_pose *p=&storage->list.poses[i];
         const dok_asset_entry *e=dok_sprite_asset_image(&storage->bank,p->image);
+#if GAMEPLAY_FRONTEND
+        e=dok_frontend_visual_resolve(&frontend->visual,e,frontend->state.language);
+#endif
         uint32_t transparent=p->glyph>=256u?1u:(p->flags&8u)!=0;
         uint64_t key;
         if(!e)do{if(!g_nds_effect_probe[31])g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);{g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return 0;}}while(0);
@@ -553,14 +713,23 @@ static int render_one(const dok_render_case *c,uint32_t ordinal)
     dok_nds_render_camera camera;
     const dok_nds_render_frame *frame=NULL;
     dok_nds_render_stats stats={0};NdsRenderHistoryRecord row={0};
-    uint32_t start=cpuGetTiming(),phase=start,i,present_ticks;
+    uint32_t start=cpuGetTiming(),phase=start,i,present_ticks,present_vblank;
+#if N21P_PROFILE
+    uint32_t p21[48]={0},p21_phase=start;
+#endif
+#if GAMEPLAY_AUDIO
+    if(!nds_audio_runtime_service())return 0;
+#endif
+    #if N21P_PROFILE
+    p21[16]=cpuGetTiming()-p21_phase;p21_phase=cpuGetTiming();
+    #endif
     int64_t x=(int64_t)c->x+(int64_t)c->dx*ordinal;
     int64_t z=(int64_t)c->z+(int64_t)c->dz*ordinal;
     int64_t heading=((int64_t)c->heading+(int64_t)c->dheading*ordinal)%360;
     if(x<INT32_MIN || x>INT32_MAX || z<INT32_MIN || z>INT32_MAX) do{if(!g_nds_effect_probe[31])g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);{g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return 0;}}while(0);
     if(heading<0) heading+=360;
-    if((c->source_kind>=22u && c->source_kind<=27u)) {x=storage->game.hero.x;z=storage->game.hero.z;heading=storage->game.hero.heading;}
-    camera=(dok_nds_render_camera){(int32_t)x,(c->source_kind>=22u && c->source_kind<=27u)?storage->game.hero.y:c->y,(int32_t)z,0,0};
+    if((c->source_kind>=22u && c->source_kind<=(GAMEPLAY_MAP?29u:(GAMEPLAY_UI?28u:27u)))) {x=storage->game.hero.x;z=storage->game.hero.z;heading=storage->game.hero.heading;}
+    camera=(dok_nds_render_camera){(int32_t)x,(c->source_kind>=22u && c->source_kind<=(GAMEPLAY_MAP?29u:(GAMEPLAY_UI?28u:27u)))?storage->game.hero.y:c->y,(int32_t)z,0,0};
     if(!dok_render_trig((uint32_t)heading,&camera.sin_q15,&camera.cos_q15)) do{if(!g_nds_effect_probe[31])g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);{g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return 0;}}while(0);
     row.vblank_start=previous_present_ticks?previous_present_vblank:vblank_counter;
     row.case_id=c->id;row.level=c->level;
@@ -569,12 +738,36 @@ static int render_one(const dok_render_case *c,uint32_t ordinal)
     if(scene->leased && dok_render_scene_release(scene,scene->generation)!=DOK_RENDER_SCENE_OK)
         do{if(!g_nds_effect_probe[31])g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);{g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return 0;}}while(0);
     storage->effects.case_id=c->id;storage->effects.frame_id=obs.frame_id;
+#if GAMEPLAY_FRONTEND
+    uint32_t held=frontend_keys;
+#else
     scanKeys();uint32_t held=keysHeld()&4095u;
+#endif
+#if GAMEPLAY_MAP
+#if GAMEPLAY_FRONTEND
+    held=nds_map_input(map_ui,&storage->effects.clock,held&~KEY_START,
+        frontend_touch,frontend_x,frontend_y,&storage->game);
+#else
+    touchPosition pen={0};uint32_t touching=(keysHeld()&KEY_TOUCH)!=0;
+    if(touching)touchRead(&pen);
+    held=nds_map_input(map_ui,&storage->effects.clock,held,touching,(int16_t)pen.px,(int16_t)pen.py,&storage->game);
+#endif
+#endif
     if(held!=storage->game.input_held)storage->game.input_tick=cpuGetTiming();
     if(nds_gameplay_input(&storage->game,held)!=DOK_STATUS_OK){g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return 0;}
+    #if N21P_PROFILE
+    p21[17]=cpuGetTiming()-p21_phase;p21_phase=cpuGetTiming();
+    #endif
     uint32_t simulation_start=cpuGetTiming();
-    if(nds_effects_begin(&storage->effects)!=DOK_STATUS_OK)do{if(!g_nds_effect_probe[31])g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);{g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return 0;}}while(0);
+    if((!GAMEPLAY_MAP
+#if GAMEPLAY_MAP
+       ||!map_ui->paused
+#endif
+       )&&nds_effects_begin(&storage->effects)!=DOK_STATUS_OK)do{if(!g_nds_effect_probe[31])g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);{g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return 0;}}while(0);
     uint32_t simulation_ticks=cpuGetTiming()-simulation_start;
+    #if N21P_PROFILE
+    p21[18]=simulation_ticks;p21_phase=cpuGetTiming();
+    #endif
     uint32_t profile[8]={c->id,obs.frame_id,0,0,0,0,0,0};
     dok_interaction_phase_view phase_view={0};dok_door_render_counts door_counts;
     if(dok_interactions_phases(&storage->game.interactions,&phase_view)!=DOK_STATUS_OK){g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return 0;}
@@ -589,7 +782,13 @@ static int render_one(const dok_render_case *c,uint32_t ordinal)
     if(dok_door_scene_prepare(scene,&world->initial,world->bindings,&camera,
         (uint32_t)heading,&phase_view,&door_counts,&frame)!=DOK_RENDER_SCENE_OK) do{if(!g_nds_effect_probe[31])g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);{g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return 0;}}while(0);
     profile[2]=cpuGetTiming()-phase;
+    #if N21P_PROFILE
+    p21[19]=cpuGetTiming()-p21_phase;p21_phase=cpuGetTiming();
+    #endif
     if(!sprites_prepare(c,&camera,(uint32_t)heading,ordinal))do{if(!g_nds_effect_probe[31])g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);{g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return 0;}}while(0);
+    #if N21P_PROFILE
+    p21[20]=cpuGetTiming()-p21_phase;p21[21]=map_ui->profile[8];p21_phase=cpuGetTiming();
+    #endif
     dok_weapon_view weapon;
     if(dok_combat_weapon_view(&storage->game.combat,&weapon)!=DOK_STATUS_OK){g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return 0;}
     const unsigned char *weapon_pixels=NULL;const dok_asset_entry *weapon_entry=NULL;
@@ -598,6 +797,11 @@ static int render_one(const dok_render_case *c,uint32_t ordinal)
         if(!weapon_entry || texture_require(weapon_entry)!=DOK_STATUS_OK){g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return 0;}
         weapon_pixels=dok_texture_cache_pixels(&storage->cache,weapon_entry->id);
     }
+    /* Only a confirmed blank VRAM region survives a hidden->hidden frame.
+     * Visible weapons always use the complete original renderer and upload. */
+#if GAMEPLAY_UI
+    if(SPRITE_AUDIT || N21P_AUDIT || weapon.visible || !ui->overlay_blank) {
+#endif
     unsigned char *overlay=(unsigned char *)(void *)scratch;
     if((GAMEPLAY_FAST_OVERLAY?dok_weapon_overlay_clipped:dok_weapon_overlay)(&weapon,weapon_pixels,weapon_entry?weapon_entry->storage_width:0,
         weapon_entry?weapon_entry->bytes:0,overlay,256u*192u)!=DOK_STATUS_OK){g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return 0;}
@@ -608,6 +812,10 @@ static int render_one(const dok_render_case *c,uint32_t ordinal)
     }
     DC_FlushRange(overlay,256u*154u);dmaCopyWords(3,overlay,bgGetGfxPtr(hud_bg),256u*154u);
     if(SPRITE_AUDIT && memcmp(overlay,bgGetGfxPtr(hud_bg),256u*154u))return 0;
+#if GAMEPLAY_UI
+    ui->overlay_blank=(uint16_t)!weapon.visible;
+    }
+#endif
     /* Weapon admission may compact raw LRU storage. Resolve every borrowed
      * sprite pointer again before effect generation/stream planning. */
     for(uint32_t n=0;n<demand_count;++n){const unsigned char *pixels=dok_texture_cache_pixels(&storage->cache,demand[n].texture.asset_id);if(pixels)demand[n].texture.pixels=pixels;}
@@ -622,6 +830,9 @@ static int render_one(const dok_render_case *c,uint32_t ordinal)
         }
     }
     profile[3]=cpuGetTiming()-phase-profile[2];
+    #if N21P_PROFILE
+    p21[22]=cpuGetTiming()-p21_phase;p21_phase=cpuGetTiming();
+    #endif
     if(c->source_kind==12u && sprite_obs.frame_fixture) {
         NdsSpriteTrace trace={0};unsigned char hash[32];
         const dok_nds_render_texture *t=&demand[sprite_slots[storage->list.count-1u]].texture;
@@ -634,7 +845,25 @@ static int render_one(const dok_render_case *c,uint32_t ordinal)
         ++sprite_obs.trace_count;
     }
     if(!effects_prepare(c,ordinal))do{if(!g_nds_effect_probe[31])g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);{g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return 0;}}while(0);
+#if GAMEPLAY_FRONTEND
+    frontend->visual_asset=frontend->visual_pixels=frontend->visual_bytes=0;
+    frontend->visual_dirty=storage->cache.misses||storage->cache.evictions;
+    frontend->visual_descriptor_bytes=frontend->visual_references=0;
+    _Static_assert(sizeof(dok_nds_stream_texture)<=sizeof(frontend->visual_descriptor),"N21 submitted texture snapshot");
+    /* effects_prepare has finalized and passed this exact array to stream_plan.
+     * Copy its selected descriptor and count real submitted quad references. */
+    for(uint32_t n=0;n<demand_count;++n)if((demand[n].texture.asset_id&0x3fffffffu)==((145u<<18)|(DOK_ASSET_GPU_INDEX8_POT<<10)|5u)){
+        frontend->visual_asset=demand[n].texture.asset_id;
+        frontend->visual_pixels=address(demand[n].texture.pixels);frontend->visual_bytes=demand[n].texture.bytes;
+        memcpy(frontend->visual_descriptor,&demand[n],sizeof(dok_nds_stream_texture));
+        frontend->visual_descriptor_bytes=sizeof(dok_nds_stream_texture);frontend->visual_frame=obs.frame_id;frontend->visual_slot=n;
+        for(uint32_t q=0;q<scene->counts.published_quads;++q)frontend->visual_references+=scene->quads[q].texture_slot==n;
+    }
+#endif
     profile[4]=cpuGetTiming()-phase-profile[2]-profile[3];
+    #if N21P_PROFILE
+    p21[23]=cpuGetTiming()-p21_phase;
+    #endif
     obs.flat_diagnostic=(c->flags&DOK_RENDER_CASE_FLAT)?1u:0u;
     if(obs.flat_diagnostic) row.flags|=NDS_RENDER_FRAME_FLAT_DIAGNOSTIC;
     if(obs.flat_diagnostic) for(i=0;i<scene->counts.published_quads;++i) {
@@ -648,8 +877,33 @@ static int render_one(const dok_render_case *c,uint32_t ordinal)
         memcpy((void *)g_nds_effect_profile[c->id],profile,sizeof(profile));
         DC_FlushRange((const void *)g_nds_effect_profile[c->id],sizeof(profile));
     }
+#if GAMEPLAY_MAP
+    /* Finish all CPU bitmap work before submitting SwapBuffers. Only the
+     * bounded map transfer and publication belong after the VBlank wait. */
+#if GAMEPLAY_UI
+    if(c->source_kind==28u)nds_ui_fixture(ui,world,scratch,ordinal);
+#endif
+#if N21P_PROFILE
+    uint32_t map_prepare_start=cpuGetTiming();
+#endif
+    nds_map_prepare(map_ui,world,&storage->game,ui->bank,ui->language,map_pixels,
+        storage->effects.last_ticks,c->level,world_serial,obs.frame_id,ordinal,c->id,&camera,(uint32_t)heading);
+#if N21P_PROFILE
+    uint32_t map_prepare_ticks=cpuGetTiming()-map_prepare_start;
+#endif
+#endif
+#if GAMEPLAY_AUDIO && GAMEPLAY_MAP
+    if(!nds_audio_runtime_service())return 0;
+#endif
+    uint32_t cold=!stream_ready,stream_prepare_ticks=0;
+    /* All payload mutations and map/UI scratch work have completed. Preserve
+     * this source lease through submit, boundary wait and prepared commit. */
+    if(!cold){
+        uint32_t clean_start=cpuGetTiming();
+        if(dok_nds_stream_prepare_uploads()!=DOK_NDS_RENDER_OK)return 0;
+        stream_prepare_ticks=cpuGetTiming()-clean_start;
+    }
     phase=cpuGetTiming();
-    uint32_t cold=!stream_ready;
     if(cold) {
         row.flags|=NDS_RENDER_FRAME_LOADING;
         if(dok_nds_stream_commit(&stream_stats)!=DOK_NDS_RENDER_OK)do{if(!g_nds_effect_probe[31])g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);{g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return 0;}}while(0);
@@ -658,6 +912,9 @@ static int render_one(const dok_render_case *c,uint32_t ordinal)
     if(dok_nds_render_submit(frame,&stats)!=DOK_NDS_RENDER_OK) do{if(!g_nds_effect_probe[31])g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);{g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return 0;}}while(0);
     row.geometry_wait_ticks=stats.geometry_wait_ticks;
     row.submit_ticks=cpuGetTiming()-phase-row.geometry_wait_ticks;
+    #if N21P_PROFILE
+    p21[24]=cpuGetTiming()-phase;
+    #endif
     obs.submitted_frame_id=obs.frame_id;
     row.input_quads=stats.input_quads;row.submitted_quads=stats.submitted_quads;
     row.submitted_vertices=stats.submitted_vertices;row.hardware_polygons=stats.hardware_polygons;
@@ -666,18 +923,90 @@ static int render_one(const dok_render_case *c,uint32_t ordinal)
     /* The interval starts at the previous presentation boundary, so compact
      * history/probe publishing after it is included in the following frame.
      * Full diagnostic text and snapshot flush have their own explicit phase. */
+    #if N21P_PROFILE
+    p21_phase=cpuGetTiming();
+    #endif
     present_ticks=wait_presentation_boundary();
+    present_vblank=vblank_counter;
+    #if N21P_PROFILE
+    p21[25]=cpuGetTiming()-p21_phase;
+    p21[47]=UINT32_MAX;
+    #endif
+#if GAMEPLAY_MAP
+    /* SUB bitmap DMA must finish in this blank. Admit only its early part;
+     * the conservative room margin is verified by actual start/end lines.
+     * A fallback wait advances the joint presentation boundary honestly. */
+    if(map_ui->pending_reason&&(REG_VCOUNT<192u||REG_VCOUNT>224u)){
+        uint32_t extra_start=cpuGetTiming();
+        present_ticks=wait_presentation_boundary();
+        present_vblank=vblank_counter;
+        #if N21P_PROFILE
+        p21[46]=cpuGetTiming()-extra_start;p21[25]+=p21[46];
+        #else
+        (void)extra_start;
+        #endif
+        if(REG_VCOUNT<192u||REG_VCOUNT>224u){map_ui->fault=5u;return 0;}
+    }
+    phase=cpuGetTiming();
+    nds_map_transfer(map_ui,map_pixels,bgGetGfxPtr(map_bg));
+    if(map_ui->pending_reason&&(map_ui->profile[10]<192u||map_ui->profile[11]>262u||
+       map_ui->profile[10]>map_ui->profile[11]||map_ui->profile[4]>=560190u)){
+        map_ui->fault=5u;return 0;
+    }
+    #if N21P_PROFILE
+    uint32_t map_transfer_ticks=cpuGetTiming()-phase;
+    #endif
+#endif
     phase=cpuGetTiming();
     if(!cold) {
-        dok_nds_render_result result=dok_nds_stream_commit(&stream_stats);
+        dok_nds_render_result result=dok_nds_stream_commit_prepared(&stream_stats);
         sprite_obs.commit_start_line=stream_stats.commit_start_line;sprite_obs.commit_end_line=stream_stats.commit_end_line;
         if(result!=DOK_NDS_RENDER_OK)do{if(!g_nds_effect_probe[31])g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);{g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return 0;}}while(0);
+        /* Preserve the accepted uploader window in the SAME sampled epoch:
+         * line192 through next line47 =119 scanlines, 2130 bus ticks each.
+         * Modulo VCOUNT alone could hide a whole missed texture deadline. */
+        if(stream_stats.upload_bytes&&cpuGetTiming()-present_ticks>=119u*2130u){
+            g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return 0;
+        }
     }
-    if(!cold)row.io_upload_ticks=cpuGetTiming()-phase;
+    if(!cold)row.io_upload_ticks=stream_prepare_ticks+cpuGetTiming()-phase;
+    #if N21P_PROFILE
+    p21[26]=stream_prepare_ticks+cpuGetTiming()-phase;p21_phase=cpuGetTiming();
+    if(stream_stats.upload_bytes)p21[47]=stream_stats.commit_start_line|(stream_stats.commit_end_line<<16);
+    #endif
     row.uploads=stream_stats.uploads;row.upload_bytes=stream_stats.upload_bytes;
     obs.uploads_total+=row.uploads;obs.upload_bytes_total+=row.upload_bytes;
     obs.cache_misses+=stream_stats.misses;obs.cache_evictions+=stream_stats.evictions;
     sprite_obs.commit_start_line=stream_stats.commit_start_line;sprite_obs.commit_end_line=stream_stats.commit_end_line;
+#if GAMEPLAY_UI
+    dok_inventory *inventory=&storage->game.items.inventory;
+    dok_ui_values shown={inventory->health,inventory->charge,inventory->max_health,inventory->max_charge,ui->lives,inventory->score,inventory->keys,inventory->selected};
+    if(c->source_kind==28u){
+        /* Presentation fixture values do not mutate the live inventory. */
+        static const int16_t limits[8]={100,9,0,-32768,32767,-1,1,10};
+        /* The fixture exposes numeric cases first in each language; the
+         * message run uses ordinary representative stats and all keys. */
+        uint32_t local=ui->message_kind?0u:ui->local_stage;
+        shown=(dok_ui_values){limits[local],limits[7u-local],100,200,limits[local],limits[7u-local],(uint16_t)local,(uint16_t)(local==7u?8u:local)};
+    }
+    nds_ui_update(ui,world,&shown,storage->effects.last_ticks,ui_pixels,
+        (unsigned char *)bgGetGfxPtr(hud_bg)+154u*256u,world_serial,obs.frame_id);
+#endif
+    #if N21P_PROFILE
+    p21[27]=cpuGetTiming()-p21_phase;p21_phase=cpuGetTiming();
+    #endif
+#if GAMEPLAY_MAP
+    nds_map_commit(map_ui,map_pixels,bgGetGfxPtr(map_bg));
+    #if N21P_PROFILE
+    p21[28]=map_prepare_ticks+map_transfer_ticks+cpuGetTiming()-p21_phase;p21_phase=cpuGetTiming();
+    #endif
+#if GAMEPLAY_AUDIO
+    if(!nds_audio_runtime_service())return 0;
+#endif
+#endif
+    #if N21P_PROFILE
+    p21[29]=cpuGetTiming()-p21_phase;p21_phase=cpuGetTiming();
+    #endif
     dok_nds_render_present();
     obs.presented_frame_id=obs.submitted_frame_id;row.presented_frame_id=obs.presented_frame_id;
     row.flags|=NDS_RENDER_FRAME_PRESENTED;observe(&stats);
@@ -688,7 +1017,7 @@ static int render_one(const dok_render_case *c,uint32_t ordinal)
     obs.render_frame_address=address(frame);obs.render_frame_bytes=sizeof(*frame);
     obs.cell_record_bytes=sizeof(dok_nds_render_cell);obs.quad_record_bytes=sizeof(dok_nds_render_quad);
     obs.render_generation=frame->generation;
-    row.vblank_end=vblank_counter;
+    row.vblank_end=present_vblank;
     row.total_ticks=present_ticks-(previous_present_ticks?previous_present_ticks:start);
     previous_present_ticks=present_ticks;previous_present_vblank=row.vblank_end;
     obs.flags=row.flags;
@@ -712,10 +1041,35 @@ static int render_one(const dok_render_case *c,uint32_t ordinal)
     data[48]=(uint32_t)(int32_t)g->combat.weapons[g->items.inventory.selected].cursor;
     data[35]=g->input_latency_max;data[36]=g->interactions.revision;data[37]=g->c2;
     memcpy((void *)g_nds_gameplay_probe,data,sizeof(data));DC_FlushRange((const void *)g_nds_gameplay_probe,sizeof(data));
+    #if N21P_PROFILE
+    p21[30]=cpuGetTiming()-p21_phase;p21[31]=cpuGetTiming()-start-p21[25];
+    p21[0]=0x21504b44u;p21[1]=map_ui->profile[17]+1u;p21[2]=N21P_GEOMETRY_PROFILE?3u:1u;p21[3]=c->id;p21[4]=obs.frame_id;
+    p21[5]=ordinal;p21[6]=33513982u;p21[7]=c->level;p21[8]=map_ui->updates;p21[9]=map_ui->discovery_records;p21[10]=map_ui->upload_bytes;
+    p21[11]=row.total_ticks;
+    #if N21P_GEOMETRY_PROFILE
+    memcpy(p21+12,scene->profile_ticks,4u*sizeof(uint32_t));
+    #else
+    p21[12]=row.prepare_ticks;p21[13]=row.submit_ticks;p21[14]=row.geometry_wait_ticks;p21[15]=row.io_upload_ticks;
+    #endif
+    memcpy(p21+32,map_ui->profile,8u*sizeof(uint32_t));
+    p21[40]=address(map_ui->profile_history);p21[41]=8u;p21[42]=48u*sizeof(uint32_t);p21[43]=obs.frame_id;
+    p21[44]=map_ui->profile[10];p21[45]=map_ui->profile[11];
+    uint32_t *history_slot=map_ui->profile_history[(obs.frame_id-1u)%8u];
+    uint32_t latest_sequence=p21[1],slot_sequence=history_slot[1]+1u;
+    history_slot[1]=slot_sequence;DC_FlushRange(history_slot,32);
+    p21[1]=slot_sequence;memcpy(history_slot,p21,sizeof(p21));DC_FlushRange(history_slot,sizeof(p21));
+    ++history_slot[1];DC_FlushRange(history_slot,32);p21[1]=latest_sequence;
+    map_ui->profile[17]=p21[1];DC_FlushRange(map_ui->profile+16,32);
+    memcpy(map_ui->profile+16,p21,sizeof(p21));DC_FlushRange(map_ui->profile+16,sizeof(p21));
+    ++map_ui->profile[17];DC_FlushRange(map_ui->profile+16,32);
+    #endif
     last_render_stats=stats;
     return !obs.disp3d_sticky && !obs.gxstat_sticky;
 }
 
+#if GAMEPLAY_FRONTEND
+#include "../frontend/loop.inc"
+#endif
 int main(void)
 {
     uint32_t index,current_level=0;
@@ -724,6 +1078,9 @@ int main(void)
     sprite_obs.trace_bytes=sizeof(NdsSpriteTrace);sprite_obs.trace_capacity=NDS_SPRITE_TRACE_CAPACITY;
     if(!memory_setup()) {obs.error_bits=1;goto done;}
     irqSet(IRQ_VBLANK,vblank_irq);irqEnable(IRQ_VBLANK);
+#if GAMEPLAY_FRONTEND
+    nds_frontend_boot_probe();
+#endif
     cpuStartTiming(0);obs.timer_hz=BUS_CLOCK;obs.timer_divider=1;
     if(dok_nds_clock_initialize(&platform)!=DOK_STATUS_OK){obs.error_bits=128;goto done;}
     obs.vblank_ticks=560190; /* 355*263*6 bus-clock ticks. */
@@ -752,25 +1109,49 @@ int main(void)
     }
     hud_bg=bgInit(3,BgType_Bmp8,BgSize_B8_256x256,0,0);bgSetPriority(hud_bg,0);
     REG_BG0CNT=(REG_BG0CNT&~3u)|1u;
+#if GAMEPLAY_MAP
+    map_bg=bgInitSub(3,BgType_Bmp8,BgSize_B8_256x256,0,0);bgSetPriority(map_bg,0);
+#else
     consoleInit(&bottom,0,BgType_Text4bpp,BgSize_T_256x256,31,0,false,true);
+#endif
     obs.vram_a=VRAM_A_CR;obs.vram_b=VRAM_B_CR;obs.vram_c=VRAM_C_CR;
     obs.vram_d=VRAM_D_CR;obs.vram_e=VRAM_E_CR;obs.vram_f=VRAM_F_CR;
     obs.vram_g=VRAM_G_CR;obs.vram_h=VRAM_H_CR;obs.vram_i=VRAM_I_CR;
     obs.texture_capacity_bytes=DOK_NDS_RENDER_TEXTURE_BYTES;obs.palette_capacity_bytes=16384;
     if(!fatInitDefault() || nds_asset_file_open(&package,"fat:/dok/assets.ndp",&reader)!=DOK_ASSET_OK ||
-       dok_assets_open(&reader,&io->catalog,&session)!=DOK_ASSET_OK || !fixture_load())
+       dok_assets_open(&reader,&io->catalog,&session)!=DOK_ASSET_OK
+#if !GAMEPLAY_FRONTEND
+       || !fixture_load()
+#endif
+       )
         {obs.error_bits=4;goto done;}
+ #if GAMEPLAY_AUDIO
+    if(!nds_audio_runtime_init(&session,audio_backing,DOK_NDS_AUDIO_BYTES,audio_extra,163840u)){obs.error_bits=16384;goto done;}
+#if !GAMEPLAY_FRONTEND
+    for(;;){int result=nds_audio_runtime_catalog();if(result<0){obs.error_bits=16384;goto done;}if(result)break;swiWaitForVBlank();}
+#endif
+ #endif
+#if GAMEPLAY_UI
+    if(!nds_ui_initialize(ui)){obs.error_bits=32768;goto done;}
+#endif
     dok_render_scene_init(scene);
+#if GAMEPLAY_FRONTEND
+    if(!frontend_loop()){obs.error_bits=65536;goto done;}
+    goto done;
+#endif
     for(index=0;index<fixture_count;++index) {
         const dok_render_case *c=&cases[index];uint32_t frame;
+#if GAMEPLAY_MAP
+        nds_map_begin();
+#endif
         obs.status=NDS_RENDER_RUNNING;obs.case_id=c->id;obs.level=c->level;publish();
-        if(current_level!=c->level || (c->source_kind>=22u && c->source_kind<=27u)) {
+        if(current_level!=c->level || (c->source_kind>=22u && c->source_kind<=(GAMEPLAY_MAP?29u:(GAMEPLAY_UI?28u:27u)))) {
             if(scene->leased) (void)dok_render_scene_release(scene,scene->generation);
             if(!level_load(c->level)) {obs.error_bits=8;goto done;}
             current_level=c->level;
         }
         /* Explicit fixture boundary; real source clock is paused while READY. */
-        if((c->source_kind>=22u && c->source_kind<=27u)) {
+        if((c->source_kind>=22u && c->source_kind<=(GAMEPLAY_MAP?29u:(GAMEPLAY_UI?28u:27u)))) {
             if(c->source_kind==24u || c->source_kind==26u || c->source_kind==27u){
                 for(uint32_t cell=0;cell<4096u;++cell){uint32_t glyph=world->initial.maps[DOK_WORLD_TMAP][cell],n=world->initial.glyph_index[glyph];
                     const dok_level_object *o=&world->effective.objects[n-1u];const dok_level_field *category=dok_level_field_at(o,0x54);
@@ -801,6 +1182,12 @@ int main(void)
                 if(world->initial.objects[n-1u].pose_known && dok_ai_consider(&storage->game.ai,world->initial.objects[n-1u].reference,e->motion.x,e->motion.z)!=DOK_STATUS_OK){obs.error_bits=512;goto done;}
             }
         }
+#if GAMEPLAY_AUDIO
+        /* Explicit long-stream stress under the same live movement/AI runtime.
+         * This title-in-game fixture is not an original gameplay music claim. */
+        if(c->source_kind==22u&&c->frames>=1600u)
+            if(!nds_audio_runtime_title()){obs.error_bits=16384;goto done;}
+#endif
         if(dok_world_clock_resume(&storage->effects.clock)!=DOK_STATUS_OK){obs.error_bits=1024;goto done;}
         begin_presentation_sequence(c);
         for(frame=0;frame<c->frames;++frame)
@@ -822,11 +1209,18 @@ int main(void)
         }
         if(dok_world_clock_pause(&storage->effects.clock)!=DOK_STATUS_OK){obs.error_bits=2048;goto done;}
         obs.status=NDS_RENDER_READY;publish();
-        do {swiWaitForVBlank();scanKeys();publish();} while(!(keysDown()&KEY_A));
+        do {swiWaitForVBlank();scanKeys();publish();
+#if GAMEPLAY_AUDIO
+            if(!nds_audio_runtime_service()){obs.error_bits=16384;goto done;}
+#endif
+        } while(!(keysDown()&KEY_A));
         do {swiWaitForVBlank();scanKeys();} while(keysHeld()&KEY_A);
     }
     if(!memory_check()) obs.error_bits=32;
 done:
+#if GAMEPLAY_AUDIO
+    nds_audio_runtime_clear();
+#endif
     obs.status=obs.error_bits?NDS_RENDER_FAILED:NDS_RENDER_COMPLETE;publish();
     for(;;) {swiWaitForVBlank();publish();}
 }

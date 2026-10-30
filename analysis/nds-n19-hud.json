@@ -1,0 +1,647 @@
+{
+  "task": "N19",
+  "status": "ready-emulator",
+  "passed": true,
+  "software_checks_passed": true,
+  "gates": {
+    "source": {
+      "path": "analysis/nds-n19-ui-source.json",
+      "bytes": 1408,
+      "sha256": "31769089a586a3d54b20c588ba8afbcdb17280065c4b3555daee47c8a5282274"
+    },
+    "original": {
+      "path": "analysis/nds-n19-ui-original.json",
+      "bytes": 654,
+      "sha256": "abe61fffb78775582f7566019ec7e22e2e9f4be7b84ba01afb90f52085115163"
+    },
+    "host": {
+      "path": "analysis/nds-n19-ui-host.json",
+      "bytes": 4933,
+      "sha256": "a6118eb2c41106b54605b99275c79922b47bc80f55cc97045b63a0e867c875b5"
+    },
+    "presentation": {
+      "path": "analysis/nds-n19-presentation.json",
+      "bytes": 994,
+      "sha256": "788212077a25c07be6493018d2913603549002a2891ea35689c6d444d3b9391a"
+    },
+    "ui_language": {
+      "path": "analysis/nds-n19-ui-language-runtime.json",
+      "bytes": 1227,
+      "sha256": "4d992cd7bf325c4faeddc816c4b6f109b0c29c079ed919871e76122889697b42"
+    },
+    "gameplay_regression": {
+      "path": "research/evidence/nds/n19/gameplay-regression.json",
+      "bytes": 1560,
+      "sha256": "850f7a27725899b9d118753a72f97785a7e2c3e47241e3259194a24c89531bd0"
+    },
+    "visual": {
+      "path": "research/evidence/nds/n19/visual-review.json",
+      "bytes": 3622,
+      "sha256": "de36963924b72bc1c7357f4ce4cdab3b0d08da85c8d7ce1ae1bc9a9fab19b63e"
+    }
+  },
+  "source": {
+    "task": "N19",
+    "passed": true,
+    "counts": {
+      "messages": 546,
+      "level_messages": 532,
+      "native_messages": 14,
+      "max_message_bytes": 36,
+      "message_pages": 589,
+      "stories": 16,
+      "story_pages": 34,
+      "fonts": 4,
+      "icons": 12
+    },
+    "outputs": [
+      {
+        "path": "build/nds/n19/ui.dat",
+        "bytes": 16416,
+        "sha256": "5e5f6b24f5e387eb49e54e5d42b1e3bedada58a3482442e9816e08746cc583e9"
+      },
+      {
+        "path": "build/nds/n19/generated/ui_native.inc",
+        "bytes": 1855,
+        "sha256": "08d2fe4c077380187c7a6d14e4d898304034a7a4014ade20b7f38b91d53aa3a4"
+      }
+    ],
+    "fonts_equal_between_languages": true,
+    "all_banks_equal_between_languages": true,
+    "script_sha256": "2ba58b2310b0ba2beb22eb09bbd5331337926813a3198d02d6833e99033d359a",
+    "catalog": {
+      "path": "research/evidence/nds/n19/ui-catalog.json",
+      "sha256": "65c4377505b7675bf7c26226ba146ae5375b55b76213e37b58c5e6886c959e63"
+    },
+    "source_sha256": {
+      "originals/pkr/RUS/PKR.RES": "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816",
+      "originals/pkr/ENG/PKE.RES": "865da340621fa6f90548a84e9ae9bf0a85071befb32a40ca1d359e488f74d458",
+      "originals/pkr/RUS/PKR.EXE": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+      "originals/pkr/ENG/PKE.EXE": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b"
+    }
+  },
+  "original": {
+    "task": "N19",
+    "passed": true,
+    "whole_DOS_session": false,
+    "unicorn_version": "2.1.4",
+    "script_sha256": "83a3496e0b9d0250419371f7b63fae3f90d0670dbe7354266f18c23b1f4da447",
+    "report": {
+      "path": "research/evidence/nds/n19/original-ui-check.json",
+      "sha256": "c94db593a921b8db1857cd5abd8fb7ad1db58d7f07e559663e5f658a19844060"
+    },
+    "counts": {
+      "ru": {
+        "glyph_vectors": 2048,
+        "string_vectors": 60,
+        "copy_vectors": 18,
+        "countdown_vectors": 7
+      },
+      "en": {
+        "glyph_vectors": 2048,
+        "string_vectors": 60,
+        "copy_vectors": 18,
+        "countdown_vectors": 7
+      }
+    }
+  },
+  "host": {
+    "task": "N19",
+    "passed": true,
+    "architecture": "Windows x86_64 host; same C as ARM9, not ARM9 execution",
+    "counts": {
+      "unsigned_cp866_glyphs": 1024,
+      "catalog_messages": 546,
+      "message_pages": 589,
+      "story_pages": 34,
+      "synthetic_pages": 1697,
+      "key_weapon_extreme_layout_cases": 864,
+      "maximum_bar_cases": 56,
+      "retained_output_shrink_key_cleanup_cases": 80,
+      "number_strings": 65536,
+      "guarded_hud_renders": 132669
+    },
+    "fixed_left_anchors": [
+      {
+        "language": 1,
+        "value": 0,
+        "cell_anchors": {
+          "health": 23,
+          "charge": 97
+        },
+        "original_ink_adjacency": {
+          "health": {
+            "icon_right": 20,
+            "number_left": 23,
+            "optical_gap": 2
+          },
+          "charge": {
+            "icon_right": 94,
+            "number_left": 97,
+            "optical_gap": 2
+          }
+        }
+      },
+      {
+        "language": 1,
+        "value": 9,
+        "cell_anchors": {
+          "health": 23,
+          "charge": 97
+        },
+        "original_ink_adjacency": {
+          "health": {
+            "icon_right": 20,
+            "number_left": 23,
+            "optical_gap": 2
+          },
+          "charge": {
+            "icon_right": 94,
+            "number_left": 97,
+            "optical_gap": 2
+          }
+        }
+      },
+      {
+        "language": 1,
+        "value": 100,
+        "cell_anchors": {
+          "health": 23,
+          "charge": 97
+        },
+        "original_ink_adjacency": {
+          "health": {
+            "icon_right": 20,
+            "number_left": 24,
+            "optical_gap": 3
+          },
+          "charge": {
+            "icon_right": 94,
+            "number_left": 98,
+            "optical_gap": 3
+          }
+        }
+      },
+      {
+        "language": 1,
+        "value": -32768,
+        "cell_anchors": {
+          "health": 23,
+          "charge": 97
+        },
+        "original_ink_adjacency": {
+          "health": {
+            "icon_right": 20,
+            "number_left": 24,
+            "optical_gap": 3
+          },
+          "charge": {
+            "icon_right": 94,
+            "number_left": 98,
+            "optical_gap": 3
+          }
+        }
+      },
+      {
+        "language": 2,
+        "value": 0,
+        "cell_anchors": {
+          "health": 23,
+          "charge": 97
+        },
+        "original_ink_adjacency": {
+          "health": {
+            "icon_right": 20,
+            "number_left": 23,
+            "optical_gap": 2
+          },
+          "charge": {
+            "icon_right": 94,
+            "number_left": 97,
+            "optical_gap": 2
+          }
+        }
+      },
+      {
+        "language": 2,
+        "value": 9,
+        "cell_anchors": {
+          "health": 23,
+          "charge": 97
+        },
+        "original_ink_adjacency": {
+          "health": {
+            "icon_right": 20,
+            "number_left": 23,
+            "optical_gap": 2
+          },
+          "charge": {
+            "icon_right": 94,
+            "number_left": 97,
+            "optical_gap": 2
+          }
+        }
+      },
+      {
+        "language": 2,
+        "value": 100,
+        "cell_anchors": {
+          "health": 23,
+          "charge": 97
+        },
+        "original_ink_adjacency": {
+          "health": {
+            "icon_right": 20,
+            "number_left": 24,
+            "optical_gap": 3
+          },
+          "charge": {
+            "icon_right": 94,
+            "number_left": 98,
+            "optical_gap": 3
+          }
+        }
+      },
+      {
+        "language": 2,
+        "value": -32768,
+        "cell_anchors": {
+          "health": 23,
+          "charge": 97
+        },
+        "original_ink_adjacency": {
+          "health": {
+            "icon_right": 20,
+            "number_left": 24,
+            "optical_gap": 3
+          },
+          "charge": {
+            "icon_right": 94,
+            "number_left": 98,
+            "optical_gap": 3
+          }
+        }
+      }
+    ],
+    "signed16_sweep": {
+      "1": {
+        "cases": 65536,
+        "fields": [
+          "health",
+          "charge",
+          "lives",
+          "score"
+        ],
+        "all_bytes_per_case": 9728,
+        "validated_bytes": 637534208,
+        "raster_sha256": "8b11c744b40885e538cdbed6ba5953324b6ac623ac92bb4d3067faecce3723e0",
+        "source_oracle_cross_checks": 75
+      },
+      "2": {
+        "cases": 65536,
+        "fields": [
+          "health",
+          "charge",
+          "lives",
+          "score"
+        ],
+        "all_bytes_per_case": 9728,
+        "validated_bytes": 637534208,
+        "raster_sha256": "a2060146bd83e2938b40869cf74852fffcff9ae289fca781aba4aa4567a36654",
+        "source_oracle_cross_checks": 75
+      }
+    },
+    "representative_raster_sha256": "34f4a31bae7379f1e81b63ec7b91b1f4cc625077f69bba9100137a3faa02e6a8",
+    "runtime_seconds": 5.484120500041172,
+    "report": {
+      "path": "research/evidence/nds/n19/host-ui-check.json",
+      "bytes": 7295,
+      "sha256": "6ebdc92c296f3061a7d33639b89fbd043e2ce904b2842efdb30344dfd5d6d3f8"
+    }
+  },
+  "presentation": {
+    "task": "N19",
+    "passed": true,
+    "scope": "Windows host alias bind and original N05 regression; no ARM9/DOS execution",
+    "test_presentation_alias": {
+      "passed": true,
+      "checks": 126255,
+      "levels": 3,
+      "language_binds": 9,
+      "bindings": 10024,
+      "texts": 1064,
+      "resources": 8960,
+      "numeric_rejections": 9900,
+      "alias_rejections": 22
+    },
+    "test_balance": {
+      "passed": true,
+      "checks": 21236,
+      "accepted_changes": 39,
+      "retained_assertions": 35,
+      "presentation_bindings": 5000,
+      "rejected_models": 19,
+      "resigned_package_cases": 2
+    },
+    "test_world": {
+      "passed": true,
+      "stdout": "N05 world: 5694 checks, 0 failures; level=105056 seed=27168 workspace=105056 resident=237280"
+    },
+    "n05_reports_unchanged": true,
+    "report": {
+      "path": "research/evidence/nds/n19/presentation-check.json",
+      "bytes": 7284,
+      "sha256": "0ff7b416deca582e85bd58ffb25eb456360e1bf4a917665aa043887da13b4377"
+    }
+  },
+  "gameplay_regression": {
+    "checks": 178111,
+    "failures": 0,
+    "callbacks": 2464,
+    "world_hashes": [
+      1432390096,
+      3638979953,
+      1814864016
+    ]
+  },
+  "ui_language": {
+    "task": "N19",
+    "passed": true,
+    "scope": "Actual runtime language/message/update C, host nds cache/DMA/palette stubs; no hardware claims",
+    "actual_runtime": {
+      "passed": true,
+      "checks": 35622,
+      "scenarios": 6,
+      "actual_language_calls": 18,
+      "actual_text_draws": 1596,
+      "animation_player_steps": 4644,
+      "localized_text_differences": 1596
+    },
+    "mutation_control": {
+      "rejected": true,
+      "fault": "UI bind publishes into world.presentation",
+      "exit_code": 1,
+      "stderr": "N19 actual language line 31: memcmp(after,world_before,32)==0\nN19 actual language line 111: unchanged()",
+      "stdout": "{\"passed\":false,\"checks\":1747,\"scenarios\":6,\"actual_language_calls\":2,\"actual_text_draws\":75,\"animation_player_steps\":228,\"localized_text_differences\":75}",
+      "source": {
+        "path": "build/nds/n19/ui-language-runtime/faulty-runtime.c",
+        "bytes": 8417,
+        "sha256": "f1f860c399985f5eec79f793f3c9ee877ffb53982dda2796a910d68b02099fd1"
+      }
+    },
+    "report": {
+      "path": "research/evidence/nds/n19/ui-language-runtime-check.json",
+      "bytes": 8682,
+      "sha256": "38b99fcd677f402c090060374555631870f3d4b6d3da50b3c0dde535332bcf7c"
+    }
+  },
+  "runtime": [
+    {
+      "language": "ru",
+      "rom": {
+        "path": "build/nds/n19/final-release-ru/dok_nds_gameplay.nds",
+        "bytes": 260608,
+        "sha256": "4c92439d1cfaae152c6bb97ec48e5dc627b59ab810d5a63143dd7edc0018b31d"
+      },
+      "hud_report": {
+        "path": "build/nds/n19/final-release-ru/hud/result.json",
+        "bytes": 1371207,
+        "sha256": "2654aa9c49d9e8d4530a898f6b05dafcfa3740769507bdb5449d8a6a983d3159"
+      },
+      "renderer_report": {
+        "path": "build/nds/n19/final-release-ru/emulator/result.json",
+        "bytes": 24964162,
+        "sha256": "4adf121e99dd83a03fcde50303eb56182dd557081ce6c0571299be46be5d19fd"
+      },
+      "observed_hud_rows": 872,
+      "index8_pixel_checks": 8482816,
+      "hardware_pixel_checks": 8482816,
+      "missing_stages": {
+        "1": [],
+        "2": [],
+        "3": []
+      },
+      "renderer_checks_passed": true,
+      "audio_report": {
+        "path": "build/nds/n19/final-release-ru/audio/result.json",
+        "bytes": 485442,
+        "sha256": "7d1689dce2862c739900f859bc7e3f80ae07d1b796edc957f1ec2bf74d2f0bc2"
+      },
+      "audio_catalog": 24,
+      "memory": {
+        "static_bytes": 345268,
+        "heap_start_gap": 32,
+        "static_startup_bytes": 516096,
+        "managed_bytes": 2293760,
+        "sdk_heap_available": 204800,
+        "reserve_bytes": 655360,
+        "closure_bytes": 3670016
+      },
+      "history": {
+        "intervals": 6637,
+        "histogram": {
+          "1": 2176,
+          "2": 4460,
+          "3": 1
+        },
+        "virtual_fps": 35.774917950985895,
+        "median": 2,
+        "p95": 2,
+        "p99": 2,
+        "max": 3,
+        "fraction_over_one": 0.6721410275726986,
+        "fraction_over_two": 0.00015067048365225252,
+        "refresh_hz": 59.82609828808083,
+        "rendered_frames": 6666,
+        "minimum_new_frames_in_one_second": 29,
+        "checked_one_second_windows": 5153,
+        "minimum_window_cadence_fps": 29.42267128922008,
+        "cadence_window_method": "Complete new-frame intervals spanning at least1s, enclosing timestamp duration; integer1s counts reported separately",
+        "prepare_ms": 14.29670265496048,
+        "submit_ms": 3.4319492224431323,
+        "uploads": 1011,
+        "upload_bytes": 8130816,
+        "maximum_texture_bytes": 309248,
+        "maximum_palette_bytes": 8192,
+        "budget_passed": false,
+        "goal_60_passed": false
+      },
+      "live_routes": {
+        "intervals": 4788,
+        "histogram": {
+          "1": 1604,
+          "2": 3184
+        },
+        "virtual_fps": 35.93168070789401,
+        "median": 2,
+        "p95": 2,
+        "p99": 2,
+        "max": 2,
+        "fraction_over_one": 0.6649958228905597,
+        "fraction_over_two": 0.0,
+        "refresh_hz": 59.82609828808083,
+        "rendered_frames": 4800,
+        "minimum_new_frames_in_one_second": 29,
+        "checked_one_second_windows": 4273,
+        "minimum_window_cadence_fps": 29.913049144040414,
+        "cadence_window_method": "Complete new-frame intervals spanning at least1s, enclosing timestamp duration; integer1s counts reported separately",
+        "prepare_ms": 14.048244453245738,
+        "submit_ms": 3.1140627783776997,
+        "uploads": 804,
+        "upload_bytes": 4686080,
+        "maximum_texture_bytes": 258048,
+        "maximum_palette_bytes": 8192,
+        "budget_passed": true,
+        "goal_60_passed": false
+      }
+    },
+    {
+      "language": "en",
+      "rom": {
+        "path": "build/nds/n19/final-release-en/dok_nds_gameplay.nds",
+        "bytes": 260608,
+        "sha256": "c8d972ef1fb227df039e32511cc074f2adfb9a0aa2e8296d04826acc972e8ed5"
+      },
+      "hud_report": {
+        "path": "build/nds/n19/final-release-en/hud/result.json",
+        "bytes": 1366789,
+        "sha256": "82cf707879f8d5f4a36cc071ae0da1d656dd332fc0a6a6fe73064aef03fb264e"
+      },
+      "renderer_report": {
+        "path": "build/nds/n19/final-release-en/emulator/result.json",
+        "bytes": 24959092,
+        "sha256": "54fe9d8a6aaeeeaef25e7440c7486a43e5abdf7202c4d80de66099ad67bbdcfc"
+      },
+      "observed_hud_rows": 869,
+      "index8_pixel_checks": 8453632,
+      "hardware_pixel_checks": 8453632,
+      "missing_stages": {
+        "1": [],
+        "2": [],
+        "3": []
+      },
+      "renderer_checks_passed": true,
+      "audio_report": {
+        "path": "build/nds/n19/final-release-en/audio/result.json",
+        "bytes": 486412,
+        "sha256": "7dabc75c89dfbe5eec58b950dee44d0721ab2efdcfd2397e6548e0f9e30e4bde"
+      },
+      "audio_catalog": 24,
+      "memory": {
+        "static_bytes": 345236,
+        "heap_start_gap": 32,
+        "static_startup_bytes": 516096,
+        "managed_bytes": 2293760,
+        "sdk_heap_available": 204800,
+        "reserve_bytes": 655360,
+        "closure_bytes": 3670016
+      },
+      "history": {
+        "intervals": 6637,
+        "histogram": {
+          "1": 2160,
+          "2": 4476,
+          "3": 1
+        },
+        "virtual_fps": 35.723420093386636,
+        "median": 2,
+        "p95": 2,
+        "p99": 2,
+        "max": 3,
+        "fraction_over_one": 0.6745517553111345,
+        "fraction_over_two": 0.00015067048365225252,
+        "refresh_hz": 59.82609828808083,
+        "rendered_frames": 6666,
+        "minimum_new_frames_in_one_second": 29,
+        "checked_one_second_windows": 5157,
+        "minimum_window_cadence_fps": 29.42267128922008,
+        "cadence_window_method": "Complete new-frame intervals spanning at least1s, enclosing timestamp duration; integer1s counts reported separately",
+        "prepare_ms": 14.290918958040209,
+        "submit_ms": 3.5025961972915174,
+        "uploads": 1014,
+        "upload_bytes": 8141568,
+        "maximum_texture_bytes": 309248,
+        "maximum_palette_bytes": 8192,
+        "budget_passed": false,
+        "goal_60_passed": false
+      },
+      "live_routes": {
+        "intervals": 4788,
+        "histogram": {
+          "1": 1592,
+          "2": 3196
+        },
+        "virtual_fps": 35.87767517576791,
+        "median": 2,
+        "p95": 2,
+        "p99": 2,
+        "max": 2,
+        "fraction_over_one": 0.6675020885547202,
+        "fraction_over_two": 0.0,
+        "refresh_hz": 59.82609828808083,
+        "rendered_frames": 4800,
+        "minimum_new_frames_in_one_second": 29,
+        "checked_one_second_windows": 4276,
+        "minimum_window_cadence_fps": 29.913049144040414,
+        "cadence_window_method": "Complete new-frame intervals spanning at least1s, enclosing timestamp duration; integer1s counts reported separately",
+        "prepare_ms": 14.041426633974142,
+        "submit_ms": 3.1778105517495217,
+        "uploads": 807,
+        "upload_bytes": 4696832,
+        "maximum_texture_bytes": 258048,
+        "maximum_palette_bytes": 8192,
+        "budget_passed": true,
+        "goal_60_passed": false
+      }
+    }
+  ],
+  "fixture": {
+    "task": "N19",
+    "fixture": {
+      "path": "build/nds/n19/scene.dat",
+      "bytes": 34752,
+      "sha256": "81f4e930a32e58605811002b0f64b96d82363d22680f533b8da3722be33736cf"
+    },
+    "predecessor": {
+      "path": "analysis/nds-n18-audio.json",
+      "bytes": 65014,
+      "sha256": "0c85e54805de9e866c166666c8623af38abc75a56688992585752c86733c2303"
+    },
+    "stages": {
+      "1": 194,
+      "2": 191,
+      "3": 280
+    },
+    "scope": "All accepted N18 cases plus explicit UI-only presentation fixtures over live worlds"
+  },
+  "ui_data": {
+    "path": "build/nds/n19/ui.dat",
+    "bytes": 16416,
+    "sha256": "5e5f6b24f5e387eb49e54e5d42b1e3bedada58a3482442e9816e08746cc583e9"
+  },
+  "supersession": {
+    "path": "research/evidence/nds/n19/supersession.json",
+    "bytes": 2594,
+    "sha256": "54ba394febdd5030f8d88cde8725ff9e7bf897a2580ce660c4584ed8156b3d4e"
+  },
+  "archive": {
+    "path": "research/evidence/nds/n19/final-archive.json",
+    "bytes": 692715,
+    "sha256": "08bb8964d104de27ee97b0b9434c9effdba5abd2f10ebdc70d233e8e52bbda5f"
+  },
+  "user_adjustment": "HP/charge numbers are left aligned immediately after original icons, 2-3px visible gap",
+  "adaptations": [
+    "256x38 NDS layout; original 8-pixel-wide fonts and signed16 fields preserved",
+    "Full notifications paginate at28columns;20054native ticks per page instead of DOS HUD-call countdown",
+    "Explicit diagnostic numeric states never write inventory or world"
+  ],
+  "joint_performance_budget_passed": false,
+  "physical_hardware": false,
+  "next_task": "N20",
+  "limits": [
+    "DS/DSLite LCD readability, actual FPS/DMA/VBlank and palette behavior remain N24",
+    "Functional HUD gates pass; joint renderer performance budget has a single normal3VBlank interval and remains N21P",
+    "Trial lives are a separate signedWORD initialized3; campaign/death flow owns later updates",
+    "Menu/story presentation remains N21; lower automap remains N20"
+  ]
+}
