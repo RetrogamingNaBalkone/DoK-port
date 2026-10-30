@@ -150,6 +150,12 @@ uint32_t dok_frontend_show_ending(dok_frontend *s)
 {
     return show_fixture(s,DOK_FRONTEND_ENDING);
 }
+uint32_t dok_frontend_game_over(dok_frontend *s)
+{
+    uint32_t action=s->state==DOK_FRONTEND_PLAY?DOK_FRONTEND_PAUSE_GAME:0u;
+    enter(s,DOK_FRONTEND_LEVELS,s->level-1u);
+    return action|DOK_FRONTEND_STOP_GAME;
+}
 static uint32_t checksum(const uint8_t *p)
 {
     uint32_t hash=2166136261u;

@@ -1,0 +1,192 @@
+{
+  "task": "N22",
+  "scope": "Read-only candidate01 RU/EN model-RAM AI advisory; no production changes, playthrough or physical cache-coherence claim",
+  "passed": true,
+  "layouts": [
+    {
+      "language": "ru",
+      "elf": {
+        "path": "build/nds/n22/candidate-partial01-ru/dok_nds_gameplay.elf",
+        "sha256": "06f2151482206baefac04ebeff855b6c2c7b880db0e9d31cf24c4240d5635943",
+        "bytes": 2274980
+      },
+      "storage_symbol": {
+        "address": 33816172,
+        "bytes": 4
+      },
+      "json": {
+        "path": "research/evidence/nds/n22/candidate01-ai-layout.json",
+        "sha256": "119d6172e0b05abf1565f7e42ef1966ae21db3b797f85c53137e883d7b432236",
+        "bytes": 2913
+      }
+    },
+    {
+      "language": "en",
+      "elf": {
+        "path": "build/nds/n22/candidate-partial01-en/dok_nds_gameplay.elf",
+        "sha256": "5fddcabe2ae3f7378ddb8e494b818e9132cd6247fcbd14eabfc9f94ab1db6753",
+        "bytes": 2274856
+      },
+      "storage_symbol": {
+        "address": 33816108,
+        "bytes": 4
+      },
+      "json": {
+        "path": "research/evidence/nds/n22/candidate01-en-ai-layout.json",
+        "sha256": "835aba9ac22d030f3cdfb4d936edc16ecb182ba0232f87698a0c8eb4d5154977",
+        "bytes": 2913
+      }
+    }
+  ],
+  "common_structural_offsets": {
+    "sprite_world": {
+      "bytes": 383960,
+      "members": {
+        "game": 352960
+      }
+    },
+    "game": {
+      "bytes": 26880,
+      "members": {
+        "ai": 4,
+        "hero": 26436
+      }
+    },
+    "ai": {
+      "bytes": 9844,
+      "members": {
+        "world": 0,
+        "collision": 4,
+        "scheduler": 8,
+        "enemies": 36,
+        "glyph_index": 9252,
+        "corpses": 9764,
+        "epoch": 9796,
+        "count": 9800,
+        "callbacks": 9808,
+        "revision": 9828,
+        "fault": 9824,
+        "busy": 9836
+      }
+    },
+    "enemy": {
+      "bytes": 72,
+      "members": {
+        "motion": 0,
+        "last_motion_ticks": 48,
+        "burst_started": 52,
+        "health": 56,
+        "glyph": 66,
+        "state": 67,
+        "corpse": 69
+      }
+    },
+    "motion": {
+      "bytes": 48,
+      "members": {
+        "x": 4,
+        "y": 8,
+        "z": 12,
+        "heading": 36,
+        "angle_parameter": 38,
+        "speed": 16,
+        "distance": 20
+      }
+    },
+    "world": {
+      "bytes": 27164,
+      "members": {
+        "epoch": 4,
+        "hero": 8,
+        "object_count": 20,
+        "glyph_index": 28,
+        "objects": 540,
+        "maps": 10780
+      }
+    },
+    "seed": {
+      "bytes": 40,
+      "members": {
+        "reference": 0,
+        "x": 12,
+        "y": 16,
+        "z": 20,
+        "heading": 24,
+        "upper_y": 26,
+        "lower_y": 28,
+        "definition_index": 30,
+        "class_id": 32,
+        "pose_known": 36
+      }
+    },
+    "scheduler": {
+      "bytes": 64,
+      "members": {
+        "_dispatching": 44,
+        "_in_callback": 48
+      }
+    },
+    "definition": {
+      "bytes": 105052,
+      "members": {
+        "objects": 604
+      }
+    },
+    "object_definition": {
+      "bytes": 360,
+      "members": {
+        "class_id": 0,
+        "flags": 2,
+        "height_parameter": 6,
+        "glyph": 10
+      }
+    }
+  },
+  "samples": [
+    {
+      "language": "ru",
+      "passed": true,
+      "accepted": 43,
+      "refused": {
+        "Private hero pose differs from published flow": 28,
+        "AI epoch/callbacks differ from published flow": 9
+      },
+      "placed_actors": 60,
+      "report": {
+        "path": "research/evidence/nds/n22/ai-readonly/smoke.json",
+        "sha256": "1a8a2ef0beb9b97dee01c7f5667b37a057785409c45a89303ffdaa03775ba991"
+      }
+    },
+    {
+      "language": "en",
+      "passed": true,
+      "accepted": 43,
+      "refused": {
+        "Private hero pose differs from published flow": 28,
+        "AI epoch/callbacks differ from published flow": 9
+      },
+      "placed_actors": 60,
+      "report": {
+        "path": "research/evidence/nds/n22/ai-readonly/smoke-en.json",
+        "sha256": "fecbe5f6d683134e64f1fa33cfe8f430d5188e351b46f3ec97bc7fd76aa863c6"
+      }
+    }
+  ],
+  "inputs": [
+    {
+      "path": "ports/nds/tools/flow/smoke_live_ai.py",
+      "sha256": "b1fd781a3c71f203a20a85e28578eddab4e882e34dcd1dda90ef9ca6d8165045",
+      "bytes": 2939
+    },
+    {
+      "path": "ports/nds/tools/flow/read_live_ai.py",
+      "sha256": "143f53b04d6683634b5e2714979b2375d6842beff7b013e521707d3434de8df4",
+      "bytes": 6902
+    },
+    {
+      "path": "ports/nds/tools/flow/inspect_ai_layout.py",
+      "sha256": "aee387a688e023fe9bfac0de1ef94af40f07bc6d456042c7ebaaed40be76dea4",
+      "bytes": 5616
+    }
+  ]
+}

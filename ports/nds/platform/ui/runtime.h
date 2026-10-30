@@ -2,6 +2,7 @@
 #define NDS_UI_RUNTIME_H
 #include "dok/ui.h"
 #include "dok/render_materials.h"
+#include "dok/overlay_reuse.h"
 typedef struct NdsUiRuntime {
     unsigned char bank[DOK_UI_BANK_BYTES];
     dok_level_presentation presentation;
@@ -16,6 +17,8 @@ typedef struct NdsUiRuntime {
     uint32_t vram_verified;
     int16_t lives;
     uint16_t overlay_blank;
+    uint32_t overlay_valid;
+    dok_overlay_key overlay_key;
 } NdsUiRuntime;
 extern volatile uint32_t g_nds_ui_probe[64];
 int nds_ui_initialize(NdsUiRuntime *);

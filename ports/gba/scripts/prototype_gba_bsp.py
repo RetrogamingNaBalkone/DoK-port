@@ -212,6 +212,7 @@ VARIANTS['hw_v128_wide']=tuple(d for d in VARIANTS['hw_v128_combo_near'] if d!='
 # adopts the exact rectangle/animation-column path.
 VARIANTS['hw_v128_rect_control']=VARIANTS['hw_v128_entity_rect']
 VARIANTS['hw_v128_entity_rect']=VARIANTS['hw_v128_rect_animated']+('HW_SURFACE_PRELIT','HW_FLOOR_FILL')
+VARIANTS['hw_v128_vblank_only']=tuple(d for d in VARIANTS['hw_v128_entity_rect'] if d!='HW_EARLY_PRESENT')+('HW_VBLANK_ONLY',)
 
 
 def tables(out, assets, include_sides=False, include_zero_spans=False, include_entities=False, include_lowered=False, include_empty=False, scene_rows=128):
@@ -617,6 +618,7 @@ def build(base,out,variants,unreflected_control=False):
             if 'HW_PRESENT' in defines:main_defines+=['-DDOK_RENDER_HW_PRESENT_PROTOTYPE']
             if 'HW_MAP_CACHE' in defines:main_defines+=['-DDOK_RENDER_HW_MAP_CACHE_PROTOTYPE']
             if 'HW_EARLY_PRESENT' in defines:main_defines+=['-DDOK_RENDER_HW_EARLY_PRESENT_PROTOTYPE']
+            if 'HW_VBLANK_ONLY' in defines:main_defines+=['-DDOK_RENDER_HW_VBLANK_ONLY_PROTOTYPE']
             if 'HW_VERTICAL128' in defines:main_defines+=['-DDOK_RENDER_HW_VERTICAL128_PROTOTYPE']
             if 'HW_OBJ_ROWS_PROBE' in defines:main_defines+=['-DDOK_RENDER_HW_OBJ_ROWS_PROBE_PROTOTYPE']
             if 'HW_WORLD_OBJ_PROBE' in defines:main_defines+=['-DDOK_RENDER_HW_WORLD_OBJ_PROBE_PROTOTYPE']

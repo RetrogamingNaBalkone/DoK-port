@@ -1,0 +1,39 @@
+# Separate ARM9 integration fixture. Never changes the production entry point.
+BLOCKSDS ?= /opt/blocksds/core
+WONDERFUL_TOOLCHAIN ?= /opt/wonderful
+CC := $(WONDERFUL_TOOLCHAIN)/toolchain/gcc-arm-none-eabi/bin/arm-none-eabi-gcc
+OUTDIR := ../../build/nds/n22/overlap-arm9
+OBJDIR := $(OUTDIR)/obj
+ELF := $(OUTDIR)/dok_nds_overlap.elf
+ROM := $(OUTDIR)/dok_nds_overlap.nds
+ARM7ELF := ../../build/nds/n18/arm7/dok_audio_arm7.elf
+ARCH := -mthumb -mcpu=arm946e-s+nofp
+SPECS := $(BLOCKSDS)/sys/crts/ds_arm9.specs
+CPPFLAGS := -D__NDS__ -D__BLOCKSDS__ -DARM9 -DGAMEPLAY_FLOW=1 -DGAMEPLAY_UI=0 -DGAMEPLAY_AUDIO=0 -DN21P_ITCM=0
+CPPFLAGS += -Iinclude -Iplatform/gameplay_probe -Iplatform/assets -I$(OUTDIR)/generated -I$(BLOCKSDS)/libs/libnds/include
+CFLAGS := -O2 -g3 -Wall -Wextra -Werror -Wno-misleading-indentation -ffunction-sections -fdata-sections -fstack-usage -MMD -MP
+CORE := gameflow events contracts input controls motion camera time collision interactions interactions_move assets memory sha256 world balance items combat ai
+RENDER := scene geometry materials door_render sprites sprite_assets weapon_overlay
+OBJECTS := $(addprefix $(OBJDIR)/,$(addsuffix .o,$(CORE) $(RENDER)))
+OBJECTS += $(OBJDIR)/gameplay.o $(OBJDIR)/file_reader.o $(OBJDIR)/test_retry_overlap.o $(OBJDIR)/overlap_arm9_main.o
+.PHONY: all
+all: $(ROM)
+$(ROM): $(ELF) $(ARM7ELF)
+	$(BLOCKSDS)/tools/ndstool/ndstool -c $@ -9 $< -7 $(ARM7ELF)
+$(ELF): $(OBJECTS)
+	$(CC) $(ARCH) -specs=$(SPECS) -o $@ $^ -L$(BLOCKSDS)/libs/libnds/lib -Wl,-Map,$(OUTDIR)/dok_nds_overlap.map -Wl,--defsym=__usr_stack_size=12288 -Wl,--start-group -lnds9 -lc -Wl,--end-group
+$(OBJDIR)/%.o: core/%.c Makefile.n22overlap | $(OBJDIR)
+	$(CC) $(ARCH) -specs=$(SPECS) $(CPPFLAGS) $(CFLAGS) -std=c11 -pedantic-errors -c $< -o $@
+$(OBJDIR)/%.o: render/%.c Makefile.n22overlap | $(OBJDIR)
+	$(CC) $(ARCH) -specs=$(SPECS) $(CPPFLAGS) $(CFLAGS) -std=c11 -pedantic-errors -c $< -o $@
+$(OBJDIR)/gameplay.o: platform/gameplay_probe/gameplay.c Makefile.n22overlap | $(OBJDIR)
+	$(CC) $(ARCH) -specs=$(SPECS) $(CPPFLAGS) $(CFLAGS) -std=gnu11 -c $< -o $@
+$(OBJDIR)/file_reader.o: platform/assets/file_reader.c Makefile.n22overlap | $(OBJDIR)
+	$(CC) $(ARCH) -specs=$(SPECS) $(CPPFLAGS) $(CFLAGS) -std=c11 -pedantic-errors -c $< -o $@
+$(OBJDIR)/test_retry_overlap.o: tools/flow/test_retry_overlap.c Makefile.n22overlap | $(OBJDIR)
+	$(CC) $(ARCH) -specs=$(SPECS) $(CPPFLAGS) $(CFLAGS) -std=gnu11 -Dmain=nds_overlap_test_main -c $< -o $@
+$(OBJDIR)/overlap_arm9_main.o: tools/flow/overlap_arm9_main.c Makefile.n22overlap | $(OBJDIR)
+	$(CC) $(ARCH) -specs=$(SPECS) $(CPPFLAGS) $(CFLAGS) -std=gnu11 -c $< -o $@
+$(OBJDIR):
+	mkdir -p $@
+-include $(OBJECTS:.o=.d)

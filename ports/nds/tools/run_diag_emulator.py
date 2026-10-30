@@ -26,6 +26,8 @@ import traceback
 import wave
 import zlib
 
+from emulator_disk_cleanup import register_disk_cleanup
+
 
 ROOT = Path(__file__).resolve().parents[3]
 MARKER = b"DOK_NDS_DIAG_V1\n"
@@ -278,6 +280,9 @@ class Frontend:
         self.directory = directory
         self.system = directory / "system"
         self.save = directory / "save"
+        self.initialized = False
+        self.loaded = False
+        self._disk_cleanup = register_disk_cleanup(self, ROOT, flush_native_stdio)
         self.system.mkdir(parents=True, exist_ok=True)
         self.save.mkdir(parents=True, exist_ok=True)
         self.variables = {}
@@ -335,8 +340,6 @@ class Frontend:
             getattr(self.core, name).restype = None
         self.info = SystemInfo()
         self.core.retro_get_system_info(C.byref(self.info))
-        self.initialized = False
-        self.loaded = False
 
     def environment(self, command, data):
         self.env_calls[str(command)] = self.env_calls.get(str(command), 0) + 1

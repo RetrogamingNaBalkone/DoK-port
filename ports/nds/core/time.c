@@ -3,6 +3,9 @@
 #include <stddef.h>
 
 #define CLOCK_MAGIC UINT32_C(0x4E303843)
+#ifndef N23_CLOCK_FAST32
+#define N23_CLOCK_FAST32 1
+#endif
 
 static uint64_t gcd64(uint64_t a, uint64_t b)
 {
@@ -20,6 +23,24 @@ static uint64_t gcd64(uint64_t a, uint64_t b)
 static uint32_t convert(uint64_t elapsed, uint64_t num, uint64_t den,
                         uint64_t *fraction)
 {
+#if N23_CLOCK_FAST32
+    /* For 32-bit factors and fraction<den<=UINT32_MAX,
+     * elapsed*num+fraction <= (2^32-1)^2+(2^32-2) < 2^64.
+     * Close successive source reads usually need only compare/subtract or
+     * native 32-bit divmod. This changes no samples or rational remainders. */
+    if(elapsed<=UINT32_MAX&&num<=UINT32_MAX&&den<=UINT32_MAX&&*fraction<den){
+        uint64_t value=elapsed*num+*fraction;
+        if(value<den){*fraction=value;return 0u;}
+        if(value<=UINT32_MAX){
+            uint32_t ticks=(uint32_t)value/(uint32_t)den;
+            *fraction=(uint32_t)value%(uint32_t)den;
+            return ticks;
+        }
+        uint32_t ticks=(uint32_t)(value/den);
+        *fraction=value%den;
+        return ticks;
+    }
+#endif
     if (elapsed <= (UINT64_MAX - *fraction) / num) {
         uint64_t value = elapsed * num + *fraction;
         uint32_t ticks = (uint32_t)(value / den);

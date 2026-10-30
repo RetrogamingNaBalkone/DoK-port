@@ -78,8 +78,41 @@ static void hw_bg_plan_cells(void) {
 }
 #endif
 
+#ifdef DOK_RENDER_HW_VBLANK_ONLY_PROTOTYPE
+/* Diagnostic isolation of the repeat-DMA stop/start hazard. Keep audio and
+ * normal rasterization unchanged. Main callers wait with IRQs available,
+ * then mask IME and recheck the window before publishing a new DMA frame. */
+volatile uint32_t g_hw_dma_guard[8]; /* magic,rearms,deferred,stops,min line,max line,wait cycles,late ends */
+static unsigned hw_bg_lock_vblank(void) {
+    uint32_t stamp=timer_sample();
+    for(;;) {
+        while(VCOUNT<160 || VCOUNT>=224) {}
+        unsigned ime=R16(0x04000208);R16(0x04000208)=0;
+        unsigned line=VCOUNT;
+        if(line>=160 && line<224) {
+            g_hw_dma_guard[6]+=timer_sample()-stamp;return ime;
+        }
+        R16(0x04000208)=(uint16_t)ime;
+    }
+}
+static void hw_bg_dma_record(unsigned line,unsigned stop) {
+    if(g_hw_dma_guard[0]!=0x56424c31) {
+        g_hw_dma_guard[0]=0x56424c31;g_hw_dma_guard[4]=line;
+    }
+    if(line<g_hw_dma_guard[4])g_hw_dma_guard[4]=line;
+    if(line>g_hw_dma_guard[5])g_hw_dma_guard[5]=line;
+    ++g_hw_dma_guard[stop?3:1];
+}
+#endif
 void gba_hw_bg_vblank(void) {
     if(!hw_bg_enabled)return;
+#ifdef DOK_RENDER_HW_VBLANK_ONLY_PROTOTYPE
+    /* A delayed VBlank IRQ must never stop HBlank DMA during visible lines.
+     * Main callers hold the lock; the IRQ caller already has CPSR.I set. */
+    unsigned line=VCOUNT;
+    if(line<160 || line>=224){++g_hw_dma_guard[2];return;}
+    hw_bg_dma_record(line,0);
+#endif
     R16(0x040000ba)=0;R16(0x040000d2)=0;
     hw_bg_frame *f=
 #ifdef DOK_RENDER_HW_BG_LOWERED_PROTOTYPE
@@ -173,6 +206,9 @@ void gba_hw_bg_vblank(void) {
 #ifdef DOK_RENDER_HW_WORLD_OBJ_PROTOTYPE
     hw_world_obj_vblank();
 #endif
+#ifdef DOK_RENDER_HW_VBLANK_ONLY_PROTOTYPE
+    if(VCOUNT<160 || VCOUNT>=228)++g_hw_dma_guard[7];
+#endif
 }
 #ifdef DOK_RENDER_HW_BG_LOWERED_PROTOTYPE
 static void hw_bg_hold_before_mode4(void) {
@@ -190,12 +226,19 @@ static void hw_bg_hold_before_mode4(void) {
 }
 #endif
 static void hw_bg_disable(void) {
+#ifdef DOK_RENDER_HW_VBLANK_ONLY_PROTOTYPE
+    unsigned ime=hw_bg_lock_vblank();hw_bg_dma_record(VCOUNT,1);
+#endif
     hw_bg_enabled=0;R16(0x040000ba)=0;R16(0x040000d2)=0;
 #if defined(DOK_RENDER_HW_UI_OBJ_PROTOTYPE) || defined(DOK_RENDER_HW_WORLD_OBJ_PROTOTYPE)
     R16(0x040000de)=0;
 #endif
     R16(0x04000020)=256;R16(0x04000022)=0;R16(0x04000024)=0;R16(0x04000026)=256;
     *(volatile uint32_t *)0x04000028=0;*(volatile uint32_t *)0x0400002c=0;
+#ifdef DOK_RENDER_HW_VBLANK_ONLY_PROTOTYPE
+    if(VCOUNT<160 || VCOUNT>=228)++g_hw_dma_guard[7];
+    R16(0x04000208)=(uint16_t)ime;
+#endif
 }
 #ifdef DOK_RENDER_HW_ROW_LUT_PROTOTYPE
 typedef struct {int16_t pa,pc;int32_t x,y;} hw_bg_lut_entry;
@@ -431,11 +474,17 @@ static void hw_bg_upload(void) {
         hw_bg_phases[mat]=(uint8_t)phase;
     }
     hw_bg_loaded=1;hw_bg_loaded_view=hw_bg_view;hw_bg_loaded_x=hw_bg_x;hw_bg_loaded_z=hw_bg_z;
+#ifdef DOK_RENDER_HW_VBLANK_ONLY_PROTOTYPE
+    unsigned ime=hw_bg_lock_vblank();
+#endif
     __asm__ volatile("" ::: "memory");hw_bg_front=hw_bg_next;
 #ifdef DOK_RENDER_HW_BG_LOWERED_PROTOTYPE
     hw_bg_mode4_held=0;
 #endif
     hw_bg_enabled=1;gba_hw_bg_vblank();
+#ifdef DOK_RENDER_HW_VBLANK_ONLY_PROTOTYPE
+    R16(0x04000208)=(uint16_t)ime;
+#endif
     g_hw_bg_diag[5]=VCOUNT;
 #ifdef DOK_RENDER_HW_EARLY_PRESENT_PROTOTYPE
     if(!cold && VCOUNT<144)++g_hw_bg_diag[4];

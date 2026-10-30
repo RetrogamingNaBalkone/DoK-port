@@ -1,0 +1,57 @@
+{
+  "task": "N22",
+  "scope": "Separate controlled ARM9 integration fixture; no ordinary playthrough or physical DS claim",
+  "passed": true,
+  "command_build": "py -3.14 -B -X utf8 ports/nds/tools/flow/build_overlap_arm9.py",
+  "command_run": "py -3.14 -B -X utf8 ports/nds/tools/flow/run_overlap_arm9.py",
+  "actual": {
+    "checks": 160,
+    "total_ai_callbacks": 40,
+    "repeated_retries": 2,
+    "corpse_variants": 2,
+    "collision_state_bytes": 1340,
+    "overlap_bitmap_bytes": 32,
+    "faults": [
+      0,
+      0,
+      0
+    ],
+    "DSi": 0
+  },
+  "frames": 709,
+  "report": {
+    "path": "research/evidence/nds/n22/overlap-arm9/emulator.json",
+    "sha256": "36aaf8789c28849562d30d3427e3d3713e9404a4c5830678d2c1d10124be199c"
+  },
+  "build_manifest": {
+    "path": "build/nds/n22/overlap-arm9/build-manifest.json",
+    "sha256": "d6b6ea728863946958f4ac7511e8282a458119036bfceee7c201b5c9d623d1be",
+    "bytes": 39498
+  },
+  "artifacts": [
+    {
+      "path": "build/nds/n22/overlap-arm9/dok_nds_overlap.nds",
+      "sha256": "78d890f9918bcb43af958d704227b909cd97c1b7cc6b5e514b273bfc4f13f798",
+      "bytes": 179712
+    },
+    {
+      "path": "build/nds/n22/overlap-arm9/dok_nds_overlap.elf",
+      "sha256": "614a9c195e6740ecd2cf945e4e0f0f414f95a19e10a5601daff692508628a0af",
+      "bytes": 1523020
+    },
+    {
+      "path": "build/nds/n22/overlap-arm9/dok_nds_overlap.map",
+      "sha256": "30db8b1c49cd8c883d3c529778ffc4f931aff18cb59e658f3c0050c052c22e4c",
+      "bytes": 843172
+    }
+  ],
+  "source_snapshots": 83,
+  "observer_snapshots": 12,
+  "core": {
+    "path": "C:\\Users\\dspev\\AppData\\Local\\Programs\\melonDS-DS\\1.4.0\\melondsds_libretro-win32-x86_64-Release\\cores\\melondsds_libretro.dll",
+    "sha256": "c7e6b58c667075a2a9868f2c3ba7a98e24200410a6da3051a7c555f1f0eef8ef",
+    "library": "melonDS DS",
+    "version": "1.4.0"
+  },
+  "disk_unchanged": true
+}

@@ -1,5 +1,6 @@
 """Build and verify N20 discovery against original PKR/PKE instructions."""
 from __future__ import annotations
+from compiler_cache import compiler_environment
 import argparse
 import hashlib
 import json
@@ -48,7 +49,7 @@ def main():
     args=parser.parse_args()
     if args.summarize_only:summarize();return
     OUT.mkdir(parents=True,exist_ok=True)
-    env=os.environ.copy();env['ZIG_LOCAL_CACHE_DIR']=str(OUT/'zig-local-cache');env['ZIG_GLOBAL_CACHE_DIR']=str(OUT/'zig-global-cache')
+    env=compiler_environment(ROOT)
     sources=['ports/nds/tests/map_discovery_dump.c','ports/nds/ui/map_discovery.c',
         'ports/nds/render/sprites.c','ports/nds/render/scene.c','ports/nds/render/geometry.c',
         'ports/nds/core/world.c','ports/nds/core/sha256.c']

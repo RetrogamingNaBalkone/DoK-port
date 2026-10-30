@@ -141,9 +141,9 @@ static int memory_setup(void)
 static int memory_check(void)
 {
     uint32_t i, heap = address(getHeapEnd());
-    const unsigned char *tail = (const unsigned char *)bank + sizeof(*bank);
-    for (i = 0; i < DOK_NDS_EVENTS_BYTES - sizeof(*bank); ++i)
-        if (tail[i] != 0xa5) return 0;
+    const unsigned char *events = (const unsigned char *)bank;
+    for (i = sizeof(*bank); i < DOK_NDS_EVENTS_BYTES; ++i)
+        if (events[i] != 0xa5) return 0;
     obs.heap_end = heap; obs.heap_limit_final = address(getHeapLimit());
     if (heap < obs.static_end + DOK_NDS_SLAB_BYTES || heap > obs.heap_limit_final) return 0;
     obs.static_startup_bytes = heap - DOK_NDS_MAIN_BASE - DOK_NDS_SLAB_BYTES;
@@ -223,7 +223,8 @@ static void draw(void)
     printf("world ticks %lu\n", (unsigned long)world_clock._ticks);
     printf("state %lu paused %lu\n", (unsigned long)obs.status, (unsigned long)world_clock._paused);
     printf("live %lu resumed %lu\n", (unsigned long)obs.live_callbacks, (unsigned long)obs.resumed_callbacks);
-    printf("events bank %lu / 65536\n", (unsigned long)obs.events_bank_bytes);
+    printf("events bank %lu / %lu\n", (unsigned long)obs.events_bank_bytes,
+           (unsigned long)DOK_NDS_EVENTS_BYTES);
     printf("RAM reserve %lu\n", (unsigned long)obs.reserve_bytes);
     printf("\nStart: pause / resume\n");
     consoleSelect(&bottom); consoleClear();

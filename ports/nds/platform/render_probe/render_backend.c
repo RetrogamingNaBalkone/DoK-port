@@ -1,5 +1,6 @@
 #include "dok/hotcode.h"
 #include "render_backend.h"
+#include "dok/vram_layout.h"
 
 #include <limits.h>
 #include <string.h>
@@ -33,6 +34,14 @@ static uint32_t darkness, applied_darkness;
 typedef struct StripDraw {uint16_t packed;} StripDraw;
 _Static_assert(sizeof(StripDraw)==2u,"bounded strip metadata");
 static StripDraw strip_draw[DOK_NDS_RENDER_POLYGON_LIMIT];
+#ifndef N23_CLIP_CACHE
+#define N23_CLIP_CACHE 0
+#endif
+#if N23_CLIP_CACHE
+/* Per-submit reuse only: the checked immutable cell matrices stay valid until
+ * this call returns. Larger public frames retain the original recomputation. */
+static m4x4 checked_clip[64];
+#endif
 DOK_NDS_HOT_CODE static unsigned strip_order(const StripDraw *d,unsigned k)
 {return (d->packed>>(2u*k))&3u;}
 DOK_NDS_HOT_CODE static unsigned strip_reuse(const StripDraw *d)
@@ -421,9 +430,17 @@ void dok_nds_render_present(void)
     }
 }
 
+#if N23_PIPELINE_PROFILE
+/* Diagnostic-only split of validation and FIFO emission. No omitted work. */
+_Alignas(32) uint32_t g_nds_n23_submit_profile[8+8*16];
+#endif
 DOK_NDS_HOT_CODE dok_nds_render_result dok_nds_render_submit(
     const dok_nds_render_frame *frame, dok_nds_render_stats *stats)
 {
+#if N23_PIPELINE_PROFILE
+    uint32_t pipeline_start=cpuGetTiming(),pipeline_camera,pipeline_validated;
+    uint32_t pipeline_fenced,pipeline_emitted,pipeline_completed;
+#endif
     uint32_t i, j, k, quads = 0, vertex_bound = 0;
     uint32_t bound_quads = 0;
     int worst_case_fits;
@@ -447,12 +464,18 @@ DOK_NDS_HOT_CODE dok_nds_render_result dok_nds_render_submit(
     worst_case_fits = bound_quads <= DOK_NDS_RENDER_VERTEX_LIMIT / 10u;
     result=camera_plan(&frame->camera,&plan);
     if(result!=DOK_NDS_RENDER_OK) return result;
+#if N23_PIPELINE_PROFILE
+    pipeline_camera=cpuGetTiming();
+#endif
     for (i = 0; i < frame->cell_count; ++i) {
         const dok_nds_render_cell *cell = &frame->cells[i];
         const dok_nds_render_quad *previous_quad=NULL;StripDraw *previous_draw=NULL;int previous_inside=0;
         int transform_bounded;
         result = planned_cell_clip(&plan, cell, &clip);
         if (result != DOK_NDS_RENDER_OK) return result;
+#if N23_CLIP_CACHE
+        if(frame->cell_count<=64u)checked_clip[i]=clip;
+#endif
         transform_bounded = worst_case_fits && clip_range_bounded(&clip);
         if (cell->quad_count != 0 && cell->quads == NULL)
             return DOK_NDS_RENDER_ARGUMENT;
@@ -504,8 +527,14 @@ DOK_NDS_HOT_CODE dok_nds_render_result dok_nds_render_submit(
                 return DOK_NDS_RENDER_CAPACITY;
         }
     }
+#if N23_PIPELINE_PROFILE
+    pipeline_validated=cpuGetTiming();
+#endif
     result = fence(NULL);
     if (result != DOK_NDS_RENDER_OK) return result;
+#if N23_PIPELINE_PROFILE
+    pipeline_fenced=cpuGetTiming();
+#endif
     memset(stats, 0, sizeof(*stats));
     stats->input_quads = stats->submitted_quads = quads;
     stats->submitted_vertices = quads * 4;
@@ -518,6 +547,10 @@ DOK_NDS_HOT_CODE dok_nds_render_result dok_nds_render_submit(
     uint32_t draw_index=0,submitted_vertices=0;
     for (i = 0; i < frame->cell_count; ++i) {
         const dok_nds_render_cell *cell = &frame->cells[i];
+#if N23_CLIP_CACHE
+        if(frame->cell_count<=64u)clip=checked_clip[i];
+        else
+#endif
         (void)planned_cell_clip(&plan, cell, &clip);
         if (i == 0u) load_cell_clip(&clip);
         else {
@@ -554,6 +587,9 @@ DOK_NDS_HOT_CODE dok_nds_render_result dok_nds_render_submit(
         glEnd();
     }
     stats->submitted_vertices=submitted_vertices;
+#if N23_PIPELINE_PROFILE
+    pipeline_emitted=cpuGetTiming();
+#endif
     {
         uint32_t start = cpuGetTiming();
         result = fence(&stats->geometry_wait_iterations);
@@ -568,6 +604,25 @@ DOK_NDS_HOT_CODE dok_nds_render_result dok_nds_render_submit(
         stats->hardware_vertices > DOK_NDS_RENDER_VERTEX_LIMIT)
         return DOK_NDS_RENDER_HARDWARE;
     glFlush(GL_ZBUFFERING);
+#if N23_PIPELINE_PROFILE
+    pipeline_completed=cpuGetTiming();
+    uint32_t total=g_nds_n23_submit_profile[2]+1u;
+    uint32_t *record=g_nds_n23_submit_profile+8+((total-1u)%8u)*16;
+    uint32_t sequence=record[14]+1u;
+    record[14]=sequence;DC_FlushRange(record+8,32);
+    uint32_t sample[16]={total,pipeline_camera-pipeline_start,
+        pipeline_validated-pipeline_camera,pipeline_fenced-pipeline_validated,
+        pipeline_emitted-pipeline_fenced,pipeline_completed-pipeline_emitted,
+        stats->geometry_wait_ticks,frame->cell_count,quads,submitted_vertices,
+        (uint32_t)worst_case_fits,vertex_bound,(uint32_t)frame->camera.x,
+        (uint32_t)frame->camera.z,sequence,0};
+    memcpy(record,sample,sizeof(sample));
+    DC_FlushRange(record,sizeof(sample));
+    ++record[14];DC_FlushRange(record+8,32);
+    g_nds_n23_submit_profile[0]=0x23534b44u;g_nds_n23_submit_profile[1]=1;
+    g_nds_n23_submit_profile[2]=total;g_nds_n23_submit_profile[3]=33513982u;
+    DC_FlushRange(g_nds_n23_submit_profile,sizeof(g_nds_n23_submit_profile));
+#endif
     return DOK_NDS_RENDER_OK;
 }
 
@@ -642,6 +697,12 @@ static const uint16_t *stream_palette;
 static uint32_t stream_colors, stream_palette_pending, stream_planned;
 static int stream_palette_id;
 static uint32_t stream_repacking;
+#ifndef N22_STREAM_LARGEST_MISSES
+#define N22_STREAM_LARGEST_MISSES 0
+#endif
+#ifndef N22_STREAM_PARTIAL_DEFRAG
+#define N22_STREAM_PARTIAL_DEFRAG 0
+#endif
 
 dok_nds_render_result dok_nds_stream_palette_dirty(void)
 {
@@ -693,6 +754,58 @@ static int stream_allocate(StreamSlot *s,const dok_nds_stream_texture *t)
     }
     s->key=t->key;s->texture=t->texture;s->valid=s->pinned=s->pending=1;return 1;
 }
+#if N22_STREAM_LARGEST_MISSES || N22_STREAM_PARTIAL_DEFRAG
+static int stream_allocate_missing(const dok_nds_stream_texture *textures,uint32_t count)
+{
+    uint16_t order[DOK_NDS_RENDER_TEXTURE_CAPACITY];uint32_t missing=0,j;
+    for(uint32_t i=0;i<count;++i){
+        for(j=0;j<DOK_NDS_RENDER_TEXTURE_CAPACITY;++j)
+            if(stream_slots[j].valid&&stream_slots[j].key==textures[i].key)break;
+        if(j==DOK_NDS_RENDER_TEXTURE_CAPACITY)order[missing++]=(uint16_t)i;
+        else resident[i]=(ResidentTexture){stream_slots[j].sdk_id,textures[i].texture.logical_width,textures[i].texture.logical_height};
+    }
+    for(uint32_t n=0;n<missing;++n){
+        uint32_t largest=n;
+        for(uint32_t k=n+1u;k<missing;++k)
+            if(textures[order[k]].texture.bytes>textures[order[largest]].texture.bytes)largest=k;
+        uint16_t temp=order[n];order[n]=order[largest];order[largest]=temp;
+    }
+    for(uint32_t n=0;n<missing;++n){
+        uint32_t request=order[n];
+        for(j=0;j<DOK_NDS_RENDER_TEXTURE_CAPACITY;++j)if(!stream_slots[j].valid)break;
+        if(j==DOK_NDS_RENDER_TEXTURE_CAPACITY||!stream_allocate(&stream_slots[j],&textures[request]))return 0;
+        resident[request]=(ResidentTexture){stream_slots[j].sdk_id,textures[request].texture.logical_width,textures[request].texture.logical_height};
+    }
+    return 1;
+}
+#endif
+#if N22_STREAM_PARTIAL_DEFRAG
+static int stream_partial_relocation(const dok_nds_stream_texture *textures,
+    uint32_t count,dok_nds_stream_stats *stats)
+{
+    _Static_assert(DOK_NDS_RENDER_TEXTURE_CAPACITY==DOK_VRAM_LAYOUT_SLOTS,"planner capacity");
+    dok_vram_span spans[DOK_VRAM_LAYOUT_SLOTS];uint32_t missing[DOK_VRAM_LAYOUT_SLOTS];
+    uint32_t nspans=0,nmissing=0;
+    for(uint32_t i=0;i<DOK_NDS_RENDER_TEXTURE_CAPACITY;++i){const StreamSlot *s=&stream_slots[i];
+        if(!s->valid)continue;
+        void *pointer=glGetTexturePointer(s->sdk_id);
+        if(!stream_pointer_valid(pointer,s->texture.bytes))return 0;
+        spans[nspans++]=(dok_vram_span){(uint32_t)(uintptr_t)pointer,s->texture.bytes,s->pending?0u:s->texture.bytes,i};
+    }
+    for(uint32_t i=0;i<count;++i){uint32_t j=0;
+        for(;j<DOK_NDS_RENDER_TEXTURE_CAPACITY;++j)
+            if(stream_slots[j].valid&&stream_slots[j].key==textures[i].key)break;
+        if(j==DOK_NDS_RENDER_TEXTURE_CAPACITY)missing[nmissing++]=textures[i].texture.bytes;
+    }
+    dok_vram_relocation plan;
+    if(!dok_vram_relocation_plan(spans,nspans,missing,nmissing,&plan)||!plan.count)return 0;
+    for(uint32_t i=0;i<DOK_NDS_RENDER_TEXTURE_CAPACITY;++i)
+        if(plan.evict[i/8u]&(1u<<(i%8u))){StreamSlot *s=&stream_slots[i];
+            glDeleteTextures(1,&s->sdk_id);s->valid=s->pinned=s->pending=0;++stats->evictions;
+        }
+    ++stats->rebuilds;return 1;
+}
+#endif
 dok_nds_render_result dok_nds_stream_plan(const dok_nds_stream_texture *textures,
     uint32_t count,dok_nds_stream_stats *stats)
 {
@@ -718,6 +831,17 @@ dok_nds_render_result dok_nds_stream_plan(const dok_nds_stream_texture *textures
         if(j<count) { s->pinned=1;++result.hits; }
         else { glDeleteTextures(1,&s->sdk_id);s->valid=0;++result.evictions; }
     }
+#if N22_STREAM_LARGEST_MISSES || N22_STREAM_PARTIAL_DEFRAG
+    /* Keep resident allocations in place. New requests alone are sorted, so
+     * a small miss cannot consume the only span needed by a later large one. */
+    i=stream_allocate_missing(textures,count)?count:0u;
+#if N22_STREAM_PARTIAL_DEFRAG
+    for(uint32_t attempt=0;i<count&&attempt<4u;++attempt){
+        if(!stream_partial_relocation(textures,count,&result))break;
+        i=stream_allocate_missing(textures,count)?count:0u;
+    }
+#endif
+#else
     for(i=0;i<count;++i) {
         for(j=0;j<DOK_NDS_RENDER_TEXTURE_CAPACITY;++j)
             if(stream_slots[j].valid && stream_slots[j].key==textures[i].key) break;
@@ -728,7 +852,13 @@ dok_nds_render_result dok_nds_stream_plan(const dok_nds_stream_texture *textures
         }
         resident[i]=(ResidentTexture){stream_slots[j].sdk_id,textures[i].texture.logical_width,textures[i].texture.logical_height};
     }
+#endif
     if(i<count) {
+#if N22_STREAM_PARTIAL_DEFRAG
+        /* A normal frame cannot turn a failed bounded relocation into the
+         * old all-textures upload. Its proven DMA deadline remains binding. */
+        if(!loading)return DOK_NDS_RENDER_TEXTURE;
+#endif
         /* Fragmentation recovery: plan largest allocations first, still without
          * touching VRAM bytes referenced by the currently displayed frame. */
         const uint16_t *palette=stream_palette;uint32_t colors=stream_colors;
@@ -755,6 +885,9 @@ dok_nds_render_result dok_nds_stream_plan(const dok_nds_stream_texture *textures
         if(stream_slots[i].pending) { ++result.uploads;result.upload_bytes+=stream_slots[i].texture.bytes; }
     }
     if(stream_palette_pending) result.upload_bytes+=stream_colors*2u+(stream_colors==4096u?512u:0u);
+#if N22_STREAM_LARGEST_MISSES || N22_STREAM_PARTIAL_DEFRAG
+    result.misses=result.uploads;result.hits=count-result.misses;
+#endif
     result.resident_bytes=resident_bytes=used;resident_count=count;
     stream_planned=1;*stats=result;return DOK_NDS_RENDER_OK;
 }

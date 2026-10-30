@@ -2,6 +2,7 @@
 #define NDS_GAMEPLAY_H
 #include "dok/ai.h"
 #include "dok/interactions_move.h"
+#include "dok/gameflow.h"
 typedef struct NdsGameplay {
 #if GAMEPLAY_UI
     struct NdsUiRuntime *ui;
@@ -12,6 +13,12 @@ typedef struct NdsGameplay {
     dok_collision_state collision;
     dok_interactions_state interactions;
     dok_motion_state hero;
+#if GAMEPLAY_FLOW
+    dok_motion_state spawn;
+    int16_t lives;
+    uint16_t finish_pending;
+    uint32_t deaths,retries;
+#endif
     dok_control_latch controls;
     uint32_t last_hero,started,hero_callbacks,fault,outputs[16],ai_outputs[16];
     uint32_t c2,input_sequence,input_held,case_kind,case_started;
@@ -25,4 +32,6 @@ dok_status nds_gameplay_bind(NdsGameplay *,struct NdsEffectsRuntime *);
 dok_status nds_gameplay_callback(NdsGameplay *,struct NdsEffectsRuntime *,dok_object_ref,uint16_t,uint32_t);
 dok_status nds_gameplay_input(NdsGameplay *,uint32_t held);
 dok_status nds_gameplay_pose(NdsGameplay *,int32_t,int32_t,int32_t,int16_t);
+/* Called after scheduler dispatch/scene release, never from an output sink. */
+dok_status nds_gameplay_retry(NdsGameplay *);
 #endif

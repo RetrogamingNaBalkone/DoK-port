@@ -1,0 +1,179 @@
+{
+  "task": "N22",
+  "passed": true,
+  "scope": "Exact V14 fragmentation via public BlocksDS/backend API; generated texels; emulator only",
+  "normal_playthrough_claim": false,
+  "physical_DS_claim": false,
+  "cases": {
+    "baseline": {
+      "report": {
+        "path": "research/evidence/nds/n22/fragment-baseline-01/emulator.json",
+        "sha256": "3d2fab694bc2ba75d1e1f4c40a3d63cf67a70a147d0765027cda181374046124",
+        "bytes": 26684
+      },
+      "manifest": {
+        "path": "research/evidence/nds/n22/fragment-baseline-01/build-manifest.json",
+        "sha256": "6d20e7bc77cb97a248c49ab96a45418f4118f25ae87293e2207324d4228b9f16",
+        "bytes": 44083
+      },
+      "artifacts": [
+        {
+          "path": "build/nds/n22/fragment-baseline-01/dok_nds_fragment.nds",
+          "sha256": "97c842df480b4266dcc69a42dec1687fc5abd59649bf34a3302012754b834dcf",
+          "bytes": 90112
+        },
+        {
+          "path": "build/nds/n22/fragment-baseline-01/dok_nds_fragment.elf",
+          "sha256": "04cd55da76eb97108e1f8e9445f0d8025d94b0679ee23c4cad10ca42fd13dac3",
+          "bytes": 626364
+        },
+        {
+          "path": "build/nds/n22/fragment-baseline-01/dok_nds_fragment.map",
+          "sha256": "af1d949c5a399a2c57eb3cf1f276417e51b0cad4307404bb4a0adb3c89e04ce8",
+          "bytes": 651490
+        }
+      ],
+      "actual": {
+        "checks": 262,
+        "uploads": 19,
+        "upload_bytes": 367360,
+        "commit_result": 6,
+        "commit_start": 216,
+        "commit_end": 133,
+        "map_start": 192,
+        "map_end": 216,
+        "dma_epoch_ticks": 435294,
+        "deadline_pass": false,
+        "resident_bytes": 358656,
+        "resident_count": 19,
+        "pixel_bytes_verified": 358656,
+        "palette_bytes_verified": 8192,
+        "old_source_poisoned": 16384,
+        "current_source_verified": 1,
+        "mapping_unchanged": true,
+        "planning_payload_unchanged": true,
+        "active_guard_result": 6,
+        "active_guard_payload_unchanged": true,
+        "palette_upload_bytes": 8704
+      },
+      "frames": 90,
+      "build_input_snapshots": 55,
+      "observer_input_snapshots": 12
+    },
+    "partial": {
+      "report": {
+        "path": "research/evidence/nds/n22/fragment-partial-01/emulator.json",
+        "sha256": "eda17c8f64cf731bd96f2cd6521ddbde7c6140d58ba045c79696870624986e32",
+        "bytes": 31163
+      },
+      "manifest": {
+        "path": "research/evidence/nds/n22/fragment-partial-01/build-manifest.json",
+        "sha256": "3f8561ff943cdbe276353440566cc16fc9d3b5dadcdc40f6e6283ae69ef0d681",
+        "bytes": 44021
+      },
+      "artifacts": [
+        {
+          "path": "build/nds/n22/fragment-partial-01/dok_nds_fragment.nds",
+          "sha256": "bfa36b2f2baf147b91b80380a7c49d2b940daa5fb2a63c09f942945a44f54346",
+          "bytes": 94208
+        },
+        {
+          "path": "build/nds/n22/fragment-partial-01/dok_nds_fragment.elf",
+          "sha256": "7dada3aff7435af6d6148d377414e7a9ce7ad2c7c1c923cdb4fb11f402695316",
+          "bytes": 649220
+        },
+        {
+          "path": "build/nds/n22/fragment-partial-01/dok_nds_fragment.map",
+          "sha256": "2e45b9831163ca66d0ba603c0fe074a5904d880a44e489920cc1bff2ab325c3f",
+          "bytes": 651731
+        }
+      ],
+      "actual": {
+        "checks": 264,
+        "uploads": 5,
+        "upload_bytes": 67840,
+        "commit_result": 0,
+        "commit_start": 216,
+        "commit_end": 250,
+        "map_start": 192,
+        "map_end": 216,
+        "dma_epoch_ticks": 123829,
+        "deadline_pass": true,
+        "resident_bytes": 358656,
+        "resident_count": 19,
+        "pixel_bytes_verified": 358656,
+        "palette_bytes_verified": 8192,
+        "old_source_poisoned": 16384,
+        "current_source_verified": 1,
+        "mapping_unchanged": true,
+        "planning_payload_unchanged": true,
+        "active_guard_result": 6,
+        "active_guard_payload_unchanged": true,
+        "palette_upload_bytes": 0
+      },
+      "frames": 90,
+      "build_input_snapshots": 55,
+      "observer_input_snapshots": 12,
+      "relocated": [
+        {
+          "phase": 2,
+          "index": 12,
+          "key_lo": 1103631360,
+          "key_hi": 1,
+          "address": 109211648,
+          "bytes": 16384,
+          "sdk_id": 11,
+          "first_byte": 128,
+          "key": 5398598656
+        }
+      ],
+      "pixel_sample_count": 19,
+      "maximum_RGB8_sample_error": 4
+    }
+  },
+  "candidate_implementation_match": [
+    {
+      "current": {
+        "path": "ports/nds/platform/render_probe/render_backend.c",
+        "sha256": "338431c28126070903a48afaec580d7295c7ffc4358be4845438bfb0b3534ba0",
+        "bytes": 38913
+      },
+      "candidate": {
+        "path": "research/evidence/nds/n22/candidates/candidate-partial01-ru/sources/ports/nds/platform/render_probe/render_backend.c",
+        "sha256": "338431c28126070903a48afaec580d7295c7ffc4358be4845438bfb0b3534ba0",
+        "bytes": 38913
+      }
+    },
+    {
+      "current": {
+        "path": "ports/nds/render/vram_layout.c",
+        "sha256": "8b5fb5f4bae11c04fb4f32eb89c521cc0528d19ebfb8194071de8f6563659c0d",
+        "bytes": 5071
+      },
+      "candidate": {
+        "path": "research/evidence/nds/n22/candidates/candidate-partial01-ru/sources/ports/nds/render/vram_layout.c",
+        "sha256": "8b5fb5f4bae11c04fb4f32eb89c521cc0528d19ebfb8194071de8f6563659c0d",
+        "bytes": 5071
+      }
+    },
+    {
+      "current": {
+        "path": "ports/nds/include/dok/vram_layout.h",
+        "sha256": "571d1f53a88ff07e015857b76a44c0197be8cce809842860257f27902ca3af0b",
+        "bytes": 838
+      },
+      "candidate": {
+        "path": "research/evidence/nds/n22/candidates/candidate-partial01-ru/sources/ports/nds/include/dok/vram_layout.h",
+        "sha256": "571d1f53a88ff07e015857b76a44c0197be8cce809842860257f27902ca3af0b",
+        "bytes": 838
+      }
+    }
+  ],
+  "integrity_pins_checked": 294,
+  "commands": {
+    "build": "py -3.14 -B -X utf8 ports/nds/tools/flow/build_fragment_arm9.py {baseline|partial}",
+    "execute": "py -3.14 -B -X utf8 ports/nds/tools/flow/run_fragment_arm9.py {baseline|partial}",
+    "summarize": "py -3.14 -B -X utf8 ports/nds/tools/flow/summarize_fragment_arm9.py"
+  },
+  "conclusion": "One 16384-byte current HIT moves; pending payload67840 and no palette reset fit map-first119-line epoch. Baseline367360 reproduces HARDWARE6. No private allocator writes."
+}

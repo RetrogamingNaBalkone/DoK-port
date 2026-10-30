@@ -88,6 +88,13 @@ def main():
                     status='passed' if all(not r['mixed_frames'] and not r['overflows'] for r in rows) else 'failed',
                     mode4_transitions=args.mode4_transitions,
                     scope=f'Every PPU callback for{len(rows)} held camera/weapon/message/Pause changes in six world/language views; not continuous gameplay or physical GBA.')
+        if 'g_hw_dma_guard' in p.symbols:
+            guard=dict(zip(('magic','rearms','deferred','stops','min_line','max_line','wait_cycles','late_ends'),p.words('g_hw_dma_guard',8)))
+            result['vblank_dma_guard']=guard
+            if not (guard['magic']==0x56424c31 and guard['rearms'] and
+                    (not args.mode4_transitions or guard['stops']) and
+                    160<=guard['min_line']<=guard['max_line']<224 and not guard['late_ends']):
+                result['status']='failed'
         args.report.write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8')
         print(result['status'],len(rows),sum(r['video_frames'] for r in rows),'frames',sum(len(r['mixed_frames']) for r in rows),'mixed')
         assert result['status']=='passed'

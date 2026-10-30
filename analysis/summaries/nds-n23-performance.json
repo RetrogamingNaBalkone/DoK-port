@@ -1,0 +1,533 @@
+{
+  "summary_schema": 1,
+  "full_report": {
+    "path": "analysis/nds-n23-performance.json",
+    "sha256": "52a3d1b84128f490da62688dc990f34be7de8ec2a31809117cffd60adb114043",
+    "bytes": 16508
+  },
+  "scope": "Summary of a recorded run; not a new verification. Full report is local and ignored by Git.",
+  "result": {
+    "task": "N23",
+    "passed": false,
+    "status": "in_progress_architecture_review",
+    "date": "2026-10-30",
+    "next_id": "N23",
+    "n24_started": false,
+    "decision": "Evaluate fixed-game simplicity and large CPU stages before point optimizations. No new product optimization accepted.",
+    "pipeline_audit": {
+      "report": {
+        "path": "research/evidence/nds/n23/root13-pipeline-audit.json",
+        "bytes": 13088,
+        "sha256": "6b0a825f4f56c47064a07ab3375cdeecbd07ff376b13b96920d7fe2617a11b30"
+      },
+      "one_vblank_ms": 16.715113113088144,
+      "ordinary_cpu_ms": {
+        "samples": 8149,
+        "mean": 19.2559899800333,
+        "p95": 26.96026989571099,
+        "maximum": 36.51246217175864
+      },
+      "geometry_discovery_submit_ms": {
+        "samples": 8149,
+        "mean": 12.53136103237778,
+        "p95": 15.473124023280791,
+        "maximum": 18.099460696732486
+      },
+      "split": {
+        "14": {
+          "frames": 32,
+          "submit_ms": {
+            "camera_ticks": {
+              "detail_pointer": "/pipeline_audit/split/14/submit_ms/camera_ticks",
+              "entries": 4,
+              "scalars": {
+                "samples": 32,
+                "mean": 0.04012038169621264,
+                "p95": 0.04013250350256797,
+                "maximum": 0.04013250350256797
+              }
+            },
+            "validation_ticks": {
+              "detail_pointer": "/pipeline_audit/split/14/submit_ms/validation_ticks",
+              "entries": 4,
+              "scalars": {
+                "samples": 32,
+                "mean": 2.497892148417338,
+                "p95": 2.5002698873562683,
+                "maximum": 2.5002698873562683
+              }
+            },
+            "initial_fence_ticks": {
+              "detail_pointer": "/pipeline_audit/split/14/submit_ms/initial_fence_ticks",
+              "entries": 4,
+              "scalars": {
+                "samples": 32,
+                "mean": 0.001235491801600896,
+                "p95": 0.0012532082878125314,
+                "maximum": 0.0012532082878125314
+              }
+            },
+            "emission_ticks": {
+              "detail_pointer": "/pipeline_audit/split/14/submit_ms/emission_ticks",
+              "entries": 4,
+              "scalars": {
+                "samples": 32,
+                "mean": 3.146913242061179,
+                "p95": 3.1469253638675343,
+                "maximum": 3.1469253638675343
+              }
+            },
+            "completion_ticks": {
+              "detail_pointer": "/pipeline_audit/split/14/submit_ms/completion_ticks",
+              "entries": 4,
+              "scalars": {
+                "samples": 32,
+                "mean": 0.004905601787337595,
+                "p95": 0.0049233182735492305,
+                "maximum": 0.0049233182735492305
+              }
+            },
+            "final_fence_ticks": {
+              "detail_pointer": "/pipeline_audit/split/14/submit_ms/final_fence_ticks",
+              "entries": 4,
+              "scalars": {
+                "samples": 32,
+                "mean": 0.0012532082878125314,
+                "p95": 0.0012532082878125314,
+                "maximum": 0.0012532082878125314
+              }
+            }
+          },
+          "geometry_ms": {
+            "geometry_build": {
+              "detail_pointer": "/pipeline_audit/split/14/geometry_ms/geometry_build",
+              "entries": 4,
+              "scalars": {
+                "samples": 32,
+                "mean": 2.574283772068625,
+                "p95": 2.5744478826777435,
+                "maximum": 2.5767752694979666
+              }
+            },
+            "geometry_cull": {
+              "detail_pointer": "/pipeline_audit/split/14/geometry_ms/geometry_cull",
+              "entries": 4,
+              "scalars": {
+                "samples": 32,
+                "mean": 1.4084084368130292,
+                "p95": 1.4084270857458836,
+                "maximum": 1.4086657920864194
+              }
+            },
+            "geometry_merge": {
+              "detail_pointer": "/pipeline_audit/split/14/geometry_ms/geometry_merge",
+              "entries": 4,
+              "scalars": {
+                "samples": 32,
+                "mean": 0.5034615104824011,
+                "p95": 0.5034615104824011,
+                "maximum": 0.5034615104824011
+              }
+            },
+            "geometry_doors": {
+              "detail_pointer": "/pipeline_audit/split/14/geometry_ms/geometry_doors",
+              "entries": 4,
+              "scalars": {
+                "samples": 32,
+                "mean": 0.951080656425727,
+                "p95": 0.9510955755720105,
+                "maximum": 0.9510955755720105
+              }
+            }
+          }
+        },
+        "15": {
+          "frames": 32,
+          "submit_ms": {
+            "camera_ticks": {
+              "detail_pointer": "/pipeline_audit/split/15/submit_ms/camera_ticks",
+              "entries": 4,
+              "scalars": {
+                "samples": 32,
+                "mean": 0.040117584356284486,
+                "p95": 0.04013250350256797,
+                "maximum": 0.04013250350256797
+              }
+            },
+            "validation_ticks": {
+              "detail_pointer": "/pipeline_audit/split/15/submit_ms/validation_ticks",
+              "entries": 4,
+              "scalars": {
+                "samples": 32,
+                "mean": 2.3679221406754944,
+                "p95": 2.367937059821778,
+                "maximum": 2.367937059821778
+              }
+            },
+            "initial_fence_ticks": {
+              "detail_pointer": "/pipeline_audit/split/15/submit_ms/initial_fence_ticks",
+              "entries": 4,
+              "scalars": {
+                "samples": 32,
+                "mean": 0.001238289141529049,
+                "p95": 0.0012532082878125314,
+                "maximum": 0.0012532082878125314
+              }
+            },
+            "emission_ticks": {
+              "detail_pointer": "/pipeline_audit/split/15/submit_ms/emission_ticks",
+              "entries": 4,
+              "scalars": {
+                "samples": 32,
+                "mean": 2.6885532432403885,
+                "p95": 2.688519675161251,
+                "maximum": 2.6910559300294428
+              }
+            },
+            "completion_ticks": {
+              "detail_pointer": "/pipeline_audit/split/15/submit_ms/completion_ticks",
+              "entries": 4,
+              "scalars": {
+                "samples": 32,
+                "mean": 0.004908399127265748,
+                "p95": 0.0049233182735492305,
+                "maximum": 0.0049233182735492305
+              }
+            },
+            "final_fence_ticks": {
+              "detail_pointer": "/pipeline_audit/split/15/submit_ms/final_fence_ticks",
+              "entries": 4,
+              "scalars": {
+                "samples": 32,
+                "mean": 0.0012532082878125314,
+                "p95": 0.0012532082878125314,
+                "maximum": 0.0012532082878125314
+              }
+            }
+          },
+          "geometry_ms": {
+            "geometry_build": {
+              "detail_pointer": "/pipeline_audit/split/15/geometry_ms/geometry_build",
+              "entries": 4,
+              "scalars": {
+                "samples": 32,
+                "mean": 2.5741998518707807,
+                "p95": 2.5742390146297747,
+                "maximum": 2.5744478826777435
+              }
+            },
+            "geometry_cull": {
+              "detail_pointer": "/pipeline_audit/split/15/geometry_ms/geometry_cull",
+              "entries": 4,
+              "scalars": {
+                "samples": 32,
+                "mean": 1.4085632229557203,
+                "p95": 1.4109633406140756,
+                "maximum": 1.4109633406140756
+              }
+            },
+            "geometry_merge": {
+              "detail_pointer": "/pipeline_audit/split/15/geometry_ms/geometry_merge",
+              "entries": 4,
+              "scalars": {
+                "samples": 32,
+                "mean": 0.5034708349488283,
+                "p95": 0.5034615104824011,
+                "maximum": 0.5037598934080707
+              }
+            },
+            "geometry_doors": {
+              "detail_pointer": "/pipeline_audit/split/15/geometry_ms/geometry_doors",
+              "entries": 4,
+              "scalars": {
+                "samples": 32,
+                "mean": 0.9511608468370008,
+                "p95": 0.9510955755720105,
+                "maximum": 0.9536318304402025
+              }
+            }
+          }
+        },
+        "39": {
+          "frames": 90,
+          "submit_ms": {
+            "camera_ticks": {
+              "detail_pointer": "/pipeline_audit/split/39/submit_ms/camera_ticks",
+              "entries": 4,
+              "scalars": {
+                "samples": 90,
+                "mean": 0.041266358620112645,
+                "p95": 0.041266358620112645,
+                "maximum": 0.041266358620112645
+              }
+            },
+            "validation_ticks": {
+              "detail_pointer": "/pipeline_audit/split/39/submit_ms/validation_ticks",
+              "entries": 4,
+              "scalars": {
+                "samples": 90,
+                "mean": 2.4887957377179335,
+                "p95": 2.4888119830105535,
+                "maximum": 2.4888119830105535
+              }
+            },
+            "initial_fence_ticks": {
+              "detail_pointer": "/pipeline_audit/split/39/submit_ms/initial_fence_ticks",
+              "entries": 4,
+              "scalars": {
+                "samples": 90,
+                "mean": 0.0012396152878653584,
+                "p95": 0.0012532082878125314,
+                "maximum": 0.0012532082878125314
+              }
+            },
+            "emission_ticks": {
+              "detail_pointer": "/pipeline_audit/split/39/submit_ms/emission_ticks",
+              "entries": 4,
+              "scalars": {
+                "samples": 90,
+                "mean": 3.051779668822669,
+                "p95": 3.051711372286349,
+                "maximum": 3.054247627154541
+              }
+            },
+            "completion_ticks": {
+              "detail_pointer": "/pipeline_audit/split/39/submit_ms/completion_ticks",
+              "entries": 4,
+              "scalars": {
+                "samples": 90,
+                "mean": 0.004913040639442832,
+                "p95": 0.0049233182735492305,
+                "maximum": 0.0052217011992188814
+              }
+            },
+            "final_fence_ticks": {
+              "detail_pointer": "/pipeline_audit/split/39/submit_ms/final_fence_ticks",
+              "entries": 4,
+              "scalars": {
+                "samples": 90,
+                "mean": 0.0012532082878125314,
+                "p95": 0.0012532082878125314,
+                "maximum": 0.0012532082878125314
+              }
+            }
+          },
+          "geometry_ms": {
+            "geometry_build": {
+              "detail_pointer": "/pipeline_audit/split/39/geometry_ms/geometry_build",
+              "entries": 4,
+              "scalars": {
+                "samples": 90,
+                "mean": 2.552366220031853,
+                "p95": 2.55245706105589,
+                "maximum": 2.554844124461247
+              }
+            },
+            "geometry_cull": {
+              "detail_pointer": "/pipeline_audit/split/39/geometry_ms/geometry_cull",
+              "entries": 4,
+              "scalars": {
+                "samples": 90,
+                "mean": 1.1227353805147158,
+                "p95": 1.123143170513131,
+                "maximum": 1.125500395625921
+              }
+            },
+            "geometry_merge": {
+              "detail_pointer": "/pipeline_audit/split/39/geometry_ms/geometry_merge",
+              "entries": 4,
+              "scalars": {
+                "samples": 90,
+                "mean": 0.4509885522473045,
+                "p95": 0.4512743367827792,
+                "maximum": 0.45157271970844887
+              }
+            },
+            "geometry_doors": {
+              "detail_pointer": "/pipeline_audit/split/39/geometry_ms/geometry_doors",
+              "entries": 4,
+              "scalars": {
+                "samples": 90,
+                "mean": 0.2897735836543287,
+                "p95": 0.2897894974103644,
+                "maximum": 0.2897894974103644
+              }
+            }
+          }
+        }
+      }
+    },
+    "topology_invariant": {
+      "report": {
+        "path": "research/evidence/nds/n23/root15-topology-invariant.json",
+        "bytes": 3601,
+        "sha256": "f69a203f5782d8538ca8cefc1c7b153f8915d70fbf585048ae4286f82d28a9a2"
+      },
+      "levels": [
+        {
+          "passed": true,
+          "mutable_initial_cells": 2720,
+          "enemy_glyphs": 64,
+          "individual_mutations": 174271,
+          "full_cell_comparisons": 875451,
+          "joint_world_cells": 4096,
+          "level": 1,
+          "inputs": [
+            {
+              "detail_pointer": "/topology_invariant/levels/0/inputs/0",
+              "entries": 3,
+              "scalars": {
+                "path": "build/nds/n07/geometry-level1.cp866",
+                "bytes": 24384,
+                "sha256": "21872af6fa49bf8c0c8fe89dfe2ca5dd040912b3f141c306258c9a4f6cb9e856"
+              }
+            },
+            {
+              "detail_pointer": "/topology_invariant/levels/0/inputs/1",
+              "entries": 3,
+              "scalars": {
+                "path": "build/nds/n07/geometry-bindings1.bin",
+                "bytes": 8192,
+                "sha256": "929b29fd64373f2486ddd864fc3ee0952ec2ab7921fb2b2b3377224297510302"
+              }
+            }
+          ]
+        },
+        {
+          "passed": true,
+          "mutable_initial_cells": 2214,
+          "enemy_glyphs": 64,
+          "individual_mutations": 141856,
+          "full_cell_comparisons": 713376,
+          "joint_world_cells": 4096,
+          "level": 2,
+          "inputs": [
+            {
+              "detail_pointer": "/topology_invariant/levels/1/inputs/0",
+              "entries": 3,
+              "scalars": {
+                "path": "build/nds/n07/geometry-level2.cp866",
+                "bytes": 24280,
+                "sha256": "f8bb9c934f2cf96e3164fbce6f0c2e3f0c666f9527642584d646899b6084fc99"
+              }
+            },
+            {
+              "detail_pointer": "/topology_invariant/levels/1/inputs/1",
+              "entries": 3,
+              "scalars": {
+                "path": "build/nds/n07/geometry-bindings2.bin",
+                "bytes": 8192,
+                "sha256": "ec0ed957e706c5a18c04c4a7d6017372fdd4fc84800649f77fe91dd0cb8f0700"
+              }
+            }
+          ]
+        },
+        {
+          "passed": true,
+          "mutable_initial_cells": 2094,
+          "enemy_glyphs": 105,
+          "individual_mutations": 220145,
+          "full_cell_comparisons": 1104821,
+          "joint_world_cells": 4096,
+          "level": 3,
+          "inputs": [
+            {
+              "detail_pointer": "/topology_invariant/levels/2/inputs/0",
+              "entries": 3,
+              "scalars": {
+                "path": "build/nds/n07/geometry-level3.cp866",
+                "bytes": 27997,
+                "sha256": "15e99cb968333c6998c7e9fc56e7de57de56c7013b98e5d7ea8f52f25478a66a"
+              }
+            },
+            {
+              "detail_pointer": "/topology_invariant/levels/2/inputs/1",
+              "entries": 3,
+              "scalars": {
+                "path": "build/nds/n07/geometry-bindings3.bin",
+                "bytes": 8192,
+                "sha256": "1c64d2ae1342b9c5d0ad2e7948c4211af9b5d788da803a14f153b2588f94a34d"
+              }
+            }
+          ]
+        }
+      ],
+      "scope": "Host base geometry invariant under all actual item-removal and corpse-glyph TMap substitutions. No DS cache or new rendering implementation."
+    },
+    "topology_census": {
+      "path": "research/evidence/nds/n23/root14-topology-census.json",
+      "bytes": 4710,
+      "sha256": "23255f8db78ef3fd0b8493cda723b27accac23f865b56670fe18aa989886a07c"
+    },
+    "matrix": {
+      "detail_pointer": "/matrix",
+      "items": 2
+    },
+    "english_live": {
+      "passed": true,
+      "report": {
+        "path": "research/evidence/nds/n23/review13/files/build/nds/n23/candidate12-en/joint-frontend/live/result.json",
+        "bytes": 5091746,
+        "sha256": "8b47293fbde0c179c839b8360feead8acc2de6e04b254ac07a9c5ae06b06e16b"
+      },
+      "metrics": {
+        "intervals": 1836,
+        "histogram": {
+          "1": 1813,
+          "2": 23
+        },
+        "virtual_fps": 59.08591525385498,
+        "median": 1,
+        "p95": 1,
+        "p99": 2,
+        "max": 2,
+        "fraction_over_one": 0.01252723311546841,
+        "fraction_over_two": 0.0,
+        "refresh_hz": 59.82609828808083,
+        "checked_one_second_windows": 1485,
+        "scope": "Every product PRESENTED interval without LOADING/WARMUP/DIAGNOSTIC/SYNC flags, independent of observer phase; timestamp gaps separate UI reading time",
+        "minimum_window_cadence_fps": 49.85508190673402,
+        "minimum_new_frames_in_one_second": 49,
+        "budget_passed": true,
+        "missing_profiles": []
+      },
+      "latency": {
+        "gameplay_whole_map_lcd_rgb": {
+          "samples": 6,
+          "max_upper_vblanks": 588,
+          "max_upper_ms": 9828.486510495828
+        },
+        "whole_map_lcd_rgb": {
+          "samples": 42,
+          "max_upper_vblanks": 6,
+          "max_upper_ms": 100.29067867852886
+        },
+        "whole_static_lcd_rgb": {
+          "samples": 59,
+          "max_upper_vblanks": 58,
+          "max_upper_ms": 969.4765605591124
+        }
+      }
+    },
+    "archives": [
+      {
+        "path": "research/evidence/nds/n23/review13/manifest.json",
+        "bytes": 889727,
+        "sha256": "895ccb99e14d21fe0d12a4c43e27ea576d6efe6aa8b294b1683577a1e20037c0"
+      },
+      {
+        "path": "research/evidence/nds/n23/review13-inputs.json",
+        "bytes": 8473,
+        "sha256": "80ea30d8ea5b54aa5e6104c8e4b921273e205094f32a91484ab1b5abd364fa71"
+      }
+    ],
+    "open": [
+      "natural >=61 AI on current product",
+      "full current ordinary completion routes",
+      "ARM speed and memory proof of a simpler static representation",
+      "final N23 archive and acceptance",
+      "physical DS and listening deferred to N24"
+    ],
+    "scope": "Emulator and host evidence only. Partial route FPS PASS and short diagnostics do not accept the full game or establish a DS hardware limit."
+  }
+}

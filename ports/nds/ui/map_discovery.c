@@ -2,6 +2,15 @@
 #include "dok/map_discovery.h"
 #include <limits.h>
 #include <string.h>
+#ifndef N23_DISCOVERY_BITSET
+#define N23_DISCOVERY_BITSET 0
+#endif
+#ifndef N23_DISCOVERY_SORT
+#define N23_DISCOVERY_SORT 0
+#endif
+#ifndef N23_DISCOVERY_CACHE
+#define N23_DISCOVERY_CACHE 0
+#endif
 
 DOK_NDS_HOT_CODE static int32_t bits(uint32_t u)
 {return u<=INT32_MAX?(int32_t)u:-1-(int32_t)(UINT32_MAX-u);}
@@ -19,6 +28,20 @@ DOK_NDS_HOT_CODE static int32_t rotate(const dok_nds_render_camera *c,int32_t x,
 }
 DOK_NDS_HOT_CODE static int camera_ok(const dok_nds_render_camera *c)
 {return c && c->sin_q15>=-32768 && c->sin_q15<=32768 && c->cos_q15>=-32768 && c->cos_q15<=32768;}
+#if N23_DISCOVERY_CACHE
+DOK_NDS_HOT_CODE static void project_point(const dok_nds_render_camera *c,int32_t x,int32_t z,
+    dok_map_discovery_workspace *w,int32_t *depth,int32_t *lateral)
+{
+    if(w){
+        uint32_t slot=((uint32_t)x*UINT32_C(0x9e3779b9)^(uint32_t)z*UINT32_C(0x85ebca6b))>>25;
+        uint32_t mask=UINT32_C(1)<<(slot&31u);
+        dok_map_projection_point *p=&w->points[slot];
+        if((w->point_valid[slot>>5]&mask)&&p->x==x&&p->z==z){*depth=p->depth;*lateral=p->lateral;return;}
+        p->x=x;p->z=z;p->depth=rotate(c,x,z,1u);p->lateral=rotate(c,x,z,0u);
+        w->point_valid[slot>>5]|=mask;*depth=p->depth;*lateral=p->lateral;
+    }else{*depth=rotate(c,x,z,1u);*lateral=rotate(c,x,z,0u);}
+}
+#endif
 
 DOK_NDS_HOT_CODE dok_status dok_map_discovery_bounds(const dok_initial_world *world,
     const dok_nds_render_camera *camera,uint32_t heading,dok_render_gather_bounds *out)
@@ -52,26 +75,40 @@ DOK_NDS_HOT_CODE dok_status dok_map_discovery_bounds(const dok_initial_world *wo
 
 DOK_NDS_HOT_CODE static dok_status record_geometry(const dok_geometry_quad *q,
     const dok_nds_render_camera *c,dok_map_render_record *out,
-    dok_map_projection_factor *factors)
+    dok_map_discovery_workspace *workspace)
 {
+    dok_map_projection_factor *factors=workspace?workspace->factors:NULL;
     dok_map_render_record r={0};
     int32_t depth[4],lateral[4],screen[4],minimum=INT32_MAX,maximum=INT32_MIN;
     uint32_t i,count,horizontal;
+#if N23_DISCOVERY_CACHE
+    int32_t raw_depth[4];
+#endif
     if(!q || !out || !camera_ok(c) || q->kind>DOK_GEOMETRY_CEILING_BAND ||
         q->cell_x>=64u || q->cell_z>=64u) return DOK_STATUS_INVALID_ARGUMENT;
     r.cell=(uint16_t)((uint32_t)q->cell_z*64u+q->cell_x);
     horizontal=q->kind==DOK_GEOMETRY_FLOOR_QUAD || q->kind==DOK_GEOMETRY_CEILING_QUAD;
     count=horizontal?4u:2u;
     for(i=0;i<count;++i) {
+#if N23_DISCOVERY_CACHE
+        int32_t raw_lateral;
+        project_point(c,q->vertices[i].x,q->vertices[i].z,workspace,&raw_depth[i],&raw_lateral);
+        depth[i]=sar(raw_depth[i],15);lateral[i]=sar(raw_lateral,15);
+#else
         depth[i]=sar(rotate(c,q->vertices[i].x,q->vertices[i].z,1u),15);
         lateral[i]=sar(rotate(c,q->vertices[i].x,q->vertices[i].z,0u),15);
+#endif
     }
     if(horizontal) {
         uint32_t positive=0;
         for(i=0;i<4u;++i) if(depth[i]>0) positive=1;
         if(!positive) { *out=r;return DOK_STATUS_OK; }
         for(i=0;i<4u;++i) if(depth[i]<0)
+#if N23_DISCOVERY_CACHE
+            depth[i]=sar(raw_depth[i],20);
+#else
             depth[i]=sar(rotate(c,q->vertices[i].x,q->vertices[i].z,1u),20);
+#endif
     } else {
         if(depth[0]<=0 && depth[1]<=0) { *out=r;return DOK_STATUS_OK; }
         if(depth[0]<0) {
@@ -140,7 +177,12 @@ DOK_NDS_HOT_CODE dok_status dok_map_record_sprite(const dok_sprite_pose *p,
 DOK_NDS_HOT_CODE dok_status dok_map_discovery_records(dok_map_discovery_workspace *w,
     unsigned char visited[DOK_LEVEL_MAX_CELLS],dok_map_discovery_stats *out)
 {
-    dok_map_discovery_stats stats={0};uint32_t i,gap;int32_t remaining=320;
+    dok_map_discovery_stats stats={0};uint32_t i,gap;
+#if N23_DISCOVERY_BITSET
+    uint32_t columns[10],nonempty_words=10;
+#else
+    int32_t remaining=320;
+#endif
     if(!w || !visited || !out || w->count>DOK_MAP_DISCOVERY_RECORDS)
         return DOK_STATUS_INVALID_ARGUMENT;
     for(i=0;i<w->count;++i) {
@@ -150,6 +192,17 @@ DOK_NDS_HOT_CODE dok_status dok_map_discovery_records(dok_map_discovery_workspac
     }
     /* Original Shell/gap sort, strict key comparison preserves its tie effects. */
     for(gap=w->count/2u;gap;gap/=2u) for(i=gap;i<w->count;++i) {
+#if N23_DISCOVERY_SORT
+        uint16_t value=w->order[i];
+        int32_t key=w->records[value].key;
+        uint32_t j=i;
+        /* Shift exactly the same strict-less predecessors as the swap loop.
+         * Neither the gap sequence nor its tie ordering changes. */
+        while(j>=gap && w->records[w->order[j-gap]].key<key) {
+            w->order[j]=w->order[j-gap];j-=gap;
+        }
+        w->order[j]=value;
+#else
         int32_t j=(int32_t)(i-gap);
         while(j>=0 && w->records[w->order[(uint32_t)j]].key<
                 w->records[w->order[(uint32_t)j+gap]].key) {
@@ -157,24 +210,52 @@ DOK_NDS_HOT_CODE dok_status dok_map_discovery_records(dok_map_discovery_workspac
             w->order[(uint32_t)j]=w->order[(uint32_t)j+gap];
             w->order[(uint32_t)j+gap]=t;j-=(int32_t)gap;
         }
+#endif
     }
-    memset(w->columns,1,sizeof(w->columns));stats.records=w->count;
+#if N23_DISCOVERY_BITSET
+    for(i=0;i<10u;++i)columns[i]=UINT32_MAX;
+#else
+    memset(w->columns,1,sizeof(w->columns));
+#endif
+    stats.records=w->count;
     for(i=w->count;i>0u;--i) {
         dok_map_render_record *r=&w->records[w->order[i-1u]];
-        int32_t left=r->left<0?0:r->left,right=r->right>319?319:r->right,x;
+        int32_t left=r->left<0?0:r->left,right=r->right>319?319:r->right;
         uint32_t visible=0;
         /* Native clears the sort key for EVERY record before column testing. */
         r->key=0;
-        if(remaining>0)for(x=left;x<=right;++x)if(w->columns[x]) {
+#if N23_DISCOVERY_BITSET
+        if(nonempty_words && left<=right) {
+            uint32_t first=(uint32_t)left/32u,last=(uint32_t)right/32u;
+            for(uint32_t word=first;word<=last;++word) {
+                uint32_t mask=UINT32_MAX;
+                if(word==first)mask<<=(uint32_t)left&31u;
+                if(word==last)mask&=UINT32_MAX>>(31u-((uint32_t)right&31u));
+                uint32_t before=columns[word];
+                if(before&mask)visible=1;
+                if(r->flags&2u) {
+                    columns[word]=before&~mask;
+                    if(before && !columns[word])--nonempty_words;
+                } else if(visible)break;
+            }
+        }
+#else
+        if(remaining>0)for(int32_t x=left;x<=right;++x)if(w->columns[x]) {
             visible=1;
             if(r->flags&2u){w->columns[x]=0;--remaining;}else break;
         }
+#endif
         if(!visible){r->flags=(uint16_t)(r->flags&~1u);r->key=0;++stats.occluded;}
         else {
             ++stats.eligible;
             if(!visited[r->cell]){visited[r->cell]=1;++stats.newly_visited;}
         }
     }
+#if N23_DISCOVERY_BITSET
+    /* Preserve the public workspace's exact byte-column result. The native
+     * traversal has no callbacks observing its intermediate column writes. */
+    for(i=0;i<320u;++i)w->columns[i]=(unsigned char)((columns[i/32u]>>(i&31u))&1u);
+#endif
     *out=stats;return DOK_STATUS_OK;
 }
 
@@ -301,6 +382,9 @@ DOK_NDS_HOT_CODE dok_status dok_map_discovery_update(const dok_initial_world *wo
         return DOK_STATUS_INVALID_ARGUMENT;
     dok_geometry_prepare_fields(world->definition,workspace->field54);
     workspace->count=0;
+#if N23_DISCOVERY_CACHE
+    memset(workspace->point_valid,0,sizeof(workspace->point_valid));
+#endif
     for(i=0;i<256u;++i)workspace->factors[i].denominator=0;
     if(sprites) {
         /* Only heads within the native gather are read. No full 4096-cell
@@ -332,7 +416,7 @@ DOK_NDS_HOT_CODE dok_status dok_map_discovery_update(const dok_initial_world *wo
                 q.vertices[2].x=s->bx;q.vertices[2].z=s->az;
                 q.vertices[3].x=s->ax;q.vertices[3].z=s->az;
             } else {q.vertices[0].z=s->az;q.vertices[1].z=s->bz;}
-            status=record_geometry(&q,camera,&r,workspace->factors);if(status!=DOK_STATUS_OK)return status;
+            status=record_geometry(&q,camera,&r,workspace);if(status!=DOK_STATUS_OK)return status;
             status=append(workspace,r);if(status!=DOK_STATUS_OK)return status;
         }
         /* Native cell order: TMap billboard then MMap billboard. N12 gathers

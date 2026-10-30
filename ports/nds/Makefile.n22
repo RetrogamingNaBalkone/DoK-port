@@ -1,0 +1,18 @@
+# N22 full gameflow on the accepted N21P presentation/runtime.
+OUTDIR ?= ../../build/nds/n22/frontend-ru
+include Makefile.n21p
+CPPFLAGS += -DGAMEPLAY_FLOW=1
+PLATFORM_CPPFLAGS += -DGAMEPLAY_FLOW=1
+N22_STREAM_LARGEST_MISSES ?= 0
+CPPFLAGS += -DN22_STREAM_LARGEST_MISSES=$(N22_STREAM_LARGEST_MISSES)
+PLATFORM_CPPFLAGS += -DN22_STREAM_LARGEST_MISSES=$(N22_STREAM_LARGEST_MISSES)
+# Accepted N22 normal streaming: bounded relocation, no full resident reset.
+N22_STREAM_PARTIAL_DEFRAG ?= 1
+CPPFLAGS += -DN22_STREAM_PARTIAL_DEFRAG=$(N22_STREAM_PARTIAL_DEFRAG)
+PLATFORM_CPPFLAGS += -DN22_STREAM_PARTIAL_DEFRAG=$(N22_STREAM_PARTIAL_DEFRAG)
+OBJECTS += $(OBJDIR)/gameflow.o
+$(ELF): $(OBJDIR)/gameflow.o
+-include $(OBJDIR)/gameflow.d
+OBJECTS += $(OBJDIR)/vram_layout.o
+$(ELF): $(OBJDIR)/vram_layout.o
+-include $(OBJDIR)/vram_layout.d

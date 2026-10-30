@@ -9,6 +9,9 @@
 extern uint32_t cpuGetTiming(void);
 #endif
 #include "render_trig.inc"
+#ifndef N23_FUSED_CULL
+#define N23_FUSED_CULL 0
+#endif
 
 #define SCENE_TAG UINT32_C(0x4E303753)
 
@@ -126,15 +129,33 @@ DOK_NDS_HOT_CODE dok_render_scene_result dok_render_bounds(const dok_initial_wor
     *out=result;return DOK_RENDER_SCENE_OK;
 }
 
-typedef struct scene_camera_dot { int64_t lateral,depth; } scene_camera_dot;
+typedef struct scene_camera_dot {
+    int64_t lateral,depth;
+#if N23_FUSED_CULL
+    int32_t x[5],z[5];int64_t offset[5];
+#endif
+} scene_camera_dot;
 DOK_NDS_HOT_CODE static int visible(const dok_geometry_quad *quad,const dok_nds_render_camera *camera,
     const scene_camera_dot *dot)
 {
     uint32_t vertex,common_outside=31u;
+#if N23_FUSED_CULL
+    (void)camera;
+#endif
     /* Two target-pixel guard band for Q12 matrix/raster quantization. It only
      * retains extra candidates; the GPU clips at the actual N06 viewport. */
     for(vertex=0;vertex<4u;++vertex) {
         const dok_geometry_vertex *v=&quad->vertices[vertex];
+#if N23_FUSED_CULL
+        /* Exact distribution of the original five integer plane equations.
+         * Coefficients depend only on this camera; no precision is discarded. */
+        uint32_t outside=0;
+        if(common_outside&1u)outside|=(int64_t)v->x*dot->x[0]+(int64_t)v->z*dot->z[0]+dot->offset[0]<0?1u:0u;
+        if(common_outside&2u)outside|=(int64_t)v->x*dot->x[1]+(int64_t)v->z*dot->z[1]+dot->offset[1]<0?2u:0u;
+        if(common_outside&4u)outside|=(int64_t)v->x*dot->x[2]+(int64_t)v->z*dot->z[2]+dot->offset[2]<0?4u:0u;
+        if(common_outside&8u)outside|=(int64_t)v->x*dot->x[3]+(int64_t)v->z*dot->z[3]+(int64_t)v->y*13107200+dot->offset[3]<0?8u:0u;
+        if(common_outside&16u)outside|=(int64_t)v->x*dot->x[4]+(int64_t)v->z*dot->z[4]-(int64_t)v->y*13107200+dot->offset[4]<0?16u:0u;
+#else
         int64_t depth=(int64_t)v->z*camera->cos_q15-(int64_t)v->x*camera->sin_q15-dot->depth;
         int64_t eye=depth+INT64_C(200)*32768;
         uint32_t outside=0;
@@ -149,6 +170,7 @@ DOK_NDS_HOT_CODE static int visible(const dok_geometry_quad *quad,const dok_nds_
             if(common_outside&8u)outside|=164*eye+400*dy<0?8u:0u;
             if(common_outside&16u)outside|=166*eye-400*dy<0?16u:0u;
         }
+#endif
         common_outside&=outside;
         /* Intersection can only lose bits. Once no plane rejects all seen
          * vertices, later vertices cannot reject the quad either. */
@@ -188,6 +210,20 @@ DOK_NDS_HOT_CODE dok_render_scene_result dok_render_scene_prepare(dok_render_sce
 #endif
     dot.lateral=(int64_t)camera->x*camera->cos_q15+(int64_t)camera->z*camera->sin_q15;
     dot.depth=(int64_t)camera->z*camera->cos_q15-(int64_t)camera->x*camera->sin_q15;
+#if N23_FUSED_CULL
+    (void)camera;
+    dot.x[0]=-camera->sin_q15;dot.z[0]=camera->cos_q15;dot.offset[0]=-dot.depth+32768;
+    dot.x[1]=400*camera->cos_q15-324*camera->sin_q15;
+    dot.z[1]=400*camera->sin_q15+324*camera->cos_q15;
+    dot.offset[1]=-400*dot.lateral-324*dot.depth+INT64_C(324)*200*32768;
+    dot.x[2]=-400*camera->cos_q15-326*camera->sin_q15;
+    dot.z[2]=-400*camera->sin_q15+326*camera->cos_q15;
+    dot.offset[2]=400*dot.lateral-326*dot.depth+INT64_C(326)*200*32768;
+    dot.x[3]=-164*camera->sin_q15;dot.z[3]=164*camera->cos_q15;
+    dot.offset[3]=-164*dot.depth-(int64_t)camera->y*13107200+INT64_C(164)*200*32768;
+    dot.x[4]=-166*camera->sin_q15;dot.z[4]=166*camera->cos_q15;
+    dot.offset[4]=-166*dot.depth+(int64_t)camera->y*13107200+INT64_C(166)*200*32768;
+#endif
     memset(&scene->counts,0,sizeof(scene->counts));scene->counts.bounds=bounds;
 #if N21P_GEOMETRY_PROFILE
     memset(scene->profile_ticks,0,sizeof(scene->profile_ticks));

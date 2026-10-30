@@ -1,5 +1,6 @@
 """C13 freshly prepared field54 metadata; host counts and equivalence."""
 from __future__ import annotations
+from compiler_cache import compiler_environment
 import hashlib,json,os,subprocess
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[4]
@@ -8,7 +9,7 @@ EVIDENCE=ROOT/'research/evidence/nds/n21p'
 def pin(p):
     p=Path(p);return dict(path=p.relative_to(ROOT).as_posix(),bytes=p.stat().st_size,sha256=hashlib.sha256(p.read_bytes()).hexdigest())
 OUT.mkdir(parents=True,exist_ok=True)
-env=os.environ.copy();env['ZIG_LOCAL_CACHE_DIR']=str(OUT/'zig-local-cache');env['ZIG_GLOBAL_CACHE_DIR']=str(OUT/'zig-global-cache')
+env=compiler_environment(ROOT)
 flags=[str(Path(os.environ['LOCALAPPDATA'])/'Programs/Zig/0.13.0/zig.exe'),'cc','-std=c11','-O2','-Wall','-Wextra','-Werror','-pedantic','-DN21P_PROFILE=0','-DN21P_GEOMETRY_PROFILE=0','-Iports/nds/include','-Iports/nds/render','-Ibuild/nds/n07/generated']
 commands=[]
 def build(args):

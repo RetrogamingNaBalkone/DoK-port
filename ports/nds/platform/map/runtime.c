@@ -4,6 +4,12 @@
 #ifndef N21P_AUDIT
 #define N21P_AUDIT 1
 #endif
+#ifndef N23_MAP_BUTTON_CACHE
+#define N23_MAP_BUTTON_CACHE 0
+#endif
+#ifndef N23_MAP_SECTOR_DIRTY
+#define N23_MAP_SECTOR_DIRTY 0
+#endif
 _Alignas(32) volatile uint32_t g_nds_map_probe[64];
 _Static_assert(sizeof(dok_map_glyph)==4,"N20 metadata ABI");
 /* Platform-only GCC/Clang alias extension permits aligned WORD reads of byte
@@ -114,6 +120,23 @@ static void buttons(NdsMapRuntime *m,unsigned char *out,const unsigned char *fon
         text(out,font,s,n,(int)(x+(w-n*8u)/2u),172,fill==2u?86u:2u);
     }
 }
+#if N23_MAP_BUTTON_CACHE
+static uint32_t prepare_buttons(NdsMapRuntime *m,unsigned char *out,const unsigned char *font,uint32_t language)
+{
+    static const unsigned char glyphs[2][8]={{'-','+',0x96,0xa5,0xad,0xe2,0xe0,0},{'-','+','C','e','n','t','e','r'}};
+    unsigned char signature[64]={0};
+    uint32_t lang=language==1u?0u:1u,capture=m->control.capture;
+    if(capture<2u||capture>4u)capture=0;
+    for(uint32_t i=0;i<(lang?8u:7u);++i)memcpy(signature+i*8u,font+glyphs[lang][i]*8u,8u);
+    if(!m->button_valid||m->force==1u||m->button_pixels!=out||m->button_capture!=capture||
+       m->button_language!=lang||memcmp(signature,m->button_font,sizeof(signature))){
+        buttons(m,out,font,language);
+        m->button_valid=1;m->button_capture=capture;m->button_language=lang;m->button_pixels=out;
+        memcpy(m->button_font,signature,sizeof(signature));return DOK_MAP_SCREEN_BYTES;
+    }
+    return DOK_MAP_VIEW_BYTES;
+}
+#endif
 void nds_map_prepare(NdsMapRuntime *m,dok_render_world *w,NdsGameplay *g,
     const unsigned char *font,uint32_t language,unsigned char *pixels,
     uint32_t ticks,uint32_t level,uint32_t serial,uint32_t frame,uint32_t ordinal,uint32_t case_id,
@@ -129,7 +152,13 @@ void nds_map_prepare(NdsMapRuntime *m,dok_render_world *w,NdsGameplay *g,
     if(m->control.follow&&!m->paused)dok_map_control_step(&m->control,
         (dok_map_touch){(int16_t)m->touch_x,(int16_t)m->touch_y,(uint8_t)m->touch_held,0},hero_x,hero_z);
     dok_map_control_view(&m->control,&left,&top);
-    if(m->snapshot.hero_x!=hero_x||m->snapshot.hero_z!=hero_z||m->snapshot.heading!=(uint16_t)g->hero.heading||
+    uint32_t heading_changed;
+#if N23_MAP_SECTOR_DIRTY
+    heading_changed=dok_map_arrow_sector(m->snapshot.heading)!=dok_map_arrow_sector((uint16_t)g->hero.heading);
+#else
+    heading_changed=m->snapshot.heading!=(uint16_t)g->hero.heading;
+#endif
+    if(m->snapshot.hero_x!=hero_x||m->snapshot.hero_z!=hero_z||heading_changed||
        m->snapshot.map_available!=(uint8_t)g->items.inventory.map_available||m->left!=left||m->top!=top)changed=1;
     /* A cheap known difference already establishes the dirty OR. Avoid
      * rescanning the full planes while aggregating the same pending movement. */
@@ -177,11 +206,15 @@ void nds_map_prepare(NdsMapRuntime *m,dok_render_world *w,NdsGameplay *g,
     if(reason){
         phase=cpuGetTiming();
         memcpy(m->post_visited,w->initial.maps[3],DOK_LEVEL_MAX_CELLS);
-        buttons(m,pixels,font,language);
+#if N23_MAP_BUTTON_CACHE
+        m->pending_upload_bytes=prepare_buttons(m,pixels,font,language);
+#else
+        buttons(m,pixels,font,language);m->pending_upload_bytes=DOK_MAP_SCREEN_BYTES;
+#endif
         m->profile[3]=cpuGetTiming()-phase;phase=cpuGetTiming();
         /* Clean the RAM source before the wait; commit still performs the
          * actual VRAM transfer. No second framebuffer is allocated. */
-        DC_FlushRange(pixels,DOK_MAP_SCREEN_BYTES);
+        DC_FlushRange(pixels,m->pending_upload_bytes);
         for(uint32_t i=0;i<256u;++i)m->palette[i]=BG_PALETTE_SUB[i];
         m->profile[0]+=cpuGetTiming()-phase;phase=cpuGetTiming();
         m->language=language;
@@ -221,7 +254,7 @@ void nds_map_transfer(NdsMapRuntime *m,unsigned char *pixels,void *vram)
     uint32_t start=cpuGetTiming(),phase=start;
     if(m->pending_reason){
         m->profile[10]=REG_VCOUNT;
-        dmaCopy(pixels,vram,DOK_MAP_SCREEN_BYTES);
+        dmaCopy(pixels,vram,m->pending_upload_bytes);
         m->profile[11]=REG_VCOUNT;
         m->profile[4]=cpuGetTiming()-phase;
     }
@@ -245,7 +278,7 @@ void nds_map_commit(NdsMapRuntime *m,unsigned char *pixels,void *vram)
         uint32_t count=m->pending_probe[8]*m->pending_probe[9],visited=0;
         for(uint32_t n=0;n<count;++n)visited+=m->visited_snapshot[n]!=0;
         m->pending_probe[34]=visited;
-        m->upload_bytes+=DOK_MAP_SCREEN_BYTES;++m->updates;
+        m->upload_bytes+=m->pending_upload_bytes;++m->updates;
         m->last_draw_ticks=m->pending_ticks;m->last_draw_frame=m->pending_probe[62];
         m->last_draw_reason=m->pending_reason;m->force=0;
         if(m->input_pending){uint32_t latency=cpuGetTiming()-m->input_ticks;if(latency>m->latency_max)m->latency_max=latency;m->input_pending=0;}

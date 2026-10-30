@@ -460,6 +460,9 @@ def main():
     try:
         assert transport.sha(args.core) == render.CORE_SHA
         frontend = FrontendObserver(args.core, target, directory, readonly=args.mode == "readonly")
+        # The separate restart process consumes this exact post-settings image.
+        # Other modes clean their private image only after all post-close audits.
+        frontend._keep_disk_for_restart = args.mode == "settings"
         report = frontend.report
         report["initial_language"] = args.language
         image = frontend.save / "melonDS DS/dldi_sd_card.bin"

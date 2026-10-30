@@ -1,6 +1,10 @@
 #include "dok/hotcode.h"
 #include "dok/door_render.h"
+#include "geometry_private.h"
 #include <string.h>
+#ifndef N23_DOOR_INPLACE
+#define N23_DOOR_INPLACE 0
+#endif
 #if N21P_PROFILE && N21P_GEOMETRY_PROFILE
 extern uint32_t cpuGetTiming(void);
 #endif
@@ -69,7 +73,12 @@ DOK_NDS_HOT_CODE dok_door_geometry_result dok_door_geometry_build(const dok_geom
 
 typedef struct source_cache {
     uint32_t cell_id,valid;
-    dok_geometry_cell cell,candidate;
+    dok_geometry_cell cell;
+#if N23_DOOR_INPLACE
+    /* Private builder writes active quads directly. No second full cell. */
+#else
+    dok_geometry_cell candidate;
+#endif
 } source_cache;
 static const dok_geometry_quad *source_quad(source_cache *cache,uint32_t id,
     const dok_initial_world *world,const dok_geometry_binding bindings[256])
@@ -79,7 +88,11 @@ static const dok_geometry_quad *source_quad(source_cache *cache,uint32_t id,
     --id;cell=id/DOK_GEOMETRY_CELL_MAX;ordinal=id%DOK_GEOMETRY_CELL_MAX;
     x=cell%64u;z=cell/64u;
     if(!cache->valid || cache->cell_id!=cell) {
+#if N23_DOOR_INPLACE
+        if(dok_geometry_build_cell_inplace(world,bindings,x,z,&cache->cell)!=DOK_GEOMETRY_OK)
+#else
         if(dok_geometry_build_cell(world,bindings,x,z,&cache->candidate,&cache->cell)!=DOK_GEOMETRY_OK)
+#endif
             return NULL;
         cache->cell_id=cell;cache->valid=1;
     }

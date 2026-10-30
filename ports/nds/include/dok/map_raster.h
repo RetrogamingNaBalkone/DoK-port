@@ -22,6 +22,14 @@ typedef struct dok_map_snapshot {
     uint16_t heading;
     uint8_t map_available;
 } dok_map_snapshot;
+/* The native three-pixel arrow has these exact eight angle sectors.
+ * Invalid headings have no arrow (sector8). Shared by raster and dirty key. */
+static inline unsigned dok_map_arrow_sector(uint32_t h)
+{
+    return (h<=19u||(h>=341u&&h<=360u))?0u:
+        h<=64u?1u:h<=109u?2u:h<=154u?3u:h<=199u?4u:
+        h<=244u?5u:h<=289u?6u:h<=340u?7u:8u;
+}
 
 /* Screen coordinates of cell x's right boundary and row z's top boundary:
  * offset_x + (width-x)*scale, offset_z + z*scale.

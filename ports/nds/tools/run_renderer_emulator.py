@@ -138,6 +138,63 @@ def capture(frontend, stem: str) -> dict:
     return frontend.capture(stem)
 
 
+def compiled_memory_partitions(elf: Path) -> dict:
+    """Accept reviewed slabs only for an ELF-bound compiled build input.
+
+    Historical targets retain N03 ceilings. Never infer their budget from the
+    mutable current header, and never enlarge a ceiling from a probe value.
+    """
+    legacy = dict(world=393216, events=65536, scratch=131072, scene=262144,
+                  assets=1048576, audio=262144, io=131072)
+    rebalanced = dict(legacy, events=36864, assets=1077248)
+    manifest_path = elf.parent/'build-manifest.json'
+    n23_target = elf.parent.resolve().is_relative_to(ROOT/'build/nds/n23')
+    if n23_target:
+        assert manifest_path.is_file(), 'N23 compiled memory manifest is required'
+    if not manifest_path.exists():
+        return dict(ceilings=legacy, provenance='Historical N03 partition ceilings')
+    manifest = json.loads(manifest_path.read_text('utf8'))
+    task = manifest.get('task')
+    if n23_target:
+        assert task == 'N23', 'N23 compiled memory manifest task mismatch'
+    if task == 'N23':
+        assert manifest.get('label') == elf.parent.name, 'N23 memory manifest label mismatch'
+        assert elf.parent.resolve().is_relative_to(ROOT/'build/nds/n23'), 'N23 memory manifest target mismatch'
+    if task not in ('N22', 'N23') or manifest.get('label') != elf.parent.name:
+        return dict(ceilings=legacy, provenance='Historical N03 partition ceilings')
+    relative = 'ports/nds/include/dok/memory_budget.h'
+    row = next((r for r in manifest.get('sources', []) if r['path'] == relative), None)
+    if row is None:
+        assert task != 'N23', 'N23 compiled memory header is absent from the manifest'
+        return dict(ceilings=legacy, provenance='Historical N03 partition ceilings')
+    actual_elf = dict(path=elf.resolve().relative_to(ROOT).as_posix(), bytes=elf.stat().st_size,
+                      sha256=hashlib.sha256(elf.read_bytes()).hexdigest())
+    assert actual_elf in manifest['artifacts'], 'Memory ledger is not bound to the executed ELF'
+    frozen_root = ROOT/'research/evidence/nds'/task.lower()/'candidates'/manifest['label']
+    frozen = frozen_root/'sources'/relative
+    if task == 'N23':
+        frozen_manifest = frozen_root/'build-manifest.json'
+        assert frozen_manifest.is_file() and frozen_manifest.read_bytes() == manifest_path.read_bytes(), 'N23 compiled manifest is not frozen exactly'
+        assert frozen.is_file() and frozen.stat().st_size == row['bytes'] and hashlib.sha256(frozen.read_bytes()).hexdigest() == row['sha256'], 'N23 frozen compiled memory header mismatch'
+    paths = (frozen,) if task == 'N23' else (frozen, ROOT/relative)
+    header = next((p for p in paths if p.exists() and p.stat().st_size == row['bytes']
+                   and hashlib.sha256(p.read_bytes()).hexdigest() == row['sha256']), None)
+    if header is None:
+        # This fallback cannot admit the enlarged assets region. It permits
+        # historical targets with missing optional source snapshots to retain
+        # the original strict N03 limits.
+        return dict(ceilings=legacy, provenance='Historical N03 partition ceilings; bound header unavailable')
+    definitions = dict(re.findall(r'^#define\s+DOK_NDS_(\w+)\s+UINT32_C\((\d+)\)', header.read_text('utf8'), re.M))
+    sizes = {name: int(definitions[name.upper()+'_BYTES']) for name in legacy}
+    assert sizes in (legacy, rebalanced), 'Unreviewed RAM partition change'
+    assert sum(sizes.values()) == int(definitions['SLAB_BYTES']) == 2293760
+    assert int(definitions['RESERVE_BYTES']) == 655360 and int(definitions['SDK_HEAP_MIN']) == 196608
+    assert int(definitions['STATIC_CEILING']) == 524288 and int(definitions['ARM9_BYTES']) == 3670016
+    return dict(ceilings=sizes, provenance='ELF-bound compiled memory_budget.h; approved N03 or N22 partition',
+                header=dict(path=header.relative_to(ROOT).as_posix(), bytes=row['bytes'], sha256=row['sha256']),
+                elf=actual_elf)
+
+
 def verify_memory(frontend, probe: dict, elf: Path) -> dict:
     """Recompute the whole ARM9 closure, including heap alignment/startup."""
     if frontend.core.retro_get_memory_size(2) != 4194304 or probe["is_dsi"]:
@@ -172,14 +229,17 @@ def verify_memory(frontend, probe: dict, elf: Path) -> dict:
     closure = startup + managed + available + probe["reserve_bytes"]
     if closure != limit - base:
         raise AssertionError("N07 ARM9 byte budget does not close")
-    ceilings = {"world": 393216, "scratch": 131072, "scene": 262144, "assets": 1048576}
-    for name, capacity in ceilings.items():
+    partition = compiled_memory_partitions(elf)
+    if managed and managed != sum(partition['ceilings'].values()):
+        raise AssertionError('Managed RAM differs from the compiled slab ledger')
+    for name in ('world', 'scratch', 'scene', 'assets'):
+        capacity = partition['ceilings'][name]
         if not 0 <= probe[name + "_used"] <= probe[name + "_high_water"] <= capacity:
             raise AssertionError(f"N07 {name} arena exceeded accepted capacity")
     return dict(static_bytes=static_end-base, heap_start_gap=probe["heap_start"]-static_end,
                 static_startup_bytes=startup, managed_bytes=managed,
                 sdk_heap_available=available, reserve_bytes=probe["reserve_bytes"],
-                closure_bytes=closure)
+                closure_bytes=closure, partition=partition)
 
 
 def history_record(frontend, probe: dict, ordinal: int,

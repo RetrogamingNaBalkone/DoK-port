@@ -1,5 +1,8 @@
 #include "dok/render_materials.h"
 #include <string.h>
+#ifndef N23_COMPACT_SOURCE
+#define N23_COMPACT_SOURCE 0
+#endif
 
 static uint32_t align32(uint32_t value) { return (value+31u)&~31u; }
 
@@ -85,7 +88,14 @@ dok_status dok_render_world_load(const dok_asset_session *session,
     /* The parser/world and presentation scratch lifetimes are disjoint. */
     if(dok_presentation_bind(&world->effective,&world->base,session,
         &scratch->presentation,&world->presentation)!=DOK_BALANCE_OK) return DOK_STATUS_INVALID_STATE;
+#if N23_COMPACT_SOURCE
+    /* All token spans borrow precisely source_bytes, not the unused capacity
+     * of the 64KiB loading destination. Keep that complete lease, aligned for
+     * following GPU payloads; loading's original capacity guard is unchanged. */
+    world->asset_bytes=align32(world->base.source_bytes);
+#else
     world->asset_bytes=DOK_RENDER_SOURCE_BYTES;
+#endif
     cells=(uint32_t)world->effective.settings[DOK_LEVEL_WIDTH]*
           (uint32_t)world->effective.settings[DOK_LEVEL_LENGTH];
     for(i=0;i<cells;++i) {

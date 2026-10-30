@@ -2,6 +2,152 @@
 
 ## Текущее состояние — 30 октября 2026 года
 
+**Актуализация после продолжения N23:** пользователь требует сначала
+проверить крупные решения и оверинжиниринг для конкретного NDS-порта,
+затем делать точечные оптимизации. N24 не начинать.
+[Новый аудит конвейера](spec/N23-pipeline-audit.md): C12 ordinary CPU
+mean19,256 мс, geometry+disclosure+submit12,531; diagnostic submit разделён
+на validation2,37–2,50 мс и emission2,69–3,15 мс на154 тяжёлых кадрах.
+GPU hardware limit не доказан. Производственные оптимизации не добавлены.
+
+C12 EN и накопленные C12 SCN RU/EN завершены:63 cases/12880 frames на банк,
+normal6637 intervals, все≤2VB/min29,913049, RU51,346931/EN51,247524 FPS.
+Runtime/audio/HUD/map PASS; EN all3 live/LCD PASS, touch42/max6VB.
+Natural61 остаётся открытым; tours13/14/15 дали52/19/15, без FINISH.
+Frozen reports/images/source snapshots — `research/evidence/nds/n23/review13/`.
+Все запуски этого продолжения закончены.
+
+Первый следующий шаг N23 — **простое статическое представление геометрии
+при загрузке**, изолированная ARM-пара и memory/equivalence proof.
+Не вводить универсальный cache/invalidation framework: текущие pickup/corpse
+writers сохраняют базовую геометрию, host invariant PASS на трёх уровнях
+(536272 substitutions). Doors/sprites/water остаются отдельной динамикой.
+Current C12 equivalence и выигрыш нового представления ещё не проверены.
+После крупного решения вернуться к natural61/полным ordinary routes и
+итоговому архиву N23. Подробные команды/границы — в новом аудите.
+
+Ниже — предыдущая передача C12; её запрет запусков действовал на момент
+handoff и снят текущим поручением продолжать N23, EN/SCN пункты обновлены выше.
+
+Пользователь поручил **N22 → N23**. Остановка перед N22 снята; сейчас
+N22 принята (эмулятор); **N23 не принята, передаётся в новый чат**.
+Актуальная самодостаточная передача — [N23-next-chat](spec/N23-next-chat.md),
+паспорт — [N23](tasks/N23.md), детали — [N23-performance](spec/N23-performance.md).
+Последняя immutable RU-сборка — `build/nds/n23/candidate12-ru/`, durable-копия —
+`research/evidence/nds/n23/candidates/candidate12-ru/`. Её ROM SHA
+`f7049e2c7ec1900d9d644503ea359abbd3d7c622a4aae01de0e503aecaf36bdc`.
+C12 LEVEL2 prefix220 и LEVEL1 allkeys7 partial прошли свой FPS-бюджет
+(minimum29,913049; все интервалы≤2 VB), но LEVEL1 закончился Game Over,
+не FINISH. C12 RU all3 live/LCD тоже PASS; touch42/max6VB.
+**Natural61, C12 EN/накопленная RUEN-матрица и окончательная приёмка открыты.**
+Новых сборок/прогонов сейчас не запускать: все bounded runs завершены,
+живых cores и SDK-процессов нет. Следующий ID остаётся N23.
+Цель итерации — полная игра и оптимизированная,
+проверенная в эмуляторе сборка для плейтестинга. После N23 остановиться
+перед N24; аппаратная проверка и прослушивание остаются открытыми.
+Предыдущая итерация и её доказательства сохранены ниже как история.
+
+Итог N22: `root-acceptance.json` — PASS/pending0, все три ordinary мира и
+оба языка FINISH; `root-final-review.json` независимо проверил4974 archive
+SHA/source pairs,624 compiled inputs и clear renderer/GPU flags.
+Полные профили и bottlenecks — [N22-route-performance](spec/N22-route-performance.md).
+Паспорт [N22](tasks/N22.md) содержит точные команды, immutable ROM hashes,
+archive/index hashes и ограничения. Игровые сохранения не добавлены.
+**Итоговый бюджет N23 ещё не принят**. Fine profile compaction/decode,
+map raster и callbacks выполнен; локальные оптимизации и C12 partial checks
+описаны в текущей передаче. Остаются natural61, matching RUEN matrix и
+окончательная latency/audio/memory/stack сводка. Не считать
+естественные61 активных AI после traversal/retry искусственным all-awake.
+Ни один активный emulator/core для N22 не остался.
+
+Ниже сохранена история N22 до итоговой приёмки; её промежуточные «открыто»
+не отменяют текущий статус выше.
+
+Промежуточное состояние N22: [игровой цикл](spec/N22-flow.md) реализован;
+[исходные x86/RES-проверки](spec/N22-original-flow.md) прошли. RU/EN ARM9
+подтвердили два немедленных retry в том же мире и Game Over с очисткой
+событий/звука. Исправлены и отдельно проверены первый pixel descriptor
+перехода и [занятая точка возрождения](spec/N22-retry-overlap.md).
+Проверены смены мира, язык и settings → restart без прогресса.
+
+Длительное прохождение LEVEL2 выявило [фрагментацию VRAM](spec/N22-texture-stream.md).
+Исправление частичным перемещением принято отдельно: независимые host/SDK
+проверки подтвердили 67 840 bytes upload вместо 367 360, прежние pixels/palette,
+границы DMA и source lease. Полностью закреплённые кандидаты:
+`build/nds/n22/candidate-partial01-{ru,en}`; обычные root RU/EN natural/menu
+прогоны имеют суффикс `-partial01`. Полный игровой цикл LEVEL1 уже пройден
+на контрольных сборках; прохождение оставшихся уровней и окончательная
+матрица кандидата ещё выполняются. **N22 не закрыта, N23 не начата.**
+Текущие команды, конкретные хеши, отчёты и ограничения — в паспорте N22;
+следующий шаг — завершить обычные LEVEL2/3 и принять полный N22 archive.
+
+Дальнейший ordinary EN LEVEL2 выявил [CPU cache NO_SPACE](spec/N22-cpu-cache-fault.md)
+на candidate01: точный replay 19 304 кадров подтвердил sprites working set
+229 376 + W overlay 8192 = 237 568 bytes при capacity 221 056. Это отдельный
+сбой до GPU stream planning. Candidate01 теперь служит контролем, окончательной
+сборкой его принимать нельзя. В **candidate-partial02-{ru,en}** неиспользуемые
+28 672 bytes хвоста events slab переданы assets: events 36 864, assets 1 077 248.
+Полные 512 owners ×3 slots, slab 2 293 760, SDK minimum 196 608 и reserve 655 360
+сохранены. [N03/N08 regression](spec/N22-memory-rebalance-regression.md) прошла;
+root RU/EN transitions/natural retry/Game Over на 02 —
+`research/evidence/nds/n22/root-review-partial02b.json` (4 reports/198 image pins).
+Проверка бюджетов берёт SHA-bound compiled header из архива конкретного ELF;
+изменение текущего заголовка не расширяет старый бюджет. Границы дополнительно
+проверены `root-memory-oracle-review.py`, 10 positive/negative cases.
+Полные обычные маршруты 02 ещё не приняты; **N22 и переход к N23 остаются открытыми**.
+
+На candidate02 **LEVEL1 RU полностью пройден** сохранённой политикой V18:
+`route-1-level1-root-saved-v18-02a`, одна настоящая смерть/retry, все ключи,
+38 kills, W, FINISH → EINTRO RU → LEVELS, FAT unchanged. Полный профиль
+15 416/15 416 кадров: среднее 30,396122 FPS, минимум за ≥1 с 22,933338,
+>2VB 5,637001%, максимум 6VB. Архив —
+`research/evidence/nds/n22/route-profiles/level1-ru-current02-complete01/`
+(41 verified pins). На кадрах 10509/9388 sprites 46,222/39,113 мс и
+14/16 CPU cache evictions; подробности и ограничения — в спецификации
+производительности.
+
+LEVEL2 EN также полностью пройден: `route-2-level2-original-en-l2-v3`,
+все ключи, 6 kills, один retry, FINISH → EINTRO EN → LEVELS, FAT unchanged.
+14 607 активных кадров/полное CPU покрытие: 26,766718 FPS в среднем,
+минимум за ≥1 с 19,615114, >2VB 28,876566%, максимум 5VB; map максимум
+21,581 мс, simulation 32,083. Архив — `route-profiles/level2-en-current02-complete01/`
+в N22 evidence (420 verified pins). Независимый
+`root-complete-route-review-level1-2.json` подтвердил оба completed мира,
+исходные выходы и оба языка FINISH. LEVEL3 RU теперь также полностью
+завершён: `route-1-level3-root-ru-l3-east-v8`, keys7, W, 17 kills,
+два native retry, FINISH → EINTRO RU → LEVELS, FAT unchanged.
+11 020 активных кадров с CPU profile: среднее 31,684141 FPS, минимум
+за ≥1 с 19,942033, >2VB 11,588022%, максимум 5VB. Архив —
+`route-profiles/level3-ru-current02-complete01/` (150 verified pins).
+`root-complete-route-review.json` независимо подтвердил все три мира,
+исходные exit-cells и оба языка концовки. Агрегат содержит13 прогонов,
+из них3 completed; отрицательные controls отдельно обозначены.
+Финальный архив и итоговая программная приёмка N22 прошли;
+`root-final-review.json` — PASS.
+
+По уточнению пользователя N22 собирает [данные оптимизации N23](spec/N22-route-performance.md)
+на обычных маршрутах, а не только на постановочных сценах. Все новые route
+прогоны сохраняют presentation history и CPU profiles с координатами/вводом.
+Первый LEVEL1 RU prefix (180 клеток/3005 кадров) — 29,958 FPS, секундный
+минимум 27,018, >2VB 1,897%; **бюджет N23 не пройден**. Данные, snapshots
+и PNG закреплены в `research/evidence/nds/n22/route-profiles/level1-ru-prefix01/`;
+независимая проверка cadence — `root-route-profile-review.json` в N22 evidence.
+Полные прогоны и сравнение после оптимизаций ещё требуются. Это эмуляторный
+результат; аппаратные FPS и N23 acceptance из него не следуют.
+
+Повтор того же LEVEL1 prefix с расширенным read-only observer совпал по всем
+992 input transitions, route rows, 3005 presentation intervals и CPU profiles.
+В худшем кадре 2240 зафиксированы 8 CPU cache evictions и 3 decode/49 152 bytes.
+`frame_store.c:evict` делает отдельный `memmove` на каждую жертву; пакетная
+compaction — конкретный кандидат N23, отдельное время compaction/unpack пока
+не измерено. Архив — `route-profiles/level1-ru-resources01/`, независимый proof —
+`root-route-resource-review.py/.json` в N22 evidence. GPU relocation planner
+входит в более поздний `effects`, поэтому его стоимость не объясняет пик
+внутри `sprites`. Эти сведения и отрицательная попытка LEVEL3 явно разделены
+в [спецификации замеров](spec/N22-route-performance.md).
+
+## Архив приёмки N18–N21P — до поручения N22–N23
+
 **Цикл N18 → N19 → N20 → N21 → N21P завершён (эмулятор). Остановиться перед
 N22; полного FINISH/death/gameflow ещё нет.** Пользователь требует новых
 субагентов для новых задач. Physical DS и прослушивание RU/EN audio/music
@@ -112,6 +258,36 @@ C21 устранил пропуск deadline переносом диагност
 инвалидацией. Цель60 требует≥99% интервалов≤1VB на полном наборе, сейчас
 она не достигнута. HUD и редкая перерисовка карты не являются первым
 направлением дальнейшей оптимизации.
+
+## Очистка после итерации — 30 октября 2026 года
+
+По отдельному поручению пользователя удалены 49 983 временных файла
+(10 347 565 051 B): 246 завершённых тестовых FAT по 32 MiB и 49 737 файлов
+кешей компилятора/Python. Убрано 41 пустое дерево кеша. Точный манифест,
+SHA дисков, хеши логических файлов и hex небольших настроек находятся в
+`research/evidence/maintenance/cleanup-20261030/delete-plan-final.json`.
+Нестандартный quality FAT и его индекс, исследовательские оригиналы,
+отчёты, контрольные кадры/PCM, ROM/ELF и входы сборок сохранены.
+
+В 12 map/check-инструментах отдельные Zig global caches заменены общим
+`build/zig-global-cache`; локальный кеш процесса автоматически удаляется.
+Общий libretro Frontend удаляет созданные им SD-образ/индекс при выходе
+процесса после освобождения core и проверок FAT, сохраняя disk-retention JSON.
+Режим settings намеренно сохраняет образ для следующего restart-процесса;
+переданный --reuse-image не удаляется. Для отладки:
+`NDS_KEEP_COMPILER_CACHE=1` и `NDS_KEEP_EMULATOR_DISK=1`.
+
+Это обслуживание инструментов, не N22/N23 и не повторная приёмка игрового
+кода. Старые frozen source/tool hashes относятся к сохранённым версиям
+`research/evidence/nds/n21p/final-sources/`, текущие Python-инструменты изменены
+осознанно; manifests/ROM/ELF/архив не переписаны. Maintenance supersessions и
+проверки сохранности — `retained-verification.json` в каталоге очистки.
+Проверены 8018 source/archive pins, 22 оригинальных образца, 23 проверки
+очистки и actual melonDS core smoke (24 кадра: FAT доступен после close,
+удалён после выхода процесса). Повторный cleanup-plan содержит 0 удалений.
+Подробная [процедура очистки](../storage-maintenance.md) и
+[компактный итог](../../analysis/storage-cleanup-20261030.json).
+Статусы NDS и остановка перед N22 прежние; статусы GBA/SDL2 не менялись.
 
 ## История итерации N18–N21P до финальной приёмки
 

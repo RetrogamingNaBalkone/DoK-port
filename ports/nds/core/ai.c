@@ -1,4 +1,5 @@
 #include "dok/ai.h"
+#include "dok/cell_math.h"
 #include <limits.h>
 #include <stddef.h>
 #include <string.h>
@@ -138,7 +139,7 @@ dok_status dok_ai_hit(dok_ai *s,dok_object_ref target,dok_object_ref source,int1
 }
 static uint32_t index_at(const dok_ai *s,int32_t x,int32_t z)
 {
-    const dok_level_definition *d=s->world->definition;int32_t cx=word(x/d->settings[3]),cz=word(z/d->settings[3]);
+    const dok_level_definition *d=s->world->definition;int32_t cx=word(dok_cell_quotient(x,d->settings[3])),cz=word(dok_cell_quotient(z,d->settings[3]));
     if(cx<0)cx=0;if(cz<0)cz=0;if(cx>=d->settings[0])cx=d->settings[0]-1;if(cz>=d->settings[2])cz=d->settings[2]-1;
     return (uint32_t)cz*(uint16_t)d->settings[0]+(uint32_t)cx;
 }
@@ -184,7 +185,7 @@ dok_status dok_ai_sight(dok_ai *s,dok_object_ref target,uint32_t *visible)
     dok_status r=valid(s);dok_enemy *e;if(r!=DOK_STATUS_OK)return r;if(!visible)return DOK_STATUS_INVALID_ARGUMENT;
     e=find(s,target);if(!e)return DOK_STATUS_STALE_REFERENCE;
     uint32_t index=index_at(s,e->motion.x,e->motion.z);unsigned char old=s->world->maps[DOK_WORLD_MMAP][index];
-    if(old!=e->glyph&&old!=' ')return DOK_STATUS_INVALID_STATE;
+    if(old!=e->glyph&&old!=' '&&!dok_collision_respawn_origin(s->collision,ref(s,e),index))return DOK_STATUS_INVALID_STATE;
     s->busy=1;s->world->maps[DOK_WORLD_MMAP][index]=' ';r=sight(s,e,visible);
     s->world->maps[DOK_WORLD_MMAP][index]=old;s->busy=0;return r;
 }
@@ -192,7 +193,8 @@ static dok_status course(dok_ai *s,dok_enemy *e,int16_t old_heading)
 {
     uint32_t origin=index_at(s,e->motion.x,e->motion.z);unsigned char old=s->world->maps[DOK_WORLD_MMAP][origin];dok_status r;
     const dok_world_object_seed *hero=&s->world->objects[s->world->hero.object_id-1u];dok_collision_view view;
-    if(old!=e->glyph&&old!=' ')return DOK_STATUS_INVALID_STATE;
+    uint32_t overlap=dok_collision_respawn_origin(s->collision,ref(s,e),origin);
+    if(old!=e->glyph&&old!=' '&&!overlap)return DOK_STATUS_INVALID_STATE;
     if((r=dok_ai_heading(wrap((int64_t)hero->x-e->motion.x),wrap((int64_t)hero->z-e->motion.z),&e->motion.heading))!=DOK_STATUS_OK)return r;
     if(!dok_ai_course_step(&e->course_counter,word(field(definition(s,e->glyph),0xae)))){e->motion.heading=old_heading;return DOK_STATUS_OK;}
     int32_t x=e->motion.x,z=e->motion.z;int16_t half=word(-sar(s->world->definition->settings[3],1));
@@ -202,7 +204,7 @@ static dok_status course(dok_ai *s,dok_enemy *e,int16_t old_heading)
         r=advance(s,&nx,&nz,e->motion.heading,half);if(r!=DOK_STATUS_OK)break;
         r=dok_collision_native_resolve(&view,x,z,nx,nz,&ax,&az);if(r!=DOK_STATUS_OK)break;
         x=ax;z=az;++s->course_trials;if(index_at(s,x,z)!=origin)break;}
-    s->world->maps[DOK_WORLD_MMAP][origin]=old;
+    s->world->maps[DOK_WORLD_MMAP][origin]=overlap?e->glyph:old;
     if(r!=DOK_STATUS_OK)return r;
     r=dok_ai_heading(wrap((int64_t)x-e->motion.x),wrap((int64_t)z-e->motion.z),&e->motion.heading);
     if(r==DOK_STATUS_OK)emit(s,e,DOK_AI_COURSE);return r;
@@ -213,7 +215,8 @@ static dok_status walking(dok_ai *s,dok_enemy *e,uint32_t now,const dok_level_ob
     dok_collision_context context;dok_collision_report collision_report;dok_motion_report motion_report;
     uint32_t origin=index_at(s,e->motion.x,e->motion.z);unsigned char old_cell=s->world->maps[DOK_WORLD_MMAP][origin];
     const dok_world_object_seed *hero=&s->world->objects[s->world->hero.object_id-1u];
-    if(old_cell!=e->glyph&&old_cell!=' ')return DOK_STATUS_INVALID_STATE;
+    uint32_t overlap=dok_collision_respawn_origin(s->collision,ref(s,e),origin);
+    if(old_cell!=e->glyph&&old_cell!=' '&&!overlap)return DOK_STATUS_INVALID_STATE;
     s->world->maps[DOK_WORLD_MMAP][origin]=' ';
     r=dok_ai_heading(wrap((int64_t)hero->x-e->motion.x),wrap((int64_t)hero->z-e->motion.z),&e->motion.heading);
     if(r==DOK_STATUS_OK)r=ticks(s,&now);
@@ -228,7 +231,7 @@ static dok_status walking(dok_ai *s,dok_enemy *e,uint32_t now,const dok_level_ob
         }
     }
     if(r==DOK_STATUS_OK)r=course(s,e,old);
-    s->world->maps[DOK_WORLD_MMAP][origin]=old_cell;
+    s->world->maps[DOK_WORLD_MMAP][origin]=overlap?e->glyph:old_cell;
     if(r!=DOK_STATUS_OK)return r;
     a=animation(s,e,DOK_PRESENT_ANIMATION,&id);if(!a)return DOK_STATUS_INVALID_STATE;
     if(e->next_cursor<0||(uint32_t)e->next_cursor>=a->count)e->next_cursor=0;
@@ -282,7 +285,7 @@ static dok_status dying(dok_ai *s,dok_enemy *e)
     uint32_t index=index_at(s,e->motion.x,e->motion.z);
     unsigned char current=s->world->maps[DOK_WORLD_MMAP][index];
     const dok_level_object *tile=definition(s,s->world->maps[DOK_WORLD_TMAP][index]);
-    if(!tile||(current!=e->glyph&&current!=' '))return DOK_STATUS_INVALID_STATE;
+    if(!tile||(current!=e->glyph&&current!=' '&&!dok_collision_respawn_origin(s->collision,ref(s,e),index)))return DOK_STATUS_INVALID_STATE;
     s->world->maps[DOK_WORLD_MMAP][index]=' ';
     s->world->maps[tile->class_id==0u?DOK_WORLD_TMAP:DOK_WORLD_MMAP][index]=e->glyph;
     r=dok_collision_set_flags(s->collision,ref(s,e),(uint16_t)(s->collision->flags[e->glyph]|0x10u));if(r!=DOK_STATUS_OK)return r;

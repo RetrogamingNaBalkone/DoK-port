@@ -1,0 +1,28 @@
+# Exact public-SDK texture fragmentation fixture; separate from production.
+BLOCKSDS ?= /opt/blocksds/core
+WONDERFUL_TOOLCHAIN ?= /opt/wonderful
+CC := $(WONDERFUL_TOOLCHAIN)/toolchain/gcc-arm-none-eabi/bin/arm-none-eabi-gcc
+OUTDIR ?= ../../build/nds/n22/fragment-partial-01
+PARTIAL ?= 1
+OBJDIR := $(OUTDIR)/obj
+ARCH := -mcpu=arm946e-s+nofp
+SPECS := $(BLOCKSDS)/sys/crts/ds_arm9.specs
+CPPFLAGS := -D__NDS__ -D__BLOCKSDS__ -DARM9 -DN21P_ITCM=1 -DN22_STREAM_PARTIAL_DEFRAG=$(PARTIAL) -DN22_STREAM_LARGEST_MISSES=0
+CPPFLAGS += -Iinclude -Iplatform/render_probe -I$(OUTDIR)/generated -I$(BLOCKSDS)/libs/libnds/include
+CFLAGS := -O2 -g3 -Wall -Wextra -Werror -Wno-misleading-indentation -ffunction-sections -fdata-sections -fstack-usage -MMD -MP
+OBJECTS := $(OBJDIR)/fragment.o $(OBJDIR)/render_backend.o $(OBJDIR)/vram_layout.o
+.PHONY: all
+all: $(OUTDIR)/dok_nds_fragment.nds
+$(OUTDIR)/dok_nds_fragment.nds: $(OUTDIR)/dok_nds_fragment.elf ../../build/nds/n18/arm7/dok_audio_arm7.elf
+	$(BLOCKSDS)/tools/ndstool/ndstool -c $@ -9 $< -7 ../../build/nds/n18/arm7/dok_audio_arm7.elf
+$(OUTDIR)/dok_nds_fragment.elf: $(OBJECTS)
+	$(CC) $(ARCH) -mthumb -specs=$(SPECS) -o $@ $^ -L$(BLOCKSDS)/libs/libnds/lib -Wl,-Map,$(OUTDIR)/dok_nds_fragment.map -Wl,--defsym=__usr_stack_size=12288 -Wl,--start-group -lnds9 -lc -Wl,--end-group
+$(OBJDIR)/fragment.o: tools/flow/fragment_arm9.c $(OUTDIR)/generated/fragment_layout.inc Makefile.n22fragment | $(OBJDIR)
+	$(CC) $(ARCH) -mthumb -specs=$(SPECS) $(CPPFLAGS) $(CFLAGS) -std=gnu11 -c $< -o $@
+$(OBJDIR)/render_backend.o: platform/render_probe/render_backend.c Makefile.n22fragment | $(OBJDIR)
+	$(CC) $(ARCH) -marm -specs=$(SPECS) $(CPPFLAGS) $(CFLAGS) -std=gnu11 -c $< -o $@
+$(OBJDIR)/vram_layout.o: render/vram_layout.c Makefile.n22fragment | $(OBJDIR)
+	$(CC) $(ARCH) -marm -specs=$(SPECS) $(CPPFLAGS) $(CFLAGS) -std=c11 -pedantic-errors -c $< -o $@
+$(OBJDIR):
+	mkdir -p $@
+-include $(OBJECTS:.o=.d)

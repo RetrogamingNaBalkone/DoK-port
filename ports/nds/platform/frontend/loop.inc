@@ -1,9 +1,51 @@
-/* Production N21 shell. FINISH/death campaign consumption remains N22.
+/* Production shell. N22 consumes FINISH/death only after complete dispatch.
  * FRONTEND_FIXTURES alone exposes explicit real-button EINTRO/ENDTXT hooks. */
+#if GAMEPLAY_FLOW
+_Alignas(32) volatile uint32_t g_nds_flow_probe[32];
+static uint32_t flow_result;
+static void frontend_flow_probe(void)
+{
+    NdsGameplay *g=&storage->game;
+    uint32_t p[32]={0x22504b44u,1,g_nds_flow_probe[2]|1u,world_active,world_serial,
+        frontend->state.level,(uint32_t)(int32_t)g->items.inventory.health,
+        (uint32_t)(int32_t)g->lives,(uint32_t)g->hero.x,(uint32_t)g->hero.y,
+        (uint32_t)g->hero.z,(uint32_t)(int32_t)g->hero.heading,g->finish_pending,
+        g->deaths,g->retries,g->hero_callbacks,g->ai.callbacks,g->combat.callbacks,
+        storage->effects.scheduler._event_count,world->initial.object_count,
+        world_active?address(world->initial.maps[DOK_WORLD_MMAP]):0,
+        world_active?address(world->initial.maps[DOK_WORLD_TMAP]):0,
+        world_active?address(world->initial.maps[DOK_WORLD_FCMAP]):0,
+        world_active?address(world->initial.maps[DOK_WORLD_VISITED]):0,
+        g->items.inventory.keys,g->items.inventory.charge,flow_result,
+        storage->effects.scheduler._dispatching,g->collision._active!=NULL,
+        storage->effects.scheduler._config.world_epoch,obs.presented_frame_id,frontend->frames};
+    g_nds_flow_probe[2]=p[2];DC_FlushRange((void *)g_nds_flow_probe,32);
+    memcpy((void *)g_nds_flow_probe,p,sizeof(p));DC_FlushRange((void *)g_nds_flow_probe,sizeof(p));
+    ++g_nds_flow_probe[2];DC_FlushRange((void *)g_nds_flow_probe,32);
+}
+static int frontend_stop_world(void)
+{
+    if(!world_active)return nds_audio_runtime_clear();
+    if(storage->effects.scheduler._dispatching||storage->game.collision._active)return 0;
+    if(scene->leased&&dok_render_scene_release(scene,scene->generation)!=DOK_RENDER_SCENE_OK)return 0;
+    if(!nds_audio_runtime_clear()||dok_combat_clear(&storage->game.combat)!=DOK_STATUS_OK||
+       dok_ai_clear(&storage->game.ai)!=DOK_STATUS_OK||
+       dok_events_reset(&storage->effects.scheduler,world_serial+1u)!=DOK_STATUS_OK)return 0;
+    storage->effects.game=NULL;storage->effects.simulation_list=NULL;
+    storage->effects.world=NULL;storage->effects.sprites=NULL;
+    memset(&storage->game,0,sizeof(storage->game));memset(&storage->list,0,sizeof(storage->list));
+    memset(demand,0,sizeof(demand));demand_count=0;stream_ready=0;mask_identity_count=0;
+    frontend->visual_descriptor_bytes=0;frontend->visual_asset=0;frontend->visual_pixels=0;
+    frontend->visual_bytes=0;frontend->visual_references=0;
+    ui->message_kind=0;ui->message_bytes=0;ui->message_address=0;ui->dirty=1;
+    nds_map_begin();map_ui->prepared=0;memset(&map_ui->snapshot,0,sizeof(map_ui->snapshot));
+    world_active=0;return memory_check();
+}
+#endif
 static void frontend_game_probe(void)
 {
     uint32_t p[16]={0};
-    if(world_serial){
+    if(world_active){
         p[0]=storage->effects.clock._ticks;p[1]=storage->game.hero_callbacks;
         p[2]=storage->game.ai.callbacks;p[3]=storage->game.combat.callbacks;
         p[4]=world_serial;p[5]=world->initial.epoch;
@@ -17,6 +59,9 @@ static void frontend_game_probe(void)
          * boundary. Publishing their addresses does not dirty the UI bank. */
     }
     nds_frontend_publish(frontend,p);publish();
+#if GAMEPLAY_FLOW
+    frontend_flow_probe();
+#endif
 }
 static int frontend_actions(uint32_t action)
 {
@@ -34,16 +79,23 @@ static int frontend_actions(uint32_t action)
         map_ui->paused=0;++map_ui->resumes;
     }
     if(action&DOK_FRONTEND_LANGUAGE_CHANGED){
-        if(world_serial&&!nds_ui_language(ui,world,scratch,frontend->state.language))return 0;
+        if(world_active&&!nds_ui_language(ui,world,scratch,frontend->state.language))return 0;
         /* Failed writes never roll back the user's in-memory selection. */
         (void)nds_frontend_settings_write(frontend);
     }
-    if(action&(DOK_FRONTEND_STOP_GAME|DOK_FRONTEND_STOP_TITLE))nds_audio_runtime_clear();
+    if(action&DOK_FRONTEND_STOP_TITLE)if(!nds_audio_runtime_clear())return 0;
+    if(action&DOK_FRONTEND_STOP_GAME){
+#if GAMEPLAY_FLOW
+        if(!frontend_stop_world())return 0;
+#else
+        nds_audio_runtime_clear();
+#endif
+    }
     return 1;
 }
 static void frontend_restore_game(void)
 {
-    bgShow(0);ui->dirty=1;ui->overlay_blank=0;frontend->drawn_revision=0;
+    bgShow(0);ui->dirty=1;ui->overlay_blank=0;ui->overlay_valid=0;frontend->drawn_revision=0;
     frontend->visual_flushed_asset=0;frontend->visual_flushed_pixels=0;frontend->visual_flushed_bytes=0;
     nds_map_invalidate(map_ui);
     for(uint32_t n=0;n<256u;++n){BG_PALETTE[n]=storage->effects.palette[n];
@@ -99,6 +151,9 @@ static int frontend_loop(void)
             if(new_level){
                 if(scene->leased&&(dok_render_scene_release(scene,scene->generation)!=DOK_RENDER_SCENE_OK))return 0;
                 if(!level_load(frontend->state.level))return 0;
+#if GAMEPLAY_FLOW
+                flow_result=0;
+#endif
                 if(ui->language!=frontend->state.language&&!nds_ui_language(ui,world,scratch,frontend->state.language))return 0;
                 play=(dok_render_case){0};play.id=1;play.level=frontend->state.level;play.source_kind=22;
                 play.x=storage->game.hero.x;play.y=storage->game.hero.y;play.z=storage->game.hero.z;play.heading=storage->game.hero.heading;
@@ -115,6 +170,36 @@ static int frontend_loop(void)
             frontend_touch=dok_frontend_game_input(&frontend->state)?touching:0;
             frontend_x=(int16_t)pen.px;frontend_y=(int16_t)pen.py;
             if(!render_one(&play,ordinal++))return 0;
+#if GAMEPLAY_FLOW
+            /* Dispatch/output sinks have returned. Render-one has completed
+             * the display boundary, so teardown cannot invalidate a borrower. */
+            NdsGameplay *g=&storage->game;
+            if(g->finish_pending)g->items.inventory.health=-1;
+            flow_result=dok_gameflow_check(g->items.inventory.health,&g->lives);
+            if(flow_result==DOK_FLOW_RETRY||flow_result==DOK_FLOW_GAMEOVER){
+                ++g->deaths;
+                const dok_world_object_seed *h=&world->initial.objects[world->initial.hero.object_id-1u];
+                nds_audio_runtime_hero_death(world->initial.hero,world->effective.objects[h->definition_index].glyph);
+                if(!nds_audio_runtime_service())return 0;
+                ui->lives=g->lives;ui->message_kind=0;ui->dirty=1;
+            }
+            if(flow_result==DOK_FLOW_RETRY){
+                if(scene->leased&&dok_render_scene_release(scene,scene->generation)!=DOK_RENDER_SCENE_OK)return 0;
+                if(nds_gameplay_retry(g)!=DOK_STATUS_OK)return 0;
+                play.x=g->hero.x;play.y=g->hero.y;play.z=g->hero.z;play.heading=g->hero.heading;
+            }else if(flow_result==DOK_FLOW_FINISH||flow_result==DOK_FLOW_GAMEOVER){
+                uint32_t transition=flow_result==DOK_FLOW_FINISH?
+                    dok_frontend_show_outro(&frontend->state,frontend->state.level)|DOK_FRONTEND_STOP_GAME:
+                    dok_frontend_game_over(&frontend->state);
+                if(!frontend_actions(transition))return 0;
+                /* Publish a non-PLAY descriptor only after its own complete
+                 * buffers/palettes exist. PLAY scratch was borrowed by the
+                 * renderer; it cannot masquerade as a fresh OUTRO/LEVELS. */
+                shown=0;bgHide(0);
+                if(!nds_frontend_draw(frontend,bgGetGfxPtr(hud_bg),bgGetGfxPtr(map_bg)))return 0;
+                swiWaitForVBlank();
+            }
+#endif
         }else{
             shown=0;bgHide(0);
             if(!nds_frontend_draw(frontend,bgGetGfxPtr(hud_bg),bgGetGfxPtr(map_bg)))return 0;

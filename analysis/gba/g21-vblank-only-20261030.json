@@ -1,0 +1,123 @@
+{
+  "task": "G21 hardware freeze / VBlankOnly trial",
+  "date": "2026-10-30",
+  "status": "user hardware smoke passed; VBlank default promoted; G21 in progress",
+  "rom": {
+    "path": "artifacts/gba/DoK-port_G21_VBlankOnly.gba",
+    "bytes": 26645840,
+    "sha256": "389f5ff7991b21cea1e71eb2ff03d242a4efd2ea97a7d4609f7e91aa9f953df1",
+    "build_dir": "build/gba/g21-vblank-only/hardware/hw_v128_vblank_only"
+  },
+  "baseline": {
+    "sha256": "cf30cf8ab1e21c35b2da1f13d3fb5cda8224b27efe32041ac9893fce5727df57",
+    "role": "early-present control before promotion; Beta 1 release retained",
+    "early_present_control_rebuilt_byte_exact": true
+  },
+  "changes": {
+    "variant": "hw_v128_vblank_only",
+    "removed_flags": [
+      "HW_EARLY_PRESENT"
+    ],
+    "added_flags": [
+      "HW_VBLANK_ONLY"
+    ],
+    "hblank_rearm_and_disable_locked_to_vblank": true,
+    "audio_backend_source_unchanged": true
+  },
+  "checks": {
+    "ppu_cases": 396,
+    "all_rgb_and_coverage_equal": true,
+    "transitions": 294,
+    "video_callbacks": 4968,
+    "dma_guard": {
+      "magic": 1447185457,
+      "rearms": 9605,
+      "deferred": 0,
+      "stops": 6,
+      "min_line": 160,
+      "max_line": 208,
+      "wait_cycles": 992000,
+      "late_ends": 0
+    },
+    "frontend_status": "passed",
+    "music": {
+      "wav": "build/gba/g21-vblank-only/hardware/hw_v128_vblank_only/audio-check/ui01-menu-two-loops.wav",
+      "sha256": "9d9193ef7c1786a43c332b94a62d2e02c9df53a44cd899de463a5586e5b395bf",
+      "seconds": 86.17718505859375,
+      "loops": 2,
+      "starts": 1,
+      "underruns": 0,
+      "max_irq_gap": 412,
+      "repeat_correlation": 0.9934563096311618,
+      "stereo_channels_equal": true,
+      "stop_before_intro": true,
+      "no_menu_music_in_pause": true,
+      "restart_on_return": true
+    },
+    "flow_status": "passed",
+    "host_ui": true,
+    "linux_and_thumb_compiled": true
+  },
+  "memory": {
+    "ewram_static_bytes": 261476,
+    "ewram_free_bytes": 668,
+    "iwram_bytes": 24428,
+    "stack_bios_reserve_bytes": 8192,
+    "observed_main_stack": {
+      "main_stack_low": 50356224,
+      "main_stack_top": 50364160,
+      "sentinel_word": 219540062,
+      "untouched_margin_bytes": 5352,
+      "high_water_bytes": 2584,
+      "irq_and_bios_excluded": true,
+      "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+    }
+  },
+  "reports": {
+    "frontend-build.json": {
+      "path": "build/gba/g21-vblank-only/frontend-build.json",
+      "sha256": "cee2f6d0d1a2a4acf06ef8e12d7180bf98f04dd2d8e4820a72118435b5dda953"
+    },
+    "ppu.json": {
+      "path": "build/gba/g21-vblank-only/ppu.json",
+      "sha256": "c4e09eb690ea79fb44c4b03742a92a910820da471c6b4389c3c2168067ec5c5c"
+    },
+    "transitions.json": {
+      "path": "build/gba/g21-vblank-only/transitions.json",
+      "sha256": "9720d9853a2c44bf5fd4dfd6d2950e857878e2e69bb217f18b6562da7b6fc597"
+    },
+    "frontend.json": {
+      "path": "build/gba/g21-vblank-only/frontend.json",
+      "sha256": "0bea7cfb9bac00910983fc745fcc70b74c310827b69577a5b2695c2d39708690"
+    },
+    "flow.json": {
+      "path": "build/gba/g21-vblank-only/flow.json",
+      "sha256": "6c6f06348869222ae7d30fb0981db7fd2279c98f16b583d8962608ca86796b4b"
+    }
+  },
+  "scope": "User-reported physical GBA smoke test for the former early LEVEL1 crash, plus prior mGBA regressions. Duration/full playthrough not confirmed. Exact DMA root cause unproven. G21 remains in progress; NDS/SDL2 unchanged.",
+  "hardware_trial": {
+    "date": "2026-10-30",
+    "source": "user report in chat after trying the linked VBlankOnly ROM",
+    "user_report": "сбоя нет, играется",
+    "platform": "physical GBA",
+    "flashcart": "EZFlash Omega Definitive",
+    "boot": "Clean Boot",
+    "prior_failure": "practically at the start of LEVEL1",
+    "result": "no failure reported; playable",
+    "duration_minutes": null,
+    "whole_game_completed": false,
+    "root_cause": "HBlank repeat-DMA timing hazard supported; exact channel/instruction not proven"
+  },
+  "default_build": {
+    "variant": "hw_v128_vblank_only",
+    "command": "py -3.14 -X utf8 ports/gba/scripts/build_gba_frontend.py --out build/gba/g21-vblank-default",
+    "report": "build/gba/g21-vblank-default/frontend-build.json",
+    "report_sha256": "3508a637df916225daec7cae0fdc4056552bb4aab975b30dbaece270da79000d",
+    "bytes": 26645840,
+    "sha256": "389f5ff7991b21cea1e71eb2ff03d242a4efd2ea97a7d4609f7e91aa9f953df1",
+    "byte_exact_with_hardware_trial": true,
+    "accepted_rom": "artifacts/gba/DoK-port_UI01.gba",
+    "released_beta1_unchanged": true
+  }
+}

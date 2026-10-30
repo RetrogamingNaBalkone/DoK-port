@@ -7,6 +7,9 @@
 #ifndef N21P_AUDIT
 #define N21P_AUDIT 1
 #endif
+#ifndef N23_HUD_FULL_DMA
+#define N23_HUD_FULL_DMA 0
+#endif
 _Alignas(32) volatile uint32_t g_nds_ui_probe[64];
 int nds_ui_initialize(NdsUiRuntime *u)
 {
@@ -89,21 +92,30 @@ void nds_ui_update(NdsUiRuntime *u,dok_render_world *w,const dok_ui_values *valu
     if(!u->stage_count){u->page=(ticks-u->message_start)/20054u;
         if(u->page>=pages){if(u->message_kind)u->dirty=1;u->message_kind=0;data=(const unsigned char *)"";bytes=0;u->page=0;pages=1;}}
     u->pages=pages;u->message_bytes=bytes;u->message_address=(uint32_t)(uintptr_t)data;
-    /* Draw on changes only; compare each aligned row and upload exactly the
-     * changed run in that row. Main BG palette is never written here. */
+    /* Draw on changes only. Main BG palette is never written here. */
     uint32_t redrawn=u->dirty||memcmp(&u->last,values,sizeof(*values))||u->last_page!=u->page||u->stage_count;
     if(redrawn){
         dok_ui_hud(buffer,u->bank,u->language,values,data,bytes,u->page);
+#if N23_HUD_FULL_DMA
+        /* VRAM reads and many short transfers cost more than this 9.5 KiB
+         * strip. Keep the same redraw decision and upload its complete rows. */
+        DC_FlushRange(buffer,DOK_UI_HUD_BYTES);
+        dmaCopy(buffer,vram,DOK_UI_HUD_BYTES);
+        u->uploaded_bytes+=DOK_UI_HUD_BYTES;u->uploaded_rows+=38u;
+#else
         uint16_t *dst=vram;const uint16_t *src=(const uint16_t *)(const void *)buffer;
         for(uint32_t row=0;row<38u;++row){uint32_t first=0,last=128;
             while(first<last&&src[row*128u+first]==dst[row*128u+first])++first;
             while(last>first&&src[row*128u+last-1u]==dst[row*128u+last-1u])--last;
             if(last>first){uint32_t size=(last-first)*2u;DC_FlushRange(src+row*128u+first,size);dmaCopy(src+row*128u+first,dst+row*128u+first,size);u->uploaded_bytes+=size;++u->uploaded_rows;}}
+#endif
         u->last=*values;u->last_page=u->page;u->dirty=0;++u->updates;
         if(N21P_AUDIT){if(memcmp(buffer,vram,DOK_UI_HUD_BYTES))u->fault=3;else ++u->vram_verified;}
     }
     memcpy(u->palette,BG_PALETTE,512);DC_FlushRange(u->palette,512);
+#if !N23_HUD_FULL_DMA
     if(redrawn)DC_FlushRange(buffer,DOK_UI_HUD_BYTES);
+#endif
     uint32_t p[64]={0x19504b44u,1,sequence,u->language,u->level,w->initial.epoch,serial,
         (uint32_t)(uintptr_t)u->bank,(uint32_t)(uintptr_t)vram,(uint32_t)(int32_t)values->health,(uint32_t)(int32_t)values->charge,
         (uint32_t)(int32_t)values->max_health,(uint32_t)(int32_t)values->max_charge,(uint32_t)(int32_t)values->lives,(uint32_t)(int32_t)values->score,

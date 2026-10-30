@@ -1,0 +1,31 @@
+{
+  "task": "N22",
+  "scope": "Confirmed ordinary EN LEVEL2 CPU raw-cache defect; no full-playthrough acceptance",
+  "diagnosis_passed": true,
+  "ordinary_completed": false,
+  "native_checks": 331,
+  "same_state_rows": 19304,
+  "same_physical_button_events": 7183,
+  "current_raw_capacity": 221056,
+  "sprites_bytes": 229376,
+  "weapon_current_bytes": 8192,
+  "required_current_bytes": 237568,
+  "deficit_bytes": 16512,
+  "decoded_payload_sha_checks": 15,
+  "source": {
+    "path": "research/evidence/nds/n22/cpu-cache-fault-01/host.json",
+    "bytes": 17303,
+    "sha256": "8835cb359a693824158c7c89076e4bcb8480cb2e338158ae2b28c7527b806b11"
+  },
+  "spec": "docs/nds/spec/N22-cpu-cache-fault.md",
+  "rom": {
+    "path": "build/nds/n22/candidate-partial01-en/dok_nds_gameplay.nds",
+    "bytes": 287232,
+    "sha256": "476eda4c91b94822c0f8ab0314bf183798ef12ae0e432d208064a6a8728e0a53"
+  },
+  "elf": {
+    "path": "build/nds/n22/candidate-partial01-en/dok_nds_gameplay.elf",
+    "bytes": 2274856,
+    "sha256": "5fddcabe2ae3f7378ddb8e494b818e9132cd6247fcbd14eabfc9f94ab1db6753"
+  }
+}

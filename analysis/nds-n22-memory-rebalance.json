@@ -1,0 +1,156 @@
+{
+  "task": "N22",
+  "passed": true,
+  "scope": "Fresh isolated N03/N08 memory/time regression for N22 rebalance; no ordinary-playthrough acceptance",
+  "budget": {
+    "capacities": [
+      393216,
+      36864,
+      131072,
+      262144,
+      1077248,
+      262144,
+      131072
+    ],
+    "total": 2293760,
+    "reserve": 655360,
+    "sdk_heap_min": 196608,
+    "moved_bytes": 28672
+  },
+  "host": {
+    "memory_checks": 28459,
+    "contracts_passed": true,
+    "time": {
+      "checks": 17974,
+      "failures": 0,
+      "first_failed_line": 0,
+      "clock_cases": 3,
+      "event_cases": 7,
+      "bank_bytes": 36864
+    },
+    "flow": {
+      "passed": true,
+      "checks": 655929,
+      "life_domain": 65536,
+      "integration_vectors": 8,
+      "frontend_branches": 12
+    },
+    "retry_overlap": {
+      "reproduced": false,
+      "checks": 160,
+      "retry_count": 1,
+      "callback_count": 27,
+      "callback_status": 0,
+      "game_fault": 0,
+      "ai_fault": 0,
+      "enemy_glyph": 128,
+      "origin_after": 128,
+      "ai_callbacks": 18,
+      "total_ai_callbacks": 40,
+      "corpse_variants": 2,
+      "shared_actors": 3,
+      "repeated_retry_count": 2
+    }
+  },
+  "memory_arm9": {
+    "observations": 120,
+    "observer_checks": 38,
+    "frames": 171,
+    "checked_bytes": 2293760
+  },
+  "time_arm9": {
+    "frames": 398,
+    "trace_checks": {
+      "passed": true,
+      "synthetic": [
+        {
+          "scenario": 1,
+          "fps": 15,
+          "callbacks": 30,
+          "render_reads": 12,
+          "passed": true
+        },
+        {
+          "scenario": 2,
+          "fps": 30,
+          "callbacks": 30,
+          "render_reads": 24,
+          "passed": true
+        },
+        {
+          "scenario": 3,
+          "fps": 60,
+          "callbacks": 30,
+          "render_reads": 48,
+          "passed": true
+        }
+      ],
+      "live_callbacks": 62,
+      "exact_clock_transitions": 378,
+      "pause_vblanks": 126,
+      "paused_world_ticks": 15352,
+      "resume_world_ticks": 15352,
+      "first_resumed_callback": {
+        "magic": 945179460,
+        "abi_version": 1,
+        "size_bytes": 116,
+        "sequence": 2,
+        "ordinal": 429,
+        "scenario_id": 4,
+        "action": 2,
+        "sample_index": 219,
+        "owner": 1,
+        "callback": 1,
+        "parameter": 101,
+        "flags": 0,
+        "native_now": 15520,
+        "native_deadline": 15433,
+        "native_interval": 416,
+        "paused": 0,
+        "raw_counter_low": 1913498,
+        "raw_counter_high": 0,
+        "clock_last_counter_low": 1913465,
+        "clock_last_counter_high": 0,
+        "rate_numerator_low": 38181824,
+        "rate_numerator_high": 0,
+        "rate_denominator_low": 1994081929,
+        "rate_denominator_high": 0,
+        "fraction_low": 11359648,
+        "fraction_high": 0,
+        "vblank_count": 300,
+        "callback_total": 121,
+        "render_reads": 0
+      }
+    },
+    "memory": {
+      "passed": true,
+      "static_startup_bytes": 118784,
+      "managed_bytes": 2293760,
+      "sdk_heap_available": 602112,
+      "reserve_bytes": 655360,
+      "events_bank_bytes": 36864,
+      "closure_bytes": 3670016
+    }
+  },
+  "preserved_files": 187,
+  "preserved_unchanged": true,
+  "source_snapshot_count": 103,
+  "source": {
+    "path": "research/evidence/nds/n22/rebalance/report.json",
+    "bytes": 1596875,
+    "sha256": "80cd7fc5449df1752c30862c665514c51b07555b5f216adb3d9f7222f49bd282"
+  },
+  "spec": "docs/nds/spec/N22-memory-rebalance-regression.md",
+  "roms": [
+    {
+      "path": "build/nds/n22/rebalance/memory/dok_nds_memory.nds",
+      "bytes": 97792,
+      "sha256": "d17fc6ea669cd62e1abc1ca4c078e3262635e3f04e4eac42513d4b748c3b5a45"
+    },
+    {
+      "path": "build/nds/n22/rebalance/time/dok_nds_time.nds",
+      "bytes": 109056,
+      "sha256": "c7f040122cd8e9aa760cab4f9dc4ae3bfc717f3561ee6ea17649d0e41481a3e7"
+    }
+  ]
+}

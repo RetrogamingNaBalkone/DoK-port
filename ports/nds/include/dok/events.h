@@ -74,8 +74,8 @@ typedef struct dok_event_dispatch_report {
     uint32_t clock_reads;
 } dok_event_dispatch_report;
 
-_Static_assert(sizeof(dok_event_bank) <= DOK_NDS_EVENTS_BYTES,
-               "N08 owner bank must fit N03 events slab");
+_Static_assert(sizeof(dok_event_bank) == DOK_NDS_EVENTS_BYTES,
+               "N22 events slab holds the complete bank with no unused tail");
 
 /* Initialize unused storage; all references must use the configured nonzero
  * epoch. Register/unregister preserve object lifetime identity; reusing the

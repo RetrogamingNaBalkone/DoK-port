@@ -1,10 +1,18 @@
 #include "dok/collision.h"
+#include "dok/cell_math.h"
+#include "dok/n23_profile.h"
 #include <limits.h>
 #include <stddef.h>
 #include <string.h>
 #define STATE_TAG UINT32_C(0x434f4c31)
 #define CONTEXT_TAG UINT32_C(0x434f4c43)
 #define NO_CELL UINT32_MAX
+#ifndef N23_COLLISION_CORNERS
+#define N23_COLLISION_CORNERS 1
+#endif
+#ifndef N23_COLLISION_OBJECT
+#define N23_COLLISION_OBJECT 0
+#endif
 
 static int32_t signed32(uint32_t v)
 { return v<=INT32_MAX?(int32_t)v:(int32_t)((int64_t)v-INT64_C(4294967296)); }
@@ -21,7 +29,7 @@ static uint32_t valid_view(const dok_collision_view *v)
     v->cell_side>0&&v->mmap!=NULL&&v->tmap!=NULL&&v->flags!=NULL&&v->known!=NULL; }
 static uint32_t native_index(const dok_collision_view *v,int32_t x,int32_t z)
 {
-    int32_t cx=word(x/v->cell_side),cz=word(z/v->cell_side);
+    int32_t cx=word(dok_cell_quotient(x,v->cell_side)),cz=word(dok_cell_quotient(z,v->cell_side));
     if(cx<0)cx=0;
     if(cx>=v->width)cx=(int32_t)v->width-1;
     if(cz<0)cz=0;
@@ -33,8 +41,22 @@ static uint32_t clear_at(const dok_collision_view *v,int32_t x,int32_t z,
 {
     uint32_t plane,i;
     int32_t xs[2]={sub32(x,r),add32(x,r)},zs[2]={sub32(z,r),add32(z,r)};
+#if N23_COLLISION_CORNERS
+    uint32_t columns[2],rows[2];
+    for(i=0;i<2u;++i){
+        int32_t cx=word(dok_cell_quotient(xs[i],v->cell_side));
+        int32_t cz=word(dok_cell_quotient(zs[i],v->cell_side));
+        if(cx<0)cx=0;if(cx>=v->width)cx=(int32_t)v->width-1;
+        if(cz<0)cz=0;if(cz>=v->length)cz=(int32_t)v->length-1;
+        columns[i]=(uint32_t)cx;rows[i]=(uint32_t)cz*v->width;
+    }
+#endif
     for(plane=0;plane<2u;++plane)for(i=0;i<4u;++i){
+#if N23_COLLISION_CORNERS
+        uint32_t index=rows[i%2u]+columns[i/2u];
+#else
         uint32_t index=native_index(v,xs[i/2u],zs[i%2u]);
+#endif
         if(plane==0u&&v->projectile_occupied!=NULL&&
            (v->projectile_occupied[index/8u]&(1u<<(index%8u)))!=0u)return 0;
         unsigned char g=plane==0u?(index==ignore?32u:v->mmap[index]):v->tmap[index];
@@ -49,10 +71,10 @@ dok_status dok_collision_native_clear(const dok_collision_view *v,
     *out=clear_at(v,x,z,radius,NO_CELL);return DOK_STATUS_OK;
 }
 static int32_t center(const dok_collision_view *v,int32_t a)
-{ return add32(mul32(a/v->cell_side,v->cell_side),v->cell_side/2); }
+{ return add32(mul32(dok_cell_quotient(a,v->cell_side),v->cell_side),v->cell_side/2); }
 static int32_t edge(const dok_collision_view *v,int32_t a,int32_t direction)
 {
-    int32_t origin=sub32(a,a%v->cell_side);
+    int32_t origin=sub32(a,dok_cell_remainder(a,v->cell_side));
     return direction<0?add32(origin,v->min_distance):
         sub32(sub32(add32(origin,v->cell_side),v->min_distance),1);
 }
@@ -105,8 +127,19 @@ static const dok_world_object_seed *object(const dok_collision_state *s,dok_obje
 {
     uint32_t i;
     if(!valid_state(s)||ref.world_epoch!=s->_epoch||ref.object_id==0u||ref.generation==0u)return NULL;
-    for(i=0;i<s->_world->object_count;++i)if(same_ref(s->_world->objects[i].reference,ref))
-        return &s->_world->objects[i];
+#if N23_COLLISION_OBJECT
+    /* Initial-world references normally use object_id=index+1. Bind proves
+     * uniqueness; reference identities remain immutable while bound. Keep
+     * the full identity test and the original scan for other valid layouts. */
+    if(ref.object_id<=s->_world->object_count) {
+        const dok_world_object_seed *candidate=&s->_world->objects[ref.object_id-1u];
+        if(same_ref(candidate->reference,ref)){N23_ADD(3,1);return candidate;}
+    }
+#endif
+    for(i=0;i<s->_world->object_count;++i)if(same_ref(s->_world->objects[i].reference,ref)){
+        N23_ADD(3,i+1u);return &s->_world->objects[i];
+    }
+    N23_ADD(3,i);
     return NULL;
 }
 dok_status dok_collision_get_view(const dok_collision_state *s,dok_collision_view *out)
@@ -170,6 +203,35 @@ dok_status dok_collision_projectiles(dok_collision_state *s,const unsigned char 
     if(s->_revision==UINT32_MAX)return DOK_STATUS_LIMIT_REACHED;
     s->_projectile_occupied=bits;++s->_revision;return DOK_STATUS_OK;
 }
+uint32_t dok_collision_respawn_origin(const dok_collision_state *s,dok_object_ref ref,uint32_t cell)
+{
+    if(!valid_state(s)||cell!=s->_respawn_cell)return 0;
+    const dok_world_object_seed *o=object(s,ref);if(!o)return 0;
+    uint32_t n=(uint32_t)(o-s->_world->objects);
+    return (s->_respawn_origins[n/8u]>>(n%8u))&1u;
+}
+dok_status dok_collision_respawn_overlap(dok_collision_state *s,uint32_t cell)
+{
+    dok_collision_view v;
+    if(dok_collision_get_view(s,&v)!=DOK_STATUS_OK||s->_active)return DOK_STATUS_INVALID_STATE;
+    const dok_world_object_seed *hero=object(s,s->_world->hero);
+    if(!hero||hero->class_id!=1u||cell>=(uint32_t)v.width*v.length)return DOK_STATUS_INVALID_STATE;
+    unsigned char bits[32]={0};uint32_t occupied=0;
+    for(uint32_t i=0;i<s->_world->object_count;++i){const dok_world_object_seed *o=&s->_world->objects[i];
+        if(o->class_id==9u&&o->pose_known&&native_index(&v,o->x,o->z)==cell){
+            bits[i/8u]|=(unsigned char)(1u<<(i%8u));occupied=1;
+        }
+    }
+    if(occupied){uint32_t n=(uint32_t)(hero-s->_world->objects);bits[n/8u]|=(unsigned char)(1u<<(n%8u));}
+    s->_respawn_cell=occupied?cell:0u;
+    memcpy(s->_respawn_origins,bits,sizeof(bits));return DOK_STATUS_OK;
+}
+static uint32_t origin_allowed(const dok_collision_state *s,dok_object_ref ref,
+    uint32_t cell,unsigned char glyph)
+{
+    unsigned char current=s->_world->maps[DOK_WORLD_MMAP][cell];
+    return current==glyph||current==32u||dok_collision_respawn_origin(s,ref,cell);
+}
 static uint32_t bounded(const dok_collision_view *v,int32_t x,int32_t z)
 {
     int64_t r=v->min_distance;
@@ -195,7 +257,7 @@ dok_status dok_collision_begin(dok_collision_state *s,dok_object_ref ref,
         return DOK_STATUS_LIMIT_REACHED;
     g=s->_world->definition->objects[o->definition_index].glyph;
     index=native_index(&v,motion->x,motion->z);
-    if(v.mmap[index]!=g&&v.mmap[index]!=32u)return DOK_STATUS_INVALID_STATE;
+    if(!origin_allowed(s,ref,index,g))return DOK_STATUS_INVALID_STATE;
     memset(c,0,sizeof(*c));c->_state=s;c->_actor=ref;c->_x=motion->x;c->_y=motion->y;c->_z=motion->z;
     c->_tag=CONTEXT_TAG;c->_glyph=g;s->_active=c;return DOK_STATUS_OK;
 }
@@ -211,7 +273,7 @@ dok_status dok_collision_query(dok_collision_context *c,const dok_motion_substep
     p._x=r->x;p._z=r->z;p._candidate_x=r->candidate_x;p._candidate_z=r->candidate_z;
     p._old_cell=native_index(&v,r->x,r->z);p._new_cell=p._old_cell;p._write=1;
     dx=(int64_t)r->candidate_x-r->x;dz=(int64_t)r->candidate_z-r->z;
-    if(v.mmap[p._old_cell]!=c->_glyph&&v.mmap[p._old_cell]!=32u){p._reason=DOK_COLLISION_FOREIGN;p._write=0;}
+    if(!origin_allowed(c->_state,c->_actor,p._old_cell,c->_glyph)){p._reason=DOK_COLLISION_FOREIGN;p._write=0;}
     else if(dx*2<=-v.cell_side||dx*2>=v.cell_side||dz*2<=-v.cell_side||dz*2>=v.cell_side||
             2*(int32_t)r->distance<=-v.cell_side||2*(int32_t)r->distance>=v.cell_side)
         p._reason=DOK_COLLISION_LARGE_STEP;
@@ -244,6 +306,11 @@ dok_status dok_collision_commit(dok_collision_context *c,const dok_collision_pla
         w->maps[DOK_WORLD_MMAP][p->_old_cell]=32u;
         door_change(s,w->maps[DOK_WORLD_TMAP][p->_new_cell],1);
         w->maps[DOK_WORLD_MMAP][p->_new_cell]=c->_glyph;
+        if(p->_old_cell!=p->_new_cell&&p->_old_cell==s->_respawn_cell){
+            const dok_world_object_seed *o=object(s,c->_actor);
+            if(o){uint32_t n=(uint32_t)(o-w->objects);
+                s->_respawn_origins[n/8u]&=(unsigned char)~(1u<<(n%8u));}
+        }
         ++c->_report.committed;
     }
     ++c->_report.requested;
@@ -278,7 +345,7 @@ dok_status dok_collision_camera_clear(const dok_collision_state *s,dok_object_re
     if((o->class_id!=1u&&o->class_id!=9u)||o->pose_known==0u)return DOK_STATUS_INVALID_STATE;
     if(!bounded(&v,selfx,selfz))return DOK_STATUS_INVALID_STATE;
     g=s->_world->definition->objects[o->definition_index].glyph;own=native_index(&v,selfx,selfz);
-    if(v.mmap[own]!=g&&v.mmap[own]!=32u)return DOK_STATUS_INVALID_STATE;
+    if(!origin_allowed(s,ref,own,g))return DOK_STATUS_INVALID_STATE;
     *out=bounded(&v,x,z)?clear_at(&v,x,z,v.min_distance,own):0u;return DOK_STATUS_OK;
 }
 
@@ -301,7 +368,7 @@ dok_status dok_collision_displace(dok_collision_state *s,dok_object_ref ref,
     if(!bounded(&v,motion->x,motion->z))return DOK_STATUS_INVALID_STATE;
     glyph=s->_world->definition->objects[o->definition_index].glyph;
     cell=native_index(&v,motion->x,motion->z);
-    if(v.mmap[cell]!=glyph&&v.mmap[cell]!=32u)return DOK_STATUS_INVALID_STATE;
+    if(!origin_allowed(s,ref,cell,glyph))return DOK_STATUS_INVALID_STATE;
     memset(&context,0,sizeof(context));context._state=s;context._actor=ref;
     context._x=motion->x;context._y=motion->y;context._z=motion->z;
     context._tag=CONTEXT_TAG;context._glyph=glyph;

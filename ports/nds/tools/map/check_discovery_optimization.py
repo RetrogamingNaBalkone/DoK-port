@@ -1,5 +1,6 @@
 """N21P exact disclosure: archived N20 differential and fresh native replay."""
 from __future__ import annotations
+from compiler_cache import compiler_environment
 import argparse
 import hashlib
 import json
@@ -25,9 +26,7 @@ def main():
     OUT.mkdir(parents=True,exist_ok=True)
     EVIDENCE.mkdir(parents=True,exist_ok=True)
     zig=Path(os.environ['LOCALAPPDATA'])/'Programs/Zig/0.13.0/zig.exe'
-    env=os.environ.copy()
-    env['ZIG_LOCAL_CACHE_DIR']=str(OUT/'zig-local-cache')
-    env['ZIG_GLOBAL_CACHE_DIR']=str(OUT/'zig-global-cache')
+    env=compiler_environment(ROOT)
     flags=['cc','-std=c11','-O2','-Wall','-Wextra','-Werror','-pedantic']
     include=['-Iports/nds/include','-Ibuild/nds/n07/generated']
     common=['ports/nds/render/sprites.c','ports/nds/render/scene.c',

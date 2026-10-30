@@ -14,6 +14,9 @@ typedef struct dok_map_render_record {
 typedef struct dok_map_projection_factor {
     int32_t denominator, factor;
 } dok_map_projection_factor;
+typedef struct dok_map_projection_point {
+    int32_t x,z,depth,lateral;
+} dok_map_projection_point;
 typedef struct dok_map_discovery_workspace {
     dok_map_render_record records[DOK_MAP_DISCOVERY_RECORDS];
     uint16_t order[DOK_MAP_DISCOVERY_RECORDS];
@@ -24,6 +27,9 @@ typedef struct dok_map_discovery_workspace {
     uint16_t sprite_heads[DOK_LEVEL_MAX_CELLS], sprite_next[DOK_SPRITE_LIMIT];
     dok_map_projection_factor factors[256];
     dok_geometry_field54 field54[DOK_LEVEL_MAX_OBJECTS];
+    /* N23 optional, exact-key transient transforms for this update's camera. */
+    dok_map_projection_point points[128];
+    uint32_t point_valid[4];
 } dok_map_discovery_workspace;
 typedef struct dok_map_discovery_stats {
     uint32_t records, eligible, occluded, newly_visited;

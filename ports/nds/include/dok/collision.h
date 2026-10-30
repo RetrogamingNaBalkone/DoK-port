@@ -21,6 +21,10 @@ typedef struct dok_collision_state {
     unsigned char known[256];
     uint32_t _tag, _revision, _epoch;
     const unsigned char *_projectile_occupied;
+    /* N22 source respawn may overlay several live actors in one cell.
+     * Bits identify world seed indices, not glyphs or runtime selectors. */
+    uint32_t _respawn_cell;
+    unsigned char _respawn_origins[32];
 } dok_collision_state;
 enum {
     DOK_COLLISION_WORLD_EDGE=1u, DOK_COLLISION_LARGE_STEP=2u,
@@ -69,6 +73,11 @@ dok_status dok_collision_set_door_count(dok_collision_state *state,
     dok_object_ref object, uint16_t count);
 /* Bind/unbind outside an active context; storage outlives the binding. */
 dok_status dok_collision_projectiles(dok_collision_state *state,const unsigned char *bits);
+/* Called only at the original retry boundary, before its unconditional MMap
+ * overwrite. Authorizes hero and actual class9 occupants of that one cell;
+ * ordinary foreign origins, stale refs and other cells remain refused. */
+dok_status dok_collision_respawn_overlap(dok_collision_state *,uint32_t cell);
+uint32_t dok_collision_respawn_origin(const dok_collision_state *,dok_object_ref,uint32_t cell);
 /* Admission before N09 update. One context exclusively borrows the world until
  * end; no render lease/world reset/other gameplay mutation may overlap it.
  * It validates scalar quarter-step before any occupancy write. Caller still

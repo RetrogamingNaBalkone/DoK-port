@@ -32,6 +32,9 @@ typedef struct NdsMapRuntime {
     uint8_t class1_glyphs[4];
     uint32_t pending_probe[64];
     uint32_t prepared,pending_reason,prepare_ticks,pending_ticks;
+    uint32_t pending_upload_bytes,button_valid,button_capture,button_language;
+    const unsigned char *button_pixels;
+    unsigned char button_font[64];
 } NdsMapRuntime;
 #ifdef N21P_HOST_TEST
 int nds_map_test_bytes_differ(const void *,const void *,uint32_t);

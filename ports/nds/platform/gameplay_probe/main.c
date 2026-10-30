@@ -116,6 +116,7 @@ static dok_nds_stream_stats stream_stats;
 static uint32_t demand_count;
 static uint32_t stream_ready;
 static uint32_t world_serial;
+static uint32_t world_active;
 static unsigned char world_digest[32];
 static void hash_bytes(const void *bytes,uint32_t count,unsigned char hash[32])
 { dok_sha256 state;dok_sha256_begin(&state);dok_sha256_update(&state,bytes,count);dok_sha256_end(&state,hash); }
@@ -131,7 +132,153 @@ static uint16_t raw_material[DOK_NDS_RENDER_TEXTURE_CAPACITY];
 static dok_light_counts light_counts;
 static uint32_t mask_identity_count;
 _Alignas(32) volatile uint32_t g_nds_effect_probe[32];
+#include "dok/n23_profile.h"
+#include "dok/effect_workset.h"
+#if N23_FINE_PROFILE
+_Alignas(32) uint32_t g_nds_n23_profile[8 + 8 * 16 + 128 * 4];
+uint32_t dok_n23_fine[8];
+uint32_t dok_n23_profile_time(void){return cpuGetTiming();}
+#endif
 /* Per-case worst preparation profile, diagnostic only; no skipped work. */
+#if N23_CODEC_BENCH
+_Alignas(32) uint32_t g_nds_n23_codec_bench[8+512*5];
+static int n23_codec_bench(void)
+{
+    uint32_t *out=g_nds_n23_codec_bench,number=0;
+    for(uint32_t pass=0;pass<2u;++pass)for(uint32_t i=0;i<storage->frames.count;++i){
+        const dok_frame_record *r=&storage->frames.records[i];
+        if(number==512u||r->decoded_bytes>DOK_NDS_SCRATCH_BYTES)return 0;
+        unsigned char *pixels=(unsigned char *)(void *)scratch;
+        uint32_t start=cpuGetTiming();
+        dok_status status=dok_frame_unpack(storage->frames.pool+r->offset,r->bytes,pixels,r->decoded_bytes);
+        uint32_t ticks=cpuGetTiming()-start,digest=2166136261u;
+        if(status!=DOK_STATUS_OK)return 0;
+        for(uint32_t p=0;p<r->decoded_bytes;++p)digest=(digest^pixels[p])*16777619u;
+        uint32_t *row=out+8+number++*5;
+        row[0]=r->id;row[1]=ticks;row[2]=r->bytes;row[3]=r->decoded_bytes;row[4]=digest;
+    }
+    out[0]=0x23444b44u;out[1]=1;out[2]=number;out[3]=storage->frames.bytes;
+    out[4]=storage->frames.count;out[5]=33513982u;
+    DC_FlushRange(out,sizeof(g_nds_n23_codec_bench));return 1;
+}
+#endif
+#if N23_MAP_BENCH
+_Alignas(32) uint32_t g_nds_n23_map_bench[8+40*4];
+#if N23_MAP_FINE
+extern uint32_t dok_n23_map_phases[4];
+_Alignas(32) uint32_t g_nds_n23_map_phases[40*4];
+#endif
+static int n23_map_bench(uint32_t level)
+{
+    static const unsigned scales[5]={2,3,4,6,8};
+    static const int offsets[8][2]={{0,0},{-16,-16},{-64,-64},{-120,-160},{128,80},{-256,-256},{-1,-1},{-257,159}};
+    dok_map_glyph glyphs[256]={{0}};uint32_t number=0;
+    unsigned char *visited=(unsigned char *)(void *)scratch,*pixels=visited+4096u;
+    _Static_assert(4096u+DOK_MAP_VIEW_BYTES<=DOK_NDS_SCRATCH_BYTES,"N23 map benchmark scratch");
+    memset(visited,1,4096u);
+    for(uint32_t i=0;i<world->effective.object_count;++i){const dok_level_object *o=&world->effective.objects[i];
+        glyphs[o->glyph]=(dok_map_glyph){o->class_id,o->marker,0};}
+    dok_map_snapshot snapshot={{world->initial.maps[0],world->initial.maps[1],world->initial.maps[2]},visited,glyphs,
+        (uint16_t)world->effective.settings[0],(uint16_t)world->effective.settings[2],32,32,45,1};
+    for(uint32_t scale=0;scale<5u;++scale)for(uint32_t view=0;view<8u;++view){
+        uint32_t start=cpuGetTiming();
+        if(!dok_map_raster(pixels,&snapshot,scales[scale],offsets[view][0],offsets[view][1]))return 0;
+        uint32_t ticks=cpuGetTiming()-start,digest=2166136261u;
+#if N23_MAP_FINE
+        memcpy(g_nds_n23_map_phases+number*4u,dok_n23_map_phases,sizeof(dok_n23_map_phases));
+#endif
+        for(uint32_t p=0;p<DOK_MAP_VIEW_BYTES;++p)digest=(digest^pixels[p])*16777619u;
+        uint32_t *row=g_nds_n23_map_bench+8+number++*4;
+        row[0]=scales[scale];row[1]=view;row[2]=ticks;row[3]=digest;
+    }
+    uint32_t header[8]={0x234d4b44u,1,number,level,33513982u,snapshot.width,snapshot.length,0};
+    memcpy(g_nds_n23_map_bench,header,sizeof(header));DC_FlushRange(g_nds_n23_map_bench,sizeof(g_nds_n23_map_bench));
+#if N23_MAP_FINE
+    DC_FlushRange(g_nds_n23_map_phases,sizeof(g_nds_n23_map_phases));
+#endif
+    return 1;
+}
+#endif
+#if N23_CLOCK_BENCH
+_Alignas(32) uint32_t g_nds_n23_clock_bench[16];
+static uint64_t n23_bench_counter(void *context){return *(uint64_t *)context;}
+static int n23_clock_bench(void)
+{
+    uint64_t counter=0;dok_world_clock clock;
+    dok_platform_services source={0};source.context=&counter;source.read_counter=n23_bench_counter;
+    source.counter_hz_numerator=33513982u;source.counter_hz_denominator=64u;
+    if(dok_world_clock_init(&clock,&source,0xfffff000u)!=DOK_STATUS_OK)return 0;
+    uint32_t seed=230030u,digest=2166136261u,step,value,start=cpuGetTiming();
+    for(step=0;step<10000u;++step){
+        seed=seed*1664525u+1013904223u;counter+=seed>>28u;
+        if(step%97u==0u)counter+=10000u;
+        if(step%1000u==500u&&dok_world_clock_pause(&clock)!=DOK_STATUS_OK)return 0;
+        if(step%1000u==520u&&dok_world_clock_resume(&clock)!=DOK_STATUS_OK)return 0;
+        if(dok_world_clock_read(&clock,&value)!=DOK_STATUS_OK)return 0;
+        digest=(digest^value)*16777619u;digest=(digest^(uint32_t)clock._fraction)*16777619u;
+        digest=(digest^(uint32_t)(clock._fraction>>32u))*16777619u;
+    }
+    uint32_t ticks=cpuGetTiming()-start;
+    uint32_t out[16]={0x23434b44u,1,step,ticks,digest,value,(uint32_t)clock._fraction,
+        (uint32_t)(clock._fraction>>32u),(uint32_t)counter,(uint32_t)(counter>>32u),33513982u};
+    memcpy(g_nds_n23_clock_bench,out,sizeof(out));DC_FlushRange(g_nds_n23_clock_bench,sizeof(out));
+    return 1;
+}
+#endif
+#if N23_CACHE_BENCH
+_Alignas(32) uint32_t g_nds_n23_cache_bench[8+512*5];
+_Alignas(32) uint32_t g_nds_n23_cache_logical[512];
+static int n23_cache_bench(void)
+{
+    uint32_t *out=g_nds_n23_cache_bench,number=0;
+    if(storage->bank.image_count>256u)return 0;
+    for(uint32_t pass=0;pass<2u;++pass)for(uint32_t i=0;i<storage->bank.image_count;i+=N23_CACHE_BENCH_GROUP){
+        const dok_asset_entry *entry=&storage->bank.images[i];
+        const dok_asset_entry *group[N23_CACHE_BENCH_GROUP];
+        uint32_t group_count=storage->bank.image_count-i;
+        if(group_count>N23_CACHE_BENCH_GROUP)group_count=N23_CACHE_BENCH_GROUP;
+        for(uint32_t n=0;n<group_count;++n)group[n]=entry+n;
+        if(dok_texture_cache_begin(&storage->cache)!=DOK_STATUS_OK)return 0;
+        uint32_t start=cpuGetTiming();
+        dok_status status=DOK_STATUS_OK;
+#if N23_FRAME_BATCH
+        status=dok_frame_store_require_many(&storage->frames,&storage->cache,group,group_count,(dok_frame_batch_workspace *)(void *)scratch);
+#else
+        for(uint32_t n=0;n<group_count&&status==DOK_STATUS_OK;++n)status=dok_frame_store_require(&storage->frames,&storage->cache,group[n]);
+#endif
+        uint32_t ticks=cpuGetTiming()-start;
+        if(status!=DOK_STATUS_OK)return 0;
+        const unsigned char *pixels=storage->cache.pool;
+        uint32_t digest=2166136261u;
+        /* Outside the measured region, include every retained byte and the
+         * exact active record order/offset/age/pins, not only the new frame. */
+        for(uint32_t p=0;p<storage->cache.used;++p)digest=(digest^pixels[p])*16777619u;
+        pixels=(const unsigned char *)(const void *)storage->cache.records;
+        for(uint32_t p=0;p<storage->cache.count*sizeof(storage->cache.records[0]);++p)digest=(digest^pixels[p])*16777619u;
+        uint32_t *row=out+8+number++*5;
+        row[0]=entry->id;row[1]=ticks;row[2]=storage->cache.used;row[3]=storage->cache.evictions;row[4]=digest;
+        /* Offset-independent policy comparison, still outside the timer.
+         * Include ordered metadata and every record's own complete pixels. */
+        digest=2166136261u;
+        for(uint32_t record=0;record<storage->cache.count;++record){
+            const dok_texture_cache_record *r=&storage->cache.records[record];
+            const uint32_t fields[6]={(uint32_t)r->key,(uint32_t)(r->key>>32u),r->bytes,r->age,r->pinned,storage->cache.count};
+            pixels=(const unsigned char *)(const void *)fields;
+            for(uint32_t p=0;p<sizeof(fields);++p)digest=(digest^pixels[p])*16777619u;
+            pixels=storage->cache.pool+r->offset;
+            for(uint32_t p=0;p<r->bytes;++p)digest=(digest^pixels[p])*16777619u;
+        }
+        g_nds_n23_cache_logical[number-1u]=digest;
+    }
+    out[0]=0x23424b44u;out[1]=1;out[2]=number;out[3]=storage->cache.capacity;
+    out[4]=storage->frames.bytes;out[5]=storage->bank.image_count;out[6]=33513982u;
+    out[7]=N23_CACHE_BENCH_GROUP;
+    DC_FlushRange(out,sizeof(g_nds_n23_cache_bench));
+    DC_FlushRange(g_nds_n23_cache_logical,sizeof(g_nds_n23_cache_logical));
+    dok_texture_cache_init(&storage->cache,storage->cache.pool,storage->cache.capacity);
+    return 1;
+}
+#endif
 _Alignas(32) volatile uint32_t g_nds_effect_profile[64][8];
 
 static dok_render_case cases[DOK_RENDER_FIXTURE_CASES];
@@ -410,7 +557,7 @@ static dok_status texture_require(const dok_asset_entry *entry)
 static int level_load(uint32_t level)
 {
 #if GAMEPLAY_UI
-    ui->overlay_blank=0;
+    ui->overlay_blank=0;ui->overlay_valid=0;
 #endif
 #if GAMEPLAY_MAP
     nds_map_begin();
@@ -420,8 +567,8 @@ static int level_load(uint32_t level)
 #if EFFECT_LIGHT_CACHE
     dok_light_cache_reset(&geometry_cache);
 #endif
-    uint32_t start=cpuGetTiming(),i;
-    if(world_serial){
+    uint32_t start=cpuGetTiming(),i,effect_pool_bytes=EFFECT_POOL_BYTES;
+    if(world_active){
 #if GAMEPLAY_AUDIO
         nds_audio_runtime_clear();
 #endif
@@ -455,10 +602,20 @@ static int level_load(uint32_t level)
     if(dok_sprite_assets_load(&world->presentation,&storage->bank,assets+i,DOK_NDS_ASSETS_BYTES-i)!=DOK_STATUS_OK)
         do{if(!g_nds_effect_probe[31])g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);{g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return 0;}}while(0);
     i=(i+storage->bank.metadata_bytes+31u)&~31u;
-    if(i+EFFECT_POOL_BYTES>=DOK_NDS_ASSETS_BYTES)do{if(!g_nds_effect_probe[31])g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);{g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return 0;}}while(0);
+#if N23_EFFECT_POOL_WORKSET && EFFECT_GPU_FOG && GAMEPLAY_FRONTEND && !FRONTEND_FIXTURES
+    /* Full alpha/reference SCN keeps its original pool. Ordinary GPU fog has
+     * one current water variant per material, no LIGHT variants. Reassign only
+     * a proven unused tail of the existing assets slab to the raw frame cache. */
+    uint32_t generated_bound;
+    if(dok_effect_workset_bound(world,&generated_bound,NULL,NULL)==DOK_STATUS_OK&&generated_bound<=EFFECT_POOL_BYTES){
+        uint32_t wanted=(generated_bound+31u)&~31u;if(wanted<32768u)wanted=32768u;
+        if(wanted<EFFECT_POOL_BYTES)effect_pool_bytes=wanted;
+    }
+#endif
+    if(i+effect_pool_bytes>=DOK_NDS_ASSETS_BYTES)do{if(!g_nds_effect_probe[31])g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);{g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return 0;}}while(0);
     uint32_t packed=0;
     if(GAMEPLAY_FRAME_STORE){
-        uint32_t available=DOK_NDS_ASSETS_BYTES-i-EFFECT_POOL_BYTES;
+        uint32_t available=DOK_NDS_ASSETS_BYTES-i-effect_pool_bytes;
         if(available<=196608u || dok_frame_store_load(&storage->frames,&storage->bank,&session,assets+i,
             available-196608u,(unsigned char *)(void *)scratch,DOK_NDS_SCRATCH_BYTES)!=DOK_STATUS_OK){g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return 0;}
 #if GAMEPLAY_FRONTEND
@@ -467,7 +624,19 @@ static int level_load(uint32_t level)
 #endif
         packed=(storage->frames.bytes+31u)&~31u;
     }
-    dok_texture_cache_init(&storage->cache,assets+i+packed,DOK_NDS_ASSETS_BYTES-i-EFFECT_POOL_BYTES-packed);
+    dok_texture_cache_init(&storage->cache,assets+i+packed,DOK_NDS_ASSETS_BYTES-i-effect_pool_bytes-packed);
+#if N23_CODEC_BENCH
+    if(!n23_codec_bench())return 0;
+#endif
+#if N23_MAP_BENCH
+    if(!n23_map_bench(level))return 0;
+#endif
+#if N23_CLOCK_BENCH
+    if(!n23_clock_bench())return 0;
+#endif
+#if N23_CACHE_BENCH
+    if(!n23_cache_bench())return 0;
+#endif
     /* Measured N12 cold turns stalled on FAT/catalog/hash reads. Initial
      * bindings are a bounded level working set: verify them at the explicit
      * load boundary, while later animation frames remain demand-loaded. */
@@ -477,7 +646,7 @@ static int level_load(uint32_t level)
         if(!e || texture_require(e)!=DOK_STATUS_OK)do{if(!g_nds_effect_probe[31])g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);{g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return 0;}}while(0);
     }
     if(nds_effects_load(&storage->effects,world,&storage->bank,&session,&reader,events,&platform,
-        assets+DOK_NDS_ASSETS_BYTES-EFFECT_POOL_BYTES,EFFECT_POOL_BYTES)!=DOK_STATUS_OK)do{if(!g_nds_effect_probe[31])g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);{g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return 0;}}while(0);
+        assets+DOK_NDS_ASSETS_BYTES-effect_pool_bytes,effect_pool_bytes)!=DOK_STATUS_OK)do{if(!g_nds_effect_probe[31])g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);{g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return 0;}}while(0);
 #if EFFECT_GPU_FOG && !GAMEPLAY_FRAME_STORE
     /* Profiled turn stalls were2KiB source animation reads, not GPU shading.
      * Verify the bounded active animation working set at level loading along
@@ -510,6 +679,7 @@ static int level_load(uint32_t level)
     if(dok_nds_stream_reset(storage->effects.palette,4096)!=DOK_NDS_RENDER_OK)do{if(!g_nds_effect_probe[31])g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);{g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return 0;}}while(0);
 #if GAMEPLAY_UI
     storage->game.ui=ui;
+    ui->lives=3;
     ui->ticks=storage->effects.clock._ticks;ui->message_start=ui->ticks;
 #endif
 #if GAMEPLAY_MAP
@@ -530,6 +700,7 @@ static int level_load(uint32_t level)
     row.io_upload_ticks=cpuGetTiming()-start;row.total_ticks=row.io_upload_ticks;
     row.vblank_end=vblank_counter;
     history(&row);
+    world_active=1;
     return memory_check();
 }
 
@@ -550,11 +721,18 @@ static void begin_presentation_sequence(const dok_render_case *c)
 
 static int sprites_prepare(const dok_render_case *c,const dok_nds_render_camera *camera,uint32_t heading,uint32_t ordinal)
 {
+#if N23_FRAME_BATCH && GAMEPLAY_FRAME_STORE
+    const dok_asset_entry *frame_requests[DOK_NDS_RENDER_TEXTURE_CAPACITY];
+    uint32_t frame_request_count=0;
+    _Static_assert(sizeof(dok_frame_batch_workspace)<=DOK_NDS_SCRATCH_BYTES,"N23 batch borrows post-discovery scratch");
+#endif
     const dok_sprite_list *list;
     dok_sprite_snapshot snapshot={world->initial.epoch,scene->generation,storage->bank.bindings,&world->initial};
     uint32_t i,j,base_demands;
     uint16_t material_map[DOK_RENDER_MATERIALS];
+    N23_TIME(gather_start);
     if(dok_sprites_gather_live(&snapshot,storage->game.collision.flags,storage->game.ai.corpses,camera,heading,&storage->list,&list)!=DOK_STATUS_OK)do{if(!g_nds_effect_probe[31])g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);{g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return 0;}}while(0);
+    N23_ADD(2,dok_n23_profile_time()-gather_start);
 #if GAMEPLAY_MAP
     if(!map_ui->paused){
         uint32_t discovery_start=cpuGetTiming();
@@ -666,14 +844,22 @@ static int sprites_prepare(const dok_render_case *c,const dok_nds_render_camera 
         key=((uint64_t)transparent<<32)|e->id;
         for(j=0;j<demand_count;++j)if(demand[j].key==key)break;
         if(j==demand_count) {
-            if(j==DOK_NDS_RENDER_TEXTURE_CAPACITY ||
-               texture_require(e)!=DOK_STATUS_OK)do{if(!g_nds_effect_probe[31])g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);{g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return 0;}}while(0);
+            if(j==DOK_NDS_RENDER_TEXTURE_CAPACITY)return 0;
+#if N23_FRAME_BATCH && GAMEPLAY_FRAME_STORE
+            frame_requests[frame_request_count++]=e;
+#else
+            if(texture_require(e)!=DOK_STATUS_OK)do{if(!g_nds_effect_probe[31])g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);{g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return 0;}}while(0);
+#endif
             raw_material[j]=UINT16_MAX;
             demand[j]=(dok_nds_stream_texture){key,{e->id,NULL,e->bytes,NULL,e->storage_width,e->storage_height,
                 e->width,e->height,transparent}};++demand_count;
         }
         sprite_slots[i]=(uint16_t)j;
     }
+#if N23_FRAME_BATCH && GAMEPLAY_FRAME_STORE
+    if(dok_frame_store_require_many(&storage->frames,&storage->cache,frame_requests,frame_request_count,
+        (dok_frame_batch_workspace *)(void *)scratch)!=DOK_STATUS_OK){g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return 0;}
+#endif
     for(i=base_demands;i<demand_count;++i) {
         demand[i].texture.pixels=dok_texture_cache_pixels(&storage->cache,demand[i].texture.asset_id);
         if(!demand[i].texture.pixels)do{if(!g_nds_effect_probe[31])g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);{g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return 0;}}while(0);
@@ -710,6 +896,10 @@ static int sprites_prepare(const dok_render_case *c,const dok_nds_render_camera 
 
 static int render_one(const dok_render_case *c,uint32_t ordinal)
 {
+#if N23_FINE_PROFILE
+    memset(dok_n23_fine,0,sizeof(dok_n23_fine));
+    uint32_t fine_callback_start=g_nds_n23_profile[3];
+#endif
     dok_nds_render_camera camera;
     const dok_nds_render_frame *frame=NULL;
     dok_nds_render_stats stats={0};NdsRenderHistoryRecord row={0};
@@ -794,13 +984,31 @@ static int render_one(const dok_render_case *c,uint32_t ordinal)
     const unsigned char *weapon_pixels=NULL;const dok_asset_entry *weapon_entry=NULL;
     if(weapon.visible) {
         weapon_entry=dok_sprite_asset_image(&storage->bank,weapon.frame.image);
-        if(!weapon_entry || texture_require(weapon_entry)!=DOK_STATUS_OK){g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return 0;}
-        weapon_pixels=dok_texture_cache_pixels(&storage->cache,weapon_entry->id);
+        if(!weapon_entry){g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return 0;}
     }
-    /* Only a confirmed blank VRAM region survives a hidden->hidden frame.
-     * Visible weapons always use the complete original renderer and upload. */
+#if GAMEPLAY_UI && N23_OVERLAY_REUSE
+    dok_overlay_key overlay_key={weapon,world_serial,weapon_entry?weapon_entry->bytes:0,
+        weapon_entry?weapon_entry->storage_width:0};
+    uint32_t retained_overlay=!SPRITE_AUDIT&&!N21P_AUDIT&&ui->overlay_valid&&dok_overlay_key_equal(&ui->overlay_key,&overlay_key);
+#endif
+    if(weapon.visible) {
+#if GAMEPLAY_UI && N23_OVERLAY_REUSE && N23_OVERLAY_REUSE_RAW
+        if(!retained_overlay){
+#endif
+        if(texture_require(weapon_entry)!=DOK_STATUS_OK){g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return 0;}
+        weapon_pixels=dok_texture_cache_pixels(&storage->cache,weapon_entry->id);
+#if GAMEPLAY_UI && N23_OVERLAY_REUSE && N23_OVERLAY_REUSE_RAW
+        }
+#endif
+    }
+    /* A matched VRAM image needs no scratch pixels. Raw-admission elision is
+     * separately selectable; scratch and cache pointers are never retained. */
 #if GAMEPLAY_UI
+#if N23_OVERLAY_REUSE
+    if(!retained_overlay) {
+#else
     if(SPRITE_AUDIT || N21P_AUDIT || weapon.visible || !ui->overlay_blank) {
+#endif
 #endif
     unsigned char *overlay=(unsigned char *)(void *)scratch;
     if((GAMEPLAY_FAST_OVERLAY?dok_weapon_overlay_clipped:dok_weapon_overlay)(&weapon,weapon_pixels,weapon_entry?weapon_entry->storage_width:0,
@@ -814,6 +1022,9 @@ static int render_one(const dok_render_case *c,uint32_t ordinal)
     if(SPRITE_AUDIT && memcmp(overlay,bgGetGfxPtr(hud_bg),256u*154u))return 0;
 #if GAMEPLAY_UI
     ui->overlay_blank=(uint16_t)!weapon.visible;
+#if N23_OVERLAY_REUSE
+    ui->overlay_key=overlay_key;ui->overlay_valid=1;
+#endif
     }
 #endif
     /* Weapon admission may compact raw LRU storage. Resolve every borrowed
@@ -1040,6 +1251,7 @@ static int render_one(const dok_render_case *c,uint32_t ordinal)
     data[47]=(uint32_t)(int32_t)g->combat.weapons[g->items.inventory.selected].state;
     data[48]=(uint32_t)(int32_t)g->combat.weapons[g->items.inventory.selected].cursor;
     data[35]=g->input_latency_max;data[36]=g->interactions.revision;data[37]=g->c2;
+    data[62]=storage->effects.cache.capacity;data[63]=storage->effects.cache.used;
     memcpy((void *)g_nds_gameplay_probe,data,sizeof(data));DC_FlushRange((const void *)g_nds_gameplay_probe,sizeof(data));
     #if N21P_PROFILE
     p21[30]=cpuGetTiming()-p21_phase;p21[31]=cpuGetTiming()-start-p21[25];
@@ -1063,6 +1275,16 @@ static int render_one(const dok_render_case *c,uint32_t ordinal)
     memcpy(map_ui->profile+16,p21,sizeof(p21));DC_FlushRange(map_ui->profile+16,sizeof(p21));
     ++map_ui->profile[17];DC_FlushRange(map_ui->profile+16,32);
     #endif
+#if N23_FINE_PROFILE
+    g_nds_n23_profile[0]=0x23504b44u;g_nds_n23_profile[1]=1;
+    uint32_t *fine_row=g_nds_n23_profile+8+((obs.frame_id-1u)%8u)*16;
+    memset(fine_row,0,16u*sizeof(uint32_t));fine_row[0]=obs.frame_id;
+    memcpy(fine_row+1,dok_n23_fine,sizeof(dok_n23_fine));
+    fine_row[9]=fine_callback_start;fine_row[10]=g_nds_n23_profile[3];
+    fine_row[11]=c->level;fine_row[12]=ordinal;
+    g_nds_n23_profile[2]=obs.frame_id;
+    DC_FlushRange(g_nds_n23_profile,sizeof(g_nds_n23_profile));
+#endif
     last_render_stats=stats;
     return !obs.disp3d_sticky && !obs.gxstat_sticky;
 }

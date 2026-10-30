@@ -1,5 +1,6 @@
 """C9 instrumentation-only bridge; leave accepted C8/C9 proofs immutable."""
 from __future__ import annotations
+from compiler_cache import compiler_environment
 import hashlib
 import json
 import os
@@ -48,7 +49,7 @@ def main():
     before=[pin(p) for p in (current,header,ROOT/'ports/nds/render/geometry.c',
                             ROOT/'ports/nds/tests/scene_prepare_equivalence.c',Path(__file__),
                             ROOT/'ports/nds/tools/map/check_scene_merge.py')]
-    env=os.environ.copy();env['ZIG_LOCAL_CACHE_DIR']=str(OUT/'zig-local-cache');env['ZIG_GLOBAL_CACHE_DIR']=str(OUT/'zig-global-cache')
+    env=compiler_environment(ROOT)
     zig=Path(os.environ['LOCALAPPDATA'])/'Programs/Zig/0.13.0/zig.exe'
     flags=[str(zig),'cc','-std=c11','-O2','-Wall','-Wextra','-Werror','-pedantic','-DN21P_PROFILE=0',
            '-Iports/nds/include','-Ibuild/nds/n07/generated']

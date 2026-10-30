@@ -1,0 +1,288 @@
+{
+  "task": "N22",
+  "passed": true,
+  "completed_playthrough": true,
+  "scope": "Ordinary EN LEVEL2 on immutable candidate02; no whole-N22 or N23 performance acceptance",
+  "run": "build/nds/n22/candidate-partial02-en/route-2-level2-original-en-l2-v3",
+  "report": {
+    "path": "build/nds/n22/candidate-partial02-en/route-2-level2-original-en-l2-v3/report.json",
+    "bytes": 9374514,
+    "sha256": "c0205ebf0217475d450cae3d3ec822b7446f453cb33a21157c9ea966b8c40040"
+  },
+  "provenance": {
+    "path": "research/evidence/nds/n22/en-level2-v3/provenance.json",
+    "bytes": 96633,
+    "sha256": "3c740ff5dc12ca64de84c836e0bef2f0376bcc21c6ebf6ba7982ac5876e55950"
+  },
+  "rom": {
+    "path": "build/nds/n22/candidate-partial02-en/dok_nds_gameplay.nds",
+    "bytes": 287232,
+    "sha256": "7115d1c2c68472d1cedb29cf441fe5baac45625c46ad6fbe6f94ab57c8b4319b"
+  },
+  "elf": {
+    "path": "build/nds/n22/candidate-partial02-en/dok_nds_gameplay.elf",
+    "bytes": 2274880,
+    "sha256": "a18030a9083405bafce626970a22963a4f34cbd2c15a7a2f4383ddf46fe08246"
+  },
+  "core": {
+    "path": "C:\\Users\\dspev\\AppData\\Local\\Programs\\melonDS-DS\\1.4.0\\melondsds_libretro-win32-x86_64-Release\\cores\\melondsds_libretro.dll",
+    "sha256": "c7e6b58c667075a2a9868f2c3ba7a98e24200410a6da3051a7c555f1f0eef8ef"
+  },
+  "controller_sources": [
+    {
+      "path": "build/nds/n22/candidate-partial02-en/route-2-level2-original-en-l2-v3/sources/db6ee32b0d12cf83e1e1d6bf35fbf2f1d946955dcdf1738af4ed6aa8d8544d68-run_routes.py",
+      "bytes": 54688,
+      "sha256": "db6ee32b0d12cf83e1e1d6bf35fbf2f1d946955dcdf1738af4ed6aa8d8544d68"
+    },
+    {
+      "path": "build/nds/n22/candidate-partial02-en/route-2-level2-original-en-l2-v3/sources/014bfd2d8442ecf4fe0de9d1218ed64b78a332756e4bfb54405b01896e768d6b-plan_routes.py",
+      "bytes": 8956,
+      "sha256": "014bfd2d8442ecf4fe0de9d1218ed64b78a332756e4bfb54405b01896e768d6b"
+    },
+    {
+      "path": "build/nds/n22/candidate-partial02-en/route-2-level2-original-en-l2-v3/sources/d447bc84e7d360d427a580fbb16c545731915f3f32c523fc383fd997b1af8ea2-analyze_tactics.py",
+      "bytes": 4155,
+      "sha256": "d447bc84e7d360d427a580fbb16c545731915f3f32c523fc383fd997b1af8ea2"
+    },
+    {
+      "path": "build/nds/n22/candidate-partial02-en/route-2-level2-original-en-l2-v3/sources/51730a75f845aba0ee89c1c3052df80f1a15c2861fd9c5fa7aa69b50dfa86f1b-tactical_controller.py",
+      "bytes": 6002,
+      "sha256": "51730a75f845aba0ee89c1c3052df80f1a15c2861fd9c5fa7aa69b50dfa86f1b"
+    },
+    {
+      "path": "build/nds/n22/candidate-partial02-en/route-2-level2-original-en-l2-v3/sources/d5815e90e85c6e080e7b39989e417bfbf2fbde4924ce9df3619cf1670107b509-read_live_ai.py",
+      "bytes": 6997,
+      "sha256": "d5815e90e85c6e080e7b39989e417bfbf2fbde4924ce9df3619cf1670107b509"
+    },
+    {
+      "path": "build/nds/n22/candidate-partial02-en/route-2-level2-original-en-l2-v3/sources/119d6172e0b05abf1565f7e42ef1966ae21db3b797f85c53137e883d7b432236-candidate01-ai-layout.json",
+      "bytes": 2913,
+      "sha256": "119d6172e0b05abf1565f7e42ef1966ae21db3b797f85c53137e883d7b432236"
+    },
+    {
+      "path": "build/nds/n22/candidate-partial02-en/route-2-level2-original-en-l2-v3/sources/835aba9ac22d030f3cdfb4d936edc16ecb182ba0232f87698a0c8eb4d5154977-candidate01-en-ai-layout.json",
+      "bytes": 2913,
+      "sha256": "835aba9ac22d030f3cdfb4d936edc16ecb182ba0232f87698a0c8eb4d5154977"
+    },
+    {
+      "path": "build/nds/n22/candidate-partial02-en/route-2-level2-original-en-l2-v3/sources/40416ede76cf25342fce713eb2725c014f9d3c0828e94c77dad36aa13ab752bd-candidate02-ai-layout.json",
+      "bytes": 2913,
+      "sha256": "40416ede76cf25342fce713eb2725c014f9d3c0828e94c77dad36aa13ab752bd"
+    },
+    {
+      "path": "build/nds/n22/candidate-partial02-en/route-2-level2-original-en-l2-v3/sources/e4536e897c201eab7ae8dfb0432fc77966c9c6e79249c3de442554a877dc6a3e-candidate02-en-ai-layout.json",
+      "bytes": 2913,
+      "sha256": "e4536e897c201eab7ae8dfb0432fc77966c9c6e79249c3de442554a877dc6a3e"
+    },
+    {
+      "path": "build/nds/n22/candidate-partial02-en/route-2-level2-original-en-l2-v3/sources/ade886f04ecbc8c5bb880bf1ea74328f9d7cb0cdd5c7089cbf4337c2f497c76b-route_profile.py",
+      "bytes": 14085,
+      "sha256": "ade886f04ecbc8c5bb880bf1ea74328f9d7cb0cdd5c7089cbf4337c2f497c76b"
+    },
+    {
+      "path": "build/nds/n22/candidate-partial02-en/route-2-level2-original-en-l2-v3/sources/f5fac00e60d9c435e6ff7360aff4108dcd9facfc8999da56521a52bf042390d4-run_joint_frontend_emulator.py",
+      "bytes": 27630,
+      "sha256": "f5fac00e60d9c435e6ff7360aff4108dcd9facfc8999da56521a52bf042390d4"
+    },
+    {
+      "path": "build/nds/n22/candidate-partial02-en/route-2-level2-original-en-l2-v3/sources/24f1ba58bb98712ac9bc6e01c56ce0e7bd6277237bedb9814e9567b27f543212-joint_profile_abi.py",
+      "bytes": 625,
+      "sha256": "24f1ba58bb98712ac9bc6e01c56ce0e7bd6277237bedb9814e9567b27f543212"
+    },
+    {
+      "path": "build/nds/n22/candidate-partial02-en/route-2-level2-original-en-l2-v3/sources/7c6648bce920b10964a1dec6b015d0dd4541d9b50ab5d79ab696317e61bcc440-run_joint_profile_emulator.py",
+      "bytes": 4133,
+      "sha256": "7c6648bce920b10964a1dec6b015d0dd4541d9b50ab5d79ab696317e61bcc440"
+    },
+    {
+      "path": "build/nds/n22/candidate-partial02-en/route-2-level2-original-en-l2-v3/sources/305ddbe539b7ec201f6944e4cfe2a5fbcdc5c8ef41b3760955089f6f53e41eb5-render_metrics.py",
+      "bytes": 4451,
+      "sha256": "305ddbe539b7ec201f6944e4cfe2a5fbcdc5c8ef41b3760955089f6f53e41eb5"
+    },
+    {
+      "path": "build/nds/n22/candidate-partial02-en/route-2-level2-original-en-l2-v3/sources/6f2615f00928e129dffc6c66d6eab9b46c6e518cc3554e03f033ff042a0b533b-run_renderer_emulator.py",
+      "bytes": 53065,
+      "sha256": "6f2615f00928e129dffc6c66d6eab9b46c6e518cc3554e03f033ff042a0b533b"
+    },
+    {
+      "path": "build/nds/n22/candidate-partial02-en/route-2-level2-original-en-l2-v3/sources/341e8f69b3d82604ec38831c99a82fe177cc43d13358fbd6bd994e5e60f13d20-run_diag_emulator.py",
+      "bytes": 44438,
+      "sha256": "341e8f69b3d82604ec38831c99a82fe177cc43d13358fbd6bd994e5e60f13d20"
+    },
+    {
+      "path": "build/nds/n22/candidate-partial02-en/route-2-level2-original-en-l2-v3/sources/b50a0f150d53f28cda8f00d326442644182120301abcdbf76ed62e2e2adc9908-render_probe.h",
+      "bytes": 5053,
+      "sha256": "b50a0f150d53f28cda8f00d326442644182120301abcdbf76ed62e2e2adc9908"
+    },
+    {
+      "path": "build/nds/n22/candidate-partial02-en/route-2-level2-original-en-l2-v3/sources/bc0c2c3cfde1631c5684e9c6612c881d817ce129b197ca242f44234af8b10ec1-sprites_probe.h",
+      "bytes": 959,
+      "sha256": "bc0c2c3cfde1631c5684e9c6612c881d817ce129b197ca242f44234af8b10ec1"
+    },
+    {
+      "path": "build/nds/n22/candidate-partial02-en/route-2-level2-original-en-l2-v3/sources/fd447c05a0029227a1ed15b0283f57546e54a66641acef00b96084dd71856d28-review_commands.py",
+      "bytes": 6807,
+      "sha256": "fd447c05a0029227a1ed15b0283f57546e54a66641acef00b96084dd71856d28"
+    }
+  ],
+  "input_steps": 5030,
+  "commands": 75,
+  "checkpoints": 75,
+  "manual_actions": 32,
+  "manual_callback_batch_overshoot_max": 0,
+  "route_cells_reached": 1624,
+  "presented": 14608,
+  "final_gameplay_row": {
+    "video_frame": 34430,
+    "presented": 14608,
+    "frame": 14608,
+    "state": 8,
+    "level": 2,
+    "epoch": 1,
+    "serial": 1,
+    "ticks": 5473026,
+    "hero_callbacks": 8328,
+    "ai_callbacks": 76052,
+    "combat_callbacks": 14940,
+    "pose": [
+      12718,
+      -300,
+      3598,
+      179
+    ],
+    "health": 100,
+    "charge": 200,
+    "keys": 7,
+    "weapon": 1,
+    "ai_dead": 6,
+    "all_projectile_shots": 166,
+    "lives": 2,
+    "deaths": 1,
+    "retries": 1
+  },
+  "retry_before": {
+    "video_frame": 27119,
+    "presented": 11609,
+    "frame": 11609,
+    "state": 8,
+    "level": 2,
+    "epoch": 1,
+    "serial": 1,
+    "ticks": 4249503,
+    "hero_callbacks": 6476,
+    "ai_callbacks": 52186,
+    "combat_callbacks": 13348,
+    "pose": [
+      19906,
+      -300,
+      10798,
+      161
+    ],
+    "health": 7,
+    "charge": 200,
+    "keys": 7,
+    "weapon": 1,
+    "ai_dead": 6,
+    "all_projectile_shots": 157,
+    "lives": 3,
+    "deaths": 0,
+    "retries": 0
+  },
+  "retry_after": {
+    "video_frame": 27123,
+    "presented": 11610,
+    "frame": 11610,
+    "state": 8,
+    "level": 2,
+    "epoch": 1,
+    "serial": 1,
+    "ticks": 4249908,
+    "hero_callbacks": 6477,
+    "ai_callbacks": 52198,
+    "combat_callbacks": 13353,
+    "pose": [
+      20880,
+      -300,
+      3120,
+      90
+    ],
+    "health": 100,
+    "charge": 200,
+    "keys": 7,
+    "weapon": 1,
+    "ai_dead": 6,
+    "all_projectile_shots": 157,
+    "lives": 2,
+    "deaths": 1,
+    "retries": 1
+  },
+  "finish_frontend_state": 10,
+  "finish_result": 3,
+  "active_world_after_finish": 0,
+  "level_select_state": 3,
+  "disk_unchanged": {
+    "passed": true,
+    "changed_files": [],
+    "after": {
+      "/DOK/ASSETS.NDP": {
+        "bytes": 9230016,
+        "sha256": "2f03ba02c9986b4e0bd321e94ca00df8a355f7dbb1dff5598a950d3366061511"
+      },
+      "/DOK/UI.DAT": {
+        "bytes": 16416,
+        "sha256": "5e5f6b24f5e387eb49e54e5d42b1e3bedada58a3482442e9816e08746cc583e9"
+      },
+      "/DOK/FRONTEND.DAT": {
+        "bytes": 4684,
+        "sha256": "a51c74bbc400bed0674cba5b9cefd935ec74be3509f5cd26a1c68b3c98cd4a36"
+      },
+      "/DOK/SETTINGS.DAT": {
+        "bytes": 16,
+        "sha256": "e6a394fc31539a1e9196f3cae37c090a1a49188efe8537d0d8f703848a90a5dd"
+      },
+      "/DOK_ND~1.NDS": {
+        "bytes": 524288,
+        "sha256": "c8cbfe348b2adb5f47f349f1a04818fc5242ece3dfc00cbccaddb853dac80be7"
+      }
+    }
+  },
+  "renderer_errors": 0,
+  "play_audio": {
+    "video_frames": 32852,
+    "samples": 17972031,
+    "nonzero_frames": 11223
+  },
+  "profile": {
+    "path": "build/nds/n22/candidate-partial02-en/route-2-level2-original-en-l2-v3/runtime-profile.json",
+    "bytes": 48685824,
+    "sha256": "340012a601f66bd3a86bf6125a5b711a2775ac2e1e656b2b676a2f157d868d6d"
+  },
+  "metrics": {
+    "intervals": 14607,
+    "histogram": {
+      "1": 1396,
+      "2": 8993,
+      "3": 3615,
+      "4": 594,
+      "5": 9
+    },
+    "virtual_fps": 26.766718258208673,
+    "median": 2,
+    "p95": 3,
+    "p99": 4,
+    "max": 5,
+    "fraction_over_one": 0.9044293831724516,
+    "fraction_over_two": 0.28876566029985623,
+    "refresh_hz": 59.82609828808083,
+    "checked_one_second_windows": 12983,
+    "scope": "Every product PRESENTED interval without LOADING/WARMUP/DIAGNOSTIC/SYNC flags, independent of observer phase; timestamp gaps separate UI reading time",
+    "minimum_window_cadence_fps": 19.615114192813387,
+    "minimum_new_frames_in_one_second": 19,
+    "budget_passed": false,
+    "missing_profiles": []
+  },
+  "limitations": [
+    "Emulator-only ordinary control; physical DS/DS Lite and subjective listening remain N24.",
+    "Cadence budget failed; this successful flow proof supplies N23 profiling evidence."
+  ]
+}

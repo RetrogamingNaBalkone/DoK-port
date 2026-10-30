@@ -1,0 +1,60 @@
+{
+  "status": "verified",
+  "date": "2026-10-30",
+  "scope": "Repository storage maintenance; game statuses unchanged; stop before N22",
+  "deleted_files": 49983,
+  "deleted_bytes": 10347565051,
+  "by_reason": {
+    "compiler-cache": {
+      "files": 49737,
+      "bytes": 2093174779
+    },
+    "generated-test-disk": {
+      "files": 246,
+      "bytes": 8254390272
+    }
+  },
+  "empty_cache_trees_removed": 41,
+  "before_scanned_bytes": 23200576001,
+  "after_scanned_bytes": 12868332687,
+  "retained": "Originals, Ghidra, source evidence, reports, control images/PCM, ROM/ELF and build inputs",
+  "retained_unrecognised_disk": "build/nds/n13p/quality/emulator/save/melonDS DS/dldi_sd_card.bin (and idx)",
+  "research_access_limitation": "One pre-existing inaccessible N21P dma-control temporary directory left untouched; no ACL changes",
+  "manifest": {
+    "path": "research/evidence/maintenance/cleanup-20261030/delete-plan-final.json",
+    "bytes": 12803980,
+    "sha256": "e477c4a43846f7daa6df604e6d050ee7e82f02bdd2c60cd9fded0da657620d8e"
+  },
+  "maintenance_tools": {
+    "path": "research/evidence/maintenance/cleanup-20261030/maintenance-tools.json",
+    "bytes": 14463,
+    "sha256": "89665485973bcd716aefc248e493869976d4ae8d262630e1bc1635874ccd9943"
+  },
+  "retained_verification": {
+    "path": "research/evidence/maintenance/cleanup-20261030/retained-verification.json",
+    "bytes": 9413,
+    "sha256": "e5cfd430c252609c773c670c022afcda805a0442c17a8bfdd50e3978d42e51b5"
+  },
+  "checks": {
+    "archive_and_source_file_checks": 8018,
+    "original_samples_unchanged": 22,
+    "source_only_tool_supersessions": 14,
+    "compiler_cache_tests": 7,
+    "native_deletion_driver_tests": 5,
+    "emulator_disk_cleanup_tests": 11,
+    "actual_core_smoke_frames": 24,
+    "actual_core_smoke_exit_code": 0,
+    "actual_core_disk_and_index_removed": true,
+    "post_cleanup_plan_files": 0
+  },
+  "automatic_cleanup": {
+    "map_checks_updated": 12,
+    "shared_zig_cache": "build/zig-global-cache",
+    "local_cache_keep": "NDS_KEEP_COMPILER_CACHE=1",
+    "emulator_disks": "Owned known FAT+idx removed at process exit after post-close checks; compact disk-retention evidence kept",
+    "emulator_disk_keep": "NDS_KEEP_EMULATOR_DISK=1",
+    "retained_pipeline_input": "--mode settings keeps disk for downstream restart; --reuse-image input preserved"
+  },
+  "full_game_regression": false,
+  "documentation": "docs/storage-maintenance.md"
+}

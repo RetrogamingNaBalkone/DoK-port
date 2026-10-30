@@ -72,8 +72,9 @@ int nds_audio_runtime_init(const dok_asset_session *s,unsigned char *backing,uin
      * Runtime reads bounded slices directly, without rescanning/hash stalls. */
     if(!nds_audio_init(backing,bytes))return 0;catalog_phase=1;publish();return 1;
 }
-void nds_audio_runtime_clear(void)
-{if(session){(void)nds_audio_stop(0);++stops;}active_id=pending_id=stream_filling=0;presentation=NULL;publish();}
+int nds_audio_runtime_clear(void)
+{int ok=1;if(session){ok=nds_audio_stop(0);++stops;}active_id=pending_id=stream_filling=0;presentation=NULL;publish();
+ NdsAudioStatus s=nds_audio_status();return ok&&!s.playing&&!s.preparing&&!s.underruns&&!s.stale_commands;}
 void nds_audio_runtime_world(const dok_level_presentation *p,uint32_t e)
 {nds_audio_runtime_clear();presentation=p;epoch=e;publish();}
 static uint32_t identity(dok_object_ref object,uint16_t slot)
@@ -123,7 +124,11 @@ void nds_audio_runtime_interaction(const dok_interaction_output *o)
 void nds_audio_runtime_combat(const dok_combat *s,const dok_combat_output *o)
 {
     if(!presentation||o->object.world_epoch!=epoch)return;
-    if(o->kind==DOK_COMBAT_DAMAGE||o->kind==DOK_COMBAT_HERO_DEAD)
+    if(o->kind==DOK_COMBAT_DAMAGE
+#if !GAMEPLAY_FLOW
+       ||o->kind==DOK_COMBAT_HERO_DEAD
+#endif
+      )
         binding(o->object,glyph(s->items->world,o->object),0xa6,0,0);
     else if(o->kind==DOK_COMBAT_SHOT&&o->source.object_id==s->items->world->hero.object_id){
         dok_object_ref weapon=s->items->inventory.weapons[s->items->inventory.selected];
@@ -132,6 +137,8 @@ void nds_audio_runtime_combat(const dok_combat *s,const dok_combat_output *o)
         binding(o->object,(uint8_t)o->template_glyph,DOK_PRESENT_SOUND,0,0);
     else if(o->kind==DOK_COMBAT_REMOVED)stop(identity(o->object,DOK_PRESENT_SOUND));
 }
+void nds_audio_runtime_hero_death(dok_object_ref object,uint8_t actor_glyph)
+{binding(object,actor_glyph,0xa6,0,1);}
 static int source_read(unsigned char *out,uint32_t take)
 {
     if(current)return 0; /* Resident PCM is produced only by ARM7. */

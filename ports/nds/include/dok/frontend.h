@@ -44,6 +44,8 @@ int dok_frontend_game_input(const dok_frontend *);
  * called while PLAY; paused callers must not pause their clock twice. */
 uint32_t dok_frontend_show_outro(dok_frontend *,uint8_t level);
 uint32_t dok_frontend_show_ending(dok_frontend *);
+/* Native Game Over returns directly to independent level selection. */
+uint32_t dok_frontend_game_over(dok_frontend *);
 
 /* Exact little-endian 16-byte settings-only record. Decode always writes a
  * safe language (RU=1); its return value says whether the input was valid. */

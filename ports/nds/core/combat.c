@@ -5,12 +5,24 @@
 #define TAG UINT32_C(0x434d4231)
 #define POOL UINT32_C(0x10000)
 #define WEAPON UINT32_C(0x20000)
+#ifndef N23_COMBAT_SAR
+#define N23_COMBAT_SAR 0
+#endif
 static int16_t word(int64_t n)
 {uint32_t u=(uint32_t)(uint64_t)n&65535u;return u<=32767u?(int16_t)u:(int16_t)((int32_t)u-65536);}
 static int32_t wrap(int64_t n)
 {uint32_t u=(uint32_t)(uint64_t)n;return u<=INT32_MAX?(int32_t)u:-1-(int32_t)(UINT32_MAX-u);}
 static int32_t sar(int32_t n,uint32_t b)
-{int64_t d=INT64_C(1)<<b;return n>=0?(int32_t)(n/d):-(int32_t)((-(int64_t)n+d-1)/d);}
+{
+#if N23_COMBAT_SAR
+    /* All call sites use 0..31. Exact DWORD SAR, including negative odd
+     * values and INT32_MIN, without a software 64-bit division. */
+    return n>=0?(int32_t)((uint32_t)n>>b):
+        -1-(int32_t)((uint32_t)(-1-n)>>b);
+#else
+    int64_t d=INT64_C(1)<<b;return n>=0?(int32_t)(n/d):-(int32_t)((-(int64_t)n+d-1)/d);
+#endif
+}
 static uint32_t same(dok_object_ref a,dok_object_ref b)
 {return a.world_epoch==b.world_epoch&&a.object_id==b.object_id&&a.generation==b.generation;}
 static dok_object_ref service(const dok_combat *s,uint32_t id)

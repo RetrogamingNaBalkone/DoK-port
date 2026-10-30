@@ -1,0 +1,91 @@
+{
+  "task": "N22",
+  "scope": "original x86 slices and RES only; no port acceptance or whole DOS session",
+  "status": "passed",
+  "command": "py -3.14 -B -X utf8 ports/nds/tools/flow/audit_original.py",
+  "report": "research/evidence/nds/n22/original/audit.json",
+  "report_sha256": "ef51a96dc8747857add97304927c3d0d3c90ab12439fd47dd626c22e36cf1b67",
+  "script_sha256": "2bdb0835f33fba1eed95da5be51f0313cbd446a8f3601ff377d5fac555d5fd24",
+  "python": "3.14.6",
+  "unicorn": "2.1.4",
+  "checks": {
+    "death": 28,
+    "category1000": 16,
+    "native_far_restore_helper": 2,
+    "original_levels": 6
+  },
+  "samples": [
+    {
+      "language": "ru",
+      "sample": "originals/pkr/RUS/PKR.EXE",
+      "sha256_before": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+      "sha256_after": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28"
+    },
+    {
+      "language": "en",
+      "sample": "originals/pkr/ENG/PKE.EXE",
+      "sha256_before": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b",
+      "sha256_after": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b"
+    }
+  ],
+  "exit_cells": [
+    {
+      "language": 1,
+      "level": 1,
+      "total": 0,
+      "cells": [
+        414,
+        415
+      ]
+    },
+    {
+      "language": 1,
+      "level": 2,
+      "total": 0,
+      "cells": [
+        3610,
+        3611
+      ]
+    },
+    {
+      "language": 1,
+      "level": 3,
+      "total": 0,
+      "cells": [
+        2788,
+        2789,
+        2790,
+        2791
+      ]
+    },
+    {
+      "language": 2,
+      "level": 1,
+      "total": 0,
+      "cells": [
+        414,
+        415
+      ]
+    },
+    {
+      "language": 2,
+      "level": 2,
+      "total": 0,
+      "cells": [
+        3610,
+        3611
+      ]
+    },
+    {
+      "language": 2,
+      "level": 3,
+      "total": 0,
+      "cells": [
+        2788,
+        2789,
+        2790,
+        2791
+      ]
+    }
+  ]
+}

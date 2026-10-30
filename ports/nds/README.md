@@ -1,12 +1,49 @@
 # Nintendo DS
 
+Текущая итерация — [N22](../../docs/nds/tasks/N22.md) →
+[N23](../../docs/nds/tasks/N23.md). N22 соединяет полный игровой цикл;
+N22 принята (эмулятор): три обычных прохождения завершены, итоговый архив
+прошёл4974 независимых SHA checks. Следующая задача — N23.
+N23 передаётся в новый чат и **ещё не принята**: [актуальная передача](../../docs/nds/spec/N23-next-chat.md).
+Последняя оптимизированная RU control — `build/nds/n23/candidate12-ru/dok_nds_gameplay.nds`;
+её partial ordinary FPS прошёл порог, но natural61 и matching RU/EN matrix
+остаются открытыми. C12 EN ещё не построена. N24 не начата, активных cores нет.
+Проверяемые immutable-сборки —
+`build/nds/n22/candidate-partial02-{ru,en}/dok_nds_gameplay.nds`, внешний пакет —
+`build/nds/assets/dok-assets.ndspak`. Реализация, точные правила retry и команды —
+[N22-flow](../../docs/nds/spec/N22-flow.md); статусы и следующий шаг —
+[план](../../docs/nds/plan.md) и [handoff](../../docs/nds/handoff.md).
+
+```powershell
+py -3.14 -B -X utf8 ports/nds/tools/check_flow.py candidate-partial03-ru
+py -3.14 -B -X utf8 ports/nds/tools/check_flow.py candidate-partial03-en
+```
+
+Эти команды создают следующий отдельный кандидат; существующий candidate label
+driver повторно не собирает. Production/audit по умолчанию включают принятое
+частичное перемещение VRAM (`N22_STREAM_PARTIAL_DEFRAG=1`); controls в старых
+`frontend-{ru,en}` сохраняют прежний флаг0 и не являются итоговой сборкой N22.
+Candidate01 сохраняет найденный CPU-cache NO_SPACE; candidate02 использует
+проверенное [перераспределение памяти](../../docs/nds/spec/N22-cpu-cache-fault.md).
+
+Обычный LEVEL1 RU на candidate02 полностью пройден: среднее 30,396 FPS,
+минимум за ≥1 с 22,933 FPS в эмуляторе. Завершённый LEVEL2 EN — 26,767 FPS
+в среднем, минимум 19,615 за ≥1 с. Завершённый LEVEL3 RU — 31,684 FPS
+в среднем, минимум 19,942 за ≥1 с. Бюджет N23 ещё не пройден;
+показатели ранних прототипов ниже не характеризуют полную игру.
+[Покадровые замеры N22 и входы оптимизации N23](../../docs/nds/spec/N22-route-performance.md).
+
+Пункты ниже описывают историю ранних этапов. Корневой `Makefile` этого порта
+остаётся самостоятельной диагностикой N02; игровая сборка использует
+`Makefile.n22` через указанный driver.
+
 Python-инструменты запускаются общим `py -3.14`; внешняя зависимость x86-oracle
 закреплена в `tools/requirements.txt`. Установка: `py -3.14 -m pip install --user
 -r ports/nds/tools/requirements.txt` из корня. NDS не использует окружение,
 библиотеки, игровые ресурсы или код из каталога соседнего проекта.
 
 После N11 выполнена [N07P](../../docs/nds/tasks/N07P.md): ускорение вывода
-и отдельные профили renderer/интерактивного probe/audit. Текущая ROM —
+и отдельные профили renderer/интерактивного probe/audit. Историческая ROM N07P —
 `build/nds/perf/n11-optimized/dok_nds_interactions.nds` от корня репозитория;
 старый `build/nds/n11/` — историческая принятая сборка.
 На эмуляторе старты renderer — 59,83 FPS, диагностический маршрут N11 —
@@ -18,7 +55,7 @@ Python-инструменты запускаются общим `py -3.14`; вн
 Независимый порт для DS/DS Lite. [План](../../docs/nds/plan.md),
 [handoff](../../docs/nds/handoff.md), [принятая N11](../../docs/nds/tasks/N11.md).
 
-N01 завершена; N02–N11 готовы (эмулятор). Полный игровой цикл ещё не завершён.
+После N11: N01 завершена; N02–N11 готовы (эмулятор), полного игрового цикла ещё нет.
 N02 создала диагностику платформы. Её исходники — `platform/diag/`, сборка —
 `Makefile` и `tools/build_diag.ps1`, эмуляторные проверки —
 `tools/run_diag_emulator.py`. Выходы — `build/nds/n02/`, доказательства —

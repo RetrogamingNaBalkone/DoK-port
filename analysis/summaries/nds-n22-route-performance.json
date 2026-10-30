@@ -1,0 +1,190 @@
+{
+  "summary_schema": 1,
+  "full_report": {
+    "path": "analysis/nds-n22-route-performance.json",
+    "sha256": "599d693aa9942b43e40e9d7f666d604a8e03c9fea90023cd068e0265bec39620",
+    "bytes": 1531566
+  },
+  "scope": "Summary of a recorded run; not a new verification. Full report is local and ignored by Git.",
+  "result": {
+    "task": "N22",
+    "scope": "Ordinary-route performance evidence for optimization in N23; emulator only",
+    "measured_overview": {
+      "level1-ru-prefix01": {
+        "route_passed": true,
+        "completed_playthrough": false,
+        "active_presentations": 3005,
+        "profile_coverage": 3005,
+        "average_fps": 29.957911240740355,
+        "minimum_one_second_fps": 27.01823793655263,
+        "fraction_over_two_vblanks": 0.01896838602329451,
+        "maximum_vblanks": 4,
+        "budget_passed": false,
+        "rom_sha256": "e3785a18b402571d10c273b160df639d8499d27ad214a3ce890531aebabb9844"
+      },
+      "level1-ru-resources01": {
+        "route_passed": true,
+        "completed_playthrough": false,
+        "active_presentations": 3005,
+        "profile_coverage": 3005,
+        "average_fps": 29.957911240740355,
+        "minimum_one_second_fps": 27.01823793655263,
+        "fraction_over_two_vblanks": 0.01896838602329451,
+        "maximum_vblanks": 4,
+        "budget_passed": false,
+        "rom_sha256": "e3785a18b402571d10c273b160df639d8499d27ad214a3ce890531aebabb9844"
+      },
+      "level1-ru-extended01": {
+        "route_passed": false,
+        "completed_playthrough": false,
+        "active_presentations": 9229,
+        "profile_coverage": 9229,
+        "average_fps": 30.117005460137346,
+        "minimum_one_second_fps": 22.557381321735395,
+        "fraction_over_two_vblanks": 0.05125148986889154,
+        "maximum_vblanks": 4,
+        "budget_passed": false,
+        "rom_sha256": "e3785a18b402571d10c273b160df639d8499d27ad214a3ce890531aebabb9844"
+      },
+      "level3-ru-attempt01": {
+        "route_passed": false,
+        "completed_playthrough": false,
+        "active_presentations": 19268,
+        "profile_coverage": 19268,
+        "average_fps": 37.218431545096905,
+        "minimum_one_second_fps": 26.921744229636374,
+        "fraction_over_two_vblanks": 0.001660784720780569,
+        "maximum_vblanks": 4,
+        "budget_passed": false,
+        "rom_sha256": "e3785a18b402571d10c273b160df639d8499d27ad214a3ce890531aebabb9844"
+      },
+      "level1-ru-current02-failed01": {
+        "route_passed": false,
+        "completed_playthrough": false,
+        "active_presentations": 7741,
+        "profile_coverage": 7741,
+        "average_fps": 29.309146689958464,
+        "minimum_one_second_fps": 22.19355259073966,
+        "fraction_over_two_vblanks": 0.09804934762950523,
+        "maximum_vblanks": 4,
+        "budget_passed": false,
+        "rom_sha256": "2fb3b082efa1fc7d797f435433a89bbca8beafd66a11ff778f3f2336d9afed2c"
+      },
+      "level1-en-current02-failed01": {
+        "route_passed": false,
+        "completed_playthrough": false,
+        "active_presentations": 4210,
+        "profile_coverage": 4210,
+        "average_fps": 28.923733784200767,
+        "minimum_one_second_fps": 23.93043931523233,
+        "fraction_over_two_vblanks": 0.08384798099762471,
+        "maximum_vblanks": 4,
+        "budget_passed": false,
+        "rom_sha256": "7115d1c2c68472d1cedb29cf441fe5baac45625c46ad6fbe6f94ab57c8b4319b"
+      },
+      "level2-en-current02-failed01": {
+        "route_passed": false,
+        "completed_playthrough": false,
+        "active_presentations": 17429,
+        "profile_coverage": 17429,
+        "average_fps": 28.445019152220876,
+        "minimum_one_second_fps": 19.94203276269361,
+        "fraction_over_two_vblanks": 0.21768317172528545,
+        "maximum_vblanks": 4,
+        "budget_passed": false,
+        "rom_sha256": "7115d1c2c68472d1cedb29cf441fe5baac45625c46ad6fbe6f94ab57c8b4319b"
+      },
+      "level1-ru-current02-complete01": {
+        "route_passed": true,
+        "completed_playthrough": true,
+        "active_presentations": 15416,
+        "profile_coverage": 15416,
+        "average_fps": 30.396121917113376,
+        "minimum_one_second_fps": 22.93333767709765,
+        "fraction_over_two_vblanks": 0.0563700051894136,
+        "maximum_vblanks": 6,
+        "budget_passed": false,
+        "rom_sha256": "2fb3b082efa1fc7d797f435433a89bbca8beafd66a11ff778f3f2336d9afed2c"
+      },
+      "level3-ru-current02-attempt01": {
+        "route_passed": false,
+        "completed_playthrough": false,
+        "active_presentations": 7686,
+        "profile_coverage": 7686,
+        "average_fps": 32.238897247576894,
+        "minimum_one_second_fps": 21.576625612094723,
+        "fraction_over_two_vblanks": 0.10590684361176164,
+        "maximum_vblanks": 5,
+        "budget_passed": false,
+        "rom_sha256": "2fb3b082efa1fc7d797f435433a89bbca8beafd66a11ff778f3f2336d9afed2c"
+      },
+      "level2-en-current02-complete01": {
+        "route_passed": true,
+        "completed_playthrough": true,
+        "active_presentations": 14607,
+        "profile_coverage": 14607,
+        "average_fps": 26.766718258208673,
+        "minimum_one_second_fps": 19.615114192813387,
+        "fraction_over_two_vblanks": 0.28876566029985623,
+        "maximum_vblanks": 5,
+        "budget_passed": false,
+        "rom_sha256": "7115d1c2c68472d1cedb29cf441fe5baac45625c46ad6fbe6f94ab57c8b4319b"
+      },
+      "level3-ru-current02-attempt02": {
+        "route_passed": false,
+        "completed_playthrough": false,
+        "active_presentations": 6977,
+        "profile_coverage": 6977,
+        "average_fps": 33.307268413337056,
+        "minimum_one_second_fps": 21.576625612094723,
+        "fraction_over_two_vblanks": 0.08556686254837323,
+        "maximum_vblanks": 5,
+        "budget_passed": false,
+        "rom_sha256": "2fb3b082efa1fc7d797f435433a89bbca8beafd66a11ff778f3f2336d9afed2c"
+      },
+      "level3-ru-current02-attempt03": {
+        "route_passed": false,
+        "completed_playthrough": false,
+        "active_presentations": 9986,
+        "profile_coverage": 9986,
+        "average_fps": 31.216606620586013,
+        "minimum_one_second_fps": 20.939134400828287,
+        "fraction_over_two_vblanks": 0.14750650911275787,
+        "maximum_vblanks": 5,
+        "budget_passed": false,
+        "rom_sha256": "2fb3b082efa1fc7d797f435433a89bbca8beafd66a11ff778f3f2336d9afed2c"
+      },
+      "level3-ru-current02-complete01": {
+        "route_passed": true,
+        "completed_playthrough": true,
+        "active_presentations": 11020,
+        "profile_coverage": 11020,
+        "average_fps": 31.684140865755996,
+        "minimum_one_second_fps": 19.94203276269361,
+        "fraction_over_two_vblanks": 0.11588021778584393,
+        "maximum_vblanks": 5,
+        "budget_passed": false,
+        "rom_sha256": "2fb3b082efa1fc7d797f435433a89bbca8beafd66a11ff778f3f2336d9afed2c"
+      }
+    },
+    "runs": {
+      "detail_pointer": "/runs",
+      "items": 13
+    },
+    "ordinary_runs_completed": 3,
+    "all_measured_budgets_passed": false,
+    "acceptance": "These measurements do not establish N22 functional completion or N23 optimization acceptance.",
+    "limitations": [
+      "Prefix runs cover only their recorded traversal.",
+      "N21P prototype performance is not a substitute for measurements throughout complete levels.",
+      "Discovery is contained in sprites, detailed map stages in map; do not add these twice.",
+      "CPU render_one timing omits frontend/flow/probe overhead included in presentation cadence.",
+      "No claim about physical DS/DS Lite FPS; hardware and listening remain N24."
+    ],
+    "generator": {
+      "path": "ports/nds/tools/flow/summarize_route_profiles.py",
+      "bytes": 2956,
+      "sha256": "4c7617639724e61cbc6051381575fbd713def35033cf00ee4d471df604525891"
+    }
+  }
+}
