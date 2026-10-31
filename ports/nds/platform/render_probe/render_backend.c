@@ -30,10 +30,21 @@ static int initialized;
 static int loading;
 static uint32_t light_palette_rows, light_palette_base;
 static uint32_t darkness, applied_darkness;
+#ifndef N23_RELATIVE_MATRICES
+#define N23_RELATIVE_MATRICES 0
+#endif
+#if N23_RELATIVE_MATRICES > 1
+_Alignas(32) uint32_t g_nds_relative_matrix_probe[32];
+#endif
+#ifndef N23_SIMPLE_QUADS
+#define N23_SIMPLE_QUADS 0
+#endif
+#if !N23_SIMPLE_QUADS
 /* Four2-bit vertex indices and one reuse bit; capacity is unchanged. */
 typedef struct StripDraw {uint16_t packed;} StripDraw;
 _Static_assert(sizeof(StripDraw)==2u,"bounded strip metadata");
 static StripDraw strip_draw[DOK_NDS_RENDER_POLYGON_LIMIT];
+#endif
 #ifndef N23_CLIP_CACHE
 #define N23_CLIP_CACHE 0
 #endif
@@ -42,6 +53,7 @@ static StripDraw strip_draw[DOK_NDS_RENDER_POLYGON_LIMIT];
  * this call returns. Larger public frames retain the original recomputation. */
 static m4x4 checked_clip[64];
 #endif
+#if !N23_SIMPLE_QUADS
 DOK_NDS_HOT_CODE static unsigned strip_order(const StripDraw *d,unsigned k)
 {return (d->packed>>(2u*k))&3u;}
 DOK_NDS_HOT_CODE static unsigned strip_reuse(const StripDraw *d)
@@ -66,6 +78,7 @@ DOK_NDS_HOT_CODE static int shared_strip(const dok_nds_render_quad *a,const Stri
     }
     return 0;
 }
+#endif
 
 static int64_t floor_div(int64_t value, int64_t divisor)
 {
@@ -469,7 +482,9 @@ DOK_NDS_HOT_CODE dok_nds_render_result dok_nds_render_submit(
 #endif
     for (i = 0; i < frame->cell_count; ++i) {
         const dok_nds_render_cell *cell = &frame->cells[i];
+#if !N23_SIMPLE_QUADS
         const dok_nds_render_quad *previous_quad=NULL;StripDraw *previous_draw=NULL;int previous_inside=0;
+#endif
         int transform_bounded;
         result = planned_cell_clip(&plan, cell, &clip);
         if (result != DOK_NDS_RENDER_OK) return result;
@@ -519,10 +534,14 @@ DOK_NDS_HOT_CODE dok_nds_render_result dok_nds_render_submit(
             }
             /* Clipping a convex quad by six planes adds at most six vertices.
              * Fully interior quads require four. No capacity truncation. */
+#if !N23_SIMPLE_QUADS
             StripDraw *draw=&strip_draw[quads-cell->quad_count+j];
             shared_strip(previous_inside && inside?previous_quad:NULL,previous_draw,q,draw);
             vertex_bound += worst_case_fits ? 10u : inside ? 4u-2u*strip_reuse(draw) : outside_all?0u:4u+(uint32_t)__builtin_popcount(outside_any);
             previous_quad=q;previous_draw=draw;previous_inside=inside;
+#else
+            vertex_bound += worst_case_fits ? 10u : inside ? 4u : outside_all?0u:4u+(uint32_t)__builtin_popcount(outside_any);
+#endif
             if (vertex_bound > DOK_NDS_RENDER_VERTEX_LIMIT)
                 return DOK_NDS_RENDER_CAPACITY;
         }
@@ -544,9 +563,45 @@ DOK_NDS_HOT_CODE dok_nds_render_result dok_nds_render_submit(
     /* State is local to this submission: diagnostics may change SDK/GE
      * state between frames. Never reuse a binding across that boundary. */
     uint32_t bound_slot = UINT32_MAX, bound_color = UINT32_MAX, bound_palette=UINT32_MAX;
-    uint32_t draw_index=0,submitted_vertices=0;
+    uint32_t submitted_vertices=0;
+#if !N23_SIMPLE_QUADS
+    uint32_t draw_index=0;
+#endif
     for (i = 0; i < frame->cell_count; ++i) {
         const dok_nds_render_cell *cell = &frame->cells[i];
+#if N23_RELATIVE_MATRICES
+        int translated=0;
+        if(i){
+            const dok_nds_render_cell *previous=&frame->cells[i-1u];
+            /* First-pass admission already proved aligned origins and every
+             * absolute clip matrix. World units /512 become Q12 via *8. */
+            int64_t dx=((int64_t)cell->origin_x-previous->origin_x)*8;
+            int64_t dy=((int64_t)cell->origin_y-previous->origin_y)*8;
+            int64_t dz=((int64_t)cell->origin_z-previous->origin_z)*8;
+            if(dx>=INT32_MIN&&dx<=INT32_MAX&&dy>=INT32_MIN&&dy<=INT32_MAX&&dz>=INT32_MIN&&dz<=INT32_MAX){
+                glTranslatef32((int32_t)dx,(int32_t)dy,(int32_t)dz);translated=1;
+            }
+        }
+        if(!translated){
+            (void)planned_cell_clip(&plan,cell,&clip);
+            if(!i){load_cell_clip(&clip);glMatrixMode(GL_PROJECTION);}
+            else glLoadMatrix4x4(&clip);
+        }
+#if N23_RELATIVE_MATRICES > 1
+        m4x4 actual_clip,expected_clip;
+        if(fence(NULL)!=DOK_NDS_RENDER_OK||planned_cell_clip(&plan,cell,&expected_clip)!=DOK_NDS_RENDER_OK)return DOK_NDS_RENDER_HARDWARE;
+        glGetFixed(GL_GET_MATRIX_CLIP,actual_clip.m);
+        g_nds_relative_matrix_probe[0]=0x234d4b44u;g_nds_relative_matrix_probe[1]=1;
+        ++g_nds_relative_matrix_probe[2];
+        ++g_nds_relative_matrix_probe[translated?4u:5u];
+        if(memcmp(&actual_clip,&expected_clip,sizeof(actual_clip))){
+            ++g_nds_relative_matrix_probe[3];
+            DC_FlushRange(g_nds_relative_matrix_probe,sizeof(g_nds_relative_matrix_probe));
+            return DOK_NDS_RENDER_HARDWARE;
+        }
+        DC_FlushRange(g_nds_relative_matrix_probe,sizeof(g_nds_relative_matrix_probe));
+#endif
+#else
 #if N23_CLIP_CACHE
         if(frame->cell_count<=64u)clip=checked_clip[i];
         else
@@ -558,10 +613,16 @@ DOK_NDS_HOT_CODE dok_nds_render_result dok_nds_render_submit(
             glMatrixMode(GL_PROJECTION);
             glLoadMatrix4x4(&clip);
         }
+#endif
+#if N23_SIMPLE_QUADS
+        glBegin(GL_QUADS);
+#endif
         for (j = 0; j < cell->quad_count; ++j) {
             const dok_nds_render_quad *q = &cell->quads[j];
+#if !N23_SIMPLE_QUADS
             const StripDraw *draw=&strip_draw[draw_index++];
             if(!strip_reuse(draw)){if(j)glEnd();glBegin(GL_QUAD_STRIP);}
+#endif
             uint32_t color = q->texture_slot == UINT16_MAX
                 ? q->color_rgb555 : RGB15(31, 31, 31);
             if (bound_slot != q->texture_slot) {
@@ -576,8 +637,13 @@ DOK_NDS_HOT_CODE dok_nds_render_result dok_nds_render_submit(
                 bound_palette=palette_row;
             }
             if (bound_color != color) { glColor(color); bound_color = color; }
+#if !N23_SIMPLE_QUADS
             for (k = strip_reuse(draw)?2u:0u; k < 4; ++k) {
                 const dok_nds_render_vertex *v = &q->vertex[strip_order(draw,k)];
+#else
+            for (k = 0; k < 4; ++k) {
+                const dok_nds_render_vertex *v = &q->vertex[k];
+#endif
                 glTexCoord2t16((t16)nearest_div(v->u_q16, 4096),
                               (t16)nearest_div(v->v_q16, 4096));
                 glVertex3v16((v16)(v->x * 8), (v16)(v->y * 8), (v16)(v->z * 8));

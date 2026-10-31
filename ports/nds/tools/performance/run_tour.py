@@ -31,26 +31,44 @@ def main():
     original = ordinary.Observer
 
     class TourObserver(original):
+        def turn_to(self, target, limit=100):
+            from run_routes import Y,A,L
+            for _ in range(limit):
+                if self.pending_choice or not self.probe or self.probe[3]!=8:return
+                angle=(target-self.heading()+180)%360-180
+                if abs(angle)<=8:
+                    self.game_step([])
+                    return
+                self.game_step([Y if angle>0 else A,L])
+            raise AssertionError(('Bounded ordinary run-turn failed',target,self.last_pose))
+
+        def turn_precise(self, target, limit=240):
+            # This is a host input policy, not engine arithmetic. An 8-degree
+            # camera intention avoids spending a life on one-degree alignment.
+            return self.turn_to(target, limit=min(limit,100))
+
         def __init__(self, core, target, directory):
             super().__init__(core, target, directory)
             if args.ai_layout:
                 self.ai_reader = LiveAiReader(target / 'dok_nds_gameplay.elf', args.ai_layout)
+            # External review also uses this class's run-turn helper. Retain
+            # its source before boot, even when no automatic policy is called.
+            sources = [Path(__file__).resolve(), policy]
+            if args.ai_layout:
+                sources.append(args.ai_layout.resolve())
+            self.report['tour_options'] = dict(health_threshold=args.health_threshold,
+                health_distance=args.health_distance,host_turn_tolerance_degrees=8,host_turn_run=True)
+            for source in sources:
+                row = ordinary.pin(source)
+                dest = self.directory / 'sources' / (row['sha256'] + '-' + source.name)
+                dest.write_bytes(source.read_bytes())
+                self.report.setdefault('tour_inputs', []).append(dict(source=row, snapshot=ordinary.pin(dest)))
 
         def policy_choice(self, saved):
             if not hasattr(self, 'tour_stage'):
                 self.tour_stage = 0
                 self.tour_blocks = 0
                 self.detour_goal = None
-                sources = [Path(__file__).resolve(), policy]
-                if args.ai_layout:
-                    sources.append(args.ai_layout.resolve())
-                self.report['tour_options'] = dict(health_threshold=args.health_threshold,
-                    health_distance=args.health_distance)
-                for source in sources:
-                    row = ordinary.pin(source)
-                    dest = self.directory / 'sources' / (row['sha256'] + '-' + source.name)
-                    dest.write_bytes(source.read_bytes())
-                    self.report.setdefault('tour_inputs', []).append(dict(source=row, snapshot=ordinary.pin(dest)))
             kind = saved['reason']['kind']
             stage = stages[self.tour_stage] if self.tour_stage < len(stages) else {}
             expected = ('goal_reached' if 'goal' in stage else
@@ -63,6 +81,12 @@ def main():
                 self.tour_blocks = 0
             if kind == 'reviewed_path_block':
                 self.tour_blocks += 1
+            # These are actual inventory bits from a published native pause,
+            # not a prediction that merely reaching a waypoint grants a key.
+            while self.tour_stage < len(stages) and stages[self.tour_stage].get('key_mask',0) and (
+                    saved['flow'][24] & stages[self.tour_stage]['key_mask']) == stages[self.tour_stage]['key_mask']:
+                self.tour_stage += 1
+                self.tour_blocks = 0
             if self.tour_stage == len(stages) or self.tour_blocks > 4:
                 self.policy_end = 'bounded_tour_completed' if self.tour_stage == len(stages) else 'unresolved_blocked_goal'
                 choice = dict(abort=True)
@@ -93,6 +117,7 @@ def main():
                                       pause_after_goal=True, health_reserve=0, ammo_reserve=0)
                 if not self.detour_goal:
                     choice['health_reserve'] = max(0, min(args.health_threshold - 1, saved['flow'][6] - 25))
+            choice.pop('key_mask',None)
             self.report.setdefault('host_policy_choices', []).append(dict(checkpoint=saved['ordinal'],
                 reason=kind, stage=self.tour_stage, ai_active=self.game[5], choice=choice.copy()))
             return choice

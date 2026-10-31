@@ -108,6 +108,7 @@ def main():
     parser.add_argument('--video-budget',type=int,default=18000)
     parser.add_argument('--west-pressure',action='store_true')
     parser.add_argument('--review-external',action='store_true',help='Real native Start checkpoints controlled by review_commands.py')
+    parser.add_argument('--ai-layout',type=Path,help='Optional read-only binding for this exact ELF')
     parser.add_argument('--run-id',required=True)
     args=parser.parse_args();target=args.target.resolve()
     assert target.is_relative_to(ROOT/'build/nds/n23')
@@ -115,7 +116,13 @@ def main():
     report=dict(task='N23',passed=False);f=None
     try:
         f=Observer(front.CORE,target,directory);report=f.report
-        report.update(task='N23',completion_claim=False,sample_arguments=vars(args)|dict(target=str(target)),runner=pin(Path(__file__)))
+        if args.ai_layout:
+            from read_live_ai import LiveAiReader
+            source=args.ai_layout.resolve();f.ai_reader=LiveAiReader(target/'dok_nds_gameplay.elf',source)
+            destination=directory/'sources'/(pin(source)['sha256']+'-'+source.name);destination.write_bytes(source.read_bytes())
+            report['ai_layout_binding']=dict(source=pin(source),snapshot=pin(destination))
+        arguments={key:str(value) if isinstance(value,Path) else value for key,value in vars(args).items()}
+        report.update(task='N23',completion_claim=False,sample_arguments=arguments,runner=pin(Path(__file__)))
         runner_copy=directory/'sources'/(transport.sha(Path(__file__))+'-'+Path(__file__).name)
         runner_copy.write_bytes(Path(__file__).read_bytes());report['runner_snapshot']=pin(runner_copy)
         f.publisher_stop=threading.Event();f.external_review=args.review_external

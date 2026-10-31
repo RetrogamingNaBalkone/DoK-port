@@ -2,18 +2,18 @@
   "summary_schema": 1,
   "full_report": {
     "path": "analysis/nds-n23-performance.json",
-    "sha256": "52a3d1b84128f490da62688dc990f34be7de8ec2a31809117cffd60adb114043",
-    "bytes": 16508
+    "sha256": "c3f5092817f137b7e9ab87e92ab9ec7c651d266d00aed02f8c1d31f408edd057",
+    "bytes": 29399
   },
   "scope": "Summary of a recorded run; not a new verification. Full report is local and ignored by Git.",
   "result": {
     "task": "N23",
     "passed": false,
-    "status": "in_progress_architecture_review",
+    "status": "C22 simplification and SCN RU/EN verified; full N23 acceptance pending",
     "date": "2026-10-30",
     "next_id": "N23",
     "n24_started": false,
-    "decision": "Evaluate fixed-game simplicity and large CPU stages before point optimizations. No new product optimization accepted.",
+    "decision": "Choose one static level geometry representation shared by renderer/native disclosure, plain GL_QUADS, and relative cell matrices; keep 60 goal separate from 30 acceptance.",
     "pipeline_audit": {
       "report": {
         "path": "research/evidence/nds/n23/root13-pipeline-audit.json",
@@ -464,6 +464,52 @@
       "items": 2
     },
     "english_live": {
+      "report": {
+        "path": "research/evidence/nds/n23/review26/files/build/nds/n23/candidate22-en/joint-frontend/live/result.json",
+        "bytes": 5096423,
+        "sha256": "9e2a73ecfbe8a0fd016bf80aed58870d1f2b786df382ab212851631f2feaee07"
+      },
+      "metrics": {
+        "intervals": 1839,
+        "histogram": {
+          "1": 1839
+        },
+        "virtual_fps": 59.82609828808083,
+        "median": 1,
+        "p95": 1,
+        "p99": 1,
+        "max": 1,
+        "fraction_over_one": 0.0,
+        "fraction_over_two": 0.0,
+        "refresh_hz": 59.82609828808083,
+        "checked_one_second_windows": 1485,
+        "scope": "Every product PRESENTED interval without LOADING/WARMUP/DIAGNOSTIC/SYNC flags, independent of observer phase; timestamp gaps separate UI reading time",
+        "minimum_window_cadence_fps": 59.82609828808083,
+        "minimum_new_frames_in_one_second": 59,
+        "budget_passed": true,
+        "missing_profiles": []
+      },
+      "touch": {
+        "samples": 42,
+        "max_upper_vblanks": 4,
+        "max_upper_ms": 66.86045245235258
+      }
+    },
+    "archives": {
+      "detail_pointer": "/archives",
+      "items": 7
+    },
+    "open": [
+      "Natural >=61 actual active AI",
+      "Current complete ordinary LEVEL2 and LEVEL3",
+      "Final integrated memory/audio/latency review and playtest package"
+    ],
+    "scope": "Emulator measurements and evidence only. C22 normal SCN RU/EN and LEVEL1 complete meet 30 budget; these subsets do not accept complete N23. 60 goal not met.",
+    "control_matrix": {
+      "detail_pointer": "/control_matrix",
+      "items": 2
+    },
+    "control_english_live": {
       "passed": true,
       "report": {
         "path": "research/evidence/nds/n23/review13/files/build/nds/n23/candidate12-en/joint-frontend/live/result.json",
@@ -509,25 +555,127 @@
         }
       }
     },
-    "archives": [
-      {
-        "path": "research/evidence/nds/n23/review13/manifest.json",
-        "bytes": 889727,
-        "sha256": "895ccb99e14d21fe0d12a4c43e27ea576d6efe6aa8b294b1683577a1e20037c0"
+    "current_candidate": {
+      "ru": {
+        "manifest": {
+          "path": "research/evidence/nds/n23/candidates/candidate22-ru/build-manifest.json",
+          "bytes": 102416,
+          "sha256": "222d034aa771adeca2bb6b5cdaa4d41d9faaa1983c08dacf452424a89f5b1826"
+        },
+        "rom": {
+          "path": "research/evidence/nds/n23/candidates/candidate22-ru/dok_nds_gameplay.nds",
+          "bytes": 299520,
+          "sha256": "4a8d40a3325f27b83a5923f6f733a99ef798c9109d3e287fa79fb019218bb785"
+        }
       },
-      {
-        "path": "research/evidence/nds/n23/review13-inputs.json",
-        "bytes": 8473,
-        "sha256": "80ea30d8ea5b54aa5e6104c8e4b921273e205094f32a91484ab1b5abd364fa71"
+      "en": {
+        "manifest": {
+          "path": "research/evidence/nds/n23/candidates/candidate22-en/build-manifest.json",
+          "bytes": 102416,
+          "sha256": "9896a17c611bb3e8ded3612f3b60847b9c57c2bf1d2204442298726b3c3e1903"
+        },
+        "rom": {
+          "path": "research/evidence/nds/n23/candidates/candidate22-en/dok_nds_gameplay.nds",
+          "bytes": 299520,
+          "sha256": "5eeea23e410ddcf19d89a9ae68e4a09bb24911912bb9cb2154a4466f8b563934"
+        }
       }
+    },
+    "simplification": {
+      "review": {
+        "path": "research/evidence/nds/n23/simplification22-review.json",
+        "bytes": 53912,
+        "sha256": "e0f7caf6f68cb66561eae84e8d1b75d2cf52d10657488bb333aadbd44a084132"
+      },
+      "integrity_review": {
+        "path": "research/evidence/nds/n23/c22-review27.json",
+        "bytes": 22451,
+        "sha256": "79ad6e6f2d4e16df44bbfd800b4ee4fb801624bfc68495a3bea849d61624eee4"
+      },
+      "exact_png_pairs": 52,
+      "gpu_exact_clip_matrices": 18186,
+      "static_level_bytes_aligned": [
+        19648,
+        21056,
+        13472
+      ],
+      "generic_cache_framework": false
+    },
+    "ordinary_routes": {
+      "detail_pointer": "/ordinary_routes",
+      "items": 2
+    },
+    "natural_ai": {
+      "max_actual_active": 56,
+      "physical_prefix_exact": true,
+      "completed_level3": false,
+      "report": {
+        "path": "research/evidence/nds/n23/route-profiles/c22-level3-prefix23-negative01/summary.json",
+        "bytes": 104593,
+        "sha256": "cee37126f3f4e9226539a692936116b02430dae0db74101fe6ff7d8af7fc613a"
+      }
+    },
+    "remaining_60_analysis": {
+      "task": "N23",
+      "profile": "build/nds/n23/candidate22-ru/route-1-level1-c22-saved01/runtime-profile.json",
+      "missed_one_vblank_with_map_redraw": 2094,
+      "missed_one_vblank_without_map_redraw": 1934,
+      "redraw_share_of_missed": 0.5198609731876862,
+      "cpu_excluding_map_ms": {
+        "mean": 12.676514713688446,
+        "p95": 17.080333814107796,
+        "above_one_vblank": 946
+      },
+      "scope": "Correlation and arithmetic subtraction only; not a measured no-map build or acceptance claim."
+    },
+    "deferred_to_n24": [
+      "Physical DS/DS Lite FPS/compatibility",
+      "Listening",
+      "Physical stack high-water"
     ],
-    "open": [
-      "natural >=61 AI on current product",
-      "full current ordinary completion routes",
-      "ARM speed and memory proof of a simpler static representation",
-      "final N23 archive and acceptance",
-      "physical DS and listening deferred to N24"
-    ],
-    "scope": "Emulator and host evidence only. Partial route FPS PASS and short diagnostics do not accept the full game or establish a DS hardware limit."
+    "russian_live": {
+      "report": {
+        "path": "research/evidence/nds/n23/review28-ru-live/files/build/nds/n23/candidate22-ru/joint-frontend/live/result.json",
+        "bytes": 5090801,
+        "sha256": "f4ccfa32e26c4e2c9c9580a7568a22edf71386c54ffa43ac68d2732fe041aff0"
+      },
+      "metrics": {
+        "intervals": 1839,
+        "histogram": {
+          "1": 1839
+        },
+        "virtual_fps": 59.82609828808083,
+        "median": 1,
+        "p95": 1,
+        "p99": 1,
+        "max": 1,
+        "fraction_over_one": 0.0,
+        "fraction_over_two": 0.0,
+        "refresh_hz": 59.82609828808083,
+        "checked_one_second_windows": 1485,
+        "scope": "Every product PRESENTED interval without LOADING/WARMUP/DIAGNOSTIC/SYNC flags, independent of observer phase; timestamp gaps separate UI reading time",
+        "minimum_window_cadence_fps": 59.82609828808083,
+        "minimum_new_frames_in_one_second": 59,
+        "budget_passed": true,
+        "missing_profiles": []
+      },
+      "touch": {
+        "samples": 42,
+        "max_upper_vblanks": 4,
+        "max_upper_ms": 66.86045245235258
+      }
+    },
+    "gpu_only_culling": {
+      "accepted": false,
+      "review": {
+        "path": "research/evidence/nds/n23/cull29-review.json",
+        "bytes": 12347,
+        "sha256": "7d15975ce48f444b7b2010d9a59df1ba5fcb925b59cc586421327cc6e5aaa9f3"
+      },
+      "extra_submitted_quads_fraction": 0.43447792571829,
+      "cpu_case14_before_ms": 21.5407,
+      "cpu_case14_after_ms": 25.0003,
+      "experimental_flag_removed": true
+    }
   }
 }

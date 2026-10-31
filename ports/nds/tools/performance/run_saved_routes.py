@@ -15,11 +15,13 @@ def verify(p,row):
     actual=pin(p);assert all(actual[k]==row[k]for k in ('bytes','sha256')),(p,actual,row)
 def main():
     parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--record',type=Path,required=True)
+    parser.add_argument('--ai-layout',type=Path,help='Read-only DWARF binding for this exact new ELF; frozen input policy is unchanged')
     parser.add_argument('--check-policy',action='store_true',help='Verify/freeze the policy derivation without creating an emulator')
     args,remaining=parser.parse_known_args();record=args.record.resolve()
     assert any(record.is_relative_to(ROOT/'research/evidence/nds'/x)or record.is_relative_to(ROOT/'build/nds'/x)for x in ('n22','n23'))
     report=json.loads(record.read_text('utf8'));originals={Path(x['original']['path']).name:x for x in report['source_snapshots']}
-    folder=ROOT/'research/evidence/nds/n23/saved-policies'/pin(record)['sha256'];folder.mkdir(parents=True,exist_ok=True)
+    identity=pin(Path(__file__))['sha256']+('-'+pin(args.ai_layout.resolve())['sha256'] if args.ai_layout else '')
+    folder=ROOT/'research/evidence/nds/n23/saved-policies'/pin(record)['sha256']/identity;folder.mkdir(parents=True,exist_ok=True)
     derived=[];loaded={}
     for name in ('plan_routes','analyze_tactics','tactical_controller','run_routes'):
         row=originals[name+'.py'];expected=row['snapshot']
@@ -45,6 +47,7 @@ def main():
         loaded[name]=module
     manifest=dict(task='N23',policy_record=pin(record),launcher=pin(Path(__file__)),sources=derived,
         scope='Frozen adaptive native-input policy; only N22 task labels and allowed output root are derived. No game rules, input logic or emulated state are patched.')
+    if args.ai_layout:manifest['ai_layout']=pin(args.ai_layout.resolve())
     manifest_path=folder/'manifest.json';encoded=json.dumps(manifest,indent=2)+'\n'
     if manifest_path.exists():assert manifest_path.read_text('utf8')==encoded
     else:manifest_path.write_text(encoded,'utf8')
@@ -54,6 +57,11 @@ def main():
     class ArchivedObserver(base):
         def __init__(self,core,target,directory):
             super().__init__(core,target,directory);self.report['task']='N23';snapshots=[]
+            if args.ai_layout:
+                from read_live_ai import LiveAiReader
+                source=args.ai_layout.resolve();self.ai_reader=LiveAiReader(target/'dok_nds_gameplay.elf',source)
+                destination=directory/'sources'/(pin(source)['sha256']+'-'+source.name);destination.write_bytes(source.read_bytes())
+                self.report['archived_policy_ai_binding']=dict(source=pin(source),snapshot=pin(destination),scope='Read-only advisory binding; no input-policy or emulated-state patch')
             for item in derived:
                 source=ROOT/item['executed_source']['path'];destination=directory/'sources'/source.name
                 destination.parent.mkdir(parents=True,exist_ok=True);destination.write_bytes(source.read_bytes())

@@ -2,6 +2,35 @@
 
 ## Текущее состояние — 30 октября 2026 года
 
+**Последняя актуализация — C22:** [результаты упрощения](spec/N23-simplification.md).
+Простая таблица статической геометрии уровня принята для кандидата: общий
+renderer/native disclosure input, без общего cache/invalidation framework.
+Отдельными ARM-парами выбраны GL_QUADS без strip search и relative matrices.
+52 PNG pairs byte-identical;18186 GPU clip matrices exact; host geometry/
+native disclosure equivalence PASS. C22 normal SCN RU56,003641/EN56,027348 FPS
+против C12 около51,3; все6637 intervals на язык≤2VB, min29,913049.
+Цель60 FAIL: около6,8% intervals занимают2VB.
+
+C22 полный SCN RU/EN renderer/audio/HUD/map PASS,63 cases/12880 frames на язык.
+EN live all3/LCD PASS. LEVEL1 RU `c22-saved01` завершён FINISH→EINTRO→LEVELS:
+14862 normal intervals,47,069109 FPS/min29,913049/все≤2VB. Natural max56;
+≥61 и полные текущие LEVEL2/3 ещё открыты. N23 не принята, N24 не начинать.
+Remaining CPU spike: нижняя карта в полном L1 p958,524/max10,188 мс;
+перед дальнейшими правками проверить её общий путь и причины missed60.
+Не тратить основную итерацию на новые вариации проигрывающего host bot.
+
+C22 immutable production/SCN RUEN — `build/nds/n23/candidate22-{ru,en,scn-ru,scn-en}`,
+durable compiled inputs/ROM/ELF — `research/evidence/nds/n23/candidates/`.
+Флаги и точные SHA в manifests; feature selection C12+staticgeom,simplequads,relmat.
+C19 отрицательная матрица сохранена: её остановил false RGB failure HUD
+observer при fade; stable key исправлен включением palette bytes, assertions
+не ослаблены. Четыре positive/negative observer checks и C22 fade35–37 PASS.
+
+Далее — история предшествующего архитектурного аудита. Утверждения ниже
+«оптимизации не добавлены» и «первый шаг static geometry» относятся к C12;
+последнее состояние кандидата описано выше. Перед финальным handoff сверить
+активные прогоны и архив: при текущей актуализации ещё выполнялся C22 LEVEL2.
+
 **Актуализация после продолжения N23:** пользователь требует сначала
 проверить крупные решения и оверинжиниринг для конкретного NDS-порта,
 затем делать точечные оптимизации. N24 не начинать.

@@ -16,9 +16,20 @@ class PipelineFrontend(cost.CostFrontend):
         self.pipeline_address, size = elf_symbol(self.target / 'dok_nds_gameplay.elf', 'g_nds_n23_submit_profile')
         assert size == (8 + 8 * 16) * 4
         self.pipeline_rows = {}
+        try:
+            self.relative_address, size = elf_symbol(self.target / 'dok_nds_gameplay.elf', 'g_nds_relative_matrix_probe')
+            assert size == 128
+        except ValueError:
+            self.relative_address = None
+        self.relative_audit = None
 
     def observe_map(self):
         super().observe_map()
+        if self.relative_address:
+            values = struct.unpack('<32I', render.ram(self, self.relative_address, 128))
+            if values[0] == 0x234d4b44:
+                self.relative_audit = dict(checks=values[2], mismatches=values[3],
+                    translations=values[4], full_loads=values[5], emulator_only=True)
         raw = render.ram(self, self.pipeline_address, (8 + 8 * 16) * 4)
         values = struct.unpack('<136I', raw)
         if values[0] != 0x23534b44:
@@ -55,6 +66,12 @@ class PipelineFrontend(cost.CostFrontend):
             rom_sha256=self.profile_report['rom_sha256'],
             elf_sha256=cost.joint.profile.transport.sha(self.target / 'dok_nds_gameplay.elf'),
             rows=list(self.pipeline_rows.values()))
+        if self.relative_address:
+            expected_checks = sum(row['cells'] for row in self.pipeline_rows.values())
+            report['relative_matrix_audit'] = self.relative_audit
+            report['relative_expected_checks'] = expected_checks
+            report['passed'] = report['passed'] and bool(self.relative_audit) and (
+                self.relative_audit['mismatches'] == 0 and self.relative_audit['checks'] == expected_checks)
         (self.target / 'pipeline-result.json').write_text(json.dumps(report, indent=2) + '\n', 'utf8')
 
 

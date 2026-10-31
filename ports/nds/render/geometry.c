@@ -2,6 +2,9 @@
 #include "dok/geometry.h"
 #include "geometry_private.h"
 #include <string.h>
+#if N23_STATIC_GEOMETRY
+#include "static_geometry.h"
+#endif
 _Static_assert(DOK_GEOMETRY_CELL_MAX>=8u,"all native branches fit without dropping faces");
 _Static_assert(sizeof(dok_geometry_vertex)==20u && sizeof(dok_geometry_quad)==92u,
     "constructors assign every byte of each active quad, without padding");
@@ -227,9 +230,19 @@ DOK_NDS_HOT_CODE dok_geometry_status dok_geometry_build_cell(const dok_initial_w
 }
 DOK_NDS_HOT_CODE dok_geometry_status dok_geometry_build_cell_inplace(const dok_initial_world *world,
     const dok_geometry_binding bindings[256],uint32_t x,uint32_t z,dok_geometry_cell *cell)
-{return build_cell(world,bindings,x,z,cell,0u,NULL);}
+{
+#if N23_STATIC_GEOMETRY
+    if(dok_static_geometry_read(world,bindings,x,z,cell))return DOK_GEOMETRY_OK;
+#endif
+    return build_cell(world,bindings,x,z,cell,0u,NULL);
+}
 
 DOK_NDS_HOT_CODE dok_geometry_status dok_geometry_build_cell_prepared(const dok_initial_world *world,
     const dok_geometry_binding bindings[256],uint32_t x,uint32_t z,dok_geometry_cell *cell,
     const dok_geometry_field54 prepared[DOK_LEVEL_MAX_OBJECTS])
-{return build_cell(world,bindings,x,z,cell,0u,prepared);}
+{
+#if N23_STATIC_GEOMETRY
+    if(dok_static_geometry_read(world,bindings,x,z,cell))return DOK_GEOMETRY_OK;
+#endif
+    return build_cell(world,bindings,x,z,cell,0u,prepared);
+}

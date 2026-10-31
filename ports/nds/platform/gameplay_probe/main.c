@@ -20,6 +20,9 @@
 #include "effects_runtime.h"
 #include "gameplay.h"
 #include "dok/geometry_cache.h"
+#if N23_STATIC_GEOMETRY
+#include "../../render/static_geometry.h"
+#endif
 #include "dok/water_texture.h"
 #include "dok/frame_store.h"
 #include "dok/weapon_overlay.h"
@@ -556,6 +559,9 @@ static dok_status texture_require(const dok_asset_entry *entry)
 
 static int level_load(uint32_t level)
 {
+#if N23_STATIC_GEOMETRY
+    dok_static_geometry_reset();
+#endif
 #if GAMEPLAY_UI
     ui->overlay_blank=0;ui->overlay_valid=0;
 #endif
@@ -602,6 +608,12 @@ static int level_load(uint32_t level)
     if(dok_sprite_assets_load(&world->presentation,&storage->bank,assets+i,DOK_NDS_ASSETS_BYTES-i)!=DOK_STATUS_OK)
         do{if(!g_nds_effect_probe[31])g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);{g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return 0;}}while(0);
     i=(i+storage->bank.metadata_bytes+31u)&~31u;
+#if N23_STATIC_GEOMETRY
+    uint32_t geometry_bytes;
+    if(!dok_static_geometry_load(&world->initial,world->bindings,assets+i,
+        DOK_NDS_ASSETS_BYTES-i,&geometry_bytes))return 0;
+    i=(i+geometry_bytes+31u)&~31u;
+#endif
 #if N23_EFFECT_POOL_WORKSET && EFFECT_GPU_FOG && GAMEPLAY_FRONTEND && !FRONTEND_FIXTURES
     /* Full alpha/reference SCN keeps its original pool. Ordinary GPU fog has
      * one current water variant per material, no LIGHT variants. Reassign only

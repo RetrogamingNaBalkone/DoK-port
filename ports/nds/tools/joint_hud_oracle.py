@@ -21,7 +21,11 @@ def observe_joint_hud(self):
         raise AssertionError("Language presentation changed the initial world")
     if p[56] and p[57] and render.ram(self,p[56],32)!=render.ram(self,p[57],32):
         raise AssertionError("UI language changed the live gameplay presentation descriptor")
-    key=(p[5],p[3],p[4],*p[9:21],p[29],p[30],p[31])
+    # Fade changes RGB while text/numeric state is unchanged. Stability must
+    # include the exact palette, otherwise a new palette is compared with the
+    # preceding LCD scanout when presentations arrive every VBlank.
+    palette_bytes=render.ram(self,p[55],512) if p[55] else None
+    key=(p[5],p[3],p[4],*p[9:21],p[29],p[30],p[31],palette_bytes)
     self.hud_report["last_probe"]=list(p)
     if key!=self.hud_stable:
         self.hud_stable=key;self.hud_stability=1
@@ -50,7 +54,7 @@ def observe_joint_hud(self):
             actual=actual[first],expected=expected[first],probe=list(p),state=state)
         self.capture("hud-mismatch")
         raise AssertionError(f"HUD original-resource pixel mismatch at {first%256},{154+first//256}")
-    palette=struct.unpack("<256H",render.ram(self,p[55],512))
+    palette=struct.unpack("<256H",palette_bytes)
     width,height,rgb=self.rgb()
     if (width,height)!=(256,384):
         raise AssertionError("Screen geometry changed")

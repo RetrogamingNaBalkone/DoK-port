@@ -41,7 +41,8 @@ def build(label,features=None):
     compilation_inputs=[p for p in (ROOT/'ports/nds').rglob('*') if p.is_file() and (p.suffix in ('.c','.h','.inc','.S','.ld','.lds') or p.name.startswith('Makefile'))]
     before=[artifact(p) for p in compilation_inputs]
     driver_before=artifact(Path(__file__))
-    command=command.replace(' GAMEPLAY_WATER_UV=1',f' N23_PIPELINE_PROFILE={int(chosen("pipeline"))} GAMEPLAY_WATER_UV=1')
+    relative_matrices=2 if chosen('relmataudit') else int(chosen('relmat'))
+    command=command.replace(' GAMEPLAY_WATER_UV=1',f' N23_PIPELINE_PROFILE={int(chosen("pipeline"))} N23_STATIC_GEOMETRY={int(chosen("staticgeom"))} N23_SIMPLE_QUADS={int(chosen("simplequads"))} N23_RELATIVE_MATRICES={relative_matrices} GAMEPLAY_WATER_UV=1')
     try:log=run([Path.home()/'.local/msys64/usr/bin/bash.exe','--login','-s'],input=command,env=env)
     except Exception as error:
         (target/'build-error.log').write_text(str(error),'utf8');raise
@@ -60,6 +61,9 @@ def build(label,features=None):
             *[artifact(ROOT/'ports/nds/tools'/name) for name in ('check_items.py','check_interactions.py','prepare_interactions_fixture.py')]],
         arm7_dependency=artifact(ROOT/'build/nds/n18/arm7/dok_audio_arm7.elf'))
     report['pipeline_profile']=bool(chosen('pipeline'))
+    report['static_geometry']=bool(chosen('staticgeom'))
+    report['simple_quads']=bool(chosen('simplequads'))
+    report['relative_matrices']=relative_matrices
     (target/'build-manifest.json').write_text(json.dumps(report,indent=2)+'\n','utf8')
     if True:
         evidence=ROOT/'research/evidence/nds/n23/candidates'/label
@@ -81,6 +85,6 @@ if __name__=='__main__':
     args=parser.parse_args()
     features=None if args.features is None else args.features.split(',')
     allowed={'batch','math','arm','vert','corners','frames','clip','fastclock','fused','floorruns','door','workset','fine','geomfine','bench','group','clockbench','mapbench','codecbench','smallcodec','widecodec','discovercache','mapbuttons','discoverbits','discoversort','compactsource','object','overlayreuse','combatsar','overlayraw','replace','mapfine','sector','huddma','mapseen','scn','audit'}
-    allowed.add('pipeline')
+    allowed.update(('pipeline','staticgeom','simplequads','relmat','relmataudit'))
     assert features is None or set(features)<=allowed, 'Unknown feature token'
     build(args.label,features)

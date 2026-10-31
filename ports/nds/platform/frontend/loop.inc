@@ -39,6 +39,9 @@ static int frontend_stop_world(void)
     frontend->visual_bytes=0;frontend->visual_references=0;
     ui->message_kind=0;ui->message_bytes=0;ui->message_address=0;ui->dirty=1;
     nds_map_begin();map_ui->prepared=0;memset(&map_ui->snapshot,0,sizeof(map_ui->snapshot));
+#if N23_STATIC_GEOMETRY
+    dok_static_geometry_reset();
+#endif
     world_active=0;return memory_check();
 }
 #endif

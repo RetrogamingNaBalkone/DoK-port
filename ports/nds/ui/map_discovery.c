@@ -2,6 +2,9 @@
 #include "dok/map_discovery.h"
 #include <limits.h>
 #include <string.h>
+#if N23_STATIC_GEOMETRY
+#include "../render/static_geometry.h"
+#endif
 #ifndef N23_DISCOVERY_BITSET
 #define N23_DISCOVERY_BITSET 0
 #endif
@@ -269,11 +272,15 @@ DOK_NDS_HOT_CODE static dok_status append(dok_map_discovery_workspace *w,dok_map
 /* Only source constructor X/Z and its kind/flags reach the column producer.
  * Keep these inputs directly rather than building y/UV/material vertices,
  * copying a full 12-quad cell and then discarding those fields. */
+#if N23_STATIC_GEOMETRY
+typedef dok_static_map_shape map_shape;
+#else
 typedef struct map_shape {
     int32_t ax,az,bx,bz;
     uint16_t flags;
     uint8_t glyph,kind;
 } map_shape;
+#endif
 
 DOK_NDS_HOT_CODE static const dok_level_object *map_object(const dok_initial_world *w,
     uint32_t plane,uint32_t x,uint32_t z)
@@ -314,6 +321,9 @@ DOK_NDS_HOT_CODE static dok_status map_cell(const dok_initial_world *w,const dok
     uint32_t x,uint32_t z,map_shape shapes[DOK_GEOMETRY_CELL_MAX],uint32_t *count,
     const dok_geometry_field54 *prepared)
 {
+#if N23_STATIC_GEOMETRY
+    if(dok_static_geometry_shapes(w,bindings,x,z,shapes,count))return DOK_STATUS_OK;
+#endif
     const dok_level_definition *d=w->definition;
     const dok_level_object *t,*f,*nt[4],*nf[4];const dok_geometry_image *image;
     uint32_t width,length,nx[4],nz[4],i,n=0;int32_t side,xx,zz,inset,scaled;

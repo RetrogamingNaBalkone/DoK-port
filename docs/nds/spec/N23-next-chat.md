@@ -1,5 +1,20 @@
 # Передача N23 в следующий чат — 30 октября 2026
 
+## Последняя актуализация C22
+
+Сначала читать [N23-simplification](N23-simplification.md): в этом продолжении
+static level geometry/shared disclosure, GL_QUADS и relative matrices уже
+реализованы и проверены. Четыре ARM-пары,52 exact PNG pairs,18186 GPU matrices
+без различий. C22 полный SCN RUEN63 cases/12880 frames PASS; normal56,00/56,03
+FPS, все≤2VB/min29,913049, цель60 FAIL. EN live all3/LCD PASS.
+LEVEL1 RU `c22-saved01` FINISH→EINTRO→LEVELS,14862 intervals/все≤2VB.
+Natural56, ≥61 и текущие полные LEVEL2/3 ещё открыты. N23 не принята,
+N24 не начинать. Lower map p958,524/max10,188 мс на полном L1 требует
+разбора общего пути; не расходовать основную работу на новые host bot tours.
+Ниже C12 «representation ещё открыто» — история до проверок C22.
+Перед передачей сверить процессы/архивы: эта актуализация сделана во время
+продолжающейся работы, не является объявлением остановки всех запусков.
+
 ## Актуализация после продолжения
 
 Сначала читать [N23-pipeline-audit](N23-pipeline-audit.md). По последнему
