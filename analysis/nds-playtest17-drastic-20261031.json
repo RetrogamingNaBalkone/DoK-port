@@ -1,0 +1,139 @@
+{
+  "task": "N23",
+  "candidate": "playtest17-ru",
+  "rom": {
+    "path": "artifacts/nds/dok.nds",
+    "bytes": 10165760,
+    "sha256": "0619e840622cddd34f8cd1b45cd53c429c2219a14d76303e8306b08e5d8f65a4"
+  },
+  "arm7": {
+    "path": "build/nds/n23/playtest17-ru/arm7/dok_audio_arm7.elf",
+    "bytes": 332888,
+    "sha256": "0b13daf47ec7145aefe6a80a742a5f731a57ac69813d1d9c3ccb732f9bd7ac62"
+  },
+  "idle_binary_check": {
+    "path": "research/evidence/nds/n23/playtest17-drastic/arm7-idle-check.json",
+    "bytes": 271,
+    "sha256": "bac57f830679f1c0f0048f75be0f6de339a669d8c854fde9bda5ef27c430b365"
+  },
+  "user_photo_previous": {
+    "stage": 58,
+    "error": "00004000",
+    "arm7_boot": 9,
+    "arm7_loop": 1,
+    "arm7_rx": 0,
+    "at": 4,
+    "vblank": 168,
+    "handler": 2
+  },
+  "drastic_verified": false,
+  "root_cause_in_emulator_confirmed": false,
+  "localization": "ARM7 main remains inside BIOS idle wait while VBlank handlers execute and return",
+  "changes": [
+    "N23 ARM7_IDLE_BIOS=0; bounded 256-iteration NOP idle without SWI/HALT"
+  ],
+  "limitations": [
+    "Increased ARM7 idle CPU activity; physical power unmeasured"
+  ],
+  "reports": [
+    {
+      "report": {
+        "path": "research/evidence/nds/n23/playtest17-drastic/frontend-world-smoke-no-storage/result.json",
+        "bytes": 19437,
+        "sha256": "a9778887340d1b82ede817e08eefc76fdee57eb2e3c154b3df70c2d9899c3939"
+      },
+      "passed": true,
+      "metrics": {
+        "index8_checks": 1277952,
+        "rgb_checks": 1277952
+      }
+    },
+    {
+      "report": {
+        "path": "research/evidence/nds/n23/playtest17-drastic/boot-steps/result.json",
+        "bytes": 1362,
+        "sha256": "9883b06c66dbe2d65130ed3abbc5ed3c9861938923ba31d14a181f050b6c5500"
+      },
+      "passed": true,
+      "metrics": {
+        "arm7_boot": {
+          "address": 37224992,
+          "words": [
+            927092545,
+            9,
+            29080,
+            2,
+            33891392,
+            6,
+            34049,
+            393297,
+            1,
+            4,
+            1,
+            148,
+            2,
+            0,
+            0,
+            0
+          ]
+        },
+        "arm7_progress": {
+          "loop_delta": 590,
+          "vblank_delta": 3,
+          "words": [
+            927092545,
+            9,
+            29670,
+            2,
+            33891392,
+            6,
+            34049,
+            393297,
+            1,
+            4,
+            1,
+            151,
+            2,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "report": {
+        "path": "research/evidence/nds/n23/playtest17-drastic/live/result.json",
+        "bytes": 3240226,
+        "sha256": "40fde90375b158d95e9ef8145c97bd6a9753f5c6ed40b851fde9f50d5b44b09c"
+      },
+      "passed": true,
+      "metrics": {
+        "index8_checks": 5701632,
+        "rgb_checks": 5701632,
+        "steady_metrics": {
+          "intervals": 1119,
+          "histogram": {
+            "1": 1119
+          },
+          "virtual_fps": 59.82609828808083,
+          "median": 1,
+          "p95": 1,
+          "p99": 1,
+          "max": 1,
+          "fraction_over_one": 0.0,
+          "fraction_over_two": 0.0,
+          "refresh_hz": 59.82609828808083,
+          "checked_one_second_windows": 765,
+          "scope": "Every product PRESENTED interval without LOADING/WARMUP/DIAGNOSTIC/SYNC flags, independent of observer phase; timestamp gaps separate UI reading time",
+          "minimum_window_cadence_fps": 59.82609828808083,
+          "minimum_new_frames_in_one_second": 59,
+          "budget_passed": true,
+          "missing_profiles": []
+        }
+      }
+    }
+  ],
+  "next_id": "N23",
+  "N24_started": false
+}

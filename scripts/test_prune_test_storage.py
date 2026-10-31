@@ -1,17 +1,45 @@
 """Check the native deletion driver's boundaries before using it on real data."""
 import hashlib
+import contextlib
+import io
 import json
 from pathlib import Path
 import shutil
 import subprocess
+import sys
 import unittest
 from unittest.mock import patch
 from uuid import uuid4
 
 import prune_test_storage as storage
+sys.path.insert(0, str(storage.ROOT/'ports/nds/tools'))
 
 
 class PruneTests(unittest.TestCase):
+    def test_plan_excludes_active_tree_and_records_inaccessible_directory(self):
+        root = self.directory/'isolated'
+        active = root/'build/nds/active/zig-cache'
+        idle = root/'build/nds/idle/zig-cache'
+        active.mkdir(parents=True); idle.mkdir(parents=True)
+        for area in ('ports', 'scripts', 'tools'):
+            (root/area).mkdir()
+        (active/'live.o').write_bytes(b'active')
+        (idle/'old.o').write_bytes(b'idle')
+        walk = storage.os.walk
+        def with_denied(path, **kwargs):
+            if path == root/'ports':
+                kwargs['onerror'](PermissionError(13, 'denied', str(root/'ports/private')))
+            yield from walk(path, **kwargs)
+        manifest = root/'manifest.json'
+        with patch.object(storage, 'ROOT', root), patch.object(storage.os, 'walk', with_denied), \
+             patch.object(storage.subprocess, 'check_output', return_value=b''), \
+             contextlib.redirect_stdout(io.StringIO()):
+            storage.plan(manifest, ['build/nds/active'])
+        report = json.loads(manifest.read_text('utf8'))
+        self.assertEqual([r['path'] for r in report['delete']], ['build/nds/idle/zig-cache/old.o'])
+        self.assertTrue(any(r['path']=='ports/private' for r in report['skipped']))
+        self.assertTrue((active/'live.o').exists())
+
     def setUp(self):
         self.directory = storage.ROOT / 'build/storage-cleanup-tests' / ('run-' + uuid4().hex)
         storage.local(self.directory)

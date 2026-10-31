@@ -1,0 +1,145 @@
+{
+  "task": "N23 partial playtest09",
+  "passed": true,
+  "published": {
+    "path": "artifacts/nds/dok.nds",
+    "bytes": 10157568,
+    "sha256": "94cad36a0d2db88b478a480a92b5c05debdad2af7ba6c80594a385aaa68db8ae"
+  },
+  "checks": {
+    "level1": {
+      "path": "research/evidence/nds/n23/playtest09/level1.json",
+      "bytes": 4023398,
+      "sha256": "4f616e5b37e57723b62c8080fdb1448c83eab5b495520c9afcd88607ed0fe75a"
+    },
+    "level2": {
+      "path": "research/evidence/nds/n23/playtest09/level2.json",
+      "bytes": 1232451,
+      "sha256": "63e50578b22639bbca20ef6342255849b88a236aaf2f33409fd3ceb5900ddc3c"
+    },
+    "level3": {
+      "path": "research/evidence/nds/n23/playtest09/level3.json",
+      "bytes": 5088793,
+      "sha256": "dcc91122be4574cbc1b7b9f85a2dfb4c0c6acc3c6d8a6445bb6152b1a544a53e"
+    },
+    "live": {
+      "path": "research/evidence/nds/n23/playtest09/live.json",
+      "bytes": 4170442,
+      "sha256": "4808f2b9366d6779851600d6b552ab970995cab97cb35a3a94e62e6a9b023440"
+    },
+    "no_storage": {
+      "path": "research/evidence/nds/n23/playtest09/no_storage.json",
+      "bytes": 19437,
+      "sha256": "9c20b9ba1684c3675f6e9a32d559cdb9f1535759e7f2ad0e1ccbd0b503b74a7d"
+    },
+    "packed": {
+      "path": "research/evidence/nds/n23/playtest09/packed.json",
+      "bytes": 425,
+      "sha256": "0ae03a4b17e74cb3fc1a21de7f55d2202863829a2b8f676757edbeaa6c7544cf"
+    },
+    "hud": {
+      "path": "research/evidence/nds/n23/playtest09/hud.json",
+      "bytes": 7295,
+      "sha256": "dc48f3798a3bba92447e7084cb2cd27dbf837832209faf2c7d28b3e10274656d"
+    },
+    "ui": {
+      "path": "research/evidence/nds/n23/playtest09/ui.json",
+      "bytes": 157,
+      "sha256": "3cc27f547e2fdf9b128c7e30909095ca71c4322eee1b7747d96c97194fe70f9c"
+    }
+  },
+  "totals": {
+    "hold_sequences": 197,
+    "hold_video_frames": 197,
+    "captured_lcd_sample_checks": 7092,
+    "source_interval_checks": 6150
+  },
+  "levels": [
+    {
+      "level": 1,
+      "cells": 220,
+      "video_frames": 5344,
+      "held_sequences": 70,
+      "lcd_checks": 2520,
+      "source_interval_checks": 3113,
+      "release_frames": 70,
+      "release_same_capture": 69,
+      "clock_last": 10030.243036651756,
+      "observer": {
+        "path": "research/evidence/nds/n23/playtest09/level1-observer.py",
+        "bytes": 7450,
+        "sha256": "187612fb3bd1d5d18005457fe28c19f4bee9e18626f8debce00bb22c1104fa85"
+      }
+    },
+    {
+      "level": 2,
+      "cells": 100,
+      "video_frames": 2242,
+      "held_sequences": 30,
+      "lcd_checks": 1080,
+      "source_interval_checks": 132,
+      "release_frames": 30,
+      "release_same_capture": 29,
+      "clock_last": 10030.741251042182,
+      "observer": {
+        "path": "research/evidence/nds/n23/playtest09/level2-observer.py",
+        "bytes": 7450,
+        "sha256": "187612fb3bd1d5d18005457fe28c19f4bee9e18626f8debce00bb22c1104fa85"
+      }
+    },
+    {
+      "level": 3,
+      "cells": 100,
+      "video_frames": 5328,
+      "held_sequences": 97,
+      "lcd_checks": 3492,
+      "source_interval_checks": 2905,
+      "release_frames": 97,
+      "release_same_capture": 95,
+      "clock_last": 10027.207970435269,
+      "observer": {
+        "path": "research/evidence/nds/n23/playtest09/level3-observer.py",
+        "bytes": 7450,
+        "sha256": "187612fb3bd1d5d18005457fe28c19f4bee9e18626f8debce00bb22c1104fa85"
+      }
+    }
+  ],
+  "capture": {
+    "main": "VRAM C capture RGB555, MODE_FB2 while rasterizer preload",
+    "sub": "H 32KiB + I 16KiB, 256x192 BG8",
+    "texture_bytes": 393216
+  },
+  "hud": {
+    "height": 38,
+    "removed_bottom_rows": 2,
+    "extra_message_rows": 1,
+    "extra_stats_rows": 1,
+    "message_y_single": 7,
+    "message_y_double": [
+      3,
+      11
+    ],
+    "numeric_font16_y": 23
+  },
+  "animation": {
+    "expected_source_tick_hz": 10026.73949579832,
+    "clock_changed": false,
+    "ai_changed": false,
+    "resource_intervals_changed": false,
+    "checked": "Consecutive walking/flying frames within one animation: last_motion_ticks delta >= prior signed RES interval; clock observed in real video time",
+    "visual_acceleration_claim": "Not confirmed by these checks; actual DOS PC cadence and perceived attack/death tempo are not claimed identical"
+  },
+  "ram": {
+    "static_startup_bytes": 507904,
+    "managed_bytes": 2293760,
+    "sdk_heap_available": 212992,
+    "reserve_bytes": 655360
+  },
+  "limitations": [
+    "Emulator only; physical DS is N24",
+    "Bounded ordinary routes, not full playthroughs",
+    "Capture repeats the previous frame; LOADING intervals remain excluded by legacy steady FPS metric",
+    "User perception of fast enemies remains a visual playtest item",
+    "N23 remains open; N24 not started"
+  ]
+}

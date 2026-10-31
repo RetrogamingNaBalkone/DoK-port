@@ -4,28 +4,39 @@
   "scope": "Actual runtime language/message/update C, host nds cache/DMA/palette stubs; no hardware claims",
   "actual_runtime": {
     "passed": true,
-    "checks": 35622,
+    "checks": 35706,
     "scenarios": 6,
     "actual_language_calls": 18,
     "actual_text_draws": 1596,
     "animation_player_steps": 4644,
     "localized_text_differences": 1596
   },
+  "notice_mutation_control": {
+    "rejected": true,
+    "fault": "Old two-second notice lifetime",
+    "exit_code": 1,
+    "stderr": "N19 actual language line 102: ui.message_kind==2&&ui.message_id==0&&ui.page==0\nN19 actual language line 133: notice_timing()",
+    "source": {
+      "path": "build/nds/n19/ui-language-runtime/short-notice-runtime.c",
+      "bytes": 9372,
+      "sha256": "b9f0709b17e2ff6384c263aa4aa7e697f995c94717a26f603d54b179ffa0124f"
+    }
+  },
   "mutation_control": {
     "rejected": true,
     "fault": "UI bind publishes into world.presentation",
     "exit_code": 1,
-    "stderr": "N19 actual language line 31: memcmp(after,world_before,32)==0\nN19 actual language line 111: unchanged()",
+    "stderr": "N19 actual language line 31: memcmp(after,world_before,32)==0\nN19 actual language line 131: unchanged()",
     "stdout": "{\"passed\":false,\"checks\":1747,\"scenarios\":6,\"actual_language_calls\":2,\"actual_text_draws\":75,\"animation_player_steps\":228,\"localized_text_differences\":75}",
     "source": {
       "path": "build/nds/n19/ui-language-runtime/faulty-runtime.c",
-      "bytes": 8417,
-      "sha256": "f1f860c399985f5eec79f793f3c9ee877ffb53982dda2796a910d68b02099fd1"
+      "bytes": 9413,
+      "sha256": "f9c6c105fc71ffad3f756a7a2bc70227d5b0fd668873269ac252dbd47e3d08c2"
     }
   },
   "report": {
     "path": "research/evidence/nds/n19/ui-language-runtime-check.json",
-    "bytes": 8682,
-    "sha256": "38b99fcd677f402c090060374555631870f3d4b6d3da50b3c0dde535332bcf7c"
+    "bytes": 11322,
+    "sha256": "2b75d5b0587e8b70ea77d94278ef4d212594645efc9a35e70a060ca8523ce4cf"
   }
 }

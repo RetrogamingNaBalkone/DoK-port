@@ -6,6 +6,12 @@
 /* backing must be 32-byte aligned main RAM, >=65536 bytes, persistent until
  * shutdown. Only the first 65536 bytes are used. No allocations or file I/O. */
 int nds_audio_init(void *backing, size_t capacity);
+/* Optional boot diagnostics; callback is cleared by the runtime after init. */
+void nds_audio_set_loading(void (*progress)(unsigned));
+/* Failure-only raw diagnostics: serial/ACK/ready/sequence/mirror address,
+ * canonical ACK/ready, hardware FIFO control. No coherent-status wait. */
+void nds_audio_debug(uint32_t out[8]);
+void nds_audio_boot_debug(uint32_t out[32]);
 /* Before begin, write both parts. While active, only the retired part may be
  * written, once per retirement. Short parts are zero padded, never repeated.
  * Caller fills looping source across part boundaries without padding. */

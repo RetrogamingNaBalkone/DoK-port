@@ -1,0 +1,78 @@
+{
+  "task": "N23",
+  "candidate": "playtest12-ru",
+  "rom": {
+    "path": "artifacts/nds/dok.nds",
+    "bytes": 10164736,
+    "sha256": "3a8db8a1b484d8f9d80f18d2dcb615466ca4b157ba5cffe7190037f704fc7fc1"
+  },
+  "device": "RG DS",
+  "environment": "ROCKNIX DraStic launched via ES-DE; exact versions unknown",
+  "user_result_previous_candidate": "playtest11 hangs at 5 segments, no visible error",
+  "root_cause_confirmed": false,
+  "drastic_verified": false,
+  "changes": [
+    "bounded coherent status reader",
+    "visible boot checkpoints 51..59"
+  ],
+  "host_ipc": {
+    "passed": true,
+    "ack_cases": 6,
+    "status_cases": 4
+  },
+  "reports": [
+    {
+      "report": {
+        "path": "research/evidence/nds/n23/playtest12-drastic/frontend-world-smoke-no-storage/result.json",
+        "bytes": 19437,
+        "sha256": "4172baf8532458af1f488475f4721b4d33a6171c1360f0163676bdc02af923bf"
+      },
+      "passed": true,
+      "metrics": {
+        "index8_checks": 1277952,
+        "rgb_checks": 1277952
+      }
+    },
+    {
+      "report": {
+        "path": "research/evidence/nds/n23/playtest12-drastic/packed-check/result.json",
+        "bytes": 425,
+        "sha256": "0ae03a4b17e74cb3fc1a21de7f55d2202863829a2b8f676757edbeaa6c7544cf"
+      },
+      "passed": true,
+      "metrics": {
+        "sound_clips": 22,
+        "frames": 169
+      }
+    },
+    {
+      "report": {
+        "path": "research/evidence/nds/n23/playtest12-drastic/boot-steps/result.json",
+        "bytes": 804,
+        "sha256": "0e9b383d4937bda21739e92d131eb5874ab30441344bfb2de69ab78a5e2775e3"
+      },
+      "passed": true,
+      "metrics": {
+        "stages": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          51,
+          52,
+          53,
+          54,
+          55,
+          56,
+          57,
+          58,
+          59,
+          6
+        ]
+      }
+    }
+  ],
+  "next_id": "N23",
+  "N24_started": false
+}

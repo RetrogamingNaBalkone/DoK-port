@@ -1,0 +1,66 @@
+{
+  "task": "N23",
+  "candidate": "loading20-ru",
+  "rom": {
+    "path": "artifacts/nds/dok-loading20.nds",
+    "bytes": 10165760,
+    "sha256": "332627c7a265fad6578da7c301e1ed8cc344c94f019f7addf95c414ebf243b8e"
+  },
+  "main_rom": {
+    "path": "artifacts/nds/dok.nds",
+    "bytes": 10165760,
+    "sha256": "332627c7a265fad6578da7c301e1ed8cc344c94f019f7addf95c414ebf243b8e"
+  },
+  "user_photo_previous": {
+    "irq_lr": "03801F8C",
+    "interrupted_pc": "03801F88",
+    "r3": "00008404",
+    "psr": "6000003F",
+    "control_magic": "43424D41",
+    "control_serial": 1,
+    "command": "02052440"
+  },
+  "verified_location": "ARM7 SDK fifo_buffer_wait_block, waiting for a free queue block",
+  "remaining_uncertainty": "Underlying DraStic/pool exhaustion mechanism not reproduced locally",
+  "change": "SYS_INPUT ready SDK messages to a RAM mailbox; retain filtering/calibration and SDK scanKeys",
+  "sdk_private_abi": "Pinned setTransferInputData r0 touch12 pointer/r1 raw key WORD, verified in SDK machine code",
+  "drastic_verified": false,
+  "level_tests_run": false,
+  "reports": [
+    {
+      "report": {
+        "path": "research/evidence/nds/n23/drastic-loading20/boot-steps/result.json",
+        "bytes": 1717,
+        "sha256": "210f47bfc89b560e03aaa2922132ac16d8a5344a1664d72fdfe26aad1e113533"
+      },
+      "passed": true
+    },
+    {
+      "report": {
+        "path": "research/evidence/nds/n23/drastic-loading20/boot-input/result.json",
+        "bytes": 342,
+        "sha256": "edc87fbb9f35df2820e4b0bd7c3b68eddb105d3c4e2f0b2d52b7792b90e260b9"
+      },
+      "passed": true
+    }
+  ],
+  "boot_input": {
+    "passed": true,
+    "scope": "Boot/title only; no level selected",
+    "title_soak_frames": 240,
+    "input_messages": 240,
+    "keys": "0x1c00",
+    "touch": [
+      1920,
+      1280,
+      120,
+      80,
+      4095,
+      4095
+    ],
+    "released": "0x0",
+    "source_sha256": "302c33691bebeaafbabc1687668d965f850462750567f554802fe8a5c369b06b"
+  },
+  "next_id": "N23",
+  "N24_started": false
+}

@@ -1,0 +1,140 @@
+{
+  "task": "N23",
+  "candidate": "playtest15-ru",
+  "rom": {
+    "path": "artifacts/nds/dok.nds",
+    "bytes": 10165760,
+    "sha256": "7f295ef35aa9e77076c1f9135a9c9a984dcde04f3fb2befff541dd7da6da393d"
+  },
+  "arm7": {
+    "path": "build/nds/n23/playtest15-ru/arm7/dok_audio_arm7.elf",
+    "bytes": 332636,
+    "sha256": "da6b52ffa4c610f44b981c1a4bb786ca1949a36a85588c8336e80d0bcaaf0aa9"
+  },
+  "arm7_boot_header": {
+    "path": "build/nds/n23/playtest15-ru/generated/audio_boot.inc",
+    "bytes": 41,
+    "sha256": "e9189d6e3657c8ac4a487d6ea2be9bfc845c3aa4417dc956a94ea4e74f7aab67"
+  },
+  "user_photo_previous": {
+    "stage": 58,
+    "error": "00004000",
+    "ack": 0,
+    "serial": 1,
+    "ready": 0,
+    "sequence": 0,
+    "mirror": "02C52340",
+    "canonical_ack": 0,
+    "canonical_ready": 0,
+    "fifo": "8400"
+  },
+  "drastic_verified": false,
+  "root_cause_confirmed": false,
+  "changes": [
+    "SDK FIFO polling in ARM7 main loop and ARM9 fallback",
+    "ARM7 boot and callback trace at ELF-derived main-RAM address"
+  ],
+  "host_tests": {
+    "passed": true,
+    "ack_on_poll": true,
+    "mailbox_lifetime": true,
+    "bounded_status": true,
+    "raw_status": true
+  },
+  "reports": [
+    {
+      "report": {
+        "path": "research/evidence/nds/n23/playtest15-drastic/frontend-world-smoke-no-storage/result.json",
+        "bytes": 19437,
+        "sha256": "199dd6c75092cac76577d9ae3f3d501c53e73ef82a7fb6f4bfe39776134cc2b6"
+      },
+      "passed": true,
+      "metrics": {
+        "index8_checks": 1277952,
+        "rgb_checks": 1277952
+      }
+    },
+    {
+      "report": {
+        "path": "research/evidence/nds/n23/playtest15-drastic/boot-steps/result.json",
+        "bytes": 1062,
+        "sha256": "9260919ccb095c29c2bdec0dbe07c9bab2f01d8c9ff1fbbfb8d3b4391c56e1ab"
+      },
+      "passed": true,
+      "metrics": {
+        "arm7_boot": {
+          "address": 37224992,
+          "words": [
+            927092545,
+            9,
+            151,
+            2,
+            33891360,
+            6,
+            34049,
+            393297,
+            1,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "stages": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          51,
+          52,
+          53,
+          54,
+          55,
+          56,
+          57,
+          58,
+          59,
+          6
+        ]
+      }
+    },
+    {
+      "report": {
+        "path": "research/evidence/nds/n23/playtest15-drastic/live/result.json",
+        "bytes": 3240225,
+        "sha256": "681403a67c95578c04e00f278cd912d209e8915c3cf73ab9e128eb14c8224c93"
+      },
+      "passed": true,
+      "metrics": {
+        "index8_checks": 5701632,
+        "rgb_checks": 5701632,
+        "steady_metrics": {
+          "intervals": 1119,
+          "histogram": {
+            "1": 1119
+          },
+          "virtual_fps": 59.82609828808083,
+          "median": 1,
+          "p95": 1,
+          "p99": 1,
+          "max": 1,
+          "fraction_over_one": 0.0,
+          "fraction_over_two": 0.0,
+          "refresh_hz": 59.82609828808083,
+          "checked_one_second_windows": 765,
+          "scope": "Every product PRESENTED interval without LOADING/WARMUP/DIAGNOSTIC/SYNC flags, independent of observer phase; timestamp gaps separate UI reading time",
+          "minimum_window_cadence_fps": 59.82609828808083,
+          "minimum_new_frames_in_one_second": 59,
+          "budget_passed": true,
+          "missing_profiles": []
+        }
+      }
+    }
+  ],
+  "next_id": "N23",
+  "N24_started": false
+}

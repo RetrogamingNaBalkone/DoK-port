@@ -1,6 +1,30 @@
 # Full N22 game with independently selectable diagnostic timing.
 OUTDIR ?= ../../build/nds/n23/candidate-ru
 include Makefile.n22
+N23_CAPTURE_HOLD ?= 0
+CPPFLAGS += -DN23_CAPTURE_HOLD=$(N23_CAPTURE_HOLD)
+PLATFORM_CPPFLAGS += -DN23_CAPTURE_HOLD=$(N23_CAPTURE_HOLD)
+# One self-contained production ROM; SCN/legacy controls retain FAT fixtures.
+NDS_EMBEDDED_RESOURCES ?= $(GAMEPLAY_FRONTEND)
+CPPFLAGS += -DNDS_EMBEDDED_RESOURCES=$(NDS_EMBEDDED_RESOURCES)
+PLATFORM_CPPFLAGS += -DNDS_EMBEDDED_RESOURCES=$(NDS_EMBEDDED_RESOURCES)
+ifeq ($(NDS_EMBEDDED_RESOURCES),1)
+OBJECTS += $(OBJDIR)/input_bridge.o
+$(ELF): $(OBJDIR)/input_bridge.o
+LDFLAGS += -Wl,--wrap=scanKeys
+$(OBJDIR)/input_bridge.o: platform/audio/input_bridge.c platform/audio/audio_ipc.h | $(OBJDIR)
+	"$(CC)" $(ARCH) -specs=$(SPECS) $(PLATFORM_CPPFLAGS) -std=gnu11 $(CFLAGS) -MMD -MP -c "$<" -o "$@"
+NITROFSDIR := $(OUTDIR)/nitrofs
+$(ROM): $(NITROFSDIR)/dok/assets.ndp $(NITROFSDIR)/dok/ui.dat $(NITROFSDIR)/dok/frontend.dat $(NITROFSDIR)/dok/frames.dat $(NITROFSDIR)/dok/sounds.dat
+$(NITROFSDIR)/dok:
+	mkdir -p "$@"
+$(NITROFSDIR)/dok/assets.ndp: ../../build/nds/assets/dok-assets.ndspak | $(NITROFSDIR)/dok
+	cp "$<" "$@"
+$(NITROFSDIR)/dok/ui.dat: ../../build/nds/n23/playtest-ui/ui.dat | $(NITROFSDIR)/dok
+	cp "$<" "$@"
+$(NITROFSDIR)/dok/frontend.dat: ../../build/nds/n21/frontend.dat | $(NITROFSDIR)/dok
+	cp "$<" "$@"
+endif
 N23_FINE_PROFILE ?= 0
 N23_RELATIVE_MATRICES ?= 0
 CPPFLAGS += -DN23_RELATIVE_MATRICES=$(N23_RELATIVE_MATRICES)

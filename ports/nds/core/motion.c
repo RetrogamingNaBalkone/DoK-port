@@ -193,3 +193,17 @@ void dok_motion_free_flight(void *context, const dok_motion_substep *request,
     (void)context;
     *accepted_x=request->candidate_x; *accepted_z=request->candidate_z;
 }
+
+dok_status dok_motion_update_direct(dok_motion_state *state,uint32_t elapsed,
+    const dok_motion_services *services,dok_motion_report *out)
+{
+    if(!state)return DOK_STATUS_INVALID_ARGUMENT;
+    dok_motion_state direct=*state;
+    direct.movement_accumulator=(direct.flags&MOVE_MASK)?10000:0;
+    direct.turn_accumulator=(direct.flags&TURN_MASK)?10000:0;
+    direct.last_flags=direct.flags;
+    direct.last_turn=(direct.flags&DOK_INPUT_NATIVE_TURN_NEG)?1:0;
+    dok_status result=dok_motion_update(&direct,elapsed,services,out);
+    if(result==DOK_STATUS_OK)*state=direct;
+    return result;
+}

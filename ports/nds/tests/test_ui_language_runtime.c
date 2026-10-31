@@ -88,6 +88,26 @@ static int ui_texts(uint32_t language)
     CHECK(memcmp(ui.published_simulation+32,ui.simulation_after,32)==0);
     return 1;
 }
+static int notice_timing(void)
+{
+    dok_ui_values values={100,0,100,100,3,0,7,2};
+    /* Exercise production expiry and replacement, including DWORD wrap.
+     * A late replacement must own a fresh four seconds, without a queue. */
+    ui.stage_count=0;
+    const uint32_t starts[]={1000u,UINT32_MAX-20000u};
+    for(uint32_t i=0;i<2u;++i){uint32_t start=starts[i];
+        nds_ui_update(&ui,&world,&values,start,hud,vram,77,55);
+        nds_ui_notice(&ui,2,0,0);
+        nds_ui_update(&ui,&world,&values,start+30000u,hud,vram,77,55);
+        CHECK(ui.message_kind==2&&ui.message_id==0&&ui.page==0);
+        nds_ui_notice(&ui,2,1,0);
+        nds_ui_update(&ui,&world,&values,start+70106u,hud,vram,77,55);
+        CHECK(ui.message_kind==2&&ui.message_id==1&&ui.page==0);
+        nds_ui_update(&ui,&world,&values,start+70107u,hud,vram,77,55);
+        CHECK(ui.message_kind==0&&ui.message_bytes==0);
+    }
+    return 1;
+}
 static int scenario(const dok_asset_session *s,uint32_t index,uint32_t simulation_language,const char *ui_path)
 {
     dok_balance_profile profile=dok_balance_accepted_profile();dok_balance_diff diff;FILE *f;
@@ -110,7 +130,7 @@ static int scenario(const dok_asset_session *s,uint32_t index,uint32_t simulatio
         CHECK(ui.presentation.localized==(language==1?&world.effective:&world.base));
         CHECK(unchanged());CHECK(animation_resolves(simulation_language));CHECK(ui_texts(language));CHECK(unchanged());
     }
-    CHECK(ui.language_changes==2);return 1;
+    CHECK(ui.language_changes==2);CHECK(notice_timing());CHECK(unchanged());return 1;
 }
 int main(int argc,char **argv)
 {

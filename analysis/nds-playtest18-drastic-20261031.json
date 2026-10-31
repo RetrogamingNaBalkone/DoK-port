@@ -1,0 +1,159 @@
+{
+  "task": "N23",
+  "candidate": "playtest18b-ru",
+  "rom": {
+    "path": "artifacts/nds/dok.nds",
+    "bytes": 10165760,
+    "sha256": "dc2aa5c242e2a0d6c54e0016b66a8c6f47cd0250f07d832917ee0e5e7608b087"
+  },
+  "arm7": {
+    "path": "build/nds/n23/playtest18b-ru/arm7/dok_audio_arm7.elf",
+    "bytes": 333968,
+    "sha256": "e102b41e26cbb81db60992a85f860c80c19b8c03125dddf457b97455bc5a17d9"
+  },
+  "waveform_capture": {
+    "path": "research/evidence/nds/n23/playtest18-drastic/title-audio/title-0.wav",
+    "bytes": 5641312,
+    "sha256": "c55d6637093d5d78bef1a065e6a108892a10bb953ddb26712031032cfc9c1bb7"
+  },
+  "user_photo_previous": {
+    "stage": 58,
+    "error": "00004000",
+    "arm7_loop": 65,
+    "arm7_rx": 0,
+    "at": 1,
+    "vblank": 168,
+    "handler": 2
+  },
+  "drastic_verified": false,
+  "root_cause_in_emulator_confirmed": false,
+  "localization": "SDK custom FIFO processing stalls before sound callback",
+  "changes": [
+    "ARM9-owned 32-byte RAM control line after ARM7-owned 64-byte trace",
+    "serial publication after mailbox/address flush",
+    "critical ARM7 command handling; no custom FIFO path for embedded ROM"
+  ],
+  "host_ram_tests": {
+    "passed": true,
+    "no_fifo_calls": true,
+    "publication_order": true,
+    "ack_cases": true,
+    "timeout_lifetime": true
+  },
+  "legacy_host_passed": true,
+  "reports": [
+    {
+      "report": {
+        "path": "research/evidence/nds/n23/playtest18-drastic/boot-steps/result.json",
+        "bytes": 1470,
+        "sha256": "211e7f2478f66317ae44a205852643ea977142425ee041c64a542ed3f1aede7d"
+      },
+      "passed": true,
+      "metrics": {
+        "arm7_boot": {
+          "address": 37224992,
+          "words": [
+            927092545,
+            9,
+            29734,
+            2,
+            33891296,
+            6,
+            34049,
+            393297,
+            1,
+            4,
+            1,
+            147,
+            2,
+            0,
+            0,
+            0
+          ]
+        },
+        "arm7_progress": {
+          "loop_delta": 605,
+          "vblank_delta": 3,
+          "words": [
+            927092545,
+            9,
+            30339,
+            2,
+            33891296,
+            6,
+            34049,
+            393297,
+            1,
+            4,
+            1,
+            150,
+            2,
+            0,
+            0,
+            0
+          ]
+        },
+        "ram_mailbox_control": [
+          1128418625,
+          33891296,
+          2,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "report": {
+        "path": "research/evidence/nds/n23/playtest18-drastic/title-audio/result.json",
+        "bytes": 21445,
+        "sha256": "586213457cec0d47ba98ea3139ae115d52e5efe749ac935d6055c070c2c3584c"
+      },
+      "passed": true,
+      "metrics": {
+        "index8_checks": 98304,
+        "rgb_checks": 98304,
+        "waveform_whole_coefficient": 0.9924338014084911
+      }
+    },
+    {
+      "report": {
+        "path": "research/evidence/nds/n23/playtest18-drastic/live/result.json",
+        "bytes": 3240279,
+        "sha256": "72da46e786abcfc2d6cc1fbe7b2d36eb8288d34f35b3c014c701330d9ef4e82e"
+      },
+      "passed": true,
+      "metrics": {
+        "index8_checks": 5701632,
+        "rgb_checks": 5701632,
+        "steady_metrics": {
+          "intervals": 1119,
+          "histogram": {
+            "1": 1119
+          },
+          "virtual_fps": 59.82609828808083,
+          "median": 1,
+          "p95": 1,
+          "p99": 1,
+          "max": 1,
+          "fraction_over_one": 0.0,
+          "fraction_over_two": 0.0,
+          "refresh_hz": 59.82609828808083,
+          "checked_one_second_windows": 765,
+          "scope": "Every product PRESENTED interval without LOADING/WARMUP/DIAGNOSTIC/SYNC flags, independent of observer phase; timestamp gaps separate UI reading time",
+          "minimum_window_cadence_fps": 59.82609828808083,
+          "minimum_new_frames_in_one_second": 59,
+          "budget_passed": true,
+          "missing_profiles": []
+        }
+      }
+    }
+  ],
+  "limitations": [
+    "ARM7 busy idle retained; physical power unmeasured"
+  ],
+  "next_id": "N23",
+  "N24_started": false
+}

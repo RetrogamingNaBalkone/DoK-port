@@ -111,14 +111,16 @@ def long_name_entries(name, short_name):
     return b"".join(rows)
 
 
-def write_image(path, files):
+def write_image(path, files, include_dok=True):
+    if not include_dok and files:
+        raise ValueError("Root-only empty fixture cannot contain DOK files")
     sectors, start, fat_sectors, root_sectors, cluster_bytes = 65536, 2048, 64, 32, 2048
     volume_sectors = sectors - start
     root_start = start + 1 + 2 * fat_sectors
     data_start = root_start + root_sectors
     cluster_limit = (sectors - data_start) // 4 + 2
     fat = bytearray(fat_sectors * 512)
-    struct.pack_into("<3H", fat, 0, 0xFFF8, 0xFFFF, 0xFFFF)  # cluster2=/DOK
+    struct.pack_into("<3H", fat, 0, 0xFFF8, 0xFFFF, 0xFFFF if include_dok else 0)
     directory = directory_entry(b".          ", 0x10, 2)
     directory += directory_entry(b"..         ", 0x10, 0)
     allocated = []
@@ -159,9 +161,10 @@ def write_image(path, files):
             stream.seek(sector * 512)
             stream.write(fat)
         stream.seek(root_start * 512)
-        stream.write(directory_entry(b"DOK        ", 0x10, 2))
-        stream.seek(data_start * 512)
-        stream.write(directory)
+        if include_dok:
+            stream.write(directory_entry(b"DOK        ", 0x10, 2))
+            stream.seek(data_start * 512)
+            stream.write(directory)
         for cluster, data in allocated:
             stream.seek(data_start * 512 + (cluster - 2) * cluster_bytes)
             stream.write(data)

@@ -11,6 +11,10 @@
 #include "dok/render_scene.h"
 #include "dok/sha256.h"
 #include "file_reader.h"
+#include "resource_paths.h"
+#if NDS_EMBEDDED_RESOURCES
+#include <filesystem.h>
+#endif
 #include "render_backend.h"
 #include "render_probe.h"
 #include "sprites_probe.h"
@@ -59,6 +63,7 @@ static unsigned char *ui_pixels;
 #endif
 #if GAMEPLAY_AUDIO
 #include "../audio/runtime.h"
+#include "../audio/arm9.h"
 static unsigned char *audio_backing;
 static unsigned char *audio_extra;
 #endif
@@ -557,8 +562,42 @@ static dok_status texture_require(const dok_asset_entry *entry)
         dok_texture_cache_require(&storage->cache,&session,entry);
 }
 
+#if GAMEPLAY_FRONTEND && NDS_EMBEDDED_RESOURCES
+#include "../frontend/packed_frames.inc"
+#endif
+static unsigned loading_stage;
+static void loading_screen(unsigned stage)
+{
+    loading_stage=stage;
+#if GAMEPLAY_FRONTEND && GAMEPLAY_UI
+    static const unsigned char letters[7][5]={
+        {127,64,64,64,64},{62,65,65,65,62},{126,9,9,9,126},
+        {127,65,65,65,62},{65,65,127,65,65},{127,2,4,8,127},{62,65,73,73,122}};
+    bgHide(0);memset(ui_pixels,0,DOK_UI_HUD_BYTES);
+    for(unsigned c=0;c<7u;++c)for(unsigned x=0;x<5u;++x)for(unsigned y=0;y<7u;++y)
+        if(letters[c][x]&(1u<<y))for(unsigned r=0;r<2u;++r)for(unsigned b=0;b<2u;++b)
+            ui_pixels[(y*2u+4u+r)*256u+86u+c*12u+x*2u+b]=2;
+    for(unsigned n=0;n<8u;++n)for(unsigned y=24;y<28u;++y)
+        memset(ui_pixels+y*256u+64u+n*16u,n<(stage>=50u?5u:stage)?2:1,12);
+    if(stage>=50u){
+        static const unsigned char digits[10][5]={
+            {7,5,5,5,7},{2,6,2,2,7},{7,1,7,4,7},{7,1,7,1,7},{5,5,7,1,1},
+            {7,4,7,1,7},{7,4,7,5,7},{7,1,1,1,1},{7,5,7,5,7},{7,5,7,1,7}};
+        for(unsigned d=0;d<2u;++d)for(unsigned y=0;y<5u;++y)for(unsigned x=0;x<3u;++x)
+            if(digits[d?stage%10u:stage/10u][y]&(4u>>x))
+                ui_pixels[(31u+y)*256u+123u+d*5u+x]=2;
+    }
+    DC_FlushRange(ui_pixels,DOK_UI_HUD_BYTES);
+    swiWaitForVBlank();BG_PALETTE[0]=0;BG_PALETTE[1]=RGB15(8,8,8);BG_PALETTE[2]=RGB15(31,31,31);
+    dmaFillHalfWords(0,bgGetGfxPtr(hud_bg),65536);
+    dmaCopyWords(3,ui_pixels,(unsigned char *)bgGetGfxPtr(hud_bg)+72u*256u,DOK_UI_HUD_BYTES);
+#else
+    (void)stage;
+#endif
+}
 static int level_load(uint32_t level)
 {
+    loading_screen(1);
 #if N23_STATIC_GEOMETRY
     dok_static_geometry_reset();
 #endif
@@ -605,6 +644,7 @@ static int level_load(uint32_t level)
     if(!nds_ui_language(ui,world,scratch,SPRITE_LANGUAGE))return 0;
 #endif
     i=(world->asset_bytes+31u)&~31u;
+    loading_screen(2);
     if(dok_sprite_assets_load(&world->presentation,&storage->bank,assets+i,DOK_NDS_ASSETS_BYTES-i)!=DOK_STATUS_OK)
         do{if(!g_nds_effect_probe[31])g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);{g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return 0;}}while(0);
     i=(i+storage->bank.metadata_bytes+31u)&~31u;
@@ -626,10 +666,16 @@ static int level_load(uint32_t level)
 #endif
     if(i+effect_pool_bytes>=DOK_NDS_ASSETS_BYTES)do{if(!g_nds_effect_probe[31])g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);{g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return 0;}}while(0);
     uint32_t packed=0;
+    loading_screen(3);
     if(GAMEPLAY_FRAME_STORE){
         uint32_t available=DOK_NDS_ASSETS_BYTES-i-effect_pool_bytes;
-        if(available<=196608u || dok_frame_store_load(&storage->frames,&storage->bank,&session,assets+i,
+        if(available<=196608u)return 0;
+#if GAMEPLAY_FRONTEND && NDS_EMBEDDED_RESOURCES
+        if(!frontend_frames_load(assets+i,available-196608u))return 0;
+#else
+        if(dok_frame_store_load(&storage->frames,&storage->bank,&session,assets+i,
             available-196608u,(unsigned char *)(void *)scratch,DOK_NDS_SCRATCH_BYTES)!=DOK_STATUS_OK){g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return 0;}
+#endif
 #if GAMEPLAY_FRONTEND
         if(dok_frontend_visual_append_store(&frontend->visual,&storage->frames,&session,
             assets+i,available-196608u,(unsigned char *)(void *)scratch,DOK_NDS_SCRATCH_BYTES)!=DOK_STATUS_OK)return 0;
@@ -637,6 +683,7 @@ static int level_load(uint32_t level)
         packed=(storage->frames.bytes+31u)&~31u;
     }
     dok_texture_cache_init(&storage->cache,assets+i+packed,DOK_NDS_ASSETS_BYTES-i-effect_pool_bytes-packed);
+    loading_screen(5);
 #if N23_CODEC_BENCH
     if(!n23_codec_bench())return 0;
 #endif
@@ -684,6 +731,7 @@ static int level_load(uint32_t level)
             }
     }
     storage->effects.simulation_list=&storage->list;
+    loading_screen(6);
     if(nds_gameplay_bind(&storage->game,&storage->effects)!=DOK_STATUS_OK){g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return 0;}
 #if GAMEPLAY_AUDIO
     nds_audio_runtime_world(&world->presentation,world->initial.epoch);
@@ -731,6 +779,7 @@ static void begin_presentation_sequence(const dok_render_case *c)
     obs.flags=row.flags;history(&row);publish();
 }
 
+static uint32_t previous_scene_ticks,scene_clock_epoch;
 static int sprites_prepare(const dok_render_case *c,const dok_nds_render_camera *camera,uint32_t heading,uint32_t ordinal)
 {
 #if N23_FRAME_BATCH && GAMEPLAY_FRAME_STORE
@@ -1118,7 +1167,7 @@ static int render_one(const dok_render_case *c,uint32_t ordinal)
 #if GAMEPLAY_AUDIO && GAMEPLAY_MAP
     if(!nds_audio_runtime_service())return 0;
 #endif
-    uint32_t cold=!stream_ready,stream_prepare_ticks=0;
+    uint32_t cold=!stream_ready||dok_nds_stream_loading(),stream_prepare_ticks=0;
     /* All payload mutations and map/UI scratch work have completed. Preserve
      * this source lease through submit, boundary wait and prepared commit. */
     if(!cold){
@@ -1155,6 +1204,23 @@ static int render_one(const dok_render_case *c,uint32_t ordinal)
     p21[25]=cpuGetTiming()-p21_phase;
     p21[47]=UINT32_MAX;
     #endif
+    phase=cpuGetTiming();
+    if(!cold) {
+        dok_nds_render_result result=dok_nds_stream_commit_prepared(&stream_stats);
+        sprite_obs.commit_start_line=stream_stats.commit_start_line;sprite_obs.commit_end_line=stream_stats.commit_end_line;
+        if(result!=DOK_NDS_RENDER_OK)do{if(!g_nds_effect_probe[31])g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);{g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return 0;}}while(0);
+        /* Preserve the accepted uploader window in the SAME sampled epoch:
+         * line192 through line213: the 3D rasterizer starts at line214.
+         * Modulo VCOUNT alone could hide a whole missed texture deadline. */
+        if(stream_stats.upload_bytes&&cpuGetTiming()-present_ticks>=22u*2130u){
+            g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return 0;
+        }
+    }
+    if(!cold)row.io_upload_ticks=stream_prepare_ticks+cpuGetTiming()-phase;
+    #if N21P_PROFILE
+    p21[26]=stream_prepare_ticks+cpuGetTiming()-phase;p21_phase=cpuGetTiming();
+    if(stream_stats.upload_bytes)p21[47]=stream_stats.commit_start_line|(stream_stats.commit_end_line<<16);
+    #endif
 #if GAMEPLAY_MAP
     /* SUB bitmap DMA must finish in this blank. Admit only its early part;
      * the conservative room margin is verified by actual start/end lines.
@@ -1180,30 +1246,14 @@ static int render_one(const dok_render_case *c,uint32_t ordinal)
     uint32_t map_transfer_ticks=cpuGetTiming()-phase;
     #endif
 #endif
-    phase=cpuGetTiming();
-    if(!cold) {
-        dok_nds_render_result result=dok_nds_stream_commit_prepared(&stream_stats);
-        sprite_obs.commit_start_line=stream_stats.commit_start_line;sprite_obs.commit_end_line=stream_stats.commit_end_line;
-        if(result!=DOK_NDS_RENDER_OK)do{if(!g_nds_effect_probe[31])g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);{g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return 0;}}while(0);
-        /* Preserve the accepted uploader window in the SAME sampled epoch:
-         * line192 through next line47 =119 scanlines, 2130 bus ticks each.
-         * Modulo VCOUNT alone could hide a whole missed texture deadline. */
-        if(stream_stats.upload_bytes&&cpuGetTiming()-present_ticks>=119u*2130u){
-            g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return 0;
-        }
-    }
-    if(!cold)row.io_upload_ticks=stream_prepare_ticks+cpuGetTiming()-phase;
-    #if N21P_PROFILE
-    p21[26]=stream_prepare_ticks+cpuGetTiming()-phase;p21_phase=cpuGetTiming();
-    if(stream_stats.upload_bytes)p21[47]=stream_stats.commit_start_line|(stream_stats.commit_end_line<<16);
-    #endif
     row.uploads=stream_stats.uploads;row.upload_bytes=stream_stats.upload_bytes;
     obs.uploads_total+=row.uploads;obs.upload_bytes_total+=row.upload_bytes;
     obs.cache_misses+=stream_stats.misses;obs.cache_evictions+=stream_stats.evictions;
     sprite_obs.commit_start_line=stream_stats.commit_start_line;sprite_obs.commit_end_line=stream_stats.commit_end_line;
 #if GAMEPLAY_UI
     dok_inventory *inventory=&storage->game.items.inventory;
-    dok_ui_values shown={inventory->health,inventory->charge,inventory->max_health,inventory->max_charge,ui->lives,inventory->score,inventory->keys,inventory->selected};
+    uint16_t owned=(inventory->weapons[1].object_id?2u:0u)|(inventory->weapons[2].object_id?4u:0u);
+    dok_ui_values shown={inventory->health,inventory->charge,inventory->max_health,inventory->max_charge,ui->lives,inventory->score,inventory->keys,owned};
     if(c->source_kind==28u){
         /* Presentation fixture values do not mutate the live inventory. */
         static const int16_t limits[8]={100,9,0,-32768,32767,-1,1,10};
@@ -1231,6 +1281,15 @@ static int render_one(const dok_render_case *c,uint32_t ordinal)
     p21[29]=cpuGetTiming()-p21_phase;p21_phase=cpuGetTiming();
     #endif
     dok_nds_render_present();
+    /* Original main loop1008:0FD1..0FF3 measures one completed scene before
+     * updating C2. Door extent and conveyors borrow this same estimate. */
+    {
+        uint32_t source_end;
+        if(storage->effects.scheduler._config.read_ticks(storage->effects.scheduler._config.clock_context,&source_end)!=DOK_STATUS_OK)return 0;
+        if(scene_clock_epoch==world->initial.epoch&&source_end!=previous_scene_ticks&&
+           dok_interactions_cadence(storage->game.c2,source_end-previous_scene_ticks,&storage->game.c2)!=DOK_STATUS_OK)return 0;
+        previous_scene_ticks=source_end;scene_clock_epoch=world->initial.epoch;
+    }
     obs.presented_frame_id=obs.submitted_frame_id;row.presented_frame_id=obs.presented_frame_id;
     row.flags|=NDS_RENDER_FRAME_PRESENTED;observe(&stats);
     row.disp3d_flags=stats.disp3d_flags;row.gxstat_flags=stats.gxstat_flags;row.rdlines=stats.rdlines;
@@ -1352,15 +1411,32 @@ int main(void)
     obs.vram_d=VRAM_D_CR;obs.vram_e=VRAM_E_CR;obs.vram_f=VRAM_F_CR;
     obs.vram_g=VRAM_G_CR;obs.vram_h=VRAM_H_CR;obs.vram_i=VRAM_I_CR;
     obs.texture_capacity_bytes=DOK_NDS_RENDER_TEXTURE_BYTES;obs.palette_capacity_bytes=16384;
-    if(!fatInitDefault() || nds_asset_file_open(&package,"fat:/dok/assets.ndp",&reader)!=DOK_ASSET_OK ||
+#if NDS_EMBEDDED_RESOURCES
+    loading_screen(1);
+    if(!nitroFSInit(NULL)){obs.error_bits=4;goto done;}
+    /* Writable settings storage is optional; cartridge resources need no FAT. */
+    bool settings_storage_available=fatInitDefault();
+    (void)settings_storage_available;
+#else
+    if(!fatInitDefault()){obs.error_bits=4;goto done;}
+#endif
+    if(nds_asset_file_open(&package,NDS_RESOURCE_ROOT "assets.ndp",&reader)!=DOK_ASSET_OK ||
        dok_assets_open(&reader,&io->catalog,&session)!=DOK_ASSET_OK
 #if !GAMEPLAY_FRONTEND
        || !fixture_load()
 #endif
        )
         {obs.error_bits=4;goto done;}
+#if GAMEPLAY_FRONTEND
+    /* The open-time catalog workspace is dead; keep all display mirrors and
+     * frontend state beyond this disjoint 32KiB page cache. */
+    nds_asset_file_cache(&package,(unsigned char *)(void *)io,dok_assets_count(&session));
+    loading_screen(2);
+#endif
  #if GAMEPLAY_AUDIO
+    nds_audio_runtime_loading(loading_screen);
     if(!nds_audio_runtime_init(&session,audio_backing,DOK_NDS_AUDIO_BYTES,audio_extra,163840u)){obs.error_bits=16384;goto done;}
+    loading_screen(6);
 #if !GAMEPLAY_FRONTEND
     for(;;){int result=nds_audio_runtime_catalog();if(result<0){obs.error_bits=16384;goto done;}if(result)break;swiWaitForVBlank();}
 #endif
@@ -1452,6 +1528,34 @@ int main(void)
     }
     if(!memory_check()) obs.error_bits=32;
 done:
+    /* Show failures before cleanup: a failed IPC peer must not hide the
+     * reason behind the last loading image or a second IPC wait. */
+    if(obs.error_bits) {
+        static PrintConsole failure_console;
+        videoSetMode(MODE_0_2D);
+        vramSetBankE(VRAM_E_MAIN_BG);
+        consoleInit(&failure_console,0,BgType_Text4bpp,BgSize_T_256x256,31,0,true,true);
+        consoleSelect(&failure_console);
+        printf("DoK loading candidate 20\n\nStage: %u\nCode: %08lX\n",loading_stage,(unsigned long)obs.error_bits);
+        if(obs.error_bits==16384u){
+            uint32_t d[8];nds_audio_debug(d);
+            printf("\nAudio initialization failed.\n");
+            printf("ACK %08lX / %08lX\nReady %lu Seq %lu\nMirror %08lX\nRAM ACK %08lX Ready %lu\nFIFO %04lX\n",
+                (unsigned long)d[1],(unsigned long)d[0],(unsigned long)d[2],(unsigned long)d[3],
+                (unsigned long)d[4],(unsigned long)d[5],(unsigned long)d[6],(unsigned long)d[7]);
+            uint32_t b[32];nds_audio_boot_debug(b);
+            printf("A7 %08lX boot %lu\nLoop %lu RX %lu step %lu\nAddr %08lX\nA7 FIFO %04lX IME %lu\nIE %08lX Init %lu\n",
+                (unsigned long)b[0],(unsigned long)b[1],(unsigned long)b[2],(unsigned long)b[3],
+                (unsigned long)b[5],(unsigned long)b[4],(unsigned long)b[6],(unsigned long)b[8],
+                (unsigned long)b[7],(unsigned long)b[10]);
+            printf("At %lu VB %lu Handler %lu\n",(unsigned long)b[9],
+                (unsigned long)b[11],(unsigned long)b[12]);
+            printf("IRQ LR %08lX R3 %08lX\nPSR %08lX\nCtl %08lX # %lu\nCmd %08lX\n",
+                (unsigned long)b[13],(unsigned long)b[14],(unsigned long)b[15],
+                (unsigned long)b[16],(unsigned long)b[18],(unsigned long)b[17]);
+            printf("Input %lu seq %lu\n",(unsigned long)b[25],(unsigned long)b[24]);
+        }
+    }
 #if GAMEPLAY_AUDIO
     nds_audio_runtime_clear();
 #endif

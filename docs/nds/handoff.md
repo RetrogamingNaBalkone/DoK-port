@@ -1,5 +1,174 @@
 # Передача контекста NDS между чатами
 
+31 октября 2026: пользователь подтвердил запуск loading20 в DraStic/RG DS.
+Открыт дефект аудио: фрагменты title PCM в уровнях и пропуски выстрелов.
+Поставлен кандидат [audio21](spec/drastic-audio21-20261031.md): title ring очищается,
+resident once целиком готовится и играет SOUND_ONE_SHOT, hardware completion
+освобождает busy независимо от задержки IRQ. Boot/input, full title waveform
+и короткий LEVEL1 audio transition PASS; выстрелы не проверены (на старте нет оружия).
+ROM `artifacts/nds/dok-audio21.nds` / `dok.nds`, SHA
+`7df6f228302c80b4dacfeb7a3011b34b4e4d08896eb63b7e5cd87a5ee60e9c18`.
+Корневая причина DraStic пока не доказана; повтор на устройстве открыт.
+Маршруты/набор уровней не прогонялись. Следующий ID N23, N24 не начата.
+Ниже — история предыдущих сборок.
+
+31 октября 2026: кандидат [loading20](spec/drastic-loading20-20261031.md), SHA
+`332627c7a265fad6578da7c301e1ed8cc344c94f019f7addf95c414ebf243b8e`.
+Фото19:IRQ LR03801F8C,R3=8404,PSR6000003F,Ctl43424D41/#1. Адрес03801F88
+принадлежит fifo_buffer_wait_block, не main idle. Периодический SDK sender
+inputGetAndSend отправляет SYS_INPUT из VBlank до готовности загрузки.
+В20 готовое SDK input message идёт через RAM input line, ARM9 scanKeys wrapper
+вызывает проверенный setTransferInputData и исходный scanKeys; filtering/XY/touch
+сохранены. Actual BL на wrapper проверен; boot и title240frames/X/Y/touch PASS.
+Уровни/маршруты не запускались по требованию пользователя. Boot region128bytes.
+Файлы dok.nds/dok-loading20.nds; нужен холодный RG DS запуск. До устранения
+только boot analysis. Причина неосвобождения FIFO в DraStic ещё неизвестна.
+Следующий ID N23; N24 не начата.
+
+31 октября 2026: [фокус на анализе boot19](spec/drastic-loading-analysis19-20261031.md).
+Пользователь потребовал прекратить повторные тесты уровней: проверять только
+загрузку до локализации. Последний18b:Loop68/At4/VB167/Handler2,RX0,Stage58/4000.
+Actual ELF At4 = finite256-loop, без SWI; старые выводы BIOS Halt/FIFO root cause
+не доказаны. Диагностический ROM отдельно `artifacts/nds/dok-bootdiag19.nds`,SHA
+`ba8e7d7e6c2a3b291799a1b899104776f437a5c19198e85c1bc331bf0e1cf338`.
+Он выводит raw IRQ LR/R3/PSR и Ctl/Cmd; короткий melonDS boot capture валиден.
+Получить контекст с RG DS, сопоставить с **bootdiag19 ELF**, затем исправлять.
+`dok.nds` остаётся неисправным на DraStic18b. Следующий ID N23; N24 не начата.
+
+31 октября 2026: поставка — [playtest18b](spec/playtest18-drastic-20261031.md), SHA
+`dc2aa5c242e2a0d6c54e0016b66a8c6f47cd0250f07d832917ee0e5e7608b087`.
+Playtest17 фото RG DS/ROCKNIX/DraStic:Loop65,At1,RX0,VB168,Handler2,Stage58/4000.
+Обход BIOS сна продвинул main, теперь остановка в SDK FIFO. Новый embedded
+sound transport использует RAM control line по ELF-derived boot+64; FIFO
+остаётся системным службам, custom polling/handler в RAM mode убраны.
+Boot buffer96bytes:64 A7 trace +32 A9 control; команда immutable до ACK,
+timeout forbids reuse. Host RAM/legacy, boot/control/title waveform PASS;
+all3 в сводке. Повтор RG DS открыт, повышенная idle-нагрузка сохраняется.
+Следующий ID N23; N24 не начата.
+
+31 октября 2026: поставка — [playtest17](spec/playtest17-drastic-20261031.md), SHA
+`0619e840622cddd34f8cd1b45cd53c429c2219a14d76303e8306b08e5d8f65a4`.
+RG DS/ROCKNIX/DraStic playtest16: At4,VB168,Handler2,Loop1,RX0,Stage58/4000.
+ARM7 исполняет IRQ, но основной loop не возвращается из BIOS Halt. Новый N23
+idle — bounded256-NOP вместо SWI; активность CPU повышена, power не измерен.
+ARM7 main ELF проверен без SVC инструкций; boot/smoke PASS, all3 в сводке.
+Нужен холодный запуск на устройстве, затем звук/уровень. При успехе отдельно
+исследовать экономичный idle. Следующий ID N23; N24 не начата.
+
+31 октября 2026: текущий ROM — [playtest16](spec/playtest16-drastic-20261031.md), SHA
+`9426cdb8ace55956968672ebc875c8cfb4f05c1f810e79ac64acb088c500159f`.
+Фото playtest15 RG DS/ROCKNIX/DraStic: boot9,Loop1,RX0,step0,A7 FIFO C400,
+IME1,IE60051,Init1,Stage58/4000. ARM7 main стартовал; место внутри loop неизвестно.
+Idle теперь Halt вместо VBlank wait; новые At1=poll,2=producer,3=producer returned,
+4=Halt,5=Halt returned и VB/Handler1/2 показывают IRQ entry/return.
+melonDS smoke/boot-progress PASS, all3 в сводке. При отказе нужен весь экран
+с последней строкой At/VB/Handler. Следующий ID N23; N24 не начата.
+
+31 октября 2026: текущий ROM — [playtest15](spec/playtest15-drastic-20261031.md), SHA
+`7f295ef35aa9e77076c1f9135a9c9a984dcde04f3fb2befff541dd7da6da393d`.
+Фото RG DS/ROCKNIX/DraStic playtest14: Stage58/4000,ACK0/1,Ready0,Seq0,
+RAM ACK0/Ready0,FIFO8400. Нет подтверждения stale mirror; private WRAM не помогла.
+Новый путь обслуживает FIFO polling в ARM7 loop и ARM9 fallback; A7 startup/RX
+trace в64байтах .crt0 main RAM, адрес0x02380220 получен builder из ARM7 ELF.
+При отказе нужен полный экран с boot/Loop/RX/step. Host/melonDS smoke и boot
+PASS; all3 в сводке. Причина DraStic пока не доказана. Следующий ID N23, N24 не начата.
+
+31 октября 2026: поставка — [playtest14](spec/playtest14-drastic-20261031.md), SHA
+`fef5cd3e8c391f8379bfa9685c1f23bbd096970b9d897f27fe21cf2c8f4ea59b`.
+Playtest13 на RG DS/ROCKNIX/DraStic/ES-DE вернул Stage58/4000: нет ACK к deadline.
+Теперь ARM7 code/data в private WRAM0x03800000 (__shared_wram_size=0), прежний
+N18 ELF сохранён. Гипотеза совместимости пока не доказана. При ошибке выводятся
+ACK/expected,Ready/Seq,Mirror,canonical RAM ACK/Ready,FIFO; нужен полный экран
+после холодного запуска. Host/melonDS smoke PASS, остальные результаты в сводке.
+Следующий ID N23; N23 открыта, N24 не начата.
+
+31 октября 2026: текущий ROM — [playtest13](spec/playtest13-drastic-20261031.md), SHA
+`7a97e8e3e43588a1bb3de99617b264925bcbd3158ecb020d0dda3015b53b503c`.
+Playtest12 остановился с56 на RG DS/ROCKNIX DraStic через ES-DE. Теперь звук
+передаёт один адрес mailbox вместо13слов datamsg; команда неизменяема до ACK,
+timeout блокирует reuse. Пересобраны оба CPU, N23 ARM7 из собственного каталога;
+N18 ELF не менялся. Host/smoke PASS, live/audio результаты и fixture full-flow
+FAIL зафиксированы в спецификации/сводке. Нужен повторный холодный запуск на RG DS.
+Причина внутри DraStic пока не доказана. Следующий ID N23; N24 не начата.
+
+31 октября 2026: поставка — [playtest12](spec/playtest12-drastic-20261031.md), SHA
+`3a8db8a1b484d8f9d80f18d2dcb615466ca4b157ba5cffe7190037f704fc7fc1`.
+Playtest11 на RG DS/ROCKNIX DraStic через ES-DE остановился на Loading/5.
+Теперь status seqlock reader ограничен; шаги 51…59 показываются под шкалой.
+Host 10 ACK/status cases и melonDS smoke/packed/boot checkpoints PASS.
+На устройстве причина ещё не доказана: запросить код под шкалой или Stage/Code
+после холодного запуска нового ROM. Команды и ограничения — в спецификации.
+N23 открыта, следующий ID N23, N24 не начата.
+
+31 октября 2026: текущая поставка — [playtest11 для DraStic/RG DS](spec/playtest11-drastic-20261031.md).
+SHA `4a664ef914ec1a13366f79e95f653379990c7bd9b5bf093b61d0b6bc21698290`.
+Сообщённый Loading/2 означает участок audio init, а не начальный NitroFS init.
+Добавлены деления 3/4/5 внутри audio init, экран ошибки Stage/Code и fallback
+ожидания ARM7 ACK до восьми VBlank после прежнего быстрого цикла.
+Конкретная причина на RG DS пока не доказана; нужен повторный холодный запуск
+и результат либо Stage/Code/число делений. Host IPC и melonDS smoke PASS;
+результаты всех проверок — в спецификации и `analysis/nds-playtest11-drastic-20261031.json`.
+N23 не принята, следующий ID N23, N24 не начата.
+
+31 октября 2026: текущий ROM — [playtest10](spec/playtest10-20261031.md), SHA
+`7ad0033563651ffbccef3dfcdfaa6fda8a320dc030adc46cbae1b0645e67efa5`.
+Исправлена оценка C2 (main rendered loop вместо hero service), ускорявшая двери;
+сообщения держатся 40107 source ticks (~4 с), сразу заменяются без очереди.
+Мышь: source interval500, ASM wrap без дополнительного ожидания; живой DOS60k/120k
+показал61,24/51,11мс из-за частоты main loop. Произвольного замедления AI нет.
+В новой спецификации самодостаточные адреса, SHA, команды, ограничения и проверки.
+Три маршрута220/100/50 и live/LCD PASS, LEVEL3 host planner100-cell FAIL сохранён,
+не считать полным прохождением. N23 остаётся открытой; следующий ID N23, N24 не начата.
+
+31 октября 2026: актуальный кандидат — [playtest09](spec/playtest09-20261031.md).
+Мерцание playtest07 происходило от выключения BG0 в bulk preload. Теперь
+MAIN capture C выводится через MODE_FB2 до нового swap; нижний BG8 полностью
+помещается в H+I (48 КиБ видимых строк). Текстуры A/B/D и память RAM сохранены.
+36 LCD samples каждого удержания сверяются с реальной VRAM C; маршруты всех
+трёх уровней и live/LCD RU/EN проверяются отдельно от полной FPS-приёмки.
+Нижняя рамка HUD удалена, обе области выросли на пиксель; одно-/двухстрочные
+сообщения и числа выровнены по центру. Часы около 10 027 тиков/с, ранних walking
+frames относительно RES не найдено; AI/time/events и интервалы не менялись.
+Уточнение пользователя о конкретных быстрых врагах пока запрошено. Подробности,
+команды, хеши и ограничения — по ссылке и в `analysis/nds-playtest09-20261031.json`.
+Далее N23: повторный плейтест/темп анимаций и полная приёмка; N24 не начинать.
+
+31 октября 2026: [playtest07 — зависание/загрузка/FONT8](spec/playtest07-20261031.md).
+Причина freeze playtest03 воспроизведена: frame298 texture commit192→217,
+фатальная проверка окна.32-bit DMA и безопасный preload крупных замен>32KiB;
+порог64KiB отвергнут отдельным поздним failure. Крупные замены могут кратко
+скрывать3D; прежний FPS observer исключает LOADING, общую плавность не доказывает.
+Окончательные тексты — исходный FONT8 8×8 без scaling, сообщения30×2;
+сюжетные строки сохраняют пагинацию. Иконки оружия20×9 справа от патронов,
+ключи справа внизу.32KiB cache переиспользует мёртвый catalog workspace,
+готовые frames.dat/sounds.dat проверяются SHA, память/резерв сохранены.
+Команды, хеши, проверки и ограничения — в спецификации/компактной сводке.
+Следующий ID — N23: повторный плейтест и полная приёмка. N24 не начата.
+
+31 октября 2026: выполнен [аудит загрузки playtest03](spec/loading-audit-20261031.md),
+результаты — `analysis/nds-loading-audit-20261031.json`. Прежний прогон точного ROM:
+заставка ≤7,488 с, входы уровней ≤8,575/9,377/8,993 с. Новая host-проба:
+LEVEL1 в проверенной части 15032 reader calls, 14826 к каталогу. Каждый уровень
+заново собирает 168 images/24 animations, 1249728 → 283947 байт. Стартовый audio
+init читает/упаковывает эффекты дважды; индикации загрузки нет. ARM-разбивки
+времени нет. Runtime и ROM не менялись. Далее N23: stage profile и парные
+оптимизации; N24 не начата. Команда и ограничения — в спецификации.
+
+31 октября 2026: исправлены [замечания плейтеста](spec/playtest-fixes-20261031.md): меню на одном экране,
+исходные значки HUD без полос/служебных счётчиков, все игровые сообщения
+в одну строку, безопасное окно текстур перед DMA карты, управление без инерции.
+Текущий ROM — `artifacts/nds/dok.nds`, playtest03; host и короткая
+эмуляторная регрессия трёх уровней PASS. Полные маршруты и физическая DS
+открыты; следующий ID — N23, N24 не начата.
+
+31 октября 2026 года по отдельному запросу выдана [текущая сборка](spec/current-build-20261031.md):
+**`artifacts/nds/dok.nds` — один автономный ROM с переключением RU/EN в меню**.
+Все ресурсы встроены в NitroFS; внешнего каталога данных не требуется.
+FAT нужен только для необязательного `dok/settings.dat`. Проверены запуск
+без внешних ресурсов и без DLDI, смена языка, запись/перезапуск, live/LCD
+трёх уровней; команды и evidence — по ссылке. N23 остаётся в работе,
+N24 не начата; следующий ID — N23. Эта выдача не закрывает приёмку C22.
+
 ## Текущее состояние — 30 октября 2026 года
 
 **Последняя актуализация — C22:** [результаты упрощения](spec/N23-simplification.md).
@@ -1363,3 +1532,11 @@ Temporary console может показывать partial redraw/stale periodic 
 N24; аппаратные FPS/latency/IRQ/stack peak не подтверждены эмулятором.
 Диагностические keys/score/relocation/occupancy — явные fixtures, не кампания.
 Игровых saves и gameplay writes на microSD нет. GBA/SDL2 не менялись.
+
+
+31 ??????? 2026 ????: ????????? ????????? ???????????? ???????? ?? ??????? ????????????.
+??????????? 4,79 ???; ?????????? local caches ?????? ????????, ????????? gzip-
+?????????????? ? ?????? ????????????? N23 ARM-????????. ???????? ??????? ?????????.
+???????, ????????, ??????????? ? ?????????????? ??????? `.log` ??????? ?
+`docs/storage-maintenance.md`; ?????????? ???? ? `analysis/storage-cleanup-20261031.json`.
+??????? ?????? ?? ????????, ????????? ID ? N23; N24 ?? ????????.

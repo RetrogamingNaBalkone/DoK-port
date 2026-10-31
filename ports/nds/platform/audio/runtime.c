@@ -3,6 +3,7 @@
 #include "arm9.h"
 #include "runtime.h"
 #include "dok/audio_codec.h"
+#include "../assets/resource_paths.h"
 
 /* No pointer into the mutable world crosses IPC. Sound identity is a binding,
  * not a PCM resource; projectile instance generations have separate identities. */
@@ -18,6 +19,8 @@ static uint32_t stream_filling,stream_part,stream_bytes,packed_used,cold_max;
 static uint32_t pending_id,pending_pcm,pending_loop,active_id,epoch,retired;
 static uint32_t starts,rejects,stops,completed,requests,read_bytes,read_calls,service_max,fault;
 static uint32_t catalog_index,catalog_wait,catalog_phase;
+static void (*loading_progress)(unsigned);
+void nds_audio_runtime_loading(void (*progress)(unsigned)) { loading_progress=progress; }
 static const uint32_t indices[23]={86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,110};
 static uint32_t le32(const unsigned char *p)
 {return (uint32_t)p[0]|(uint32_t)p[1]<<8|(uint32_t)p[2]<<16|(uint32_t)p[3]<<24;}
@@ -34,12 +37,19 @@ static void publish(void)
     memcpy((void *)g_nds_audio_probe,a,63u*4u);DC_FlushRange((const void *)g_nds_audio_probe,sizeof(a));
     g_nds_audio_probe[63]=sequence+1u;DC_FlushRange((const void *)&g_nds_audio_probe[56],32);
 }
+#if NDS_EMBEDDED_RESOURCES
+#include "packed_sounds.inc"
+#endif
 int nds_audio_runtime_init(const dok_asset_session *s,unsigned char *backing,uint32_t bytes,unsigned char *extra,uint32_t extra_bytes)
 {
     if(!s||bytes<262144u||!extra||extra_bytes<163840u)return 0;
     session=s;cache=backing;fill=backing+65536;
     unsigned char *banks[2]={backing+98304,extra};uint32_t used[2]={0,0};
-    unsigned order[22];dok_asset_view view;unsigned char descriptor[128];
+    dok_asset_view view;unsigned char descriptor[128];
+#if NDS_EMBEDDED_RESOURCES
+    if(!load_packed_sounds(banks,used))return 0;
+#else
+    unsigned order[22];
     for(uint32_t i=0;i<22u;++i){
         AudioResident *r=&resident[i];r->pcm=(SPRITE_LANGUAGE<<30)|(indices[i]<<18)|(DOK_ASSET_PCM_CLIP<<10);
         if(dok_assets_load(s,r->pcm,descriptor,sizeof(descriptor),&view)!=DOK_ASSET_OK)return 0;
@@ -58,19 +68,26 @@ int nds_audio_runtime_init(const dok_asset_session *s,unsigned char *backing,uin
         if(dok_assets_load(s,(r->pcm&~0x3fc00u)|(DOK_ASSET_PCM_CHUNK<<10),cache,65536,&view)!=DOK_ASSET_OK ||
            dok_audio_pack(cache,r->samples,r->packed,r->bytes,&r->bytes)!=DOK_STATUS_OK)return 0;
     }
+#endif
+    if(loading_progress)loading_progress(3);
     /* ARM7 borrows immutable compressed bytes. ARM9 never writes this bank
      * again and must not flush its PCM ring while the ARM7 producer owns it. */
     DC_FlushRange(banks[0],used[0]);DC_FlushRange(banks[1],used[1]);
     uint32_t title=(SPRITE_LANGUAGE<<30)|(110u<<18)|(DOK_ASSET_PCM_CLIP<<10);
     if(dok_assets_load(s,title,descriptor,sizeof(descriptor),&view)!=DOK_ASSET_OK)return 0;
     chunk_count=le32(descriptor+8);if(chunk_count!=8u)return 0;
+    if(loading_progress)loading_progress(4);
     for(uint32_t i=0;i<chunk_count;++i){
         if(dok_assets_find(s,le32(descriptor+24+i*12),&chunks[i])!=DOK_ASSET_OK ||
            dok_assets_load(s,chunks[i].id,cache,65536,&view)!=DOK_ASSET_OK)return 0;
     }
     /* Every title chunk has been verified at the immutable package boundary.
      * Runtime reads bounded slices directly, without rescanning/hash stalls. */
-    if(!nds_audio_init(backing,bytes))return 0;catalog_phase=1;publish();return 1;
+    if(loading_progress)loading_progress(5);
+    nds_audio_set_loading(loading_progress);
+    int audio_ready=nds_audio_init(backing,bytes);
+    nds_audio_set_loading(NULL);
+    if(!audio_ready)return 0;catalog_phase=1;publish();return 1;
 }
 int nds_audio_runtime_clear(void)
 {int ok=1;if(session){ok=nds_audio_stop(0);++stops;}active_id=pending_id=stream_filling=0;presentation=NULL;publish();

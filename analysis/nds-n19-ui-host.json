@@ -187,7 +187,7 @@
       ],
       "all_bytes_per_case": 9728,
       "validated_bytes": 637534208,
-      "raster_sha256": "8b11c744b40885e538cdbed6ba5953324b6ac623ac92bb4d3067faecce3723e0",
+      "raster_sha256": "09cc98cd1b6c0e74a4b56d2e00ee4c85bb4ceb7020c150d79b1f4b2d627a62d4",
       "source_oracle_cross_checks": 75
     },
     "2": {
@@ -200,15 +200,15 @@
       ],
       "all_bytes_per_case": 9728,
       "validated_bytes": 637534208,
-      "raster_sha256": "a2060146bd83e2938b40869cf74852fffcff9ae289fca781aba4aa4567a36654",
+      "raster_sha256": "09cc98cd1b6c0e74a4b56d2e00ee4c85bb4ceb7020c150d79b1f4b2d627a62d4",
       "source_oracle_cross_checks": 75
     }
   },
-  "representative_raster_sha256": "34f4a31bae7379f1e81b63ec7b91b1f4cc625077f69bba9100137a3faa02e6a8",
-  "runtime_seconds": 5.484120500041172,
+  "representative_raster_sha256": "939363344e76ba9ef01d2020041cf8b05a04e43673f8fd1adc397640bdfd291c",
+  "runtime_seconds": 4.333969200029969,
   "report": {
     "path": "research/evidence/nds/n19/host-ui-check.json",
     "bytes": 7295,
-    "sha256": "6ebdc92c296f3061a7d33639b89fbd043e2ce904b2842efdb30344dfd5d6d3f8"
+    "sha256": "dc48f3798a3bba92447e7084cb2cd27dbf837832209faf2c7d28b3e10274656d"
   }
 }

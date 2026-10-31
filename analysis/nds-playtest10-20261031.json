@@ -1,0 +1,221 @@
+{
+  "task": "N23 partial playtest10",
+  "passed": true,
+  "published": {
+    "path": "artifacts/nds/dok.nds",
+    "bytes": 10157568,
+    "sha256": "7ad0033563651ffbccef3dfcdfaa6fda8a320dc030adc46cbae1b0645e67efa5"
+  },
+  "checks": {
+    "level1": {
+      "path": "research/evidence/nds/n23/playtest10/level1.json",
+      "bytes": 4358398,
+      "sha256": "d9e991c0251d53b66f8e2f61129b82c0cf5ffe555d58e99269a7d12214283157"
+    },
+    "level2": {
+      "path": "research/evidence/nds/n23/playtest10/level2.json",
+      "bytes": 2001762,
+      "sha256": "17da8428b8c58d4b6485e275b97ddf462367d543dd1186dfbaa10a8491c72f8b"
+    },
+    "level3": {
+      "path": "research/evidence/nds/n23/playtest10/level3.json",
+      "bytes": 2630877,
+      "sha256": "16e111940b647f1ef4d84a8487931684dcb6a6e3ee2c03f341abb1137fd4a48c"
+    },
+    "door": {
+      "path": "research/evidence/nds/n23/playtest10/door.json",
+      "bytes": 1837086,
+      "sha256": "293c6ae10d7f8238c9ca543f2784fa54c13e7cfe452a7b6760a9fe4651ed0f02"
+    },
+    "live": {
+      "path": "research/evidence/nds/n23/playtest10/live.json",
+      "bytes": 4170389,
+      "sha256": "94f6de6c49a7fc7f6019548cffd020ac6d9337fb39afa714d7629aabc236301f"
+    },
+    "host_ui": {
+      "path": "research/evidence/nds/n23/playtest10/host_ui.json",
+      "bytes": 11322,
+      "sha256": "2b75d5b0587e8b70ea77d94278ef4d212594645efc9a35e70a060ca8523ce4cf"
+    }
+  },
+  "totals": {
+    "source_interval_checks": 5786,
+    "notice_checks": 2174,
+    "hold_sequences": 234,
+    "captured_lcd_sample_checks": 8424
+  },
+  "levels": [
+    {
+      "level": 1,
+      "cells": 220,
+      "video_frames": 6003,
+      "source_interval_checks": 3817,
+      "notice_checks": 919,
+      "hold_sequences": 142,
+      "lcd_checks": 5112,
+      "c2_min": 43,
+      "c2_max": 60
+    },
+    {
+      "level": 2,
+      "cells": 100,
+      "video_frames": 3372,
+      "source_interval_checks": 249,
+      "notice_checks": 574,
+      "hold_sequences": 38,
+      "lcd_checks": 1368,
+      "c2_min": 28,
+      "c2_max": 61
+    },
+    {
+      "level": 3,
+      "cells": 50,
+      "video_frames": 3073,
+      "source_interval_checks": 1720,
+      "notice_checks": 681,
+      "hold_sequences": 54,
+      "lcd_checks": 1944,
+      "c2_min": 46,
+      "c2_max": 60
+    }
+  ],
+  "door_observed_tails": [
+    {
+      "glyph": 100,
+      "start_frame": 672,
+      "start_ticks": 33195,
+      "first_phase": 2,
+      "extent": 59,
+      "c2": 59,
+      "end_frame": 733,
+      "end_ticks": 43417,
+      "duration_ticks": 10222
+    },
+    {
+      "glyph": 107,
+      "start_frame": 2436,
+      "start_ticks": 328836,
+      "first_phase": 2,
+      "extent": 58,
+      "c2": 57,
+      "end_frame": 2500,
+      "end_ticks": 339564,
+      "duration_ticks": 10728
+    },
+    {
+      "glyph": 100,
+      "start_frame": 2926,
+      "start_ticks": 410959,
+      "first_phase": 2,
+      "extent": 56,
+      "c2": 59,
+      "end_frame": 2980,
+      "end_ticks": 420009,
+      "duration_ticks": 9050
+    },
+    {
+      "glyph": 109,
+      "start_frame": 692,
+      "start_ticks": 43752,
+      "first_phase": 3,
+      "extent": 59,
+      "c2": 59,
+      "end_frame": 758,
+      "end_ticks": 54816,
+      "duration_ticks": 11064
+    },
+    {
+      "glyph": 109,
+      "start_frame": 1568,
+      "start_ticks": 190568,
+      "first_phase": 2,
+      "extent": 58,
+      "c2": 58,
+      "end_frame": 1634,
+      "end_ticks": 201644,
+      "duration_ticks": 11076
+    },
+    {
+      "glyph": 98,
+      "start_frame": 1798,
+      "start_ticks": 229118,
+      "first_phase": 3,
+      "extent": 59,
+      "c2": 57,
+      "end_frame": 1870,
+      "end_ticks": 241183,
+      "duration_ticks": 12065
+    }
+  ],
+  "door_measurement_scope": "Read-only live fields; first observed phase2/3, end state1 ready1 at extent-1; tails exclude first unsampled phases; only latest observer reports count",
+  "original_sample": {
+    "path": "originals/pkr/RUS/PKR.EXE",
+    "sha256": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28"
+  },
+  "ghidra_manifest": {
+    "path": "research/evidence/nds/n23/dos-cadence/ghidra-ru/manifest.json",
+    "bytes": 1340,
+    "sha256": "80a39603db14f9368414b759375e07079d2ed1cb625acf6bca979060f30d6dde"
+  },
+  "native_dos": [
+    {
+      "report": {
+        "path": "research/evidence/nds/n23/dos-cadence/ru-60k-04/result.json",
+        "bytes": 187657,
+        "sha256": "bd3e999499dc60bc178f10f2d49920a630d91ed413138831f52dd010d8577197"
+      },
+      "cycles": 60000,
+      "samples": 197,
+      "bat_glyph": 162,
+      "source_interval": 500,
+      "deadline_comparisons": 183,
+      "ticks_min": 612.0,
+      "ticks_median": 614.0,
+      "ticks_max": 619.0,
+      "milliseconds_median": 61.23625733542745,
+      "c2_histogram": {
+        "48": 197
+      }
+    },
+    {
+      "report": {
+        "path": "research/evidence/nds/n23/dos-cadence/ru-120k-01/result.json",
+        "bytes": 154899,
+        "sha256": "a0436c537628f665881d919e966fb14b621b887e52f59c754f669ef132b3e8cf"
+      },
+      "cycles": 120000,
+      "samples": 151,
+      "bat_glyph": 162,
+      "source_interval": 500,
+      "deadline_comparisons": 150,
+      "ticks_min": 511.0,
+      "ticks_median": 512.5,
+      "ticks_max": 515.0,
+      "milliseconds_median": 51.113325544636105,
+      "c2_histogram": {
+        "97": 145,
+        "96": 4,
+        "98": 2
+      }
+    }
+  ],
+  "notice": {
+    "source_ticks_per_second": "1193182/119",
+    "page_ticks": 40107,
+    "replacement": "immediate; fresh four seconds; no queue",
+    "host_checks": 35706,
+    "old_two_second_mutant_rejected": true,
+    "dword_wrap_checked": true
+  },
+  "limitations": [
+    "No physical DS check; N23 remains open, N24 not started",
+    "Bat cadence is DOS main-loop/CPU dependent; no invented universal DOS FPS or arbitrary animation slowdown",
+    "LEVEL3 100-cell host path planner failed at52,51 with flags16; retained failed report, subsequent 50-cell sample passes; not a completed playthrough",
+    "Old observer door duration fields in level1/2 reports are excluded: incorrect end-phase criterion; replaced by six corrected observations"
+  ],
+  "known_failed_host_route": {
+    "path": "research/evidence/nds/n23/playtest10/level3-host-route-failure.json",
+    "bytes": 5896205,
+    "sha256": "90b40fe3379bc0e7cc0abdeb2b47a45ed9cc7db7e40f2b84069030478a7d3fee"
+  }
+}

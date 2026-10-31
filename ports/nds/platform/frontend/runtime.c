@@ -1,9 +1,12 @@
 ﻿#include "runtime.h"
 #include "dok/ui.h"
+#include "../assets/resource_paths.h"
 #include "dok/sha256.h"
 #include "frontend_hash.inc"
 #include <nds.h>
 #include <string.h>
+#include <errno.h>
+#include <sys/stat.h>
 #ifndef N21P_AUDIT
 #define N21P_AUDIT 1
 #endif
@@ -31,7 +34,7 @@ int nds_frontend_initialize(NdsFrontend *f,const dok_asset_session *assets,void 
 {
     unsigned char h[32],raw[608],settings[17];uint16_t pages[2][8];uint8_t language=1;
     memset(f,0,sizeof(*f));f->assets=assets;f->font=font;f->top=scratch;f->bottom=f->top+49152;f->text=f->top+98304;
-    f->file=fopen("fat:/dok/frontend.dat","rb");
+    f->file=fopen(NDS_RESOURCE_ROOT "frontend.dat","rb");
     if(!f->file||fread(h,1,32,f->file)!=32||memcmp(h,"N21UI01\0",8)||le32(h+8)!=1||le32(h+12)!=38||le32(h+16)!=32||le32(h+24)||le32(h+28)||fread(raw,1,sizeof(raw),f->file)!=sizeof(raw))return 0;
     if(le32(h+20)!=DOK_FRONTEND_FILE_BYTES||fseek(f->file,0,SEEK_END)||ftell(f->file)!=(long)le32(h+20))return 0;
     {dok_sha256 hash;unsigned char digest[32];uint32_t left=DOK_FRONTEND_FILE_BYTES;
@@ -56,6 +59,9 @@ int nds_frontend_initialize(NdsFrontend *f,const dok_asset_session *assets,void 
 int nds_frontend_settings_write(NdsFrontend *f)
 {
     unsigned char bytes[16];dok_settings_encode(bytes,f->state.language);
+    /* No data directory is shipped with a standalone ROM. Create it only
+     * when settings are changed; a read-only/missing drive is non-fatal. */
+    if(mkdir("fat:/dok",0777)!=0&&errno!=EEXIST){++f->settings_failures;return 0;}
     FILE *file=fopen("fat:/dok/settings.dat","wb");
     if(!file){++f->settings_failures;return 0;}
     int ok=fwrite(bytes,1,16,file)==16;if(fflush(file))ok=0;if(fclose(file))ok=0;
@@ -76,8 +82,8 @@ static void line(NdsFrontend *f,const unsigned char *s,unsigned row)
 typedef struct PageDraw {NdsFrontend *f;const unsigned char *data;} PageDraw;
 static void page_glyph(void *p,uint32_t offset,uint32_t col,uint32_t row)
 {PageDraw *d=p;NdsFrontend *f=d->f;unsigned x=8u+8u*col,y=24u+16u*row;
- for(unsigned r=0;r<16u;++r)for(unsigned b=0;b<8u;++b)
-    if(f->font[2048u+d->data[offset]*16u+r]&(128u>>b))f->bottom[(y+r)*256u+x+b]=2;}
+ for(unsigned r=0;r<8u;++r)for(unsigned b=0;b<8u;++b)
+    if(f->font[d->data[offset]*8u+r]&(128u>>b))f->bottom[(y+4u+r)*256u+x+b]=2;}
 static int background(NdsFrontend *f,unsigned id)
 {
     unsigned char links[8];uint32_t bytes;dok_asset_view view;
@@ -124,6 +130,20 @@ int nds_frontend_draw(NdsFrontend *f,void *top,void *bottom)
 #if FRONTEND_FIXTURES
     if(state==DOK_FRONTEND_CONTROLS)label(f,(const unsigned char *)"Fixture: Sel+Start/X/Y",8,160,2);
 #endif
+    /* Menus share one screen with their original tiled background. Only
+     * title/story/intermission pages use the second display for text. */
+    if(index<0&&state!=DOK_FRONTEND_TITLE){
+        /* Index zero is also the selected row's foreground. Composite the
+         * complete menu canvas over FON rather than treating zero as alpha. */
+        for(unsigned y=0;y<192u;++y)for(unsigned x=0;x<256u;++x){
+            unsigned at=y*256u+x;
+            if(f->bottom[at]|| (x>=8u&&x<248u&&y>=28u+24u*f->state.selection&&y<48u+24u*f->state.selection&&
+               (state==DOK_FRONTEND_MAIN||state==DOK_FRONTEND_PAUSE||state==DOK_FRONTEND_LEVELS||state==DOK_FRONTEND_LANGUAGE)))
+                f->top[at]=f->bottom[at];
+        }
+        memset(f->bottom,0,49152);
+        memcpy(f->palettes[0],f->palettes[1],512);
+    }
     DC_FlushRange(f->top,49152);DC_FlushRange(f->bottom,49152);
     if(f->text_bytes)DC_FlushRange(f->text,f->text_bytes);
     DC_FlushRange(f->palettes,sizeof(f->palettes));

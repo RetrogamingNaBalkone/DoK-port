@@ -56,14 +56,17 @@ def main():
     world=nodes[ref(concrete(nodes,worldptr)['attrs']['type'])]
     _,objects=member(nodes,world,'objects');seed=nodes[ref(concrete(nodes,objects)['attrs']['type'])]
     _,scheduler_pointer=member(nodes,ai,'scheduler');scheduler=nodes[ref(concrete(nodes,scheduler_pointer)['attrs']['type'])]
+    _,interactions=member(nodes,game,'interactions');_,doors=member(nodes,interactions,'doors')
+    door=nodes[ref(concrete(nodes,doors)['attrs']['type'])]
     _,definition_pointer=member(nodes,world,'definition');definition=nodes[ref(concrete(nodes,definition_pointer)['attrs']['type'])]
     _,definitions=member(nodes,definition,'objects');object_definition=nodes[ref(concrete(nodes,definitions)['attrs']['type'])]
     storage_symbol=elf_symbol(elf,'storage');assert storage_symbol[1]==4
     result=dict(elf=pin(elf),command=command,address_system='ARM9 32-bit pointer and actual ELF DWARF field offsets; no DOS layout',
        storage_symbol=dict(address=storage_symbol[0],bytes=storage_symbol[1]),
-       sprite_world=describe(nodes,sprite,['game']),game=describe(nodes,game,['ai','hero']),
+       sprite_world=describe(nodes,sprite,['game']),game=describe(nodes,game,['ai','hero','interactions','c2']),
+       interactions=describe(nodes,interactions,['doors']),door=describe(nodes,door,['phase','extent','state','ready']),
        ai=describe(nodes,ai,['world','collision','scheduler','enemies','glyph_index','corpses','epoch','count','callbacks','revision','fault','busy']),
-       enemy=describe(nodes,enemy,['motion','last_motion_ticks','burst_started','health','glyph','state','corpse']),
+       enemy=describe(nodes,enemy,['motion','last_motion_ticks','burst_started','health','glyph','state','corpse','next_cursor','displayed_cursor','displayed_kind']),
        motion=describe(nodes,motion,['x','y','z','heading','angle_parameter','speed','distance']),
        world=describe(nodes,world,['epoch','hero','object_count','glyph_index','objects','maps']),
        seed=describe(nodes,seed,['reference','x','y','z','heading','upper_y','lower_y','definition_index','class_id','pose_known']),

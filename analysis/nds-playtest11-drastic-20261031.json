@@ -1,0 +1,102 @@
+{
+  "task": "N23",
+  "candidate": "playtest11-ru",
+  "rom": {
+    "path": "artifacts/nds/dok.nds",
+    "bytes": 10163712,
+    "sha256": "4a664ef914ec1a13366f79e95f653379990c7bd9b5bf093b61d0b6bc21698290"
+  },
+  "user_report": "DraStic on RG DS, boot Loading with 2 segments",
+  "localization": "After asset catalog open; inside audio init before stage 6",
+  "drastic_verified": false,
+  "root_cause_confirmed": false,
+  "ipc_hypothesis": "ARM7 acknowledgement scheduling exceeds ARM9 busy-loop deadline",
+  "ipc_host_tests": {
+    "passed": true,
+    "cases": [
+      "immediate",
+      "first VBlank",
+      "eighth VBlank",
+      "missing",
+      "stale serial",
+      "FIFO rejection"
+    ]
+  },
+  "reports": [
+    {
+      "report": {
+        "path": "research/evidence/nds/n23/playtest11-drastic/frontend-world-smoke-no-storage/result.json",
+        "bytes": 19437,
+        "sha256": "1ea75c8ceccb7b11710a1387681315b085b81391f737c03932554fc8599a2619"
+      },
+      "passed": true,
+      "metrics": {
+        "index8_checks": 1277952,
+        "rgb_checks": 1277952
+      }
+    },
+    {
+      "report": {
+        "path": "research/evidence/nds/n23/playtest11-drastic/packed-check/result.json",
+        "bytes": 425,
+        "sha256": "0ae03a4b17e74cb3fc1a21de7f55d2202863829a2b8f676757edbeaa6c7544cf"
+      },
+      "passed": true,
+      "metrics": {
+        "frames": 169,
+        "sound_clips": 22
+      }
+    },
+    {
+      "report": {
+        "path": "research/evidence/nds/n23/playtest11-drastic/live/result.json",
+        "bytes": 3240257,
+        "sha256": "941ede43d5b717bf5938ff5c505a1f0484f9bb3b426819274a3f47ee1977303a"
+      },
+      "passed": true,
+      "metrics": {
+        "index8_checks": 5701632,
+        "rgb_checks": 5701632,
+        "steady_metrics": {
+          "intervals": 1119,
+          "histogram": {
+            "1": 1119
+          },
+          "virtual_fps": 59.82609828808083,
+          "median": 1,
+          "p95": 1,
+          "p99": 1,
+          "max": 1,
+          "fraction_over_one": 0.0,
+          "fraction_over_two": 0.0,
+          "refresh_hz": 59.82609828808083,
+          "checked_one_second_windows": 765,
+          "scope": "Every product PRESENTED interval without LOADING/WARMUP/DIAGNOSTIC/SYNC flags, independent of observer phase; timestamp gaps separate UI reading time",
+          "minimum_window_cadence_fps": 59.82609828808083,
+          "minimum_new_frames_in_one_second": 59,
+          "budget_passed": true,
+          "missing_profiles": []
+        },
+        "latency_summary": {
+          "gameplay_whole_map_lcd_rgb": {
+            "samples": 6,
+            "max_upper_vblanks": 301,
+            "max_upper_ms": 5031.249047039531
+          },
+          "whole_map_lcd_rgb": {
+            "samples": 42,
+            "max_upper_vblanks": 4,
+            "max_upper_ms": 66.86045245235258
+          },
+          "whole_static_lcd_rgb": {
+            "samples": 57,
+            "max_upper_vblanks": 46,
+            "max_upper_ms": 768.8952032020546
+          }
+        }
+      }
+    }
+  ],
+  "next_id": "N23",
+  "N24_started": false
+}

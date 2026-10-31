@@ -140,6 +140,13 @@ def main():
         report['passed']=True
     except Exception:
         report['error']=traceback.format_exc()
+        if f:
+            import struct
+            address,size=transport.elf_symbol(target/'dok_nds_gameplay.elf','g_nds_effect_probe')
+            report['failure_effect_probe']=list(struct.unpack('<32I',render.ram(f,address,size)))
+            address,size=transport.elf_symbol(target/'dok_nds_gameplay.elf','g_nds_sprite_probe')
+            fields=render.scalar_fields(ROOT/'ports/nds/platform/sprites_probe/sprites_probe.h','NdsSpriteProbe')
+            report['failure_sprite_probe']=dict(zip(fields,struct.unpack('<'+'I'*(size//4),render.ram(f,address,size))))
         if f and f.last_video:report['failure_images']=f.capture('failure')
     finally:
         if f:

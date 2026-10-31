@@ -53,7 +53,7 @@ $(OUTDIR)/dok_nds_geometry.elf: $(OBJDIR)/geometry_gate.o $(OBJDIR)/render_backe
 $(OBJDIR)/geometry_gate.o: platform/render_probe/geometry_gate.c platform/render_probe/render_probe.h Makefile.n21 | $(OBJDIR)
 	"$(CC)" $(ARCH) -specs=$(SPECS) $(PLATFORM_CPPFLAGS) -std=gnu11 $(CFLAGS) -MMD -MP -c "$<" -o "$@"
 $(ROM): $(ELF) $(ARM7ELF)
-	"$(NDSTOOL)" -c "$@" -9 "$(ELF)" -7 "$(ARM7ELF)"
+	"$(NDSTOOL)" -c "$@" -9 "$(ELF)" -7 "$(ARM7ELF)" $(if $(NITROFSDIR),-d "$(NITROFSDIR)")
 $(ELF): $(OBJECTS)
 	"$(CC)" $(ARCH) -specs=$(SPECS) $(CPPFLAGS) -o "$@" $(OBJECTS) $(LDFLAGS) -Wl,--start-group -lnds9 -lc -Wl,--end-group
 $(OBJDIR)/main.o: platform/gameplay_probe/main.c platform/render_probe/render_probe.h platform/sprites_probe/sprites_probe.h Makefile.n21 | $(OBJDIR)

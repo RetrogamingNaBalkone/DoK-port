@@ -22,6 +22,7 @@ static const unsigned char *mock_resident;
 static uint32_t mock_resident_bytes;
 
 NdsAudioStatus nds_audio_status(void) { return consumer; }
+void nds_audio_set_loading(void (*progress)(unsigned)) { (void)progress; }
 void nds_audio_service(void) {}
 int nds_audio_init(void *data, size_t bytes)
 {

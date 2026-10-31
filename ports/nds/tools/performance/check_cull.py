@@ -10,11 +10,16 @@ from check_items import artifact
 OUT=ROOT/'build/nds/n23/cull-check'
 E=ROOT/'research/evidence/nds/n23'
 
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]/'map'))
+from compiler_cache import compiler_environment
+
+
 def main():
     OUT.mkdir(parents=True,exist_ok=True);E.mkdir(parents=True,exist_ok=True)
     old=ROOT/'research/evidence/nds/n22/candidates/candidate-partial02-ru/sources/ports/nds/render/scene.c'
     current=ROOT/'ports/nds/render/scene.c'
-    env=dict(os.environ,ZIG_GLOBAL_CACHE_DIR=str(ROOT/'build/zig-global-cache'),ZIG_LOCAL_CACHE_DIR=str(OUT/'zig-cache'))
+    env=compiler_environment(ROOT)
     zig=Path.home()/'AppData/Local/Programs/Zig/0.13.0/zig.exe'
     flags=[str(zig),'cc','-std=c11','-O2','-Wall','-Wextra','-Werror','-pedantic',
         '-DN21P_PROFILE=0','-DN21P_GEOMETRY_PROFILE=0','-DGAMEPLAY_GEOMETRY_CACHE=0',

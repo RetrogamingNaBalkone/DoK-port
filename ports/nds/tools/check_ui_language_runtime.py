@@ -48,6 +48,13 @@ static inline void dmaCopy(const void *a,void *b,uint32_t n){memcpy(b,a,n);}
     inputs=[ROOT/'build/nds/assets/dok-assets.ndspak',ROOT/'build/nds/n19/ui.dat']
     report['actual_runtime']=json.loads(run([OUT/'test_ui_language.exe',*inputs]).stdout)
     original=runtime.read_text('utf8')
+    # The old two-second lifetime must fail the independent boundary test.
+    assert original.count('#define NOTICE_PAGE_TICKS 40107u')==1
+    short=OUT/'short-notice-runtime.c';short.write_text(original.replace('#define NOTICE_PAGE_TICKS 40107u','#define NOTICE_PAGE_TICKS 20054u'),'utf8')
+    run([zig,'cc',*flags,*sources,short,'-o',OUT/'test_short_notice.exe'])
+    rejected_short=run([OUT/'test_short_notice.exe',*inputs],allowed_fail=True)
+    assert rejected_short.returncode!=0 and 'ui.message_kind==2&&ui.message_id==0&&ui.page==0' in rejected_short.stderr
+    report['notice_mutation_control']=dict(rejected=True,fault='Old two-second notice lifetime',exit_code=rejected_short.returncode,stderr=rejected_short.stderr.strip(),source=artifact(short))
     old='&scratch->presentation,&u->presentation)'
     assert original.count(old)==1,'Expected exact current callback publication site'
     # Restore the old publication destination while keeping the new UI

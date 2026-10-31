@@ -4,10 +4,17 @@ ARM7_OUT ?= ../../build/nds/n18/arm7
 ARM7_CC := $(WONDERFUL_TOOLCHAIN)/toolchain/gcc-arm-none-eabi/bin/arm-none-eabi-gcc
 ARM7_ARCH := -mthumb -mcpu=arm7tdmi -specs=$(BLOCKSDS)/sys/crts/ds_arm7.specs
 ARM7_FLAGS := -D__NDS__ -D__BLOCKSDS__ -DARM7 -I$(BLOCKSDS)/libs/libnds/include -Iinclude -std=gnu11 -O2 -g -Wall -Wextra -Werror -Wno-misleading-indentation -ffunction-sections -fdata-sections -fstack-usage -MMD -MP
+ARM7_SHARED_WRAM ?= 32768
+ARM7_IDLE_BIOS ?= 1
+ARM7_RAM_MAILBOX ?= 0
+ARM7_FLAGS += -DDOK_ARM7_IDLE_BIOS=$(ARM7_IDLE_BIOS) -DDOK_ARM7_RAM_MAILBOX=$(ARM7_RAM_MAILBOX)
+ifeq ($(ARM7_RAM_MAILBOX),1)
+ARM7_TRANSPORT_LDFLAGS := -Wl,--wrap=fifoSendDatamsg
+endif
 .PHONY: audio-arm7
 audio-arm7: $(ARM7_OUT)/dok_audio_arm7.elf
 $(ARM7_OUT)/dok_audio_arm7.elf: $(ARM7_OUT)/arm7.o $(ARM7_OUT)/audio_codec.o
-	$(ARM7_CC) $(ARM7_ARCH) -o $@ $^ -L$(BLOCKSDS)/libs/libnds/lib -Wl,-Map,$(ARM7_OUT)/dok_audio_arm7.map -Wl,--start-group -lnds7 -lc -Wl,--end-group
+	$(ARM7_CC) $(ARM7_ARCH) -o $@ $^ -L$(BLOCKSDS)/libs/libnds/lib $(ARM7_TRANSPORT_LDFLAGS) -Wl,--defsym=__shared_wram_size=$(ARM7_SHARED_WRAM) -Wl,-Map,$(ARM7_OUT)/dok_audio_arm7.map -Wl,--start-group -lnds7 -lc -Wl,--end-group
 $(ARM7_OUT)/arm7.o: platform/audio/arm7.c platform/audio/audio_ipc.h
 	mkdir -p $(ARM7_OUT)
 	$(ARM7_CC) $(ARM7_ARCH) $(ARM7_FLAGS) -c $< -o $@

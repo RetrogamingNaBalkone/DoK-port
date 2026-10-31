@@ -9,6 +9,11 @@ import subprocess
 from audit_pipeline import ROOT, pin
 
 
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]/'map'))
+from compiler_cache import compiler_environment
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path, required=True)
@@ -21,8 +26,7 @@ def main():
                'ports/nds/core/world.c', 'ports/nds/core/sha256.c']
     before = [pin(ROOT/p) for p in sources]
     zig = Path.home()/'AppData/Local/Programs/Zig/0.13.0/zig.exe'
-    env = dict(os.environ, ZIG_GLOBAL_CACHE_DIR=str(ROOT/'build/zig-global-cache'),
-               ZIG_LOCAL_CACHE_DIR=str(target/'zig-cache'))
+    env = compiler_environment(ROOT)
     command = [str(zig), 'cc', '-std=c11', '-O2', '-Wall', '-Wextra', '-Werror',
                '-pedantic', '-Iports/nds/include', *sources, '-o', str(target/'geometry_dump.exe')]
     subprocess.run(command, cwd=ROOT, env=env, capture_output=True, check=True)

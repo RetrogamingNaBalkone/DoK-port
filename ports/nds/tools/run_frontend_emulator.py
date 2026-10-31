@@ -347,15 +347,19 @@ def settings_bytes(language):
     return bytes(raw) + struct.pack("<I", value)
 
 
-def write_fixture(image, settings=None):
-    files = [("assets.ndp", b"ASSETS  NDP", (ROOT / "build/nds/assets/dok-assets.ndspak").read_bytes()),
+def embedded_resources(target):
+    return json.loads((target / 'build-manifest.json').read_text('utf8')).get('embedded_resources', False)
+
+
+def write_fixture(image, settings=None, embedded=False):
+    files = [] if embedded else [("assets.ndp", b"ASSETS  NDP", (ROOT / "build/nds/assets/dok-assets.ndspak").read_bytes()),
              ("ui.dat", b"UI      DAT", (ROOT / "build/nds/n19/ui.dat").read_bytes()),
              ("frontend.dat", b"FRONTENDDAT", (ROOT / "build/nds/n21/frontend.dat").read_bytes())]
     if settings is not None:
         files.append(("settings.dat", b"SETTINGSDAT", settings))
     image.parent.mkdir(parents=True, exist_ok=True)
     image.with_name(image.name + ".idx").unlink(missing_ok=True)
-    fat.write_image(image, files)
+    fat.write_image(image, files, include_dok=not embedded or settings is not None)
 
 
 def smoke_flow(frontend, mode, language):
@@ -445,6 +449,7 @@ def main():
     parser.add_argument("--language", type=int, choices=(1, 2), default=1)
     parser.add_argument("--mode", choices=("smoke", "world-smoke", "full", "settings", "restart", "corrupt", "readonly", "early"), default="smoke")
     parser.add_argument("--reuse-image", type=Path)
+    parser.add_argument("--no-storage", action="store_true", help="Disable DLDI media; embedded cartridge resources must still boot")
     parser.add_argument("--phase", type=int, choices=range(8), default=0)
     parser.add_argument("--button", choices=("A", "Start"), default="A")
     args = parser.parse_args()
@@ -452,6 +457,8 @@ def main():
     assert target.is_relative_to(ROOT / "build/nds")
     assert not any(p.is_symlink() or p.is_junction() for p in (target, *target.parents) if p.exists())
     directory = target / ("frontend-" + args.mode)
+    if args.no_storage:
+        directory = target / ("frontend-" + args.mode + "-no-storage")
     if args.mode == "early":
         directory = target / f"frontend-early-{args.button}-{args.phase}"
     directory.mkdir(parents=True, exist_ok=True)
@@ -460,11 +467,17 @@ def main():
     try:
         assert transport.sha(args.core) == render.CORE_SHA
         frontend = FrontendObserver(args.core, target, directory, readonly=args.mode == "readonly")
+        embedded = embedded_resources(target)
+        assert not args.no_storage or embedded, 'Missing-media test requires embedded resources'
+        if args.no_storage:
+            frontend.options['melonds_homebrew_sdcard'] = 'disabled'
         # The separate restart process consumes this exact post-settings image.
         # Other modes clean their private image only after all post-close audits.
         frontend._keep_disk_for_restart = args.mode == "settings"
         report = frontend.report
         report["initial_language"] = args.language
+        report['embedded_resources'] = embedded
+        report['no_storage'] = args.no_storage
         image = frontend.save / "melonDS DS/dldi_sd_card.bin"
         if args.mode == "restart":
             assert args.reuse_image and args.reuse_image.resolve().is_relative_to(ROOT / "build/nds")
@@ -473,10 +486,13 @@ def main():
             shutil.copyfile(args.reuse_image, image)
         else:
             write_fixture(image, b"invalid settings" if args.mode == "corrupt" else
-                          settings_bytes(2) if args.language == 2 else None)
+                          settings_bytes(2) if args.language == 2 else None, embedded=embedded)
         frontend.load(target / "dok_nds_gameplay.nds")
         transport.flush_native_stdio()
         before = volume_files(image)
+        if embedded:
+            assert not any(name in before for name in ('/DOK/ASSETS.NDP', '/DOK/UI.DAT', '/DOK/FRONTEND.DAT'))
+            report['external_resource_files'] = []
         if args.mode == "full":
             full_flow(frontend, args.language)
         elif args.mode in ("settings", "restart", "corrupt", "readonly"):

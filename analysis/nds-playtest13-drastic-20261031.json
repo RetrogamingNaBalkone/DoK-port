@@ -1,0 +1,110 @@
+{
+  "task": "N23",
+  "candidate": "playtest13-ru",
+  "rom": {
+    "path": "artifacts/nds/dok.nds",
+    "bytes": 10164736,
+    "sha256": "7a97e8e3e43588a1bb3de99617b264925bcbd3158ecb020d0dda3015b53b503c"
+  },
+  "arm7": {
+    "path": "build/nds/n23/playtest13-ru/arm7/dok_audio_arm7.elf",
+    "bytes": 332020,
+    "sha256": "799399174a89bd6d00754a1fd3375e5a7337993882b75afa9806b733be9c201b"
+  },
+  "old_arm7": {
+    "path": "build/nds/n18/arm7/dok_audio_arm7.elf",
+    "bytes": 331792,
+    "sha256": "825e93dc4af325e1aa0c974dd34f631bf2bccd0b903d4e6c3706c252b710795a"
+  },
+  "user_result_previous_candidate": "RG DS/ROCKNIX/DraStic/ES-DE, checkpoint 56",
+  "drastic_verified": false,
+  "root_cause_confirmed": false,
+  "changes": [
+    "one FIFO mailbox address instead of 48-byte data message",
+    "immutable command until ACK; latched failure prevents reuse after timeout",
+    "isolated matching N23 ARM7 build"
+  ],
+  "host_ipc": {
+    "passed": true,
+    "ack_cases": 6,
+    "status_cases": 4,
+    "mailbox_flush": true,
+    "timeout_reuse_blocked": true,
+    "late_ack_reuse_blocked": true
+  },
+  "reports": [
+    {
+      "report": {
+        "path": "research/evidence/nds/n23/playtest13-drastic/frontend-world-smoke-no-storage/result.json",
+        "bytes": 19437,
+        "sha256": "5c054fa675a931f2eac1bb2105d194e38e5d2fcc3ff586d1693e57b464622259"
+      },
+      "passed": true,
+      "error": null,
+      "metrics": {
+        "index8_checks": 1277952,
+        "rgb_checks": 1277952
+      }
+    },
+    {
+      "report": {
+        "path": "research/evidence/nds/n23/playtest13-drastic/frontend-full/result.json",
+        "bytes": 52630,
+        "sha256": "08a3e60d31453ee34c8a4a27e18eb282d404d84c49997360908ba33a0436c9c5"
+      },
+      "passed": false,
+      "error": "Traceback (most recent call last):\n  File \"C:\\Source\\DoK-port\\ports\\nds\\tools\\run_frontend_emulator.py\", line 497, in main\n    full_flow(frontend, args.language)\n    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Source\\DoK-port\\ports\\nds\\tools\\run_frontend_emulator.py\", line 291, in full_flow\n    raise AssertionError(\"Display-only POPAL fixture did not activate\")\nAssertionError: Display-only POPAL fixture did not activate\n",
+      "metrics": {
+        "index8_checks": 2457600,
+        "rgb_checks": 2457600
+      }
+    },
+    {
+      "report": {
+        "path": "research/evidence/nds/n23/playtest13-drastic/live/result.json",
+        "bytes": 3240234,
+        "sha256": "e4e830e790c87d217e8e934aad2fa3dd8bf28b381191ae7ffbd98f31f6c53d77"
+      },
+      "passed": true,
+      "error": null,
+      "metrics": {
+        "index8_checks": 5701632,
+        "rgb_checks": 5701632,
+        "steady_metrics": {
+          "intervals": 1119,
+          "histogram": {
+            "1": 1119
+          },
+          "virtual_fps": 59.82609828808083,
+          "median": 1,
+          "p95": 1,
+          "p99": 1,
+          "max": 1,
+          "fraction_over_one": 0.0,
+          "fraction_over_two": 0.0,
+          "refresh_hz": 59.82609828808083,
+          "checked_one_second_windows": 765,
+          "scope": "Every product PRESENTED interval without LOADING/WARMUP/DIAGNOSTIC/SYNC flags, independent of observer phase; timestamp gaps separate UI reading time",
+          "minimum_window_cadence_fps": 59.82609828808083,
+          "minimum_new_frames_in_one_second": 59,
+          "budget_passed": true,
+          "missing_profiles": []
+        }
+      }
+    }
+  ],
+  "title_waveforms": [
+    {
+      "complete": true,
+      "whole_coefficient": 0.9924338014084911,
+      "whole_source": true
+    },
+    {
+      "complete": true,
+      "whole_coefficient": 0.9924103060592988,
+      "whole_source": true
+    }
+  ],
+  "next_id": "N23",
+  "N24_started": false
+}

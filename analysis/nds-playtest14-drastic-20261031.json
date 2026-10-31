@@ -1,0 +1,86 @@
+{
+  "task": "N23",
+  "candidate": "playtest14-ru",
+  "rom": {
+    "path": "artifacts/nds/dok.nds",
+    "bytes": 10164736,
+    "sha256": "fef5cd3e8c391f8379bfa9685c1f23bbd096970b9d897f27fe21cf2c8f4ea59b"
+  },
+  "arm7": {
+    "path": "build/nds/n23/playtest14-ru/arm7/dok_audio_arm7.elf",
+    "bytes": 332020,
+    "sha256": "b2828cfbc80a0a636aa834d7860eaa8eb37899f91bfbe90f00c833031bb04701"
+  },
+  "arm7_map": {
+    "path": "build/nds/n23/playtest14-ru/arm7/dok_audio_arm7.map",
+    "bytes": 269240,
+    "sha256": "ca367ddee34555aaf09f73ecf5d9193b6451978c878f426abb72ffb8a9a8d2f5"
+  },
+  "arm7_shared_wram_bytes": 0,
+  "arm7_runtime_base": "0x03800000",
+  "old_arm7": {
+    "path": "build/nds/n18/arm7/dok_audio_arm7.elf",
+    "bytes": 331792,
+    "sha256": "825e93dc4af325e1aa0c974dd34f631bf2bccd0b903d4e6c3706c252b710795a"
+  },
+  "user_result_previous_candidate": "RG DS/ROCKNIX/DraStic/ES-DE: Stage 58, Code 00004000, audio init failed",
+  "localization": "ATTACH acknowledgement did not match before deadline",
+  "root_cause_confirmed": false,
+  "drastic_verified": false,
+  "hypothesis": "ARM7 shared-WRAM code mirror compatibility; unconfirmed",
+  "host_ipc": {
+    "passed": true,
+    "ack_cases": 6,
+    "status_cases": 4,
+    "raw_diagnostics_odd_status": true,
+    "status_cacheline_layout_assert": true
+  },
+  "reports": [
+    {
+      "report": {
+        "path": "research/evidence/nds/n23/playtest14-drastic/frontend-world-smoke-no-storage/result.json",
+        "bytes": 19437,
+        "sha256": "e502cb458cb5ad9c9c6d1294ecb82515e07c20d6379071ebacc29ba496b9408b"
+      },
+      "passed": true,
+      "metrics": {
+        "index8_checks": 1277952,
+        "rgb_checks": 1277952
+      }
+    },
+    {
+      "report": {
+        "path": "research/evidence/nds/n23/playtest14-drastic/live/result.json",
+        "bytes": 3240272,
+        "sha256": "b0441c9b308dc4e05d5f8950d2583197cff88cec92876a7386cd92573395de37"
+      },
+      "passed": true,
+      "metrics": {
+        "index8_checks": 5701632,
+        "rgb_checks": 5701632,
+        "steady_metrics": {
+          "intervals": 1119,
+          "histogram": {
+            "1": 1119
+          },
+          "virtual_fps": 59.82609828808083,
+          "median": 1,
+          "p95": 1,
+          "p99": 1,
+          "max": 1,
+          "fraction_over_one": 0.0,
+          "fraction_over_two": 0.0,
+          "refresh_hz": 59.82609828808083,
+          "checked_one_second_windows": 765,
+          "scope": "Every product PRESENTED interval without LOADING/WARMUP/DIAGNOSTIC/SYNC flags, independent of observer phase; timestamp gaps separate UI reading time",
+          "minimum_window_cadence_fps": 59.82609828808083,
+          "minimum_new_frames_in_one_second": 59,
+          "budget_passed": true,
+          "missing_profiles": []
+        }
+      }
+    }
+  ],
+  "next_id": "N23",
+  "N24_started": false
+}

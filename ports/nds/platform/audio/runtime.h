@@ -5,6 +5,7 @@
 #include "dok/ai.h"
 #include "dok/interactions.h"
 extern volatile uint32_t g_nds_audio_probe[64];
+void nds_audio_runtime_loading(void (*progress)(unsigned));
 int nds_audio_runtime_init(const dok_asset_session *,unsigned char *,uint32_t,
     unsigned char *extra,uint32_t extra_bytes);
 void nds_audio_runtime_world(const dok_level_presentation *,uint32_t);

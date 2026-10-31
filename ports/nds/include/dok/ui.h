@@ -5,7 +5,7 @@
 #define DOK_UI_HUD_BYTES 9728u
 typedef struct dok_ui_values {
     int16_t health,charge,max_health,max_charge,lives,score;
-    uint16_t keys,weapon;
+    uint16_t keys,weapon; /* weapon: owned slots 1/2 as bits 2/4 */
 } dok_ui_values;
 typedef void (*dok_ui_glyph_fn)(void *,uint32_t offset,uint32_t col,uint32_t row);
 /* Consumes every byte through the first NUL/$ once; CR has no raster, LF

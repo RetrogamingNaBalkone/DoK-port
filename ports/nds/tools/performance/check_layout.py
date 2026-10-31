@@ -7,9 +7,14 @@ from check_items import artifact
 OUT=ROOT/'build/nds/n23/layout-check'
 E=ROOT/'research/evidence/nds/n23'
 
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]/'map'))
+from compiler_cache import compiler_environment
+
+
 def main():
     OUT.mkdir(parents=True,exist_ok=True)
-    env=dict(os.environ,ZIG_GLOBAL_CACHE_DIR=str(ROOT/'build/zig-global-cache'),ZIG_LOCAL_CACHE_DIR=str(OUT/'zig-cache'))
+    env=compiler_environment(ROOT)
     flags=[str(Path.home()/'AppData/Local/Programs/Zig/0.13.0/zig.exe'),'cc','-std=c11','-O2','-Wall','-Wextra','-Werror','-pedantic','-Iports/nds/include','-Ibuild/nds/n07/generated']
     sources=['ports/nds/tools/performance/compact_source_test.c','ports/nds/render/materials.c','ports/nds/core/assets.c','ports/nds/core/world.c','ports/nds/core/balance.c','ports/nds/core/sha256.c','ports/nds/platform/assets/file_reader.c']
     old='research/evidence/nds/n22/candidates/candidate-partial02-ru/sources/ports/nds/render/materials.c'

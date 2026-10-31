@@ -1,0 +1,139 @@
+{
+  "task": "N23",
+  "candidate": "playtest16-ru",
+  "rom": {
+    "path": "artifacts/nds/dok.nds",
+    "bytes": 10165760,
+    "sha256": "9426cdb8ace55956968672ebc875c8cfb4f05c1f810e79ac64acb088c500159f"
+  },
+  "arm7": {
+    "path": "build/nds/n23/playtest16-ru/arm7/dok_audio_arm7.elf",
+    "bytes": 332828,
+    "sha256": "1eb4daba1a530316907eea4caba442bedaae72c89b28f1cd9d8c3a3d66aebeee"
+  },
+  "user_photo_previous": {
+    "stage": 58,
+    "error": "00004000",
+    "ack": 0,
+    "serial": 1,
+    "ready": 0,
+    "mirror": "02C52480",
+    "canonical_ack": 0,
+    "fifo": "8400",
+    "arm7_boot": 9,
+    "arm7_loop": 1,
+    "arm7_rx": 0,
+    "arm7_step": 0,
+    "arm7_fifo": "C400",
+    "arm7_ime": 1,
+    "arm7_ie": "00060051",
+    "arm7_init": 1
+  },
+  "drastic_verified": false,
+  "root_cause_confirmed": false,
+  "changes": [
+    "ARM7 idle Halt instead of VBlank IntrWait",
+    "At/VB/Handler diagnostics to distinguish loop and ISR stalls"
+  ],
+  "reports": [
+    {
+      "report": {
+        "path": "research/evidence/nds/n23/playtest16-drastic/frontend-world-smoke-no-storage/result.json",
+        "bytes": 19437,
+        "sha256": "29566e406f9acd3deb97aa370446be012d51100712110bdd1142e17ca94875a5"
+      },
+      "passed": true,
+      "metrics": {
+        "index8_checks": 1277952,
+        "rgb_checks": 1277952
+      }
+    },
+    {
+      "report": {
+        "path": "research/evidence/nds/n23/playtest16-drastic/boot-steps/result.json",
+        "bytes": 1348,
+        "sha256": "869430acad8c660f4866b7ab62b8ac5e523ab1328fa159b459cb21dadc6a382a"
+      },
+      "passed": true,
+      "metrics": {
+        "arm7_boot": {
+          "address": 37224992,
+          "words": [
+            927092545,
+            9,
+            151,
+            2,
+            33891392,
+            6,
+            34049,
+            393297,
+            1,
+            4,
+            1,
+            146,
+            2,
+            0,
+            0,
+            0
+          ]
+        },
+        "arm7_progress": {
+          "loop_delta": 3,
+          "vblank_delta": 3,
+          "words": [
+            927092545,
+            9,
+            154,
+            2,
+            33891392,
+            6,
+            34049,
+            393297,
+            1,
+            4,
+            1,
+            149,
+            2,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "report": {
+        "path": "research/evidence/nds/n23/playtest16-drastic/live/result.json",
+        "bytes": 3240225,
+        "sha256": "55a94e235c7776d7c991c3af3e78e8628e12c557e8d7ba722e004731d2a34544"
+      },
+      "passed": true,
+      "metrics": {
+        "index8_checks": 5701632,
+        "rgb_checks": 5701632,
+        "steady_metrics": {
+          "intervals": 1119,
+          "histogram": {
+            "1": 1119
+          },
+          "virtual_fps": 59.82609828808083,
+          "median": 1,
+          "p95": 1,
+          "p99": 1,
+          "max": 1,
+          "fraction_over_one": 0.0,
+          "fraction_over_two": 0.0,
+          "refresh_hz": 59.82609828808083,
+          "checked_one_second_windows": 765,
+          "scope": "Every product PRESENTED interval without LOADING/WARMUP/DIAGNOSTIC/SYNC flags, independent of observer phase; timestamp gaps separate UI reading time",
+          "minimum_window_cadence_fps": 59.82609828808083,
+          "minimum_new_frames_in_one_second": 59,
+          "budget_passed": true,
+          "missing_profiles": []
+        }
+      }
+    }
+  ],
+  "next_id": "N23",
+  "N24_started": false
+}

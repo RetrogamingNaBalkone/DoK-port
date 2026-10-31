@@ -14,7 +14,7 @@ EVIDENCE_SUFFIXES=COMPILED_SUFFIXES|{'.json','.jsonl','.png','.wav','.py','.md',
 
 
 def evidence_file(path):
-    return path.suffix in EVIDENCE_SUFFIXES or path.name.startswith('Makefile')
+    return path.suffix in EVIDENCE_SUFFIXES or path.name.endswith('.log.gz') or path.name.startswith('Makefile')
 
 def pin(path):
     data=path.read_bytes()

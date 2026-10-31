@@ -1,0 +1,149 @@
+{
+  "passed": true,
+  "task": "N23 partial playtest fixes",
+  "label": "playtest07-ru",
+  "published": {
+    "path": "artifacts/nds/dok.nds",
+    "bytes": 10156544,
+    "sha256": "edaa50be0014aa54446aa432bb2a5b050d59a77d1d3d1be1934f74c305ff4ef0"
+  },
+  "before": {
+    "boot_ms": 7488.370674663488,
+    "levels": [
+      {
+        "category": "level_loading",
+        "latency_upper_vblanks": 513,
+        "latency_upper_ms": 8574.853027014218,
+        "map_key": [
+          1,
+          1,
+          1,
+          1,
+          1
+        ]
+      },
+      {
+        "category": "level_loading",
+        "latency_upper_vblanks": 561,
+        "latency_upper_ms": 9377.178456442449,
+        "map_key": [
+          2,
+          2,
+          2,
+          1,
+          2
+        ]
+      },
+      {
+        "category": "level_loading",
+        "latency_upper_vblanks": 538,
+        "latency_upper_ms": 8992.730854841422,
+        "map_key": [
+          3,
+          3,
+          3,
+          1,
+          1
+        ]
+      }
+    ]
+  },
+  "after": {
+    "boot_ms": 2239.8251571538112,
+    "levels": [
+      {
+        "level": 1,
+        "milliseconds": 4396.074748742182
+      },
+      {
+        "level": 2,
+        "milliseconds": 4997.818820813355
+      },
+      {
+        "level": 3,
+        "milliseconds": 4847.3828027955615
+      }
+    ]
+  },
+  "font": "Original FONT8 8x8, no scaling; messages 30 columns x2 rows; story 30 columns x9 rows",
+  "route": {
+    "cells": 220,
+    "video_frames": 5545,
+    "maximum_natural_ai": 16,
+    "loading_records_excluded_from_steady_fps": 103
+  },
+  "packed": {
+    "passed": true,
+    "frames": 169,
+    "decoded_bytes": 1282496,
+    "sound_clips": 22,
+    "sound_packed_bytes": 314352,
+    "catalog": {
+      "passed": true,
+      "logical_calls": 4400,
+      "storage_reads": 1367,
+      "cache_hits": 3031
+    },
+    "frames_sha256": "a9961d28cfa417961d9a4d2906144bc3e147bf1e9aed15b0ace7189949bc8a6b",
+    "sounds_sha256": "336b66511eee2d99f036b828d921e042a54d20ae2ec952ec193af99c502eb84d"
+  },
+  "checks": {
+    "live": {
+      "path": "research/evidence/nds/n23/playtest07/live.json",
+      "bytes": 4164435,
+      "sha256": "60e3dc2b794c29b9378951984468fdbe1d3fbb70dd2fed850f4ea3d9db9c2e4f"
+    },
+    "route_level1": {
+      "path": "research/evidence/nds/n23/playtest07/route_level1.json",
+      "bytes": 2587879,
+      "sha256": "da15b4a1b7ce422688b89ada6cbcde3224d9225b7130ca450f85e56a55043b94"
+    },
+    "packed": {
+      "path": "research/evidence/nds/n23/playtest07/packed.json",
+      "bytes": 425,
+      "sha256": "0ae03a4b17e74cb3fc1a21de7f55d2202863829a2b8f676757edbeaa6c7544cf"
+    },
+    "controls": {
+      "path": "research/evidence/nds/n23/playtest07/controls.json",
+      "bytes": 1924,
+      "sha256": "5325cc884f9f9d0db63d9f7f35acae90dd51f7493aa9c72c2fc925880bafd4dc"
+    },
+    "no_storage": {
+      "path": "research/evidence/nds/n23/playtest07/no_storage.json",
+      "bytes": 19437,
+      "sha256": "545e21bab572e65b409ff8936cc241b1f7bf7c527d17f9f6225f0104e230e5b5"
+    },
+    "hud": {
+      "path": "research/evidence/nds/n23/playtest07/hud.json",
+      "bytes": 7296,
+      "sha256": "2184655b1fad218cf5eb2a248f6e1e1bb9906bf86d859b50caa2eba9ffd49589"
+    },
+    "ui": {
+      "path": "research/evidence/nds/n23/playtest07/ui.json",
+      "bytes": 157,
+      "sha256": "ef996e32658863ecbf9a3742e1b3b63b8425f3b716477d91963c646aa2112616"
+    },
+    "baseline-freeze": {
+      "path": "research/evidence/nds/n23/playtest07/baseline-freeze.json",
+      "bytes": 291914,
+      "sha256": "3f909d1ebcb659b5d1c558af2df673293bad1bc9d8c1d99bdc78aae9c657ce74"
+    },
+    "rejected-64k": {
+      "path": "research/evidence/nds/n23/playtest07/rejected-64k.json",
+      "bytes": 1586461,
+      "sha256": "17f728c3a41de5423f81a0d74484cdd0507095996f4bb0d4b44f0bff1807e65b"
+    }
+  },
+  "ram": {
+    "static_startup_bytes": 507904,
+    "managed_bytes": 2293760,
+    "sdk_heap_available": 212992,
+    "reserve_bytes": 655360
+  },
+  "limitations": [
+    "Emulator only; no physical DS test",
+    "Bounded route, not a complete playthrough",
+    "Large texture replacements temporarily hide the 3D layer and are tagged LOADING; steady FPS excludes them",
+    "N23 remains open; N24 not started"
+  ]
+}

@@ -185,9 +185,19 @@ def render_frontend(art, labels, controls, state, language, selection, level, pa
         label("/", 224, 8)
         label(str(len(pages)), 232, 8)
         for row, line in enumerate(pages[page]):
-            label(line, 8, 24 + 16 * row, 2, 16)
+            label(line, 8, 28 + 16 * row, 2, 8)
     if state not in (1, 12):
         label(copy[15 if text_index is not None else 14], 8, 176, 2)
-    return dict(top=top, bottom=bytes(bottom), top_palette=top_palette,
+    if text_index is None and state != 1:
+        top = bytearray(top)
+        for y in range(192):
+            for x in range(256):
+                at = y*256+x
+                selected = state in (2,3,4,9) and 8 <= x < 248 and 28+24*selection <= y < 48+24*selection
+                if bottom[at] or selected:
+                    top[at] = bottom[at]
+        bottom = bytearray(49152)
+        top_palette = art.palette(language, "МЕНЮ_ПАЛ")
+    return dict(top=bytes(top), bottom=bytes(bottom), top_palette=top_palette,
                 bottom_palette=art.palette(language, "МЕНЮ_ПАЛ"), background=background,
                 text_index=text_index, message=message, pages=len(pages) if pages else 1)

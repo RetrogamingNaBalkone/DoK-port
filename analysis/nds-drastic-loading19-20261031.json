@@ -1,0 +1,102 @@
+{
+  "task": "N23",
+  "scope": "Loading analysis only; no level tests",
+  "user_constraint": "Stop repeated level regression until this boot failure is localized",
+  "previous_photo": {
+    "candidate": "playtest18b-ru",
+    "stage": 58,
+    "error": "00004000",
+    "loop": 68,
+    "rx": 0,
+    "at": 4,
+    "vblank": 167,
+    "handler": 2
+  },
+  "corrected_findings": [
+    "At4 in playtest18b is a finite decrement loop, not BIOS Halt",
+    "At1 alone did not establish a FIFO root cause",
+    "ARM9 actual machine code publishes address/magic then serial with intervening flushes"
+  ],
+  "unresolved": "Actual ARM7 interrupted context on DraStic; no confirmed root cause",
+  "diagnostic_rom": {
+    "path": "artifacts/nds/dok-bootdiag19.nds",
+    "bytes": 10165760,
+    "sha256": "ba8e7d7e6c2a3b291799a1b899104776f437a5c19198e85c1bc331bf0e1cf338"
+  },
+  "normal_rom_unchanged": {
+    "path": "artifacts/nds/dok.nds",
+    "bytes": 10165760,
+    "sha256": "dc2aa5c242e2a0d6c54e0016b66a8c6f47cd0250f07d832917ee0e5e7608b087"
+  },
+  "boot_check": {
+    "passed": true,
+    "core_sha256": "c7e6b58c667075a2a9868f2c3ba7a98e24200410a6da3051a7c555f1f0eef8ef",
+    "irq_context": {
+      "saved_lr": "0x38004a6",
+      "interrupted_pc": "0x38004a2",
+      "r3": "0x59",
+      "psr": "0x2000003f"
+    },
+    "control": [
+      1128418625,
+      33891392,
+      2,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "report": {
+      "path": "research/evidence/nds/n23/drastic-loading19/boot-result.json",
+      "bytes": 1635,
+      "sha256": "17e581ec3dbf0de32472b9f47995503900d0dc922bcff6731d96b5969f22334c"
+    }
+  },
+  "analysis": [
+    {
+      "path": "research/evidence/nds/n23/drastic-loading19/playtest18b-ru/boot-code/arm7.txt",
+      "bytes": 33877,
+      "sha256": "45beacea0989b8e058981547e1520b2b3c25d0d20c094ce0374589bb436f4023"
+    },
+    {
+      "path": "research/evidence/nds/n23/drastic-loading19/playtest18b-ru/boot-code/arm9.txt",
+      "bytes": 8526,
+      "sha256": "075da2b08d06745f8e4b857a694f7d1009959682729a13f6a7af02de9d50ec7a"
+    },
+    {
+      "path": "research/evidence/nds/n23/drastic-loading19/playtest18b-ru/boot-code/result.json",
+      "bytes": 889,
+      "sha256": "1381676b87957e94b4928d3b68c3c7425c701cebf74e791668130e6fc1ef732f"
+    },
+    {
+      "path": "research/evidence/nds/n23/drastic-loading19/bootdiag19-ru/boot-code/arm7.txt",
+      "bytes": 34393,
+      "sha256": "f4528b78f22ec0550610555def3c3bad25a3a92f6ffdb0905bdcc5b17fe1e527"
+    },
+    {
+      "path": "research/evidence/nds/n23/drastic-loading19/bootdiag19-ru/boot-code/arm9.txt",
+      "bytes": 8526,
+      "sha256": "62e71cc3a373f7d927964d92a5da8e59495ccc8bf9f96e39f8e203fe011b9626"
+    },
+    {
+      "path": "research/evidence/nds/n23/drastic-loading19/bootdiag19-ru/boot-code/result.json",
+      "bytes": 976,
+      "sha256": "62f33ee3806814b8144debaece382018354da1210950ed5e8b987551193d6564"
+    },
+    {
+      "path": "research/evidence/nds/n23/drastic-loading19/inspect_boot_elf.py",
+      "bytes": 3305,
+      "sha256": "be1dbbed8f9dd08d83deaa6dbfae4432184c694150bc19fe4a6eb2488cc3c882"
+    },
+    {
+      "path": "research/evidence/nds/n23/drastic-loading19/check_audio_boot_steps.py",
+      "bytes": 3132,
+      "sha256": "445f4f3e0496a03906adcb3fa5c34cd4fdb3010121a482d940eaea5d40aa919d"
+    }
+  ],
+  "level_tests_run": false,
+  "drastic_verified": false,
+  "next_id": "N23",
+  "N24_started": false
+}

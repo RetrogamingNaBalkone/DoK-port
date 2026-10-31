@@ -73,5 +73,9 @@ dok_status dok_motion_update(dok_motion_state *state, uint32_t elapsed,
 /* Explicit free-flight DIAGNOSTIC ONLY until N10 collision integration. */
 void dok_motion_free_flight(void *context, const dok_motion_substep *request,
                             int32_t *accepted_x, int32_t *accepted_z);
+/* NDS playtest control adaptation: immediate full response and no coasting.
+ * The source-equivalent calculator remains available for original oracles. */
+dok_status dok_motion_update_direct(dok_motion_state *,uint32_t elapsed,
+    const dok_motion_services *,dok_motion_report *);
 
 #endif

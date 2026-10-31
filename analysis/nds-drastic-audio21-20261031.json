@@ -1,0 +1,957 @@
+{
+  "task": "N23",
+  "candidate": "audio21b-ru",
+  "rom": {
+    "path": "artifacts/nds/dok-audio21.nds",
+    "bytes": 10166784,
+    "sha256": "7df6f228302c80b4dacfeb7a3011b34b4e4d08896eb63b7e5cd87a5ee60e9c18"
+  },
+  "device_report": {
+    "loading20_boot": "User confirmed game starts in DraStic RG DS ROCKNIX ES-DE",
+    "audio": "Fragments of title PCM in levels; cease during door/gun sounds; many gun sounds missing"
+  },
+  "cause_status": "DraStic root cause not established; local melonDS does not reproduce title fragments. Candidate bounds one-shot playback and retires title PCM.",
+  "changes": [
+    "Clear streamed PCM on stop",
+    "Fully predecode resident one-shot before channel enable",
+    "SOUND_ONE_SHOT and word-rounded source length",
+    "Retire logical voice when hardware one-shot stops, independently of delayed timer IRQ"
+  ],
+  "checks": {
+    "audio-transition": {
+      "passed": true,
+      "scope": "Title stop and stationary LEVEL1 audio only; no routes",
+      "title_retired_zero_bytes": 65536,
+      "firing": {
+        "requests": 0,
+        "starts": 0,
+        "busy_rejects": 0,
+        "underruns": 0,
+        "stale": 0,
+        "weapon_present": false
+      },
+      "effects": [
+        {
+          "start_sample": 330970,
+          "index": 89,
+          "identity": 327666,
+          "samples": 18075,
+          "period": 760,
+          "rate": 22050,
+          "coefficient": 0.9995627733767581
+        }
+      ],
+      "source_sha256": "d5e96cf5cf1cbb8b557316db3b5b9314cd04303b2ddb17e6fcbb54a001e65432",
+      "rom_sha256": "7df6f228302c80b4dacfeb7a3011b34b4e4d08896eb63b7e5cd87a5ee60e9c18"
+    },
+    "boot-input": {
+      "passed": true,
+      "scope": "Boot/title only; no level selected",
+      "title_soak_frames": 240,
+      "input_messages": 240,
+      "keys": "0x1c00",
+      "touch": [
+        1920,
+        1280,
+        120,
+        80,
+        4095,
+        4095
+      ],
+      "released": "0x0",
+      "source_sha256": "302c33691bebeaafbabc1687668d965f850462750567f554802fe8a5c369b06b"
+    },
+    "title-audio": {
+      "task": "N21",
+      "passed": true,
+      "rows": [
+        {
+          "state": 1,
+          "language": 1,
+          "selection": 0,
+          "level": 1,
+          "page": 0,
+          "pages": 1,
+          "revision": 1,
+          "draws": 1,
+          "frontend_frame": 151,
+          "image_key": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "images": [
+            {
+              "path": "C:\\Source\\DoK-port\\build\\nds\\n23\\audio21b-ru\\title-audio\\frontend-1-1-1-0.png",
+              "sha256": "612ee39b8c442c737d5996caf0a21d7203a466cb732ad3d5dc757e808a952ee9"
+            },
+            {
+              "path": "C:\\Source\\DoK-port\\build\\nds\\n23\\audio21b-ru\\title-audio\\frontend-1-1-1-0-top.png",
+              "sha256": "9214eaa107c5a9faed70c3e8c4d2bd0c222d503471e8b2641d9d38049cc4653f"
+            },
+            {
+              "path": "C:\\Source\\DoK-port\\build\\nds\\n23\\audio21b-ru\\title-audio\\frontend-1-1-1-0-bottom.png",
+              "sha256": "2465c35647a1d22634b97bed4245662977e92e3a050529efbebfb4375187184a"
+            }
+          ]
+        }
+      ],
+      "input_steps": [],
+      "index8_checks": 98304,
+      "rgb_checks": 98304,
+      "source_text_checks": 0,
+      "observer_sha256": "c00e68f7cbae338d7b521f075032fb59db5f3fab6e9088093dbf0b7b608b09c6",
+      "pixel_oracle_sha256": "8a6779e495212fb847c90fd955c0fcf39917699266c62cdc5ff1d4288c4d1d29",
+      "fat_oracle_sha256": "81298c73e48778d4eb54985d6c596b39ad3c078c9c59c455e8b094bba85f891c",
+      "rom_sha256": "7df6f228302c80b4dacfeb7a3011b34b4e4d08896eb63b7e5cd87a5ee60e9c18",
+      "elf_sha256": "f058e49785d9fe57a714c706bfef123c9160641637e5928c0175a8f9db473ae1",
+      "audio": [
+        {
+          "start_probe": [
+            407915332,
+            1,
+            1,
+            0,
+            1,
+            2147483758,
+            0,
+            0,
+            0,
+            0,
+            2,
+            0,
+            1520,
+            0,
+            1,
+            0,
+            0,
+            0,
+            1,
+            65536,
+            2,
+            696,
+            0,
+            11025,
+            474361,
+            65536,
+            0,
+            0,
+            35800384,
+            35865920,
+            425984,
+            86,
+            482060,
+            314352,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            8
+          ],
+          "start_frame": 149,
+          "state": 1,
+          "language": 1,
+          "end_probe": [
+            407915332,
+            1,
+            1,
+            0,
+            0,
+            2147483758,
+            15,
+            474361,
+            0,
+            0,
+            2,
+            15,
+            1520,
+            0,
+            1,
+            0,
+            0,
+            1,
+            1,
+            474361,
+            801,
+            21542,
+            0,
+            11025,
+            474361,
+            474361,
+            0,
+            0,
+            35800384,
+            35865920,
+            425984,
+            86,
+            482060,
+            314352,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            5158
+          ],
+          "complete": true,
+          "wav": "build/nds/n23/audio21b-ru/title-audio/title-0.wav",
+          "waveform": {
+            "resource_index": 110,
+            "name": "ЗАСТАВКА_ЗВУК",
+            "language": 1,
+            "nominal_rate": 11025,
+            "effective_rate": 11024.336184210526,
+            "source_samples": 474361,
+            "repeats": 1,
+            "original_res_sha256": "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816",
+            "original_pcm_sha256": "7cc8afbcc69e978b2514c2df2fe56762a9338219eb06e9a8691d47aa6940ca8b",
+            "capture_sha256": "c6f3c153ac29d7853915c4b7acc0f7e45171a09546c46446da7cec6ef95acb5b",
+            "output_rate": 32728.498046875,
+            "wav_header_rate": 32728,
+            "output_frames": 1410316,
+            "peak": 20568,
+            "rms": 8373.837123024185,
+            "initial_coefficient": 0.9928085593176748,
+            "whole_coefficient": 0.9924338014084911,
+            "compared_positions": 24967,
+            "expected_positions": 24967,
+            "delay_frames": 1443.0,
+            "delay_seconds": 0.044090015922309676,
+            "expected_duration_seconds": 43.02853179308863,
+            "complete_source_covered": true,
+            "channel_correlation": 1.0,
+            "windows": [
+              {
+                "source_start": 0,
+                "source_end": 5512,
+                "coefficient": 0.9959340885619634
+              },
+              {
+                "source_start": 5512,
+                "source_end": 11024,
+                "coefficient": 0.9985562151366587
+              },
+              {
+                "source_start": 11024,
+                "source_end": 16536,
+                "coefficient": 0.9987633130827208
+              },
+              {
+                "source_start": 16536,
+                "source_end": 22048,
+                "coefficient": 0.9950128560800049
+              },
+              {
+                "source_start": 22048,
+                "source_end": 27560,
+                "coefficient": 0.9884380989642535
+              },
+              {
+                "source_start": 27560,
+                "source_end": 33072,
+                "coefficient": 0.9882439685114841
+              },
+              {
+                "source_start": 33072,
+                "source_end": 38584,
+                "coefficient": 0.9875227520512535
+              },
+              {
+                "source_start": 38584,
+                "source_end": 44096,
+                "coefficient": 0.9898544768678837
+              },
+              {
+                "source_start": 44096,
+                "source_end": 49608,
+                "coefficient": 0.9894368939943688
+              },
+              {
+                "source_start": 49608,
+                "source_end": 55120,
+                "coefficient": 0.9915371622296926
+              },
+              {
+                "source_start": 55120,
+                "source_end": 60632,
+                "coefficient": 0.9955586595201464
+              },
+              {
+                "source_start": 60632,
+                "source_end": 66144,
+                "coefficient": 0.9940165644715028
+              },
+              {
+                "source_start": 66144,
+                "source_end": 71656,
+                "coefficient": 0.9944678892932786
+              },
+              {
+                "source_start": 71656,
+                "source_end": 77168,
+                "coefficient": 0.9935550848783403
+              },
+              {
+                "source_start": 77168,
+                "source_end": 82680,
+                "coefficient": 0.9938918667760765
+              },
+              {
+                "source_start": 82680,
+                "source_end": 88192,
+                "coefficient": 0.9948320511819403
+              },
+              {
+                "source_start": 88192,
+                "source_end": 93704,
+                "coefficient": 0.9903263228830591
+              },
+              {
+                "source_start": 93704,
+                "source_end": 99216,
+                "coefficient": 0.9919700072391656
+              },
+              {
+                "source_start": 99216,
+                "source_end": 104728,
+                "coefficient": 0.9899802084952279
+              },
+              {
+                "source_start": 104728,
+                "source_end": 110240,
+                "coefficient": 0.9949964068717679
+              },
+              {
+                "source_start": 110240,
+                "source_end": 115752,
+                "coefficient": 0.995910721274651
+              },
+              {
+                "source_start": 115752,
+                "source_end": 121264,
+                "coefficient": 0.9941354249210631
+              },
+              {
+                "source_start": 121264,
+                "source_end": 126776,
+                "coefficient": 0.9966931130486417
+              },
+              {
+                "source_start": 126776,
+                "source_end": 132288,
+                "coefficient": 0.9969050844305986
+              },
+              {
+                "source_start": 132288,
+                "source_end": 137800,
+                "coefficient": 0.9927497410599053
+              },
+              {
+                "source_start": 137800,
+                "source_end": 143312,
+                "coefficient": 0.9948649261568501
+              },
+              {
+                "source_start": 143312,
+                "source_end": 148824,
+                "coefficient": 0.996214177133322
+              },
+              {
+                "source_start": 148824,
+                "source_end": 154336,
+                "coefficient": 0.9923005336174818
+              },
+              {
+                "source_start": 154336,
+                "source_end": 159848,
+                "coefficient": 0.9933686099193432
+              },
+              {
+                "source_start": 159848,
+                "source_end": 165360,
+                "coefficient": 0.9907659822957556
+              },
+              {
+                "source_start": 165360,
+                "source_end": 170872,
+                "coefficient": 0.996234105037495
+              },
+              {
+                "source_start": 170872,
+                "source_end": 176384,
+                "coefficient": 0.9963949189482025
+              },
+              {
+                "source_start": 176384,
+                "source_end": 181896,
+                "coefficient": 0.9957232443905323
+              },
+              {
+                "source_start": 181896,
+                "source_end": 187408,
+                "coefficient": 0.9946318035794569
+              },
+              {
+                "source_start": 187408,
+                "source_end": 192920,
+                "coefficient": 0.9959320226765673
+              },
+              {
+                "source_start": 192920,
+                "source_end": 198432,
+                "coefficient": 0.9927284772417522
+              },
+              {
+                "source_start": 198432,
+                "source_end": 203944,
+                "coefficient": 0.9917805667326399
+              },
+              {
+                "source_start": 203944,
+                "source_end": 209456,
+                "coefficient": 0.9946093569394696
+              },
+              {
+                "source_start": 209456,
+                "source_end": 214968,
+                "coefficient": 0.9915249028629662
+              },
+              {
+                "source_start": 214968,
+                "source_end": 220480,
+                "coefficient": 0.9919430428711843
+              },
+              {
+                "source_start": 220480,
+                "source_end": 225992,
+                "coefficient": 0.994599611317868
+              },
+              {
+                "source_start": 225992,
+                "source_end": 231504,
+                "coefficient": 0.9944159841561172
+              },
+              {
+                "source_start": 231504,
+                "source_end": 237016,
+                "coefficient": 0.9954237845238504
+              },
+              {
+                "source_start": 237016,
+                "source_end": 242528,
+                "coefficient": 0.9884654337317665
+              },
+              {
+                "source_start": 242528,
+                "source_end": 248040,
+                "coefficient": 0.9889150015034833
+              },
+              {
+                "source_start": 248040,
+                "source_end": 253552,
+                "coefficient": 0.9884396635436383
+              },
+              {
+                "source_start": 253552,
+                "source_end": 259064,
+                "coefficient": 0.9931999619133902
+              },
+              {
+                "source_start": 259064,
+                "source_end": 264576,
+                "coefficient": 0.9899955514775916
+              },
+              {
+                "source_start": 264576,
+                "source_end": 270088,
+                "coefficient": 0.9912735516437724
+              },
+              {
+                "source_start": 270088,
+                "source_end": 275600,
+                "coefficient": 0.9913515086237048
+              },
+              {
+                "source_start": 275600,
+                "source_end": 281112,
+                "coefficient": 0.9939208719051285
+              },
+              {
+                "source_start": 281112,
+                "source_end": 286624,
+                "coefficient": 0.9882274105147099
+              },
+              {
+                "source_start": 286624,
+                "source_end": 292136,
+                "coefficient": 0.9913832930861706
+              },
+              {
+                "source_start": 292136,
+                "source_end": 297648,
+                "coefficient": 0.993907154988997
+              },
+              {
+                "source_start": 297648,
+                "source_end": 303160,
+                "coefficient": 0.9907473147019608
+              },
+              {
+                "source_start": 303160,
+                "source_end": 308672,
+                "coefficient": 0.9936852315551116
+              },
+              {
+                "source_start": 308672,
+                "source_end": 314184,
+                "coefficient": 0.9938720059817029
+              },
+              {
+                "source_start": 314184,
+                "source_end": 319696,
+                "coefficient": 0.9954983953699204
+              },
+              {
+                "source_start": 319696,
+                "source_end": 325208,
+                "coefficient": 0.9947449464824542
+              },
+              {
+                "source_start": 325208,
+                "source_end": 330720,
+                "coefficient": 0.9893458426688364
+              },
+              {
+                "source_start": 330720,
+                "source_end": 336232,
+                "coefficient": 0.989456374647212
+              },
+              {
+                "source_start": 336232,
+                "source_end": 341744,
+                "coefficient": 0.988907448779919
+              },
+              {
+                "source_start": 341744,
+                "source_end": 347256,
+                "coefficient": 0.992108500118589
+              },
+              {
+                "source_start": 347256,
+                "source_end": 352768,
+                "coefficient": 0.990557803016451
+              },
+              {
+                "source_start": 352768,
+                "source_end": 358280,
+                "coefficient": 0.9917746103338799
+              },
+              {
+                "source_start": 358280,
+                "source_end": 363792,
+                "coefficient": 0.9920076834035295
+              },
+              {
+                "source_start": 363792,
+                "source_end": 369304,
+                "coefficient": 0.9952977837561389
+              },
+              {
+                "source_start": 369304,
+                "source_end": 374816,
+                "coefficient": 0.9881904959603336
+              },
+              {
+                "source_start": 374816,
+                "source_end": 380328,
+                "coefficient": 0.9899729894923165
+              },
+              {
+                "source_start": 380328,
+                "source_end": 385840,
+                "coefficient": 0.9903671725329833
+              },
+              {
+                "source_start": 385840,
+                "source_end": 391352,
+                "coefficient": 0.9947755923486872
+              },
+              {
+                "source_start": 391352,
+                "source_end": 396864,
+                "coefficient": 0.9920798848057757
+              },
+              {
+                "source_start": 396864,
+                "source_end": 402376,
+                "coefficient": 0.9888782020448877
+              },
+              {
+                "source_start": 402376,
+                "source_end": 407888,
+                "coefficient": 0.9886288092227609
+              },
+              {
+                "source_start": 407888,
+                "source_end": 413400,
+                "coefficient": 0.9908134653417833
+              },
+              {
+                "source_start": 413400,
+                "source_end": 418912,
+                "coefficient": 0.9953611150645909
+              },
+              {
+                "source_start": 418912,
+                "source_end": 424424,
+                "coefficient": 0.9981824890062828
+              },
+              {
+                "source_start": 424424,
+                "source_end": 429936,
+                "coefficient": 0.9988722633729251
+              },
+              {
+                "source_start": 429936,
+                "source_end": 435448,
+                "coefficient": 0.9984065022887609
+              },
+              {
+                "source_start": 435448,
+                "source_end": 440960,
+                "coefficient": 0.9811746802189077
+              },
+              {
+                "source_start": 440960,
+                "source_end": 446472,
+                "coefficient": 0.9879699861741756
+              },
+              {
+                "source_start": 446472,
+                "source_end": 451984,
+                "coefficient": 0.9879965390522741
+              },
+              {
+                "source_start": 451984,
+                "source_end": 457496,
+                "coefficient": 0.9938241447438194
+              },
+              {
+                "source_start": 457496,
+                "source_end": 463008,
+                "coefficient": 0.9938643195064716
+              },
+              {
+                "source_start": 463008,
+                "source_end": 468520,
+                "coefficient": 0.996278801347723
+              },
+              {
+                "source_start": 468520,
+                "source_end": 474032,
+                "coefficient": 0.9962749975476373
+              },
+              {
+                "source_start": 474032,
+                "source_end": 474361,
+                "coefficient": 0.9852873231039654
+              }
+            ],
+            "scope": "Actual emulated DS mixer/core-resampled waveform; not byte equality, listening, Sound Blaster equivalence or physical DS capture"
+          }
+        }
+      ],
+      "visual_alias": [],
+      "waiting": {
+        "state": 1,
+        "selection": null,
+        "language": null,
+        "page": null
+      },
+      "last_audio_probe": [
+        407915332,
+        1,
+        1,
+        0,
+        0,
+        2147483758,
+        15,
+        474361,
+        0,
+        0,
+        2,
+        15,
+        1520,
+        0,
+        1,
+        0,
+        0,
+        1,
+        1,
+        474361,
+        801,
+        21542,
+        0,
+        11025,
+        474361,
+        474361,
+        0,
+        0,
+        35800384,
+        35865920,
+        425984,
+        86,
+        482060,
+        314352,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        5158
+      ],
+      "last_renderer": {
+        "magic": 928140100,
+        "abi_version": 1,
+        "size_bytes": 360,
+        "sequence": 5152,
+        "status": 1,
+        "error_bits": 0,
+        "is_dsi": 0,
+        "case_count": 0,
+        "case_id": 0,
+        "level": 0,
+        "frame_id": 0,
+        "submitted_frame_id": 0,
+        "presented_frame_id": 0,
+        "vblank_count": 2723,
+        "flags": 0,
+        "camera_x": 0,
+        "camera_y": 0,
+        "camera_z": 0,
+        "sin_q15": 0,
+        "cos_q15": 0,
+        "history_address": 33865248,
+        "history_capacity": 128,
+        "history_record_bytes": 136,
+        "history_total": 0,
+        "position_address": 33858976,
+        "position_count": 24,
+        "position_record_bytes": 196,
+        "projection_address": 33781720,
+        "projection_words": 16,
+        "timer_hz": 33513982,
+        "timer_divider": 1,
+        "vblank_ticks": 560190,
+        "total_frames": 0,
+        "max_vblank_delta": 0,
+        "max_frame_ticks": 0,
+        "disp3d_sticky": 0,
+        "gxstat_sticky": 0,
+        "rdlines_min": 4294967295,
+        "rdlines_max": 0,
+        "rdlines_samples": 0,
+        "texture_capacity_bytes": 393216,
+        "palette_capacity_bytes": 16384,
+        "texture_bytes": 0,
+        "palette_bytes": 0,
+        "texture_count": 0,
+        "uploads_total": 0,
+        "upload_bytes_total": 0,
+        "cache_misses": 0,
+        "cache_evictions": 0,
+        "vram_a": 131,
+        "vram_b": 139,
+        "vram_c": 128,
+        "vram_d": 155,
+        "vram_e": 129,
+        "vram_f": 131,
+        "vram_g": 128,
+        "vram_h": 129,
+        "vram_i": 129,
+        "region_base": 33554432,
+        "region_limit": 37224448,
+        "static_end": 33899812,
+        "heap_start": 33899812,
+        "heap_end": 0,
+        "heap_limit_before": 37699584,
+        "heap_limit_policy": 37224448,
+        "heap_limit_final": 0,
+        "reserve_bytes": 655360,
+        "managed_base": 33899840,
+        "managed_bytes": 2293760,
+        "malloc_request_bytes": 2293791,
+        "static_startup_bytes": 0,
+        "sdk_heap_available": 0,
+        "sdk_heap_min": 196608,
+        "world_used": 383960,
+        "world_high_water": 383960,
+        "scratch_used": 105052,
+        "scratch_high_water": 105052,
+        "scene_used": 238168,
+        "scene_high_water": 238168,
+        "assets_used": 0,
+        "assets_high_water": 0,
+        "source_packet_address": 0,
+        "source_packet_bytes": 0,
+        "render_frame_address": 0,
+        "render_frame_bytes": 0,
+        "cell_record_bytes": 0,
+        "quad_record_bytes": 0,
+        "render_generation": 0,
+        "flat_diagnostic": 0,
+        "negative_pass_mask": 0
+      },
+      "last_probe": [
+        558910276,
+        1,
+        5152,
+        1,
+        1,
+        0,
+        1,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        1,
+        0,
+        0,
+        4294967295,
+        0,
+        34428224,
+        0,
+        34329920,
+        34379072,
+        36124876,
+        36125388,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        2576,
+        36126004,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "check_source_sha256": "2a6f53e5741e85c7357f9c963403ab8fa73f49798655f3b83aa0974e220f8a0e"
+    }
+  },
+  "limitations": [
+    "No RG DS audio21 confirmation",
+    "Shots not verified: initial LEVEL1 has no weapon, actual firing request count was zero",
+    "Single-voice original admission unchanged",
+    "No routes or level suite",
+    "No injected delayed-IRQ test"
+  ],
+  "next_id": "N23",
+  "N18_elf_unchanged": true
+}

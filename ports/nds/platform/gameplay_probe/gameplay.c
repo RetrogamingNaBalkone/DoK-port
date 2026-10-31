@@ -148,7 +148,8 @@ static dok_status hero_service(NdsGameplay *g,NdsEffectsRuntime *r)
     dok_nds_render_camera camera={g->hero.x,g->hero.y,g->hero.z,0,0};
     DO(r->scheduler._config.read_ticks(r->scheduler._config.clock_context,&now));
     uint32_t elapsed=g->started?now-g->last_hero:0;
-    DO(dok_interactions_cadence(g->c2,elapsed?elapsed:416u,&g->c2));
+    /* C2 belongs to the main scene loop (PKR1008:0FD1), not this416-tick
+     * hero service. The presentation shell updates it once per scene. */
     if(!trig(g,(uint16_t)g->hero.heading,&camera.sin_q15,&camera.cos_q15))return DOK_STATUS_INVALID_STATE;
     DO(dok_ai_consider_camera(&g->ai,&camera,(uint16_t)g->hero.heading));
     if(r->simulation_list){
@@ -177,7 +178,7 @@ static dok_status hero_service(NdsGameplay *g,NdsEffectsRuntime *r)
     if(g->items.inventory.health>0){
         DO(dok_collision_begin(&g->collision,g->items.world->hero,&g->hero,elapsed,&context));
         dok_motion_services services={g,trig,&context,dok_collision_move};
-        s=dok_motion_update(&g->hero,elapsed,&services,&mr);end=dok_collision_end(&context,&cr);
+        s=dok_motion_update_direct(&g->hero,elapsed,&services,&mr);end=dok_collision_end(&context,&cr);
         if(s!=DOK_STATUS_OK)return s;
         if(end!=DOK_STATUS_OK)return end;
         publish_hero(g);

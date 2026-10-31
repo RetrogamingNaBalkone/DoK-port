@@ -6,6 +6,11 @@ from pathlib import Path
 import subprocess
 from audit_pipeline import ROOT,pin
 
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]/'map'))
+from compiler_cache import compiler_environment
+
+
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--label',required=True)
@@ -13,7 +18,7 @@ def main():
     out=ROOT/'build/nds/n23'/args.label;out.mkdir(exist_ok=True)
     report_path=ROOT/'research/evidence/nds/n23'/(args.label+'-host.json');assert not report_path.exists()
     zig=Path.home()/'AppData/Local/Programs/Zig/0.13.0/zig.exe'
-    env=dict(os.environ,ZIG_GLOBAL_CACHE_DIR=str(ROOT/'build/zig-global-cache'),ZIG_LOCAL_CACHE_DIR=str(out/'zig-cache'))
+    env=compiler_environment(ROOT)
     common=['ports/nds/render/sprites.c','ports/nds/render/scene.c','ports/nds/render/geometry.c',
         'ports/nds/render/static_geometry.c','ports/nds/core/world.c','ports/nds/core/sha256.c']
     sources=common+['ports/nds/render/static_geometry.h','ports/nds/ui/map_discovery.c',

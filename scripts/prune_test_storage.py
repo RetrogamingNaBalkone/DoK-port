@@ -48,18 +48,28 @@ def local(path):
     return path
 
 
-def plan(destination):
+def plan(destination, exclude=()):
     if destination.exists():
         raise ValueError('Use a new manifest path; never overwrite an applied plan')
     sys.path.insert(0, str(ROOT / 'ports/nds/tools'))
     from frontend_fat_oracle import volume_files
     tracked = set(subprocess.check_output(['git', 'ls-files', '-z'], cwd=ROOT).decode('utf-8').split('\0'))
     candidates, disks, skipped, indices = [], [], [], []
+    excluded = {local(ROOT/p) for p in exclude}
+    if any(not p.is_relative_to(ROOT/'build') for p in excluded):
+        raise ValueError('Exclusions must be inside build')
+    skipped.extend(dict(path=relative(p), reason='Explicit active-run exclusion') for p in sorted(excluded))
     def fail(error):
-        raise error
+        if not isinstance(error, PermissionError):
+            raise error
+        skipped.append(dict(path=relative(Path(error.filename)),
+                            reason=f'Inaccessible directory: {error}'))
     for area in ('build', 'ports', 'scripts', 'tools'):
         for base, dirs, names in os.walk(ROOT / area, followlinks=False, onerror=fail):
             parent = Path(base)
+            if parent in excluded:
+                dirs[:] = []
+                continue
             for directory in dirs:
                 child = parent / directory
                 if child.is_symlink() or child.is_junction() or getattr(child.lstat(), 'st_file_attributes', 0) & getattr(stat, 'FILE_ATTRIBUTE_REPARSE_POINT', 0):
@@ -116,6 +126,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('action', choices=('plan', 'verify'))
     parser.add_argument('--manifest', type=Path, required=True)
+    parser.add_argument('--exclude', action='append', default=[], help='Active build directory to leave untouched (repeatable)')
     args = parser.parse_args()
     target = local(args.manifest)
-    raise SystemExit(plan(target) if args.action == 'plan' else verify(target))
+    raise SystemExit(plan(target, args.exclude) if args.action == 'plan' else verify(target))

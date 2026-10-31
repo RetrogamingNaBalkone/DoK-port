@@ -1,0 +1,66 @@
+{
+  "task": "N23 playtest corrections",
+  "passed": true,
+  "rom_sha256": "01c0a23f7b6a74be5f0d609ca331d269e24cbe3384b536706aba58bfd5fe5855",
+  "host_hud_rasters": 132669,
+  "playtest_hud_rasters": 1316,
+  "original_single_line_messages": 546,
+  "max_message_bytes": 36,
+  "touch_stages": 57,
+  "live_levels": [
+    1,
+    2,
+    3
+  ],
+  "release_no_drift_directions": 6,
+  "physical_ds_tested": false,
+  "full_routes_tested": false,
+  "next_task": "N23",
+  "evidence": [
+    {
+      "path": "research/evidence/nds/n23/playtest03/build/nds/n23/playtest03-ru/joint-frontend/live/result.json",
+      "bytes": 4166266,
+      "sha256": "bd5c7932da1cd5dff7fb1a0868b93a08bf27377bf7110668a289b85cdd45d3ef"
+    },
+    {
+      "path": "research/evidence/nds/n23/playtest03/build/nds/n23/playtest03-ru/frontend-world-smoke/result.json",
+      "bytes": 20612,
+      "sha256": "4b34ada045f4fd615de15993cdd4f73ebfc78cb351fb43d59473aa338263c07e"
+    },
+    {
+      "path": "research/evidence/nds/n23/playtest03/build/nds/n23/playtest03-ru/frontend-world-smoke-no-storage/result.json",
+      "bytes": 19441,
+      "sha256": "299e7a9b5ea6697a4a1fbe7f6795dfc2f062098f119b6d8cf42978017e1ae822"
+    },
+    {
+      "path": "research/evidence/nds/n23/playtest03/build/nds/n23/playtest03-ru/playtest-controls/result.json",
+      "bytes": 1924,
+      "sha256": "d794441132696600bdeb34a6d204e0a846fdbcc3b75150eeb48a4dea0b2a4e4e"
+    },
+    {
+      "path": "research/evidence/nds/n23/playtest03/research/evidence/nds/n23/playtest-ui-check.json",
+      "bytes": 135,
+      "sha256": "dce41cfc3d59c2fce3cec2e73a96ef49e97a7354221f23c8359f6a73827a3c07"
+    },
+    {
+      "path": "research/evidence/nds/n23/playtest03/research/evidence/nds/n19/host-ui-check.json",
+      "bytes": 7295,
+      "sha256": "ea0fd5b61bb722aa9d73b8bbf0077daedc8208b8346fd2b4843e332f63cf14dd"
+    },
+    {
+      "path": "research/evidence/nds/n23/playtest03/research/evidence/nds/n23/playtest-hud-1.png",
+      "bytes": 1815,
+      "sha256": "a5a0f4dc91f7ccbaa7b3e04ed4a7780a6c726e98a9dd3c0497b5082b70e0db83"
+    },
+    {
+      "path": "research/evidence/nds/n23/playtest03/research/evidence/nds/n23/playtest-hud-2.png",
+      "bytes": 1753,
+      "sha256": "dbb8f2d26a0608cc34822ad07e7e2db4e978f2810e1db4801f8394b1d037da48"
+    },
+    {
+      "path": "research/evidence/nds/n23/playtest03/artifacts/nds/manifest.json",
+      "bytes": 1180,
+      "sha256": "5819f5bdb05e74ef678498971fe6776571dbd40fc372a506fbd97f0392986b8d"
+    }
+  ]
+}

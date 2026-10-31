@@ -47,9 +47,14 @@ def native_ai():
     (E/'original-ai-combat.json').write_text(json.dumps(report,indent=2)+'\n','utf8')
     return report
 
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]/'map'))
+from compiler_cache import compiler_environment
+
+
 def main():
     OUT.mkdir(parents=True,exist_ok=True);E.mkdir(parents=True,exist_ok=True)
-    env=dict(os.environ,ZIG_GLOBAL_CACHE_DIR=str(ROOT/'build/zig-global-cache'),ZIG_LOCAL_CACHE_DIR=str(OUT/'zig-local-cache'))
+    env=compiler_environment(ROOT)
     zig=Path.home()/'AppData/Local/Programs/Zig/0.13.0/zig.exe'
     tests={};commands=[]
     cases={'test_collision':['collision_cases.c'],'test_collision_routes':['collision_routes.c'],

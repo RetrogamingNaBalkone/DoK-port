@@ -480,10 +480,15 @@ def main():
         report['initial_language'] = args.language
         report['command_arguments'] = {k:str(v) if isinstance(v,Path) else v for k,v in vars(args).items()}
         image = f.save/'melonDS DS/dldi_sd_card.bin'
-        front.write_fixture(image,front.settings_bytes(2) if args.language == 2 else None)
+        embedded = front.embedded_resources(target)
+        front.write_fixture(image,front.settings_bytes(2) if args.language == 2 else None,embedded=embedded)
         f.load(target/'dok_nds_gameplay.nds')
         front.transport.flush_native_stdio()
         before = volume_files(image)
+        report['embedded_resources'] = embedded
+        if embedded:
+            assert not any(name in before for name in ('/DOK/ASSETS.NDP','/DOK/UI.DAT','/DOK/FRONTEND.DAT'))
+            report['external_resource_files'] = []
         if args.mode == 'full':
             f.phase = 'full-functional-front-end'
             front.full_flow(f,args.language)

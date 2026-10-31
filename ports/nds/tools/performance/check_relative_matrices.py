@@ -5,6 +5,11 @@ from pathlib import Path
 import subprocess
 from audit_pipeline import ROOT,pin
 
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]/'map'))
+from compiler_cache import compiler_environment
+
+
 def main():
     source=ROOT/'ports/nds/platform/render_probe/render_backend.c';text=source.read_text()
     def extract(signature):
@@ -70,7 +75,7 @@ int main(void){
     zig=Path.home()/'AppData/Local/Programs/Zig/0.13.0/zig.exe'
     command=[str(zig),'cc','-std=c11','-O2','-Wall','-Wextra','-Werror','-Iports/nds/include',
         '-Iports/nds/platform/render_probe','-Ibuild/nds/n07/generated',str(program),'-o',str(out/'relative_math.exe')]
-    env=dict(os.environ,ZIG_GLOBAL_CACHE_DIR=str(ROOT/'build/zig-global-cache'),ZIG_LOCAL_CACHE_DIR=str(out/'zig-cache'))
+    env=compiler_environment(ROOT)
     subprocess.run(command,cwd=ROOT,env=env,capture_output=True,check=True)
     run=subprocess.run([out/'relative_math.exe'],capture_output=True,text=True,check=True);report=json.loads(run.stdout)
     report.update(task='N23',scope=__doc__,driver=pin(Path(__file__)),backend=pin(source),generated=pin(program),command=command)

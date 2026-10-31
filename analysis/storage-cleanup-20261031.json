@@ -1,0 +1,85 @@
+{
+  "status": "verified",
+  "date": "2026-10-31",
+  "scope": "Repository storage maintenance; game statuses unchanged",
+  "freed_bytes": 5142323770,
+  "freed_gib": 4.789,
+  "cache_and_disk_files": 11855,
+  "cache_and_disk_bytes": 608658053,
+  "candidate_object_files": 8820,
+  "candidate_object_bytes": 470458686,
+  "compressed_logs": 282,
+  "log_saved_bytes": 4063207031,
+  "after_scanned_bytes": 18853263261,
+  "protected_file_size_checks": 130003,
+  "sha256_checks": 54,
+  "protected_missing": [],
+  "protected_size_changes": [],
+  "sha256_changes": [],
+  "tests": 29,
+  "python_syntax_checks": 40,
+  "active_targets_excluded": [
+    "build/nds/n23/candidate22-ru",
+    "build/nds/n23/candidate22-en",
+    "build/nds/n23/standalone01-ru"
+  ],
+  "skipped": [
+    {
+      "path": "build/nds/n23/candidate22-en",
+      "reason": "Explicit active-run exclusion"
+    },
+    {
+      "path": "build/nds/n23/candidate22-ru",
+      "reason": "Explicit active-run exclusion"
+    },
+    {
+      "path": "build/nds/n23/standalone01-ru",
+      "reason": "Explicit active-run exclusion"
+    },
+    {
+      "path": "build/nds/n13p/quality/emulator/save/melonDS DS/dldi_sd_card.bin",
+      "reason": "Unrecognised test FAT: "
+    },
+    {
+      "path": "build/nds/n22/command-review-host/tmpg87qv2u4",
+      "reason": "Inaccessible directory: [WinError 5] Отказано в доступе: 'C:\\\\Source\\\\DoK-port\\\\build\\\\nds\\\\n22\\\\command-review-host\\\\tmpg87qv2u4'"
+    },
+    {
+      "path": "build/nds/n23/root-memory-review/tmps40c2e3k",
+      "reason": "Inaccessible directory: [WinError 5] Отказано в доступе: 'C:\\\\Source\\\\DoK-port\\\\build\\\\nds\\\\n23\\\\root-memory-review\\\\tmps40c2e3k'"
+    }
+  ],
+  "full_game_regression": false,
+  "manifests": {
+    "delete-plan-idle.json": {
+      "path": "research/evidence/maintenance/cleanup-20261031/delete-plan-idle.json",
+      "bytes": 2862460,
+      "sha256": "375a0228f94250a2bd9aba2dd244621de6857b2a0224da60cbe9e74d4edab656"
+    },
+    "delete-plan-idle-verified.json": {
+      "path": "research/evidence/maintenance/cleanup-20261031/delete-plan-idle-verified.json",
+      "bytes": 279,
+      "sha256": "ff352da5e5118e11a8bc5207cbf7e05c6abf3f0d24dbcb0a08dd680eeb6d3ed4"
+    },
+    "candidate-objects-plan.json": {
+      "path": "research/evidence/maintenance/cleanup-20261031/candidate-objects-plan.json",
+      "bytes": 1719548,
+      "sha256": "9aad3fd26c93f1d7af19d0106749a167093790393290ec8ddac377563c44b0c0"
+    },
+    "logs-packed.json": {
+      "path": "research/evidence/maintenance/cleanup-20261031/logs-packed.json",
+      "bytes": 117492,
+      "sha256": "a47b5d5ef85e6db8d0e967d66bbefb3b5efbb0d8470d2cb5d057f491837322bb"
+    },
+    "protected-before.json": {
+      "path": "research/evidence/maintenance/cleanup-20261031/protected-before.json",
+      "bytes": 28362184,
+      "sha256": "4fd4084a4a9ae2510958cde13408ce2f288b971dd1e727b607bb6ef525844355"
+    },
+    "retained-verification.json": {
+      "path": "research/evidence/maintenance/cleanup-20261031/retained-verification.json",
+      "bytes": 512,
+      "sha256": "86f272ed31d4f0ac8c287006d29f53757445950299b104621a2aaf751227e041"
+    }
+  }
+}

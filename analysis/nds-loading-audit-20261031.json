@@ -1,0 +1,229 @@
+{
+  "rom_sha256": "01c0a23f7b6a74be5f0d609ca331d269e24cbe3384b536706aba58bfd5fe5855",
+  "package_sha256": "2f03ba02c9986b4e0bd321e94ca00df8a355f7dbb1dff5598a950d3366061511",
+  "existing_emulator_report": "build\\nds\\n23\\playtest03-ru\\joint-frontend\\live\\result.json",
+  "existing_emulator_report_sha256": "bd5c7932da1cd5dff7fb1a0868b93a08bf27377bf7110668a289b85cdd45d3ef",
+  "boot": {
+    "first_magic_frame": 2,
+    "first_ready_frame": 448,
+    "title_whole_lcd_frame": 448,
+    "title_from_load_upper_ms": 7488.370674663488
+  },
+  "transitions": [
+    {
+      "category": "level_loading",
+      "latency_upper_vblanks": 513,
+      "latency_upper_ms": 8574.853027014218,
+      "map_key": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "category": "level_loading",
+      "latency_upper_vblanks": 561,
+      "latency_upper_ms": 9377.178456442449,
+      "map_key": [
+        2,
+        2,
+        2,
+        1,
+        2
+      ]
+    },
+    {
+      "category": "level_loading",
+      "latency_upper_vblanks": 538,
+      "latency_upper_ms": 8992.730854841422,
+      "map_key": [
+        3,
+        3,
+        3,
+        1,
+        1
+      ]
+    }
+  ],
+  "arm_loading": [
+    {
+      "level": 1,
+      "vblanks": 508,
+      "ticks": 284829731,
+      "milliseconds": 8498.83284534795
+    },
+    {
+      "level": 2,
+      "vblanks": 512,
+      "ticks": 287143673,
+      "milliseconds": 8567.876923726939
+    },
+    {
+      "level": 3,
+      "vblanks": 534,
+      "ticks": 299547539,
+      "milliseconds": 8937.98710639637
+    }
+  ],
+  "host_logical_reads": [
+    {
+      "level": 0,
+      "stage": "open",
+      "calls": 1893,
+      "bytes": 195118,
+      "catalog_calls": 1466,
+      "catalog_bytes": 187648,
+      "images": 0,
+      "animations": 0,
+      "decoded_bytes": 0,
+      "packed_bytes": 0
+    },
+    {
+      "level": 1,
+      "stage": "world",
+      "calls": 3318,
+      "bytes": 725952,
+      "catalog_calls": 3305,
+      "catalog_bytes": 423040,
+      "images": 0,
+      "animations": 0,
+      "decoded_bytes": 0,
+      "packed_bytes": 0
+    },
+    {
+      "level": 1,
+      "stage": "localization_and_rebind",
+      "calls": 5742,
+      "bytes": 759087,
+      "catalog_calls": 5741,
+      "catalog_bytes": 734848,
+      "images": 0,
+      "animations": 0,
+      "decoded_bytes": 0,
+      "packed_bytes": 0
+    },
+    {
+      "level": 1,
+      "stage": "sprite_metadata",
+      "calls": 4200,
+      "bytes": 537184,
+      "catalog_calls": 4176,
+      "catalog_bytes": 534528,
+      "images": 168,
+      "animations": 24,
+      "decoded_bytes": 0,
+      "packed_bytes": 0
+    },
+    {
+      "level": 1,
+      "stage": "frame_store",
+      "calls": 1772,
+      "bytes": 1455040,
+      "catalog_calls": 1604,
+      "catalog_bytes": 205312,
+      "images": 168,
+      "animations": 24,
+      "decoded_bytes": 1249728,
+      "packed_bytes": 283947
+    },
+    {
+      "level": 2,
+      "stage": "world",
+      "calls": 3446,
+      "bytes": 782680,
+      "catalog_calls": 3429,
+      "catalog_bytes": 438912,
+      "images": 0,
+      "animations": 0,
+      "decoded_bytes": 0,
+      "packed_bytes": 0
+    },
+    {
+      "level": 2,
+      "stage": "localization_and_rebind",
+      "calls": 5738,
+      "bytes": 758486,
+      "catalog_calls": 5737,
+      "catalog_bytes": 734336,
+      "images": 0,
+      "animations": 0,
+      "decoded_bytes": 0,
+      "packed_bytes": 0
+    },
+    {
+      "level": 2,
+      "stage": "sprite_metadata",
+      "calls": 4200,
+      "bytes": 537184,
+      "catalog_calls": 4176,
+      "catalog_bytes": 534528,
+      "images": 168,
+      "animations": 24,
+      "decoded_bytes": 0,
+      "packed_bytes": 0
+    },
+    {
+      "level": 2,
+      "stage": "frame_store",
+      "calls": 1772,
+      "bytes": 1455040,
+      "catalog_calls": 1604,
+      "catalog_bytes": 205312,
+      "images": 168,
+      "animations": 24,
+      "decoded_bytes": 1249728,
+      "packed_bytes": 283947
+    },
+    {
+      "level": 3,
+      "stage": "world",
+      "calls": 3328,
+      "bytes": 747101,
+      "catalog_calls": 3314,
+      "catalog_bytes": 424192,
+      "images": 0,
+      "animations": 0,
+      "decoded_bytes": 0,
+      "packed_bytes": 0
+    },
+    {
+      "level": 3,
+      "stage": "localization_and_rebind",
+      "calls": 5741,
+      "bytes": 762629,
+      "catalog_calls": 5740,
+      "catalog_bytes": 734720,
+      "images": 0,
+      "animations": 0,
+      "decoded_bytes": 0,
+      "packed_bytes": 0
+    },
+    {
+      "level": 3,
+      "stage": "sprite_metadata",
+      "calls": 4651,
+      "bytes": 594912,
+      "catalog_calls": 4627,
+      "catalog_bytes": 592256,
+      "images": 168,
+      "animations": 24,
+      "decoded_bytes": 0,
+      "packed_bytes": 0
+    },
+    {
+      "level": 3,
+      "stage": "frame_store",
+      "calls": 1772,
+      "bytes": 1455040,
+      "catalog_calls": 1604,
+      "catalog_bytes": 205312,
+      "images": 168,
+      "animations": 24,
+      "decoded_bytes": 1249728,
+      "packed_bytes": 283947
+    }
+  ],
+  "scope": "Host counts cover world, current RU localization/rebind, sprite metadata and frame store; exclude audio, effects, static geometry, UI and frontend append. No host timing is used as DS timing. Reader calls are not physical media transactions."
+}

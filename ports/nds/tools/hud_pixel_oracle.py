@@ -46,12 +46,15 @@ class OriginalHudArt:
     def text(self, canvas, language, value, x, y, height=8):
         raw = value.encode("cp866") if isinstance(value,str) else value
         font = self.resources[language][f"FONT{height}"]
-        if x < 0 or y < 0 or x+8*len(raw)>256 or y+height>38:
+        if x < 0 or y < 0 or x+8*len(raw)>256:
             raise AssertionError("Expected original font text would be clipped")
         occupied = []
         for i, code in enumerate(raw):
             for row in range(height):
                 glyph = font[code*height+row]
+                if y+row>=38:
+                    assert not glyph, 'Visible original glyph would be clipped'
+                    continue
                 for col in range(8):
                     if glyph & (128>>col):
                         canvas[(y+row)*256+x+i*8+col] = 2
@@ -93,37 +96,41 @@ def message_pages(raw: bytes, columns=28):
 
 def render_hud(art: OriginalHudArt, state: dict, message=b"", page=0):
     language, level = state["language"],state["level"]
-    canvas=art.panel(language)
-    icon_hp=art.icon(canvas,language,"ПЖИЗНЬ",4,3,17,14)
-    icon_charge=art.icon(canvas,language,"ПМАГИЯ",82,2,13,16)
+    canvas=bytearray([86]*9728)
+    border=art.panel(language)
+    for y in (0,):
+        canvas[y*256:(y+1)*256]=border[y*256:(y+1)*256]
+    canvas[20*256:21*256]=border[:256]
+    icon_hp=art.icon(canvas,language,"ПЖИЗНЬ",4,23,17,14)
+    icon_charge=art.icon(canvas,language,"ПМАГИЯ",82,22,13,16)
     text_bounds={}
     for name,x in (("health",23),("charge",97)):
         value=state[name]
         if not -32768<=value<=32767:
             raise AssertionError("HUD numeric source domain is signed WORD")
-        text_bounds[name]=art.text(canvas,language,str(value),x,2,16)
-        maximum=state["max_health" if name=="health" else "max_charge"]
-        extent=0 if maximum<=0 else min(48,max(0,value)*48//maximum)
-        canvas[18*256+x:18*256+x+48]=bytes([0])*48
-        canvas[18*256+x:18*256+x+extent]=bytes([2])*extent
-    for bit,name,x in ((1,"ПКЛЮЧМ",156),(2,"ПКЛЮЧЖ",172),(4,"ПКЛЮЧЗ",188)):
+        text_bounds[name]=art.text(canvas,language,str(value),x,23,16)
+    for bit,name,x in ((1,"ПКЛЮЧМ",212),(2,"ПКЛЮЧЖ",226),(4,"ПКЛЮЧЗ",240)):
         if state["keys"]&bit:
-            art.icon(canvas,language,name,x,3,10,14)
-    weapon=("О:" if language==1 else "W:")+str(state["weapon"])
-    art.text(canvas,language,weapon,220,2,16)
-    secondary=("П:" if language==1 else "L:")+str(state["lives"])
-    secondary+="  "+("С:" if language==1 else "S:")+str(state["score"])
-    art.text(canvas,language,secondary,4,20)
-    pages=message_pages(message)
-    if not 0<=page<len(pages):
-        raise AssertionError("Message page outside full source text")
-    art.text(canvas,language,pages[page]["bytes"],4,28)
-    if len(pages)>1:
-        art.text(canvas,language,f"{page+1}/{len(pages)}",228,28)
+            art.icon(canvas,language,name,x,23,10,14)
+    for bit,name,x in ((2,"ПОРУЖИЕ1",150),(4,"ПОРУЖИЕ2",178)):
+        if state["weapon"]&bit:
+            sw,sh,_,_,_=audit_assets.decode_image(art.resources[language][name])
+            factor=min(20/sw,10/sh);w,h=max(1,round(sw*factor)),max(1,round(sh*factor))
+            art.icon(canvas,language,name,x+(20-w)//2,25+(10-h)//2,w,h)
+    pages=message_pages(message,30)
+    assert len(pages)<=2, "Original gameplay message must fit the message area"
+    font=art.resources[language]["FONT8"]
+    top=7 if len(pages)==1 else 3
+    for row,line in enumerate(pages):
+        for col,code in enumerate(line["bytes"]):
+            for y in range(8):
+                for x in range(8):
+                    if font[code*8+y] & (128 >> x):
+                        canvas[(top+row*8+y)*256+8+col*8+x]=2
     adjacency={}
     for key,icons in (("health",icon_hp),("charge",icon_charge)):
         ink=text_bounds[key]
         adjacency[key]=dict(icon_right=max(x for x,y in icons),number_left=min(x for x,y in ink),
                             optical_gap=min(x for x,y in ink)-max(x for x,y in icons)-1)
     return bytes(canvas),dict(sha256=hashlib.sha256(canvas).hexdigest(),adjacency=adjacency,
-                              message_page=page,message_pages=len(pages))
+                              message_page=page,message_pages=1)

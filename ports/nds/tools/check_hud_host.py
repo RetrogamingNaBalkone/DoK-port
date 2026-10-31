@@ -75,7 +75,9 @@ class Driver:
         self.dll.n19_paginate.restype = C.c_uint32
         self.dll.n19_hud.argtypes = [P8, P8, C.c_uint32, C.POINTER(Values), P8, C.c_uint32, C.c_uint32]
         self.dll.n19_glyph.argtypes = [P8, P8, U8, C.c_uint32]
-        blob = (ROOT / "build/nds/n19/ui.dat").read_bytes()
+        sys.path.insert(0,str(ROOT/'ports/nds/tools/ui'))
+        from prepare_playtest_ui import prepare
+        blob = (prepare() / "ui.dat").read_bytes()
         assert blob[:8] == b"N19UI01\0" and len(blob) == 16416
         self.banks = [(U8 * 8192).from_buffer_copy(blob[32 + 8192*i:32 + 8192*(i + 1)]) for i in range(2)]
         self.raw = (U8 * (9728 + 64))()
@@ -129,31 +131,18 @@ class SweepOracle:
             source = art.resources[language][f"FONT{height}"]
             self.glyph_rows[height] = [[bytes(2 if bits & (128 >> col) else 86 for col in range(8))
                                        for bits in source[code*height:(code + 1)*height]] for code in range(256)]
-        base = art.panel(language)
-        art.icon(base, language, "ПЖИЗНЬ", 4, 3, 17, 14)
-        art.icon(base, language, "ПМАГИЯ", 82, 2, 13, 16)
-        art.text(base, language, ("О:" if language == 1 else "W:") + "2", 220, 2, 16)
-        for name, x in (("ПКЛЮЧМ", 156), ("ПКЛЮЧЖ", 172), ("ПКЛЮЧЗ", 188)):
-            art.icon(base, language, name, x, 3, 10, 14)
-        self.base = bytes(base)
+        self.base = render_hud(art,dict(language=language,level=1,health=0,charge=0,
+            max_health=100,max_charge=100,lives=0,score=0,keys=7,weapon=2))[0]
 
     def render(self, value):
         canvas = bytearray(self.base)
         digits = str(value).encode("ascii")
         font = self.glyph_rows[16]
         width = len(digits)*8
-        for row in range(16):
+        for row in range(15):
             tile = b"".join(font[code][row] for code in digits)
-            canvas[(2 + row)*256 + 23:(2 + row)*256 + 23 + width] = tile
-            canvas[(2 + row)*256 + 97:(2 + row)*256 + 97 + width] = tile
-        for x in (23, 97):
-            extent = min(48, max(0, value)*48//100)
-            canvas[18*256 + x:18*256 + x + 48] = b"\x02" * extent + b"\0" * (48 - extent)
-        secondary = (b"\x8f:" if self.language == 1 else b"L:") + digits + b"  " + (b"\x91:" if self.language == 1 else b"S:") + digits
-        font = self.glyph_rows[8]
-        for row in range(8):
-            line = b"".join(font[code][row] for code in secondary)
-            canvas[(20 + row)*256 + 4:(20 + row)*256 + 4 + len(line)] = line
+            canvas[(23 + row)*256 + 23:(23 + row)*256 + 23 + width] = tile
+            canvas[(23 + row)*256 + 97:(23 + row)*256 + 97 + width] = tile
         return bytes(canvas)
 
 

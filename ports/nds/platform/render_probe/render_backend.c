@@ -28,6 +28,13 @@ static uint32_t resident_bytes, resident_palette_bytes;
 static uint32_t sticky_disp3d, sticky_gxstat;
 static int initialized;
 static int loading;
+#ifndef N23_CAPTURE_HOLD
+#define N23_CAPTURE_HOLD 0
+#endif
+#if N23_CAPTURE_HOLD
+static uint32_t capture_valid,capture_hold,capture_display;
+_Alignas(32) volatile uint32_t g_nds_capture_probe[64];
+#endif
 static uint32_t light_palette_rows, light_palette_base;
 static uint32_t darkness, applied_darkness;
 #ifndef N23_RELATIVE_MATRICES
@@ -331,13 +338,24 @@ dok_nds_render_result dok_nds_render_init(void)
     lcdMainOnTop();
     vramSetBankA(VRAM_A_TEXTURE_SLOT0);
     vramSetBankB(VRAM_B_TEXTURE_SLOT1);
+#if N23_CAPTURE_HOLD
+    vramSetBankC(VRAM_C_LCD);
+#else
     vramSetBankC(VRAM_C_SUB_BG);
+#endif
     vramSetBankD(VRAM_D_TEXTURE_SLOT3);
     vramSetBankE(VRAM_E_MAIN_BG);
     vramSetBankF(VRAM_F_TEX_PALETTE_SLOT0);
     vramSetBankG(VRAM_G_LCD);
+#if N23_CAPTURE_HOLD
+    /* The visible SUB bitmap is 256*192=48KiB: H supplies its first32KiB,
+     * I the final16KiB. The unused bottom64 bitmap rows need no backing. */
+    vramSetBankH(VRAM_H_SUB_BG);
+    vramSetBankI(VRAM_I_SUB_BG_0x06208000);
+#else
     vramSetBankH(VRAM_H_LCD);
     vramSetBankI(VRAM_I_LCD);
+#endif
     if (!glInit()) return DOK_NDS_RENDER_HARDWARE;
     /* glInit itself may acknowledge pre-existing boot state; task counters
      * start after initialization and before the first submitted geometry. */
@@ -438,9 +456,20 @@ void dok_nds_render_present(void)
     /* Called after the submitted frame's VBlank swap, never after preload
      * alone: old geometry must not be exposed with the new texture set. */
     if (initialized && loading) {
+#if N23_CAPTURE_HOLD
+        if(capture_hold){REG_DISPCNT=capture_display;capture_hold=0;
+            g_nds_capture_probe[6]=0;DC_FlushRange((void *)g_nds_capture_probe,32);}
+#endif
         REG_DISPCNT |= DISPLAY_BG0_ACTIVE;
         loading = 0;
     }
+#if N23_CAPTURE_HOLD
+    /* Capture composited MAIN, including HUD, for the next replacement. The
+     * capture is complete at line192 before the bank is selected for display. */
+    REG_DISPCAPCNT=DCAP_ENABLE|DCAP_MODE(DCAP_MODE_A)|DCAP_SRC_A(DCAP_SRC_A_COMPOSITED)|
+        DCAP_SIZE(DCAP_SIZE_256x192)|DCAP_BANK(DCAP_BANK_VRAM_C);
+    capture_valid=1;
+#endif
 }
 
 #if N23_PIPELINE_PROFILE
@@ -786,6 +815,9 @@ dok_nds_render_result dok_nds_stream_reset(const uint16_t *palette,uint32_t colo
     for(i=0;i<colors;++i) if(palette[i]&0x8000u) return DOK_NDS_RENDER_TEXTURE;
     if(fence(NULL)!=DOK_NDS_RENDER_OK) return DOK_NDS_RENDER_TIMEOUT;
     if(!stream_repacking) {
+#if N23_CAPTURE_HOLD
+        capture_valid=0;REG_DISPCAPCNT=0;
+#endif
         REG_DISPCNT&=~DISPLAY_BG0_ACTIVE;powerOff(POWER_3D_CORE);loading=1;
     }
     glResetTextures();memset(stream_slots,0,sizeof(stream_slots));
@@ -872,6 +904,35 @@ static int stream_partial_relocation(const dok_nds_stream_texture *textures,
     ++stats->rebuilds;return 1;
 }
 #endif
+static void stream_bulk_begin(void)
+{
+    if(loading)return;
+    /* Large replacements cannot fit the rasterizer's short VRAM window.
+     * Enter the existing preload path before submitting the next geometry. */
+    swiWaitForVBlank();
+#if N23_CAPTURE_HOLD
+    if(capture_valid){
+        REG_DISPCAPCNT=0;capture_display=REG_DISPCNT;
+        REG_DISPCNT=(capture_display&~((3u<<16)|(3u<<18)))|MODE_FB2;
+        /* Read-only evidence for the LCD observer: samples from the actual
+         * completed capture, never generated scene/palette expectations. */
+        g_nds_capture_probe[0]=0x38504344u;g_nds_capture_probe[1]=1;
+        ++g_nds_capture_probe[2];++g_nds_capture_probe[3];
+        g_nds_capture_probe[4]=REG_VCOUNT;g_nds_capture_probe[5]=capture_display;
+        g_nds_capture_probe[6]=1;g_nds_capture_probe[8]=36;
+        const volatile uint16_t *pixels=(const volatile uint16_t *)0x06840000u;
+        for(unsigned n=0;n<36u;++n){
+            unsigned x=n<32u?16u+(n%8u)*32u:32u+(n-32u)*64u;
+            unsigned y=n<32u?8u+(n/8u)*40u:178u;
+            g_nds_capture_probe[16u+n]=pixels[y*256u+x]&32767u;
+        }
+        ++g_nds_capture_probe[2];DC_FlushRange((void *)g_nds_capture_probe,256);
+        capture_hold=1;powerOff(POWER_3D_CORE);loading=1;return;
+    }
+#endif
+    REG_DISPCNT&=~DISPLAY_BG0_ACTIVE;powerOff(POWER_3D_CORE);loading=1;
+}
+int dok_nds_stream_loading(void){return loading;}
 dok_nds_render_result dok_nds_stream_plan(const dok_nds_stream_texture *textures,
     uint32_t count,dok_nds_stream_stats *stats)
 {
@@ -923,7 +984,7 @@ dok_nds_render_result dok_nds_stream_plan(const dok_nds_stream_texture *textures
 #if N22_STREAM_PARTIAL_DEFRAG
         /* A normal frame cannot turn a failed bounded relocation into the
          * old all-textures upload. Its proven DMA deadline remains binding. */
-        if(!loading)return DOK_NDS_RENDER_TEXTURE;
+        stream_bulk_begin();
 #endif
         /* Fragmentation recovery: plan largest allocations first, still without
          * touching VRAM bytes referenced by the currently displayed frame. */
@@ -955,6 +1016,7 @@ dok_nds_render_result dok_nds_stream_plan(const dok_nds_stream_texture *textures
     result.misses=result.uploads;result.hits=count-result.misses;
 #endif
     result.resident_bytes=resident_bytes=used;resident_count=count;
+    if(result.upload_bytes>32768u)stream_bulk_begin();
     stream_planned=1;*stats=result;return DOK_NDS_RENDER_OK;
 }
 dok_nds_render_result dok_nds_stream_prepare_uploads(void)
@@ -973,17 +1035,26 @@ static dok_nds_render_result stream_commit(dok_nds_stream_stats *stats,uint32_t 
     uint32_t i,old;
     if(!stats || !stream_planned) return DOK_NDS_RENDER_ARGUMENT;
     stats->commit_start_line=REG_VCOUNT;
-    if(!loading && REG_VCOUNT>=48 && REG_VCOUNT<192) return DOK_NDS_RENDER_HARDWARE;
+    if(!loading && (REG_VCOUNT<192 || REG_VCOUNT>=214)) return DOK_NDS_RENDER_HARDWARE;
     commit_darkness();
-    old=vramSetPrimaryBanks(VRAM_A_LCD,VRAM_B_LCD,VRAM_C_SUB_BG,VRAM_D_LCD);
+    uint32_t pending=0;
+    for(i=0;i<DOK_NDS_RENDER_TEXTURE_CAPACITY;++i)pending|=stream_slots[i].valid&&stream_slots[i].pending;
+    old=0;
+    if(pending)old=vramSetPrimaryBanks(VRAM_A_LCD,VRAM_B_LCD,
+#if N23_CAPTURE_HOLD
+        VRAM_C_LCD,
+#else
+        VRAM_C_SUB_BG,
+#endif
+        VRAM_D_LCD);
     for(i=0;i<DOK_NDS_RENDER_TEXTURE_CAPACITY;++i) {
         StreamSlot *s=&stream_slots[i];
         if(s->valid && s->pending) {
             if(clean_sources)DC_FlushRange(s->texture.pixels,s->texture.bytes);
-            dmaCopy(s->texture.pixels,glGetTexturePointer(s->sdk_id),s->texture.bytes);s->pending=0;
+            dmaCopyWords(3,s->texture.pixels,glGetTexturePointer(s->sdk_id),s->texture.bytes);s->pending=0;
         }
     }
-    vramRestorePrimaryBanks(old);
+    if(pending)vramRestorePrimaryBanks(old);
     if(stream_palette_pending) {
         uint8_t oldf=VRAM_F_CR;vramSetBankF(VRAM_F_LCD);
         if(clean_sources)DC_FlushRange(stream_palette,stream_colors*2u);
@@ -992,7 +1063,7 @@ static dok_nds_render_result stream_commit(dok_nds_stream_stats *stats,uint32_t 
         VRAM_F_CR=oldf;stream_palette_pending=0;
     }
     stats->commit_end_line=REG_VCOUNT;stream_planned=0;
-    if(!loading && REG_VCOUNT>=48 && REG_VCOUNT<192) return DOK_NDS_RENDER_HARDWARE;
+    if(!loading && (REG_VCOUNT<192 || REG_VCOUNT>=214)) return DOK_NDS_RENDER_HARDWARE;
     if(loading)powerOn(POWER_3D_CORE);
     set_control(GL_TEXTURE_2D);return DOK_NDS_RENDER_OK;
 }
