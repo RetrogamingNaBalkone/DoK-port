@@ -1,0 +1,173 @@
+{
+  "task": "N23",
+  "user_report": {
+    "build": "audio21",
+    "emulator": "DraStic/RG DS",
+    "level": 1,
+    "actions": "walking and shooting",
+    "stage": 6,
+    "code": "00010000",
+    "location": "User photo: disclosed rooms, marker near left central passage; exact coordinates unknown"
+  },
+  "meaning": "frontend_loop returned 0; Stage6 is retained loading stage, not fault origin",
+  "root_cause_proven": false,
+  "gameplay_fix_claimed": false,
+  "rom": {
+    "path": "artifacts/nds/dok-crashdiag22.nds",
+    "bytes": 10167808,
+    "sha256": "69175dfd79db4837a536b2380dca0464cc23316e0df1d257eb8cdcb379582c01"
+  },
+  "build_manifest": {
+    "path": "build/nds/n23/crashdiag22-ru/build-manifest.json",
+    "bytes": 110559,
+    "sha256": "35e1d6a8dc2d2de7a5e2dc7acfdc912fe65dafd48bc568b179304927929839e0"
+  },
+  "checks": {
+    "crash-diagnostic": {
+      "passed": true,
+      "scope": "Stationary LEVEL1; synthetic GPU sticky flag, no routes",
+      "function": "render_one",
+      "line": 1369,
+      "renderer": {
+        "magic": 928140100,
+        "abi_version": 1,
+        "size_bytes": 360,
+        "sequence": 336,
+        "status": 3,
+        "error_bits": 65536,
+        "is_dsi": 0,
+        "case_count": 0,
+        "case_id": 0,
+        "level": 0,
+        "frame_id": 36,
+        "submitted_frame_id": 36,
+        "presented_frame_id": 36,
+        "vblank_count": 580,
+        "flags": 8,
+        "camera_x": 15120,
+        "camera_y": 4294966996,
+        "camera_z": 22800,
+        "sin_q15": 32768,
+        "cos_q15": 0,
+        "history_address": 33867200,
+        "history_capacity": 128,
+        "history_record_bytes": 136,
+        "history_total": 37,
+        "position_address": 33860928,
+        "position_count": 24,
+        "position_record_bytes": 196,
+        "projection_address": 33783676,
+        "projection_words": 16,
+        "timer_hz": 33513982,
+        "timer_divider": 1,
+        "vblank_ticks": 560190,
+        "total_frames": 36,
+        "max_vblank_delta": 3,
+        "max_frame_ticks": 1262590,
+        "disp3d_sticky": 1,
+        "gxstat_sticky": 0,
+        "rdlines_min": 46,
+        "rdlines_max": 46,
+        "rdlines_samples": 36,
+        "texture_capacity_bytes": 393216,
+        "palette_capacity_bytes": 16384,
+        "texture_bytes": 167936,
+        "palette_bytes": 0,
+        "texture_count": 10,
+        "uploads_total": 12,
+        "upload_bytes_total": 209408,
+        "cache_misses": 12,
+        "cache_evictions": 2,
+        "vram_a": 131,
+        "vram_b": 139,
+        "vram_c": 128,
+        "vram_d": 155,
+        "vram_e": 129,
+        "vram_f": 131,
+        "vram_g": 128,
+        "vram_h": 129,
+        "vram_i": 129,
+        "region_base": 33554432,
+        "region_limit": 37224448,
+        "static_end": 33901764,
+        "heap_start": 33901764,
+        "heap_end": 36364288,
+        "heap_limit_before": 37699584,
+        "heap_limit_policy": 37224448,
+        "heap_limit_final": 36569088,
+        "reserve_bytes": 655360,
+        "managed_base": 33901792,
+        "managed_bytes": 2293760,
+        "malloc_request_bytes": 2293791,
+        "static_startup_bytes": 516096,
+        "sdk_heap_available": 204800,
+        "sdk_heap_min": 196608,
+        "world_used": 383960,
+        "world_high_water": 383960,
+        "scratch_used": 105052,
+        "scratch_high_water": 105052,
+        "scene_used": 238168,
+        "scene_high_water": 238168,
+        "assets_used": 349472,
+        "assets_high_water": 1077248,
+        "source_packet_address": 0,
+        "source_packet_bytes": 0,
+        "render_frame_address": 34685152,
+        "render_frame_bytes": 32,
+        "cell_record_bytes": 20,
+        "quad_record_bytes": 92,
+        "render_generation": 36,
+        "flat_diagnostic": 0,
+        "negative_pass_mask": 0
+      },
+      "captures": [
+        {
+          "path": "C:\\Source\\DoK-port\\build\\nds\\n23\\crashdiag22-ru\\crash-diagnostic\\fatal-screen.png",
+          "sha256": "cdde5dd2d0e8fe4b03a033044191531b7f8f797eeb02660db34e97a39f200e7a"
+        },
+        {
+          "path": "C:\\Source\\DoK-port\\build\\nds\\n23\\crashdiag22-ru\\crash-diagnostic\\fatal-screen-top.png",
+          "sha256": "4c6a8d55e701fa0e8d29a909a8c005d499c6c36b9e9f77fc9e1ef99118964209"
+        },
+        {
+          "path": "C:\\Source\\DoK-port\\build\\nds\\n23\\crashdiag22-ru\\crash-diagnostic\\fatal-screen-bottom.png",
+          "sha256": "f6db3970f4c74afb2216de62c2c31e1b07c82ca6e2108c62bda7bad512a820b9"
+        }
+      ],
+      "rom_sha256": "69175dfd79db4837a536b2380dca0464cc23316e0df1d257eb8cdcb379582c01"
+    },
+    "audio-transition": {
+      "passed": true,
+      "scope": "Title stop and stationary LEVEL1 audio only; no routes",
+      "title_retired_zero_bytes": 65536,
+      "firing": {
+        "requests": 0,
+        "starts": 0,
+        "busy_rejects": 0,
+        "underruns": 0,
+        "stale": 0,
+        "weapon_present": false
+      },
+      "effects": [
+        {
+          "start_sample": 330970,
+          "index": 89,
+          "identity": 327666,
+          "samples": 18075,
+          "period": 760,
+          "rate": 22050,
+          "coefficient": 0.9995620916977002
+        }
+      ],
+      "source_sha256": "d5e96cf5cf1cbb8b557316db3b5b9314cd04303b2ddb17e6fcbb54a001e65432",
+      "rom_sha256": "69175dfd79db4837a536b2380dca0464cc23316e0df1d257eb8cdcb379582c01"
+    }
+  },
+  "test": {
+    "path": "ports/nds/tools/performance/check_crash_diagnostic.py",
+    "bytes": 2843,
+    "sha256": "f965d0864d2ff7079c97488a30a7b10b30a9dfc7b2ac96ab7a4918a57d10bef7"
+  },
+  "next_id": "N23",
+  "n24_started": false
+}
