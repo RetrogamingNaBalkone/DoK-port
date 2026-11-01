@@ -356,8 +356,13 @@ def main():
         assert irq['untouched_margin_bytes'] >= 16, irq
         assert probe.audio()['underruns'] == 0, probe.audio()
         listening = load_json('analysis/gba/g16-listening.json')
-        assert sha(listening['wav_path']) == listening['wav_sha256']
         assert listening['status'] == 'confirmed_by_user'
+        # Historical human review is separate from this ROM's automated run.
+        # Its private WAV can have been retired with old build outputs.
+        listening_path = Path(listening['wav_path'])
+        listening_available = listening_path.is_file()
+        if listening_available:
+            assert sha(listening_path) == listening['wav_sha256']
         assert sha(probe.rom) == probe.metadata['rom_sha256'], 'ROM changed during ARM capture'
         report = dict(task='G16', status='quick' if args.quick else 'passed',
                       rom_sha256=sha(probe.rom), script_sha256=sha(__file__),
@@ -366,7 +371,12 @@ def main():
                       all_sounds=all_sounds, identity=identity, projectile_identity=projectile, integrated_cost=costs,
                       rejected_loop_preserved_once=True, language_preserved_active_voice=True,
                       level_change_stopped_voice=True, irq_stack=irq,
-                      stack=stack_usage(probe.frontend), human_listening_verified=True,
+                      stack=stack_usage(probe.frontend),
+                      human_listening_verified=listening_available and sha(probe.rom)==listening['source_rom_sha256'],
+                      historical_listening=dict(status=listening['status'],
+                          source_rom_sha256=listening['source_rom_sha256'],
+                          wav_available=listening_available,
+                          current_rom_listened=False),
                       listening_evidence_sha256=sha('analysis/gba/g16-listening.json'),
                       physical_gba_tested=False)
         args.report.write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8')

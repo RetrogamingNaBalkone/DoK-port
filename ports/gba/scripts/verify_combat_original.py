@@ -10,7 +10,6 @@ for _layout_dir in ("scripts", "tools/originals", "tools/reports", "ports/gba/sc
 
 import hashlib,json,random,struct,subprocess,sys
 from pathlib import Path
-sys.path.insert(0,'C:/Source/wasdify/build/research-deps')
 from unicorn import Uc,UC_ARCH_X86,UC_MODE_16,UC_HOOK_CODE
 from unicorn import x86_const as R
 def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()

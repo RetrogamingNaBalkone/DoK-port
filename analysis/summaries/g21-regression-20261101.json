@@ -1,0 +1,160 @@
+{
+  "summary_schema": 1,
+  "full_report": {
+    "path": "analysis/gba/g21-regression-20261101.json",
+    "sha256": "566edb29515895a54b1ea5bc0557fe1a006fafb68cc97ac8c9bd92317c1e1ae5",
+    "bytes": 40324
+  },
+  "scope": "Summary of a recorded run; not a new verification. Full report is local and ignored by Git.",
+  "result": {
+    "task": "G21",
+    "status": "regression_passed_acceptance_open",
+    "rom_sha256": "be9f8b25836f556c9522e896a93bb5645c8ad855641525476998e07629508323",
+    "rom_bytes": 26646152,
+    "repeated_rom_exact": true,
+    "package_sha256": "3efa5d3027d63ffd65e0ae8c0b45be23ee8394b3c5151c8e9f10e76fa8674351",
+    "originals_sha256_before": {
+      "originals/pkr/RUS/PKR.EXE": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+      "originals/pkr/RUS/PKR.RES": "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816",
+      "originals/pkr/ENG/PKE.EXE": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b",
+      "originals/pkr/ENG/PKE.RES": "865da340621fa6f90548a84e9ae9bf0a85071befb32a40ca1d359e488f74d458"
+    },
+    "originals_sha256_after": {
+      "originals/pkr/RUS/PKR.EXE": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+      "originals/pkr/RUS/PKR.RES": "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816",
+      "originals/pkr/ENG/PKE.EXE": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b",
+      "originals/pkr/ENG/PKE.RES": "865da340621fa6f90548a84e9ae9bf0a85071befb32a40ca1d359e488f74d458"
+    },
+    "tools": {
+      "python": "3.14.6 (tags/v3.14.6:c63aec6, Jun 10 2026, 10:26:10) [MSC v.1944 64 bit (AMD64)]",
+      "zig": "0.13.0",
+      "unicorn": "2.1.4",
+      "emulator": "mGBA 0.11-212-7a12d6d",
+      "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4"
+    },
+    "reports": {
+      "latency": {
+        "path": "build/gba/g21-final/latency.json",
+        "sha256": "66d50df8614d14dc2123e649d4dfaf5131d2bce63894b6fb8f1c15c36adb64be"
+      },
+      "frontend": {
+        "path": "build/gba/g21-final/frontend.json",
+        "sha256": "eb62099a0d6d0c44b8e5d1b000679f29c63480fc60f8de9723abbe3a4910c0c5"
+      },
+      "ui": {
+        "path": "build/gba/g21-final/ui.json",
+        "sha256": "49cbc45d3801a9f60cf4057b692ebcbe87b7047492c0b819ca1dd0de01274b33"
+      },
+      "flow": {
+        "path": "build/gba/g21-final/flow.json",
+        "sha256": "381bc0bb1ab5eef782e562dea09545d2799ae6ca294d3537309bb17735680a0a"
+      },
+      "credits": {
+        "path": "build/gba/g21-final/credits.json",
+        "sha256": "d7bfc891e4c0707027869520495b994d797c16d0db501364999ad825df76b093"
+      },
+      "audio": {
+        "path": "build/gba/g21-final/audio.json",
+        "sha256": "df6e8006899282d5cffefe3ee9314323cfb64d1828e6ccc282083d86b1a12558"
+      },
+      "time": {
+        "path": "build/gba/g21-final/time.json",
+        "sha256": "fceccfe75d84a30a7a76914bf022d8f3fa85148e436598bbe43b879958801366"
+      },
+      "arm": {
+        "path": "build/gba/g21-final/arm.json",
+        "sha256": "338cd3ac1195d66424b1ab7d15077c98f8d17b5051f1095edf1168e7088a8e54"
+      },
+      "water": {
+        "path": "build/gba/g21-final/water.json",
+        "sha256": "e4df3887e599d8466e9c08200d259996ec78a3fb066658c5c8f63b00c9082b30"
+      },
+      "sprites": {
+        "path": "build/gba/g21-final/sprites.json",
+        "sha256": "53c8bf853d75e1084cb9667e9c133a0b307484fb38fe50da1e2c4634987de355"
+      },
+      "transitions": {
+        "path": "build/gba/g21-final/transitions.json",
+        "sha256": "265739769e3ef19493261277d3ea8343230248a01aeb6edbb21fef7ebdec3663"
+      },
+      "combat": {
+        "path": "build/gba/g21-final/combat.json",
+        "sha256": "d5397ff1bcb498160c92f78838785751d9e0287e267f5f2d0074d3a176254b01"
+      },
+      "ai-combat": {
+        "path": "build/gba/g21-final/ai-combat.json",
+        "sha256": "2745531c87dbe6e3d61aa78fe7b2d8a573a18d9f464180f48b49de8f737d8b15"
+      },
+      "projectile-cells": {
+        "path": "build/gba/g21-final/projectile-cells.json",
+        "sha256": "4019b16e270ff4e22d13d709ad26c6345c0cea2fd9c6fb7409aa59b5fa8f994e"
+      },
+      "close-hits": {
+        "path": "build/gba/g21-final/close-hits.json",
+        "sha256": "e06bfdd6098b1c1ea10ca81d4ad47d5f446c2512d30749e8415722e2b72348ab"
+      },
+      "ceiling-sides": {
+        "path": "build/gba/g21-final/ceiling-sides.json",
+        "sha256": "6c5d0ff60441d6ab0414a64f3d0ebc375c4c66c23bf0ca1dfb778d6ab40e99b4"
+      },
+      "story": {
+        "path": "build/gba/g21-final/story.json",
+        "sha256": "54adb8367a850b72d31c1056c242fac3a3e62bb88b0ee2ec7818b6ae977078bf"
+      },
+      "automap": {
+        "path": "build/gba/g21-final/automap.json",
+        "sha256": "e5b5ee4112025a05615d47721076e991938a4f04051e82390a0460aae0147bf0"
+      },
+      "bat-hits": {
+        "path": "build/gba/g21-final/bat-hits.json",
+        "sha256": "c9135a122f7b5e7791924a03e661f69e8b203e2aa3ca6ee298b3de9432e951aa"
+      },
+      "ceiling": {
+        "path": "build/gba/g21-ceiling-sweep/ceiling.json",
+        "sha256": "450714bf56681219e8837c45891b5d3936610825c18fe875b58abf791a04c246"
+      },
+      "packing": {
+        "path": "build/gba/g21-final/packing.json",
+        "sha256": "a86c8d0d54ee8f1f8a99a697879876cb73df91d46f52ccc45394543e4b139cdb"
+      },
+      "time-selftest": {
+        "path": "build/gba/g21-final/time-selftest.json",
+        "sha256": "2de4888024321a18e74ee27e9f26d8e2024ee87c80c4d10eaf0426e9be0c4aab"
+      },
+      "original-combat": {
+        "path": "analysis/gba/g13-original-verification.json",
+        "sha256": "6535f35fd0b9d09e52b4184be407f8696d44086244d5d8c3c545ea27e0515d0a"
+      },
+      "original-surfaces": {
+        "path": "analysis/gba/g10-original-verification.json",
+        "sha256": "6851c6d3761b4d645f8c185b37a6967bf158b3ef5f21ab5ec11b7bcfcd7cc534"
+      }
+    },
+    "build_manifest_sha256": "395db4a61ba7fbe6fd147eb658b3baf58fc46b7fb90d1b28f79394dc83ad5ae1",
+    "host_log_sha256": "00568666f6238392dcaea331c6d94bce638453d8218c124fff45c6da7ef63824",
+    "bat_cases": 1440,
+    "bat_results": {
+      "hit": 1332,
+      "clear": 108
+    },
+    "native_motion_steps": 350,
+    "ceiling_frames": 750,
+    "ceiling_potential_seam_frames": 270,
+    "native_ceiling_potential_seam_frames": 306,
+    "known_issues": {
+      "BUG01": "Grid-boundary misses reproduced with centered blaster aim; original cell lookup and motion confirmed. No gameplay correction applied.",
+      "BUG02": "Native affine LIGHT seams reproduced in geometry; the reported full dark column has not been uniquely identified or corrected."
+    },
+    "physical_gba_tested": false,
+    "complete_navigation_playthrough": false,
+    "current_rom_human_listening": false,
+    "release_approved": false,
+    "published": false,
+    "next_id": "G21",
+    "gba_budget_G20_closed": false,
+    "sources": {
+      "detail_pointer": "/sources",
+      "entries": 299
+    }
+  }
+}

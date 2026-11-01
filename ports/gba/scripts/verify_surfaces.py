@@ -14,7 +14,6 @@ import hashlib,json,struct,subprocess,sys
 from collections import Counter
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[3]
-sys.path.insert(0,'C:/Source/wasdify/build/research-deps')
 from unicorn import Uc,UC_ARCH_X86,UC_MODE_16,UC_HOOK_CODE
 from unicorn import x86_const as R
 

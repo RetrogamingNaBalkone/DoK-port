@@ -125,69 +125,69 @@ if ($Compiler -eq 'zig') {
         & ./build/gba/host/dok-sound-tests.exe
         if ($LASTEXITCODE -ne 0) { throw 'Sound tests failed' }
         if ($CrossChecks) {
-            & $ZigExe cc -target x86_64-linux-musl -static -std=c11 -Wall -Wextra -Werror -O2 -I include ports/gba/src/ai.c ports/gba/src/combat.c ports/gba/src/items.c ports/gba/src/runtime.c ports/gba/src/rom_assets.c ports/gba/src/movement.c ports/gba/src/collision.c ports/gba/src/scheduler.c ports/gba/src/image.c ports/gba/src/animation.c ports/gba/src/level.c ports/gba/src/world.c ports/gba/src/res.c ports/gba/tests/test_ai.c -o build/gba/host/dok-ai-tests-linux
+            & $ZigExe cc -target x86_64-linux-musl -static -std=c11 -Wall -Wextra -Werror -O2 -I ports/gba/include ports/gba/src/ai.c ports/gba/src/combat.c ports/gba/src/items.c ports/gba/src/runtime.c ports/gba/src/rom_assets.c ports/gba/src/movement.c ports/gba/src/collision.c ports/gba/src/scheduler.c ports/gba/src/image.c ports/gba/src/animation.c ports/gba/src/level.c ports/gba/src/world.c ports/gba/src/res.c ports/gba/tests/test_ai.c -o build/gba/host/dok-ai-tests-linux
             if ($LASTEXITCODE -ne 0) { throw 'Linux AI build failed' }
-            & $ZigExe cc -target x86_64-linux-musl -static -std=c11 -Wall -Wextra -Werror -O2 -I include ports/gba/src/ai.c ports/gba/src/combat.c ports/gba/src/items.c ports/gba/src/runtime.c ports/gba/src/rom_assets.c ports/gba/src/movement.c ports/gba/src/collision.c ports/gba/src/scheduler.c ports/gba/src/image.c ports/gba/src/animation.c ports/gba/src/level.c ports/gba/src/world.c ports/gba/src/res.c ports/gba/tests/test_ai_combat.c -o build/gba/host/dok-ai-combat-tests-linux
+            & $ZigExe cc -target x86_64-linux-musl -static -std=c11 -Wall -Wextra -Werror -O2 -I ports/gba/include ports/gba/src/ai.c ports/gba/src/combat.c ports/gba/src/items.c ports/gba/src/runtime.c ports/gba/src/rom_assets.c ports/gba/src/movement.c ports/gba/src/collision.c ports/gba/src/scheduler.c ports/gba/src/image.c ports/gba/src/animation.c ports/gba/src/level.c ports/gba/src/world.c ports/gba/src/res.c ports/gba/tests/test_ai_combat.c -o build/gba/host/dok-ai-combat-tests-linux
             if($LASTEXITCODE -ne 0){throw 'G15 Linux compile failed'}
-            & $ZigExe cc -target thumb-freestanding-eabi -mcpu=arm7tdmi -ffreestanding -std=c11 -Wall -Wextra -Werror -O2 -I include -c ports/gba/src/ai.c -o build/gba/host/ai-arm7tdmi.o
+            & $ZigExe cc -target thumb-freestanding-eabi -mcpu=arm7tdmi -ffreestanding -std=c11 -Wall -Wextra -Werror -O2 -I ports/gba/include -c ports/gba/src/ai.c -o build/gba/host/ai-arm7tdmi.o
             if ($LASTEXITCODE -ne 0) { throw 'Thumb AI compile failed' }
-            & $ZigExe cc -target x86_64-linux-musl -static -std=c11 -Wall -Wextra -Werror -O2 -I include -DDOK_RUNTIME_ROM_ONLY ports/gba/src/combat.c ports/gba/src/items.c ports/gba/src/runtime.c ports/gba/src/rom_assets.c ports/gba/src/image.c ports/gba/src/animation.c ports/gba/src/movement.c ports/gba/src/collision.c ports/gba/tests/test_combat.c -o build/gba/host/dok-combat-tests-linux
+            & $ZigExe cc -target x86_64-linux-musl -static -std=c11 -Wall -Wextra -Werror -O2 -I ports/gba/include -DDOK_RUNTIME_ROM_ONLY ports/gba/src/combat.c ports/gba/src/items.c ports/gba/src/runtime.c ports/gba/src/rom_assets.c ports/gba/src/image.c ports/gba/src/animation.c ports/gba/src/movement.c ports/gba/src/collision.c ports/gba/tests/test_combat.c -o build/gba/host/dok-combat-tests-linux
             if ($LASTEXITCODE -ne 0) { throw 'Linux combat build failed' }
-            & $ZigExe cc -target thumb-freestanding-eabi -mcpu=arm7tdmi -ffreestanding -std=c11 -Wall -Wextra -Werror -O2 -I include -c ports/gba/src/combat.c -o build/gba/host/combat-arm7tdmi.o
+            & $ZigExe cc -target thumb-freestanding-eabi -mcpu=arm7tdmi -ffreestanding -std=c11 -Wall -Wextra -Werror -O2 -I ports/gba/include -c ports/gba/src/combat.c -o build/gba/host/combat-arm7tdmi.o
             if ($LASTEXITCODE -ne 0) { throw 'Thumb combat compile failed' }
-            & $ZigExe cc -target x86_64-linux-musl -static -std=c11 -Wall -Wextra -Werror -O2 -I include ports/gba/src/items.c ports/gba/tests/test_items.c -o build/gba/host/dok-items-tests-linux
+            & $ZigExe cc -target x86_64-linux-musl -static -std=c11 -Wall -Wextra -Werror -O2 -I ports/gba/include ports/gba/src/items.c ports/gba/tests/test_items.c -o build/gba/host/dok-items-tests-linux
             if ($LASTEXITCODE -ne 0) { throw 'Linux items build failed' }
-            & $ZigExe cc -target thumb-freestanding-eabi -mcpu=arm7tdmi -ffreestanding -std=c11 -Wall -Wextra -Werror -O2 -I include -c ports/gba/src/items.c -o build/gba/host/items-arm7tdmi.o
+            & $ZigExe cc -target thumb-freestanding-eabi -mcpu=arm7tdmi -ffreestanding -std=c11 -Wall -Wextra -Werror -O2 -I ports/gba/include -c ports/gba/src/items.c -o build/gba/host/items-arm7tdmi.o
             if ($LASTEXITCODE -ne 0) { throw 'Thumb items compile failed' }
-            & $ZigExe cc -target x86_64-linux-musl -static -std=c11 -Wall -Wextra -Werror -O2 -I include ports/gba/src/interactions.c ports/gba/src/scheduler.c ports/gba/src/movement.c ports/gba/src/collision.c ports/gba/tests/interactions_cases.c ports/gba/tests/test_interactions.c -o build/gba/host/dok-interactions-tests-linux
+            & $ZigExe cc -target x86_64-linux-musl -static -std=c11 -Wall -Wextra -Werror -O2 -I ports/gba/include ports/gba/src/interactions.c ports/gba/src/scheduler.c ports/gba/src/movement.c ports/gba/src/collision.c ports/gba/tests/interactions_cases.c ports/gba/tests/test_interactions.c -o build/gba/host/dok-interactions-tests-linux
             if ($LASTEXITCODE -ne 0) { throw 'Linux interactions build failed' }
-            & $ZigExe cc -target thumb-freestanding-eabi -mcpu=arm7tdmi -ffreestanding -std=c11 -Wall -Wextra -Werror -O2 -I include -c ports/gba/src/interactions.c -o build/gba/host/interactions-arm7tdmi.o
+            & $ZigExe cc -target thumb-freestanding-eabi -mcpu=arm7tdmi -ffreestanding -std=c11 -Wall -Wextra -Werror -O2 -I ports/gba/include -c ports/gba/src/interactions.c -o build/gba/host/interactions-arm7tdmi.o
             if ($LASTEXITCODE -ne 0) { throw 'Thumb interactions compile failed' }
-            & $ZigExe cc -target x86_64-linux-musl -static -std=c11 -Wall -Wextra -Werror -O2 -I include ports/gba/src/movement.c ports/gba/src/collision.c ports/gba/tests/collision_cases.c ports/gba/tests/test_collision.c -o build/gba/host/dok-collision-tests-linux
+            & $ZigExe cc -target x86_64-linux-musl -static -std=c11 -Wall -Wextra -Werror -O2 -I ports/gba/include ports/gba/src/movement.c ports/gba/src/collision.c ports/gba/tests/collision_cases.c ports/gba/tests/test_collision.c -o build/gba/host/dok-collision-tests-linux
             if ($LASTEXITCODE -ne 0) { throw 'Linux collision suite build failed' }
-            & $ZigExe cc -target thumb-freestanding-eabi -mcpu=arm7tdmi -ffreestanding -std=c11 -Wall -Wextra -Werror -O2 -I include -c ports/gba/src/collision.c -o build/gba/host/collision-arm7tdmi.o
+            & $ZigExe cc -target thumb-freestanding-eabi -mcpu=arm7tdmi -ffreestanding -std=c11 -Wall -Wextra -Werror -O2 -I ports/gba/include -c ports/gba/src/collision.c -o build/gba/host/collision-arm7tdmi.o
             if ($LASTEXITCODE -ne 0) { throw 'Thumb collision compile failed' }
-            & $ZigExe cc -target x86_64-linux-musl -static -std=c11 -Wall -Wextra -Werror -O2 -I include ports/gba/src/movement.c ports/gba/tests/movement_cases.c ports/gba/tests/test_movement.c -o build/gba/host/dok-movement-tests-linux
+            & $ZigExe cc -target x86_64-linux-musl -static -std=c11 -Wall -Wextra -Werror -O2 -I ports/gba/include ports/gba/src/movement.c ports/gba/tests/movement_cases.c ports/gba/tests/test_movement.c -o build/gba/host/dok-movement-tests-linux
             if ($LASTEXITCODE -ne 0) { throw 'Linux movement tests build failed' }
-            & $ZigExe cc -target thumb-freestanding-eabi -mcpu=arm7tdmi -ffreestanding -std=c11 -Wall -Wextra -Werror -O2 -I include -c ports/gba/src/movement.c -o build/gba/host/movement-arm7tdmi.o
+            & $ZigExe cc -target thumb-freestanding-eabi -mcpu=arm7tdmi -ffreestanding -std=c11 -Wall -Wextra -Werror -O2 -I ports/gba/include -c ports/gba/src/movement.c -o build/gba/host/movement-arm7tdmi.o
             if ($LASTEXITCODE -ne 0) { throw 'ARM movement compile failed' }
-            & $ZigExe cc -target x86_64-linux-musl -static -std=c11 -Wall -Wextra -Werror -O2 -I include ports/gba/src/scheduler.c ports/gba/src/clock.c ports/gba/tests/time_cases.c ports/gba/tests/test_time.c -o build/gba/host/dok-time-tests-linux
+            & $ZigExe cc -target x86_64-linux-musl -static -std=c11 -Wall -Wextra -Werror -O2 -I ports/gba/include ports/gba/src/scheduler.c ports/gba/src/clock.c ports/gba/tests/time_cases.c ports/gba/tests/test_time.c -o build/gba/host/dok-time-tests-linux
             if ($LASTEXITCODE -ne 0) { throw 'Linux time tests build failed' }
-            & $ZigExe cc -target x86_64-linux-musl -static -std=c11 -Wall -Wextra -Werror -O2 -I include ports/gba/src/res.c ports/gba/tools/res_tool.c -o build/gba/host/dok-res-linux
+            & $ZigExe cc -target x86_64-linux-musl -static -std=c11 -Wall -Wextra -Werror -O2 -I ports/gba/include ports/gba/src/res.c ports/gba/tools/res_tool.c -o build/gba/host/dok-res-linux
             if ($LASTEXITCODE -ne 0) { throw 'Linux resource tool build failed' }
-            & $ZigExe cc -target x86_64-linux-musl -static -std=c11 -Wall -Wextra -Werror -O2 -I include ports/gba/src/native_state.c ports/gba/tests/test_native_state.c -o build/gba/host/dok-native-tests-linux
+            & $ZigExe cc -target x86_64-linux-musl -static -std=c11 -Wall -Wextra -Werror -O2 -I ports/gba/include ports/gba/src/native_state.c ports/gba/tests/test_native_state.c -o build/gba/host/dok-native-tests-linux
             if ($LASTEXITCODE -ne 0) { throw 'Linux state tests build failed' }
-            & $ZigExe cc -target thumb-freestanding-eabi -mcpu=arm7tdmi -ffreestanding -std=c11 -Wall -Wextra -Werror -O2 -I include -c ports/gba/src/native_state.c -o build/gba/host/native-state-arm7tdmi.o
+            & $ZigExe cc -target thumb-freestanding-eabi -mcpu=arm7tdmi -ffreestanding -std=c11 -Wall -Wextra -Werror -O2 -I ports/gba/include -c ports/gba/src/native_state.c -o build/gba/host/native-state-arm7tdmi.o
             if ($LASTEXITCODE -ne 0) { throw 'ARM7TDMI compile failed' }
-            & $ZigExe cc -target x86_64-linux-musl -static -std=c11 -Wall -Wextra -Werror -O2 -I include ports/gba/src/image.c ports/gba/src/animation.c ports/gba/tools/animation_tool.c -o build/gba/host/dok-anim-linux
+            & $ZigExe cc -target x86_64-linux-musl -static -std=c11 -Wall -Wextra -Werror -O2 -I ports/gba/include ports/gba/src/image.c ports/gba/src/animation.c ports/gba/tools/animation_tool.c -o build/gba/host/dok-anim-linux
             if ($LASTEXITCODE -ne 0) { throw 'Linux animation tool build failed' }
-            & $ZigExe cc -target thumb-freestanding-eabi -mcpu=arm7tdmi -ffreestanding -std=c11 -Wall -Wextra -Werror -O2 -I include -c ports/gba/src/image.c -o build/gba/host/image-arm7tdmi.o
+            & $ZigExe cc -target thumb-freestanding-eabi -mcpu=arm7tdmi -ffreestanding -std=c11 -Wall -Wextra -Werror -O2 -I ports/gba/include -c ports/gba/src/image.c -o build/gba/host/image-arm7tdmi.o
             if ($LASTEXITCODE -ne 0) { throw 'ARM image compile failed' }
-            & $ZigExe cc -target thumb-freestanding-eabi -mcpu=arm7tdmi -ffreestanding -std=c11 -Wall -Wextra -Werror -O2 -I include -c ports/gba/src/animation.c -o build/gba/host/animation-arm7tdmi.o
+            & $ZigExe cc -target thumb-freestanding-eabi -mcpu=arm7tdmi -ffreestanding -std=c11 -Wall -Wextra -Werror -O2 -I ports/gba/include -c ports/gba/src/animation.c -o build/gba/host/animation-arm7tdmi.o
             if ($LASTEXITCODE -ne 0) { throw 'ARM animation compile failed' }
-            & $ZigExe cc -target x86_64-linux-musl -static -std=c11 -Wall -Wextra -Werror -O2 -I include ports/gba/src/sound.c ports/gba/tools/sound_tool.c -o build/gba/host/dok-sound-linux
+            & $ZigExe cc -target x86_64-linux-musl -static -std=c11 -Wall -Wextra -Werror -O2 -I ports/gba/include ports/gba/src/sound.c ports/gba/tools/sound_tool.c -o build/gba/host/dok-sound-linux
             if ($LASTEXITCODE -ne 0) { throw 'Linux sound tool build failed' }
-            & $ZigExe cc -target thumb-freestanding-eabi -mcpu=arm7tdmi -ffreestanding -std=c11 -Wall -Wextra -Werror -O2 -I include -c ports/gba/src/sound.c -o build/gba/host/sound-arm7tdmi.o
+            & $ZigExe cc -target thumb-freestanding-eabi -mcpu=arm7tdmi -ffreestanding -std=c11 -Wall -Wextra -Werror -O2 -I ports/gba/include -c ports/gba/src/sound.c -o build/gba/host/sound-arm7tdmi.o
             if ($LASTEXITCODE -ne 0) { throw 'ARM sound compile failed' }
-            & $ZigExe cc -target x86_64-linux-musl -static -std=c11 -Wall -Wextra -Werror -O2 -I include ports/gba/src/level.c ports/gba/tools/level_tool.c -o build/gba/host/dok-level-linux
+            & $ZigExe cc -target x86_64-linux-musl -static -std=c11 -Wall -Wextra -Werror -O2 -I ports/gba/include ports/gba/src/level.c ports/gba/tools/level_tool.c -o build/gba/host/dok-level-linux
             if ($LASTEXITCODE -ne 0) { throw 'Linux level tool build failed' }
-            & $ZigExe cc -target thumb-freestanding-eabi -mcpu=arm7tdmi -ffreestanding -std=c11 -Wall -Wextra -Werror -O2 -I include -c ports/gba/src/level.c -o build/gba/host/level-arm7tdmi.o
+            & $ZigExe cc -target thumb-freestanding-eabi -mcpu=arm7tdmi -ffreestanding -std=c11 -Wall -Wextra -Werror -O2 -I ports/gba/include -c ports/gba/src/level.c -o build/gba/host/level-arm7tdmi.o
             if ($LASTEXITCODE -ne 0) { throw 'ARM level compile failed' }
-            & $ZigExe cc -target x86_64-linux-musl -static -std=c11 -Wall -Wextra -Werror -O2 -I include ports/gba/src/res.c ports/gba/src/image.c ports/gba/src/animation.c ports/gba/src/level.c ports/gba/src/world.c ports/gba/tools/world_tool.c -o build/gba/host/dok-world-linux
+            & $ZigExe cc -target x86_64-linux-musl -static -std=c11 -Wall -Wextra -Werror -O2 -I ports/gba/include ports/gba/src/res.c ports/gba/src/image.c ports/gba/src/animation.c ports/gba/src/level.c ports/gba/src/world.c ports/gba/tools/world_tool.c -o build/gba/host/dok-world-linux
             if ($LASTEXITCODE -ne 0) { throw 'Linux world tool build failed' }
-            & $ZigExe cc -target thumb-freestanding-eabi -mcpu=arm7tdmi -ffreestanding -std=c11 -Wall -Wextra -Werror -O2 -I include -c ports/gba/src/world.c -o build/gba/host/world-arm7tdmi.o
+            & $ZigExe cc -target thumb-freestanding-eabi -mcpu=arm7tdmi -ffreestanding -std=c11 -Wall -Wextra -Werror -O2 -I ports/gba/include -c ports/gba/src/world.c -o build/gba/host/world-arm7tdmi.o
             if ($LASTEXITCODE -ne 0) { throw 'ARM world compile failed' }
-            & $ZigExe cc -target x86_64-linux-musl -static -std=c11 -Wall -Wextra -Werror -O2 -I include ports/gba/src/res.c ports/gba/src/image.c ports/gba/src/animation.c ports/gba/src/level.c ports/gba/src/world.c ports/gba/src/runtime.c ports/gba/tools/runtime_tool.c -o build/gba/host/dok-runtime-linux
+            & $ZigExe cc -target x86_64-linux-musl -static -std=c11 -Wall -Wextra -Werror -O2 -I ports/gba/include ports/gba/src/res.c ports/gba/src/image.c ports/gba/src/animation.c ports/gba/src/level.c ports/gba/src/world.c ports/gba/src/runtime.c ports/gba/tools/runtime_tool.c -o build/gba/host/dok-runtime-linux
             if ($LASTEXITCODE -ne 0) { throw 'Linux runtime tool build failed' }
-            & $ZigExe cc -target thumb-freestanding-eabi -mcpu=arm7tdmi -ffreestanding -std=c11 -Wall -Wextra -Werror -O2 -I include -c ports/gba/src/runtime.c -o build/gba/host/runtime-arm7tdmi.o
+            & $ZigExe cc -target thumb-freestanding-eabi -mcpu=arm7tdmi -ffreestanding -std=c11 -Wall -Wextra -Werror -O2 -I ports/gba/include -c ports/gba/src/runtime.c -o build/gba/host/runtime-arm7tdmi.o
             if ($LASTEXITCODE -ne 0) { throw 'ARM runtime compile failed' }
-            & $ZigExe cc -target x86_64-linux-musl -static -std=c11 -Wall -Wextra -Werror -O2 -I include -DDOK_RUNTIME_ROM_ONLY ports/gba/src/runtime.c ports/gba/src/rom_assets.c ports/gba/tools/rom_assets_tool.c -o build/gba/host/dok-rom-assets-linux
+            & $ZigExe cc -target x86_64-linux-musl -static -std=c11 -Wall -Wextra -Werror -O2 -I ports/gba/include -DDOK_RUNTIME_ROM_ONLY ports/gba/src/runtime.c ports/gba/src/rom_assets.c ports/gba/tools/rom_assets_tool.c -o build/gba/host/dok-rom-assets-linux
             if ($LASTEXITCODE -ne 0) { throw 'Linux ROM assets tool build failed' }
-            & $ZigExe cc -target thumb-freestanding-eabi -mcpu=arm7tdmi -ffreestanding -std=c11 -Wall -Wextra -Werror -O2 -I include -c ports/gba/src/rom_assets.c -o build/gba/host/rom-assets-arm7tdmi.o
+            & $ZigExe cc -target thumb-freestanding-eabi -mcpu=arm7tdmi -ffreestanding -std=c11 -Wall -Wextra -Werror -O2 -I ports/gba/include -c ports/gba/src/rom_assets.c -o build/gba/host/rom-assets-arm7tdmi.o
             if ($LASTEXITCODE -ne 0) { throw 'ARM ROM reader compile failed' }
-            & $ZigExe cc -target x86_64-linux-musl -static -std=c11 -Wall -Wextra -Werror -O2 -I include -DDOK_RUNTIME_ROM_ONLY ports/gba/src/runtime.c ports/gba/src/rom_assets.c ports/gba/src/image.c ports/gba/src/animation.c ports/gba/src/projection.c ports/gba/src/renderer.c ports/gba/tools/render_tool.c -o build/gba/host/dok-render-linux
+            & $ZigExe cc -target x86_64-linux-musl -static -std=c11 -Wall -Wextra -Werror -O2 -I ports/gba/include -DDOK_RUNTIME_ROM_ONLY ports/gba/src/runtime.c ports/gba/src/rom_assets.c ports/gba/src/image.c ports/gba/src/animation.c ports/gba/src/projection.c ports/gba/src/renderer.c ports/gba/tools/render_tool.c -o build/gba/host/dok-render-linux
             if ($LASTEXITCODE -ne 0) { throw 'Linux static renderer build failed' }
-            & $ZigExe cc -target thumb-freestanding-eabi -mcpu=arm7tdmi -ffreestanding -std=c11 -Wall -Wextra -Werror -O2 -I include -c ports/gba/src/renderer.c -o build/gba/host/renderer-arm7tdmi.o
+            & $ZigExe cc -target thumb-freestanding-eabi -mcpu=arm7tdmi -ffreestanding -std=c11 -Wall -Wextra -Werror -O2 -I ports/gba/include -c ports/gba/src/renderer.c -o build/gba/host/renderer-arm7tdmi.o
             if ($LASTEXITCODE -ne 0) { throw 'ARM renderer compile failed' }
             Write-Output 'Linux static binaries and ARM7TDMI Thumb objects compiled; cross-target binaries were not executed.'
         }
@@ -202,57 +202,57 @@ $taskBatch = @'
 call "%~1" -arch=x64 -host_arch=x64 >nul
 if errorlevel 1 exit /b 1
 cd /d "%~2"
-cl /nologo /std:c11 /W4 /WX /O2 /D_CRT_SECURE_NO_WARNINGS /I include ports/gba/src/interactions.c ports/gba/src/scheduler.c ports/gba/src/movement.c ports/gba/src/collision.c ports/gba/tests/interactions_cases.c ports/gba/tests/test_interactions.c /Fo:build/gba/host/ /Fe:build/gba/host/dok-interactions-tests.exe
+cl /nologo /std:c11 /W4 /WX /O2 /D_CRT_SECURE_NO_WARNINGS /I ports/gba/include ports/gba/src/interactions.c ports/gba/src/scheduler.c ports/gba/src/movement.c ports/gba/src/collision.c ports/gba/tests/interactions_cases.c ports/gba/tests/test_interactions.c /Fo:build/gba/host/ /Fe:build/gba/host/dok-interactions-tests.exe
 if errorlevel 1 exit /b 1
 build\gba\host\dok-interactions-tests.exe
 if errorlevel 1 exit /b 1
-cl /nologo /std:c11 /W4 /WX /O2 /D_CRT_SECURE_NO_WARNINGS /I include ports/gba/src/interactions.c ports/gba/src/scheduler.c ports/gba/src/movement.c ports/gba/src/collision.c ports/gba/tools/interactions_probe.c /Fo:build/gba/host/ /Fe:build/gba/host/dok-interactions-probe.exe
+cl /nologo /std:c11 /W4 /WX /O2 /D_CRT_SECURE_NO_WARNINGS /I ports/gba/include ports/gba/src/interactions.c ports/gba/src/scheduler.c ports/gba/src/movement.c ports/gba/src/collision.c ports/gba/tools/interactions_probe.c /Fo:build/gba/host/ /Fe:build/gba/host/dok-interactions-probe.exe
 if errorlevel 1 exit /b 1
-cl /nologo /std:c11 /W4 /WX /O2 /D_CRT_SECURE_NO_WARNINGS /DDOK_RUNTIME_ROM_ONLY /I include ports/gba/src/runtime.c ports/gba/src/rom_assets.c ports/gba/src/interactions.c ports/gba/src/scheduler.c ports/gba/src/movement.c ports/gba/src/collision.c ports/gba/tools/interactions_scenarios.c /Fo:build/gba/host/ /Fe:build/gba/host/dok-interactions-scenarios.exe
+cl /nologo /std:c11 /W4 /WX /O2 /D_CRT_SECURE_NO_WARNINGS /DDOK_RUNTIME_ROM_ONLY /I ports/gba/include ports/gba/src/runtime.c ports/gba/src/rom_assets.c ports/gba/src/interactions.c ports/gba/src/scheduler.c ports/gba/src/movement.c ports/gba/src/collision.c ports/gba/tools/interactions_scenarios.c /Fo:build/gba/host/ /Fe:build/gba/host/dok-interactions-scenarios.exe
 if errorlevel 1 exit /b 1
-cl /nologo /std:c11 /W4 /WX /O2 /D_CRT_SECURE_NO_WARNINGS /I include ports/gba/src/movement.c ports/gba/tests/movement_cases.c ports/gba/tests/test_movement.c /Fo:build/gba/host/ /Fe:build/gba/host/dok-movement-tests.exe
+cl /nologo /std:c11 /W4 /WX /O2 /D_CRT_SECURE_NO_WARNINGS /I ports/gba/include ports/gba/src/movement.c ports/gba/tests/movement_cases.c ports/gba/tests/test_movement.c /Fo:build/gba/host/ /Fe:build/gba/host/dok-movement-tests.exe
 if errorlevel 1 exit /b 1
 build\gba\host\dok-movement-tests.exe
 if errorlevel 1 exit /b 1
-cl /nologo /std:c11 /W4 /WX /O2 /D_CRT_SECURE_NO_WARNINGS /I include ports/gba/src/movement.c ports/gba/tools/movement_probe.c /Fo:build/gba/host/ /Fe:build/gba/host/dok-movement-probe.exe
+cl /nologo /std:c11 /W4 /WX /O2 /D_CRT_SECURE_NO_WARNINGS /I ports/gba/include ports/gba/src/movement.c ports/gba/tools/movement_probe.c /Fo:build/gba/host/ /Fe:build/gba/host/dok-movement-probe.exe
 if errorlevel 1 exit /b 1
-cl /nologo /std:c11 /W4 /WX /O2 /D_CRT_SECURE_NO_WARNINGS /DDOK_RUNTIME_ROM_ONLY /I include ports/gba/src/runtime.c ports/gba/src/rom_assets.c ports/gba/src/image.c ports/gba/src/animation.c ports/gba/src/projection.c ports/gba/src/renderer.c ports/gba/tools/render_tool.c /Fo:build/gba/host/ /Fe:build/gba/host/dok-render.exe
+cl /nologo /std:c11 /W4 /WX /O2 /D_CRT_SECURE_NO_WARNINGS /DDOK_RUNTIME_ROM_ONLY /I ports/gba/include ports/gba/src/runtime.c ports/gba/src/rom_assets.c ports/gba/src/image.c ports/gba/src/animation.c ports/gba/src/projection.c ports/gba/src/renderer.c ports/gba/tools/render_tool.c /Fo:build/gba/host/ /Fe:build/gba/host/dok-render.exe
 if errorlevel 1 exit /b 1
-cl /nologo /std:c11 /W4 /WX /O2 /D_CRT_SECURE_NO_WARNINGS /DDOK_RUNTIME_ROM_ONLY /DDOK_RENDER_FACE_CAPACITY=1 /I include ports/gba/src/runtime.c ports/gba/src/rom_assets.c ports/gba/src/image.c ports/gba/src/animation.c ports/gba/src/projection.c ports/gba/src/renderer.c ports/gba/tools/render_tool.c /Fo:build/gba/host/ /Fe:build/gba/host/dok-render-one-face.exe
+cl /nologo /std:c11 /W4 /WX /O2 /D_CRT_SECURE_NO_WARNINGS /DDOK_RUNTIME_ROM_ONLY /DDOK_RENDER_FACE_CAPACITY=1 /I ports/gba/include ports/gba/src/runtime.c ports/gba/src/rom_assets.c ports/gba/src/image.c ports/gba/src/animation.c ports/gba/src/projection.c ports/gba/src/renderer.c ports/gba/tools/render_tool.c /Fo:build/gba/host/ /Fe:build/gba/host/dok-render-one-face.exe
 if errorlevel 1 exit /b 1
-cl /nologo /std:c11 /W4 /WX /O2 /D_CRT_SECURE_NO_WARNINGS /I include ports/gba/src/projection.c ports/gba/tools/projection_probe.c /Fo:build/gba/host/ /Fe:build/gba/host/dok-projection-probe.exe
+cl /nologo /std:c11 /W4 /WX /O2 /D_CRT_SECURE_NO_WARNINGS /I ports/gba/include ports/gba/src/projection.c ports/gba/tools/projection_probe.c /Fo:build/gba/host/ /Fe:build/gba/host/dok-projection-probe.exe
 if errorlevel 1 exit /b 1
-cl /nologo /std:c11 /W4 /WX /O2 /D_CRT_SECURE_NO_WARNINGS /I include ports/gba/src/res.c ports/gba/tools/res_tool.c /Fo:build/gba/host/ /Fe:build/gba/host/dok-res.exe
+cl /nologo /std:c11 /W4 /WX /O2 /D_CRT_SECURE_NO_WARNINGS /I ports/gba/include ports/gba/src/res.c ports/gba/tools/res_tool.c /Fo:build/gba/host/ /Fe:build/gba/host/dok-res.exe
 if errorlevel 1 exit /b 1
-cl /nologo /std:c11 /W4 /WX /O2 /I include ports/gba/src/res.c ports/gba/tests/test_res.c /Fo:build/gba/host/ /Fe:build/gba/host/dok-res-tests.exe
+cl /nologo /std:c11 /W4 /WX /O2 /I ports/gba/include ports/gba/src/res.c ports/gba/tests/test_res.c /Fo:build/gba/host/ /Fe:build/gba/host/dok-res-tests.exe
 if errorlevel 1 exit /b 1
-cl /nologo /std:c11 /W4 /WX /O2 /I include ports/gba/src/native_state.c ports/gba/tests/test_native_state.c /Fo:build/gba/host/ /Fe:build/gba/host/dok-native-tests.exe
+cl /nologo /std:c11 /W4 /WX /O2 /I ports/gba/include ports/gba/src/native_state.c ports/gba/tests/test_native_state.c /Fo:build/gba/host/ /Fe:build/gba/host/dok-native-tests.exe
 if errorlevel 1 exit /b 1
-cl /nologo /std:c11 /W4 /WX /O2 /D_CRT_SECURE_NO_WARNINGS /I include ports/gba/src/image.c ports/gba/src/animation.c ports/gba/tools/animation_tool.c /Fo:build/gba/host/ /Fe:build/gba/host/dok-anim.exe
+cl /nologo /std:c11 /W4 /WX /O2 /D_CRT_SECURE_NO_WARNINGS /I ports/gba/include ports/gba/src/image.c ports/gba/src/animation.c ports/gba/tools/animation_tool.c /Fo:build/gba/host/ /Fe:build/gba/host/dok-anim.exe
 if errorlevel 1 exit /b 1
-cl /nologo /std:c11 /W4 /WX /O2 /I include ports/gba/src/image.c ports/gba/src/animation.c ports/gba/tests/test_animation.c /Fo:build/gba/host/ /Fe:build/gba/host/dok-animation-tests.exe
+cl /nologo /std:c11 /W4 /WX /O2 /I ports/gba/include ports/gba/src/image.c ports/gba/src/animation.c ports/gba/tests/test_animation.c /Fo:build/gba/host/ /Fe:build/gba/host/dok-animation-tests.exe
 if errorlevel 1 exit /b 1
-cl /nologo /std:c11 /W4 /WX /O2 /D_CRT_SECURE_NO_WARNINGS /I include ports/gba/src/sound.c ports/gba/tools/sound_tool.c /Fo:build/gba/host/ /Fe:build/gba/host/dok-sound.exe
+cl /nologo /std:c11 /W4 /WX /O2 /D_CRT_SECURE_NO_WARNINGS /I ports/gba/include ports/gba/src/sound.c ports/gba/tools/sound_tool.c /Fo:build/gba/host/ /Fe:build/gba/host/dok-sound.exe
 if errorlevel 1 exit /b 1
-cl /nologo /std:c11 /W4 /WX /O2 /I include ports/gba/src/sound.c ports/gba/tests/test_sound.c /Fo:build/gba/host/ /Fe:build/gba/host/dok-sound-tests.exe
+cl /nologo /std:c11 /W4 /WX /O2 /I ports/gba/include ports/gba/src/sound.c ports/gba/tests/test_sound.c /Fo:build/gba/host/ /Fe:build/gba/host/dok-sound-tests.exe
 if errorlevel 1 exit /b 1
-cl /nologo /std:c11 /W4 /WX /O2 /D_CRT_SECURE_NO_WARNINGS /I include ports/gba/src/level.c ports/gba/tools/level_tool.c /Fo:build/gba/host/ /Fe:build/gba/host/dok-level.exe
+cl /nologo /std:c11 /W4 /WX /O2 /D_CRT_SECURE_NO_WARNINGS /I ports/gba/include ports/gba/src/level.c ports/gba/tools/level_tool.c /Fo:build/gba/host/ /Fe:build/gba/host/dok-level.exe
 if errorlevel 1 exit /b 1
-cl /nologo /std:c11 /W4 /WX /O2 /I include ports/gba/src/level.c ports/gba/tests/test_level.c /Fo:build/gba/host/ /Fe:build/gba/host/dok-level-tests.exe
+cl /nologo /std:c11 /W4 /WX /O2 /I ports/gba/include ports/gba/src/level.c ports/gba/tests/test_level.c /Fo:build/gba/host/ /Fe:build/gba/host/dok-level-tests.exe
 if errorlevel 1 exit /b 1
-cl /nologo /std:c11 /W4 /WX /O2 /D_CRT_SECURE_NO_WARNINGS /I include ports/gba/src/res.c ports/gba/src/image.c ports/gba/src/animation.c ports/gba/src/level.c ports/gba/src/world.c ports/gba/tools/world_tool.c /Fo:build/gba/host/ /Fe:build/gba/host/dok-world.exe
+cl /nologo /std:c11 /W4 /WX /O2 /D_CRT_SECURE_NO_WARNINGS /I ports/gba/include ports/gba/src/res.c ports/gba/src/image.c ports/gba/src/animation.c ports/gba/src/level.c ports/gba/src/world.c ports/gba/tools/world_tool.c /Fo:build/gba/host/ /Fe:build/gba/host/dok-world.exe
 if errorlevel 1 exit /b 1
-cl /nologo /std:c11 /W4 /WX /O2 /I include ports/gba/src/res.c ports/gba/src/image.c ports/gba/src/animation.c ports/gba/src/level.c ports/gba/src/world.c ports/gba/src/native_state.c ports/gba/tests/test_world.c /Fo:build/gba/host/ /Fe:build/gba/host/dok-world-tests.exe
+cl /nologo /std:c11 /W4 /WX /O2 /I ports/gba/include ports/gba/src/res.c ports/gba/src/image.c ports/gba/src/animation.c ports/gba/src/level.c ports/gba/src/world.c ports/gba/src/native_state.c ports/gba/tests/test_world.c /Fo:build/gba/host/ /Fe:build/gba/host/dok-world-tests.exe
 if errorlevel 1 exit /b 1
-cl /nologo /std:c11 /W4 /WX /O2 /D_CRT_SECURE_NO_WARNINGS /I include ports/gba/src/res.c ports/gba/src/image.c ports/gba/src/animation.c ports/gba/src/level.c ports/gba/src/world.c ports/gba/src/runtime.c ports/gba/tools/runtime_tool.c /Fo:build/gba/host/ /Fe:build/gba/host/dok-runtime.exe
+cl /nologo /std:c11 /W4 /WX /O2 /D_CRT_SECURE_NO_WARNINGS /I ports/gba/include ports/gba/src/res.c ports/gba/src/image.c ports/gba/src/animation.c ports/gba/src/level.c ports/gba/src/world.c ports/gba/src/runtime.c ports/gba/tools/runtime_tool.c /Fo:build/gba/host/ /Fe:build/gba/host/dok-runtime.exe
 if errorlevel 1 exit /b 1
-cl /nologo /std:c11 /W4 /WX /O2 /I include ports/gba/src/res.c ports/gba/src/image.c ports/gba/src/animation.c ports/gba/src/level.c ports/gba/src/world.c ports/gba/src/runtime.c ports/gba/tests/test_runtime.c /Fo:build/gba/host/ /Fe:build/gba/host/dok-runtime-tests.exe
+cl /nologo /std:c11 /W4 /WX /O2 /I ports/gba/include ports/gba/src/res.c ports/gba/src/image.c ports/gba/src/animation.c ports/gba/src/level.c ports/gba/src/world.c ports/gba/src/runtime.c ports/gba/tests/test_runtime.c /Fo:build/gba/host/ /Fe:build/gba/host/dok-runtime-tests.exe
 if errorlevel 1 exit /b 1
-cl /nologo /std:c11 /W4 /WX /O2 /D_CRT_SECURE_NO_WARNINGS /DDOK_RUNTIME_ROM_ONLY /I include ports/gba/src/runtime.c ports/gba/src/rom_assets.c ports/gba/tools/rom_assets_tool.c /Fo:build/gba/host/ /Fe:build/gba/host/dok-rom-assets.exe
+cl /nologo /std:c11 /W4 /WX /O2 /D_CRT_SECURE_NO_WARNINGS /DDOK_RUNTIME_ROM_ONLY /I ports/gba/include ports/gba/src/runtime.c ports/gba/src/rom_assets.c ports/gba/tools/rom_assets_tool.c /Fo:build/gba/host/ /Fe:build/gba/host/dok-rom-assets.exe
 if errorlevel 1 exit /b 1
-cl /nologo /std:c11 /W4 /WX /O2 /DDOK_RUNTIME_ROM_ONLY /I include ports/gba/src/runtime.c ports/gba/src/rom_assets.c ports/gba/tests/test_rom_assets.c /Fo:build/gba/host/ /Fe:build/gba/host/dok-rom-assets-tests.exe
+cl /nologo /std:c11 /W4 /WX /O2 /DDOK_RUNTIME_ROM_ONLY /I ports/gba/include ports/gba/src/runtime.c ports/gba/src/rom_assets.c ports/gba/tests/test_rom_assets.c /Fo:build/gba/host/ /Fe:build/gba/host/dok-rom-assets-tests.exe
 if errorlevel 1 exit /b 1
-cl /nologo /std:c11 /W4 /WX /O2 /I include ports/gba/platform/memory.c ports/gba/tests/test_gba_helpers.c /Fo:build/gba/host/ /Fe:build/gba/host/dok-gba-helper-tests.exe
+cl /nologo /std:c11 /W4 /WX /O2 /I ports/gba/include ports/gba/platform/memory.c ports/gba/tests/test_gba_helpers.c /Fo:build/gba/host/ /Fe:build/gba/host/dok-gba-helper-tests.exe
 if errorlevel 1 exit /b 1
 build\gba\host\dok-rom-assets-tests.exe
 if errorlevel 1 exit /b 1

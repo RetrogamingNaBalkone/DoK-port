@@ -489,7 +489,9 @@ def main():
     parser.add_argument("--packer", type=Path, default=ROOT / "ports/gba/scripts/pack_gba_assets.py")
     parser.add_argument("--tool", type=Path, default=ROOT / "build/gba/host/dok-rom-assets.exe")
     parser.add_argument("--tests", type=Path, default=ROOT / "build/gba/host/dok-rom-assets-tests.exe")
+    parser.add_argument("--report", type=Path, default=ROOT / "analysis/gba/packing-report.json")
     args = parser.parse_args()
+    args.report = args.report.resolve()
     with temporary_workspace(CHECK_ROOT, "repeat-") as temporary:
         verify(args, Path(temporary))
 
@@ -581,7 +583,8 @@ def verify(args, temporary):
     report["originals_unchanged"] = True
     report["source_authentic_modes"] = "not included; original language-specific geometry remains in private G02 controls"
     report["status"] = "passed"
-    save(ROOT / "analysis/gba/packing-report.json", report)
+    args.report.parent.mkdir(parents=True, exist_ok=True)
+    save(args.report, report)
     print(json.dumps({"status": report["status"], "views": len(report["views"]),
                       "resources": len(package.resources), "package_bytes": len(data),
                       "deterministic": True, "originals_unchanged": True}, indent=2))

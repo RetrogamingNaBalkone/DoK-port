@@ -20,6 +20,7 @@ ROOT=Path(__file__).resolve().parents[3]
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--out',type=Path,default=Path('build/gba/g20b'))
+    parser.add_argument('--assets-bin',type=Path,default=Path('build/gba/assets/assets.bin'))
     parser.add_argument('--verify',action='store_true')
     parser.add_argument('--variant',choices=('hw_v128_entity_rect','hw_v128_vblank_only'),default='hw_v128_vblank_only',
                         help='VBlank-protected default; hw_v128_entity_rect retains the Beta 1 early-present control')
@@ -40,9 +41,9 @@ def main():
     run('linux-build',[*common,'-target','x86_64-linux-musl','-static','ports/gba/src/ui.c','ports/gba/tests/test_ui.c','-o',args.out/'ui-tests-linux'])
     run('thumb-build',[*common,'-target','thumb-freestanding-eabi','-mcpu=arm7tdmi','-ffreestanding','-c','ports/gba/src/ui.c','-o',args.out/'ui-thumb.o'])
     run('base-build',['powershell','-NoProfile','-ExecutionPolicy','Bypass','-File','ports/gba/scripts/build-gba.ps1',
-                      '-RendererProbe','-HalfColumns','-OutDir',args.out/'base'])
+                      '-RendererProbe','-HalfColumns','-OutDir',args.out/'base','-AssetsBin',args.assets_bin])
     run('hardware-build',[sys.executable,'ports/gba/scripts/prototype_gba_bsp.py','--base',args.out/'base',
-                          '--out',args.out/'hardware','--variants',args.variant])
+                          '--out',args.out/'hardware','--variants',args.variant,'--assets-bin',args.assets_bin])
     build=args.out/'hardware'/args.variant
     if args.verify:
         run('time-selftest-build',['powershell','-NoProfile','-ExecutionPolicy','Bypass','-File','ports/gba/scripts/build-gba.ps1',
@@ -61,6 +62,7 @@ def main():
     sources=[p for folder in ('ports/gba/src','ports/gba/platform','ports/gba/include/dok') for p in (ROOT/folder).rglob('*') if p.suffix in ('.c','.h','.inc','.S','.ld')]
     sources += [ROOT/'ports/gba/scripts'/name for name in ('ui_copy.py','build_gba_frontend.py','prototype_gba_bsp.py','build-gba.ps1','verify_frontend_gba.py','verify_credits_gba.py','verify_flow_gba.py')]
     result=dict(task='G20B/UI01',rom_sha256=sha(build/'dok-diagnostic.gba'),rom_bytes=(build/'dok-diagnostic.gba').stat().st_size,
+                assets_bin=args.assets_bin.as_posix(),assets_sha256=sha(args.assets_bin),
                 build_dir=build.as_posix(),renderer=args.variant+' / selected2775 architecture',verified=args.verify,
                 host_executed=True,linux_compiled_only=True,thumb_compiled=True,commands=commands,
                 sources={p.relative_to(ROOT).as_posix():sha(p) for p in sources},

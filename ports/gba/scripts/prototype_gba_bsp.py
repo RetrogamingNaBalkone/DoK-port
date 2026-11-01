@@ -451,12 +451,13 @@ def tables(out, assets, include_sides=False, include_zero_spans=False, include_e
 
 
 @clean_objects_after_build
-def build(base,out,variants,unreflected_control=False):
+def build(base,out,variants,unreflected_control=False,assets_bin=None):
     zig=Path(os.environ['LOCALAPPDATA'])/'Programs/Zig/0.13.0/zig.exe'
     out.mkdir(parents=True,exist_ok=True)
     streamed_rows={96 if 'HW_ROWS96' in VARIANTS[v] else 72 if 'HW_ROWS72' in VARIANTS[v] else 128 for v in variants if 'HW_UI_OBJ' in VARIANTS[v]}
     assert len(streamed_rows)<=1,'Build differing HBlank scene row layouts in separate output directories'
-    metadata=tables(out,ROOT/'build/gba/assets/assets.bin',any('SIDES_PRELIT' in VARIANTS[v] for v in variants),
+    assets_bin=Path(assets_bin) if assets_bin else ROOT/'build/gba/assets/assets.bin'
+    metadata=tables(out,assets_bin,any('SIDES_PRELIT' in VARIANTS[v] for v in variants),
                     any('HW_SPAN_SOLID' in VARIANTS[v] for v in variants),
                     any('HW_ENTITY_PRELIT' in VARIANTS[v] for v in variants),
                     any('HW_BG_LOWERED' in VARIANTS[v] for v in variants),
@@ -466,31 +467,31 @@ def build(base,out,variants,unreflected_control=False):
     command([zig,*startup,out/'tables.S','-o',out/'tables.o'])
     if any('HW_ANIMATION_COLUMNS' in VARIANTS[v] for v in variants):
         from gba_animation_columns import build_animation_columns
-        metadata['animation_columns']=build_animation_columns(out,(ROOT/'build/gba/assets/assets.bin').read_bytes())
+        metadata['animation_columns']=build_animation_columns(out,assets_bin.read_bytes())
         command([zig,*startup,out/'animation-columns.S','-o',out/'animation-columns.o'])
     if any('HW_SPARSE_POSTS' in VARIANTS[v] for v in variants):
         from gba_sparse_posts import build_posts
-        metadata['sparse_posts']=build_posts(out,ROOT/'build/gba/assets/assets.bin')
+        metadata['sparse_posts']=build_posts(out,assets_bin)
         command([zig,*startup,out/'sparse-posts.S','-o',out/'sparse-posts.o'])
     stream_metadata=None
     sector_metadata=None
     if any('SECTOR_CLIP' in VARIANTS[v] for v in variants):
         from gba_sector_scene import sector_scene_tables
-        sector_metadata=sector_scene_tables(out,(ROOT/'build/gba/assets/assets.bin').read_bytes())
+        sector_metadata=sector_scene_tables(out,assets_bin.read_bytes())
         command([zig,*startup,out/'sector-tables.S','-o',out/'sector-tables.o'])
     world_obj_metadata=None
     sector_gpu_metadata=None
     if any('SECTOR_GPU' in VARIANTS[v] for v in variants):
         from gba_sector_gpu_assets import sector_gpu_tables
-        sector_gpu_metadata=sector_gpu_tables(out,(ROOT/'build/gba/assets/assets.bin').read_bytes())
+        sector_gpu_metadata=sector_gpu_tables(out,assets_bin.read_bytes())
         command([zig,*startup,out/'sector-gpu-tables.S','-o',out/'sector-gpu-tables.o'])
     if any('HW_WORLD_OBJ' in VARIANTS[v] for v in variants):
         from gba_world_obj_assets import build_world_obj_tables
-        world_obj_metadata=build_world_obj_tables(out,(ROOT/'build/gba/assets/assets.bin').read_bytes())
+        world_obj_metadata=build_world_obj_tables(out,assets_bin.read_bytes())
         command([zig,*startup,out/'world-obj-tables.S','-o',out/'world-obj-tables.o'])
     if any('STREAM_BSP' in VARIANTS[v] for v in variants):
         from gba_stream_scene import runtime_scene_tables
-        stream_metadata=runtime_scene_tables(out,(ROOT/'build/gba/assets/assets.bin').read_bytes())
+        stream_metadata=runtime_scene_tables(out,assets_bin.read_bytes())
         command([zig,*startup,out/'stream-tables.S','-o',out/'stream-tables.o'])
     motion=('flow flow_backend ui ui_backend audio sound audio_backend ai ai_probe '
             'combat combat_probe items movement collision interactions movement_probe '
@@ -763,6 +764,7 @@ def build(base,out,variants,unreflected_control=False):
 
 def main():
     p=argparse.ArgumentParser(description=__doc__)
+    p.add_argument('--assets-bin',type=Path,default=ROOT/'build/gba/assets/assets.bin')
     p.add_argument('--base',type=Path,default=Path('build/gba/select-menu-fix'))
     p.add_argument('--out',type=Path,default=Path('research/experiments/g20a-prototypes'))
     p.add_argument('--variants',nargs='+',choices=VARIANTS,default=list(VARIANTS))
@@ -774,7 +776,7 @@ def main():
         for variant in a.variants:
             VARIANTS[variant]=tuple(d for d in VARIANTS[variant] if d!='HW_FLOOR_FILL')
     os.environ['ZIG_GLOBAL_CACHE_DIR']=str(ROOT/'build/gba/zig-cache')
-    build(a.base,a.out,a.variants,keep_objects=a.keep_objects,unreflected_control=a.unreflected_control)
+    build(a.base,a.out,a.variants,keep_objects=a.keep_objects,unreflected_control=a.unreflected_control,assets_bin=a.assets_bin)
 
 
 if __name__=='__main__':main()
