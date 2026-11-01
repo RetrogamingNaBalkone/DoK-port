@@ -250,6 +250,7 @@ void dok_ui_explore(dok_runtime *w){
 }
 #include "ui_map.inc"
 #include "ui_text.inc"
+#include "ui_channel_qr.inc"
 #ifdef DOK_RENDER_HW_UI_REUSE_PROTOTYPE
 unsigned g_hw_ui_changed;
 static unsigned hw_ui_valid,hw_ui_key[11];
@@ -422,7 +423,27 @@ void dok_ui_screen(uint8_t *f,const uint8_t *f8,const uint8_t *f16,unsigned fg,u
 void dok_ui_credits(uint8_t *f,const uint8_t *f8,const uint8_t *f16,unsigned fg,unsigned bg,const uint8_t *original,size_t n,unsigned page,unsigned language){
  /* Original ENDTXT fits one screen in both locales. Keep its ROM bytes;
   * the second screen is the explicitly requested GBA attribution. */
- const uint8_t *s=page?(const uint8_t *)ui_port_credit[language]:original;
- if(page)n=length((const char *)s);
- screen_draw(f,f8,f16,fg,bg,s,n,0,ui_about[language],language,page,2);
+ screen_draw(f,f8,f16,fg,bg,page?(const uint8_t *)"":original,page?0:n,0,ui_about[language],language,page,2);
+ if(page){
+  canvas c={f,f8,f16,fg,bg};
+  /* Use black/white already in the original menu palette, independently
+   * of its green text. Integer 3x modules and four-module quiet zone. */
+  unsigned dark=bg,light=fg;
+  if(art && art->menu_palette){
+   unsigned lo=UINT32_MAX,hi=0;
+   for(unsigned i=0;i<256;++i){
+    const uint8_t *p=art->menu_palette+i*3;unsigned value=p[0]+p[1]+p[2];
+    if(value<lo){lo=value;dark=i;}if(value>hi){hi=value;light=i;}
+   }
+  }
+  box(&c,8,24,111,111,light);
+  for(unsigned y=0;y<29;++y)for(unsigned x=0;x<29;++x){
+   unsigned bit=y*29+x;
+   if(ui_channel_qr[bit/8]&(1u<<(bit%8)))box(&c,20+x*3,36+y*3,3,3,dark);
+  }
+  label(&c,128,40,ui_port_credit[language][0],8);
+  label(&c,128,72,ui_port_credit[language][1],8);
+  label(&c,128,88,ui_port_credit[language][2],8);
+  label(&c,(240-(unsigned)length(ui_channel_url)*8)/2,136,ui_channel_url,8);
+ }
 }

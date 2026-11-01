@@ -1,0 +1,88 @@
+{
+  "task": "UI02",
+  "status": "passed",
+  "date": "2026-11-01",
+  "rom": "artifacts/gba/DoK-port_UI02.gba",
+  "rom_bytes": 26649452,
+  "rom_sha256": "e15e8cb2f9ea85cb15fd7509f26a9a3a2ddd873df8023e33e53d04081b2448d3",
+  "qr": [
+    {
+      "url": "https://t.me/RetroGamingNaBalkone",
+      "version": 3,
+      "ecc": "M",
+      "scale": 3,
+      "quiet_modules": 4,
+      "decoded_actual_ppu": {
+        "data": "https://t.me/RetroGamingNaBalkone",
+        "version": 3
+      },
+      "decoder": "jsQR 1.4.0",
+      "original_font_pixels": true,
+      "all_qr_and_quiet_pixels": true
+    },
+    {
+      "url": "https://t.me/RetroGamingNaBalkone",
+      "version": 3,
+      "ecc": "M",
+      "scale": 3,
+      "quiet_modules": 4,
+      "decoded_actual_ppu": {
+        "data": "https://t.me/RetroGamingNaBalkone",
+        "version": 3
+      },
+      "decoder": "jsQR 1.4.0",
+      "original_font_pixels": true,
+      "all_qr_and_quiet_pixels": true
+    }
+  ],
+  "credits_exit_cases": 54,
+  "host_executed": true,
+  "linux_compiled_only": true,
+  "thumb_compiled": true,
+  "physical_gba_tested": false,
+  "qr_from_physical_lcd_tested": false,
+  "reports": {
+    "credits": {
+      "path": "build/gba/ui02-channel/credits.json",
+      "sha256": "78f0750de45314ed4102f85e795f2bf3cd441530b595b40208d5d8e7b5e00076",
+      "status": "passed"
+    },
+    "story": {
+      "path": "build/gba/ui02-channel/story.json",
+      "sha256": "5f54d22bd721f36336a690579b18ee2402a2d554cb1dc4ce1ff7611ac3d2da9d",
+      "status": "passed"
+    },
+    "flow": {
+      "path": "build/gba/ui02-channel/flow.json",
+      "sha256": "b45e3e0474f9da6e81fb0029563e167ff09a842909ba58336af8a7a7ffbb3ff7",
+      "status": "passed"
+    },
+    "frontend": {
+      "path": "build/gba/ui02-channel/frontend.json",
+      "sha256": "c90febe1009445073493b9d3f2d3eedfe5962d881948a727657a5b9b3100f351",
+      "status": "passed"
+    },
+    "ui": {
+      "path": "build/gba/ui02-channel/ui.json",
+      "sha256": "457918cd84e226ffb97cc80ed1721cd666f16610b79785253f11e2b3ba49dd4c",
+      "status": "passed"
+    },
+    "latency": {
+      "path": "build/gba/ui02-channel/latency.json",
+      "sha256": "9ff6f1f431f0c316730fbad88d0f43f4e1b0d21178aefe30d728e8c432627829",
+      "status": "passed"
+    }
+  },
+  "build_manifest": {
+    "path": "build/gba/ui02-channel/frontend-build.json",
+    "sha256": "32b86d12c0bb2937fe942576cad78dbff60a8d84e5169f1aaea5826ed8072672"
+  },
+  "screens": [
+    "artifacts/gba/DoK-port_UI02-credits-ru.png",
+    "artifacts/gba/DoK-port_UI02-credits-en.png"
+  ],
+  "limits": [
+    "Built g20d_compact from concurrent working tree; source hashes and frozen generated source recorded in build output.",
+    "No release publication or full playthrough."
+  ]
+}

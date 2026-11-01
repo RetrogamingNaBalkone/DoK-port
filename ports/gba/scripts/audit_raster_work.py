@@ -46,6 +46,7 @@ def replay(probe, level):
     from verify_sprites_gba import load_json
     definitions=load_json(f'research/evidence/runtime/ru/LEVEL{level+1}-runtime.json')['objects']
     face_class=['unknown']
+    face_far=[False]
     masked_classes=Counter()
     surface_slopes=[]
 
@@ -59,6 +60,8 @@ def replay(probe, level):
             face=reg(1) if name=='raster_rect' else reg(2)
             index=struct.unpack('<H',cpu.mem_read(face+44,2))[0]
             face_class[0]=str(definitions[index]['class']) if index<len(definitions) else 'instance'
+            depth=struct.unpack('<2i',cpu.mem_read(face+24,8))
+            face_far[0]=min(depth)>=3720
             if name=='raster_rect':return
         if name == 'gba_render_stage':
             # Stage timestamps are irrelevant to a functional CPU replay.
@@ -92,6 +95,14 @@ def replay(probe, level):
             totals['ceiling_spans'] += 1
             totals['ceiling_samples_requested'] += count
             totals['ceiling_samples_open'] += opened
+            if 'dok_ceiling_offsets' in symbols:
+                # This replay driver uses RU level views only.
+                view=level*2
+                offsets=words(symbols['dok_ceiling_offsets']+view*16*4,16)
+                light_rows=[i for i,offset in enumerate(offsets)
+                            if symbols['dok_ceiling_bank']+offset==s[1]]
+                if light_rows:
+                    totals[f'ceiling_light{light_rows[0]}_open']+=opened
             totals['ceiling_fully_hidden_spans'] += opened == 0
             totals['ceiling_hidden_span_samples'] += count if not opened else 0
             row_steps[s[7]][s[10:12]] += 1
@@ -100,18 +111,27 @@ def replay(probe, level):
         elif name == 'dok_gba_tiled_masked_column':
             dst, source, v, step, count, bits, mask, tile_y = words(reg(0), 8)
             first = mask.bit_length() - 1
-            covered_count = zero = 0
+            covered_count = zero = zero_run = long_zero = 0
             for k in range(count):
                 if covered(bits, first, k):
                     covered_count += 1
+                    zero_run=0
                 elif cpu.mem_read(source + (((v + k * step) & 0xffffffff) >> 16), 1)[0] == 0:
                     zero += 1
+                    zero_run+=1
+                    if zero_run==8:long_zero+=8
+                    elif zero_run>8:long_zero+=1
+                else:zero_run=0
             totals['masked_columns'] += 1
             masked_classes[face_class[0]]+=1
             totals['masked_samples_requested'] += count
             totals['masked_samples_covered'] += covered_count
             totals['masked_samples_open_zero'] += zero
             totals['masked_samples_open_nonzero'] += count - covered_count - zero
+            totals['expanded_long_zero_samples' if step<65536 else 'minified_long_zero_samples']+=long_zero
+            if face_far[0]:
+                totals['far_masked_open']+=count-covered_count
+                totals['far_masked_nonzero']+=count-covered_count-zero
             if 0x03006000 <= source < 0x03008000:
                 totals['runtime_lit_columns'] += 1
                 totals['runtime_lit_samples_prepared'] += count

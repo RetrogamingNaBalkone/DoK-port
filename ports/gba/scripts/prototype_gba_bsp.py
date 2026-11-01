@@ -227,6 +227,14 @@ VARIANTS['g20d_exact']=VARIANTS['g20d_active_thumb']+('HW_PLANE_ZERO','HW_PLANE_
 VARIANTS['g20d_pair_only']=VARIANTS['hw_v128_vblank_only']+('HW_PLANE_PAIR',)
 VARIANTS['g20d_pair_open']=VARIANTS['g20d_pair_only']+('HW_MASKED_OPEN',)
 VARIANTS['g20d_compact']=VARIANTS['g20d_pair_open']+('HW_MASKED_UNROLL','HW_MASKED_UNROLL_COMPACT')
+VARIANTS['g22_counts']=VARIANTS['g20d_compact']+('HW_NO_TRANSPARENT_COUNT',)
+VARIANTS['g22_edges']=VARIANTS['g20d_compact']+('HW_EDGE_PAIR',)
+VARIANTS['g22_rows96']=VARIANTS['g20d_compact']+('HW_ROWS96',)
+VARIANTS['g22_split']=VARIANTS['g20d_compact']+('HW_VISIBLE_SPLIT',)
+VARIANTS['g22_rows96_split']=VARIANTS['g22_split']+('HW_ROWS96',)
+VARIANTS['g22_split_active']=VARIANTS['g22_split']+('HW_PLANE_ACTIVE','HW_PLANE_ACTIVE_HOT')
+VARIANTS['g22_sparse_control']=VARIANTS['g22_split']+('HW_NO_TRANSPARENT_COUNT',)
+VARIANTS['g22_sparse']=VARIANTS['g22_sparse_control']+('HW_MASKED_SELECTIVE_ZERO',)
 for _g20d_name in ('hw_v128_vblank_only','g20d_pair','g20d_compact'):
     VARIANTS[_g20d_name+'_kernel_profile']=tuple(d for d in VARIANTS[_g20d_name] if d!='HW_EDGE_RAM_CALL')+('HW_KERNEL_PROFILE',)
 
@@ -672,6 +680,8 @@ def build(base,out,variants,unreflected_control=False,assets_bin=None):
             if 'HW_MASKED_ZERO' in defines:tiled_flags+=['-DDOK_HW_MASKED_ZERO']
             if 'HW_MASKED_UNROLL' in defines:tiled_flags+=['-DDOK_HW_MASKED_UNROLL']
             if 'HW_MASKED_UNROLL_COMPACT' in defines:tiled_flags+=['-DDOK_HW_MASKED_UNROLL_COMPACT']
+            if 'HW_NO_TRANSPARENT_COUNT' in defines:tiled_flags+=['-DDOK_HW_NO_TRANSPARENT_COUNT']
+            if 'HW_MASKED_SELECTIVE_ZERO' in defines:tiled_flags+=['-DDOK_HW_MASKED_SELECTIVE_ZERO']
             if 'HW_OPAQUE_BATCH' in defines:tiled_flags+=['-DDOK_HW_OPAQUE_BATCH']
             if 'HW_BG_LOWERED' in defines:tiled_flags+=['-DDOK_HW_BG_LOWERED']
             if 'SECTOR_GPU' in defines:tiled_flags+=['-DDOK_SECTOR_GPU']
@@ -682,7 +692,7 @@ def build(base,out,variants,unreflected_control=False,assets_bin=None):
                 command([zig,*startup,*rect_flags,ROOT/'ports/gba/platform/rect_tiled.S','-o',dest/'rect-columns.o'])
                 objects.append(dest/'rect-columns.o')
         if 'UI_CACHE' in defines or 'UI_CONTROL' in defines:
-            for name in ('ui.c','ui_map.inc','ui_text.inc','ui_native_text.inc','ui_panel_cache.inc','ui_tiled.inc'):
+            for name in ('ui.c','ui_map.inc','ui_text.inc','ui_channel_qr.inc','ui_native_text.inc','ui_panel_cache.inc','ui_tiled.inc'):
                 (private/name).write_bytes((ROOT/'ports/gba/src'/name).read_bytes())
             p=private/'ui.c';s=p.read_text(encoding='utf-8')
             if 'UI_CACHE' in defines:
@@ -774,7 +784,7 @@ def build(base,out,variants,unreflected_control=False,assets_bin=None):
     manifest=dict(tables=metadata,stream_tables=stream_metadata,sector_tables=sector_metadata,sector_gpu_tables=sector_gpu_metadata,world_obj_tables=world_obj_metadata,variants=result,base_rom_sha256=digest(base/'dok-diagnostic.gba'),
                   base_objects={n:digest(base/(n+'.o')) for n in names},
                   sources={p.as_posix():digest(p) for p in [*Path('ports/gba/src').glob('renderer*'),Path('ports/gba/src/projection.c'),
-                           *[Path('ports/gba/src')/name for name in ('ui.c','ui_map.inc','ui_text.inc','ui_native_text.inc','ui_panel_cache.inc','ui_tiled.inc')],
+                           *[Path('ports/gba/src')/name for name in ('ui.c','ui_map.inc','ui_text.inc','ui_channel_qr.inc','ui_native_text.inc','ui_panel_cache.inc','ui_tiled.inc')],
                            *[Path('ports/gba/platform')/name for name in ('columns.S','column_cache.S','geometry_cache.S','planes.S','procedural.S','world_spans.S','ui_panels.S','masked_columns.S','world_lookup.S','renderer_probe.c','hardware_obj.inc','hardware_direct.inc','hardware_bg.inc','hardware_ui_obj.inc','hw_obj_pack.S','combat_probe.c','tiled_scene.S','startup.S','opaque_tiled.S')],
                            Path('ports/gba/platform/hardware_world_obj_probe.inc'),Path('ports/gba/platform/hardware_world_obj.inc'),Path('ports/gba/include/dok/gba_world_obj.h'),
                            Path('ports/gba/scripts/gba_world_obj_assets.py'),Path('ports/gba/scripts/gba_sector_scene.py'),Path('ports/gba/platform/sector_planes.S'),Path('ports/gba/platform/sector_bitmap.S'),Path('ports/gba/platform/hardware_sector_bitmap.inc'),Path(__file__),Path('ports/gba/scripts/gba_hw_bg_assets.py'),Path('ports/gba/scripts/compile_gba_render_scene.py'),

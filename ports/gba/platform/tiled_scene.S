@@ -259,6 +259,34 @@ dok_gba_tiled_masked_column:
     and r12,r9,lr
     cmp r12,lr
     beq .Lmasked_skip
+#ifdef DOK_HW_MASKED_SELECTIVE_ZERO
+#ifndef DOK_HW_NO_TRANSPARENT_COUNT
+#error Selective zero experiment requires disabled transparency counting
+#endif
+    /* Bounded H06: enlarged, >=4-row groups whose monotone source interval
+     * fits one zero word. No posts searches or second coverage traversal.
+     * Transparency counting is disabled; written/coverage remain exact. */
+    cmp r3,#65536
+    bhs .Lmasked_not_zero
+    cmp r10,#4
+    blo .Lmasked_not_zero
+    sub lr,r10,#1
+    mla lr,r3,lr,r2
+    add lr,r1,lr,lsr #16
+    add r12,r1,r2,lsr #16
+    eor lr,lr,r12
+    cmp lr,#4
+    bhs .Lmasked_not_zero
+    bic r12,r12,#3
+    ldr r12,[r12]
+    cmp r12,#0
+    beq .Lmasked_skip
+.Lmasked_not_zero:
+    /* Source interval checks used lr/r12; restore the coverage intersection. */
+    mov lr,r6,lsl r10
+    sub lr,lr,r6
+    and r12,r9,lr
+#endif
 #ifdef DOK_HW_MASKED_OPEN
     cmp r12,#0
     beq .Lmasked_open
@@ -266,7 +294,9 @@ dok_gba_tiled_masked_column:
 .Lmasked_sample:
     tst r9,r6
     bne .Lmasked_next
+#ifndef DOK_HW_NO_TRANSPARENT_COUNT
     add r8,r8,#1
+#endif
     ldrb r12,[r1,r2,lsr #16]
     cmp r12,#0
     strbne r12,[r0]
@@ -284,7 +314,9 @@ dok_gba_tiled_masked_column:
 /* Every bit in this tile-row group is open. No per-pixel coverage test.
  * Zero still leaves a hole; count all attempted samples exactly once. */
 .Lmasked_open:
+#ifndef DOK_HW_NO_TRANSPARENT_COUNT
     add r8,r8,r10
+#endif
 #ifdef DOK_HW_MASKED_UNROLL
 #ifdef DOK_HW_MASKED_UNROLL_COMPACT
 4:
@@ -382,7 +414,9 @@ dok_gba_tiled_masked_column:
     ldr r9,[r5]
     tst r9,r6
     bne 2f
+#ifndef DOK_HW_NO_TRANSPARENT_COUNT
     add r8,r8,#1
+#endif
 #ifdef DOK_HW_MASKED_CACHE
     mov r12,r2,lsr #16
     cmp r12,r10
@@ -412,7 +446,11 @@ dok_gba_tiled_masked_column:
     subs r4,r4,#1
     bne 1b
 #endif
+#ifdef DOK_HW_NO_TRANSPARENT_COUNT
+    mov r8,#0 /* Diagnostic transparency unavailable; written count remains exact. */
+#else
     sub r8,r8,r7
+#endif
     orr r0,r7,r8,lsl #16
     pop {r4-r11,lr}
     bx lr

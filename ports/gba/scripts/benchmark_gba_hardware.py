@@ -15,6 +15,9 @@ import struct
 
 from research_gba_fps import GameProbe, ROOT, freeze, live_measure
 from verify_gba import sha, VIDEO, scene_source_y
+from verify_gba_static_cache import Workspace
+import ctypes as ct
+import hashlib
 
 
 def capture(build,core,cameras,force_low_mode=0,save_images=True):
@@ -84,6 +87,10 @@ def capture(build,core,cameras,force_low_mode=0,save_images=True):
             if 'g_hw_bg_prepare_cycles' in p.symbols:row['hardware_bg_prepare_cycles']=p.words('g_hw_bg_prepare_cycles',1)[0]
             if 'fixture' in case:row['fixture']=case['fixture']
             if completed_coverage is not None:row['coverage_sha256']=completed_coverage
+            assert ct.sizeof(Workspace)==p.diag()['workspace_bytes']
+            address=p.symbols['g_render_frame']
+            row['lease_sha256']=hashlib.sha256(p.frontend.read(address+Workspace.image_known.offset,256)+
+                p.frontend.read(address+Workspace.surface_known.offset,768)).hexdigest()
             rows.append(row)
             if save_images:print(build.name,row,flush=True)
         return dict(rom_sha256=sha(p.rom),rows=rows),images

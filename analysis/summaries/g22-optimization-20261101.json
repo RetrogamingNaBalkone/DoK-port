@@ -1,0 +1,2527 @@
+{
+  "summary_schema": 1,
+  "full_report": {
+    "path": "analysis/gba/g22-optimization-20261101.json",
+    "sha256": "92b0b332a22243cced54215d61b9ced6d4d5707a2e7bbc663e9b6bad18686b82",
+    "bytes": 123794
+  },
+  "scope": "Summary of a recorded run; not a new verification. Full report is local and ignored by Git.",
+  "result": {
+    "task": "G22",
+    "status": "passed-bounded-emulator",
+    "selected": "g22_split_active",
+    "artifact": "artifacts/gba/DoK-port_G22.gba",
+    "rom_sha256": "53fdf1b1b868effecfd68c8feb87ffb60bcc72190a4d01f38d8684a781860247",
+    "measurement_rom_sha256": "3a8f3bd7e7ffeb77efff4c66a43fa78d698c220ea4cc3629b6f51269bfcae268",
+    "integration": {
+      "ui02": true,
+      "rom_sha256": "53fdf1b1b868effecfd68c8feb87ffb60bcc72190a4d01f38d8684a781860247",
+      "rom_bytes": 26649252,
+      "control_sha256": "e15e8cb2f9ea85cb15fd7509f26a9a3a2ddd873df8023e33e53d04081b2448d3",
+      "heavy": {
+        "cases": 6,
+        "median_cpu_percent": -0.17402719533959332,
+        "best_cpu_percent": -0.9299677358132419,
+        "worst_cpu_percent": 0.08229410647591084,
+        "before_min_fps": 9.95458342826764,
+        "after_min_fps": 9.95458342826764
+      },
+      "detail_ppu": 396,
+      "cache_mutations": 48,
+      "full_frontend_verified": true
+    },
+    "decisions": {
+      "H01": "accept separate warm/cold/fixed-duration methodology; moving states are not assumed equal",
+      "H02": "reject tested transparency-only counter removal: negligible benefit; exact written count preserved",
+      "H03": "reject tested exact paired edge UV setup; shared world UV not implemented",
+      "H04": "defer broader black-distance renderer: little far ceiling/masked work in six views; opaque/intersecting faces not exhausted",
+      "H05": "performance verified; gameplay impact of minor quality reduction remains to be assessed in G25; pixel differences alone do not reject it",
+      "H06": "reject tested enlarged zero-word shortcut against its matched control; other sparse kernels not disproved",
+      "H07": "accept split legacy path plus hot active edges after full emulator regression",
+      "H08": "defer raster cache pending bounded memory/composition design; only 668 B EWRAM free",
+      "H09": "continue in G25: allow minor degradation without material gameplay impact; exact pixel equality is not the acceptance gate",
+      "H10": "conditional defer: no new transport model; old feedback not rerun",
+      "H11": "conditional defer: no new proven offline packing/admission; old GPU fallback not rerun"
+    },
+    "variants": {
+      "control": {
+        "rom_sha256": "f40a13f56b70cfec5e673c7e0b80c659a48f35e30e7bad2e236ef7967a59a359",
+        "rom_bytes": 26648948,
+        "defines": [
+          "NO_SCALES",
+          "STATIC_SETUP",
+          "PRELIT",
+          "EXACT_LIGHT",
+          "EXACT_PLANES",
+          "UI_CACHE",
+          "SIDES_PRELIT",
+          "HW_OBJ",
+          "HW_PACK_ARM",
+          "HW_DIRECT",
+          "HW_BG",
+          "HW_RAYS32",
+          "HW_BG_LEASE_CACHE",
+          "HW_ROW_LUT",
+          "HW_BG_STREAM",
+          "HW_UI_REUSE",
+          "BACKFACE",
+          "HW_EDGE_ROM",
+          "BACKFACE_SIDES",
+          "SIDE_SETUP",
+          "HW_MASKED",
+          "HW_PRESENT",
+          "HW_MAP_CACHE",
+          "HW_VERTICAL128",
+          "HW_COLUMN_CACHE",
+          "HW_CELL_CLASS",
+          "HW_FC_SEED",
+          "HW_FACE_BOX",
+          "HW_COVER4",
+          "HW_DIRECT_RUN",
+          "HW_PROJECT_RECIP",
+          "HW_NONZERO_COLUMN",
+          "HW_COMPACT_ZERO",
+          "HW_SURFACE_SPLIT",
+          "HW_LINEAR_ROM",
+          "HW_DIRECT_GAPS",
+          "HW_STATIC_GEOMETRY",
+          "HW_EDGE_RAM_CALL",
+          "HW_INTERVAL_EWRAM",
+          "HW_ENTITY_PRELIT",
+          "HW_MASKED_BATCH",
+          "HW_RECT_RASTER",
+          "HW_RECT_BATCH",
+          "HW_ANIMATION_COLUMNS",
+          "HW_SURFACE_PRELIT",
+          "HW_FLOOR_FILL",
+          "HW_VBLANK_ONLY",
+          "HW_PLANE_PAIR",
+          "HW_MASKED_OPEN",
+          "HW_MASKED_UNROLL",
+          "HW_MASKED_UNROLL_COMPACT"
+        ],
+        "ewram_bytes": 261476,
+        "iwram_bytes": 24572,
+        "stack_reserve": 8192,
+        "heavy_reference": "control",
+        "heavy": {
+          "cases": 6,
+          "median_cpu_percent": 0.0,
+          "best_cpu_percent": 0.0,
+          "worst_cpu_percent": 0.0,
+          "before_min_fps": 9.95458342826764,
+          "after_min_fps": 9.95458342826764
+        },
+        "ppu_frames": 18,
+        "ppu_max_diff": 0,
+        "live": [
+          {
+            "level": 1,
+            "language": 0,
+            "median": 917888,
+            "p95": 1162112,
+            "maximum": 1355328,
+            "presented_fps": 16.325516822358928,
+            "game_ticks": 100755,
+            "input_observation_latency": [
+              {
+                "detail_pointer": "/variants/control/live/0/input_observation_latency/0",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 0,
+                  "observed_after_frames": 3
+                }
+              },
+              {
+                "detail_pointer": "/variants/control/live/0/input_observation_latency/1",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 200,
+                  "observed_after_frames": 1
+                }
+              },
+              {
+                "detail_pointer": "/variants/control/live/0/input_observation_latency/2",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 400,
+                  "observed_after_frames": 2
+                }
+              }
+            ]
+          },
+          {
+            "level": 2,
+            "language": 0,
+            "median": 943040.0,
+            "p95": 1160576,
+            "maximum": 1251968,
+            "presented_fps": 15.230512645249487,
+            "game_ticks": 100428,
+            "input_observation_latency": [
+              {
+                "detail_pointer": "/variants/control/live/1/input_observation_latency/0",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 0,
+                  "observed_after_frames": 3
+                }
+              },
+              {
+                "detail_pointer": "/variants/control/live/1/input_observation_latency/1",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 200,
+                  "observed_after_frames": 1
+                }
+              },
+              {
+                "detail_pointer": "/variants/control/live/1/input_observation_latency/2",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 400,
+                  "observed_after_frames": 4
+                }
+              }
+            ]
+          },
+          {
+            "level": 3,
+            "language": 0,
+            "median": 646208,
+            "p95": 839808,
+            "maximum": 1164224,
+            "presented_fps": 21.5019002050581,
+            "game_ticks": 100757,
+            "input_observation_latency": [
+              {
+                "detail_pointer": "/variants/control/live/2/input_observation_latency/0",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 0,
+                  "observed_after_frames": 2
+                }
+              },
+              {
+                "detail_pointer": "/variants/control/live/2/input_observation_latency/1",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 200,
+                  "observed_after_frames": 1
+                }
+              },
+              {
+                "detail_pointer": "/variants/control/live/2/input_observation_latency/2",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 400,
+                  "observed_after_frames": 2
+                }
+              }
+            ]
+          },
+          {
+            "level": 1,
+            "language": 1,
+            "median": 917888,
+            "p95": 1162752,
+            "maximum": 1355328,
+            "presented_fps": 16.325516822358928,
+            "game_ticks": 100755,
+            "input_observation_latency": [
+              {
+                "detail_pointer": "/variants/control/live/3/input_observation_latency/0",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 0,
+                  "observed_after_frames": 3
+                }
+              },
+              {
+                "detail_pointer": "/variants/control/live/3/input_observation_latency/1",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 200,
+                  "observed_after_frames": 1
+                }
+              },
+              {
+                "detail_pointer": "/variants/control/live/3/input_observation_latency/2",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 400,
+                  "observed_after_frames": 2
+                }
+              }
+            ]
+          },
+          {
+            "level": 2,
+            "language": 1,
+            "median": 940672,
+            "p95": 1143296,
+            "maximum": 1253056,
+            "presented_fps": 15.330058479532164,
+            "game_ticks": 100260,
+            "input_observation_latency": [
+              {
+                "detail_pointer": "/variants/control/live/4/input_observation_latency/0",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 0,
+                  "observed_after_frames": 3
+                }
+              },
+              {
+                "detail_pointer": "/variants/control/live/4/input_observation_latency/1",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 200,
+                  "observed_after_frames": 3
+                }
+              },
+              {
+                "detail_pointer": "/variants/control/live/4/input_observation_latency/2",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 400,
+                  "observed_after_frames": 4
+                }
+              }
+            ]
+          },
+          {
+            "level": 3,
+            "language": 1,
+            "median": 646432.0,
+            "p95": 839296,
+            "maximum": 1163520,
+            "presented_fps": 21.601446039340775,
+            "game_ticks": 100757,
+            "input_observation_latency": [
+              {
+                "detail_pointer": "/variants/control/live/5/input_observation_latency/0",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 0,
+                  "observed_after_frames": 2
+                }
+              },
+              {
+                "detail_pointer": "/variants/control/live/5/input_observation_latency/1",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 200,
+                  "observed_after_frames": 1
+                }
+              },
+              {
+                "detail_pointer": "/variants/control/live/5/input_observation_latency/2",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 400,
+                  "observed_after_frames": 2
+                }
+              }
+            ]
+          }
+        ],
+        "live_position_checkpoint_differences": 0,
+        "cold": {
+          "cases": 6,
+          "median_cpu_percent": 0.0,
+          "best_cpu_percent": 0.0,
+          "worst_cpu_percent": 0.0,
+          "before_min_fps": null,
+          "after_min_fps": null
+        },
+        "spatial": {
+          "0": {
+            "cases": 440,
+            "median_cpu_percent": 0.0,
+            "best_cpu_percent": 0.0,
+            "worst_cpu_percent": 0.0,
+            "before_min_fps": 9.95458342826764,
+            "after_min_fps": 9.95458342826764
+          },
+          "1": {
+            "cases": 440,
+            "median_cpu_percent": 0.0,
+            "best_cpu_percent": 0.0,
+            "worst_cpu_percent": 0.0,
+            "before_min_fps": 9.95458342826764,
+            "after_min_fps": 9.95458342826764
+          }
+        }
+      },
+      "counts": {
+        "rom_sha256": "d374221d40a3ae8744fdd36cdf491ab869647115421322f64e0e90d5c54f1dc4",
+        "rom_bytes": 26648940,
+        "defines": [
+          "NO_SCALES",
+          "STATIC_SETUP",
+          "PRELIT",
+          "EXACT_LIGHT",
+          "EXACT_PLANES",
+          "UI_CACHE",
+          "SIDES_PRELIT",
+          "HW_OBJ",
+          "HW_PACK_ARM",
+          "HW_DIRECT",
+          "HW_BG",
+          "HW_RAYS32",
+          "HW_BG_LEASE_CACHE",
+          "HW_ROW_LUT",
+          "HW_BG_STREAM",
+          "HW_UI_REUSE",
+          "BACKFACE",
+          "HW_EDGE_ROM",
+          "BACKFACE_SIDES",
+          "SIDE_SETUP",
+          "HW_MASKED",
+          "HW_PRESENT",
+          "HW_MAP_CACHE",
+          "HW_VERTICAL128",
+          "HW_COLUMN_CACHE",
+          "HW_CELL_CLASS",
+          "HW_FC_SEED",
+          "HW_FACE_BOX",
+          "HW_COVER4",
+          "HW_DIRECT_RUN",
+          "HW_PROJECT_RECIP",
+          "HW_NONZERO_COLUMN",
+          "HW_COMPACT_ZERO",
+          "HW_SURFACE_SPLIT",
+          "HW_LINEAR_ROM",
+          "HW_DIRECT_GAPS",
+          "HW_STATIC_GEOMETRY",
+          "HW_EDGE_RAM_CALL",
+          "HW_INTERVAL_EWRAM",
+          "HW_ENTITY_PRELIT",
+          "HW_MASKED_BATCH",
+          "HW_RECT_RASTER",
+          "HW_RECT_BATCH",
+          "HW_ANIMATION_COLUMNS",
+          "HW_SURFACE_PRELIT",
+          "HW_FLOOR_FILL",
+          "HW_VBLANK_ONLY",
+          "HW_PLANE_PAIR",
+          "HW_MASKED_OPEN",
+          "HW_MASKED_UNROLL",
+          "HW_MASKED_UNROLL_COMPACT",
+          "HW_NO_TRANSPARENT_COUNT"
+        ],
+        "ewram_bytes": 261476,
+        "iwram_bytes": 24564,
+        "stack_reserve": 8192,
+        "heavy_reference": "control",
+        "heavy": {
+          "cases": 6,
+          "median_cpu_percent": -0.0768177845846929,
+          "best_cpu_percent": -0.163874726875457,
+          "worst_cpu_percent": -0.006330315882763227,
+          "before_min_fps": 9.95458342826764,
+          "after_min_fps": 9.95458342826764
+        },
+        "ppu_frames": 18,
+        "ppu_max_diff": 0,
+        "live": [
+          {
+            "level": 1,
+            "language": 0,
+            "median": 917760,
+            "p95": 1162048,
+            "maximum": 1355200,
+            "presented_fps": 16.325516822358928,
+            "game_ticks": 100755,
+            "input_observation_latency": [
+              {
+                "detail_pointer": "/variants/counts/live/0/input_observation_latency/0",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 0,
+                  "observed_after_frames": 3
+                }
+              },
+              {
+                "detail_pointer": "/variants/counts/live/0/input_observation_latency/1",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 200,
+                  "observed_after_frames": 1
+                }
+              },
+              {
+                "detail_pointer": "/variants/counts/live/0/input_observation_latency/2",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 400,
+                  "observed_after_frames": 2
+                }
+              }
+            ]
+          },
+          {
+            "level": 2,
+            "language": 0,
+            "median": 940608,
+            "p95": 1152000,
+            "maximum": 1252928,
+            "presented_fps": 15.330058479532164,
+            "game_ticks": 100261,
+            "input_observation_latency": [
+              {
+                "detail_pointer": "/variants/counts/live/1/input_observation_latency/0",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 0,
+                  "observed_after_frames": 3
+                }
+              },
+              {
+                "detail_pointer": "/variants/counts/live/1/input_observation_latency/1",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 200,
+                  "observed_after_frames": 3
+                }
+              },
+              {
+                "detail_pointer": "/variants/counts/live/1/input_observation_latency/2",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 400,
+                  "observed_after_frames": 3
+                }
+              }
+            ]
+          },
+          {
+            "level": 3,
+            "language": 0,
+            "median": 646080,
+            "p95": 839488,
+            "maximum": 1164160,
+            "presented_fps": 21.5019002050581,
+            "game_ticks": 100757,
+            "input_observation_latency": [
+              {
+                "detail_pointer": "/variants/counts/live/2/input_observation_latency/0",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 0,
+                  "observed_after_frames": 2
+                }
+              },
+              {
+                "detail_pointer": "/variants/counts/live/2/input_observation_latency/1",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 200,
+                  "observed_after_frames": 1
+                }
+              },
+              {
+                "detail_pointer": "/variants/counts/live/2/input_observation_latency/2",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 400,
+                  "observed_after_frames": 2
+                }
+              }
+            ]
+          },
+          {
+            "level": 1,
+            "language": 1,
+            "median": 917760,
+            "p95": 1162752,
+            "maximum": 1355200,
+            "presented_fps": 16.325516822358928,
+            "game_ticks": 100755,
+            "input_observation_latency": [
+              {
+                "detail_pointer": "/variants/counts/live/3/input_observation_latency/0",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 0,
+                  "observed_after_frames": 3
+                }
+              },
+              {
+                "detail_pointer": "/variants/counts/live/3/input_observation_latency/1",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 200,
+                  "observed_after_frames": 1
+                }
+              },
+              {
+                "detail_pointer": "/variants/counts/live/3/input_observation_latency/2",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 400,
+                  "observed_after_frames": 2
+                }
+              }
+            ]
+          },
+          {
+            "level": 2,
+            "language": 1,
+            "median": 940544,
+            "p95": 1152000,
+            "maximum": 1252864,
+            "presented_fps": 15.330058479532164,
+            "game_ticks": 100260,
+            "input_observation_latency": [
+              {
+                "detail_pointer": "/variants/counts/live/4/input_observation_latency/0",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 0,
+                  "observed_after_frames": 3
+                }
+              },
+              {
+                "detail_pointer": "/variants/counts/live/4/input_observation_latency/1",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 200,
+                  "observed_after_frames": 3
+                }
+              },
+              {
+                "detail_pointer": "/variants/counts/live/4/input_observation_latency/2",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 400,
+                  "observed_after_frames": 3
+                }
+              }
+            ]
+          },
+          {
+            "level": 3,
+            "language": 1,
+            "median": 646304.0,
+            "p95": 839040,
+            "maximum": 1163520,
+            "presented_fps": 21.601446039340775,
+            "game_ticks": 100757,
+            "input_observation_latency": [
+              {
+                "detail_pointer": "/variants/counts/live/5/input_observation_latency/0",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 0,
+                  "observed_after_frames": 2
+                }
+              },
+              {
+                "detail_pointer": "/variants/counts/live/5/input_observation_latency/1",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 200,
+                  "observed_after_frames": 1
+                }
+              },
+              {
+                "detail_pointer": "/variants/counts/live/5/input_observation_latency/2",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 400,
+                  "observed_after_frames": 2
+                }
+              }
+            ]
+          }
+        ],
+        "live_position_checkpoint_differences": 2,
+        "cold": {
+          "cases": 6,
+          "median_cpu_percent": -0.07340296002696367,
+          "best_cpu_percent": -0.12106048989144469,
+          "worst_cpu_percent": 0.0,
+          "before_min_fps": null,
+          "after_min_fps": null
+        },
+        "spatial": {
+          "0": {
+            "cases": 440,
+            "median_cpu_percent": -0.01200179367560894,
+            "best_cpu_percent": -0.34843205574912606,
+            "worst_cpu_percent": 0.1992873965819264,
+            "before_min_fps": 9.95458342826764,
+            "after_min_fps": 9.95458342826764
+          },
+          "1": {
+            "cases": 440,
+            "median_cpu_percent": -0.012044937005173395,
+            "best_cpu_percent": -0.3431527821771696,
+            "worst_cpu_percent": 0.188484222046581,
+            "before_min_fps": 9.95458342826764,
+            "after_min_fps": 9.95458342826764
+          }
+        }
+      },
+      "edges": {
+        "rom_sha256": "738ee5a61c834b6f57d05679f1eed8d7edd8f01ade2d3f55814d84f2e4afd8d8",
+        "rom_bytes": 26648920,
+        "defines": [
+          "NO_SCALES",
+          "STATIC_SETUP",
+          "PRELIT",
+          "EXACT_LIGHT",
+          "EXACT_PLANES",
+          "UI_CACHE",
+          "SIDES_PRELIT",
+          "HW_OBJ",
+          "HW_PACK_ARM",
+          "HW_DIRECT",
+          "HW_BG",
+          "HW_RAYS32",
+          "HW_BG_LEASE_CACHE",
+          "HW_ROW_LUT",
+          "HW_BG_STREAM",
+          "HW_UI_REUSE",
+          "BACKFACE",
+          "HW_EDGE_ROM",
+          "BACKFACE_SIDES",
+          "SIDE_SETUP",
+          "HW_MASKED",
+          "HW_PRESENT",
+          "HW_MAP_CACHE",
+          "HW_VERTICAL128",
+          "HW_COLUMN_CACHE",
+          "HW_CELL_CLASS",
+          "HW_FC_SEED",
+          "HW_FACE_BOX",
+          "HW_COVER4",
+          "HW_DIRECT_RUN",
+          "HW_PROJECT_RECIP",
+          "HW_NONZERO_COLUMN",
+          "HW_COMPACT_ZERO",
+          "HW_SURFACE_SPLIT",
+          "HW_LINEAR_ROM",
+          "HW_DIRECT_GAPS",
+          "HW_STATIC_GEOMETRY",
+          "HW_EDGE_RAM_CALL",
+          "HW_INTERVAL_EWRAM",
+          "HW_ENTITY_PRELIT",
+          "HW_MASKED_BATCH",
+          "HW_RECT_RASTER",
+          "HW_RECT_BATCH",
+          "HW_ANIMATION_COLUMNS",
+          "HW_SURFACE_PRELIT",
+          "HW_FLOOR_FILL",
+          "HW_VBLANK_ONLY",
+          "HW_PLANE_PAIR",
+          "HW_MASKED_OPEN",
+          "HW_MASKED_UNROLL",
+          "HW_MASKED_UNROLL_COMPACT",
+          "HW_EDGE_PAIR"
+        ],
+        "ewram_bytes": 261476,
+        "iwram_bytes": 24560,
+        "stack_reserve": 8192,
+        "heavy_reference": "control",
+        "heavy": {
+          "cases": 6,
+          "median_cpu_percent": 0.003165157941376062,
+          "best_cpu_percent": -0.06372906045156723,
+          "worst_cpu_percent": 0.056936800151841105,
+          "before_min_fps": 9.95458342826764,
+          "after_min_fps": 9.95458342826764
+        },
+        "ppu_frames": 18,
+        "ppu_max_diff": 0,
+        "live": [
+          {
+            "level": 1,
+            "language": 0,
+            "median": 918176.0,
+            "p95": 1178304,
+            "maximum": 1355072,
+            "presented_fps": 16.225970988076252,
+            "game_ticks": 100420,
+            "input_observation_latency": [
+              {
+                "detail_pointer": "/variants/edges/live/0/input_observation_latency/0",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 0,
+                  "observed_after_frames": 3
+                }
+              },
+              {
+                "detail_pointer": "/variants/edges/live/0/input_observation_latency/1",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 200,
+                  "observed_after_frames": 2
+                }
+              },
+              {
+                "detail_pointer": "/variants/edges/live/0/input_observation_latency/2",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 400,
+                  "observed_after_frames": 5
+                }
+              }
+            ]
+          },
+          {
+            "level": 2,
+            "language": 0,
+            "median": 942976.0,
+            "p95": 1160832,
+            "maximum": 1252288,
+            "presented_fps": 15.230512645249487,
+            "game_ticks": 100428,
+            "input_observation_latency": [
+              {
+                "detail_pointer": "/variants/edges/live/1/input_observation_latency/0",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 0,
+                  "observed_after_frames": 3
+                }
+              },
+              {
+                "detail_pointer": "/variants/edges/live/1/input_observation_latency/1",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 200,
+                  "observed_after_frames": 1
+                }
+              },
+              {
+                "detail_pointer": "/variants/edges/live/1/input_observation_latency/2",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 400,
+                  "observed_after_frames": 4
+                }
+              }
+            ]
+          },
+          {
+            "level": 3,
+            "language": 0,
+            "median": 646272,
+            "p95": 839744,
+            "maximum": 1164224,
+            "presented_fps": 21.5019002050581,
+            "game_ticks": 100757,
+            "input_observation_latency": [
+              {
+                "detail_pointer": "/variants/edges/live/2/input_observation_latency/0",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 0,
+                  "observed_after_frames": 2
+                }
+              },
+              {
+                "detail_pointer": "/variants/edges/live/2/input_observation_latency/1",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 200,
+                  "observed_after_frames": 1
+                }
+              },
+              {
+                "detail_pointer": "/variants/edges/live/2/input_observation_latency/2",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 400,
+                  "observed_after_frames": 2
+                }
+              }
+            ]
+          },
+          {
+            "level": 1,
+            "language": 1,
+            "median": 918176.0,
+            "p95": 1178304,
+            "maximum": 1355776,
+            "presented_fps": 16.225970988076252,
+            "game_ticks": 100420,
+            "input_observation_latency": [
+              {
+                "detail_pointer": "/variants/edges/live/3/input_observation_latency/0",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 0,
+                  "observed_after_frames": 3
+                }
+              },
+              {
+                "detail_pointer": "/variants/edges/live/3/input_observation_latency/1",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 200,
+                  "observed_after_frames": 2
+                }
+              },
+              {
+                "detail_pointer": "/variants/edges/live/3/input_observation_latency/2",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 400,
+                  "observed_after_frames": 5
+                }
+              }
+            ]
+          },
+          {
+            "level": 2,
+            "language": 1,
+            "median": 940544,
+            "p95": 1143296,
+            "maximum": 1253376,
+            "presented_fps": 15.330058479532164,
+            "game_ticks": 100260,
+            "input_observation_latency": [
+              {
+                "detail_pointer": "/variants/edges/live/4/input_observation_latency/0",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 0,
+                  "observed_after_frames": 3
+                }
+              },
+              {
+                "detail_pointer": "/variants/edges/live/4/input_observation_latency/1",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 200,
+                  "observed_after_frames": 3
+                }
+              },
+              {
+                "detail_pointer": "/variants/edges/live/4/input_observation_latency/2",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 400,
+                  "observed_after_frames": 4
+                }
+              }
+            ]
+          },
+          {
+            "level": 3,
+            "language": 1,
+            "median": 646432.0,
+            "p95": 839296,
+            "maximum": 1163584,
+            "presented_fps": 21.601446039340775,
+            "game_ticks": 100757,
+            "input_observation_latency": [
+              {
+                "detail_pointer": "/variants/edges/live/5/input_observation_latency/0",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 0,
+                  "observed_after_frames": 2
+                }
+              },
+              {
+                "detail_pointer": "/variants/edges/live/5/input_observation_latency/1",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 200,
+                  "observed_after_frames": 1
+                }
+              },
+              {
+                "detail_pointer": "/variants/edges/live/5/input_observation_latency/2",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 400,
+                  "observed_after_frames": 2
+                }
+              }
+            ]
+          }
+        ],
+        "live_position_checkpoint_differences": 4,
+        "cold": {
+          "cases": 6,
+          "median_cpu_percent": -0.00172455420273665,
+          "best_cpu_percent": -0.01210604898914669,
+          "worst_cpu_percent": 0.05335609860206425,
+          "before_min_fps": null,
+          "after_min_fps": null
+        },
+        "spatial": {
+          "0": {
+            "cases": 440,
+            "median_cpu_percent": 0.0,
+            "best_cpu_percent": -0.20378181128856143,
+            "worst_cpu_percent": 0.17169556406215758,
+            "before_min_fps": 9.95458342826764,
+            "after_min_fps": 9.95458342826764
+          },
+          "1": {
+            "cases": 440,
+            "median_cpu_percent": 0.0,
+            "best_cpu_percent": -0.215016771308163,
+            "worst_cpu_percent": 0.1627982696869701,
+            "before_min_fps": 9.95458342826764,
+            "after_min_fps": 9.95458342826764
+          }
+        }
+      },
+      "split": {
+        "rom_sha256": "66bc4f9ebde10db8c60c78aebc8c92d73f22af6ad7ead4250d13d80ec05c9315",
+        "rom_bytes": 26648944,
+        "defines": [
+          "NO_SCALES",
+          "STATIC_SETUP",
+          "PRELIT",
+          "EXACT_LIGHT",
+          "EXACT_PLANES",
+          "UI_CACHE",
+          "SIDES_PRELIT",
+          "HW_OBJ",
+          "HW_PACK_ARM",
+          "HW_DIRECT",
+          "HW_BG",
+          "HW_RAYS32",
+          "HW_BG_LEASE_CACHE",
+          "HW_ROW_LUT",
+          "HW_BG_STREAM",
+          "HW_UI_REUSE",
+          "BACKFACE",
+          "HW_EDGE_ROM",
+          "BACKFACE_SIDES",
+          "SIDE_SETUP",
+          "HW_MASKED",
+          "HW_PRESENT",
+          "HW_MAP_CACHE",
+          "HW_VERTICAL128",
+          "HW_COLUMN_CACHE",
+          "HW_CELL_CLASS",
+          "HW_FC_SEED",
+          "HW_FACE_BOX",
+          "HW_COVER4",
+          "HW_DIRECT_RUN",
+          "HW_PROJECT_RECIP",
+          "HW_NONZERO_COLUMN",
+          "HW_COMPACT_ZERO",
+          "HW_SURFACE_SPLIT",
+          "HW_LINEAR_ROM",
+          "HW_DIRECT_GAPS",
+          "HW_STATIC_GEOMETRY",
+          "HW_EDGE_RAM_CALL",
+          "HW_INTERVAL_EWRAM",
+          "HW_ENTITY_PRELIT",
+          "HW_MASKED_BATCH",
+          "HW_RECT_RASTER",
+          "HW_RECT_BATCH",
+          "HW_ANIMATION_COLUMNS",
+          "HW_SURFACE_PRELIT",
+          "HW_FLOOR_FILL",
+          "HW_VBLANK_ONLY",
+          "HW_PLANE_PAIR",
+          "HW_MASKED_OPEN",
+          "HW_MASKED_UNROLL",
+          "HW_MASKED_UNROLL_COMPACT",
+          "HW_VISIBLE_SPLIT"
+        ],
+        "ewram_bytes": 261476,
+        "iwram_bytes": 22748,
+        "stack_reserve": 8192,
+        "heavy_reference": "control",
+        "heavy": {
+          "cases": 6,
+          "median_cpu_percent": -0.10795923501657478,
+          "best_cpu_percent": -0.27312454479242465,
+          "worst_cpu_percent": 0.08229410647591084,
+          "before_min_fps": 9.95458342826764,
+          "after_min_fps": 9.95458342826764
+        },
+        "ppu_frames": 18,
+        "ppu_max_diff": 0,
+        "live": [
+          {
+            "level": 1,
+            "language": 0,
+            "median": 916224,
+            "p95": 1160640,
+            "maximum": 1352576,
+            "presented_fps": 16.325516822358928,
+            "game_ticks": 100754,
+            "input_observation_latency": [
+              {
+                "detail_pointer": "/variants/split/live/0/input_observation_latency/0",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 0,
+                  "observed_after_frames": 3
+                }
+              },
+              {
+                "detail_pointer": "/variants/split/live/0/input_observation_latency/1",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 200,
+                  "observed_after_frames": 1
+                }
+              },
+              {
+                "detail_pointer": "/variants/split/live/0/input_observation_latency/2",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 400,
+                  "observed_after_frames": 2
+                }
+              }
+            ]
+          },
+          {
+            "level": 2,
+            "language": 0,
+            "median": 938048.0,
+            "p95": 1150144,
+            "maximum": 1315072,
+            "presented_fps": 15.42960431381484,
+            "game_ticks": 100763,
+            "input_observation_latency": [
+              {
+                "detail_pointer": "/variants/split/live/1/input_observation_latency/0",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 0,
+                  "observed_after_frames": 3
+                }
+              },
+              {
+                "detail_pointer": "/variants/split/live/1/input_observation_latency/1",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 200,
+                  "observed_after_frames": 3
+                }
+              },
+              {
+                "detail_pointer": "/variants/split/live/1/input_observation_latency/2",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 400,
+                  "observed_after_frames": 3
+                }
+              }
+            ]
+          },
+          {
+            "level": 3,
+            "language": 0,
+            "median": 642112,
+            "p95": 811136,
+            "maximum": 1202752,
+            "presented_fps": 22.099175210754158,
+            "game_ticks": 100249,
+            "input_observation_latency": [
+              {
+                "detail_pointer": "/variants/split/live/2/input_observation_latency/0",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 0,
+                  "observed_after_frames": 2
+                }
+              },
+              {
+                "detail_pointer": "/variants/split/live/2/input_observation_latency/1",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 200,
+                  "observed_after_frames": 1
+                }
+              },
+              {
+                "detail_pointer": "/variants/split/live/2/input_observation_latency/2",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 400,
+                  "observed_after_frames": 2
+                }
+              }
+            ]
+          },
+          {
+            "level": 1,
+            "language": 1,
+            "median": 916672,
+            "p95": 1161344,
+            "maximum": 1352512,
+            "presented_fps": 16.325516822358928,
+            "game_ticks": 100755,
+            "input_observation_latency": [
+              {
+                "detail_pointer": "/variants/split/live/3/input_observation_latency/0",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 0,
+                  "observed_after_frames": 3
+                }
+              },
+              {
+                "detail_pointer": "/variants/split/live/3/input_observation_latency/1",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 200,
+                  "observed_after_frames": 1
+                }
+              },
+              {
+                "detail_pointer": "/variants/split/live/3/input_observation_latency/2",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 400,
+                  "observed_after_frames": 2
+                }
+              }
+            ]
+          },
+          {
+            "level": 2,
+            "language": 1,
+            "median": 938432,
+            "p95": 1151488,
+            "maximum": 1249856,
+            "presented_fps": 15.330058479532164,
+            "game_ticks": 100260,
+            "input_observation_latency": [
+              {
+                "detail_pointer": "/variants/split/live/4/input_observation_latency/0",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 0,
+                  "observed_after_frames": 3
+                }
+              },
+              {
+                "detail_pointer": "/variants/split/live/4/input_observation_latency/1",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 200,
+                  "observed_after_frames": 3
+                }
+              },
+              {
+                "detail_pointer": "/variants/split/live/4/input_observation_latency/2",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 400,
+                  "observed_after_frames": 3
+                }
+              }
+            ]
+          },
+          {
+            "level": 3,
+            "language": 1,
+            "median": 646368.0,
+            "p95": 836544,
+            "maximum": 1162240,
+            "presented_fps": 21.80053770790613,
+            "game_ticks": 100757,
+            "input_observation_latency": [
+              {
+                "detail_pointer": "/variants/split/live/5/input_observation_latency/0",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 0,
+                  "observed_after_frames": 2
+                }
+              },
+              {
+                "detail_pointer": "/variants/split/live/5/input_observation_latency/1",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 200,
+                  "observed_after_frames": 2
+                }
+              },
+              {
+                "detail_pointer": "/variants/split/live/5/input_observation_latency/2",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 400,
+                  "observed_after_frames": 2
+                }
+              }
+            ]
+          }
+        ],
+        "live_position_checkpoint_differences": 4,
+        "cold": {
+          "cases": 6,
+          "median_cpu_percent": -0.09548862693585236,
+          "best_cpu_percent": -0.25019167910899087,
+          "worst_cpu_percent": 0.0,
+          "before_min_fps": null,
+          "after_min_fps": null
+        },
+        "spatial": {
+          "0": {
+            "cases": 440,
+            "median_cpu_percent": -0.12539784022593814,
+            "best_cpu_percent": -0.3969957081545017,
+            "worst_cpu_percent": 0.16305332447612564,
+            "before_min_fps": 9.95458342826764,
+            "after_min_fps": 9.95458342826764
+          },
+          "1": {
+            "cases": 440,
+            "median_cpu_percent": -0.12712893347381904,
+            "best_cpu_percent": -0.3862453731023008,
+            "worst_cpu_percent": 0.2067246306317161,
+            "before_min_fps": 9.95458342826764,
+            "after_min_fps": 9.95458342826764
+          }
+        }
+      },
+      "rows96": {
+        "rom_sha256": "5bbb0ee469df09b0cd1ffb13074935fc1895255d20c199ae673a66630a273967",
+        "rom_bytes": 26649124,
+        "defines": [
+          "NO_SCALES",
+          "STATIC_SETUP",
+          "PRELIT",
+          "EXACT_LIGHT",
+          "EXACT_PLANES",
+          "UI_CACHE",
+          "SIDES_PRELIT",
+          "HW_OBJ",
+          "HW_PACK_ARM",
+          "HW_DIRECT",
+          "HW_BG",
+          "HW_RAYS32",
+          "HW_BG_LEASE_CACHE",
+          "HW_ROW_LUT",
+          "HW_BG_STREAM",
+          "HW_UI_REUSE",
+          "BACKFACE",
+          "HW_EDGE_ROM",
+          "BACKFACE_SIDES",
+          "SIDE_SETUP",
+          "HW_MASKED",
+          "HW_PRESENT",
+          "HW_MAP_CACHE",
+          "HW_VERTICAL128",
+          "HW_COLUMN_CACHE",
+          "HW_CELL_CLASS",
+          "HW_FC_SEED",
+          "HW_FACE_BOX",
+          "HW_COVER4",
+          "HW_DIRECT_RUN",
+          "HW_PROJECT_RECIP",
+          "HW_NONZERO_COLUMN",
+          "HW_COMPACT_ZERO",
+          "HW_SURFACE_SPLIT",
+          "HW_LINEAR_ROM",
+          "HW_DIRECT_GAPS",
+          "HW_STATIC_GEOMETRY",
+          "HW_EDGE_RAM_CALL",
+          "HW_INTERVAL_EWRAM",
+          "HW_ENTITY_PRELIT",
+          "HW_MASKED_BATCH",
+          "HW_RECT_RASTER",
+          "HW_RECT_BATCH",
+          "HW_ANIMATION_COLUMNS",
+          "HW_SURFACE_PRELIT",
+          "HW_FLOOR_FILL",
+          "HW_VBLANK_ONLY",
+          "HW_PLANE_PAIR",
+          "HW_MASKED_OPEN",
+          "HW_MASKED_UNROLL",
+          "HW_MASKED_UNROLL_COMPACT",
+          "HW_VISIBLE_SPLIT",
+          "HW_ROWS96"
+        ],
+        "ewram_bytes": 261476,
+        "iwram_bytes": 22976,
+        "stack_reserve": 8192,
+        "heavy_reference": "control",
+        "heavy": {
+          "cases": 6,
+          "median_cpu_percent": -13.065809451508825,
+          "best_cpu_percent": -14.94587579920238,
+          "worst_cpu_percent": -11.72271851462603,
+          "before_min_fps": 9.95458342826764,
+          "after_min_fps": 11.945500113921167
+        },
+        "ppu_frames": 18,
+        "ppu_max_diff": 22062,
+        "live": [
+          {
+            "level": 1,
+            "language": 0,
+            "median": 798400,
+            "p95": 1061632,
+            "maximum": 1246208,
+            "presented_fps": 18.515525176577807,
+            "game_ticks": 100749,
+            "input_observation_latency": [
+              {
+                "detail_pointer": "/variants/rows96/live/0/input_observation_latency/0",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 0,
+                  "observed_after_frames": 2
+                }
+              },
+              {
+                "detail_pointer": "/variants/rows96/live/0/input_observation_latency/1",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 200,
+                  "observed_after_frames": 1
+                }
+              },
+              {
+                "detail_pointer": "/variants/rows96/live/0/input_observation_latency/2",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 400,
+                  "observed_after_frames": 1
+                }
+              }
+            ]
+          },
+          {
+            "level": 2,
+            "language": 0,
+            "median": 836544.0,
+            "p95": 1055552,
+            "maximum": 1123328,
+            "presented_fps": 17.42052099946837,
+            "game_ticks": 100422,
+            "input_observation_latency": [
+              {
+                "detail_pointer": "/variants/rows96/live/1/input_observation_latency/0",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 0,
+                  "observed_after_frames": 3
+                }
+              },
+              {
+                "detail_pointer": "/variants/rows96/live/1/input_observation_latency/1",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 200,
+                  "observed_after_frames": 1
+                }
+              },
+              {
+                "detail_pointer": "/variants/rows96/live/1/input_observation_latency/2",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 400,
+                  "observed_after_frames": 3
+                }
+              }
+            ]
+          },
+          {
+            "level": 3,
+            "language": 0,
+            "median": 579072.0,
+            "p95": 769408,
+            "maximum": 1091648,
+            "presented_fps": 24.78691273638642,
+            "game_ticks": 100748,
+            "input_observation_latency": [
+              {
+                "detail_pointer": "/variants/rows96/live/2/input_observation_latency/0",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 0,
+                  "observed_after_frames": 2
+                }
+              },
+              {
+                "detail_pointer": "/variants/rows96/live/2/input_observation_latency/1",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 200,
+                  "observed_after_frames": 1
+                }
+              },
+              {
+                "detail_pointer": "/variants/rows96/live/2/input_observation_latency/2",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 400,
+                  "observed_after_frames": 2
+                }
+              }
+            ]
+          },
+          {
+            "level": 1,
+            "language": 1,
+            "median": 798400,
+            "p95": 1061632,
+            "maximum": 1246208,
+            "presented_fps": 18.515525176577807,
+            "game_ticks": 100749,
+            "input_observation_latency": [
+              {
+                "detail_pointer": "/variants/rows96/live/3/input_observation_latency/0",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 0,
+                  "observed_after_frames": 2
+                }
+              },
+              {
+                "detail_pointer": "/variants/rows96/live/3/input_observation_latency/1",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 200,
+                  "observed_after_frames": 1
+                }
+              },
+              {
+                "detail_pointer": "/variants/rows96/live/3/input_observation_latency/2",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 400,
+                  "observed_after_frames": 1
+                }
+              }
+            ]
+          },
+          {
+            "level": 2,
+            "language": 1,
+            "median": 836320.0,
+            "p95": 1053952,
+            "maximum": 1123328,
+            "presented_fps": 17.42052099946837,
+            "game_ticks": 100422,
+            "input_observation_latency": [
+              {
+                "detail_pointer": "/variants/rows96/live/4/input_observation_latency/0",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 0,
+                  "observed_after_frames": 3
+                }
+              },
+              {
+                "detail_pointer": "/variants/rows96/live/4/input_observation_latency/1",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 200,
+                  "observed_after_frames": 1
+                }
+              },
+              {
+                "detail_pointer": "/variants/rows96/live/4/input_observation_latency/2",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 400,
+                  "observed_after_frames": 3
+                }
+              }
+            ]
+          },
+          {
+            "level": 3,
+            "language": 1,
+            "median": 578656.0,
+            "p95": 756160,
+            "maximum": 1090688,
+            "presented_fps": 24.78691273638642,
+            "game_ticks": 100749,
+            "input_observation_latency": [
+              {
+                "detail_pointer": "/variants/rows96/live/5/input_observation_latency/0",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 0,
+                  "observed_after_frames": 2
+                }
+              },
+              {
+                "detail_pointer": "/variants/rows96/live/5/input_observation_latency/1",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 200,
+                  "observed_after_frames": 1
+                }
+              },
+              {
+                "detail_pointer": "/variants/rows96/live/5/input_observation_latency/2",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 400,
+                  "observed_after_frames": 2
+                }
+              }
+            ]
+          }
+        ],
+        "live_position_checkpoint_differences": 2,
+        "cold": {
+          "cases": 6,
+          "median_cpu_percent": -12.08728281120613,
+          "best_cpu_percent": -13.598663748416085,
+          "worst_cpu_percent": -9.863795324866553,
+          "before_min_fps": null,
+          "after_min_fps": null
+        },
+        "spatial": {
+          "0": {
+            "cases": 440,
+            "median_cpu_percent": -11.47199788927406,
+            "best_cpu_percent": -15.515151515151516,
+            "worst_cpu_percent": -6.850724513418505,
+            "before_min_fps": 9.95458342826764,
+            "after_min_fps": 11.945500113921167
+          },
+          "1": {
+            "cases": 440,
+            "median_cpu_percent": -11.476221213671028,
+            "best_cpu_percent": -15.518585911099558,
+            "worst_cpu_percent": -6.826172712460343,
+            "before_min_fps": 9.95458342826764,
+            "after_min_fps": 11.945500113921167
+          }
+        }
+      },
+      "active": {
+        "rom_sha256": "3a8f3bd7e7ffeb77efff4c66a43fa78d698c220ea4cc3629b6f51269bfcae268",
+        "rom_bytes": 26648748,
+        "defines": [
+          "NO_SCALES",
+          "STATIC_SETUP",
+          "PRELIT",
+          "EXACT_LIGHT",
+          "EXACT_PLANES",
+          "UI_CACHE",
+          "SIDES_PRELIT",
+          "HW_OBJ",
+          "HW_PACK_ARM",
+          "HW_DIRECT",
+          "HW_BG",
+          "HW_RAYS32",
+          "HW_BG_LEASE_CACHE",
+          "HW_ROW_LUT",
+          "HW_BG_STREAM",
+          "HW_UI_REUSE",
+          "BACKFACE",
+          "HW_EDGE_ROM",
+          "BACKFACE_SIDES",
+          "SIDE_SETUP",
+          "HW_MASKED",
+          "HW_PRESENT",
+          "HW_MAP_CACHE",
+          "HW_VERTICAL128",
+          "HW_COLUMN_CACHE",
+          "HW_CELL_CLASS",
+          "HW_FC_SEED",
+          "HW_FACE_BOX",
+          "HW_COVER4",
+          "HW_DIRECT_RUN",
+          "HW_PROJECT_RECIP",
+          "HW_NONZERO_COLUMN",
+          "HW_COMPACT_ZERO",
+          "HW_SURFACE_SPLIT",
+          "HW_LINEAR_ROM",
+          "HW_DIRECT_GAPS",
+          "HW_STATIC_GEOMETRY",
+          "HW_EDGE_RAM_CALL",
+          "HW_INTERVAL_EWRAM",
+          "HW_ENTITY_PRELIT",
+          "HW_MASKED_BATCH",
+          "HW_RECT_RASTER",
+          "HW_RECT_BATCH",
+          "HW_ANIMATION_COLUMNS",
+          "HW_SURFACE_PRELIT",
+          "HW_FLOOR_FILL",
+          "HW_VBLANK_ONLY",
+          "HW_PLANE_PAIR",
+          "HW_MASKED_OPEN",
+          "HW_MASKED_UNROLL",
+          "HW_MASKED_UNROLL_COMPACT",
+          "HW_VISIBLE_SPLIT",
+          "HW_PLANE_ACTIVE",
+          "HW_PLANE_ACTIVE_HOT"
+        ],
+        "ewram_bytes": 261476,
+        "iwram_bytes": 22912,
+        "stack_reserve": 8192,
+        "heavy_reference": "control",
+        "heavy": {
+          "cases": 6,
+          "median_cpu_percent": -0.17402719533959332,
+          "best_cpu_percent": -0.9299677358132419,
+          "worst_cpu_percent": 0.08229410647591084,
+          "before_min_fps": 9.95458342826764,
+          "after_min_fps": 9.95458342826764
+        },
+        "ppu_frames": 18,
+        "ppu_max_diff": 0,
+        "live": [
+          {
+            "level": 1,
+            "language": 0,
+            "median": 912896,
+            "p95": 1160960,
+            "maximum": 1348800,
+            "presented_fps": 16.325516822358928,
+            "game_ticks": 100755,
+            "input_observation_latency": [
+              {
+                "detail_pointer": "/variants/active/live/0/input_observation_latency/0",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 0,
+                  "observed_after_frames": 3
+                }
+              },
+              {
+                "detail_pointer": "/variants/active/live/0/input_observation_latency/1",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 200,
+                  "observed_after_frames": 1
+                }
+              },
+              {
+                "detail_pointer": "/variants/active/live/0/input_observation_latency/2",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 400,
+                  "observed_after_frames": 2
+                }
+              }
+            ]
+          },
+          {
+            "level": 2,
+            "language": 0,
+            "median": 939968.0,
+            "p95": 1147904,
+            "maximum": 1311360,
+            "presented_fps": 15.42960431381484,
+            "game_ticks": 100763,
+            "input_observation_latency": [
+              {
+                "detail_pointer": "/variants/active/live/1/input_observation_latency/0",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 0,
+                  "observed_after_frames": 3
+                }
+              },
+              {
+                "detail_pointer": "/variants/active/live/1/input_observation_latency/1",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 200,
+                  "observed_after_frames": 3
+                }
+              },
+              {
+                "detail_pointer": "/variants/active/live/1/input_observation_latency/2",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 400,
+                  "observed_after_frames": 3
+                }
+              }
+            ]
+          },
+          {
+            "level": 3,
+            "language": 0,
+            "median": 642176,
+            "p95": 811072,
+            "maximum": 1202816,
+            "presented_fps": 22.099175210754158,
+            "game_ticks": 100249,
+            "input_observation_latency": [
+              {
+                "detail_pointer": "/variants/active/live/2/input_observation_latency/0",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 0,
+                  "observed_after_frames": 2
+                }
+              },
+              {
+                "detail_pointer": "/variants/active/live/2/input_observation_latency/1",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 200,
+                  "observed_after_frames": 1
+                }
+              },
+              {
+                "detail_pointer": "/variants/active/live/2/input_observation_latency/2",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 400,
+                  "observed_after_frames": 2
+                }
+              }
+            ]
+          },
+          {
+            "level": 1,
+            "language": 1,
+            "median": 912896,
+            "p95": 1161536,
+            "maximum": 1348800,
+            "presented_fps": 16.325516822358928,
+            "game_ticks": 100755,
+            "input_observation_latency": [
+              {
+                "detail_pointer": "/variants/active/live/3/input_observation_latency/0",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 0,
+                  "observed_after_frames": 3
+                }
+              },
+              {
+                "detail_pointer": "/variants/active/live/3/input_observation_latency/1",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 200,
+                  "observed_after_frames": 1
+                }
+              },
+              {
+                "detail_pointer": "/variants/active/live/3/input_observation_latency/2",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 400,
+                  "observed_after_frames": 2
+                }
+              }
+            ]
+          },
+          {
+            "level": 2,
+            "language": 1,
+            "median": 939584.0,
+            "p95": 1147904,
+            "maximum": 1311296,
+            "presented_fps": 15.42960431381484,
+            "game_ticks": 100763,
+            "input_observation_latency": [
+              {
+                "detail_pointer": "/variants/active/live/4/input_observation_latency/0",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 0,
+                  "observed_after_frames": 3
+                }
+              },
+              {
+                "detail_pointer": "/variants/active/live/4/input_observation_latency/1",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 200,
+                  "observed_after_frames": 3
+                }
+              },
+              {
+                "detail_pointer": "/variants/active/live/4/input_observation_latency/2",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 400,
+                  "observed_after_frames": 3
+                }
+              }
+            ]
+          },
+          {
+            "level": 3,
+            "language": 1,
+            "median": 646368.0,
+            "p95": 836480,
+            "maximum": 1162432,
+            "presented_fps": 21.80053770790613,
+            "game_ticks": 100757,
+            "input_observation_latency": [
+              {
+                "detail_pointer": "/variants/active/live/5/input_observation_latency/0",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 0,
+                  "observed_after_frames": 2
+                }
+              },
+              {
+                "detail_pointer": "/variants/active/live/5/input_observation_latency/1",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 200,
+                  "observed_after_frames": 2
+                }
+              },
+              {
+                "detail_pointer": "/variants/active/live/5/input_observation_latency/2",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 400,
+                  "observed_after_frames": 2
+                }
+              }
+            ]
+          }
+        ],
+        "live_position_checkpoint_differences": 5,
+        "cold": {
+          "cases": 6,
+          "median_cpu_percent": -0.13748145887553798,
+          "best_cpu_percent": -0.8088784548073824,
+          "worst_cpu_percent": 0.0,
+          "before_min_fps": null,
+          "after_min_fps": null
+        },
+        "spatial": {
+          "0": {
+            "cases": 440,
+            "median_cpu_percent": -0.1795716574817141,
+            "best_cpu_percent": -2.048521459541097,
+            "worst_cpu_percent": 0.21897484023774005,
+            "before_min_fps": 9.95458342826764,
+            "after_min_fps": 9.95458342826764
+          },
+          "1": {
+            "cases": 440,
+            "median_cpu_percent": -0.17297828984379482,
+            "best_cpu_percent": -2.057763491135789,
+            "worst_cpu_percent": 0.19211008354553805,
+            "before_min_fps": 9.95458342826764,
+            "after_min_fps": 9.95458342826764
+          }
+        }
+      },
+      "sparse_control": {
+        "rom_sha256": "bd46c92070c02f4a5664537bd60b0766ece0733838023c59ee1fc712b02a6c61",
+        "rom_bytes": 26648936,
+        "defines": [
+          "NO_SCALES",
+          "STATIC_SETUP",
+          "PRELIT",
+          "EXACT_LIGHT",
+          "EXACT_PLANES",
+          "UI_CACHE",
+          "SIDES_PRELIT",
+          "HW_OBJ",
+          "HW_PACK_ARM",
+          "HW_DIRECT",
+          "HW_BG",
+          "HW_RAYS32",
+          "HW_BG_LEASE_CACHE",
+          "HW_ROW_LUT",
+          "HW_BG_STREAM",
+          "HW_UI_REUSE",
+          "BACKFACE",
+          "HW_EDGE_ROM",
+          "BACKFACE_SIDES",
+          "SIDE_SETUP",
+          "HW_MASKED",
+          "HW_PRESENT",
+          "HW_MAP_CACHE",
+          "HW_VERTICAL128",
+          "HW_COLUMN_CACHE",
+          "HW_CELL_CLASS",
+          "HW_FC_SEED",
+          "HW_FACE_BOX",
+          "HW_COVER4",
+          "HW_DIRECT_RUN",
+          "HW_PROJECT_RECIP",
+          "HW_NONZERO_COLUMN",
+          "HW_COMPACT_ZERO",
+          "HW_SURFACE_SPLIT",
+          "HW_LINEAR_ROM",
+          "HW_DIRECT_GAPS",
+          "HW_STATIC_GEOMETRY",
+          "HW_EDGE_RAM_CALL",
+          "HW_INTERVAL_EWRAM",
+          "HW_ENTITY_PRELIT",
+          "HW_MASKED_BATCH",
+          "HW_RECT_RASTER",
+          "HW_RECT_BATCH",
+          "HW_ANIMATION_COLUMNS",
+          "HW_SURFACE_PRELIT",
+          "HW_FLOOR_FILL",
+          "HW_VBLANK_ONLY",
+          "HW_PLANE_PAIR",
+          "HW_MASKED_OPEN",
+          "HW_MASKED_UNROLL",
+          "HW_MASKED_UNROLL_COMPACT",
+          "HW_VISIBLE_SPLIT",
+          "HW_NO_TRANSPARENT_COUNT"
+        ],
+        "ewram_bytes": 261476,
+        "iwram_bytes": 22740,
+        "stack_reserve": 8192,
+        "heavy_reference": "control",
+        "heavy": {
+          "cases": 6,
+          "median_cpu_percent": -0.18477701960126214,
+          "best_cpu_percent": -0.4324471959213372,
+          "worst_cpu_percent": 0.08229410647591084,
+          "before_min_fps": 9.95458342826764,
+          "after_min_fps": 9.95458342826764
+        },
+        "ppu_frames": 18,
+        "ppu_max_diff": 0,
+        "live": [
+          {
+            "level": 1,
+            "language": 0,
+            "median": 916160,
+            "p95": 1160640,
+            "maximum": 1352512,
+            "presented_fps": 16.325516822358928,
+            "game_ticks": 100755,
+            "input_observation_latency": [
+              {
+                "detail_pointer": "/variants/sparse_control/live/0/input_observation_latency/0",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 0,
+                  "observed_after_frames": 3
+                }
+              },
+              {
+                "detail_pointer": "/variants/sparse_control/live/0/input_observation_latency/1",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 200,
+                  "observed_after_frames": 1
+                }
+              },
+              {
+                "detail_pointer": "/variants/sparse_control/live/0/input_observation_latency/2",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 400,
+                  "observed_after_frames": 2
+                }
+              }
+            ]
+          },
+          {
+            "level": 2,
+            "language": 0,
+            "median": 937888.0,
+            "p95": 1150016,
+            "maximum": 1314944,
+            "presented_fps": 15.42960431381484,
+            "game_ticks": 100763,
+            "input_observation_latency": [
+              {
+                "detail_pointer": "/variants/sparse_control/live/1/input_observation_latency/0",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 0,
+                  "observed_after_frames": 3
+                }
+              },
+              {
+                "detail_pointer": "/variants/sparse_control/live/1/input_observation_latency/1",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 200,
+                  "observed_after_frames": 3
+                }
+              },
+              {
+                "detail_pointer": "/variants/sparse_control/live/1/input_observation_latency/2",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 400,
+                  "observed_after_frames": 3
+                }
+              }
+            ]
+          },
+          {
+            "level": 3,
+            "language": 0,
+            "median": 642112,
+            "p95": 810944,
+            "maximum": 1202752,
+            "presented_fps": 22.099175210754158,
+            "game_ticks": 100249,
+            "input_observation_latency": [
+              {
+                "detail_pointer": "/variants/sparse_control/live/2/input_observation_latency/0",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 0,
+                  "observed_after_frames": 2
+                }
+              },
+              {
+                "detail_pointer": "/variants/sparse_control/live/2/input_observation_latency/1",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 200,
+                  "observed_after_frames": 1
+                }
+              },
+              {
+                "detail_pointer": "/variants/sparse_control/live/2/input_observation_latency/2",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 400,
+                  "observed_after_frames": 2
+                }
+              }
+            ]
+          },
+          {
+            "level": 1,
+            "language": 1,
+            "median": 916544,
+            "p95": 1161344,
+            "maximum": 1352384,
+            "presented_fps": 16.325516822358928,
+            "game_ticks": 100755,
+            "input_observation_latency": [
+              {
+                "detail_pointer": "/variants/sparse_control/live/3/input_observation_latency/0",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 0,
+                  "observed_after_frames": 3
+                }
+              },
+              {
+                "detail_pointer": "/variants/sparse_control/live/3/input_observation_latency/1",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 200,
+                  "observed_after_frames": 1
+                }
+              },
+              {
+                "detail_pointer": "/variants/sparse_control/live/3/input_observation_latency/2",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 400,
+                  "observed_after_frames": 2
+                }
+              }
+            ]
+          },
+          {
+            "level": 2,
+            "language": 1,
+            "median": 938240,
+            "p95": 1150912,
+            "maximum": 1249664,
+            "presented_fps": 15.330058479532164,
+            "game_ticks": 100260,
+            "input_observation_latency": [
+              {
+                "detail_pointer": "/variants/sparse_control/live/4/input_observation_latency/0",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 0,
+                  "observed_after_frames": 3
+                }
+              },
+              {
+                "detail_pointer": "/variants/sparse_control/live/4/input_observation_latency/1",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 200,
+                  "observed_after_frames": 3
+                }
+              },
+              {
+                "detail_pointer": "/variants/sparse_control/live/4/input_observation_latency/2",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 400,
+                  "observed_after_frames": 3
+                }
+              }
+            ]
+          },
+          {
+            "level": 3,
+            "language": 1,
+            "median": 646240.0,
+            "p95": 836416,
+            "maximum": 1162112,
+            "presented_fps": 21.80053770790613,
+            "game_ticks": 100757,
+            "input_observation_latency": [
+              {
+                "detail_pointer": "/variants/sparse_control/live/5/input_observation_latency/0",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 0,
+                  "observed_after_frames": 2
+                }
+              },
+              {
+                "detail_pointer": "/variants/sparse_control/live/5/input_observation_latency/1",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 200,
+                  "observed_after_frames": 2
+                }
+              },
+              {
+                "detail_pointer": "/variants/sparse_control/live/5/input_observation_latency/2",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 400,
+                  "observed_after_frames": 2
+                }
+              }
+            ]
+          }
+        ],
+        "live_position_checkpoint_differences": 4
+      },
+      "sparse": {
+        "rom_sha256": "d6fc47805653042d0b1d299a596fca8bf9665a904496383ff6fef13cdf661223",
+        "rom_bytes": 26649008,
+        "defines": [
+          "NO_SCALES",
+          "STATIC_SETUP",
+          "PRELIT",
+          "EXACT_LIGHT",
+          "EXACT_PLANES",
+          "UI_CACHE",
+          "SIDES_PRELIT",
+          "HW_OBJ",
+          "HW_PACK_ARM",
+          "HW_DIRECT",
+          "HW_BG",
+          "HW_RAYS32",
+          "HW_BG_LEASE_CACHE",
+          "HW_ROW_LUT",
+          "HW_BG_STREAM",
+          "HW_UI_REUSE",
+          "BACKFACE",
+          "HW_EDGE_ROM",
+          "BACKFACE_SIDES",
+          "SIDE_SETUP",
+          "HW_MASKED",
+          "HW_PRESENT",
+          "HW_MAP_CACHE",
+          "HW_VERTICAL128",
+          "HW_COLUMN_CACHE",
+          "HW_CELL_CLASS",
+          "HW_FC_SEED",
+          "HW_FACE_BOX",
+          "HW_COVER4",
+          "HW_DIRECT_RUN",
+          "HW_PROJECT_RECIP",
+          "HW_NONZERO_COLUMN",
+          "HW_COMPACT_ZERO",
+          "HW_SURFACE_SPLIT",
+          "HW_LINEAR_ROM",
+          "HW_DIRECT_GAPS",
+          "HW_STATIC_GEOMETRY",
+          "HW_EDGE_RAM_CALL",
+          "HW_INTERVAL_EWRAM",
+          "HW_ENTITY_PRELIT",
+          "HW_MASKED_BATCH",
+          "HW_RECT_RASTER",
+          "HW_RECT_BATCH",
+          "HW_ANIMATION_COLUMNS",
+          "HW_SURFACE_PRELIT",
+          "HW_FLOOR_FILL",
+          "HW_VBLANK_ONLY",
+          "HW_PLANE_PAIR",
+          "HW_MASKED_OPEN",
+          "HW_MASKED_UNROLL",
+          "HW_MASKED_UNROLL_COMPACT",
+          "HW_VISIBLE_SPLIT",
+          "HW_NO_TRANSPARENT_COUNT",
+          "HW_MASKED_SELECTIVE_ZERO"
+        ],
+        "ewram_bytes": 261476,
+        "iwram_bytes": 22812,
+        "stack_reserve": 8192,
+        "heavy_reference": "sparse_control",
+        "heavy": {
+          "cases": 6,
+          "median_cpu_percent": 0.6208314761106171,
+          "best_cpu_percent": 0.0,
+          "worst_cpu_percent": 1.2625708137543379,
+          "before_min_fps": 9.95458342826764,
+          "after_min_fps": 9.95458342826764
+        },
+        "ppu_frames": 18,
+        "ppu_max_diff": 0,
+        "live": [
+          {
+            "level": 1,
+            "language": 0,
+            "median": 919072.0,
+            "p95": 1177472,
+            "maximum": 1355712,
+            "presented_fps": 16.225970988076252,
+            "game_ticks": 100420,
+            "input_observation_latency": [
+              {
+                "detail_pointer": "/variants/sparse/live/0/input_observation_latency/0",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 0,
+                  "observed_after_frames": 3
+                }
+              },
+              {
+                "detail_pointer": "/variants/sparse/live/0/input_observation_latency/1",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 200,
+                  "observed_after_frames": 2
+                }
+              },
+              {
+                "detail_pointer": "/variants/sparse/live/0/input_observation_latency/2",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 400,
+                  "observed_after_frames": 5
+                }
+              }
+            ]
+          },
+          {
+            "level": 2,
+            "language": 0,
+            "median": 951360,
+            "p95": 1158400,
+            "maximum": 1251200,
+            "presented_fps": 15.130966810966811,
+            "game_ticks": 100428,
+            "input_observation_latency": [
+              {
+                "detail_pointer": "/variants/sparse/live/1/input_observation_latency/0",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 0,
+                  "observed_after_frames": 3
+                }
+              },
+              {
+                "detail_pointer": "/variants/sparse/live/1/input_observation_latency/1",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 200,
+                  "observed_after_frames": 1
+                }
+              },
+              {
+                "detail_pointer": "/variants/sparse/live/1/input_observation_latency/2",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 400,
+                  "observed_after_frames": 1
+                }
+              }
+            ]
+          },
+          {
+            "level": 3,
+            "language": 0,
+            "median": 646144,
+            "p95": 837184,
+            "maximum": 1163648,
+            "presented_fps": 21.5019002050581,
+            "game_ticks": 100757,
+            "input_observation_latency": [
+              {
+                "detail_pointer": "/variants/sparse/live/2/input_observation_latency/0",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 0,
+                  "observed_after_frames": 2
+                }
+              },
+              {
+                "detail_pointer": "/variants/sparse/live/2/input_observation_latency/1",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 200,
+                  "observed_after_frames": 1
+                }
+              },
+              {
+                "detail_pointer": "/variants/sparse/live/2/input_observation_latency/2",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 400,
+                  "observed_after_frames": 2
+                }
+              }
+            ]
+          },
+          {
+            "level": 1,
+            "language": 1,
+            "median": 916928,
+            "p95": 1162176,
+            "maximum": 1354432,
+            "presented_fps": 16.325516822358928,
+            "game_ticks": 100756,
+            "input_observation_latency": [
+              {
+                "detail_pointer": "/variants/sparse/live/3/input_observation_latency/0",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 0,
+                  "observed_after_frames": 3
+                }
+              },
+              {
+                "detail_pointer": "/variants/sparse/live/3/input_observation_latency/1",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 200,
+                  "observed_after_frames": 1
+                }
+              },
+              {
+                "detail_pointer": "/variants/sparse/live/3/input_observation_latency/2",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 400,
+                  "observed_after_frames": 2
+                }
+              }
+            ]
+          },
+          {
+            "level": 2,
+            "language": 1,
+            "median": 961600,
+            "p95": 1153600,
+            "maximum": 1250496,
+            "presented_fps": 15.130966810966811,
+            "game_ticks": 100596,
+            "input_observation_latency": [
+              {
+                "detail_pointer": "/variants/sparse/live/4/input_observation_latency/0",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 0,
+                  "observed_after_frames": 3
+                }
+              },
+              {
+                "detail_pointer": "/variants/sparse/live/4/input_observation_latency/1",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 200,
+                  "observed_after_frames": 1
+                }
+              },
+              {
+                "detail_pointer": "/variants/sparse/live/4/input_observation_latency/2",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 400,
+                  "observed_after_frames": 1
+                }
+              }
+            ]
+          },
+          {
+            "level": 3,
+            "language": 1,
+            "median": 646272.0,
+            "p95": 837184,
+            "maximum": 1162752,
+            "presented_fps": 21.601446039340775,
+            "game_ticks": 100757,
+            "input_observation_latency": [
+              {
+                "detail_pointer": "/variants/sparse/live/5/input_observation_latency/0",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 0,
+                  "observed_after_frames": 2
+                }
+              },
+              {
+                "detail_pointer": "/variants/sparse/live/5/input_observation_latency/1",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 200,
+                  "observed_after_frames": 1
+                }
+              },
+              {
+                "detail_pointer": "/variants/sparse/live/5/input_observation_latency/2",
+                "entries": 2,
+                "scalars": {
+                  "event_frame": 400,
+                  "observed_after_frames": 2
+                }
+              }
+            ]
+          }
+        ],
+        "live_position_checkpoint_differences": 4
+      }
+    },
+    "actual_ppu": {
+      "spatial": 880,
+      "detail": 396,
+      "cache_mutations": 48
+    },
+    "stack": {
+      "main_stack_low": 50356224,
+      "main_stack_top": 50364160,
+      "sentinel_word": 219540062,
+      "untouched_margin_bytes": 5352,
+      "high_water_bytes": 2584,
+      "irq_and_bios_excluded": true,
+      "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+    },
+    "irq_stack": {
+      "low": 50364160,
+      "top": 50364320,
+      "untouched_margin_bytes": 80,
+      "high_water_bytes": 80,
+      "includes_bios_irq_saves": true
+    },
+    "attribution": {
+      "detail_pointer": "/attribution",
+      "items": 6
+    },
+    "limitations": [
+      "No physical GBA or original BIOS acceptance; BUG02 remains open/deferred.",
+      "Fixed 600 video frames and timestamped inputs do not guarantee identical live world states or published tick counts.",
+      "Cold experiment invalidates geometry only; assets/PCM stay warm, presentation FPS intentionally unavailable.",
+      "Old battle presentation-count fixture is a load test, not equal-state causal timing.",
+      "No claim of global speed optimum or completion of all possible H02/H03/H04/H06/H08/H09 implementations.",
+      "96-row quality not accepted. No separate Performance product or public release."
+    ],
+    "evidence": {
+      "detail_pointer": "/evidence",
+      "entries": 140
+    }
+  }
+}

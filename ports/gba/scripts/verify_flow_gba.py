@@ -211,15 +211,11 @@ class FlowProbe(UIProbe):
             assert self.flow()['state'] == 5 and self.flow()['page'] == 1
             raw, palette = self.frame()
             _, white = ui_colors(palette)
-            text = ('GBA port by\n\nRetrogaming Na Balkone' if language else
-                    'GBA-порт\n\nРетрогейминг на балконе').encode('cp866')
-            rows = screen_lines(text)
-            for row in range(14):
-                line = rows[row] if row < len(rows) else b''
-                glyph_mask(raw, font, 8, 24+row*8, line.ljust(28, b' '), white)
+            from verify_channel_qr import verify_author
+            channel = verify_author(self,font,language,white)
             message_mask(raw, font, f'{hint} 2/2'.encode('cp866'), white)
             output.append(dict(resource='GBA port attribution', language=language,
-                               text=text.decode('cp866'), screen=self.screen(f'credits-port-{language}')))
+                               channel=channel, screen=self.screen(f'credits-port-{language}')))
             self.press(8)
 
     def to_title(self):

@@ -44,6 +44,7 @@ def main():
     parser.add_argument('--heading-step',type=int,default=45)
     parser.add_argument('--cases',nargs='+',help='Restrict to level:cell:heading triples for profiling.')
     parser.add_argument('--profile',action='store_true',help='Enable instrumented face/surface timers; timing includes their overhead.')
+    parser.add_argument('--cold-geometry',action='store_true',help='Invalidate static geometry cache before each held draw; excludes hold wait from CPU, presentation FPS unavailable.')
     parser.add_argument('--language',type=int,choices=(0,1),default=0)
     parser.add_argument('--verify-output',action='store_true',help='After timing, hold a completed draw and hash actual PPU/coverage/stats.')
     parser.add_argument('--force-low-mode',type=int,choices=(0,1,2),default=0,help='Feedback prototype only:0 auto,1 CPU ceiling,2 BG3 ceiling')
@@ -75,11 +76,23 @@ def main():
                     p.camera(level,cell%64*480+240,-300,cell//64*480+240,heading)
                     p.command(6);p.command(2,rate['id'])
                     collect(p,6)
-                    r=collect(p,a.samples)
+                    if a.cold_geometry:
+                        samples=[]
+                        for _ in range(a.samples):
+                            p.write(p.symbols['g_camera_capture_hold'],struct.pack('<I',1));p.present()
+                            p.write(p.symbols['hw_static_active'],struct.pack('<I',0))
+                            completed=p.present()
+                            samples.append(completed['last_cycles'])
+                        r=collect(p,a.samples)
+                        r.update(minimum=min(samples),median=statistics.median(samples),maximum=max(samples),
+                                 cold_geometry_cycles=samples,presented_fps=None)
+                    else:r=collect(p,a.samples)
                     assert r['audio']['underruns']==0 and r['sound_active_frames']==a.samples
                     assert all(s['flow_state']==2 and s['ui_state']==0 for s in r['samples'])
                     r.update(level=level+1,language=a.language,cell=cell,label=label,heading=heading)
                     r['stage_medians']={key:statistics.median(s['stages'][key] for s in r['samples']) for key in r['samples'][0]['stages']}
+                    if a.cold_geometry:
+                        r['warm_followup_checks']={k:r.pop(k) for k in ('stage_medians','motion_steps','ai_steps','game_ticks','time_conservation_error_ticks')}
                     r['renderer_stats']=list(p.words('g_render_stats',11))
                     r['ppu_sha256']=hashlib.sha256(p.frontend.last_video_raw).hexdigest()
                     if a.verify_output:
@@ -114,10 +127,11 @@ def main():
                         p.write(p.symbols['g_camera_capture_hold'],struct.pack('<I',0))
                     del r['samples'];rows.append(r);p.pcm.clear()
             current=[r for r in rows if r['level']==level+1]
-            if current:print('LEVEL',level+1,'cases',len(current),'minimum FPS',min(r['presented_fps'] for r in current),flush=True)
+            if current:print('LEVEL',level+1,'cases',len(current),'minimum FPS',None if a.cold_geometry else min(r['presented_fps'] for r in current),flush=True)
         result=dict(rom_sha256=sha(p.rom),core_sha256=sha(core),script_sha256=sha(__file__),rows=rows,
             capture_hold_during_samples=False,simulation_frozen=True,warmup_presentations=6,heading_step=a.heading_step,instrumented=a.profile,
             forced_low_mode=a.force_low_mode,
+            cold_geometry=a.cold_geometry,
             language=a.language,held_output_verification_after_timing=a.verify_output,
             scope='Steady renderer with PCM, original maps, distributed walkable sector/start/water cells. No live AI cost or whole-level/playthrough minimum claimed.')
         a.report.write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8')

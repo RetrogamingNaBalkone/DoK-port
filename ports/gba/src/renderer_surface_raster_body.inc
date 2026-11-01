@@ -81,6 +81,11 @@ static SURFACE_RASTER_ATTR void SURFACE_RASTER_NAME(dok_renderer_workspace *w,co
         int a=k,b=(k+1)&3;if(f->y[a]>f->y[b]) {int n=a;a=b;b=n;}
         int span=f->y[b]-f->y[a];edges[k].first=f->y[a];edges[k].last=f->y[b];
         edges[k].dx=span?PLANE_DIV((f->x[b]-f->x[a])*65536,span):0;
+#ifdef DOK_RENDER_HW_EDGE_PAIR_PROTOTYPE
+        uint64_t edge_uv=span && !mask_only?dok_gba_plane_divide_pair(
+            (u[b]-u[a])*65536,(v[b]-v[a])*65536,(unsigned)span):0;
+        edges[k].du=(int32_t)edge_uv;edges[k].dv=(int32_t)(edge_uv>>32);
+#else
         edges[k].du=span && !mask_only
 #ifdef DOK_RENDER_HW_PLANE_ZERO_PROTOTYPE
             && u[b]!=u[a]
@@ -91,6 +96,7 @@ static SURFACE_RASTER_ATTR void SURFACE_RASTER_NAME(dok_renderer_workspace *w,co
             && v[b]!=v[a]
 #endif
             ?PLANE_DIV((v[b]-v[a])*65536,span):0;
+#endif
         edges[k].x=add(f->x[a]*65536,mul(yfirst-f->y[a],edges[k].dx));
         edges[k].u=add(u[a]*65536,mul(yfirst-f->y[a],edges[k].du));
         edges[k].v=add(v[a]*65536,mul(yfirst-f->y[a],edges[k].dv));
