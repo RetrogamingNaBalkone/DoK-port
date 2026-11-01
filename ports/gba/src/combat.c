@@ -145,6 +145,13 @@ static void occupy(dok_combat *c,dok_combat_projectile *p) {
  int pos=cell(c,p->x,p->z);if(pos<0 || c->world->maps[pos]!=' ' || dok_combat_blocked(c,p->x,p->z))return;
  c->occupied[pos>>3]|=(uint8_t)(1u<<(pos&7));p->state|=0x40;
 }
+static int terrain_cell(dok_combat *c,int pos) {
+ dok_runtime *w=c->world;if(pos<0)return -2;
+ unsigned tok=w->level->glyph_index[w->maps[w->level->cells+pos]];
+ if(tok) {unsigned cls=w->level->definitions[tok-1].class_id,flags=w->objects[tok-1].flags;
+  if((cls==7 && !(flags&8)) || (cls!=7 && !(flags&0x18)))return (int)(tok-1);}
+ return -1;
+}
 static int target_cell(dok_combat *c,dok_combat_projectile *p,int pos,const combat_targets *targets) {
  dok_runtime *w=c->world;if(pos<0)return -2;
  /* Compare coordinates against this cell's half-open bounds. Repeating two
@@ -164,10 +171,7 @@ static int target_cell(dok_combat *c,dok_combat_projectile *p,int pos,const comb
   const dok_runtime_actor *a=dok_runtime_actor_at(w,(uint16_t)i);
   if(a && (uint32_t)a->x-left<side && (uint32_t)a->z-top<side)return (int)i;
  }
- unsigned tok=w->level->glyph_index[w->maps[w->level->cells+pos]];
- if(tok) {unsigned cls=w->level->definitions[tok-1].class_id,flags=w->objects[tok-1].flags;
-  if((cls==7 && !(flags&8)) || (cls!=7 && !(flags&0x18)))return (int)(tok-1);}
- return -1;
+ return terrain_cell(c,pos);
 }
 /* A quarter-cell diagonal can enter and leave a cell between its endpoints.
  * Test that intermediate cell in crossing order; an exact corner touches no
@@ -190,6 +194,7 @@ static int crossed_target(dok_combat *c,dok_combat_projectile *p,int32_t x,int32
  }
  return target_cell(c,p,next,targets);
 }
+#include "combat_player_hits.inc"
 static void update(dok_combat *c,uint16_t id,combat_targets *targets) {
  dok_combat_projectile *p=&c->slots[id];dok_animation_frame f;uint16_t count;
  if(!animation(c,p->resource,p->frame,&f,&count)) {++c->errors;dok_combat_remove(c,id);return;}
@@ -205,13 +210,18 @@ static void update(dok_combat *c,uint16_t id,combat_targets *targets) {
  int speed=(int)c->world->objects[p->object].state.projectile.velocity;
  int distance=sar(word(speed)*elapsed,8),quarter=-(int)c->world->level->settings[DOK_LEVEL_CELL_SIDE]/4;
  int whole=distance/quarter,remainder=distance%quarter;
- /* Include the spawn/current cell before a nonzero laser remainder leaves it. */
- int hit=target_cell(c,p,cell(c,p->x,p->z),targets);
- for(int step=0;hit==-1 && step<=whole;step++) {
-  dok_runtime_actor a={0};a.x=p->x;a.z=p->z;a.heading=p->heading;
-  int32_t x=p->x,z=p->z;
-  dok_motion_free(&a,(int16_t)(step==0?remainder:quarter),0,0);p->x=a.x;p->z=a.z;
-  hit=crossed_target(c,p,x,z,targets);
+ int hit;
+ if(c->world->level->definitions[p->owner].class_id==1)
+  hit=player_flight(c,p,whole,remainder,quarter,targets);
+ else {
+  /* Enemy/non-player projectiles retain the original cell collision policy. */
+  hit=target_cell(c,p,cell(c,p->x,p->z),targets);
+  for(int step=0;hit==-1 && step<=whole;step++) {
+   dok_runtime_actor a={0};a.x=p->x;a.z=p->z;a.heading=p->heading;
+   int32_t x=p->x,z=p->z;
+   dok_motion_free(&a,(int16_t)(step==0?remainder:quarter),0,0);p->x=a.x;p->z=a.z;
+   hit=crossed_target(c,p,x,z,targets);
+  }
  }
  if(hit!=-1) {
   int impact=hit>=0 && dok_combat_damage(c,(uint16_t)hit,p->owner,p->damage);

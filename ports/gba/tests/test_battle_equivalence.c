@@ -29,7 +29,9 @@ static void equal(void){
  assert(event_hash[0]==event_hash[1] && event_count[0]==event_count[1]);
 }
 int main(int argc,char **argv){
- assert(argc==2);FILE *file=fopen(argv[1],"rb");assert(file);
+ assert(argc==2 || (argc==3 && !strcmp(argv[2],"enemy-only")));
+ unsigned enemy_only=argc==3;
+ FILE *file=fopen(argv[1],"rb");assert(file);
  assert(!fseek(file,0,SEEK_END));long size=ftell(file);rewind(file);
  void *data=malloc((size_t)size);assert(data && fread(data,1,(size_t)size,file)==(size_t)size);fclose(file);
  dok_rom_assets assets;assert(dok_rom_open(&assets,data,(size_t)size)==DOK_ROM_OK);
@@ -70,6 +72,9 @@ int main(int argc,char **argv){
    for(unsigned shot=0;shot<24;shot++){
     unsigned owner=player;
     if(shot%2){owner=1+random_word()%(view.object_count-1);while(!dok_runtime_actor_at(&worlds[0],(uint16_t)owner))owner=(owner+1)%view.object_count;}
+    if(enemy_only && view.definitions[owner].class_id==1){
+     owner=0;while(view.definitions[owner].class_id!=9 || !dok_runtime_actor_at(&worlds[0],(uint16_t)owner))++owner;
+    }
     uint8_t glyph=(uint8_t)(shot%3?'1':'2');
     assert(dok_combat_spawn(&combats[0],(uint16_t)owner,glyph)==reference_combat_spawn(&combats[1],(uint16_t)owner,glyph));
    }
@@ -82,6 +87,6 @@ int main(int argc,char **argv){
    ++cases;
   }
  }
- printf("Battle differential: %u scenarios, %u polls, state and ordered events exact\n",cases,checks);
+ printf("Battle differential: %u scenarios, %u polls, state and ordered events exact (%s)\n",cases,checks,enemy_only?"non-player owners":"mixed owners");
  free(data);return 0;
 }

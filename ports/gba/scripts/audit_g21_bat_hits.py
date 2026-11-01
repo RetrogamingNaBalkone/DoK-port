@@ -1,4 +1,4 @@
-"""Blaster shots at original LEVEL1/3 bats across angles, ranges and cell edges.
+"""Both player weapons at original LEVEL1/3 bats across angles, ranges and cell edges.
 
 Controlled open-map/actor poses isolate collision from navigation and AI.
 No physical GBA or exact user route is claimed. Rational grid oracle and
@@ -23,6 +23,7 @@ from verify_projectile_cells_gba import trajectory
 from verify_gba import sha
 from verify_combat_original import Original,R
 from verify_movement import Original as NativeMotion
+from verify_centered_projectiles_gba import actor_contact,path_segments
 
 
 def native_cell(original,x,z):
@@ -49,6 +50,8 @@ def main():
     ap=argparse.ArgumentParser(description=__doc__)
     ap.add_argument('--build-dir',type=Path,required=True)
     ap.add_argument('--report',type=Path,required=True)
+    ap.add_argument('--centered',action='store_true',help='Expect the G21 actor-centered player-shot correction')
+    ap.add_argument('--weapons',type=int,nargs='+',choices=(1,2),default=[1,2])
     args=ap.parse_args()
     os.chdir(ROOT)
     os.environ['DOK_PROBE_FAST_VIDEO']='1'
@@ -106,36 +109,40 @@ def main():
                 # Two original bats per level plus a non-bat control.
                 other=next(i for i,o in enumerate(model['objects']) if o['class']==9 and i not in bats and o['placements'])
                 for target in [*bats[:2],other]:
-                    for heading in (0,30,45,60,90,135,180,225,270,315):
-                        for distance in (960,1920,2880):
-                            for offset in (0,1,239,479):
-                                tx,tz=14400+offset,14400+offset
-                                x=tx+round(math.sin(math.radians(heading))*distance)
-                                z=tz-round(math.cos(math.radians(heading))*distance)
-                                p.control(6)
-                                p.write(world+MAP_OFFSET,b' '*4096)
-                                # Other test targets must leave the ray between cases.
-                                for i in [*bats[:2],other]:
-                                    p.write(world+9220+model['objects'][i]['actor_index']*64+4,struct.pack('<iii',240,-300,240))
-                                actor_pose(p,model,model['player_index']-1,x,z,heading)
-                                actor_pose(p,model,target,tx,tz)
-                                health=world+4+target*36+16
-                                p.write(health,struct.pack('<hh',100,1))
-                                p.set_player(baseline())
-                                p.restart()
-                                p.control(1,1,100)
-                                p.control(3)
-                                slot,initial=p.active_slots()[0]
-                                d=p.poll(initial['deadline'])
-                                hp=struct.unpack('<h',p.frontend.read(health,2))[0]
-                                cells,_=trajectory(x,z,heading,1,256,trig)
-                                expected=(tx//480,tz//480) in cells
-                                assert (hp<100)==expected,(language,level,target,heading,distance,offset,hp)
-                                rows.append(dict(language=language,level=level+1,target=target,
-                                    bat=target in bats,heading=heading,distance=distance,offset=offset,
-                                    hero=[x,z],target_position=[tx,tz],health_after=hp,
-                                    oracle_hit=expected,hits=d['hits'],misses=d['misses'],
-                                    target_cell=[tx//480,tz//480],ray_cells=cells))
+                    for weapon in args.weapons:
+                        for heading in (0,30,45,60,90,135,180,225,270,315):
+                            for distance in (960,1920,2880):
+                                for offset in (0,1,239,479):
+                                    tx,tz=14400+offset,14400+offset
+                                    x=tx+round(math.sin(math.radians(heading))*distance)
+                                    z=tz-round(math.cos(math.radians(heading))*distance)
+                                    p.control(6)
+                                    p.write(world+MAP_OFFSET,b' '*4096)
+                                    # Other test targets must leave the ray between cases.
+                                    for i in [*bats[:2],other]:
+                                        p.write(world+9220+model['objects'][i]['actor_index']*64+4,struct.pack('<iii',240,-300,240))
+                                    actor_pose(p,model,model['player_index']-1,x,z,heading)
+                                    actor_pose(p,model,target,tx,tz)
+                                    health=world+4+target*36+16
+                                    p.write(health,struct.pack('<hh',100,1))
+                                    p.set_player(baseline())
+                                    p.restart()
+                                    p.control(1,weapon,100)
+                                    p.control(3)
+                                    slot,initial=p.active_slots()[0]
+                                    d=p.poll(initial['deadline'])
+                                    hp=struct.unpack('<h',p.frontend.read(health,2))[0]
+                                    cells,_=trajectory(x,z,heading,weapon,256,trig)
+                                    grid_expected=(tx//480,tz//480) in cells
+                                    centered_expected=any(actor_contact(a,b,(tx,tz)) is not None
+                                        for a,b in path_segments(x,z,heading,weapon,416,trig))
+                                    expected=centered_expected if args.centered else grid_expected
+                                    assert (hp<100)==expected,(language,level,target,weapon,heading,distance,offset,hp)
+                                    rows.append(dict(language=language,level=level+1,target=target,weapon=weapon,
+                                        bat=target in bats,heading=heading,distance=distance,offset=offset,
+                                        hero=[x,z],target_position=[tx,tz],health_after=hp,
+                                        oracle_hit=expected,grid_hit=grid_expected,centered_hit=centered_expected,
+                                        hits=d['hits'],misses=d['misses'],target_cell=[tx//480,tz//480],ray_cells=cells))
         for path,value in sources.items():
             assert sha(path)==value
     finally:
@@ -144,10 +151,11 @@ def main():
     args.report.parent.mkdir(parents=True,exist_ok=True)
     args.report.write_text(json.dumps(dict(status='passed',scope=__doc__,script_sha256=sha(__file__),
         rom_sha256=sha(args.build_dir/'dok-diagnostic.gba'),core_sha256=sha(core),sources=sources,
-        counts=counts,native_cell_vectors=native_vectors,native_movement_paths=native_paths,
+        counts=counts,centered_policy=args.centered,weapons=args.weapons,
+        native_cell_vectors=native_vectors,native_movement_paths=native_paths,
         injected_native_boundary='Native world movement uses the validated G07 trig table; collision callback permits motion.',
         rows=rows),indent=2)+'\n',encoding='utf-8')
-    print('Blaster angle/range/cell edges:',len(rows),dict(counts))
+    print('Player weapon angle/range/cell edges:',len(rows),dict(counts))
 
 
 if __name__=='__main__':

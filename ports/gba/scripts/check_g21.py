@@ -23,6 +23,8 @@ BASE_REPORTS=('latency','frontend','ui','flow','credits','audio','time','arm','w
 EXTRA=(('combat','verify_combat_gba.py',()),
        ('ai-combat','verify_ai_combat_gba.py',()),
        ('projectile-cells','verify_projectile_cells_gba.py',('reference','--reference-fixed')),
+       ('centered-projectiles','verify_centered_projectiles_gba.py',()),
+       ('midrange-bats','verify_midrange_bats_gba.py',()),
        ('close-hits','verify_close_hits_gba.py',('reference','--ordinary-pickup')),
        ('ceiling-sides','verify_ceiling_sides_gba.py',()),
        ('story','verify_story_gba.py',()),
@@ -35,10 +37,10 @@ def read(path):
 
 def main():
     ap=argparse.ArgumentParser(description=__doc__)
-    ap.add_argument('--out',type=Path,default=Path('build/gba/g21-final'))
-    ap.add_argument('--repeat',type=Path,default=Path('build/gba/g21-repeat'))
+    ap.add_argument('--out',type=Path,default=Path('build/gba/g21-bat-fixed'))
+    ap.add_argument('--repeat',type=Path,default=Path('build/gba/g21-bat-repeat'))
     ap.add_argument('--assets',type=Path,default=Path('build/gba/g21-clean-assets'))
-    ap.add_argument('--ceiling',type=Path,default=Path('build/gba/g21-ceiling-sweep'))
+    ap.add_argument('--ceiling',type=Path,default=Path('build/gba/g21-bat-ceiling'))
     ap.add_argument('--stage',choices=('all','build','checks','assemble'),default='all',
                     help='assemble validates recorded pins; it does not run or replace tests')
     args=ap.parse_args()
@@ -80,7 +82,7 @@ def main():
             for value in extra:
                 argv.extend(['--reference-build',str(repeat)] if value=='reference' else [value])
             run(name,argv)
-        run('bat-hits',[*script('audit_g21_bat_hits.py'),'--build-dir',build,'--report',args.out/'bat-hits.json'])
+        run('bat-hits',[*script('audit_g21_bat_hits.py'),'--build-dir',build,'--report',args.out/'bat-hits.json','--centered'])
         run('ceiling',[*script('audit_g21_ceiling.py'),'--build-dir',build,'--out',args.ceiling])
     command_file=args.out/('commands-'+args.stage+'.json')
     command_file.write_text(json.dumps(commands,indent=2)+'\n',encoding='utf-8')
@@ -137,7 +139,7 @@ def main():
         reports[name]=dict(path=path.as_posix(),sha256=sha(path))
     bats=read(args.out/'bat-hits.json')
     issue_status={
-        'BUG01':'Grid-boundary misses reproduced with centered blaster aim; original cell lookup and motion confirmed. No gameplay correction applied.',
+        'BUG01':'Fixed: player shots sweep actor-centered cell-sized footprints; original damage/flight and non-player collision policy preserved.',
         'BUG02':'Native affine LIGHT seams reproduced in geometry; the reported full dark column has not been uniquely identified or corrected.'}
     core_path=Path(os.environ['LOCALAPPDATA'])/'Programs/mGBA/libretro-20261024/mgba_libretro.dll'
     core=ct.CDLL(str(core_path))
@@ -153,6 +155,9 @@ def main():
         reports=reports,build_manifest_sha256=sha(args.out/'frontend-build.json'),
         host_log_sha256=sha(args.out/'host-all.log'),
         bat_cases=len(bats['rows']),bat_results=bats['counts'],
+        player_collision_policy='actor-centered-half-open-square-v1',
+        centered_projectile_cases=read(args.out/'centered-projectiles.json')['cases'],
+        live_midrange_cases=read(args.out/'midrange-bats.json')['cases'],
         native_motion_steps=sum(len(p['endpoints']) for p in bats['native_movement_paths']),
         ceiling_frames=ceiling['frames'],ceiling_potential_seam_frames=ceiling['frames_with_potential_seams'],
         native_ceiling_potential_seam_frames=ceiling['original_frames_with_potential_seams'],
@@ -178,7 +183,7 @@ def main():
         'Menus: A/Start confirm, B back. Text screens: A/Start next, B back, Select language.\n\n'
         'Private candidate; G21 acceptance remains open. No new public release.\n'
         'Automated mGBA regression passed; this ROM has no new physical GBA verification.\n'
-        'Known: grid-boundary blaster misses; reported ceiling dark column remains unresolved.\n'
+        'Grid-boundary player-shot misses corrected. Reported ceiling dark column remains unresolved.\n'
         'Speed varies by scene; stable 30 FPS is not promised.\n'
         'No original EXE/RES, extracted resource package or decompiled sources are included.\n')
     archive=artifacts/'DoK-port_G21_Candidate.zip'

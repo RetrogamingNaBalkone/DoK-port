@@ -26,13 +26,17 @@ def main():
     modules='combat items runtime rom_assets image animation movement collision'.split()
     executable=out/'battle-tests.exe'
     run([zig,*flags,*['ports/gba/src/'+n+'.c' for n in modules],out/'reference.o','ports/gba/tests/test_battle_equivalence.c','-o',executable])
-    stdout=run([executable,'build/gba/assets/assets.bin'])
+    # G21 intentionally changes player-shot geometry. Keep the original
+    # differential for all unaffected owners; centered player contacts have a
+    # separate independent rational geometry oracle on the production ARM ROM.
+    stdout=run([executable,'build/gba/assets/assets.bin','enemy-only'])
     sha=lambda p:hashlib.sha256(Path(p).read_bytes()).hexdigest()
     report=dict(status='passed',reference_commit=REFERENCE,reference_source_sha256=sha(reference),
                 source_sha256=sha('ports/gba/src/combat.c'),stdout=stdout.strip(),commands=commands,
                 package_sha256=sha('build/gba/assets/assets.bin'),
                 scope='Windows host differential, 6 LEVEL/locales, 480/511-unit cells, overlapping/edge/outside/dead/reclaimable actors, '
-                      'mixed projectile owners and simultaneous volleys. Not a DOS or hardware equivalence claim.')
+                      'non-player projectile owners and simultaneous volleys. Player shots excluded after the intentional G21 centered-footprint fix. '
+                      'Not a DOS or hardware equivalence claim.')
     (out/'result.json').write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
     print(stdout.strip())
 

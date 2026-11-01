@@ -2,15 +2,15 @@
   "summary_schema": 1,
   "full_report": {
     "path": "analysis/gba/g21-regression-20261101.json",
-    "sha256": "566edb29515895a54b1ea5bc0557fe1a006fafb68cc97ac8c9bd92317c1e1ae5",
-    "bytes": 40324
+    "sha256": "cd0c4fcd566df52e79491aa8ba4706a28e446b2c55a1f7a19e1634bac45179fc",
+    "bytes": 41366
   },
   "scope": "Summary of a recorded run; not a new verification. Full report is local and ignored by Git.",
   "result": {
     "task": "G21",
     "status": "regression_passed_acceptance_open",
-    "rom_sha256": "be9f8b25836f556c9522e896a93bb5645c8ad855641525476998e07629508323",
-    "rom_bytes": 26646152,
+    "rom_sha256": "a584bb1bcd9defaf636a8a9853ff1d72f376c18c82ea24912ff70c06c061f12c",
+    "rom_bytes": 26648812,
     "repeated_rom_exact": true,
     "package_sha256": "3efa5d3027d63ffd65e0ae8c0b45be23ee8394b3c5151c8e9f10e76fa8674351",
     "originals_sha256_before": {
@@ -34,91 +34,99 @@
     },
     "reports": {
       "latency": {
-        "path": "build/gba/g21-final/latency.json",
-        "sha256": "66d50df8614d14dc2123e649d4dfaf5131d2bce63894b6fb8f1c15c36adb64be"
+        "path": "build/gba/g21-bat-fixed/latency.json",
+        "sha256": "74f90181d8226fb3a0251dd73e798f93b67110074265e32e0cdf7436ae95155d"
       },
       "frontend": {
-        "path": "build/gba/g21-final/frontend.json",
-        "sha256": "eb62099a0d6d0c44b8e5d1b000679f29c63480fc60f8de9723abbe3a4910c0c5"
+        "path": "build/gba/g21-bat-fixed/frontend.json",
+        "sha256": "246eb16506bcbf8bd74242071ea6a9686476a0a648bf97ee360d05fb8ee303c9"
       },
       "ui": {
-        "path": "build/gba/g21-final/ui.json",
-        "sha256": "49cbc45d3801a9f60cf4057b692ebcbe87b7047492c0b819ca1dd0de01274b33"
+        "path": "build/gba/g21-bat-fixed/ui.json",
+        "sha256": "24adfa7e27e3da514d5c1808eb289ad065b3973a026fc1d657d38005b3ae51ce"
       },
       "flow": {
-        "path": "build/gba/g21-final/flow.json",
-        "sha256": "381bc0bb1ab5eef782e562dea09545d2799ae6ca294d3537309bb17735680a0a"
+        "path": "build/gba/g21-bat-fixed/flow.json",
+        "sha256": "b5fabf4d5cb32a2f7bf71d2c4602e9dfffa922820e60e2bfc8214f309f61c7ab"
       },
       "credits": {
-        "path": "build/gba/g21-final/credits.json",
-        "sha256": "d7bfc891e4c0707027869520495b994d797c16d0db501364999ad825df76b093"
+        "path": "build/gba/g21-bat-fixed/credits.json",
+        "sha256": "ea3fcdd68aeedbb4dd9dafe199989eae170cc21c6617affaba038cb5e2b8d0b6"
       },
       "audio": {
-        "path": "build/gba/g21-final/audio.json",
-        "sha256": "df6e8006899282d5cffefe3ee9314323cfb64d1828e6ccc282083d86b1a12558"
+        "path": "build/gba/g21-bat-fixed/audio.json",
+        "sha256": "9abfc41117ac87964e50b6440784e9894f0ab79d39192f622044637025c67201"
       },
       "time": {
-        "path": "build/gba/g21-final/time.json",
-        "sha256": "fceccfe75d84a30a7a76914bf022d8f3fa85148e436598bbe43b879958801366"
+        "path": "build/gba/g21-bat-fixed/time.json",
+        "sha256": "9cd3bde06d83ccc5e034ac8ce87fade7bb67a05d341f20f007ac657a60146e61"
       },
       "arm": {
-        "path": "build/gba/g21-final/arm.json",
-        "sha256": "338cd3ac1195d66424b1ab7d15077c98f8d17b5051f1095edf1168e7088a8e54"
+        "path": "build/gba/g21-bat-fixed/arm.json",
+        "sha256": "cf8798c740fb5f108aed61b9f18830c8a9351bd73fd6cf86d65cd99dd67ad60c"
       },
       "water": {
-        "path": "build/gba/g21-final/water.json",
-        "sha256": "e4df3887e599d8466e9c08200d259996ec78a3fb066658c5c8f63b00c9082b30"
+        "path": "build/gba/g21-bat-fixed/water.json",
+        "sha256": "77f408f0e5f5caf0d72074050a677574103f3116840e8de07758d43027518f6f"
       },
       "sprites": {
-        "path": "build/gba/g21-final/sprites.json",
-        "sha256": "53c8bf853d75e1084cb9667e9c133a0b307484fb38fe50da1e2c4634987de355"
+        "path": "build/gba/g21-bat-fixed/sprites.json",
+        "sha256": "c831309205dff7e213beee62ab274f66afd688d1790a4fe6950e52220a9e1bc7"
       },
       "transitions": {
-        "path": "build/gba/g21-final/transitions.json",
-        "sha256": "265739769e3ef19493261277d3ea8343230248a01aeb6edbb21fef7ebdec3663"
+        "path": "build/gba/g21-bat-fixed/transitions.json",
+        "sha256": "c3e148d41448ea1c2d109bc9dd856672fcab212f189148fc656246e8b3adc2fb"
       },
       "combat": {
-        "path": "build/gba/g21-final/combat.json",
-        "sha256": "d5397ff1bcb498160c92f78838785751d9e0287e267f5f2d0074d3a176254b01"
+        "path": "build/gba/g21-bat-fixed/combat.json",
+        "sha256": "7b93a8808e55abca22097c0976146052e821259dd097f2e8c950ebd115528c3f"
       },
       "ai-combat": {
-        "path": "build/gba/g21-final/ai-combat.json",
-        "sha256": "2745531c87dbe6e3d61aa78fe7b2d8a573a18d9f464180f48b49de8f737d8b15"
+        "path": "build/gba/g21-bat-fixed/ai-combat.json",
+        "sha256": "0c615230b918a115eda09f96d836d4864c6310fb23e5f2e7ac8d68ef4d08a10e"
       },
       "projectile-cells": {
-        "path": "build/gba/g21-final/projectile-cells.json",
-        "sha256": "4019b16e270ff4e22d13d709ad26c6345c0cea2fd9c6fb7409aa59b5fa8f994e"
+        "path": "build/gba/g21-bat-fixed/projectile-cells.json",
+        "sha256": "9371714a7e79e3ddda3727337c765450ca5e9a3e9636e7de03568de65348bd8f"
+      },
+      "centered-projectiles": {
+        "path": "build/gba/g21-bat-fixed/centered-projectiles.json",
+        "sha256": "c369996048b11d24a487c8f690c688e7bfceda5d17687b28fa0cedce81c407f4"
+      },
+      "midrange-bats": {
+        "path": "build/gba/g21-bat-fixed/midrange-bats.json",
+        "sha256": "5f42a804ff6e16ce0b7d8e93502e8f4d283215355ea052dd0e81961be2ae35ef"
       },
       "close-hits": {
-        "path": "build/gba/g21-final/close-hits.json",
-        "sha256": "e06bfdd6098b1c1ea10ca81d4ad47d5f446c2512d30749e8415722e2b72348ab"
+        "path": "build/gba/g21-bat-fixed/close-hits.json",
+        "sha256": "3bb9387029274cb3f22cd6321c464b7a6fd8ae57519930462cd9ba81bcbb34bd"
       },
       "ceiling-sides": {
-        "path": "build/gba/g21-final/ceiling-sides.json",
-        "sha256": "6c5d0ff60441d6ab0414a64f3d0ebc375c4c66c23bf0ca1dfb778d6ab40e99b4"
+        "path": "build/gba/g21-bat-fixed/ceiling-sides.json",
+        "sha256": "5de803108a4c4b928bb649080559e8ea6c02fb13c2ad9caa1b8b9e2fcdeb1ec1"
       },
       "story": {
-        "path": "build/gba/g21-final/story.json",
-        "sha256": "54adb8367a850b72d31c1056c242fac3a3e62bb88b0ee2ec7818b6ae977078bf"
+        "path": "build/gba/g21-bat-fixed/story.json",
+        "sha256": "4ac906ca61ab6db90554cc94bc15b3ae686bc4d63486a8b02ca561ccbb671170"
       },
       "automap": {
-        "path": "build/gba/g21-final/automap.json",
-        "sha256": "e5b5ee4112025a05615d47721076e991938a4f04051e82390a0460aae0147bf0"
+        "path": "build/gba/g21-bat-fixed/automap.json",
+        "sha256": "8bbba36f4073640adc84277b5d5a3cbc74c33242f94cf9d4195d293fda2a55dd"
       },
       "bat-hits": {
-        "path": "build/gba/g21-final/bat-hits.json",
-        "sha256": "c9135a122f7b5e7791924a03e661f69e8b203e2aa3ca6ee298b3de9432e951aa"
+        "path": "build/gba/g21-bat-fixed/bat-hits.json",
+        "sha256": "bb8eb0b44f9f99870b06e85a12c35ef5c4658eb5c6afff451b01b62223029460"
       },
       "ceiling": {
-        "path": "build/gba/g21-ceiling-sweep/ceiling.json",
-        "sha256": "450714bf56681219e8837c45891b5d3936610825c18fe875b58abf791a04c246"
+        "path": "build/gba/g21-bat-ceiling/ceiling.json",
+        "sha256": "f525fdefe6344bfc657a840721350f7e770f79548b54bd48e79baae97a96d32c"
       },
       "packing": {
-        "path": "build/gba/g21-final/packing.json",
-        "sha256": "a86c8d0d54ee8f1f8a99a697879876cb73df91d46f52ccc45394543e4b139cdb"
+        "path": "build/gba/g21-bat-fixed/packing.json",
+        "sha256": "4abe04635dc2becf6b62d88a3d5aaf47e810e014275a2968b4743229907bcffb"
       },
       "time-selftest": {
-        "path": "build/gba/g21-final/time-selftest.json",
+        "path": "build/gba/g21-bat-fixed/time-selftest.json",
         "sha256": "2de4888024321a18e74ee27e9f26d8e2024ee87c80c4d10eaf0426e9be0c4aab"
       },
       "original-combat": {
@@ -130,19 +138,21 @@
         "sha256": "6851c6d3761b4d645f8c185b37a6967bf158b3ef5f21ab5ec11b7bcfcd7cc534"
       }
     },
-    "build_manifest_sha256": "395db4a61ba7fbe6fd147eb658b3baf58fc46b7fb90d1b28f79394dc83ad5ae1",
-    "host_log_sha256": "00568666f6238392dcaea331c6d94bce638453d8218c124fff45c6da7ef63824",
-    "bat_cases": 1440,
+    "build_manifest_sha256": "e5bf6c874f9b9f1bb2ca1afd135b0cc54496c36a8113ecaca8f5a4c59ef3b10d",
+    "host_log_sha256": "ce7ef23ec38fe536b317d5fcd56199346654c2453925a6a324b0ed34853a46b6",
+    "bat_cases": 2880,
     "bat_results": {
-      "hit": 1332,
-      "clear": 108
+      "hit": 2880
     },
+    "player_collision_policy": "actor-centered-half-open-square-v1",
+    "centered_projectile_cases": 518,
+    "live_midrange_cases": 32,
     "native_motion_steps": 350,
     "ceiling_frames": 750,
     "ceiling_potential_seam_frames": 270,
     "native_ceiling_potential_seam_frames": 306,
     "known_issues": {
-      "BUG01": "Grid-boundary misses reproduced with centered blaster aim; original cell lookup and motion confirmed. No gameplay correction applied.",
+      "BUG01": "Fixed: player shots sweep actor-centered cell-sized footprints; original damage/flight and non-player collision policy preserved.",
       "BUG02": "Native affine LIGHT seams reproduced in geometry; the reported full dark column has not been uniquely identified or corrected."
     },
     "physical_gba_tested": false,
@@ -154,7 +164,7 @@
     "gba_budget_G20_closed": false,
     "sources": {
       "detail_pointer": "/sources",
-      "entries": 299
+      "entries": 303
     }
   }
 }

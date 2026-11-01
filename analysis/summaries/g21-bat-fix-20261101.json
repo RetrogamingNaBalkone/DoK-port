@@ -1,0 +1,105 @@
+{
+  "summary_schema": 1,
+  "full_report": {
+    "path": "analysis/gba/g21-bat-fix-20261101.json",
+    "sha256": "13cfd1103e73c4966932094c22103052a5c2a43dda9e94a6f6b9ea1829192e33",
+    "bytes": 7875
+  },
+  "scope": "Summary of a recorded run; not a new verification. Full report is local and ignored by Git.",
+  "result": {
+    "task": "G21/BUG01",
+    "status": "fixed_emulator_verified",
+    "correction": "Player-shot collision uses a cell-sized half-open square centered on the target actor. Exact swept path and first-contact ordering, not sprite-pixel tests. Flight vectors/damage/timing and non-player native cell collision retained.",
+    "original_behavior_reference_commit": "d628e63",
+    "baseline_rom_sha256": "be9f8b25836f556c9522e896a93bb5645c8ad855641525476998e07629508323",
+    "rom_sha256": "a584bb1bcd9defaf636a8a9853ff1d72f376c18c82ea24912ff70c06c061f12c",
+    "rom_bytes": 26648812,
+    "aimed_cases": 2880,
+    "old_misses": 216,
+    "new_misses": 0,
+    "geometry_cases": 518,
+    "live_midrange_cases": 32,
+    "live_midrange_targets_moved": 28,
+    "non_player_differential_scenarios": 480,
+    "non_player_differential_polls": 15360,
+    "ewram_static_bytes": 261476,
+    "iwram_end": 50356076,
+    "observed_stack_high_water": 2584,
+    "performance": {
+      "detail_pointer": "/performance",
+      "items": 10
+    },
+    "ppu_frozen_pairs_exact": 10,
+    "reports": {
+      "bat-hits-before": {
+        "path": "build/gba/g21-bat-fixed/bat-hits-before.json",
+        "sha256": "6d5c80ac40c8e991525143a5a339f28994a505239fddb37a402d7202591e01c6"
+      },
+      "bat-hits": {
+        "path": "build/gba/g21-bat-fixed/bat-hits.json",
+        "sha256": "bb8eb0b44f9f99870b06e85a12c35ef5c4658eb5c6afff451b01b62223029460"
+      },
+      "centered-projectiles": {
+        "path": "build/gba/g21-bat-fixed/centered-projectiles.json",
+        "sha256": "c369996048b11d24a487c8f690c688e7bfceda5d17687b28fa0cedce81c407f4"
+      },
+      "midrange-bats": {
+        "path": "build/gba/g21-bat-fixed/midrange-bats.json",
+        "sha256": "5f42a804ff6e16ce0b7d8e93502e8f4d283215355ea052dd0e81961be2ae35ef"
+      },
+      "combat": {
+        "path": "build/gba/g21-bat-fixed/combat.json",
+        "sha256": "7b93a8808e55abca22097c0976146052e821259dd097f2e8c950ebd115528c3f"
+      },
+      "ai-combat": {
+        "path": "build/gba/g21-bat-fixed/ai-combat.json",
+        "sha256": "0c615230b918a115eda09f96d836d4864c6310fb23e5f2e7ac8d68ef4d08a10e"
+      },
+      "projectile-cells": {
+        "path": "build/gba/g21-bat-fixed/projectile-cells.json",
+        "sha256": "9371714a7e79e3ddda3727337c765450ca5e9a3e9636e7de03568de65348bd8f"
+      },
+      "close-hits": {
+        "path": "build/gba/g21-bat-fixed/close-hits.json",
+        "sha256": "3bb9387029274cb3f22cd6321c464b7a6fd8ae57519930462cd9ba81bcbb34bd"
+      },
+      "battles-before": {
+        "path": "build/gba/g21-bat-fixed/battles-before.json",
+        "sha256": "6bc292864591ea361594fca2f80094c0d555cea9f2185fa06a6a7155ac17b2b7"
+      },
+      "battles-after": {
+        "path": "build/gba/g21-bat-fixed/battles-after.json",
+        "sha256": "a3947fd6565b68f79e259ad61b699a4b1031f9d2e20416057ad43cdd8bba31ef"
+      },
+      "frontend-build": {
+        "path": "build/gba/g21-bat-fixed/frontend-build.json",
+        "sha256": "e5bf6c874f9b9f1bb2ca1afd135b0cc54496c36a8113ecaca8f5a4c59ef3b10d"
+      },
+      "non-player-differential": {
+        "path": "build/gba/battle-equivalence/result.json",
+        "sha256": "14abe08fdfb02adae67f627054b6fd0fbdd0226b54c4a2b04b8921997822bcc3"
+      },
+      "ceiling-before": {
+        "path": "build/gba/g21-ceiling-sweep/ceiling.json",
+        "sha256": "450714bf56681219e8837c45891b5d3936610825c18fe875b58abf791a04c246"
+      },
+      "ceiling-after": {
+        "path": "build/gba/g21-bat-ceiling/ceiling.json",
+        "sha256": "f525fdefe6344bfc657a840721350f7e770f79548b54bd48e79baae97a96d32c"
+      }
+    },
+    "ceiling_ppu_pairs_exact": 750,
+    "performance_scope": "600 live held-A frames per room/language/ROM, original maps/AI, stationary fixture hero HP32767. Changed contacts can change AI poses/death timing; live rows are not lockstep CPU equivalence. Maximum cycles can increase even when presentation VBlank minima are unchanged.",
+    "physical_gba_tested": false,
+    "full_navigation_playthrough": false,
+    "G21_complete": false,
+    "remaining": [
+      "BUG02",
+      "final_release_acceptance"
+    ],
+    "next_id": "G21",
+    "script_sha256": "99b559c703ed35dceb18840e7efc8c402c2fde79bb290c09860097feec52e1fa",
+    "source_sha256": "ca902cb0607084de95bd485c5d94521d1f59eed7e2b4398d72f208541253d569",
+    "geometry_source_sha256": "02a1b60d64be3092f5611e544574c79f9e4899cf9464a3c645c128904021fec2"
+  }
+}
