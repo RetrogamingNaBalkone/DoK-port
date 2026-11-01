@@ -234,6 +234,9 @@ dok_gba_tiled_masked_column:
     rsb r11,r11,#8
     mov r7,#0
     mov r8,#0
+#ifdef DOK_HW_MASKED_CACHE
+    mvn r10,#0 /* cached source index; lr holds the corresponding texel */
+#endif
 #ifdef DOK_HW_MASKED_BATCH
 /* Coverage words and tiled rows both contain complete eight-row groups.
  * Keep one word in a register until the current group has finished. */
@@ -244,13 +247,22 @@ dok_gba_tiled_masked_column:
     movhi r10,r4
     sub r4,r4,r10
     sub r11,r11,r10
+#ifdef DOK_HW_MASKED_UNROLL_COMPACT
+    mov lr,r6,lsl r10
+    sub lr,lr,r6 /* (mask << count) - mask, also exact at word boundary */
+#else
     rsb r12,r10,#32
     mvn lr,#0
     mov lr,lr,lsr r12
     mul lr,r6,lr
+#endif
     and r12,r9,lr
     cmp r12,lr
     beq .Lmasked_skip
+#ifdef DOK_HW_MASKED_OPEN
+    cmp r12,#0
+    beq .Lmasked_open
+#endif
 .Lmasked_sample:
     tst r9,r6
     bne .Lmasked_next
@@ -268,6 +280,90 @@ dok_gba_tiled_masked_column:
     bne .Lmasked_sample
     str r9,[r5]
     b .Lmasked_group_done
+#ifdef DOK_HW_MASKED_OPEN
+/* Every bit in this tile-row group is open. No per-pixel coverage test.
+ * Zero still leaves a hole; count all attempted samples exactly once. */
+.Lmasked_open:
+    add r8,r8,r10
+#ifdef DOK_HW_MASKED_UNROLL
+#ifdef DOK_HW_MASKED_UNROLL_COMPACT
+4:
+    ldrb r12,[r1,r2,lsr #16]
+    cmp r12,#0
+    strbne r12,[r0]
+    orrne r9,r9,r6
+    addne r7,r7,#1
+    add r0,r0,#8
+    add r2,r2,r3
+    mov r6,r6,lsl #1
+    subs r10,r10,#1
+    beq 5f
+    ldrb r12,[r1,r2,lsr #16]
+    cmp r12,#0
+    strbne r12,[r0]
+    orrne r9,r9,r6
+    addne r7,r7,#1
+    add r0,r0,#8
+    add r2,r2,r3
+    mov r6,r6,lsl #1
+    subs r10,r10,#1
+    bne 4b
+5:
+    str r9,[r5]
+    b .Lmasked_group_done
+#else
+    cmp r10,#8
+    bne 1f
+4:
+    .rept 2
+    ldrb r12,[r1,r2,lsr #16]
+    cmp r12,#0
+    strbne r12,[r0]
+    orrne r9,r9,r6
+    addne r7,r7,#1
+    add r0,r0,#8
+    add r2,r2,r3
+    mov r6,r6,lsl #1
+    .endr
+    subs r10,r10,#2
+    bne 4b
+    str r9,[r5]
+    b .Lmasked_group_done
+#endif
+#endif
+#ifndef DOK_HW_MASKED_UNROLL_COMPACT
+#ifdef DOK_HW_MASKED_ZERO
+    /* Only skip when all requested source addresses lie in one aligned,
+     * all-zero word. Coverage was proved open above. Monotone Q16 sampling
+     * makes the endpoints sufficient, including repeated/minified texels. */
+    sub lr,r10,#1
+    mla lr,r3,lr,r2
+    add lr,r1,lr,lsr #16
+    add r12,r1,r2,lsr #16
+    eor lr,lr,r12
+    cmp lr,#4
+    bhs 3f
+    bic r12,r12,#3
+    ldr r12,[r12]
+    cmp r12,#0
+    beq .Lmasked_skip
+3:
+#endif
+1:
+    ldrb r12,[r1,r2,lsr #16]
+    cmp r12,#0
+    strbne r12,[r0]
+    orrne r9,r9,r6
+    addne r7,r7,#1
+    add r0,r0,#8
+    add r2,r2,r3
+    mov r6,r6,lsl #1
+    subs r10,r10,#1
+    bne 1b
+    str r9,[r5]
+    b .Lmasked_group_done
+#endif
+#endif
 .Lmasked_skip:
     add r0,r0,r10,lsl #3
     mla r2,r10,r3,r2
@@ -287,10 +383,20 @@ dok_gba_tiled_masked_column:
     tst r9,r6
     bne 2f
     add r8,r8,#1
+#ifdef DOK_HW_MASKED_CACHE
+    mov r12,r2,lsr #16
+    cmp r12,r10
+    ldrbne lr,[r1,r12]
+    movne r10,r12
+    cmp lr,#0
+    beq 2f
+    strb lr,[r0]
+#else
     ldrb r10,[r1,r2,lsr #16]
     cmp r10,#0
     beq 2f
     strb r10,[r0]
+#endif
     orr r9,r9,r6
     str r9,[r5]
     add r7,r7,#1

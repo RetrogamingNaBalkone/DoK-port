@@ -103,6 +103,7 @@ def main():
                         assert r['raster_work'][3]==completed['face_count']
                         r['profile_snapshot_draw']=completed['draws']
                         r['profile_timer_cycles_per_tick']=64
+                        if 'g_kernel_work' in p.symbols:r['kernel_work']=list(p.words('g_kernel_work',4))
                         if 'g_hw_face_class_work' in p.symbols:r['face_class_work']=list(p.words('g_hw_face_class_work',4))
                         p.write(p.symbols['g_camera_capture_hold'],struct.pack('<I',0))
                     if 'g_hw_static_work' in p.symbols:r['static_cache_work']=list(p.words('g_hw_static_work',4))

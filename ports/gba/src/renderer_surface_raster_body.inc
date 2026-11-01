@@ -72,13 +72,25 @@ static SURFACE_RASTER_ATTR void SURFACE_RASTER_NAME(dok_renderer_workspace *w,co
 #if defined(DOK_RENDERER_PROBE) && defined(DOK_RENDER_HALF_COLUMNS)
     for(int x=(clamp(xmin,0,239)+1)&~1;x<=clamp(xmax,0,239);x+=2) COVER_COUNT(w,x)|=128;
 #endif
+#ifdef DOK_RENDER_HW_PLANE_ACTIVE_PROTOTYPE
+    surface_edge edges[4];
+#else
     struct {int first,last;int32_t x,u,v,dx,du,dv;} edges[4];
+#endif
     for(int k=0;k<4;++k) {
         int a=k,b=(k+1)&3;if(f->y[a]>f->y[b]) {int n=a;a=b;b=n;}
         int span=f->y[b]-f->y[a];edges[k].first=f->y[a];edges[k].last=f->y[b];
         edges[k].dx=span?PLANE_DIV((f->x[b]-f->x[a])*65536,span):0;
-        edges[k].du=span && !mask_only?PLANE_DIV((u[b]-u[a])*65536,span):0;
-        edges[k].dv=span && !mask_only?PLANE_DIV((v[b]-v[a])*65536,span):0;
+        edges[k].du=span && !mask_only
+#ifdef DOK_RENDER_HW_PLANE_ZERO_PROTOTYPE
+            && u[b]!=u[a]
+#endif
+            ?PLANE_DIV((u[b]-u[a])*65536,span):0;
+        edges[k].dv=span && !mask_only
+#ifdef DOK_RENDER_HW_PLANE_ZERO_PROTOTYPE
+            && v[b]!=v[a]
+#endif
+            ?PLANE_DIV((v[b]-v[a])*65536,span):0;
         edges[k].x=add(f->x[a]*65536,mul(yfirst-f->y[a],edges[k].dx));
         edges[k].u=add(u[a]*65536,mul(yfirst-f->y[a],edges[k].du));
         edges[k].v=add(v[a]*65536,mul(yfirst-f->y[a],edges[k].dv));
@@ -87,6 +99,9 @@ static SURFACE_RASTER_ATTR void SURFACE_RASTER_NAME(dok_renderer_workspace *w,co
     int depth=d0*65536+(yfirst-f->y[min])*depth_step;
 #ifdef DOK_RENDER_SWEEP_PLANES_PROTOTYPE
     int active0=-1,active1=-1,active_until=-1;
+#endif
+#ifdef DOK_RENDER_HW_PLANE_ACTIVE_PROTOTYPE
+    uint32_t cached=0;int cached_until=-1;
 #endif
     for(int y=yfirst;y<=ylast;y+=row_step) {
         int lo=-1,hi=-1,count=0;int32_t xl=0,xh=0;int offset=y-yfirst;
@@ -103,6 +118,16 @@ static SURFACE_RASTER_ATTR void SURFACE_RASTER_NAME(dok_renderer_workspace *w,co
             xl=add(edges[lo].x,mul(offset,edges[lo].dx));
             xh=add(edges[hi].x,mul(offset,edges[hi].dx));
             if(xl>xh) {int n=lo;lo=hi;hi=n;int32_t v=xl;xl=xh;xh=v;}
+        }
+#elif defined(DOK_RENDER_HW_PLANE_ACTIVE_PROTOTYPE)
+        if(y>cached_until) {
+            cached=surface_active_edges(edges,y,offset);cached_until=(int)(cached>>16);
+        }
+        lo=(int)(cached&15)-1;hi=(int)((cached>>4)&15)-1;count=(int)((cached>>8)&15);
+        if(count>=2) {
+            xl=add(edges[lo].x,mul(offset,edges[lo].dx));
+            xh=add(edges[hi].x,mul(offset,edges[hi].dx));
+            if(xl>xh) {int n=lo;lo=hi;hi=n;int32_t value=xl;xl=xh;xh=value;}
         }
 #else
         for(int k=0;k<4;++k) {
@@ -144,7 +169,13 @@ static SURFACE_RASTER_ATTR void SURFACE_RASTER_NAME(dok_renderer_workspace *w,co
             w->lights+row*256;
         int32_t ul=add(edges[lo].u,mul(offset,edges[lo].du)),uh=add(edges[hi].u,mul(offset,edges[hi].du));
         int32_t vl=add(edges[lo].v,mul(offset,edges[lo].dv)),vh=add(edges[hi].v,mul(offset,edges[hi].dv));
+#ifdef DOK_RENDER_HW_PLANE_PAIR_PROTOTYPE
+        /* Low/high words carry two signed exact quotients, AAPCS uint64_t. */
+        uint64_t slopes=dok_gba_plane_divide_pair(uh-ul,vh-vl,(unsigned)span);
+        int32_t du=(int32_t)slopes,dv=(int32_t)(slopes>>32);
+#else
         int32_t du=PLANE_DIV(uh-ul,span),dv=PLANE_DIV(vh-vl,span);
+#endif
         int32_t tu=ul+(first-left)*du,tv=vl+(first-left)*dv;
 #if defined(DOK_RENDERER_PROBE) && defined(DOK_RENDER_HALF_COLUMNS)
         if(!shift_x && !shift_y) {
@@ -159,7 +190,15 @@ static SURFACE_RASTER_ATTR void SURFACE_RASTER_NAME(dok_renderer_workspace *w,co
             if(row_step==2)s.mask|=s.mask<<1;
 #endif
 #ifdef DOK_RENDER_HW_DIRECT_PROTOTYPE
-            if(SURFACE_RASTER_TILED) {s.dst=scene_pointer(w->frame,(unsigned)first,(unsigned)y);stats->pixels_written+=dok_gba_tiled_surface(&s);continue;}
+            if(SURFACE_RASTER_TILED) {
+                s.dst=scene_pointer(w->frame,(unsigned)first,(unsigned)y);
+#ifdef DOK_RENDER_HW_KERNEL_PROFILE_PROTOTYPE
+                stats->pixels_written+=timed_surface_sample(&s);
+#else
+                stats->pixels_written+=dok_gba_tiled_surface(&s);
+#endif
+                continue;
+            }
 #endif
             stats->pixels_written+=dok_gba_surface_span(&s);continue;
         }

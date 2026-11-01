@@ -24,6 +24,36 @@ dok_gba_plane_divide:
     bx lr
 .size dok_gba_plane_divide,.-dok_gba_plane_divide
 .ltorg
+#ifdef DOK_GBA_PLANE_PAIR
+.global dok_gba_plane_divide_pair
+.type dok_gba_plane_divide_pair,%function
+/* r0/r1 signed numerators, r2 positive divisor 1..16384.
+ * Same Q32 estimate and one correction as the scalar helper; return r0/r1.
+ * The reciprocal load is shared. No RAM cache or altered rounding. */
+dok_gba_plane_divide_pair:
+    push {r4-r6,lr}
+    ldr r3,=dok_exact_plane_reciprocal
+    ldr r3,[r3,r2,lsl #2]
+    .macro quotient value
+    mov r4,\value,asr #31
+    eor \value,\value,r4
+    sub \value,\value,r4
+    umull r5,r6,\value,r3
+    mul r5,r6,r2
+    sub r5,\value,r5
+    cmp r5,r2
+    addhs r6,r6,#1
+    eor \value,r6,r4
+    sub \value,\value,r4
+    .endm
+    quotient r0
+    quotient r1
+    .purgem quotient
+    pop {r4-r6,lr}
+    bx lr
+.size dok_gba_plane_divide_pair,.-dok_gba_plane_divide_pair
+.ltorg
+#endif
 #ifdef DOK_RENDER_RASTER_DIV_PROTOTYPE
 .global dok_gba_texture_quotient
 .type dok_gba_texture_quotient,%function

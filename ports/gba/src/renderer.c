@@ -40,6 +40,19 @@ static DOK_COLD uint32_t render_ticks(void) {
     do {hi=clock[2];lo=clock[0];next=clock[2];} while(hi!=next);
     return ((uint32_t)hi<<16)|lo;
 }
+#ifdef DOK_RENDER_HW_KERNEL_PROFILE_PROTOTYPE
+volatile uint32_t g_kernel_work[4]; /* sampler ticks/calls: ceiling, masked */
+extern unsigned dok_gba_tiled_surface(const void *);
+extern unsigned dok_gba_tiled_masked_column(const void *);
+static DOK_COLD unsigned timed_surface_sample(const void *s) {
+    uint32_t start=render_ticks();unsigned result=dok_gba_tiled_surface(s);
+    g_kernel_work[0]+=render_ticks()-start;++g_kernel_work[1];return result;
+}
+DOK_COLD unsigned dok_gba_timed_masked_column(const void *s) {
+    uint32_t start=render_ticks();unsigned result=dok_gba_tiled_masked_column(s);
+    g_kernel_work[2]+=render_ticks()-start;++g_kernel_work[3];return result;
+}
+#endif
 /* The single GBA renderer owns these during a draw. IRQs never render.
  * Keep the overwhelmingly common first interval on the fast 32-bit bus. */
 #ifdef DOK_RENDER_HALF_COLUMNS
@@ -963,7 +976,13 @@ static DOK_NOINLINE unsigned VISIBLE_COLUMN_NAME(dok_renderer_workspace *w,unsig
         struct {uint8_t *dst;const uint8_t *pixels;unsigned v,step,count;uint32_t *bits;unsigned mask,tile_y;} span={
             scene_pointer(w->frame,x,begin),pixels,v,step,end-begin+1,&coverage_bits[x>>1][begin>>5],1u<<(begin&31),begin&7};
         extern unsigned dok_gba_tiled_masked_column(const void *);
-        unsigned result=dok_gba_tiled_masked_column(&span);COVER_COUNT(w,x)|=128;return result;
+        unsigned result=
+#ifdef DOK_RENDER_HW_KERNEL_PROFILE_PROTOTYPE
+            dok_gba_timed_masked_column(&span);
+#else
+            dok_gba_tiled_masked_column(&span);
+#endif
+        COVER_COUNT(w,x)|=128;return result;
     }
 #endif
 #ifdef DOK_RENDER_MASKED_ARM_PROTOTYPE
@@ -1632,6 +1651,9 @@ dok_renderer_status dok_renderer_draw(dok_renderer_workspace *w,const dok_runtim
 #endif
 #ifdef DOK_RENDERER_PROBE
     for(unsigned k=1;k<5;++k) g_render_work[k]=0;
+#ifdef DOK_RENDER_HW_KERNEL_PROFILE_PROTOTYPE
+    for(unsigned k=0;k<4;++k)g_kernel_work[k]=0;
+#endif
 #ifdef DOK_RENDER_HW_FACE_CLASS_PROFILE_PROTOTYPE
     for(unsigned k=0;k<4;++k)g_hw_face_class_work[k]=0;
 #endif

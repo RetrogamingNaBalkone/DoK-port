@@ -43,6 +43,11 @@ def replay(probe, level):
     row_lights = defaultdict(set)
     division_callers = Counter()
     division_wide = Counter()
+    from verify_sprites_gba import load_json
+    definitions=load_json(f'research/evidence/runtime/ru/LEVEL{level+1}-runtime.json')['objects']
+    face_class=['unknown']
+    masked_classes=Counter()
+    surface_slopes=[]
 
     def covered(bits, first, offset):
         row = first + offset
@@ -50,6 +55,11 @@ def replay(probe, level):
 
     def hook(cpu, address, size, unused):
         name = entries[address]
+        if name in ('raster','raster_rect'):
+            face=reg(1) if name=='raster_rect' else reg(2)
+            index=struct.unpack('<H',cpu.mem_read(face+44,2))[0]
+            face_class[0]=str(definitions[index]['class']) if index<len(definitions) else 'instance'
+            if name=='raster_rect':return
         if name == 'gba_render_stage':
             # Stage timestamps are irrelevant to a functional CPU replay.
             cpu.reg_write(R.UC_ARM_REG_PC, cpu.reg_read(R.UC_ARM_REG_LR))
@@ -57,6 +67,9 @@ def replay(probe, level):
         if name in ('surface_raster_hw', 'surface_raster_general', 'raster'):
             primitive[0] = 'ceiling' if name == 'surface_raster_hw' else 'vertical'
             totals[name + '_calls'] += 1
+            return
+        if name=='dok_gba_plane_divide_pair':
+            totals[primitive[0]+'_paired_divisions']+=1
             return
         if name in ('dok_gba_plane_divide', '__aeabi_idiv', '__aeabi_uidiv',
                     '__aeabi_idivmod', '__aeabi_uidivmod'):
@@ -82,6 +95,7 @@ def replay(probe, level):
             totals['ceiling_fully_hidden_spans'] += opened == 0
             totals['ceiling_hidden_span_samples'] += count if not opened else 0
             row_steps[s[7]][s[10:12]] += 1
+            surface_slopes.append([s[5],s[6],s[7],*s[8:12]])
             row_lights[s[7]].add(s[1])
         elif name == 'dok_gba_tiled_masked_column':
             dst, source, v, step, count, bits, mask, tile_y = words(reg(0), 8)
@@ -93,6 +107,7 @@ def replay(probe, level):
                 elif cpu.mem_read(source + (((v + k * step) & 0xffffffff) >> 16), 1)[0] == 0:
                     zero += 1
             totals['masked_columns'] += 1
+            masked_classes[face_class[0]]+=1
             totals['masked_samples_requested'] += count
             totals['masked_samples_covered'] += covered_count
             totals['masked_samples_open_zero'] += zero
@@ -105,7 +120,8 @@ def replay(probe, level):
     names = ('gba_render_stage', 'surface_raster_hw', 'surface_raster_general', 'raster',
              'dok_gba_plane_divide', '__aeabi_idiv', '__aeabi_uidiv',
              '__aeabi_idivmod', '__aeabi_uidivmod',
-             'dok_gba_tiled_surface', 'dok_gba_tiled_masked_column')
+             'dok_gba_tiled_surface', 'dok_gba_tiled_masked_column',
+             'dok_gba_plane_divide_pair','raster_rect')
     entries = {symbols[name] & ~1: name for name in names if name in symbols}
     def invalid(cpu, access, address, size, value, unused):
         raise AssertionError(('Invalid replay memory', hex(cpu.reg_read(R.UC_ARM_REG_PC)), hex(address), size))
@@ -132,6 +148,8 @@ def replay(probe, level):
     # UI/weapon overlays are written after draw, so this replay checks coverage
     # and statistics. Actual PPU timing is measured by the separate mGBA sweep.
     return dict(counts=dict(totals), coverage_exact=True, stats_exact=True,
+                masked_columns_by_definition_class=dict(masked_classes),
+                ceiling_uv_span_sha256=hashlib.sha256(json.dumps(surface_slopes).encode()).hexdigest(),
                 coverage_sha256=hashlib.sha256(coverage).hexdigest(),
                 ceiling_rows=[dict(y=y, spans=sum(steps.values()), unique_uv_steps=len(steps),
                                    light_variants=len(row_lights[y])) for y, steps in sorted(row_steps.items())],

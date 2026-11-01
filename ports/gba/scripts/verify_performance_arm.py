@@ -137,6 +137,15 @@ def main():
                 expected=(abs(numerator)//divisor)*(-1 if numerator<0 else 1)
                 assert call('dok_gba_plane_divide',numerator&0xffffffff,divisor)==expected&0xffffffff,(numerator,divisor)
                 plane_division_vectors+=1
+    plane_pair_vectors=0
+    if 'dok_gba_plane_divide_pair' in symbols:
+        for divisor in range(1,16385):
+            for n,m in ((0,-2147483648),(2147483647,0),
+                        (rng.randrange(-2147483648,2147483648),rng.randrange(-2147483648,2147483648))):
+                actual=call('dok_gba_plane_divide_pair',n&0xffffffff,m&0xffffffff,divisor)
+                expected=lambda value:((abs(value)//divisor)*(-1 if value<0 else 1))&0xffffffff
+                assert actual==expected(n) and cpu.reg_read(R.UC_ARM_REG_R1)==expected(m),(n,m,divisor)
+                plane_pair_vectors+=1
     cell_table=bytes(cpu.mem_read(symbols['dok_cell_480'],1920))
     assert all(cell_table[n>>4]==n//480 for n in range(30720))
     pixel_addr,lut_addr,frame_addr,bits_addr,desc=0x09fc0000,0x09fe0000,0x02000000,0x02010000,0x02012000
@@ -366,6 +375,8 @@ def main():
             x=rng.randrange(120)*2;y=rng.randrange(scene_rows);count=rng.randrange(1,scene_rows+1-y)
             height=rng.choice((1,17,96,192,512));pixels=bytearray(rng.randbytes(height));black=rng.randrange(1,256)
             for k in range(case%7,height,11):pixels[k]=0
+            if masked and case%8 in (0,2):
+                pixels=bytearray(0 if case%8==0 or k%16<8 else 255 for k in range(height))
             if name=='dok_gba_tiled_opaque_batch' and case%3==0:
                 black=0;pixels=bytearray(p or 1 for p in pixels)
             v=rng.randrange(height*65536);step=rng.randrange((height*65536-1-v)//max(1,count-1)+1)
@@ -665,6 +676,7 @@ def main():
                 script_sha256=sha(__file__),sampler_vectors=4096,coverage_edge_vectors=2048,
                 exact_cell_coordinate_vectors=30720,
                 exact_plane_division_vectors=plane_division_vectors,
+                exact_plane_pair_vectors=plane_pair_vectors,
                 scalar_projection_vectors=projection_vectors,
                 rectangle_raster_vectors=rectangle_vectors,
                 rectangle_cropped_vectors=rectangle_cropped_vectors,

@@ -1,6 +1,6 @@
-"""Bind G20 measurements, regressions, sources and finite GBA memory budgets.
+"""Reproduce the historical 2026-10-26 G20 budget, with its former FPS gate.
 
-A passed regression is never interpreted as achievement of the 30 FPS target.
+Current target-free G20/G20D evidence is produced by report_g20d.py.
 """
 
 import sys as _layout_sys
@@ -24,7 +24,7 @@ def read(path):return json.loads(Path(path).read_text(encoding='utf-8-sig'))
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--build-dir',type=Path,default=Path('build/gba/g20'))
-    p.add_argument('--report',type=Path,default=Path('analysis/gba/gba-final-budget.json'))
+    p.add_argument('--report',type=Path,default=Path('analysis/gba/gba-final-budget-20261026.json'))
     a=p.parse_args()
     build=a.build_dir
     metadata=read(build/'build-report.json')

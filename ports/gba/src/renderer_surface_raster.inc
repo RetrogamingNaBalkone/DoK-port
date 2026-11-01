@@ -2,6 +2,9 @@
  * production port shares front-to-back coverage with vertical planes. */
 #ifdef DOK_RENDER_EXACT_PLANES_PROTOTYPE
 extern int32_t dok_gba_plane_divide(int32_t,unsigned);
+#ifdef DOK_RENDER_HW_PLANE_PAIR_PROTOTYPE
+extern uint64_t dok_gba_plane_divide_pair(int32_t,int32_t,unsigned);
+#endif
 #define PLANE_DIV(n,d) dok_gba_plane_divide((n),(unsigned)(d))
 #elif defined(DOK_RENDER_FAST_PLANES_PROTOTYPE)
 extern const uint32_t dok_plane_reciprocal[16385];
@@ -16,6 +19,33 @@ static int32_t plane_divide(int32_t value,unsigned divisor) {
 #define PLANE_DIV(n,d) ((n)/(d))
 #endif
 #ifndef DOK_RENDER_WORLD_PLANES_PROTOTYPE
+#ifdef DOK_RENDER_HW_PLANE_ACTIVE_PROTOTYPE
+typedef struct {int first,last;int32_t x,u,v,dx,du,dv;} surface_edge;
+#ifdef DOK_RENDER_HW_PLANE_ACTIVE_THUMB_PROTOTYPE
+static DOK_NOINLINE __attribute__((target("thumb")))
+#elif defined(DOK_RENDER_HW_PLANE_ACTIVE_HOT_PROTOTYPE)
+static DOK_NOINLINE
+#else
+static DOK_COLD
+#endif
+uint32_t surface_active_edges(const surface_edge *edges,int y,int offset) {
+    int lo=-1,hi=-1,count=0,until=143;int32_t xl=0,xh=0;
+    for(int k=0;k<4;++k) if(edges[k].first!=edges[k].last) {
+        if(y<edges[k].first) {
+            if(edges[k].first-1<until)until=edges[k].first-1;
+        } else if(y<=edges[k].last) {
+            int32_t x=add(edges[k].x,mul(offset,edges[k].dx));
+            if(lo<0 || x<xl) {lo=k;xl=x;}
+            if(hi<0 || x>xh) {hi=k;xh=x;}
+            ++count;if(edges[k].last<until)until=edges[k].last;
+        }
+    }
+    /* At a vertex row several edges may meet. Re-evaluate the following row
+     * rather than carrying one of the coincident endpoint slopes forward. */
+    if(count>2 || lo==hi)until=y;
+    return (unsigned)(lo+1)|((unsigned)(hi+1)<<4)|((unsigned)count<<8)|((unsigned)until<<16);
+}
+#endif
 static int surface_covered(dok_renderer_workspace *w,unsigned x,unsigned y) {
 #if defined(DOK_RENDERER_PROBE) && defined(DOK_RENDER_HALF_COLUMNS)
     (void)w;return (coverage_bits[x>>1][y>>5]>>(y&31))&1;
@@ -45,7 +75,9 @@ typedef struct {
 _Static_assert(offsetof(surface_span,bits)==48,"ARM surface sampler ABI");
 extern unsigned dok_gba_surface_span(const surface_span *);
 #ifdef DOK_RENDER_HW_DIRECT_PROTOTYPE
+#ifndef DOK_RENDER_HW_KERNEL_PROFILE_PROTOTYPE
 extern unsigned dok_gba_tiled_surface(const surface_span *);
+#endif
 #endif
 #endif
 #ifdef DOK_RENDER_HW_SURFACE_CLIP_PROTOTYPE

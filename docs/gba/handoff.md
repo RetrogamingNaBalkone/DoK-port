@@ -1,5 +1,56 @@
 # Передача контекста между чатами
 
+## G20/G20D: совместный проход завершён, 1 ноября 2026
+
+**Следующий ID оптимизации — G22.** Пользователь отложил BUG02 и запросил
+совместное выполнение G20/G20D без целевого FPS. Обе задачи закрыты в границах
+проверки разумных точных kernels и измеренного бюджета; это не доказательство
+максимальной скорости всех алгоритмов и не приёмка G21. Старые записи ниже
+о незакрытии G20 из-за 30 FPS относятся к прежней постановке.
+
+[Самодостаточный отчёт, решения и команды](g20d-ceiling-masked-specialization.md).
+Контроль BUG01-fixed UI01 `a584bb1b…61f12c` воспроизведён из свежей base.
+Проверены14 вариантов, включая контроль: zero edges, парные деления, masked
+cache/open/zero-word/unroll, активные рёбра ROM/ARM/Thumb и комбинации.
+Выбран `g20d_compact`: только exact paired span divide + compact open masked
+groups. Новых RAM/VRAM-буферов, уменьшения качества/AI/дистанций нет.
+
+Полный CPU пяти тяжёлых видов −1,61…−3,02%; spatial440 на язык даёт медианы
+экономии лишь около0,3…0,7%. Минимум L1 10,86→11,95 FPS, L2/L3 прежние
+9,95/14,93. Live120 обоих языков: поворот/огонь без прибавки, ходьба/поворот/
+огонь0…+0,49%. Не выдавать локальные+19% FPS L2/1592 за общее ускорение.
+Крупного общего резерва FPS этот проход не доказал; проигравшие архитектуры
+G20A не возобновлялись. Следующая отдельная развилка качества — G22.
+
+У выбранной ROM396 detail+880 spatial actual PPU exact,8 ARM replay UV/spans/
+coverage/stats exact,49152 paired-divider vectors и обычные sampler/rectangle/
+projection vectors прошли. Полная frontend/AI-combat/projectiles/flow/story/
+clock/water/sprites/transitions регрессия, host/cross и повторные сборки прошли.
+Звук без underruns, баланс времени точный, motion debt<416 в живых маршрутах.
+Отдельные instrumented ROM разделяют setup/sampling, их таймеры не production FPS.
+
+EWRAM261476 B/free668, IWRAM24572 B/free4 до отдельного stacks/BIOS8192 B.
+Observed main stack2584/margin5352, IRQ80/margin80. Следующий новый hot code
+требует нового layout; уменьшать резерв стека ради места нельзя.
+
+Пользовательская отдельная ROM:
+`artifacts/gba/DoK-port_G20_Optimized.gba`,26648948 B, SHA-256
+`f40a13f56b70cfec5e673c7e0b80c659a48f35e30e7bad2e236ef7967a59a359`.
+Default UI01/G21/Beta1 сохранены; публикации нет. Новую ROM на физической
+GBA не проверяли, полного прохождения/original BIOS нет. BUG02 не исправлен
+и не принят как качество; artificial all-awake overload этим не решён.
+
+`py -3.14 -X utf8 ports/gba/scripts/check_g20d.py --stage build|measure|checks`
+выполняет отдельные этапы; без `--stage` — все. Сводный индекс/артефакт:
+`ports/gba/scripts/report_g20d.py`, затем `tools/reports/summarize_reports.py`.
+Доказательства — `build/gba/g20d/qualification/`, полный локальный индекс —
+`analysis/gba/g20d-optimization-20261101.json`, Git-сводка —
+`analysis/summaries/g20d-optimization-20261101.json`. Актуальный бюджет —
+`analysis/gba/gba-final-budget.json`; старый сохранён с суффиксом20261026.
+GBA-план/единый бэклог/оба паспорта обновлены; NDS/SDL2 не менялись.
+
+Записи BUG02 ниже — контекст отложенной ветки, не следующая команда очереди.
+
 ## BUG02: точное воспроизведение и текстура, 1 ноября 2026
 
 [Актуальные доказательства](g21-bug02-screenshots.md#точное-воспроизведение-и-изоляция-текстуры).

@@ -154,7 +154,11 @@ dok_gba_tiled_rectangle:
     and r0,r0,#7
     str r0,[sp,#28]
     mov r0,sp
+#ifdef DOK_HW_KERNEL_PROFILE
+    bl dok_gba_timed_masked_column
+#else
     bl dok_gba_tiled_masked_column
+#endif
     add r5,r5,r0,lsr #16
     mov r0,r0,lsl #16
     add r4,r4,r0,lsr #16

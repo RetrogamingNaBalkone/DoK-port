@@ -213,6 +213,22 @@ VARIANTS['hw_v128_wide']=tuple(d for d in VARIANTS['hw_v128_combo_near'] if d!='
 VARIANTS['hw_v128_rect_control']=VARIANTS['hw_v128_entity_rect']
 VARIANTS['hw_v128_entity_rect']=VARIANTS['hw_v128_rect_animated']+('HW_SURFACE_PRELIT','HW_FLOOR_FILL')
 VARIANTS['hw_v128_vblank_only']=tuple(d for d in VARIANTS['hw_v128_entity_rect'] if d!='HW_EARLY_PRESENT')+('HW_VBLANK_ONLY',)
+VARIANTS['g20d_zero']=VARIANTS['hw_v128_vblank_only']+('HW_PLANE_ZERO',)
+VARIANTS['g20d_pair']=VARIANTS['hw_v128_vblank_only']+('HW_PLANE_ZERO','HW_PLANE_PAIR')
+VARIANTS['g20d_masked_cache']=tuple(d for d in VARIANTS['hw_v128_vblank_only'] if d!='HW_MASKED_BATCH')+('HW_MASKED_CACHE',)
+VARIANTS['g20d_masked_open']=VARIANTS['hw_v128_vblank_only']+('HW_MASKED_OPEN',)
+VARIANTS['g20d_active']=VARIANTS['hw_v128_vblank_only']+('HW_PLANE_ACTIVE',)
+VARIANTS['g20d_masked_zero']=VARIANTS['g20d_masked_open']+('HW_MASKED_ZERO',)
+VARIANTS['g20d_combined']=VARIANTS['g20d_pair']+('HW_MASKED_OPEN',)
+VARIANTS['g20d_masked_unroll']=VARIANTS['g20d_masked_open']+('HW_MASKED_UNROLL',)
+VARIANTS['g20d_active_hot']=VARIANTS['g20d_active']+('HW_PLANE_ACTIVE_HOT',)
+VARIANTS['g20d_active_thumb']=VARIANTS['g20d_active']+('HW_PLANE_ACTIVE_THUMB',)
+VARIANTS['g20d_exact']=VARIANTS['g20d_active_thumb']+('HW_PLANE_ZERO','HW_PLANE_PAIR','HW_MASKED_OPEN','HW_MASKED_UNROLL')
+VARIANTS['g20d_pair_only']=VARIANTS['hw_v128_vblank_only']+('HW_PLANE_PAIR',)
+VARIANTS['g20d_pair_open']=VARIANTS['g20d_pair_only']+('HW_MASKED_OPEN',)
+VARIANTS['g20d_compact']=VARIANTS['g20d_pair_open']+('HW_MASKED_UNROLL','HW_MASKED_UNROLL_COMPACT')
+for _g20d_name in ('hw_v128_vblank_only','g20d_pair','g20d_compact'):
+    VARIANTS[_g20d_name+'_kernel_profile']=tuple(d for d in VARIANTS[_g20d_name] if d!='HW_EDGE_RAM_CALL')+('HW_KERNEL_PROFILE',)
 
 
 def tables(out, assets, include_sides=False, include_zero_spans=False, include_entities=False, include_lowered=False, include_empty=False, scene_rows=128):
@@ -651,13 +667,19 @@ def build(base,out,variants,unreflected_control=False,assets_bin=None):
             if 'HW_NONZERO_COLUMN' in defines:tiled_flags+=['-DDOK_HW_NONZERO_COLUMN']
             if 'HW_COMPACT_ZERO' in defines:tiled_flags+=['-DDOK_HW_COMPACT_ZERO']
             if 'HW_MASKED_BATCH' in defines:tiled_flags+=['-DDOK_HW_MASKED_BATCH']
+            if 'HW_MASKED_CACHE' in defines:tiled_flags+=['-DDOK_HW_MASKED_CACHE']
+            if 'HW_MASKED_OPEN' in defines:tiled_flags+=['-DDOK_HW_MASKED_OPEN']
+            if 'HW_MASKED_ZERO' in defines:tiled_flags+=['-DDOK_HW_MASKED_ZERO']
+            if 'HW_MASKED_UNROLL' in defines:tiled_flags+=['-DDOK_HW_MASKED_UNROLL']
+            if 'HW_MASKED_UNROLL_COMPACT' in defines:tiled_flags+=['-DDOK_HW_MASKED_UNROLL_COMPACT']
             if 'HW_OPAQUE_BATCH' in defines:tiled_flags+=['-DDOK_HW_OPAQUE_BATCH']
             if 'HW_BG_LOWERED' in defines:tiled_flags+=['-DDOK_HW_BG_LOWERED']
             if 'SECTOR_GPU' in defines:tiled_flags+=['-DDOK_SECTOR_GPU']
             command([zig,*startup,*tiled_flags,ROOT/'ports/gba/platform/tiled_scene.S','-o',dest/'tiled-columns.o'])
             objects.append(dest/'tiled-columns.o')
             if 'HW_RECT_BATCH' in defines:
-                command([zig,*startup,ROOT/'ports/gba/platform/rect_tiled.S','-o',dest/'rect-columns.o'])
+                rect_flags=['-DDOK_HW_KERNEL_PROFILE'] if 'HW_KERNEL_PROFILE' in defines else []
+                command([zig,*startup,*rect_flags,ROOT/'ports/gba/platform/rect_tiled.S','-o',dest/'rect-columns.o'])
                 objects.append(dest/'rect-columns.o')
         if 'UI_CACHE' in defines or 'UI_CONTROL' in defines:
             for name in ('ui.c','ui_map.inc','ui_text.inc','ui_native_text.inc','ui_panel_cache.inc','ui_tiled.inc'):
@@ -712,6 +734,7 @@ def build(base,out,variants,unreflected_control=False,assets_bin=None):
             plane_flags=['-DDOK_RENDER_RASTER_DIV_PROTOTYPE'] if 'RASTER_DIV' in defines else []
             if 'HW_U_RECIP' in defines:plane_flags+=['-DDOK_GBA_U_RECIP']
             if 'HW_U_WIDE' in defines:plane_flags+=['-DDOK_GBA_U_WIDE']
+            if 'HW_PLANE_PAIR' in defines:plane_flags+=['-DDOK_GBA_PLANE_PAIR']
             command([zig,*startup,*plane_flags,ROOT/'ports/gba/platform/planes.S','-o',dest/'planes-columns.o'])
             objects.append(dest/'planes-columns.o')
         if 'WORLD_SPANS' in defines:

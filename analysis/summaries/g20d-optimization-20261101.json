@@ -1,0 +1,1808 @@
+{
+  "summary_schema": 1,
+  "full_report": {
+    "path": "analysis/gba/g20d-optimization-20261101.json",
+    "sha256": "2c7e0f1cb226443c191753560222bf19254255a23f2ff577b016e0cdfcfa8155",
+    "bytes": 413165
+  },
+  "scope": "Summary of a recorded run; not a new verification. Full report is local and ignored by Git.",
+  "result": {
+    "task": "G20/G20D",
+    "status": "bounded_optimization_pass_verified",
+    "target_fps": null,
+    "baseline_sha256": "a584bb1bcd9defaf636a8a9853ff1d72f376c18c82ea24912ff70c06c061f12c",
+    "rom_sha256": "f40a13f56b70cfec5e673c7e0b80c659a48f35e30e7bad2e236ef7967a59a359",
+    "rom_bytes": 26648948,
+    "repeated_rom_exact": true,
+    "default_ui01_replaced": false,
+    "published": false,
+    "decision": "Select paired exact span division and compact open masked groups. No significant general FPS reserve was demonstrated; no hardware-limit claim.",
+    "heavy_trials": {
+      "g20d_zero": [
+        {
+          "level": 1,
+          "cell": 520,
+          "heading": 225,
+          "before_cycles": 1382944.0,
+          "after_cycles": 1380224.0,
+          "cpu_change_percent": -0.19668186130458176,
+          "before_fps": 11.945500113921167,
+          "after_fps": 11.945500113921167
+        },
+        {
+          "level": 1,
+          "cell": 2242,
+          "heading": 90,
+          "before_cycles": 505952.0,
+          "after_cycles": 505920.0,
+          "cpu_change_percent": -0.006324710644489695,
+          "before_fps": 29.863750284802915,
+          "after_fps": 29.863750284802915
+        },
+        {
+          "level": 1,
+          "cell": 3640,
+          "heading": 225,
+          "before_cycles": 1311776.0,
+          "after_cycles": 1307232.0,
+          "cpu_change_percent": -0.34640060498133396,
+          "before_fps": 11.945500113921167,
+          "after_fps": 11.945500113921167
+        },
+        {
+          "level": 2,
+          "cell": 1592,
+          "heading": 135,
+          "before_cycles": 1447296.0,
+          "after_cycles": 1446016.0,
+          "cpu_change_percent": -0.08844078889184148,
+          "before_fps": 9.95458342826764,
+          "after_fps": 9.95458342826764
+        },
+        {
+          "level": 2,
+          "cell": 2871,
+          "heading": 225,
+          "before_cycles": 1507040.0,
+          "after_cycles": 1504256.0,
+          "cpu_change_percent": -0.1847329865166114,
+          "before_fps": 9.95458342826764,
+          "after_fps": 9.95458342826764
+        },
+        {
+          "level": 3,
+          "cell": 1544,
+          "heading": 315,
+          "before_cycles": 898880.0,
+          "after_cycles": 898912.0,
+          "cpu_change_percent": 0.0035599857600487894,
+          "before_fps": 14.931875142401458,
+          "after_fps": 14.931875142401458
+        }
+      ],
+      "g20d_pair": [
+        {
+          "level": 1,
+          "cell": 520,
+          "heading": 225,
+          "before_cycles": 1382944.0,
+          "after_cycles": 1373184.0,
+          "cpu_change_percent": -0.7057407964458418,
+          "before_fps": 11.945500113921167,
+          "after_fps": 11.945500113921167
+        },
+        {
+          "level": 1,
+          "cell": 2242,
+          "heading": 90,
+          "before_cycles": 505952.0,
+          "after_cycles": 505504.0,
+          "cpu_change_percent": -0.08854594902283353,
+          "before_fps": 29.863750284802915,
+          "after_fps": 29.863750284802915
+        },
+        {
+          "level": 1,
+          "cell": 3640,
+          "heading": 225,
+          "before_cycles": 1311776.0,
+          "after_cycles": 1298240.0,
+          "cpu_change_percent": -1.0318834923035647,
+          "before_fps": 11.945500113921167,
+          "after_fps": 11.945500113921167
+        },
+        {
+          "level": 2,
+          "cell": 1592,
+          "heading": 135,
+          "before_cycles": 1447296.0,
+          "after_cycles": 1442880.0,
+          "cpu_change_percent": -0.3051207216768326,
+          "before_fps": 9.95458342826764,
+          "after_fps": 9.95458342826764
+        },
+        {
+          "level": 2,
+          "cell": 2871,
+          "heading": 225,
+          "before_cycles": 1507040.0,
+          "after_cycles": 1500928.0,
+          "cpu_change_percent": -0.4055632232721096,
+          "before_fps": 9.95458342826764,
+          "after_fps": 9.95458342826764
+        },
+        {
+          "level": 3,
+          "cell": 1544,
+          "heading": 315,
+          "before_cycles": 898880.0,
+          "after_cycles": 898944.0,
+          "cpu_change_percent": 0.007119971520119783,
+          "before_fps": 14.931875142401458,
+          "after_fps": 14.931875142401458
+        }
+      ],
+      "g20d_pair_only": [
+        {
+          "level": 1,
+          "cell": 520,
+          "heading": 225,
+          "before_cycles": 1382944.0,
+          "after_cycles": 1371008.0,
+          "cpu_change_percent": -0.8630862854895116,
+          "before_fps": 11.945500113921167,
+          "after_fps": 11.945500113921167
+        },
+        {
+          "level": 1,
+          "cell": 2242,
+          "heading": 90,
+          "before_cycles": 505952.0,
+          "after_cycles": 505952.0,
+          "cpu_change_percent": 0.0,
+          "before_fps": 29.863750284802915,
+          "after_fps": 29.863750284802915
+        },
+        {
+          "level": 1,
+          "cell": 3640,
+          "heading": 225,
+          "before_cycles": 1311776.0,
+          "after_cycles": 1296128.0,
+          "cpu_change_percent": -1.1928865903934827,
+          "before_fps": 11.945500113921167,
+          "after_fps": 11.945500113921167
+        },
+        {
+          "level": 2,
+          "cell": 1592,
+          "heading": 135,
+          "before_cycles": 1447296.0,
+          "after_cycles": 1443136.0,
+          "cpu_change_percent": -0.28743256389847094,
+          "before_fps": 9.95458342826764,
+          "after_fps": 9.95458342826764
+        },
+        {
+          "level": 2,
+          "cell": 2871,
+          "heading": 225,
+          "before_cycles": 1507040.0,
+          "after_cycles": 1501152.0,
+          "cpu_change_percent": -0.3906996496443327,
+          "before_fps": 9.95458342826764,
+          "after_fps": 9.95458342826764
+        },
+        {
+          "level": 3,
+          "cell": 1544,
+          "heading": 315,
+          "before_cycles": 898880.0,
+          "after_cycles": 899520.0,
+          "cpu_change_percent": 0.07119971520113122,
+          "before_fps": 14.931875142401458,
+          "after_fps": 14.931875142401458
+        }
+      ],
+      "g20d_masked_cache": [
+        {
+          "level": 1,
+          "cell": 520,
+          "heading": 225,
+          "before_cycles": 1382944.0,
+          "after_cycles": 1435488.0,
+          "cpu_change_percent": 3.799430779554336,
+          "before_fps": 11.945500113921167,
+          "after_fps": 10.85954555811015
+        },
+        {
+          "level": 1,
+          "cell": 2242,
+          "heading": 90,
+          "before_cycles": 505952.0,
+          "after_cycles": 505248.0,
+          "cpu_change_percent": -0.13914363417873998,
+          "before_fps": 29.863750284802915,
+          "after_fps": 29.863750284802915
+        },
+        {
+          "level": 1,
+          "cell": 3640,
+          "heading": 225,
+          "before_cycles": 1311776.0,
+          "after_cycles": 1326976.0,
+          "cpu_change_percent": 1.1587344180713721,
+          "before_fps": 11.945500113921167,
+          "after_fps": 11.945500113921167
+        },
+        {
+          "level": 2,
+          "cell": 1592,
+          "heading": 135,
+          "before_cycles": 1447296.0,
+          "after_cycles": 1539008.0,
+          "cpu_change_percent": 6.336782524100104,
+          "before_fps": 9.95458342826764,
+          "after_fps": 9.95458342826764
+        },
+        {
+          "level": 2,
+          "cell": 2871,
+          "heading": 225,
+          "before_cycles": 1507040.0,
+          "after_cycles": 1594432.0,
+          "cpu_change_percent": 5.798917082492827,
+          "before_fps": 9.95458342826764,
+          "after_fps": 9.95458342826764
+        },
+        {
+          "level": 3,
+          "cell": 1544,
+          "heading": 315,
+          "before_cycles": 898880.0,
+          "after_cycles": 948992.0,
+          "cpu_change_percent": 5.574937700249194,
+          "before_fps": 14.931875142401458,
+          "after_fps": 14.931875142401458
+        }
+      ],
+      "g20d_masked_open": [
+        {
+          "level": 1,
+          "cell": 520,
+          "heading": 225,
+          "before_cycles": 1382944.0,
+          "after_cycles": 1368640.0,
+          "cpu_change_percent": -1.034315200037017,
+          "before_fps": 11.945500113921167,
+          "after_fps": 11.945500113921167
+        },
+        {
+          "level": 1,
+          "cell": 2242,
+          "heading": 90,
+          "before_cycles": 505952.0,
+          "after_cycles": 505952.0,
+          "cpu_change_percent": 0.0,
+          "before_fps": 29.863750284802915,
+          "after_fps": 29.863750284802915
+        },
+        {
+          "level": 1,
+          "cell": 3640,
+          "heading": 225,
+          "before_cycles": 1311776.0,
+          "after_cycles": 1307840.0,
+          "cpu_change_percent": -0.30005122825847996,
+          "before_fps": 11.945500113921167,
+          "after_fps": 11.945500113921167
+        },
+        {
+          "level": 2,
+          "cell": 1592,
+          "heading": 135,
+          "before_cycles": 1447296.0,
+          "after_cycles": 1424672.0,
+          "cpu_change_percent": -1.5631909436632174,
+          "before_fps": 9.95458342826764,
+          "after_fps": 10.85954555811015
+        },
+        {
+          "level": 2,
+          "cell": 2871,
+          "heading": 225,
+          "before_cycles": 1507040.0,
+          "after_cycles": 1482304.0,
+          "cpu_change_percent": -1.6413632020384372,
+          "before_fps": 9.95458342826764,
+          "after_fps": 9.95458342826764
+        },
+        {
+          "level": 3,
+          "cell": 1544,
+          "heading": 315,
+          "before_cycles": 898880.0,
+          "after_cycles": 888384.0,
+          "cpu_change_percent": -1.1676753292986786,
+          "before_fps": 14.931875142401458,
+          "after_fps": 14.931875142401458
+        }
+      ],
+      "g20d_masked_zero": [
+        {
+          "level": 1,
+          "cell": 520,
+          "heading": 225,
+          "before_cycles": 1382944.0,
+          "after_cycles": 1378240.0,
+          "cpu_change_percent": -0.3401439248443938,
+          "before_fps": 11.945500113921167,
+          "after_fps": 11.945500113921167
+        },
+        {
+          "level": 1,
+          "cell": 2242,
+          "heading": 90,
+          "before_cycles": 505952.0,
+          "after_cycles": 505504.0,
+          "cpu_change_percent": -0.08854594902283353,
+          "before_fps": 29.863750284802915,
+          "after_fps": 29.863750284802915
+        },
+        {
+          "level": 1,
+          "cell": 3640,
+          "heading": 225,
+          "before_cycles": 1311776.0,
+          "after_cycles": 1311360.0,
+          "cpu_change_percent": -0.03171273144195741,
+          "before_fps": 11.945500113921167,
+          "after_fps": 11.945500113921167
+        },
+        {
+          "level": 2,
+          "cell": 1592,
+          "heading": 135,
+          "before_cycles": 1447296.0,
+          "after_cycles": 1438208.0,
+          "cpu_change_percent": -0.6279296011320379,
+          "before_fps": 9.95458342826764,
+          "after_fps": 10.665625101715328
+        },
+        {
+          "level": 2,
+          "cell": 2871,
+          "heading": 225,
+          "before_cycles": 1507040.0,
+          "after_cycles": 1498432.0,
+          "cpu_change_percent": -0.5711859008387332,
+          "before_fps": 9.95458342826764,
+          "after_fps": 9.95458342826764
+        },
+        {
+          "level": 3,
+          "cell": 1544,
+          "heading": 315,
+          "before_cycles": 898880.0,
+          "after_cycles": 893696.0,
+          "cpu_change_percent": -0.576717693129225,
+          "before_fps": 14.931875142401458,
+          "after_fps": 14.931875142401458
+        }
+      ],
+      "g20d_masked_unroll": [
+        {
+          "level": 1,
+          "cell": 520,
+          "heading": 225,
+          "before_cycles": 1382944.0,
+          "after_cycles": 1361088.0,
+          "cpu_change_percent": -1.5803966031885608,
+          "before_fps": 11.945500113921167,
+          "after_fps": 11.945500113921167
+        },
+        {
+          "level": 1,
+          "cell": 2242,
+          "heading": 90,
+          "before_cycles": 505952.0,
+          "after_cycles": 505504.0,
+          "cpu_change_percent": -0.08854594902283353,
+          "before_fps": 29.863750284802915,
+          "after_fps": 29.863750284802915
+        },
+        {
+          "level": 1,
+          "cell": 3640,
+          "heading": 225,
+          "before_cycles": 1311776.0,
+          "after_cycles": 1306976.0,
+          "cpu_change_percent": -0.3659161320225368,
+          "before_fps": 11.945500113921167,
+          "after_fps": 11.945500113921167
+        },
+        {
+          "level": 2,
+          "cell": 1592,
+          "heading": 135,
+          "before_cycles": 1447296.0,
+          "after_cycles": 1410240.0,
+          "cpu_change_percent": -2.560360838418674,
+          "before_fps": 9.95458342826764,
+          "after_fps": 11.486057801847275
+        },
+        {
+          "level": 2,
+          "cell": 2871,
+          "heading": 225,
+          "before_cycles": 1507040.0,
+          "after_cycles": 1465760.0,
+          "cpu_change_percent": -2.739144282832573,
+          "before_fps": 9.95458342826764,
+          "after_fps": 9.95458342826764
+        },
+        {
+          "level": 3,
+          "cell": 1544,
+          "heading": 315,
+          "before_cycles": 898880.0,
+          "after_cycles": 881984.0,
+          "cpu_change_percent": -1.8796724813100796,
+          "before_fps": 14.931875142401458,
+          "after_fps": 14.931875142401458
+        }
+      ],
+      "g20d_active": [
+        {
+          "level": 1,
+          "cell": 520,
+          "heading": 225,
+          "before_cycles": 1382944.0,
+          "after_cycles": 1387360.0,
+          "cpu_change_percent": 0.31931878658861823,
+          "before_fps": 11.945500113921167,
+          "after_fps": 11.945500113921167
+        },
+        {
+          "level": 1,
+          "cell": 2242,
+          "heading": 90,
+          "before_cycles": 505952.0,
+          "after_cycles": 505504.0,
+          "cpu_change_percent": -0.08854594902283353,
+          "before_fps": 29.863750284802915,
+          "after_fps": 29.863750284802915
+        },
+        {
+          "level": 1,
+          "cell": 3640,
+          "heading": 225,
+          "before_cycles": 1311776.0,
+          "after_cycles": 1349696.0,
+          "cpu_change_percent": 2.8907374429780752,
+          "before_fps": 11.945500113921167,
+          "after_fps": 11.945500113921167
+        },
+        {
+          "level": 2,
+          "cell": 1592,
+          "heading": 135,
+          "before_cycles": 1447296.0,
+          "after_cycles": 1466912.0,
+          "cpu_change_percent": 1.3553550897674072,
+          "before_fps": 9.95458342826764,
+          "after_fps": 9.95458342826764
+        },
+        {
+          "level": 2,
+          "cell": 2871,
+          "heading": 225,
+          "before_cycles": 1507040.0,
+          "after_cycles": 1531584.0,
+          "cpu_change_percent": 1.6286229960717602,
+          "before_fps": 9.95458342826764,
+          "after_fps": 9.95458342826764
+        },
+        {
+          "level": 3,
+          "cell": 1544,
+          "heading": 315,
+          "before_cycles": 898880.0,
+          "after_cycles": 898944.0,
+          "cpu_change_percent": 0.007119971520119783,
+          "before_fps": 14.931875142401458,
+          "after_fps": 14.931875142401458
+        }
+      ],
+      "g20d_active_hot": [
+        {
+          "level": 1,
+          "cell": 520,
+          "heading": 225,
+          "before_cycles": 1382944.0,
+          "after_cycles": 1360128.0,
+          "cpu_change_percent": -1.6498137307078276,
+          "before_fps": 11.945500113921167,
+          "after_fps": 11.945500113921167
+        },
+        {
+          "level": 1,
+          "cell": 2242,
+          "heading": 90,
+          "before_cycles": 505952.0,
+          "after_cycles": 505504.0,
+          "cpu_change_percent": -0.08854594902283353,
+          "before_fps": 29.863750284802915,
+          "after_fps": 29.863750284802915
+        },
+        {
+          "level": 1,
+          "cell": 3640,
+          "heading": 225,
+          "before_cycles": 1311776.0,
+          "after_cycles": 1290336.0,
+          "cpu_change_percent": -1.6344253897006777,
+          "before_fps": 11.945500113921167,
+          "after_fps": 11.945500113921167
+        },
+        {
+          "level": 2,
+          "cell": 1592,
+          "heading": 135,
+          "before_cycles": 1447296.0,
+          "after_cycles": 1444928.0,
+          "cpu_change_percent": -0.16361545944989508,
+          "before_fps": 9.95458342826764,
+          "after_fps": 9.95458342826764
+        },
+        {
+          "level": 2,
+          "cell": 2871,
+          "heading": 225,
+          "before_cycles": 1507040.0,
+          "after_cycles": 1500608.0,
+          "cpu_change_percent": -0.42679689988321945,
+          "before_fps": 9.95458342826764,
+          "after_fps": 9.95458342826764
+        },
+        {
+          "level": 3,
+          "cell": 1544,
+          "heading": 315,
+          "before_cycles": 898880.0,
+          "after_cycles": 899520.0,
+          "cpu_change_percent": 0.07119971520113122,
+          "before_fps": 14.931875142401458,
+          "after_fps": 14.931875142401458
+        }
+      ],
+      "g20d_active_thumb": [
+        {
+          "level": 1,
+          "cell": 520,
+          "heading": 225,
+          "before_cycles": 1382944.0,
+          "after_cycles": 1388896.0,
+          "cpu_change_percent": 0.43038619061943617,
+          "before_fps": 11.945500113921167,
+          "after_fps": 11.945500113921167
+        },
+        {
+          "level": 1,
+          "cell": 2242,
+          "heading": 90,
+          "before_cycles": 505952.0,
+          "after_cycles": 505952.0,
+          "cpu_change_percent": 0.0,
+          "before_fps": 29.863750284802915,
+          "after_fps": 29.863750284802915
+        },
+        {
+          "level": 1,
+          "cell": 3640,
+          "heading": 225,
+          "before_cycles": 1311776.0,
+          "after_cycles": 1353856.0,
+          "cpu_change_percent": 3.207864757397605,
+          "before_fps": 11.945500113921167,
+          "after_fps": 11.945500113921167
+        },
+        {
+          "level": 2,
+          "cell": 1592,
+          "heading": 135,
+          "before_cycles": 1447296.0,
+          "after_cycles": 1468832.0,
+          "cpu_change_percent": 1.4880162731051527,
+          "before_fps": 9.95458342826764,
+          "after_fps": 9.95458342826764
+        },
+        {
+          "level": 2,
+          "cell": 2871,
+          "heading": 225,
+          "before_cycles": 1507040.0,
+          "after_cycles": 1533376.0,
+          "cpu_change_percent": 1.7475315850939532,
+          "before_fps": 9.95458342826764,
+          "after_fps": 9.95458342826764
+        },
+        {
+          "level": 3,
+          "cell": 1544,
+          "heading": 315,
+          "before_cycles": 898880.0,
+          "after_cycles": 898880.0,
+          "cpu_change_percent": 0.0,
+          "before_fps": 14.931875142401458,
+          "after_fps": 14.931875142401458
+        }
+      ],
+      "g20d_exact": [
+        {
+          "level": 1,
+          "cell": 520,
+          "heading": 225,
+          "before_cycles": 1382944.0,
+          "after_cycles": 1364960.0,
+          "cpu_change_percent": -1.3004141888608656,
+          "before_fps": 11.945500113921167,
+          "after_fps": 11.945500113921167
+        },
+        {
+          "level": 1,
+          "cell": 2242,
+          "heading": 90,
+          "before_cycles": 505952.0,
+          "after_cycles": 505536.0,
+          "cpu_change_percent": -0.08222123837834383,
+          "before_fps": 29.863750284802915,
+          "after_fps": 29.863750284802915
+        },
+        {
+          "level": 1,
+          "cell": 3640,
+          "heading": 225,
+          "before_cycles": 1311776.0,
+          "after_cycles": 1344096.0,
+          "cpu_change_percent": 2.4638352889517767,
+          "before_fps": 11.945500113921167,
+          "after_fps": 11.945500113921167
+        },
+        {
+          "level": 2,
+          "cell": 1592,
+          "heading": 135,
+          "before_cycles": 1447296.0,
+          "after_cycles": 1431328.0,
+          "cpu_change_percent": -1.1032988414256706,
+          "before_fps": 9.95458342826764,
+          "after_fps": 10.85954555811015
+        },
+        {
+          "level": 2,
+          "cell": 2871,
+          "heading": 225,
+          "before_cycles": 1507040.0,
+          "after_cycles": 1489664.0,
+          "cpu_change_percent": -1.1529886399830103,
+          "before_fps": 9.95458342826764,
+          "after_fps": 9.95458342826764
+        },
+        {
+          "level": 3,
+          "cell": 1544,
+          "heading": 315,
+          "before_cycles": 898880.0,
+          "after_cycles": 882112.0,
+          "cpu_change_percent": -1.8654325382698511,
+          "before_fps": 14.931875142401458,
+          "after_fps": 14.931875142401458
+        }
+      ],
+      "g20d_pair_open": [
+        {
+          "level": 1,
+          "cell": 520,
+          "heading": 225,
+          "before_cycles": 1382944.0,
+          "after_cycles": 1356704.0,
+          "cpu_change_percent": -1.8974014855265287,
+          "before_fps": 11.945500113921167,
+          "after_fps": 11.945500113921167
+        },
+        {
+          "level": 1,
+          "cell": 2242,
+          "heading": 90,
+          "before_cycles": 505952.0,
+          "after_cycles": 505504.0,
+          "cpu_change_percent": -0.08854594902283353,
+          "before_fps": 29.863750284802915,
+          "after_fps": 29.863750284802915
+        },
+        {
+          "level": 1,
+          "cell": 3640,
+          "heading": 225,
+          "before_cycles": 1311776.0,
+          "after_cycles": 1292768.0,
+          "cpu_change_percent": -1.4490278828092618,
+          "before_fps": 11.945500113921167,
+          "after_fps": 11.945500113921167
+        },
+        {
+          "level": 2,
+          "cell": 1592,
+          "heading": 135,
+          "before_cycles": 1447296.0,
+          "after_cycles": 1420576.0,
+          "cpu_change_percent": -1.8462014681170924,
+          "before_fps": 9.95458342826764,
+          "after_fps": 11.12934793222469
+        },
+        {
+          "level": 2,
+          "cell": 2871,
+          "heading": 225,
+          "before_cycles": 1507040.0,
+          "after_cycles": 1476224.0,
+          "cpu_change_percent": -2.044803057649436,
+          "before_fps": 9.95458342826764,
+          "after_fps": 9.95458342826764
+        },
+        {
+          "level": 3,
+          "cell": 1544,
+          "heading": 315,
+          "before_cycles": 898880.0,
+          "after_cycles": 888448.0,
+          "cpu_change_percent": -1.1605553577785699,
+          "before_fps": 14.931875142401458,
+          "after_fps": 14.931875142401458
+        }
+      ],
+      "g20d_compact": [
+        {
+          "level": 1,
+          "cell": 520,
+          "heading": 225,
+          "before_cycles": 1382944.0,
+          "after_cycles": 1348864.0,
+          "cpu_change_percent": -2.464308026933848,
+          "before_fps": 11.945500113921167,
+          "after_fps": 11.945500113921167
+        },
+        {
+          "level": 1,
+          "cell": 2242,
+          "heading": 90,
+          "before_cycles": 505952.0,
+          "after_cycles": 505504.0,
+          "cpu_change_percent": -0.08854594902283353,
+          "before_fps": 29.863750284802915,
+          "after_fps": 29.863750284802915
+        },
+        {
+          "level": 1,
+          "cell": 3640,
+          "heading": 225,
+          "before_cycles": 1311776.0,
+          "after_cycles": 1290592.0,
+          "cpu_change_percent": -1.614909862659475,
+          "before_fps": 11.945500113921167,
+          "after_fps": 11.945500113921167
+        },
+        {
+          "level": 2,
+          "cell": 1592,
+          "heading": 135,
+          "before_cycles": 1447296.0,
+          "after_cycles": 1405952.0,
+          "cpu_change_percent": -2.8566374812063366,
+          "before_fps": 9.95458342826764,
+          "after_fps": 11.866390841643543
+        },
+        {
+          "level": 2,
+          "cell": 2871,
+          "heading": 225,
+          "before_cycles": 1507040.0,
+          "after_cycles": 1461504.0,
+          "cpu_change_percent": -3.0215521817602675,
+          "before_fps": 9.95458342826764,
+          "after_fps": 9.95458342826764
+        },
+        {
+          "level": 3,
+          "cell": 1544,
+          "heading": 315,
+          "before_cycles": 898880.0,
+          "after_cycles": 880640.0,
+          "cpu_change_percent": -2.029191883232462,
+          "before_fps": 14.931875142401458,
+          "after_fps": 14.931875142401458
+        }
+      ]
+    },
+    "spatial": {
+      "g20d_pair": {
+        "0": {
+          "1": {
+            "cases": 136,
+            "median_cpu_change_percent": -0.029617425389949492,
+            "best_cpu_change_percent": -1.1488925748853518,
+            "worst_cpu_change_percent": 0.1222753854332792,
+            "faster": 87,
+            "slower": 32,
+            "equal": 17,
+            "before_minimum_fps": 10.85954555811015,
+            "after_minimum_fps": 11.198906356801094
+          },
+          "2": {
+            "cases": 168,
+            "median_cpu_change_percent": -0.16257406497801608,
+            "best_cpu_change_percent": -0.9293453006921193,
+            "worst_cpu_change_percent": 0.14359563469270586,
+            "faster": 119,
+            "slower": 36,
+            "equal": 13,
+            "before_minimum_fps": 9.95458342826764,
+            "after_minimum_fps": 9.95458342826764
+          },
+          "3": {
+            "cases": 136,
+            "median_cpu_change_percent": 0.0,
+            "best_cpu_change_percent": -0.1547440091962171,
+            "worst_cpu_change_percent": 0.21669853409815865,
+            "faster": 65,
+            "slower": 47,
+            "equal": 24,
+            "before_minimum_fps": 14.931875142401458,
+            "after_minimum_fps": 14.931875142401458
+          }
+        },
+        "1": {
+          "1": {
+            "cases": 136,
+            "median_cpu_change_percent": -0.008649105918734357,
+            "best_cpu_change_percent": -1.124801756740268,
+            "worst_cpu_change_percent": 0.11535503716995077,
+            "faster": 80,
+            "slower": 35,
+            "equal": 21,
+            "before_minimum_fps": 10.85954555811015,
+            "after_minimum_fps": 11.198906356801094
+          },
+          "2": {
+            "cases": 168,
+            "median_cpu_change_percent": -0.18915270616020607,
+            "best_cpu_change_percent": -0.9489336724711417,
+            "worst_cpu_change_percent": 0.11688668866887131,
+            "faster": 118,
+            "slower": 35,
+            "equal": 15,
+            "before_minimum_fps": 9.95458342826764,
+            "after_minimum_fps": 9.95458342826764
+          },
+          "3": {
+            "cases": 136,
+            "median_cpu_change_percent": 0.0,
+            "best_cpu_change_percent": -0.13747279184328498,
+            "worst_cpu_change_percent": 0.19759066862132801,
+            "faster": 47,
+            "slower": 61,
+            "equal": 28,
+            "before_minimum_fps": 14.931875142401458,
+            "after_minimum_fps": 14.931875142401458
+          }
+        }
+      },
+      "g20d_masked_unroll": {
+        "0": {
+          "1": {
+            "cases": 136,
+            "median_cpu_change_percent": -0.16499951954138115,
+            "best_cpu_change_percent": -1.9484095048498462,
+            "worst_cpu_change_percent": 0.1456929521034489,
+            "faster": 107,
+            "slower": 24,
+            "equal": 5,
+            "before_minimum_fps": 10.85954555811015,
+            "after_minimum_fps": 11.945500113921167
+          },
+          "2": {
+            "cases": 168,
+            "median_cpu_change_percent": -0.08672099849639237,
+            "best_cpu_change_percent": -4.530350303122543,
+            "worst_cpu_change_percent": 0.12058653289601651,
+            "faster": 117,
+            "slower": 37,
+            "equal": 14,
+            "before_minimum_fps": 9.95458342826764,
+            "after_minimum_fps": 9.95458342826764
+          },
+          "3": {
+            "cases": 136,
+            "median_cpu_change_percent": -0.22751181499616746,
+            "best_cpu_change_percent": -6.526472043542797,
+            "worst_cpu_change_percent": 0.18893387314440346,
+            "faster": 108,
+            "slower": 17,
+            "equal": 11,
+            "before_minimum_fps": 14.931875142401458,
+            "after_minimum_fps": 14.931875142401458
+          }
+        },
+        "1": {
+          "1": {
+            "cases": 136,
+            "median_cpu_change_percent": -0.14421956215950327,
+            "best_cpu_change_percent": -1.952645177686474,
+            "worst_cpu_change_percent": 0.11271415689810826,
+            "faster": 110,
+            "slower": 19,
+            "equal": 7,
+            "before_minimum_fps": 10.85954555811015,
+            "after_minimum_fps": 11.945500113921167
+          },
+          "2": {
+            "cases": 168,
+            "median_cpu_change_percent": -0.09960754720316212,
+            "best_cpu_change_percent": -4.573704370766851,
+            "worst_cpu_change_percent": 0.18653236336503287,
+            "faster": 123,
+            "slower": 34,
+            "equal": 11,
+            "before_minimum_fps": 9.95458342826764,
+            "after_minimum_fps": 9.95458342826764
+          },
+          "3": {
+            "cases": 136,
+            "median_cpu_change_percent": -0.2400593331332912,
+            "best_cpu_change_percent": -6.521846701964473,
+            "worst_cpu_change_percent": 0.18605732891447957,
+            "faster": 107,
+            "slower": 21,
+            "equal": 8,
+            "before_minimum_fps": 14.931875142401458,
+            "after_minimum_fps": 14.931875142401458
+          }
+        }
+      },
+      "g20d_compact": {
+        "0": {
+          "1": {
+            "cases": 136,
+            "median_cpu_change_percent": -0.34318660319264116,
+            "best_cpu_change_percent": -2.4243967952577217,
+            "worst_cpu_change_percent": 0.13355187276149483,
+            "faster": 110,
+            "slower": 19,
+            "equal": 7,
+            "before_minimum_fps": 10.85954555811015,
+            "after_minimum_fps": 11.945500113921167
+          },
+          "2": {
+            "cases": 168,
+            "median_cpu_change_percent": -0.6715794755860927,
+            "best_cpu_change_percent": -4.550643025644929,
+            "worst_cpu_change_percent": 0.17408604824671325,
+            "faster": 141,
+            "slower": 18,
+            "equal": 9,
+            "before_minimum_fps": 9.95458342826764,
+            "after_minimum_fps": 9.95458342826764
+          },
+          "3": {
+            "cases": 136,
+            "median_cpu_change_percent": -0.32743695402095985,
+            "best_cpu_change_percent": -6.274121721919846,
+            "worst_cpu_change_percent": 0.16280016280016962,
+            "faster": 113,
+            "slower": 16,
+            "equal": 7,
+            "before_minimum_fps": 14.931875142401458,
+            "after_minimum_fps": 14.931875142401458
+          }
+        },
+        "1": {
+          "1": {
+            "cases": 136,
+            "median_cpu_change_percent": -0.3779653480128098,
+            "best_cpu_change_percent": -2.4683646794827263,
+            "worst_cpu_change_percent": 0.11271415689810826,
+            "faster": 114,
+            "slower": 14,
+            "equal": 8,
+            "before_minimum_fps": 10.85954555811015,
+            "after_minimum_fps": 11.945500113921167
+          },
+          "2": {
+            "cases": 168,
+            "median_cpu_change_percent": -0.6483831229582016,
+            "best_cpu_change_percent": -4.548337180690498,
+            "worst_cpu_change_percent": 0.21762109059255685,
+            "faster": 144,
+            "slower": 14,
+            "equal": 10,
+            "before_minimum_fps": 9.95458342826764,
+            "after_minimum_fps": 9.95458342826764
+          },
+          "3": {
+            "cases": 136,
+            "median_cpu_change_percent": -0.28691909522688963,
+            "best_cpu_change_percent": -6.269483893314865,
+            "worst_cpu_change_percent": 0.14035845389763768,
+            "faster": 111,
+            "slower": 14,
+            "equal": 11,
+            "before_minimum_fps": 14.931875142401458,
+            "after_minimum_fps": 14.931875142401458
+          }
+        }
+      }
+    },
+    "live": {
+      "g20d_pair": {
+        "turn-fire": [
+          {
+            "level": 1,
+            "language": 0,
+            "before_fps": 19.90916685653528,
+            "after_fps": 19.90916685653528,
+            "fps_change_percent": 0.0,
+            "before_maximum_cycles": 961216,
+            "after_maximum_cycles": 960192,
+            "max_motion_debt": 414,
+            "time_conservation_error_ticks": 0
+          },
+          {
+            "level": 2,
+            "language": 0,
+            "before_fps": 16.66813969384349,
+            "after_fps": 16.66813969384349,
+            "fps_change_percent": 0.0,
+            "before_maximum_cycles": 993664,
+            "after_maximum_cycles": 993664,
+            "max_motion_debt": 414,
+            "time_conservation_error_ticks": 0
+          },
+          {
+            "level": 3,
+            "language": 0,
+            "before_fps": 21.78510659073769,
+            "after_fps": 21.78510659073769,
+            "fps_change_percent": 0.0,
+            "before_maximum_cycles": 803136,
+            "after_maximum_cycles": 803072,
+            "max_motion_debt": 414,
+            "time_conservation_error_ticks": 0
+          },
+          {
+            "level": 1,
+            "language": 1,
+            "before_fps": 19.90916685653528,
+            "after_fps": 19.90916685653528,
+            "fps_change_percent": 0.0,
+            "before_maximum_cycles": 960576,
+            "after_maximum_cycles": 959552,
+            "max_motion_debt": 414,
+            "time_conservation_error_ticks": 0
+          },
+          {
+            "level": 2,
+            "language": 1,
+            "before_fps": 16.66813969384349,
+            "after_fps": 16.66813969384349,
+            "fps_change_percent": 0.0,
+            "before_maximum_cycles": 994304,
+            "after_maximum_cycles": 994368,
+            "max_motion_debt": 414,
+            "time_conservation_error_ticks": 0
+          },
+          {
+            "level": 3,
+            "language": 1,
+            "before_fps": 21.78510659073769,
+            "after_fps": 21.78510659073769,
+            "fps_change_percent": 0.0,
+            "before_maximum_cycles": 803072,
+            "after_maximum_cycles": 803136,
+            "max_motion_debt": 414,
+            "time_conservation_error_ticks": 0
+          }
+        ],
+        "walk-turn-fire": [
+          {
+            "level": 1,
+            "language": 0,
+            "before_fps": 16.94397179279598,
+            "after_fps": 16.98412338472204,
+            "fps_change_percent": 0.23696682464455776,
+            "before_maximum_cycles": 1272576,
+            "after_maximum_cycles": 1270848,
+            "max_motion_debt": 412,
+            "time_conservation_error_ticks": 0
+          },
+          {
+            "level": 2,
+            "language": 0,
+            "before_fps": 17.56691193223701,
+            "after_fps": 17.653448444218473,
+            "fps_change_percent": 0.49261083743843415,
+            "before_maximum_cycles": 1183552,
+            "after_maximum_cycles": 1183552,
+            "max_motion_debt": 412,
+            "time_conservation_error_ticks": 0
+          },
+          {
+            "level": 3,
+            "language": 0,
+            "before_fps": 19.964624145829248,
+            "after_fps": 19.964624145829248,
+            "fps_change_percent": 0.0,
+            "before_maximum_cycles": 973056,
+            "after_maximum_cycles": 972992,
+            "max_motion_debt": 409,
+            "time_conservation_error_ticks": 0
+          },
+          {
+            "level": 1,
+            "language": 1,
+            "before_fps": 16.904009595171463,
+            "after_fps": 16.98412338472204,
+            "fps_change_percent": 0.4739336492891155,
+            "before_maximum_cycles": 1272576,
+            "after_maximum_cycles": 1270848,
+            "max_motion_debt": 412,
+            "time_conservation_error_ticks": 0
+          },
+          {
+            "level": 2,
+            "language": 1,
+            "before_fps": 17.56691193223701,
+            "after_fps": 17.653448444218473,
+            "fps_change_percent": 0.49261083743843415,
+            "before_maximum_cycles": 1182720,
+            "after_maximum_cycles": 1182656,
+            "max_motion_debt": 412,
+            "time_conservation_error_ticks": 0
+          },
+          {
+            "level": 3,
+            "language": 1,
+            "before_fps": 19.964624145829248,
+            "after_fps": 19.964624145829248,
+            "fps_change_percent": 0.0,
+            "before_maximum_cycles": 973696,
+            "after_maximum_cycles": 973056,
+            "max_motion_debt": 410,
+            "time_conservation_error_ticks": 0
+          }
+        ]
+      },
+      "g20d_masked_unroll": {
+        "turn-fire": [
+          {
+            "level": 1,
+            "language": 0,
+            "before_fps": 19.90916685653528,
+            "after_fps": 19.90916685653528,
+            "fps_change_percent": 0.0,
+            "before_maximum_cycles": 961216,
+            "after_maximum_cycles": 960512,
+            "max_motion_debt": 414,
+            "time_conservation_error_ticks": 0
+          },
+          {
+            "level": 2,
+            "language": 0,
+            "before_fps": 16.66813969384349,
+            "after_fps": 16.66813969384349,
+            "fps_change_percent": 0.0,
+            "before_maximum_cycles": 993664,
+            "after_maximum_cycles": 989888,
+            "max_motion_debt": 414,
+            "time_conservation_error_ticks": 0
+          },
+          {
+            "level": 3,
+            "language": 0,
+            "before_fps": 21.78510659073769,
+            "after_fps": 21.78510659073769,
+            "fps_change_percent": 0.0,
+            "before_maximum_cycles": 803136,
+            "after_maximum_cycles": 800128,
+            "max_motion_debt": 414,
+            "time_conservation_error_ticks": 0
+          },
+          {
+            "level": 1,
+            "language": 1,
+            "before_fps": 19.90916685653528,
+            "after_fps": 19.90916685653528,
+            "fps_change_percent": 0.0,
+            "before_maximum_cycles": 960576,
+            "after_maximum_cycles": 959808,
+            "max_motion_debt": 414,
+            "time_conservation_error_ticks": 0
+          },
+          {
+            "level": 2,
+            "language": 1,
+            "before_fps": 16.66813969384349,
+            "after_fps": 16.66813969384349,
+            "fps_change_percent": 0.0,
+            "before_maximum_cycles": 994304,
+            "after_maximum_cycles": 990336,
+            "max_motion_debt": 414,
+            "time_conservation_error_ticks": 0
+          },
+          {
+            "level": 3,
+            "language": 1,
+            "before_fps": 21.78510659073769,
+            "after_fps": 21.78510659073769,
+            "fps_change_percent": 0.0,
+            "before_maximum_cycles": 803072,
+            "after_maximum_cycles": 800064,
+            "max_motion_debt": 414,
+            "time_conservation_error_ticks": 0
+          }
+        ],
+        "walk-turn-fire": [
+          {
+            "level": 1,
+            "language": 0,
+            "before_fps": 16.94397179279598,
+            "after_fps": 16.94397179279598,
+            "fps_change_percent": 0.0,
+            "before_maximum_cycles": 1272576,
+            "after_maximum_cycles": 1271616,
+            "max_motion_debt": 412,
+            "time_conservation_error_ticks": 0
+          },
+          {
+            "level": 2,
+            "language": 0,
+            "before_fps": 17.56691193223701,
+            "after_fps": 17.653448444218473,
+            "fps_change_percent": 0.49261083743843415,
+            "before_maximum_cycles": 1183552,
+            "after_maximum_cycles": 1183552,
+            "max_motion_debt": 413,
+            "time_conservation_error_ticks": 0
+          },
+          {
+            "level": 3,
+            "language": 0,
+            "before_fps": 19.964624145829248,
+            "after_fps": 19.964624145829248,
+            "fps_change_percent": 0.0,
+            "before_maximum_cycles": 973056,
+            "after_maximum_cycles": 972160,
+            "max_motion_debt": 409,
+            "time_conservation_error_ticks": 0
+          },
+          {
+            "level": 1,
+            "language": 1,
+            "before_fps": 16.904009595171463,
+            "after_fps": 16.904009595171463,
+            "fps_change_percent": 0.0,
+            "before_maximum_cycles": 1272576,
+            "after_maximum_cycles": 1272320,
+            "max_motion_debt": 412,
+            "time_conservation_error_ticks": 0
+          },
+          {
+            "level": 2,
+            "language": 1,
+            "before_fps": 17.56691193223701,
+            "after_fps": 17.653448444218473,
+            "fps_change_percent": 0.49261083743843415,
+            "before_maximum_cycles": 1182720,
+            "after_maximum_cycles": 1182656,
+            "max_motion_debt": 413,
+            "time_conservation_error_ticks": 0
+          },
+          {
+            "level": 3,
+            "language": 1,
+            "before_fps": 19.964624145829248,
+            "after_fps": 19.964624145829248,
+            "fps_change_percent": 0.0,
+            "before_maximum_cycles": 973696,
+            "after_maximum_cycles": 971584,
+            "max_motion_debt": 415,
+            "time_conservation_error_ticks": 0
+          }
+        ]
+      },
+      "g20d_compact": {
+        "turn-fire": [
+          {
+            "level": 1,
+            "language": 0,
+            "before_fps": 19.90916685653528,
+            "after_fps": 19.90916685653528,
+            "fps_change_percent": 0.0,
+            "before_maximum_cycles": 961216,
+            "after_maximum_cycles": 959424,
+            "max_motion_debt": 414,
+            "time_conservation_error_ticks": 0
+          },
+          {
+            "level": 2,
+            "language": 0,
+            "before_fps": 16.66813969384349,
+            "after_fps": 16.66813969384349,
+            "fps_change_percent": 0.0,
+            "before_maximum_cycles": 993664,
+            "after_maximum_cycles": 989504,
+            "max_motion_debt": 414,
+            "time_conservation_error_ticks": 0
+          },
+          {
+            "level": 3,
+            "language": 0,
+            "before_fps": 21.78510659073769,
+            "after_fps": 21.78510659073769,
+            "fps_change_percent": 0.0,
+            "before_maximum_cycles": 803136,
+            "after_maximum_cycles": 800128,
+            "max_motion_debt": 414,
+            "time_conservation_error_ticks": 0
+          },
+          {
+            "level": 1,
+            "language": 1,
+            "before_fps": 19.90916685653528,
+            "after_fps": 19.90916685653528,
+            "fps_change_percent": 0.0,
+            "before_maximum_cycles": 960576,
+            "after_maximum_cycles": 958784,
+            "max_motion_debt": 414,
+            "time_conservation_error_ticks": 0
+          },
+          {
+            "level": 2,
+            "language": 1,
+            "before_fps": 16.66813969384349,
+            "after_fps": 16.66813969384349,
+            "fps_change_percent": 0.0,
+            "before_maximum_cycles": 994304,
+            "after_maximum_cycles": 990208,
+            "max_motion_debt": 414,
+            "time_conservation_error_ticks": 0
+          },
+          {
+            "level": 3,
+            "language": 1,
+            "before_fps": 21.78510659073769,
+            "after_fps": 21.78510659073769,
+            "fps_change_percent": 0.0,
+            "before_maximum_cycles": 803072,
+            "after_maximum_cycles": 800128,
+            "max_motion_debt": 414,
+            "time_conservation_error_ticks": 0
+          }
+        ],
+        "walk-turn-fire": [
+          {
+            "level": 1,
+            "language": 0,
+            "before_fps": 16.94397179279598,
+            "after_fps": 16.98412338472204,
+            "fps_change_percent": 0.23696682464455776,
+            "before_maximum_cycles": 1272576,
+            "after_maximum_cycles": 1269696,
+            "max_motion_debt": 412,
+            "time_conservation_error_ticks": 0
+          },
+          {
+            "level": 2,
+            "language": 0,
+            "before_fps": 17.56691193223701,
+            "after_fps": 17.653448444218473,
+            "fps_change_percent": 0.49261083743843415,
+            "before_maximum_cycles": 1183552,
+            "after_maximum_cycles": 1183552,
+            "max_motion_debt": 412,
+            "time_conservation_error_ticks": 0
+          },
+          {
+            "level": 3,
+            "language": 0,
+            "before_fps": 19.964624145829248,
+            "after_fps": 19.964624145829248,
+            "fps_change_percent": 0.0,
+            "before_maximum_cycles": 973056,
+            "after_maximum_cycles": 971328,
+            "max_motion_debt": 409,
+            "time_conservation_error_ticks": 0
+          },
+          {
+            "level": 1,
+            "language": 1,
+            "before_fps": 16.904009595171463,
+            "after_fps": 16.98412338472204,
+            "fps_change_percent": 0.4739336492891155,
+            "before_maximum_cycles": 1272576,
+            "after_maximum_cycles": 1269696,
+            "max_motion_debt": 412,
+            "time_conservation_error_ticks": 0
+          },
+          {
+            "level": 2,
+            "language": 1,
+            "before_fps": 17.56691193223701,
+            "after_fps": 17.653448444218473,
+            "fps_change_percent": 0.49261083743843415,
+            "before_maximum_cycles": 1182720,
+            "after_maximum_cycles": 1182656,
+            "max_motion_debt": 412,
+            "time_conservation_error_ticks": 0
+          },
+          {
+            "level": 3,
+            "language": 1,
+            "before_fps": 19.964624145829248,
+            "after_fps": 19.964624145829248,
+            "fps_change_percent": 0.0,
+            "before_maximum_cycles": 973696,
+            "after_maximum_cycles": 971328,
+            "max_motion_debt": 410,
+            "time_conservation_error_ticks": 0
+          }
+        ]
+      }
+    },
+    "ppu_frames": {
+      "g20d_zero": 18,
+      "g20d_pair": 396,
+      "g20d_pair_only": 18,
+      "g20d_masked_cache": 18,
+      "g20d_masked_open": 18,
+      "g20d_masked_zero": 18,
+      "g20d_masked_unroll": 18,
+      "g20d_active": 18,
+      "g20d_active_hot": 18,
+      "g20d_active_thumb": 18,
+      "g20d_exact": 18,
+      "g20d_pair_open": 18,
+      "g20d_compact": 396
+    },
+    "spatial_ppu_frames": 880,
+    "profile": {
+      "hw_v128_vblank_only_kernel_profile": [
+        {
+          "level": 1,
+          "cell": 520,
+          "heading": 225,
+          "ceiling_inclusive_cycles": 561984,
+          "ceiling_sampler_cycles": 309440,
+          "ceiling_setup_and_wrapper_cycles": 252544,
+          "masked_sampler_cycles": 181824,
+          "sampler_calls": [
+            245,
+            142
+          ]
+        },
+        {
+          "level": 1,
+          "cell": 2242,
+          "heading": 90,
+          "ceiling_inclusive_cycles": 0,
+          "ceiling_sampler_cycles": 0,
+          "ceiling_setup_and_wrapper_cycles": 0,
+          "masked_sampler_cycles": 0,
+          "sampler_calls": [
+            0,
+            0
+          ]
+        },
+        {
+          "level": 1,
+          "cell": 3640,
+          "heading": 225,
+          "ceiling_inclusive_cycles": 762624,
+          "ceiling_sampler_cycles": 368576,
+          "ceiling_setup_and_wrapper_cycles": 394048,
+          "masked_sampler_cycles": 63936,
+          "sampler_calls": [
+            314,
+            100
+          ]
+        },
+        {
+          "level": 2,
+          "cell": 1592,
+          "heading": 135,
+          "ceiling_inclusive_cycles": 176384,
+          "ceiling_sampler_cycles": 56320,
+          "ceiling_setup_and_wrapper_cycles": 120064,
+          "masked_sampler_cycles": 319808,
+          "sampler_calls": [
+            74,
+            263
+          ]
+        },
+        {
+          "level": 2,
+          "cell": 2871,
+          "heading": 225,
+          "ceiling_inclusive_cycles": 278848,
+          "ceiling_sampler_cycles": 99968,
+          "ceiling_setup_and_wrapper_cycles": 178880,
+          "masked_sampler_cycles": 316352,
+          "sampler_calls": [
+            110,
+            190
+          ]
+        },
+        {
+          "level": 3,
+          "cell": 1544,
+          "heading": 315,
+          "ceiling_inclusive_cycles": 0,
+          "ceiling_sampler_cycles": 0,
+          "ceiling_setup_and_wrapper_cycles": 0,
+          "masked_sampler_cycles": 170304,
+          "sampler_calls": [
+            0,
+            177
+          ]
+        }
+      ],
+      "g20d_pair_kernel_profile": [
+        {
+          "level": 1,
+          "cell": 520,
+          "heading": 225,
+          "ceiling_inclusive_cycles": 553728,
+          "ceiling_sampler_cycles": 304128,
+          "ceiling_setup_and_wrapper_cycles": 249600,
+          "masked_sampler_cycles": 181568,
+          "sampler_calls": [
+            245,
+            142
+          ]
+        },
+        {
+          "level": 1,
+          "cell": 2242,
+          "heading": 90,
+          "ceiling_inclusive_cycles": 0,
+          "ceiling_sampler_cycles": 0,
+          "ceiling_setup_and_wrapper_cycles": 0,
+          "masked_sampler_cycles": 0,
+          "sampler_calls": [
+            0,
+            0
+          ]
+        },
+        {
+          "level": 1,
+          "cell": 3640,
+          "heading": 225,
+          "ceiling_inclusive_cycles": 747776,
+          "ceiling_sampler_cycles": 359744,
+          "ceiling_setup_and_wrapper_cycles": 388032,
+          "masked_sampler_cycles": 64512,
+          "sampler_calls": [
+            314,
+            100
+          ]
+        },
+        {
+          "level": 2,
+          "cell": 1592,
+          "heading": 135,
+          "ceiling_inclusive_cycles": 177792,
+          "ceiling_sampler_cycles": 54720,
+          "ceiling_setup_and_wrapper_cycles": 123072,
+          "masked_sampler_cycles": 322816,
+          "sampler_calls": [
+            74,
+            263
+          ]
+        },
+        {
+          "level": 2,
+          "cell": 2871,
+          "heading": 225,
+          "ceiling_inclusive_cycles": 270784,
+          "ceiling_sampler_cycles": 95552,
+          "ceiling_setup_and_wrapper_cycles": 175232,
+          "masked_sampler_cycles": 313728,
+          "sampler_calls": [
+            110,
+            190
+          ]
+        },
+        {
+          "level": 3,
+          "cell": 1544,
+          "heading": 315,
+          "ceiling_inclusive_cycles": 0,
+          "ceiling_sampler_cycles": 0,
+          "ceiling_setup_and_wrapper_cycles": 0,
+          "masked_sampler_cycles": 176320,
+          "sampler_calls": [
+            0,
+            177
+          ]
+        }
+      ],
+      "g20d_compact_kernel_profile": [
+        {
+          "level": 1,
+          "cell": 520,
+          "heading": 225,
+          "ceiling_inclusive_cycles": 547200,
+          "ceiling_sampler_cycles": 296704,
+          "ceiling_setup_and_wrapper_cycles": 250496,
+          "masked_sampler_cycles": 164992,
+          "sampler_calls": [
+            245,
+            142
+          ]
+        },
+        {
+          "level": 1,
+          "cell": 2242,
+          "heading": 90,
+          "ceiling_inclusive_cycles": 0,
+          "ceiling_sampler_cycles": 0,
+          "ceiling_setup_and_wrapper_cycles": 0,
+          "masked_sampler_cycles": 0,
+          "sampler_calls": [
+            0,
+            0
+          ]
+        },
+        {
+          "level": 1,
+          "cell": 3640,
+          "heading": 225,
+          "ceiling_inclusive_cycles": 742784,
+          "ceiling_sampler_cycles": 367424,
+          "ceiling_setup_and_wrapper_cycles": 375360,
+          "masked_sampler_cycles": 66944,
+          "sampler_calls": [
+            314,
+            100
+          ]
+        },
+        {
+          "level": 2,
+          "cell": 1592,
+          "heading": 135,
+          "ceiling_inclusive_cycles": 174144,
+          "ceiling_sampler_cycles": 58112,
+          "ceiling_setup_and_wrapper_cycles": 116032,
+          "masked_sampler_cycles": 280512,
+          "sampler_calls": [
+            74,
+            263
+          ]
+        },
+        {
+          "level": 2,
+          "cell": 2871,
+          "heading": 225,
+          "ceiling_inclusive_cycles": 271104,
+          "ceiling_sampler_cycles": 93760,
+          "ceiling_setup_and_wrapper_cycles": 177344,
+          "masked_sampler_cycles": 276224,
+          "sampler_calls": [
+            110,
+            190
+          ]
+        },
+        {
+          "level": 3,
+          "cell": 1544,
+          "heading": 315,
+          "ceiling_inclusive_cycles": 0,
+          "ceiling_sampler_cycles": 0,
+          "ceiling_setup_and_wrapper_cycles": 0,
+          "masked_sampler_cycles": 154496,
+          "sampler_calls": [
+            0,
+            177
+          ]
+        }
+      ]
+    },
+    "profile_scope": "Separate instrumented ROMs, orchestration in ROM. Sampler elapsed includes wrapper/timer overhead and PCM IRQs. Setup is inclusive minus sampled, not production CPU or a pure isolated kernel timer.",
+    "work": {
+      "hw_v128_vblank_only": {
+        "rom_sha256": "a584bb1bcd9defaf636a8a9853ff1d72f376c18c82ea24912ff70c06c061f12c",
+        "elf_sha256": "06ee8850afec3c3c71953d4e9cf2d5e38e1a4569ba79ff805e9bfd01c8fda079",
+        "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+        "script_sha256": "76f67b52c3386735de2f1b7dd8fa3ffaa6aab438f64f7843f19aa554527d7ca4",
+        "rows": {
+          "detail_pointer": "/work/hw_v128_vblank_only/rows",
+          "items": 8
+        },
+        "scope": "Frozen RU steady draws; production binary replay; counts only, no cycle or FPS claim."
+      },
+      "g20d_pair": {
+        "rom_sha256": "7602f14c964598fbc077d82c3e5952a70ebc52e0db28a8b50ef729e97bc0d8bc",
+        "elf_sha256": "4a71041a4a1039aa3046dbc21951bed419dd37ba0c8d157e58ac35128a3dad85",
+        "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+        "script_sha256": "76f67b52c3386735de2f1b7dd8fa3ffaa6aab438f64f7843f19aa554527d7ca4",
+        "rows": {
+          "detail_pointer": "/work/g20d_pair/rows",
+          "items": 8
+        },
+        "scope": "Frozen RU steady draws; production binary replay; counts only, no cycle or FPS claim."
+      },
+      "g20d_masked_unroll": {
+        "rom_sha256": "fdb70c8094869c3a5bb7bbf70455b633b102fb60de0a7a47cd322ecfd7000463",
+        "elf_sha256": "92cbcfdb7eaa36c23fba13085a47d132e42f056f54ee81d2bef3f67403c6d7cb",
+        "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+        "script_sha256": "76f67b52c3386735de2f1b7dd8fa3ffaa6aab438f64f7843f19aa554527d7ca4",
+        "rows": {
+          "detail_pointer": "/work/g20d_masked_unroll/rows",
+          "items": 8
+        },
+        "scope": "Frozen RU steady draws; production binary replay; counts only, no cycle or FPS claim."
+      },
+      "g20d_compact": {
+        "rom_sha256": "f40a13f56b70cfec5e673c7e0b80c659a48f35e30e7bad2e236ef7967a59a359",
+        "elf_sha256": "15857bb91f8c984a9a957343714bf7b8f056b512a090d63354989905243186d4",
+        "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+        "script_sha256": "76f67b52c3386735de2f1b7dd8fa3ffaa6aab438f64f7843f19aa554527d7ca4",
+        "rows": {
+          "detail_pointer": "/work/g20d_compact/rows",
+          "items": 8
+        },
+        "scope": "Frozen RU steady draws; production binary replay; counts only, no cycle or FPS claim."
+      }
+    },
+    "memory": {
+      "ewram_bytes": 261476,
+      "ewram_free_bytes": 668,
+      "iwram_bytes": 24572,
+      "iwram_free_before_stacks_bytes": 4,
+      "stacks_bios_reserved_bytes": 8192,
+      "heap_bytes": 0,
+      "observed_main_stack": {
+        "main_stack_low": 50356224,
+        "main_stack_top": 50364160,
+        "sentinel_word": 219540062,
+        "untouched_margin_bytes": 5352,
+        "high_water_bytes": 2584,
+        "irq_and_bios_excluded": true,
+        "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+      },
+      "observed_irq_stack": {
+        "low": 50364160,
+        "top": 50364320,
+        "untouched_margin_bytes": 80,
+        "high_water_bytes": 80,
+        "includes_bios_irq_saves": true
+      }
+    },
+    "reports": {
+      "detail_pointer": "/reports",
+      "entries": 61
+    },
+    "build_manifest_sha256": "72bf8085f9bf80c5d1b9c8c6b82a091fd31dd23376ca08ef900f5444d1b5ac1b",
+    "verified_build_manifest_sha256": "93491807518780963ea634b02304614485d713f0caf2049434f33f1e81a69744",
+    "host_cross_log_sha256": "ce7ef23ec38fe536b317d5fcd56199346654c2453925a6a324b0ed34853a46b6",
+    "limitations": [
+      "Native-clock mGBA with replacement BIOS; physical GBA not measured.",
+      "Spatial fixtures freeze simulation; routes are finite 120-presentations, not whole-level minima.",
+      "Live gameplay advances by real time: optimized/control frame numbers are not lockstep.",
+      "Artificial all-awake overload remains outside these ordinary route claims.",
+      "BUG02 deferred by user; this exact-output change does not fix or accept it.",
+      "No Performance profile, distance/AI/resolution/rules reductions."
+    ],
+    "next_id": "G22"
+  }
+}
