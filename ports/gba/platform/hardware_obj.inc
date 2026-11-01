@@ -372,7 +372,7 @@ static unsigned hw_upload_budget(void) {
      * dirty UI/weapon bytes, prepared map cells and animated texture blocks.
      * This is deliberately above the measured cost, never a CPU-time target. */
     unsigned fixed=55000;
-#ifdef DOK_RENDER_HW_MAP_CACHE_PROTOTYPE
+#if defined(DOK_RENDER_HW_MAP_CACHE_PROTOTYPE) && (!defined(DOK_RENDER_HW_UI_OBJ_PROTOTYPE) || defined(DOK_RENDER_HW_LOW_ADAPTIVE_PROTOTYPE))
     if(!hw_direct_map_dirty())fixed=53000;
 #endif
 #ifdef DOK_RENDER_HW_UI_OBJ_PROTOTYPE

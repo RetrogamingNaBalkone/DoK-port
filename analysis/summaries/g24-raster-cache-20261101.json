@@ -1,0 +1,218 @@
+{
+  "summary_schema": 1,
+  "full_report": {
+    "path": "analysis/gba/g24-raster-cache-20261101.json",
+    "sha256": "abb0d817e563db915209435cae2f35de658122e7dd69317df20d1154e580670b",
+    "bytes": 5763608
+  },
+  "scope": "Summary of a recorded run; not a new verification. Full report is local and ignored by Git.",
+  "result": {
+    "task": "G24",
+    "status": "passed",
+    "decision": "Reject both measured four-span raster caches for current release; retain G22 unchanged",
+    "control_rom_sha256": "53fdf1b1b868effecfd68c8feb87ffb60bcc72190a4d01f38d8684a781860247",
+    "variants": {
+      "uniform": {
+        "rom_sha256": "93a80140e421006a379dc9ff296ad69c426214dbfc8e0949694f958b2511b854",
+        "ewram_bytes": 262132,
+        "ewram_free": 12,
+        "iwram_bytes": 23612,
+        "stack_reserved": 8192,
+        "iwram_free": 964,
+        "pairs": {
+          "detail_pointer": "/variants/uniform/pairs",
+          "items": 36
+        },
+        "cache_work": {
+          "battle": {
+            "eligible": 0,
+            "hits": 0,
+            "misses": 0,
+            "hit_writes": 0
+          },
+          "battle-shotgun": {
+            "eligible": 0,
+            "hits": 0,
+            "misses": 0,
+            "hit_writes": 0
+          },
+          "moving": {
+            "eligible": 880,
+            "hits": 0,
+            "misses": 880,
+            "hit_writes": 0
+          },
+          "warm-battle": {
+            "eligible": 0,
+            "hits": 0,
+            "misses": 0,
+            "hit_writes": 0
+          },
+          "warm-battle-shotgun": {
+            "eligible": 0,
+            "hits": 0,
+            "misses": 0,
+            "hit_writes": 0
+          },
+          "warm-heavy": {
+            "eligible": 552,
+            "hits": 48,
+            "misses": 504,
+            "hit_writes": 1440
+          },
+          "warm-moving": {
+            "eligible": 0,
+            "hits": 0,
+            "misses": 0,
+            "hit_writes": 0
+          }
+        },
+        "checks": {
+          "ppu": 396,
+          "cache_mutations": 48,
+          "destruction_mutation_pairs": 24,
+          "water_phases": 144,
+          "water_ppu_pixels": 362232,
+          "transitions": 294
+        },
+        "live": {
+          "rom_sha256": "93a80140e421006a379dc9ff296ad69c426214dbfc8e0949694f958b2511b854",
+          "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+          "rows": {
+            "detail_pointer": "/variants/uniform/live/rows",
+            "items": 6
+          },
+          "scope": "Equal emulated duration and input timestamps. States recorded, not assumed equal; not a renderer-only causal comparison or physical input latency."
+        },
+        "battles": {
+          "rom_sha256": "93a80140e421006a379dc9ff296ad69c426214dbfc8e0949694f958b2511b854",
+          "rows": {
+            "detail_pointer": "/variants/uniform/battles/rows",
+            "items": 10
+          },
+          "script_sha256": "003a493fca84e3c147cb8b4715029b5d8c647b49e7ae3ce78b8504b75c8275d3",
+          "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+          "samples": 120,
+          "fire": true,
+          "scope": "Stationary hero relocated into original rooms; original maps/enemies, HP/armor32767. Natural renderer consideration/AI wake, normal clock and audio. Different frame times change live AI poses; frozen PPU pairs are exact comparisons. mGBA, not physical GBA or a full playthrough."
+        }
+      },
+      "top": {
+        "rom_sha256": "4914a6d8578ace3313c3acb29f97b30c96a206a070b2addea9ad4a566751e880",
+        "ewram_bytes": 262132,
+        "ewram_free": 12,
+        "iwram_bytes": 23640,
+        "stack_reserved": 8192,
+        "iwram_free": 936,
+        "pairs": {
+          "detail_pointer": "/variants/top/pairs",
+          "items": 36
+        },
+        "cache_work": {
+          "battle": {
+            "eligible": 0,
+            "hits": 0,
+            "misses": 0,
+            "hit_writes": 0
+          },
+          "battle-shotgun": {
+            "eligible": 0,
+            "hits": 0,
+            "misses": 0,
+            "hit_writes": 0
+          },
+          "moving": {
+            "eligible": 16,
+            "hits": 0,
+            "misses": 16,
+            "hit_writes": 0
+          },
+          "warm-battle": {
+            "eligible": 0,
+            "hits": 0,
+            "misses": 0,
+            "hit_writes": 0
+          },
+          "warm-battle-shotgun": {
+            "eligible": 0,
+            "hits": 0,
+            "misses": 0,
+            "hit_writes": 0
+          },
+          "warm-heavy": {
+            "eligible": 288,
+            "hits": 288,
+            "misses": 0,
+            "hit_writes": 2592
+          },
+          "warm-moving": {
+            "eligible": 0,
+            "hits": 0,
+            "misses": 0,
+            "hit_writes": 0
+          }
+        },
+        "checks": {
+          "ppu": 396,
+          "cache_mutations": 48,
+          "destruction_mutation_pairs": 24,
+          "water_phases": 144,
+          "water_ppu_pixels": 362232,
+          "transitions": 294
+        },
+        "live": {
+          "rom_sha256": "4914a6d8578ace3313c3acb29f97b30c96a206a070b2addea9ad4a566751e880",
+          "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+          "rows": {
+            "detail_pointer": "/variants/top/live/rows",
+            "items": 6
+          },
+          "scope": "Equal emulated duration and input timestamps. States recorded, not assumed equal; not a renderer-only causal comparison or physical input latency."
+        },
+        "battles": {
+          "rom_sha256": "4914a6d8578ace3313c3acb29f97b30c96a206a070b2addea9ad4a566751e880",
+          "rows": {
+            "detail_pointer": "/variants/top/battles/rows",
+            "items": 10
+          },
+          "script_sha256": "003a493fca84e3c147cb8b4715029b5d8c647b49e7ae3ce78b8504b75c8275d3",
+          "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+          "samples": 120,
+          "fire": true,
+          "scope": "Stationary hero relocated into original rooms; original maps/enemies, HP/armor32767. Natural renderer consideration/AI wake, normal clock and audio. Different frame times change live AI poses; frozen PPU pairs are exact comparisons. mGBA, not physical GBA or a full playthrough."
+        }
+      }
+    },
+    "control_live": {
+      "rom_sha256": "53fdf1b1b868effecfd68c8feb87ffb60bcc72190a4d01f38d8684a781860247",
+      "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+      "rows": {
+        "detail_pointer": "/control_live/rows",
+        "items": 6
+      },
+      "scope": "Equal emulated duration and input timestamps. States recorded, not assumed equal; not a renderer-only causal comparison or physical input latency."
+    },
+    "control_battles": {
+      "rom_sha256": "53fdf1b1b868effecfd68c8feb87ffb60bcc72190a4d01f38d8684a781860247",
+      "rows": {
+        "detail_pointer": "/control_battles/rows",
+        "items": 10
+      },
+      "script_sha256": "003a493fca84e3c147cb8b4715029b5d8c647b49e7ae3ce78b8504b75c8275d3",
+      "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+      "samples": 120,
+      "fire": true,
+      "scope": "Stationary hero relocated into original rooms; original maps/enemies, HP/armor32767. Natural renderer consideration/AI wake, normal clock and audio. Different frame times change live AI poses; frozen PPU pairs are exact comparisons. mGBA, not physical GBA or a full playthrough."
+    },
+    "evidence": {
+      "detail_pointer": "/evidence",
+      "items": 30
+    },
+    "limitations": [
+      "Two concrete four-span schemes, not every possible cache algorithm. Neither selected for release.",
+      "Cache stores immutable sample colors only; geometry, leases, coverage and draw order remain live.",
+      "Moving and battle timings do not imply identical game state across different cadence.",
+      "No physical GBA/original BIOS/full playthrough; production ROM unchanged; G21/BUG02 unaffected."
+    ]
+  }
+}

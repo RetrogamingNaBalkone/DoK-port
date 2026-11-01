@@ -1,0 +1,163 @@
+{
+  "summary_schema": 1,
+  "full_report": {
+    "path": "analysis/gba/g23-attribution-20261101.json",
+    "sha256": "29c5120c710fa33aa562b5d64e88721160156de3529c51088d8be41423579735",
+    "bytes": 64729
+  },
+  "scope": "Summary of a recorded run; not a new verification. Full report is local and ignored by Git.",
+  "result": {
+    "task": "G23",
+    "status": "passed",
+    "decision": "Do not open H04 native prototype on this evidence",
+    "production_rom_sha256": "53fdf1b1b868effecfd68c8feb87ffb60bcc72190a4d01f38d8684a781860247",
+    "groups": {
+      "warm": {
+        "samples": 18,
+        "totals": {
+          "requested": 333484,
+          "open": 268754,
+          "light15_open": 1342,
+          "opaque_surface_light15_open": 1054,
+          "masked_light15_open": 288
+        },
+        "aggregate_light15_percent": 0.49934140515117914,
+        "maximum_light15_percent": 2.697908887229276,
+        "rows": {
+          "detail_pointer": "/groups/warm/rows",
+          "items": 18
+        }
+      },
+      "cold": {
+        "samples": 18,
+        "totals": {
+          "requested": 333484,
+          "open": 268754,
+          "light15_open": 1342,
+          "opaque_surface_light15_open": 1054,
+          "masked_light15_open": 288
+        },
+        "aggregate_light15_percent": 0.49934140515117914,
+        "maximum_light15_percent": 2.697908887229276,
+        "rows": {
+          "detail_pointer": "/groups/cold/rows",
+          "items": 18
+        }
+      },
+      "moving": {
+        "samples": 36,
+        "totals": {
+          "requested": 442070,
+          "open": 408680,
+          "light15_open": 3004,
+          "opaque_surface_light15_open": 2592,
+          "masked_light15_open": 412
+        },
+        "aggregate_light15_percent": 0.7350494274248801,
+        "maximum_light15_percent": 8.541369472182597,
+        "rows": {
+          "detail_pointer": "/groups/moving/rows",
+          "items": 36
+        }
+      },
+      "battle": {
+        "samples": 18,
+        "totals": {
+          "requested": 377476,
+          "open": 302312,
+          "light15_open": 0,
+          "opaque_surface_light15_open": 0,
+          "masked_light15_open": 0
+        },
+        "aggregate_light15_percent": 0.0,
+        "maximum_light15_percent": 0.0,
+        "rows": {
+          "detail_pointer": "/groups/battle/rows",
+          "items": 18
+        }
+      }
+    },
+    "cold_warm_attribution_exact": true,
+    "budget_rows": {
+      "detail_pointer": "/budget_rows",
+      "items": 18
+    },
+    "limitations": [
+      "Operation counts are coverage-aware foreground CPU samples, not output RGB pixels or native cycles.",
+      "HW base planes excluded: PPU texture fetches are not CPU sampling. UI/weapon overlay excluded from renderer replay.",
+      "Masked far samples still require alpha/silhouette reads. Opaque black fill still requires coverage and destination writes.",
+      "Uniform sampling proxy is not an upper bound or speedup prediction; opaque sampling/setup not separately timed.",
+      "Moving/battle attribution has extra held completions per 100-frame segment; continuous live timing is a separate run.",
+      "Cold means geometry invalidation, not cold resources/boot. Physical GBA and original BIOS not tested.",
+      "LIGHT15 is not black; no quality change, native black/clip implementation or release was made."
+    ],
+    "profile_ppu_frames_exact": 18,
+    "live_timing_rows": [
+      {
+        "language": 0,
+        "level": 1,
+        "median": 912896,
+        "p95": 1160960,
+        "maximum": 1348800,
+        "presented_fps": 16.325516822358928
+      },
+      {
+        "language": 0,
+        "level": 2,
+        "median": 939968.0,
+        "p95": 1147904,
+        "maximum": 1311360,
+        "presented_fps": 15.42960431381484
+      },
+      {
+        "language": 0,
+        "level": 3,
+        "median": 642176,
+        "p95": 811072,
+        "maximum": 1202816,
+        "presented_fps": 22.099175210754158
+      },
+      {
+        "language": 1,
+        "level": 1,
+        "median": 912896,
+        "p95": 1161536,
+        "maximum": 1348800,
+        "presented_fps": 16.325516822358928
+      },
+      {
+        "language": 1,
+        "level": 2,
+        "median": 939584.0,
+        "p95": 1147904,
+        "maximum": 1311296,
+        "presented_fps": 15.42960431381484
+      },
+      {
+        "language": 1,
+        "level": 3,
+        "median": 646368.0,
+        "p95": 836480,
+        "maximum": 1162432,
+        "presented_fps": 21.80053770790613
+      }
+    ],
+    "evidence": {
+      "battle-work.json": "877f5efc730f91fa4789d90f9b577277edb65d3dc83467854e0099eb82d846a4",
+      "battles.json": "4c2100fe8d88141cc79e28f3ca80d4dc5def721b2e49c0e4d6f2883017f3360d",
+      "cold-0.json": "ad81ff9fc3a38a0a598a46d366d09bcc67a453b0249e3317805994cca3958c71",
+      "cold-1.json": "4f693a6ccc0f9278788143d4b315e4f4e01ed677bf09fcf16bdb6e90b70b5dec",
+      "cold-work.json": "ea20f87137689a5dc6722bb378879b366959ccc8a4bd867cde15faf3cbb082ae",
+      "commands.json": "83e5fdae2020cbf95d4a7e6864ef7ff41098825e1be3e2b1498e9a1736e57300",
+      "live.json": "0ad5880f7190784b9e064af87a37742d756f536bb90f675bdbaa874514805216",
+      "moving-work.json": "6ee4625bbb310f8fd8323efb8344e16fff42abd27a79018f087cf10891aa8b86",
+      "profile-0.json": "2ff3b0e0a658a7bd106423eac00936c2ffe542bcf6572f54787627eaa8e938a9",
+      "profile-1.json": "89ce5b1351aa23c875f6cdeadd46f0d71f09658b99346dd35340abdfd8ef34d7",
+      "profile-ppu.json": "adb0d991e8e0118bee8e167810647502a9739a242c52ea6f1e594bdeafb90142",
+      "warm-0.json": "75bf98108a78d08b1da6e8bf212c6b15fe33e87666cddc749d902ca49c04e3f0",
+      "warm-1.json": "b7534e8ce115705749cc743dd8c90585108597bacbcda3f439328fc45d85874a",
+      "warm-work.json": "f6eae2a88890843684d1ec550b8e16e3ea0bbba7d11cbf1413023d09fb3adc36",
+      "work.json": "63c74d595a9662e6e3691f195d4bc4bc03ed5ac688297be8b846bbbd05c1f612"
+    }
+  }
+}

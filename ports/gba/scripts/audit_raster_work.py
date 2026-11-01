@@ -25,7 +25,7 @@ from research_gba_fps import GameProbe, freeze
 from verify_gba import sha
 
 
-def replay(probe, level):
+def replay(probe, level, language=0, observer=None):
     symbols = probe.symbols
     cpu = Uc(UC_ARCH_ARM, UC_MODE_ARM)
     for address, size in ((0x02000000, 0x40000), (0x03000000, 0x8000),
@@ -56,6 +56,8 @@ def replay(probe, level):
 
     def hook(cpu, address, size, unused):
         name = entries[address]
+        if observer is not None:
+            observer(cpu, name, symbols)
         if name in ('raster','raster_rect'):
             face=reg(1) if name=='raster_rect' else reg(2)
             index=struct.unpack('<H',cpu.mem_read(face+44,2))[0]
@@ -97,7 +99,7 @@ def replay(probe, level):
             totals['ceiling_samples_open'] += opened
             if 'dok_ceiling_offsets' in symbols:
                 # This replay driver uses RU level views only.
-                view=level*2
+                view=level*2+language
                 offsets=words(symbols['dok_ceiling_offsets']+view*16*4,16)
                 light_rows=[i for i,offset in enumerate(offsets)
                             if symbols['dok_ceiling_bank']+offset==s[1]]
@@ -143,6 +145,8 @@ def replay(probe, level):
              'dok_gba_tiled_surface', 'dok_gba_tiled_masked_column',
              'dok_gba_plane_divide_pair','raster_rect')
     entries = {symbols[name] & ~1: name for name in names if name in symbols}
+    if observer is not None:
+        entries.update({symbols[name] & ~1: name for name in observer.entries if name in symbols})
     def invalid(cpu, access, address, size, value, unused):
         raise AssertionError(('Invalid replay memory', hex(cpu.reg_read(R.UC_ARM_REG_PC)), hex(address), size))
     cpu.hook_add(UC_HOOK_MEM_INVALID, invalid)
@@ -150,7 +154,7 @@ def replay(probe, level):
         cpu.hook_add(UC_HOOK_CODE, hook, begin=address, end=address)
     sp, stop = 0x03007d00, 0x03007ff0
     args = (symbols['g_render_frame'], symbols['g_render_world'], symbols['package'], level,
-            0, symbols['camera'], symbols['g_render_stats'])
+            language, symbols['camera'], symbols['g_render_stats'])
     cpu.reg_write(R.UC_ARM_REG_CPSR, 0x1f)
     for number, value in enumerate(args[:4]):
         cpu.reg_write(getattr(R, f'UC_ARM_REG_R{number}'), value)

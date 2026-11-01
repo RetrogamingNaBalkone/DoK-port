@@ -198,7 +198,9 @@ static SURFACE_RASTER_ATTR void SURFACE_RASTER_NAME(dok_renderer_workspace *w,co
 #ifdef DOK_RENDER_HW_DIRECT_PROTOTYPE
             if(SURFACE_RASTER_TILED) {
                 s.dst=scene_pointer(w->frame,(unsigned)first,(unsigned)y);
-#ifdef DOK_RENDER_HW_KERNEL_PROFILE_PROTOTYPE
+#ifdef DOK_RENDER_HW_SPAN_CACHE_PROTOTYPE
+                stats->pixels_written+=hw_cached_surface(&s);
+#elif defined(DOK_RENDER_HW_KERNEL_PROFILE_PROTOTYPE)
                 stats->pixels_written+=timed_surface_sample(&s);
 #else
                 stats->pixels_written+=dok_gba_tiled_surface(&s);

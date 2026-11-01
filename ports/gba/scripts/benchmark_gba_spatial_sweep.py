@@ -125,6 +125,8 @@ def main():
                         p.write(p.symbols['g_camera_capture_hold'],struct.pack('<I',1));p.present()
                         r['world_obj_work']=list(p.words('g_world_obj_work',12))
                         p.write(p.symbols['g_camera_capture_hold'],struct.pack('<I',0))
+                    ordered=sorted(samples if a.cold_geometry else [s['cycles'] for s in r['samples']])
+                    r['p95']=ordered[int((len(ordered)-1)*.95)]
                     del r['samples'];rows.append(r);p.pcm.clear()
             current=[r for r in rows if r['level']==level+1]
             if current:print('LEVEL',level+1,'cases',len(current),'minimum FPS',None if a.cold_geometry else min(r['presented_fps'] for r in current),flush=True)

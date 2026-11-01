@@ -80,6 +80,55 @@ extern unsigned dok_gba_tiled_surface(const surface_span *);
 #endif
 #endif
 #endif
+#ifdef DOK_RENDER_HW_SPAN_CACHE_PROTOTYPE
+/* G24 bounded experiment: four immutable prelit sampled rows. No coverage or
+ * geometry is cached. Every hit composes at the original front-to-back point.
+ * Key contains all sample-affecting state; RAM textures always bypass. */
+typedef struct {uint32_t key[10];uint8_t colors[120];} hw_span_cache_entry;
+static hw_span_cache_entry hw_span_cache[4];
+volatile uint32_t g_hw_span_cache_work[4]; /* eligible,hits,misses,hit writes */
+_Static_assert(sizeof(hw_span_cache)+sizeof(g_hw_span_cache_work)==656,"G24 EWRAM budget");
+static DOK_NOINLINE unsigned hw_cached_surface(const surface_span *s) {
+#ifdef DOK_RENDER_HW_SPAN_CACHE_TOP_PROTOTYPE
+    /* Focus the same four slots on ceiling rows; only the foremost left-edge
+     * span may populate them, preventing competing surfaces from thrashing. */
+    if(s->y<24 || s->y>=28 || s->x || (*s->bits&s->mask) || (uintptr_t)s->lut<0x08000000u || (uintptr_t)s->lut>=0x0a000000u)
+        return dok_gba_tiled_surface(s);
+    hw_span_cache_entry *e=&hw_span_cache[s->y-24];
+#else
+    if((s->y&31u) || s->y>=128 || (uintptr_t)s->lut<0x08000000u || (uintptr_t)s->lut>=0x0a000000u)
+        return dok_gba_tiled_surface(s);
+    hw_span_cache_entry *e=&hw_span_cache[s->y>>5];
+#endif
+    uint32_t key[10]={(uint32_t)(uintptr_t)s->lut,s->width,s->height,s->x,s->last,
+        (uint32_t)s->tu,(uint32_t)s->tv,(uint32_t)s->du,(uint32_t)s->dv,s->black};
+    unsigned hit=1,count=(s->last-s->x)/2+1;
+    ++g_hw_span_cache_work[0];
+    for(unsigned k=0;k<10;++k)if(e->key[k]!=key[k]){hit=0;break;}
+    if(hit)++g_hw_span_cache_work[1];
+    else {
+        ++g_hw_span_cache_work[2];
+        uint32_t u=(uint32_t)s->tu,v=(uint32_t)s->tv;
+        for(unsigned k=0;k<count;++k) {
+            int x=(int32_t)u>>16,y=(int32_t)v>>16;
+            if(x<0)x=0;else if((unsigned)x>=s->width)x=(int)s->width-1;
+            if(y<0)y=0;else if((unsigned)y>=s->height)y=(int)s->height-1;
+            unsigned c=s->lut[(unsigned)y*s->width+(unsigned)x];
+            e->colors[k]=(uint8_t)(c?c:s->black);
+            u+=(uint32_t)s->du*2u;v+=(uint32_t)s->dv*2u;
+        }
+        for(unsigned k=0;k<10;++k)e->key[k]=key[k];
+    }
+    unsigned written=0;uint8_t *dst=s->dst;uint32_t *bits=s->bits;
+    for(unsigned k=0;k<count;++k) {
+        if(!(*bits&s->mask)){*bits|=s->mask;*dst=e->colors[k];++written;}
+        ++dst;if(((uintptr_t)dst&7u)==4u)dst+=56;
+        bits+=4;
+    }
+    if(hit)g_hw_span_cache_work[3]+=written;
+    return written;
+}
+#endif
 #ifdef DOK_RENDER_HW_SURFACE_CLIP_PROTOTYPE
 /* Trim already covered ends before preparing UV/light for a ceiling row.
  * The original unclipped left/right still determine the exact affine slope. */

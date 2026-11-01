@@ -1,0 +1,133 @@
+{
+  "summary_schema": 1,
+  "full_report": {
+    "path": "analysis/gba/g26-transport-model-20261101.json",
+    "sha256": "69bd621958ef02aad0356161b8d2ffe8003cef362e6a8cc9c3601731e943c548",
+    "bytes": 39484
+  },
+  "scope": "Summary of a recorded run; not a new verification. Full report is local and ignored by Git.",
+  "result": {
+    "task": "G26",
+    "status": "passed",
+    "decision": "Do not open a new H10 native backend for the current release; dirty OAM/weapon transfer does not remove fixed affine/OAM transport cost",
+    "builds": {
+      "control": {
+        "rom_sha256": "53fdf1b1b868effecfd68c8feb87ffb60bcc72190a4d01f38d8684a781860247",
+        "rom_bytes": 26649252,
+        "ewram": 261476,
+        "ewram_free": 668,
+        "iwram": 22912,
+        "iwram_free": 1664,
+        "stack_reserve": 8192
+      },
+      "ui": {
+        "rom_sha256": "8390bdb7b505776e910f1f533fb800327559b6f8758639b090ac4f9a913be7e9",
+        "rom_bytes": 26653820,
+        "ewram": 261460,
+        "ewram_free": 684,
+        "iwram": 22912,
+        "iwram_free": 1664,
+        "stack_reserve": 8192
+      },
+      "low": {
+        "rom_sha256": "3311f3c6b7d0488db07648e2ce4077b6a452818ac64bfbc10f8748dc06dcb0ce",
+        "rom_bytes": 27277876,
+        "ewram": 261460,
+        "ewram_free": 684,
+        "iwram": 22276,
+        "iwram_free": 2300,
+        "stack_reserve": 8192
+      }
+    },
+    "summary": {
+      "ui": {
+        "minimum_percent": 3.678438254003069,
+        "maximum_percent": 5.636478784040522,
+        "median_percent": 4.143475709867617
+      },
+      "low": {
+        "minimum_percent": -26.49368129813804,
+        "maximum_percent": 14.388853704876503,
+        "median_percent": 9.795331884769054
+      }
+    },
+    "rows": {
+      "detail_pointer": "/rows",
+      "items": 36
+    },
+    "ppu": {
+      "ui": {
+        "pairs": 18,
+        "maximum_background_rgb_difference": 0,
+        "coverage_leases_foreground_overlay_exact": true
+      },
+      "low": {
+        "pairs": 18,
+        "maximum_background_rgb_difference": 1009,
+        "coverage_leases_foreground_overlay_exact": true
+      }
+    },
+    "model": {
+      "units": "bytes unless cycles explicitly named",
+      "mode1": {
+        "hblank_bytes_per_line": 18,
+        "hblank_bytes_per_video_frame": 2880,
+        "affine_frame_bytes": 2900,
+        "affine_double_buffer_bytes": 5800
+      },
+      "ui_probe": {
+        "hblank_bytes_per_line": 50,
+        "hblank_bytes_per_video_frame": 8000
+      },
+      "mode2": {
+        "hblank_bytes_per_line": 68,
+        "hblank_bytes_per_video_frame": 10880,
+        "affine_frame_bytes": 5796,
+        "affine_double_buffer_bytes": 11592,
+        "mode4_hold_bytes": 5796,
+        "geometry_payload_bytes": 17041
+      },
+      "common": {
+        "foreground_bytes_per_draw": 16384,
+        "ui_max_bytes": 6784,
+        "weapon_stage_max_bytes": 5120,
+        "weapon_obj_atlas_bytes": 8192,
+        "map_bytes": 24576,
+        "map_cell_writes_bytes": 96,
+        "video_frame_cycles": 280896,
+        "vblank_cycles": 83776,
+        "hblank_cycles": 272
+      },
+      "mode1_geometry_payload_bytes": 28637
+    },
+    "timer_units": "g_hw_* timer_sample diagnostics already report CPU cycles; no multiplication by 64. Existing primitive render_ticks profile uses different units and is not used here.",
+    "evidence": {
+      "research\\evidence\\gba-g26\\commands.json": "a30c9df38b8c60487348b5385d68d1dec81bbfe054b761ba9e9defed380de116",
+      "research\\evidence\\gba-g26\\control-warm-0.json": "3beb32de2ef924dcf91a30a128a1389e0cc20a3aa4bd19373db1c6969ca042c5",
+      "research\\evidence\\gba-g26\\control-warm-1.json": "1c2b197fb1d5532f2795b195802ce8e813b342138839355f4357279cac86c3d4",
+      "research\\evidence\\gba-g26\\low-ppu.json": "c863b029af884008e5f5462a1a4d56bc4dcdf86205e223e606293e8672c25d11",
+      "research\\evidence\\gba-g26\\low-warm-0.json": "2a5b58b35c313c0343f5b5069ec03c97a99db26cdd2a5d6bbe891516edb5ea90",
+      "research\\evidence\\gba-g26\\low-warm-1.json": "a88de64b2893dec355d20e61e6735865a71c7efee9184295d6c9ffa334a30765",
+      "research\\evidence\\gba-g26\\transport-state.json": "761c85454a72cc669e20825847d1134709b4fdfe0d908537c79d86ac50c73b6b",
+      "research\\evidence\\gba-g26\\ui-ppu.json": "f70c37d21449a01d5e8c166b5d7769e242765463c7873770ddc4677db965a1b4",
+      "research\\evidence\\gba-g26\\ui-warm-0.json": "1d09a6349265d03800ccb5190df045df2a3a02917b0dd3d5aa4b41871c1b0845",
+      "research\\evidence\\gba-g26\\ui-warm-1.json": "1bd23ed7df23d617bdc5e8403fd50b6dccd9941dbf0f90148e2ced00db0c38bc"
+    },
+    "source_sha256": {
+      "ports/gba/platform/hardware_bg.inc": "787e70df42b055b6fdb70747d1509e5d0c3c3ceaf7cc5ee922904ecee81f410f",
+      "ports/gba/platform/hardware_obj.inc": "eb0e56d199e23de61108bd32a32276b7cce8ea5016e6303cd19379d287e0a57d",
+      "ports/gba/platform/hardware_ui_obj.inc": "34fdca4d92348ba74203e68eb7ed9e3110251c810179cfe7dce0610105f3bb7d",
+      "ports/gba/platform/hardware_direct.inc": "721ae0af5c81eaf6b94cd63ec1bd381c1e14f7895f4d7d22a2b67db30f16596d",
+      "ports/gba/include/dok/gba_hw_scratch.h": "d1f3797644e8551517130e0a614c025712bd55e9da8abf6a5c849e60f6a7b497",
+      "ports/gba/src/renderer_static_cache.inc": "bdc5ba9e838311c8fe66cc0c4ed47079ac8928087837f2f39422cbcbb941f0ef",
+      "ports/gba/src/renderer_surface_raster.inc": "75c67750c4e52cdb3007f5bf4142a09382c56f8f356320c008bc8ea859baf60e"
+    },
+    "limitations": [
+      "18 warm frozen poses per ROM; no full spatial/live or release regression on diagnostic transport probes",
+      "New hardware ceiling changes background sampling; not exact image optimization",
+      "No new adaptive/grid/feedback tuning, no candidate promotion, no hardware/original BIOS check",
+      "Byte traffic is not CPU cycles; measured stage deltas include DMA stalls, IRQ and layout/code differences",
+      "G21/BUG02 and other ports unchanged"
+    ]
+  }
+}

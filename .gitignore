@@ -63,3 +63,7 @@ __pycache__/
 /analysis/gba/g21-bat-fix-20261101.json
 /analysis/gba/g20d-optimization-20261101.json
 /analysis/gba/g22-optimization-20261101.json
+/analysis/gba/g23-attribution-20261101.json
+
+/analysis/gba/g24-raster-cache-20261101.json
+/analysis/gba/g26-transport-model-20261101.json
