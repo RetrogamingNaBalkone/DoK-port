@@ -233,11 +233,14 @@ VARIANTS['g22_rows96']=VARIANTS['g20d_compact']+('HW_ROWS96',)
 VARIANTS['g22_split']=VARIANTS['g20d_compact']+('HW_VISIBLE_SPLIT',)
 VARIANTS['g22_rows96_split']=VARIANTS['g22_split']+('HW_ROWS96',)
 VARIANTS['g22_split_active']=VARIANTS['g22_split']+('HW_PLANE_ACTIVE','HW_PLANE_ACTIVE_HOT')
+VARIANTS['g25_rows96']=VARIANTS['g22_split_active']+('HW_ROWS96',)
+VARIANTS['g25_ceiling_lod']=VARIANTS['g22_split_active']+('HW_CEILING_LOD',)
 VARIANTS['g24_span_cache']=VARIANTS['g22_split_active']+('HW_SPAN_CACHE',)
 VARIANTS['g24_span_cache_top']=VARIANTS['g24_span_cache']+('HW_SPAN_CACHE_TOP',)
 VARIANTS['g23_kernel_profile']=VARIANTS['g22_split_active']+('HW_KERNEL_PROFILE',)
 VARIANTS['g26_ui_transport']=VARIANTS['g22_split_active']+('HW_UI_OBJ',)
 VARIANTS['g26_low_transport']=VARIANTS['g26_ui_transport']+('HW_BG_LOWERED',)
+VARIANTS['g27_packet_oracle']=VARIANTS['g22_split_active']+('HW_OBJ_ROWS_PROBE','HW_G27_PACKETS')
 VARIANTS['g22_sparse_control']=VARIANTS['g22_split']+('HW_NO_TRANSPARENT_COUNT',)
 VARIANTS['g22_sparse']=VARIANTS['g22_sparse_control']+('HW_MASKED_SELECTIVE_ZERO',)
 for _g20d_name in ('hw_v128_vblank_only','g20d_pair','g20d_compact'):
@@ -651,6 +654,7 @@ def build(base,out,variants,unreflected_control=False,assets_bin=None):
             if 'HW_VBLANK_ONLY' in defines:main_defines+=['-DDOK_RENDER_HW_VBLANK_ONLY_PROTOTYPE']
             if 'HW_VERTICAL128' in defines:main_defines+=['-DDOK_RENDER_HW_VERTICAL128_PROTOTYPE']
             if 'HW_OBJ_ROWS_PROBE' in defines:main_defines+=['-DDOK_RENDER_HW_OBJ_ROWS_PROBE_PROTOTYPE']
+            if 'HW_G27_PACKETS' in defines:main_defines+=['-DDOK_RENDER_HW_G27_PACKETS_PROTOTYPE']
             if 'HW_WORLD_OBJ_PROBE' in defines:main_defines+=['-DDOK_RENDER_HW_WORLD_OBJ_PROBE_PROTOTYPE']
             if 'HW_WORLD_OBJ' in defines:main_defines+=['-DDOK_RENDER_HW_WORLD_OBJ_PROTOTYPE']
             if 'HW_UI_OBJ' in defines:main_defines+=['-DDOK_RENDER_HW_UI_OBJ_PROTOTYPE']
@@ -692,6 +696,10 @@ def build(base,out,variants,unreflected_control=False,assets_bin=None):
             if 'SECTOR_GPU' in defines:tiled_flags+=['-DDOK_SECTOR_GPU']
             command([zig,*startup,*tiled_flags,ROOT/'ports/gba/platform/tiled_scene.S','-o',dest/'tiled-columns.o'])
             objects.append(dest/'tiled-columns.o')
+            if 'HW_CEILING_LOD' in defines:
+                command([zig,*startup,*tiled_flags,
+                         ROOT/'ports/gba/platform/ceiling_lod.S','-o',dest/'ceiling-lod-columns.o'])
+                objects.append(dest/'ceiling-lod-columns.o')
             if 'HW_RECT_BATCH' in defines:
                 rect_flags=['-DDOK_HW_KERNEL_PROFILE'] if 'HW_KERNEL_PROFILE' in defines else []
                 command([zig,*startup,*rect_flags,ROOT/'ports/gba/platform/rect_tiled.S','-o',dest/'rect-columns.o'])

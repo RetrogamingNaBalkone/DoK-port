@@ -35,8 +35,21 @@ static void hw_world_obj_vblank(void);
 #ifdef DOK_RENDER_HW_OBJ_ROWS_PROBE_PROTOTYPE
 volatile uint32_t g_hw_obj_rows_probe[4]; /* request,ack,hold,source rows */
 static void hw_obj_test_rows(void) {
+#ifdef DOK_RENDER_HW_G27_PACKETS_PROTOTYPE
+packet_request:
+#endif
     if(g_hw_obj_rows_probe[0]!=g_hw_obj_rows_probe[1]) {
         DISPCNT=0x80;
+#ifdef DOK_RENDER_HW_G27_PACKETS_PROTOTYPE
+        /* G27 packet oracle only. CPU-written MMIO is required: direct host
+         * writes to libretro memory do not update the PPU's register cache. */
+        R16(0x04000208)=0;
+        for(unsigned d=0;d<4;++d)R16(0x040000ba+d*12)=0;
+        for(unsigned i=0;i<8192;++i)R16(0x06010000+i*2)=((const uint16_t *)(const void *)g_render_frame.frame)[i];
+        for(unsigned i=0;i<512;++i)R16(0x07000000+i*2)=((const uint16_t *)(const void *)(g_render_frame.frame+16384))[i];
+        for(unsigned i=0;i<256;++i){PAL[i]=0;PAL[256+i]=(uint16_t)i;}
+        DISPCNT=0x1040;
+#else
         for(unsigned y=0;y<HW_OBJ_ROWS*8;++y)for(unsigned x=0;x<128;x+=2) {
             unsigned offset=(y/8)*1024+(x/8)*64+(y&7)*8+(x&7);
             *(volatile uint16_t *)(uintptr_t)(0x06010000+offset)=(uint16_t)((y+1)*257);
@@ -49,9 +62,15 @@ static void hw_obj_test_rows(void) {
             0x1041;
 #endif
         g_hw_obj_rows_probe[3]=HW_OBJ_ROWS*8;
+#endif
         g_hw_obj_rows_probe[1]=g_hw_obj_rows_probe[0];
     }
-    while(g_hw_obj_rows_probe[2])__asm__ volatile("nop");
+    while(g_hw_obj_rows_probe[2]) {
+#ifdef DOK_RENDER_HW_G27_PACKETS_PROTOTYPE
+        if(g_hw_obj_rows_probe[0]!=g_hw_obj_rows_probe[1])goto packet_request;
+#endif
+        __asm__ volatile("nop");
+    }
 }
 #endif
 static unsigned hw_black_index;

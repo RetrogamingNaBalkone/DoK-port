@@ -115,6 +115,7 @@ def main():
                     w = Workspace.from_buffer_copy(p.frontend.read(p.symbols['g_render_frame'], ct.sizeof(Workspace)))
                     p.frontend.run(2)
                     video = p.frontend.last_video_raw
+                    scene_objects = p.words('g_hw_obj_diag', 6)[5]
                     images.append(video)
                     palette = original[model['palette']]
                     light = original[model['light']]
@@ -127,7 +128,7 @@ def main():
                         top, _, bottom, _ = [ct.c_int32(v).value for v in f.n[4:8]]
                         left, right = sorted((sx[0], sx[1]))
                         depth = f.n[8]
-                        assert depth == f.n[9] and 0 <= top < bottom < 128
+                        assert depth == f.n[9] and 0 <= top < bottom < scene_objects * 2
                         definition = model['objects'][obj]
                         name = next(field['hex'] for field in definition['fields'] if field['offset'] == 0x5e)
                         texture = original[name]
@@ -136,7 +137,7 @@ def main():
                         row = max(0, min(15, (depth - 1920) // 120))
                         pixels = 0
                         for y in range(144):
-                            sy = scene_source_y(y, 64)
+                            sy = scene_source_y(y, scene_objects)
                             if not top < sy < bottom:
                                 continue
                             v = ((sy - top) * ((end << 16) // (bottom - top))) >> 16

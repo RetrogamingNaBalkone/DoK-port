@@ -1,0 +1,441 @@
+{
+  "summary_schema": 1,
+  "full_report": {
+    "path": "analysis/gba/g25-quality-20261102.json",
+    "sha256": "267ec80d7e2b288a5455ae7d678c11b587e2db21cb924ffad2ea85a64a420b4b",
+    "bytes": 6135091
+  },
+  "scope": "Summary of a recorded run; not a new verification. Full report is local and ignored by Git.",
+  "result": {
+    "task": "G25",
+    "status": "passed",
+    "decision": "Select H05 96 rows as the single-port emulator-qualified candidate; reject this H09 horizontal material-pair kernel. Physical/release acceptance remains G21.",
+    "control_rom_sha256": "53fdf1b1b868effecfd68c8feb87ffb60bcc72190a4d01f38d8684a781860247",
+    "selected_rom_sha256": "ec0d4375f48e06f6e5d08544a0faf9ef65af732435fb848761dde2abe680512e",
+    "variants": {
+      "rows96": {
+        "rom_sha256": "ec0d4375f48e06f6e5d08544a0faf9ef65af732435fb848761dde2abe680512e",
+        "ewram_bytes": 261476,
+        "iwram_bytes": 23140,
+        "stack_reserve": 8192,
+        "pairs": {
+          "warm": {
+            "detail_pointer": "/variants/rows96/pairs/warm",
+            "items": 18
+          },
+          "cold": {
+            "detail_pointer": "/variants/rows96/pairs/cold",
+            "items": 18
+          }
+        },
+        "warm_cpu_percent": {
+          "minimum": -14.933215167436853,
+          "median": -12.398137369033757,
+          "maximum": -11.403315889001275
+        },
+        "cold_cpu_percent": {
+          "minimum": -13.60939929735645,
+          "median": -11.680192813286522,
+          "maximum": -9.600206535369182
+        },
+        "live": {
+          "rom_sha256": "ec0d4375f48e06f6e5d08544a0faf9ef65af732435fb848761dde2abe680512e",
+          "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+          "rows": {
+            "detail_pointer": "/variants/rows96/live/rows",
+            "items": 6
+          },
+          "scope": "Equal emulated duration and input timestamps. States recorded, not assumed equal; not a renderer-only causal comparison or physical input latency."
+        },
+        "battles": {
+          "rom_sha256": "ec0d4375f48e06f6e5d08544a0faf9ef65af732435fb848761dde2abe680512e",
+          "rows": {
+            "detail_pointer": "/variants/rows96/battles/rows",
+            "items": 10
+          },
+          "script_sha256": "003a493fca84e3c147cb8b4715029b5d8c647b49e7ae3ce78b8504b75c8275d3",
+          "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+          "samples": 120,
+          "fire": true,
+          "scope": "Stationary hero relocated into original rooms; original maps/enemies, HP/armor32767. Natural renderer consideration/AI wake, normal clock and audio. Different frame times change live AI poses; frozen PPU pairs are exact comparisons. mGBA, not physical GBA or a full playthrough."
+        }
+      },
+      "lod": {
+        "rom_sha256": "b1f669d931f5f09b351772b0ee7cb3cd9866d5c570a4c5b057d3e0bae240c8c7",
+        "ewram_bytes": 261476,
+        "iwram_bytes": 23216,
+        "stack_reserve": 8192,
+        "pairs": {
+          "warm": {
+            "detail_pointer": "/variants/lod/pairs/warm",
+            "items": 18
+          },
+          "cold": {
+            "detail_pointer": "/variants/lod/pairs/cold",
+            "items": 18
+          }
+        },
+        "warm_cpu_percent": {
+          "minimum": -0.05234819024827475,
+          "median": 0.0,
+          "maximum": 0.27357286157212446
+        },
+        "cold_cpu_percent": {
+          "minimum": -0.048076923076922906,
+          "median": 0.0017053206002759502,
+          "maximum": 0.17772033282170696
+        },
+        "live": {
+          "rom_sha256": "b1f669d931f5f09b351772b0ee7cb3cd9866d5c570a4c5b057d3e0bae240c8c7",
+          "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+          "rows": {
+            "detail_pointer": "/variants/lod/live/rows",
+            "items": 6
+          },
+          "scope": "Equal emulated duration and input timestamps. States recorded, not assumed equal; not a renderer-only causal comparison or physical input latency."
+        },
+        "battles": {
+          "rom_sha256": "b1f669d931f5f09b351772b0ee7cb3cd9866d5c570a4c5b057d3e0bae240c8c7",
+          "rows": {
+            "detail_pointer": "/variants/lod/battles/rows",
+            "items": 10
+          },
+          "script_sha256": "003a493fca84e3c147cb8b4715029b5d8c647b49e7ae3ce78b8504b75c8275d3",
+          "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+          "samples": 120,
+          "fire": true,
+          "scope": "Stationary hero relocated into original rooms; original maps/enemies, HP/armor32767. Natural renderer consideration/AI wake, normal clock and audio. Different frame times change live AI poses; frozen PPU pairs are exact comparisons. mGBA, not physical GBA or a full playthrough."
+        }
+      }
+    },
+    "spatial": {
+      "detail_pointer": "/spatial",
+      "items": 880
+    },
+    "spatial_summary": {
+      "poses": 880,
+      "minimum_cpu_change_percent": -15.448710730773563,
+      "median_cpu_change_percent": -11.30099115070799,
+      "maximum_cpu_change_percent": -6.764529144132547,
+      "before_min_fps": 9.95458342826764,
+      "after_min_fps": 11.945500113921167
+    },
+    "tail": [
+      {
+        "level": 1,
+        "cell": 520,
+        "heading": 315,
+        "language": 0,
+        "before_cpu": 1378464.0,
+        "after_cpu": 1206848.0,
+        "cpu_change_percent": -12.449799196787147,
+        "before_p95": 1380160,
+        "after_p95": 1208192,
+        "before_fps": 11.945500113921167,
+        "after_fps": 11.945500113921167
+      },
+      {
+        "level": 2,
+        "cell": 1592,
+        "heading": 45,
+        "language": 0,
+        "before_cpu": 1440672.0,
+        "after_cpu": 1270912.0,
+        "cpu_change_percent": -11.783389973567893,
+        "before_p95": 1442240,
+        "after_p95": 1272576,
+        "before_fps": 9.95458342826764,
+        "after_fps": 11.945500113921167
+      },
+      {
+        "level": 2,
+        "cell": 1907,
+        "heading": 225,
+        "language": 0,
+        "before_cpu": 1475104.0,
+        "after_cpu": 1304832.0,
+        "cpu_change_percent": -11.54305052389526,
+        "before_p95": 1476672,
+        "after_p95": 1306752,
+        "before_fps": 9.95458342826764,
+        "after_fps": 11.945500113921167
+      },
+      {
+        "level": 2,
+        "cell": 1907,
+        "heading": 315,
+        "language": 0,
+        "before_cpu": 1446144.0,
+        "after_cpu": 1277312.0,
+        "cpu_change_percent": -11.67463267835015,
+        "before_p95": 1446528,
+        "after_p95": 1277696,
+        "before_fps": 9.95458342826764,
+        "after_fps": 11.945500113921167
+      },
+      {
+        "level": 2,
+        "cell": 2552,
+        "heading": 45,
+        "language": 0,
+        "before_cpu": 1449792.0,
+        "after_cpu": 1284864.0,
+        "cpu_change_percent": -11.375976691828892,
+        "before_p95": 1451712,
+        "after_p95": 1285760,
+        "before_fps": 9.95458342826764,
+        "after_fps": 11.945500113921167
+      },
+      {
+        "level": 2,
+        "cell": 3640,
+        "heading": 135,
+        "language": 0,
+        "before_cpu": 1430752.0,
+        "after_cpu": 1246400.0,
+        "cpu_change_percent": -12.884972378161974,
+        "before_p95": 1432640,
+        "after_p95": 1248320,
+        "before_fps": 10.85954555811015,
+        "after_fps": 11.945500113921167
+      }
+    ],
+    "control_live": {
+      "rom_sha256": "53fdf1b1b868effecfd68c8feb87ffb60bcc72190a4d01f38d8684a781860247",
+      "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+      "rows": {
+        "detail_pointer": "/control_live/rows",
+        "items": 6
+      },
+      "scope": "Equal emulated duration and input timestamps. States recorded, not assumed equal; not a renderer-only causal comparison or physical input latency."
+    },
+    "control_battles": {
+      "rom_sha256": "53fdf1b1b868effecfd68c8feb87ffb60bcc72190a4d01f38d8684a781860247",
+      "rows": {
+        "detail_pointer": "/control_battles/rows",
+        "items": 10
+      },
+      "script_sha256": "003a493fca84e3c147cb8b4715029b5d8c647b49e7ae3ce78b8504b75c8275d3",
+      "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+      "samples": 120,
+      "fire": true,
+      "scope": "Stationary hero relocated into original rooms; original maps/enemies, HP/armor32767. Natural renderer consideration/AI wake, normal clock and audio. Different frame times change live AI poses; frozen PPU pairs are exact comparisons. mGBA, not physical GBA or a full playthrough."
+    },
+    "quality": {
+      "native_captures": 480,
+      "detail_captures": 396,
+      "decision": "Visible coarser textures and small contours; sampled grilles, items and navigation remain readable. No claim of imperceptibility or physical comfort acceptance."
+    },
+    "checks": {
+      "qualify-ai-combat": {
+        "path": "research/evidence/gba-g25/qualify-ai-combat.json",
+        "sha256": "6c92773eeb7bdfce3c1332fc7a1264c55b1988f90386d44e8bc9f1a75e12c35b"
+      },
+      "qualify-automap": {
+        "path": "research/evidence/gba-g25/qualify-automap.json",
+        "sha256": "7cc3683fcc2954208d8ed763ad6dd761eeed917492cff334a1f58c80d3df0327"
+      },
+      "qualify-cache": {
+        "path": "research/evidence/gba-g25/qualify-cache.json",
+        "sha256": "90de0b868f3d4e386d787512c961cd95dca01ebf1189bf6cc71916b84e4bd6dd"
+      },
+      "qualify-ceiling-sides": {
+        "path": "research/evidence/gba-g25/qualify-ceiling-sides.json",
+        "sha256": "5a6f386353e2080b52ec4b663992b355da2b873e28a01a27a02d4328a02bcbbd"
+      },
+      "qualify-centered-projectiles": {
+        "path": "research/evidence/gba-g25/qualify-centered-projectiles.json",
+        "sha256": "aafbe80804cd73faeb10779812400a7236dab35159dd4fe20b449cacfecff6d2"
+      },
+      "qualify-close-hits": {
+        "path": "research/evidence/gba-g25/qualify-close-hits.json",
+        "sha256": "8c4f26baecc2c221434d820b3bc3d2ac9babd20fb0f8eda45333b4869107b62d"
+      },
+      "qualify-combat": {
+        "path": "research/evidence/gba-g25/qualify-combat.json",
+        "sha256": "558b121321bf77f1e42c2d3630b935a1162093b23b540655f1ed599fade891db"
+      },
+      "qualify-midrange-bats": {
+        "path": "research/evidence/gba-g25/qualify-midrange-bats.json",
+        "sha256": "841ac6954dc4dfc42361557b1db378e5ec66ecfb29c7abe22af5e47a1c3e5774"
+      },
+      "qualify-profile-game": {
+        "path": "research/evidence/gba-g25/qualify-profile-game.json",
+        "sha256": "c2e591c1377765f8a9d4c254da02f6e269ef8bdb06e9b15c4c5edb809c40484c"
+      },
+      "qualify-projectile-cells": {
+        "path": "research/evidence/gba-g25/qualify-projectile-cells.json",
+        "sha256": "d35d82c1fe03576b13842e9868ce491d2523c5baf580305bef6edc9576debae5"
+      },
+      "qualify-story": {
+        "path": "research/evidence/gba-g25/qualify-story.json",
+        "sha256": "73f9b4754ce02454ca8eccc879e7dd56375cc7d693f81bec96ef215f1ec007ea"
+      }
+    },
+    "frontend_verified": {
+      "task": "G20B/UI01",
+      "rom_sha256": "ec0d4375f48e06f6e5d08544a0faf9ef65af732435fb848761dde2abe680512e",
+      "rom_bytes": 26649436,
+      "assets_bin": "build/gba/assets/assets.bin",
+      "assets_sha256": "3efa5d3027d63ffd65e0ae8c0b45be23ee8394b3c5151c8e9f10e76fa8674351",
+      "build_dir": "build/gba/g25/verified/hardware/g25_rows96",
+      "renderer": "g25_rows96 / selected2775 architecture",
+      "verified": true,
+      "host_executed": true,
+      "linux_compiled_only": true,
+      "thumb_compiled": true,
+      "commands": {
+        "detail_pointer": "/frontend_verified/commands",
+        "items": 19
+      },
+      "sources": {
+        "detail_pointer": "/frontend_verified/sources",
+        "entries": 135
+      },
+      "validation_reports": {
+        "arm.json": "f24535f378ad81167ab15019a120939fc109ac4793aa5cf30e9352f2e131a6f5",
+        "audio.json": "ed4ccd5c4d19dd97e8725ffae3bfccf81c1309cbfa35d5698b1c78c762f1cd54",
+        "credits.json": "4b6a3d3db9e028bc495831b23f043ff50405b056135558f43ec3f34edf5306b5",
+        "flow.json": "17524046621ffc4962d23948af3b2207ed9e4c1a42b3ebc85ab47af10cde849b",
+        "frontend.json": "dc35f38e97da704c0e3581c4abefe9939a83ce1d8e158fc18c0894f355546c96",
+        "latency.json": "548ed8097a6e3ead9ca936e58bd9a458b16a86957cb12801e7ce05b81693cf94",
+        "sprites.json": "379e03b0057195875c635dafabc3d3b70da87b9b749d0ee537b75618239269af",
+        "time-selftest.json": "2de4888024321a18e74ee27e9f26d8e2024ee87c80c4d10eaf0426e9be0c4aab",
+        "time.json": "ff58d4e78eaa44c1c9fcf3f3d22c5e8bcd0d1f12141d111262d28291d0247069",
+        "transitions.json": "e8ae436da9f6a23f6fb617137663831c6222706dfd1c4b01b392a498671d0d04",
+        "ui.json": "41de2a0aa6026ef4a5881085b2c63116c39f73bab41255c62ddb6674a4271cc0",
+        "water.json": "e95e0d22ac3a8968acc61a1b2cac78ce497052af767d224c3b8daedcedaf92e2"
+      }
+    },
+    "final_source_build": {
+      "task": "G20B/UI01",
+      "rom_sha256": "ec0d4375f48e06f6e5d08544a0faf9ef65af732435fb848761dde2abe680512e",
+      "rom_bytes": 26649436,
+      "assets_bin": "build/gba/assets/assets.bin",
+      "assets_sha256": "3efa5d3027d63ffd65e0ae8c0b45be23ee8394b3c5151c8e9f10e76fa8674351",
+      "build_dir": "build/gba/g25/current/hardware/g25_rows96",
+      "renderer": "g25_rows96 / selected2775 architecture",
+      "verified": false,
+      "host_executed": true,
+      "linux_compiled_only": true,
+      "thumb_compiled": true,
+      "commands": [
+        {
+          "name": "host-build",
+          "argv": [
+            "C:\\Users\\dspev\\AppData\\Local\\Programs\\Zig\\0.13.0\\zig.exe",
+            "cc",
+            "-std=c11",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-O2",
+            "-I",
+            "ports/gba/include",
+            "ports/gba/src/ui.c",
+            "ports/gba/tests/test_ui.c",
+            "-o",
+            "build\\gba\\g25\\current\\ui-tests.exe"
+          ]
+        },
+        {
+          "name": "host",
+          "argv": [
+            "C:\\Source\\DoK-port\\build\\gba\\g25\\current\\ui-tests.exe"
+          ]
+        },
+        {
+          "name": "linux-build",
+          "argv": [
+            "C:\\Users\\dspev\\AppData\\Local\\Programs\\Zig\\0.13.0\\zig.exe",
+            "cc",
+            "-std=c11",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-O2",
+            "-I",
+            "ports/gba/include",
+            "-target",
+            "x86_64-linux-musl",
+            "-static",
+            "ports/gba/src/ui.c",
+            "ports/gba/tests/test_ui.c",
+            "-o",
+            "build\\gba\\g25\\current\\ui-tests-linux"
+          ]
+        },
+        {
+          "name": "thumb-build",
+          "argv": [
+            "C:\\Users\\dspev\\AppData\\Local\\Programs\\Zig\\0.13.0\\zig.exe",
+            "cc",
+            "-std=c11",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-O2",
+            "-I",
+            "ports/gba/include",
+            "-target",
+            "thumb-freestanding-eabi",
+            "-mcpu=arm7tdmi",
+            "-ffreestanding",
+            "-c",
+            "ports/gba/src/ui.c",
+            "-o",
+            "build\\gba\\g25\\current\\ui-thumb.o"
+          ]
+        },
+        {
+          "name": "base-build",
+          "argv": [
+            "powershell",
+            "-NoProfile",
+            "-ExecutionPolicy",
+            "Bypass",
+            "-File",
+            "ports/gba/scripts/build-gba.ps1",
+            "-RendererProbe",
+            "-HalfColumns",
+            "-OutDir",
+            "build\\gba\\g25\\current\\base",
+            "-AssetsBin",
+            "build\\gba\\assets\\assets.bin"
+          ]
+        },
+        {
+          "name": "hardware-build",
+          "argv": [
+            "C:\\Users\\dspev\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+            "ports/gba/scripts/prototype_gba_bsp.py",
+            "--base",
+            "build\\gba\\g25\\current\\base",
+            "--out",
+            "build\\gba\\g25\\current\\hardware",
+            "--variants",
+            "g25_rows96",
+            "--assets-bin",
+            "build\\gba\\assets\\assets.bin"
+          ]
+        }
+      ],
+      "sources": {
+        "detail_pointer": "/final_source_build/sources",
+        "entries": 135
+      },
+      "validation_reports": {}
+    },
+    "evidence": {
+      "detail_pointer": "/evidence",
+      "items": 46
+    },
+    "limitations": [
+      "Warm/cold frozen pairs isolate renderer changes; live and120-presentation battles diverge in state and duration, so their percentages are not causal renderer estimates.",
+      "Cold geometry CPU excludes held presentation time; cold FPS is null.",
+      "Quality includes equal-pose short frozen walks/turns and bat views, not an interactive user playtest; coarse textures/contours remain visible.",
+      "Initial LOD measurements with wrong ROM placement/prelit/coverage flags are excluded; archived invalid controls are not performance evidence.",
+      "No physical GBA, original BIOS or full playthrough. G21/BUG02 and NDS/SDL2 remain unchanged."
+    ]
+  }
+}

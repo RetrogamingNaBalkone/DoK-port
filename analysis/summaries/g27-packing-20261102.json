@@ -1,0 +1,133 @@
+{
+  "summary_schema": 1,
+  "full_report": {
+    "path": "analysis/gba/g27-packing-20261102.json",
+    "sha256": "382986f0f714a9edd1839e3fa4764e5bad4960273a8c57d076441e3cf638e2e3",
+    "bytes": 99589
+  },
+  "scope": "Summary of a recorded run; not a new verification. Full report is local and ignored by Git.",
+  "result": {
+    "task": "G27",
+    "status": "passed",
+    "date": "2026-11-02",
+    "decision": "Do not open H11 native renderer for current release",
+    "production_rom_sha256": "53fdf1b1b868effecfd68c8feb87ffb60bcc72190a4d01f38d8684a781860247",
+    "captures": 54,
+    "verified_original_writes": 743658,
+    "nonempty_scenes": 52,
+    "separate_capacity_passes": 2,
+    "merged_capacity_passes": 8,
+    "direct_source_bands": 84316,
+    "direct_source_affine_rejects": 17902,
+    "direct_source_alpha_conflicts": 58,
+    "early_false_accepts": 2,
+    "early_false_rejects": 0,
+    "admission_instructions": [
+      35,
+      1002
+    ],
+    "admission_code_bytes": 288,
+    "actual_ppu_pairs": 6,
+    "actual_ppu_pixels": 230400,
+    "prior_hypotheses": {
+      "H04": "not reopened: far work unchanged",
+      "H08": "not reopened: atlas is per-frame and already sampled, no persistent cache",
+      "H10": "not reopened: no viable heavy GPU layout removing transport costs",
+      "sector_clip_bitmap": "not reopened: BSP/static/CPU plane cost unchanged",
+      "sector_shear": "not reopened: scan/OAM pressure remains; only empty final accepts; exact direct source mapping not established",
+      "H02_H03_H06": "not reopened: no changed diagnostics/UV/sparse kernel cost",
+      "H05_H09": "G25 still pending; no new quality acceptance"
+    },
+    "evidence": {
+      "captures.json.zlib": {
+        "path": "research\\evidence\\gba-g27\\captures.json.zlib",
+        "sha256": "f04ca498d37243507f965d41a6d0abdca9c666c46c3859d13b8de5609f0d267d"
+      },
+      "packing.json": {
+        "path": "research\\evidence\\gba-g27\\packing.json",
+        "sha256": "6d70183f04f0b044f90754d7ca87078ab58d52c0a0051a6cebe5df45d8ae8b1e"
+      },
+      "admission.json": {
+        "path": "research\\evidence\\gba-g27\\admission.json",
+        "sha256": "dc85f901bbae2c6e5dbc39e60e6a9d76749e3b78c5735ab15711427085d4d420"
+      },
+      "ppu.json": {
+        "path": "research\\evidence\\gba-g27\\ppu.json",
+        "sha256": "7254d1af99a7e58ec7b14fa76d4761477c73a5bb8d9d5729c3f813b27daa3534"
+      }
+    },
+    "source_sha256": {
+      "ports\\gba\\scripts\\check_g27.py": "04b27cb870bc4d27b101e60fba3814ccc56e28441c60e4c9ced4fada55b93f7f",
+      "ports\\gba\\scripts\\audit_g27_admission.py": "57c5fd762c5143b16289292518aa4b2a42afc2e999ea18a2977b99a8842af16d",
+      "ports\\gba\\scripts\\g27_admission.c": "30c08b00fcb26c6e8bf071b42ea4870967adfd7668119174c9e494558c0bcf47",
+      "ports\\gba\\scripts\\verify_g27_ppu.py": "978f1a1135b27b735bb48a4c3a551a2bbed25faea272a5d1b0223613aafa848f",
+      "ports\\gba\\scripts\\report_g27.py": "cecd6b587daf6d3096fdf4454dd0488d5ec2f4ea4cc37c900bb4dcd109431a40"
+    },
+    "capture_manifest": {
+      "rom_sha256": "53fdf1b1b868effecfd68c8feb87ffb60bcc72190a4d01f38d8684a781860247",
+      "elf_sha256": "4334f74c6cf2ccb67c3e2906b2cf2be348ddc51000a756e9839d1789e4bf59ce",
+      "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+      "prototype_manifest_sha256": "81dbc3d0c7534b13802773efd2f932d70add2942bdd2c5d12a10d492bba9062b",
+      "old_shear_sha256": null,
+      "old_shear_build_report_sha256": "abbea8f3b70dd949344b65f9c2ef7e2e983f154beb2b156205030ccf6953ecd9",
+      "old_shear_scope": "Historical ROM2775. ROM removed by retention cleanup; source and build report retained. Not reused as a G22 capture."
+    },
+    "rows": {
+      "detail_pointer": "/rows",
+      "items": 54
+    },
+    "admission": {
+      "status": "passed",
+      "source_sha256": "30c08b00fcb26c6e8bf071b42ea4870967adfd7668119174c9e494558c0bcf47",
+      "binary_sha256": "74f2e3b10616c9216dffd0eaecb951279b60e37176233b1d1ca8d9920260e46f",
+      "binary_bytes": 288,
+      "commands": [
+        [
+          "C:\\Users\\dspev\\AppData\\Local\\Programs\\Zig\\0.13.0\\zig.exe",
+          "cc",
+          "-target",
+          "arm-freestanding-eabi",
+          "-mcpu=arm7tdmi",
+          "-marm",
+          "-O2",
+          "-ffreestanding",
+          "-fno-stack-protector",
+          "-c",
+          "C:\\Source\\DoK-port\\ports\\gba\\scripts\\g27_admission.c",
+          "-o",
+          "C:\\Source\\DoK-port\\build\\gba\\g27\\admission\\probe.o"
+        ],
+        [
+          "C:\\Users\\dspev\\AppData\\Local\\Programs\\Zig\\0.13.0\\zig.exe",
+          "ld.lld",
+          "-T",
+          "C:\\Source\\DoK-port\\build\\gba\\g27\\admission\\probe.ld",
+          "C:\\Source\\DoK-port\\build\\gba\\g27\\admission\\probe.o",
+          "-o",
+          "C:\\Source\\DoK-port\\build\\gba\\g27\\admission\\probe.elf"
+        ],
+        [
+          "C:\\Users\\dspev\\AppData\\Local\\Programs\\Zig\\0.13.0\\zig.exe",
+          "objcopy",
+          "-O",
+          "binary",
+          "C:\\Source\\DoK-port\\build\\gba\\g27\\admission\\probe.elf",
+          "C:\\Source\\DoK-port\\build\\gba\\g27\\admission\\probe.bin"
+        ]
+      ],
+      "rows": {
+        "detail_pointer": "/admission/rows",
+        "items": 54
+      },
+      "scope": "Standalone ARM7TDMI instruction execution in Unicorn. No waitstates/IRQs: instructions are not cycles. Production projected faces are prerequisites; projector cost not removed."
+    },
+    "limitations": [
+      "Offline oracle consumes production coverage and samples; not GPU speedup.",
+      "Source affine fit uses optimistic arbitrary phase: success is not proof of OAM-origin feasibility.",
+      "Scanline cycle model reserves 64 UI slots, 136 top/48 bottom pixels; weapon not included, so capacity is optimistic.",
+      "Early bbox admission is measured against the concrete separate-band packer, not a universal optimum.",
+      "No new native renderer or FPS improvement. PPU test is isolated packet oracle.",
+      "Near fixtures use synthetic camera positions, not a collision-valid gameplay route. Physical GBA/original BIOS/full playthrough not tested."
+    ]
+  }
+}

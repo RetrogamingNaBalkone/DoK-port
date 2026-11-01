@@ -22,7 +22,7 @@ def main():
     parser.add_argument('--out',type=Path,default=Path('build/gba/g20b'))
     parser.add_argument('--assets-bin',type=Path,default=Path('build/gba/assets/assets.bin'))
     parser.add_argument('--verify',action='store_true')
-    parser.add_argument('--variant',choices=('hw_v128_entity_rect','hw_v128_vblank_only','g20d_compact','g22_split_active'),default='hw_v128_vblank_only',
+    parser.add_argument('--variant',choices=('hw_v128_entity_rect','hw_v128_vblank_only','g20d_compact','g22_split_active','g25_rows96'),default='hw_v128_vblank_only',
                         help='VBlank-protected default; hw_v128_entity_rect retains the Beta 1 early-present control')
     args=parser.parse_args();os.chdir(ROOT)
     args.out.mkdir(parents=True,exist_ok=True)

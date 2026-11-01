@@ -198,6 +198,15 @@ static SURFACE_RASTER_ATTR void SURFACE_RASTER_NAME(dok_renderer_workspace *w,co
 #ifdef DOK_RENDER_HW_DIRECT_PROTOTYPE
             if(SURFACE_RASTER_TILED) {
                 s.dst=scene_pointer(w->frame,(unsigned)first,(unsigned)y);
+#ifdef DOK_RENDER_HW_CEILING_LOD_PROTOTYPE
+                /* Material only: retain every coverage decision and boundary.
+                 * Two world cells are kept on the detailed sampler. */
+                if(SURFACE_RASTER_PLANE==1 && sar(depth-depth_step*row_step,16)>=960) {
+                    extern unsigned dok_gba_tiled_surface_lod(const surface_span *);
+                    stats->pixels_written+=dok_gba_tiled_surface_lod(&s);
+                    continue;
+                }
+#endif
 #ifdef DOK_RENDER_HW_SPAN_CACHE_PROTOTYPE
                 stats->pixels_written+=hw_cached_surface(&s);
 #elif defined(DOK_RENDER_HW_KERNEL_PROFILE_PROTOTYPE)
