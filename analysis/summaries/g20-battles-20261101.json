@@ -1,0 +1,800 @@
+{
+  "summary_schema": 1,
+  "full_report": {
+    "path": "analysis/gba/g20-battles-20261101.json",
+    "sha256": "64d125ac376d9b8641f190a2a07465dedf3ea08fcfd3cda2fd90f1542e1ce015",
+    "bytes": 32235364
+  },
+  "scope": "Summary of a recorded run; not a new verification. Full report is local and ignored by Git.",
+  "result": {
+    "task": "G20/G21 PERF01/PERF02",
+    "status": "passed-emulator",
+    "rom_sha256": "be9f8b25836f556c9522e896a93bb5645c8ad855641525476998e07629508323",
+    "rom_bytes": 26646152,
+    "baseline_rom_sha256": "389f5ff7991b21cea1e71eb2ff03d242a4efd2ea97a7d4609f7e91aa9f953df1",
+    "metrics": {
+      "last-key-enemy-fire": {
+        "level": 2,
+        "cell": [
+          31,
+          47
+        ],
+        "heading": 90,
+        "locales": {
+          "0": {
+            "before": {
+              "detail_pointer": "/metrics/last-key-enemy-fire/locales/0/before",
+              "entries": 8,
+              "scalars": {
+                "fps": 10.939102668425978,
+                "maximum_cycles": 3162048,
+                "p95_cycles": 2473856,
+                "logic_maximum": 1936512,
+                "logic_median": 264480.0,
+                "ui_median": 24640.0,
+                "ai_owners": 13,
+                "projectiles": 12
+              }
+            },
+            "after": {
+              "detail_pointer": "/metrics/last-key-enemy-fire/locales/0/after",
+              "entries": 8,
+              "scalars": {
+                "fps": 11.768965629478982,
+                "maximum_cycles": 2537600,
+                "p95_cycles": 2007168,
+                "logic_maximum": 1268800,
+                "logic_median": 169344.0,
+                "ui_median": 24640.0,
+                "ai_owners": 13,
+                "projectiles": 12
+              }
+            }
+          },
+          "1": {
+            "before": {
+              "detail_pointer": "/metrics/last-key-enemy-fire/locales/1/before",
+              "entries": 8,
+              "scalars": {
+                "fps": 10.945785076897831,
+                "maximum_cycles": 3161984,
+                "p95_cycles": 2474304,
+                "logic_maximum": 1888384,
+                "logic_median": 275808.0,
+                "ui_median": 24640.0,
+                "ai_owners": 13,
+                "projectiles": 12
+              }
+            },
+            "after": {
+              "detail_pointer": "/metrics/last-key-enemy-fire/locales/1/after",
+              "entries": 8,
+              "scalars": {
+                "fps": 11.784446018337224,
+                "maximum_cycles": 2468416,
+                "p95_cycles": 1997312,
+                "logic_maximum": 1269440,
+                "logic_median": 166976.0,
+                "ui_median": 24640.0,
+                "ai_owners": 13,
+                "projectiles": 12
+              }
+            }
+          }
+        }
+      },
+      "west-key-enemy-fire": {
+        "level": 3,
+        "cell": [
+          23,
+          25
+        ],
+        "heading": 0,
+        "locales": {
+          "0": {
+            "before": {
+              "detail_pointer": "/metrics/west-key-enemy-fire/locales/0/before",
+              "entries": 8,
+              "scalars": {
+                "fps": 13.960459813698286,
+                "maximum_cycles": 2209472,
+                "p95_cycles": 1492992,
+                "logic_maximum": 946496,
+                "logic_median": 121760.0,
+                "ui_median": 24576.0,
+                "ai_owners": 8,
+                "projectiles": 5
+              }
+            },
+            "after": {
+              "detail_pointer": "/metrics/west-key-enemy-fire/locales/0/after",
+              "entries": 8,
+              "scalars": {
+                "fps": 14.380618114672352,
+                "maximum_cycles": 1697920,
+                "p95_cycles": 1427072,
+                "logic_maximum": 743104,
+                "logic_median": 120384.0,
+                "ui_median": 24576.0,
+                "ai_owners": 8,
+                "projectiles": 5
+              }
+            }
+          },
+          "1": {
+            "before": {
+              "detail_pointer": "/metrics/west-key-enemy-fire/locales/1/before",
+              "entries": 8,
+              "scalars": {
+                "fps": 13.960459813698286,
+                "maximum_cycles": 2209408,
+                "p95_cycles": 1492288,
+                "logic_maximum": 945920,
+                "logic_median": 121728.0,
+                "ui_median": 24576.0,
+                "ai_owners": 8,
+                "projectiles": 5
+              }
+            },
+            "after": {
+              "detail_pointer": "/metrics/west-key-enemy-fire/locales/1/after",
+              "entries": 8,
+              "scalars": {
+                "fps": 14.380618114672352,
+                "maximum_cycles": 1698752,
+                "p95_cycles": 1427648,
+                "logic_maximum": 742336,
+                "logic_median": 120768.0,
+                "ui_median": 24576.0,
+                "ai_owners": 8,
+                "projectiles": 5
+              }
+            }
+          }
+        }
+      },
+      "southeast-key-enemy-fire": {
+        "level": 3,
+        "cell": [
+          53,
+          52
+        ],
+        "heading": 0,
+        "locales": {
+          "0": {
+            "before": {
+              "detail_pointer": "/metrics/southeast-key-enemy-fire/locales/0/before",
+              "entries": 8,
+              "scalars": {
+                "fps": 14.136686525350495,
+                "maximum_cycles": 2153408,
+                "p95_cycles": 1339392,
+                "logic_maximum": 697216,
+                "logic_median": 163104.0,
+                "ui_median": 24000.0,
+                "ai_owners": 7,
+                "projectiles": 4
+              }
+            },
+            "after": {
+              "detail_pointer": "/metrics/southeast-key-enemy-fire/locales/0/after",
+              "entries": 8,
+              "scalars": {
+                "fps": 14.136686525350495,
+                "maximum_cycles": 1944064,
+                "p95_cycles": 1331264,
+                "logic_maximum": 487872,
+                "logic_median": 163232.0,
+                "ui_median": 24000.0,
+                "ai_owners": 7,
+                "projectiles": 4
+              }
+            }
+          },
+          "1": {
+            "before": {
+              "detail_pointer": "/metrics/southeast-key-enemy-fire/locales/1/before",
+              "entries": 8,
+              "scalars": {
+                "fps": 14.136686525350495,
+                "maximum_cycles": 2153472,
+                "p95_cycles": 1341376,
+                "logic_maximum": 697408,
+                "logic_median": 163200.0,
+                "ui_median": 24000.0,
+                "ai_owners": 7,
+                "projectiles": 4
+              }
+            },
+            "after": {
+              "detail_pointer": "/metrics/southeast-key-enemy-fire/locales/1/after",
+              "entries": 8,
+              "scalars": {
+                "fps": 14.136686525350495,
+                "maximum_cycles": 1944768,
+                "p95_cycles": 1331328,
+                "logic_maximum": 488704,
+                "logic_median": 163552.0,
+                "ui_median": 24000.0,
+                "ai_owners": 7,
+                "projectiles": 4
+              }
+            }
+          }
+        }
+      },
+      "northeast-key-enemy-fire": {
+        "level": 3,
+        "cell": [
+          51,
+          10
+        ],
+        "heading": 0,
+        "locales": {
+          "0": {
+            "before": {
+              "detail_pointer": "/metrics/northeast-key-enemy-fire/locales/0/before",
+              "entries": 8,
+              "scalars": {
+                "fps": 14.876089805630345,
+                "maximum_cycles": 1199168,
+                "p95_cycles": 1081536,
+                "logic_maximum": 257984,
+                "logic_median": 115072.0,
+                "ui_median": 22208.0,
+                "ai_owners": 2,
+                "projectiles": 0
+              }
+            },
+            "after": {
+              "detail_pointer": "/metrics/northeast-key-enemy-fire/locales/0/after",
+              "entries": 8,
+              "scalars": {
+                "fps": 14.876089805630345,
+                "maximum_cycles": 1199872,
+                "p95_cycles": 1081600,
+                "logic_maximum": 258048,
+                "logic_median": 115136.0,
+                "ui_median": 22208.0,
+                "ai_owners": 2,
+                "projectiles": 0
+              }
+            }
+          },
+          "1": {
+            "before": {
+              "detail_pointer": "/metrics/northeast-key-enemy-fire/locales/1/before",
+              "entries": 8,
+              "scalars": {
+                "fps": 14.876089805630345,
+                "maximum_cycles": 1199744,
+                "p95_cycles": 1081472,
+                "logic_maximum": 257984,
+                "logic_median": 115072.0,
+                "ui_median": 22208.0,
+                "ai_owners": 2,
+                "projectiles": 0
+              }
+            },
+            "after": {
+              "detail_pointer": "/metrics/northeast-key-enemy-fire/locales/1/after",
+              "entries": 8,
+              "scalars": {
+                "fps": 14.876089805630345,
+                "maximum_cycles": 1199232,
+                "p95_cycles": 1081600,
+                "logic_maximum": 258048,
+                "logic_median": 115136.0,
+                "ui_median": 22208.0,
+                "ai_owners": 2,
+                "projectiles": 0
+              }
+            }
+          }
+        }
+      },
+      "shotgun-witches-enemy-fire": {
+        "level": 3,
+        "cell": [
+          20,
+          30
+        ],
+        "heading": 270,
+        "locales": {
+          "0": {
+            "before": {
+              "detail_pointer": "/metrics/shotgun-witches-enemy-fire/locales/0/before",
+              "entries": 8,
+              "scalars": {
+                "fps": 11.319172565307486,
+                "maximum_cycles": 5127488,
+                "p95_cycles": 1776576,
+                "logic_maximum": 4012416,
+                "logic_median": 170048.0,
+                "ui_median": 23744.0,
+                "ai_owners": 12,
+                "projectiles": 13
+              }
+            },
+            "after": {
+              "detail_pointer": "/metrics/shotgun-witches-enemy-fire/locales/0/after",
+              "entries": 8,
+              "scalars": {
+                "fps": 11.567624384042448,
+                "maximum_cycles": 3119104,
+                "p95_cycles": 1726912,
+                "logic_maximum": 1548864,
+                "logic_median": 146560.0,
+                "ui_median": 23744.0,
+                "ai_owners": 12,
+                "projectiles": 13
+              }
+            }
+          },
+          "1": {
+            "before": {
+              "detail_pointer": "/metrics/shotgun-witches-enemy-fire/locales/1/before",
+              "entries": 8,
+              "scalars": {
+                "fps": 11.326327541644595,
+                "maximum_cycles": 5127424,
+                "p95_cycles": 1775808,
+                "logic_maximum": 4012416,
+                "logic_median": 173120.0,
+                "ui_median": 23744.0,
+                "ai_owners": 12,
+                "projectiles": 13
+              }
+            },
+            "after": {
+              "detail_pointer": "/metrics/shotgun-witches-enemy-fire/locales/1/after",
+              "entries": 8,
+              "scalars": {
+                "fps": 11.560161400568871,
+                "maximum_cycles": 3119296,
+                "p95_cycles": 1726336,
+                "logic_maximum": 1548800,
+                "logic_median": 146080.0,
+                "ui_median": 23744.0,
+                "ai_owners": 12,
+                "projectiles": 13
+              }
+            }
+          }
+        }
+      },
+      "last-key-fire": {
+        "level": 2,
+        "cell": [
+          31,
+          47
+        ],
+        "heading": 90,
+        "locales": {
+          "0": {
+            "before": {
+              "detail_pointer": "/metrics/last-key-fire/locales/0/before",
+              "entries": 8,
+              "scalars": {
+                "fps": 9.305764825178786,
+                "maximum_cycles": 3883072,
+                "p95_cycles": 2958144,
+                "logic_maximum": 2406720,
+                "logic_median": 196224.0,
+                "ui_median": 599744.0,
+                "ai_owners": 14,
+                "projectiles": 1
+              }
+            },
+            "after": {
+              "detail_pointer": "/metrics/last-key-fire/locales/0/after",
+              "entries": 8,
+              "scalars": {
+                "fps": 14.663052512996522,
+                "maximum_cycles": 2374720,
+                "p95_cycles": 1577344,
+                "logic_maximum": 1314688,
+                "logic_median": 129440.0,
+                "ui_median": 118400.0,
+                "ai_owners": 14,
+                "projectiles": 1
+              }
+            }
+          },
+          "1": {
+            "before": {
+              "detail_pointer": "/metrics/last-key-fire/locales/1/before",
+              "entries": 8,
+              "scalars": {
+                "fps": 9.291288654851828,
+                "maximum_cycles": 3883072,
+                "p95_cycles": 2957504,
+                "logic_maximum": 2406720,
+                "logic_median": 196992.0,
+                "ui_median": 599680.0,
+                "ai_owners": 14,
+                "projectiles": 1
+              }
+            },
+            "after": {
+              "detail_pointer": "/metrics/last-key-fire/locales/1/after",
+              "entries": 8,
+              "scalars": {
+                "fps": 14.663052512996522,
+                "maximum_cycles": 2374720,
+                "p95_cycles": 1566144,
+                "logic_maximum": 1314752,
+                "logic_median": 129856.0,
+                "ui_median": 118400.0,
+                "ai_owners": 14,
+                "projectiles": 1
+              }
+            }
+          }
+        }
+      },
+      "west-key-fire": {
+        "level": 3,
+        "cell": [
+          23,
+          25
+        ],
+        "heading": 0,
+        "locales": {
+          "0": {
+            "before": {
+              "detail_pointer": "/metrics/west-key-fire/locales/0/before",
+              "entries": 8,
+              "scalars": {
+                "fps": 7.213466252367854,
+                "maximum_cycles": 6428288,
+                "p95_cycles": 5194816,
+                "logic_maximum": 4730176,
+                "logic_median": 176480.0,
+                "ui_median": 689536.0,
+                "ai_owners": 9,
+                "projectiles": 4
+              }
+            },
+            "after": {
+              "detail_pointer": "/metrics/west-key-fire/locales/0/after",
+              "entries": 8,
+              "scalars": {
+                "fps": 13.90089229703782,
+                "maximum_cycles": 2080768,
+                "p95_cycles": 1539776,
+                "logic_maximum": 1173632,
+                "logic_median": 124032.0,
+                "ui_median": 131904.0,
+                "ai_owners": 9,
+                "projectiles": 4
+              }
+            }
+          },
+          "1": {
+            "before": {
+              "detail_pointer": "/metrics/west-key-fire/locales/1/before",
+              "entries": 8,
+              "scalars": {
+                "fps": 7.223644495416953,
+                "maximum_cycles": 6432960,
+                "p95_cycles": 5206144,
+                "logic_maximum": 4729344,
+                "logic_median": 172800.0,
+                "ui_median": 689600.0,
+                "ai_owners": 9,
+                "projectiles": 4
+              }
+            },
+            "after": {
+              "detail_pointer": "/metrics/west-key-fire/locales/1/after",
+              "entries": 8,
+              "scalars": {
+                "fps": 13.933320506128888,
+                "maximum_cycles": 2069120,
+                "p95_cycles": 1537536,
+                "logic_maximum": 1173696,
+                "logic_median": 124032.0,
+                "ui_median": 131872.0,
+                "ai_owners": 9,
+                "projectiles": 4
+              }
+            }
+          }
+        }
+      },
+      "southeast-key-fire": {
+        "level": 3,
+        "cell": [
+          53,
+          52
+        ],
+        "heading": 0,
+        "locales": {
+          "0": {
+            "before": {
+              "detail_pointer": "/metrics/southeast-key-fire/locales/0/before",
+              "entries": 8,
+              "scalars": {
+                "fps": 9.756738454060304,
+                "maximum_cycles": 2842176,
+                "p95_cycles": 2314688,
+                "logic_maximum": 1085696,
+                "logic_median": 225952.0,
+                "ui_median": 664192.0,
+                "ai_owners": 7,
+                "projectiles": 1
+              }
+            },
+            "after": {
+              "detail_pointer": "/metrics/southeast-key-fire/locales/0/after",
+              "entries": 8,
+              "scalars": {
+                "fps": 15.752307842533407,
+                "maximum_cycles": 1831616,
+                "p95_cycles": 1260864,
+                "logic_maximum": 636672,
+                "logic_median": 157184.0,
+                "ui_median": 126464.0,
+                "ai_owners": 7,
+                "projectiles": 1
+              }
+            }
+          },
+          "1": {
+            "before": {
+              "detail_pointer": "/metrics/southeast-key-fire/locales/1/before",
+              "entries": 8,
+              "scalars": {
+                "fps": 9.738179440696603,
+                "maximum_cycles": 2842240,
+                "p95_cycles": 2317952,
+                "logic_maximum": 1086336,
+                "logic_median": 226464.0,
+                "ui_median": 672928.0,
+                "ai_owners": 7,
+                "projectiles": 1
+              }
+            },
+            "after": {
+              "detail_pointer": "/metrics/southeast-key-fire/locales/1/after",
+              "entries": 8,
+              "scalars": {
+                "fps": 15.710872574205831,
+                "maximum_cycles": 1749632,
+                "p95_cycles": 1256704,
+                "logic_maximum": 636608,
+                "logic_median": 157184.0,
+                "ui_median": 126304.0,
+                "ai_owners": 7,
+                "projectiles": 1
+              }
+            }
+          }
+        }
+      },
+      "northeast-key-fire": {
+        "level": 3,
+        "cell": [
+          51,
+          10
+        ],
+        "heading": 0,
+        "locales": {
+          "0": {
+            "before": {
+              "detail_pointer": "/metrics/northeast-key-fire/locales/0/before",
+              "entries": 8,
+              "scalars": {
+                "fps": 8.857266520455635,
+                "maximum_cycles": 2522816,
+                "p95_cycles": 2343872,
+                "logic_maximum": 552000,
+                "logic_median": 181984.0,
+                "ui_median": 599936.0,
+                "ai_owners": 2,
+                "projectiles": 1
+              }
+            },
+            "after": {
+              "detail_pointer": "/metrics/northeast-key-fire/locales/0/after",
+              "entries": 8,
+              "scalars": {
+                "fps": 13.083789829048373,
+                "maximum_cycles": 1594816,
+                "p95_cycles": 1473664,
+                "logic_maximum": 372800,
+                "logic_median": 137504.0,
+                "ui_median": 116672.0,
+                "ai_owners": 2,
+                "projectiles": 1
+              }
+            }
+          },
+          "1": {
+            "before": {
+              "detail_pointer": "/metrics/northeast-key-fire/locales/1/before",
+              "entries": 8,
+              "scalars": {
+                "fps": 8.857266520455635,
+                "maximum_cycles": 2520448,
+                "p95_cycles": 2344000,
+                "logic_maximum": 552640,
+                "logic_median": 182496.0,
+                "ui_median": 599936.0,
+                "ai_owners": 2,
+                "projectiles": 1
+              }
+            },
+            "after": {
+              "detail_pointer": "/metrics/northeast-key-fire/locales/1/after",
+              "entries": 8,
+              "scalars": {
+                "fps": 13.10292517066307,
+                "maximum_cycles": 1590272,
+                "p95_cycles": 1473600,
+                "logic_maximum": 337600,
+                "logic_median": 136608.0,
+                "ui_median": 116672.0,
+                "ai_owners": 2,
+                "projectiles": 1
+              }
+            }
+          }
+        }
+      },
+      "shotgun-witches-fire": {
+        "level": 3,
+        "cell": [
+          20,
+          30
+        ],
+        "heading": 270,
+        "locales": {
+          "0": {
+            "before": {
+              "detail_pointer": "/metrics/shotgun-witches-fire/locales/0/before",
+              "entries": 8,
+              "scalars": {
+                "fps": 8.452004797585731,
+                "maximum_cycles": 8755968,
+                "p95_cycles": 2951360,
+                "logic_maximum": 6163200,
+                "logic_median": 154272.0,
+                "ui_median": 686208.0,
+                "ai_owners": 12,
+                "projectiles": 16
+              }
+            },
+            "after": {
+              "detail_pointer": "/metrics/shotgun-witches-fire/locales/0/after",
+              "entries": 8,
+              "scalars": {
+                "fps": 12.539013415592548,
+                "maximum_cycles": 3148096,
+                "p95_cycles": 1773248,
+                "logic_maximum": 1440384,
+                "logic_median": 119360.0,
+                "ui_median": 129920.0,
+                "ai_owners": 12,
+                "projectiles": 16
+              }
+            }
+          },
+          "1": {
+            "before": {
+              "detail_pointer": "/metrics/shotgun-witches-fire/locales/1/before",
+              "entries": 8,
+              "scalars": {
+                "fps": 8.432117727473765,
+                "maximum_cycles": 8760192,
+                "p95_cycles": 2947328,
+                "logic_maximum": 6163968,
+                "logic_median": 153760.0,
+                "ui_median": 686016.0,
+                "ai_owners": 12,
+                "projectiles": 16
+              }
+            },
+            "after": {
+              "detail_pointer": "/metrics/shotgun-witches-fire/locales/1/after",
+              "entries": 8,
+              "scalars": {
+                "fps": 12.556587365719516,
+                "maximum_cycles": 3148224,
+                "p95_cycles": 1764544,
+                "logic_maximum": 1359360,
+                "logic_median": 118848.0,
+                "ui_median": 130016.0,
+                "ai_owners": 12,
+                "projectiles": 16
+              }
+            }
+          }
+        }
+      }
+    },
+    "checks": {
+      "ppu_exact_cases": 396,
+      "weapon_ppu_cases": 216,
+      "differential_scenarios": 480,
+      "differential_polls": 15360,
+      "projectile_cells": 330,
+      "enemy_groups": 28,
+      "transitions": 294,
+      "close_hit_cases_per_rom": 16,
+      "motion_debt_below_quantum": true,
+      "motion_time_conservation_exact": true,
+      "audio_underruns": 0,
+      "main_stack_high_water": 2584,
+      "main_stack_margin": 5352
+    },
+    "repeat_rom_exact": true,
+    "physical_gba_tested": false,
+    "limitation": "Stationary original-map fixtures, hero HP/armor32767; player-fire fixtures equip shotgun/ammo32767. 600 frames per room/locale/mode; natural wake/AI and normal clocks/audio. Different elapsed time changes live poses and casualties; live rows are not frame-exact comparisons. All LEVEL3 keys covered without assuming collection order. General renderer budget and full release acceptance remain open.",
+    "evidence": {
+      "build\\gba\\battle-before\\rooms-long.json": "c4d0239aaf761f09a80753eb6622606b786aa363c34357c0ff3b938365233a18",
+      "build\\gba\\battle-before\\rooms-fire.json": "823b2ccdddaf8d7cf5e8a4e28c5cd08557ee79775c48d24ef6ae10636adb8d81",
+      "build\\gba\\battle-final\\rooms-long.json": "7d37eadf8499333177d4428d88e465a6700b43d10b16115df24d6deebf6e2177",
+      "build\\gba\\battle-final\\rooms-fire.json": "bd72b46ef9e1f23682835403b075dc149f082c5560b1e7a486e30ad91a010ded",
+      "build\\gba\\battle-final\\ppu.json": "50e4c4179522d6b7da8da0cb1c8f987c8bd1e368195ad7231c8632783c80f634",
+      "build\\gba\\battle-final\\combat.json": "7cbbcdbdf5ac747d6ebb5032877356f40934ab57b88cc47ca473bced41a95445",
+      "build\\gba\\battle-final\\ai-combat.json": "4f36d80463690a0f9e52805c99fa9f96086dea605f474b0bd0e679a600a87ab5",
+      "build\\gba\\battle-final\\transitions.json": "265739769e3ef19493261277d3ea8343230248a01aeb6edbb21fef7ebdec3663",
+      "build\\gba\\battle-final\\close-hits.json": "1ca9ac2405d03865dbc624a5e1d4c862f9f6b4d3b932e96b8e269cd94f6123df",
+      "build\\gba\\battle-final\\projectile-cells.json": "7f8dbb37486b7fc48253321aeb7680c38f8265f860fc7baf4f72813d84689452",
+      "build\\gba\\battle-final\\frontend-build.json": "ccddc289c19e1f1bb2b91c5b0815e3303f76f2f0acc4429abfbeec784c5a34d7",
+      "build\\gba\\battle-repeat\\frontend-build.json": "934c86c91f9f7e87f42a753c299f8d5fa9e72347830ae5a6bccd9589e2107c02",
+      "build\\gba\\battle-equivalence\\result.json": "17d9ef674d9bb07a0526b87793de1ac592c217607e3de1b5301ed7860b46404e"
+    },
+    "runs": {
+      "before/rooms-long.json": {
+        "rom_sha256": "389f5ff7991b21cea1e71eb2ff03d242a4efd2ea97a7d4609f7e91aa9f953df1",
+        "rows": {
+          "detail_pointer": "/runs/before~1rooms-long.json/rows",
+          "items": 10
+        },
+        "script_sha256": "d9754b06798ec1e47d5194e689e4520726140e041c87e44295c6781277d779ef",
+        "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+        "samples": 600,
+        "scope": "Stationary hero relocated into original rooms; original maps/enemies, HP/armor32767. Natural renderer consideration/AI wake, normal clock and audio. Different frame times change live AI poses; frozen PPU pairs are exact comparisons. mGBA, not physical GBA or a full playthrough."
+      },
+      "before/rooms-fire.json": {
+        "rom_sha256": "389f5ff7991b21cea1e71eb2ff03d242a4efd2ea97a7d4609f7e91aa9f953df1",
+        "rows": {
+          "detail_pointer": "/runs/before~1rooms-fire.json/rows",
+          "items": 10
+        },
+        "script_sha256": "b192e179cc567439b19087a438603d70d5adb3fe370922ce19bd1dd8d43bf439",
+        "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+        "samples": 600,
+        "fire": true,
+        "scope": "Stationary hero relocated into original rooms; original maps/enemies, HP/armor32767. Natural renderer consideration/AI wake, normal clock and audio. Different frame times change live AI poses; frozen PPU pairs are exact comparisons. mGBA, not physical GBA or a full playthrough."
+      },
+      "after/rooms-long.json": {
+        "rom_sha256": "be9f8b25836f556c9522e896a93bb5645c8ad855641525476998e07629508323",
+        "rows": {
+          "detail_pointer": "/runs/after~1rooms-long.json/rows",
+          "items": 10
+        },
+        "script_sha256": "b192e179cc567439b19087a438603d70d5adb3fe370922ce19bd1dd8d43bf439",
+        "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+        "samples": 600,
+        "fire": false,
+        "scope": "Stationary hero relocated into original rooms; original maps/enemies, HP/armor32767. Natural renderer consideration/AI wake, normal clock and audio. Different frame times change live AI poses; frozen PPU pairs are exact comparisons. mGBA, not physical GBA or a full playthrough."
+      },
+      "after/rooms-fire.json": {
+        "rom_sha256": "be9f8b25836f556c9522e896a93bb5645c8ad855641525476998e07629508323",
+        "rows": {
+          "detail_pointer": "/runs/after~1rooms-fire.json/rows",
+          "items": 10
+        },
+        "script_sha256": "b192e179cc567439b19087a438603d70d5adb3fe370922ce19bd1dd8d43bf439",
+        "core_sha256": "5cac11c643d7f8dfa50c68855f2f2240ff7cc0b4cd0312dd9e17a639c85667e4",
+        "samples": 600,
+        "fire": true,
+        "scope": "Stationary hero relocated into original rooms; original maps/enemies, HP/armor32767. Natural renderer consideration/AI wake, normal clock and audio. Different frame times change live AI poses; frozen PPU pairs are exact comparisons. mGBA, not physical GBA or a full playthrough."
+      }
+    }
+  }
+}

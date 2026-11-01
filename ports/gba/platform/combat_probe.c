@@ -93,17 +93,47 @@ void gba_combat_overlay(dok_renderer_workspace *w) {
  extern int gba_hw_weapon_begin(int,int,int,int);
  if(g_hw_tile_active && !gba_hw_weapon_begin(left,top,width,height))return;
 #endif
- for(int y=0;y<height && y+top<144;y++)for(int x=0;x<width;x++) {
-  if(x+left<0 || x+left>=240 || y+top<0)continue;
-  uint8_t color=f.image.pixels[(unsigned)(y*f.image.height/height)*f.image.width+(unsigned)(x*f.image.width/width)];
-  if(color) {
+ int first=left<0?-left:0,last=width;
+ if(last>240-left)last=240-left;
+ int yfirst=top<0?-top:0,ylast=height;
+ if(ylast>144-top)ylast=144-top;
+ if(first>=last || yfirst>=ylast)return;
+ /* Exact nearest sampling by quotient/remainder recurrence. The previous
+  * inner loop divided x*source_width by width for every pixel of every row.
+  * Keep floor division (including clipped/odd-sized images), no reciprocal
+  * rounding and no persistent image cache. */
+ unsigned step=f.image.width/(unsigned)width,part=f.image.width%(unsigned)width;
+ unsigned start=(unsigned)first*f.image.width/(unsigned)width;
+ unsigned remainder=(unsigned)first*f.image.width%(unsigned)width;
+ uint16_t sample_x[240];
+ unsigned sx=start,error=remainder;
+ for(int x=first;x<last;x++) {
+  sample_x[x-first]=(uint16_t)sx;
+  sx+=step;error+=part;if(error>=(unsigned)width){error-=(unsigned)width;++sx;}
+ }
 #ifdef DOK_RENDER_HW_DIRECT_PROTOTYPE
-   if(g_hw_tile_active) {
-    unsigned xx=(unsigned)(x+left)-g_hw_weapon[0],yy=(unsigned)(y+top)-g_hw_weapon[1];
-    w->frame[25600+((yy/8)*g_hw_weapon[2]+xx/8)*64+(yy&7)*8+(xx&7)]=color;
-   } else
+ if(g_hw_tile_active) {
+  uint16_t target_x[240];
+  for(int x=first;x<last;x++) {
+   unsigned xx=(unsigned)(x+left)-g_hw_weapon[0];
+   target_x[x-first]=(uint16_t)((xx/8)*64+(xx&7));
+  }
+  for(int y=yfirst;y<ylast;y++) {
+   const uint8_t *source=f.image.pixels+(unsigned)(y*f.image.height/height)*f.image.width;
+   unsigned yy=(unsigned)(y+top)-g_hw_weapon[1];
+   uint8_t *destination=w->frame+25600+(yy/8)*g_hw_weapon[2]*64+(yy&7)*8;
+   /* gba_hw_weapon_begin clears this private weapon staging region. Zero
+    * samples can be copied too; actual OBJ transparency is unchanged. */
+   for(int x=0;x<last-first;x++)destination[target_x[x]]=source[sample_x[x]];
+  }
+  return;
+ }
 #endif
-   w->frame[(y+top)*240+x+left]=color;
+ for(int y=yfirst;y<ylast;y++) {
+  const uint8_t *source=f.image.pixels+(unsigned)(y*f.image.height/height)*f.image.width;
+  for(int x=first;x<last;x++) {
+   uint8_t color=source[sample_x[x-first]];
+   if(color)w->frame[(y+top)*240+x+left]=color;
   }
  }
 }

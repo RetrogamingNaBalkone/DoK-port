@@ -4,6 +4,18 @@
 #include "dok/animation.h"
 static int16_t word(int32_t x) {uint16_t n=(uint16_t)x;return n<32768?(int16_t)n:(int16_t)((int32_t)n-65536);}
 static int cell(dok_combat *,int32_t,int32_t);
+/* Per-poll candidate IDs only: positions/health/flags stay live across impact
+ * callbacks. No persistent occupancy cache and no extra GBA static RAM. */
+typedef struct {uint16_t ids[DOK_RUNTIME_MAX_OBJECTS],players,total;int ready;} combat_targets;
+static void prepare_targets(const dok_runtime *w,combat_targets *t) {
+ t->total=0;
+ for(unsigned cls=1;cls<=9;cls+=8){
+  for(unsigned i=0;i<w->object_count;++i)
+   if(w->level->definitions[i].class_id==cls)t->ids[t->total++]=(uint16_t)i;
+  if(cls==1)t->players=t->total;
+ }
+ t->ready=1;
+}
 static void unoccupy(dok_combat *c,dok_combat_projectile *p) {
  if(p->state&0x40) {int pos=cell(c,p->x,p->z);if(pos>=0)c->occupied[pos>>3]&=(uint8_t)~(1u<<(pos&7));p->state&=0xbf;}
 }
@@ -133,14 +145,24 @@ static void occupy(dok_combat *c,dok_combat_projectile *p) {
  int pos=cell(c,p->x,p->z);if(pos<0 || c->world->maps[pos]!=' ' || dok_combat_blocked(c,p->x,p->z))return;
  c->occupied[pos>>3]|=(uint8_t)(1u<<(pos&7));p->state|=0x40;
 }
-static int target_cell(dok_combat *c,dok_combat_projectile *p,int pos) {
+static int target_cell(dok_combat *c,dok_combat_projectile *p,int pos,const combat_targets *targets) {
  dok_runtime *w=c->world;if(pos<0)return -2;
+ /* Compare coordinates against this cell's half-open bounds. Repeating two
+  * software divisions for every actor at every quarter-step dominates volleys
+  * on ARM7TDMI. Unsigned subtraction also rejects negative/out-of-map actors.
+  * Object order and the live health/flags tests remain unchanged. */
+ unsigned side=w->level->settings[DOK_LEVEL_CELL_SIDE],width=w->level->settings[DOK_LEVEL_WIDTH];
+ uint32_t left=(unsigned)pos%width*side,top=(unsigned)pos/width*side;
+ unsigned owner_class=w->level->definitions[p->owner].class_id;
+ unsigned begin=owner_class==1?targets->players:0;
+ unsigned end=owner_class==9?targets->players:owner_class==1?targets->total:w->object_count;
  /* Test actors before walls, mirroring native MMap then TMap fallback. */
- for(unsigned i=0;i<w->object_count;i++) {
-  unsigned cls=w->level->definitions[i].class_id;if((cls!=1 && cls!=9) || (w->objects[i].flags&0x400))continue;
+ for(unsigned at=begin;at<end;at++) {
+  unsigned i=owner_class==1 || owner_class==9?targets->ids[at]:at;
+  unsigned cls=w->level->definitions[i].class_id;if((cls!=1 && cls!=9) || cls==owner_class || (w->objects[i].flags&0x400))continue;
   if(cls==9 && !w->objects[i].state.monster.health)continue;
   const dok_runtime_actor *a=dok_runtime_actor_at(w,(uint16_t)i);
-  if(a && cell(c,a->x,a->z)==pos && cls!=w->level->definitions[p->owner].class_id)return (int)i;
+  if(a && (uint32_t)a->x-left<side && (uint32_t)a->z-top<side)return (int)i;
  }
  unsigned tok=w->level->glyph_index[w->maps[w->level->cells+pos]];
  if(tok) {unsigned cls=w->level->definitions[tok-1].class_id,flags=w->objects[tok-1].flags;
@@ -150,8 +172,11 @@ static int target_cell(dok_combat *c,dok_combat_projectile *p,int pos) {
 /* A quarter-cell diagonal can enter and leave a cell between its endpoints.
  * Test that intermediate cell in crossing order; an exact corner touches no
  * extra cell. Products are bounded by one quarter-cell on valid maps. */
-static int crossed_target(dok_combat *c,dok_combat_projectile *p,int32_t x,int32_t z) {
+static int crossed_target(dok_combat *c,dok_combat_projectile *p,int32_t x,int32_t z,const combat_targets *targets) {
  int old=cell(c,x,z),next=cell(c,p->x,p->z);
+ /* The starting cell has already been tested, and no world state changes
+  * between flight substeps. Only entry into another cell needs a new lookup. */
+ if(next==old)return next<0?-2:-1;
  const dok_runtime_level *l=c->world->level;
  int width=l->settings[DOK_LEVEL_WIDTH],side=l->settings[DOK_LEVEL_CELL_SIDE];
  if(old>=0 && next>=0 && old%width!=next%width && old/width!=next/width) {
@@ -160,12 +185,12 @@ static int crossed_target(dok_combat *c,dok_combat_projectile *p,int32_t x,int32
   int tx=bx*(dz<0?-dz:dz),tz=bz*(dx<0?-dx:dx);
   if(tx!=tz) {
    int middle=tx<tz?old/width*width+next%width:next/width*width+old%width;
-   int hit=target_cell(c,p,middle);if(hit!=-1)return hit;
+   int hit=target_cell(c,p,middle,targets);if(hit!=-1)return hit;
   }
  }
- return target_cell(c,p,next);
+ return target_cell(c,p,next,targets);
 }
-static void update(dok_combat *c,uint16_t id) {
+static void update(dok_combat *c,uint16_t id,combat_targets *targets) {
  dok_combat_projectile *p=&c->slots[id];dok_animation_frame f;uint16_t count;
  if(!animation(c,p->resource,p->frame,&f,&count)) {++c->errors;dok_combat_remove(c,id);return;}
  if((p->state&15)>=2) {
@@ -174,18 +199,19 @@ static void update(dok_combat *c,uint16_t id) {
   if((unsigned)p->frame+1>=count) {dok_combat_remove(c,id);return;}
   ++p->frame;animation(c,p->resource,p->frame,&f,&count);p->deadline=c->now+(uint32_t)(int32_t)f.interval_ticks;return;
  }
+ if(!targets->ready)prepare_targets(c->world,targets);
  unoccupy(c,p);
  int elapsed=(int)(((c->now-p->last)*256u)/416u);if(elapsed<256)elapsed=256;if(elapsed>2048)elapsed=2048;
  int speed=(int)c->world->objects[p->object].state.projectile.velocity;
  int distance=sar(word(speed)*elapsed,8),quarter=-(int)c->world->level->settings[DOK_LEVEL_CELL_SIDE]/4;
  int whole=distance/quarter,remainder=distance%quarter;
  /* Include the spawn/current cell before a nonzero laser remainder leaves it. */
- int hit=target_cell(c,p,cell(c,p->x,p->z));
+ int hit=target_cell(c,p,cell(c,p->x,p->z),targets);
  for(int step=0;hit==-1 && step<=whole;step++) {
   dok_runtime_actor a={0};a.x=p->x;a.z=p->z;a.heading=p->heading;
   int32_t x=p->x,z=p->z;
   dok_motion_free(&a,(int16_t)(step==0?remainder:quarter),0,0);p->x=a.x;p->z=a.z;
-  hit=crossed_target(c,p,x,z);
+  hit=crossed_target(c,p,x,z,targets);
  }
  if(hit!=-1) {
   int impact=hit>=0 && dok_combat_damage(c,(uint16_t)hit,p->owner,p->damage);
@@ -225,10 +251,11 @@ static void weapon_update(dok_combat *c) {
 void dok_combat_poll(dok_combat *c,uint32_t tick) {
  if(c->dispatching)return;
  c->now=tick;weapon_update(c);
+ combat_targets targets;targets.ready=0;
  c->dispatching=1;
  for(unsigned visit=0;visit<c->active;visit++) {
   uint16_t id=c->cursor,next=c->slots[id].next;c->current=id;
-  if(tick>=c->slots[id].deadline)update(c,id);
+  if(tick>=c->slots[id].deadline)update(c,id,&targets);
   next=c->slots[id].next;
   if(!c->slots[id].state) {
    dok_combat_projectile *p=&c->slots[id];

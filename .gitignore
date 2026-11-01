@@ -13,6 +13,7 @@ __pycache__/
 /debug.log
 
 # Full machine reports stay local; Git contains analysis/summaries instead.
+/analysis/gba/g20-battles-20261101.json
 /analysis/artifact-cleanup-20261026.json
 /analysis/artifact-cleanup-20261027.json
 /analysis/gba/g07-camera-regression.json

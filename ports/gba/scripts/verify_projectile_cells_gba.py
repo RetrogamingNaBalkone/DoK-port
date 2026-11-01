@@ -129,6 +129,8 @@ def main():
     ap.add_argument('--build-dir', type=Path, required=True)
     ap.add_argument('--reference-build', type=Path, required=True)
     ap.add_argument('--report', type=Path, required=True)
+    ap.add_argument('--reference-fixed', action='store_true',
+                    help='Performance regression: reference already has the cell-crossing fix')
     args = ap.parse_args()
     os.chdir(ROOT)
     os.environ['DOK_PROBE_FAST_VIDEO'] = '1'
@@ -139,9 +141,13 @@ def main():
     failures = [r for r in after['rows'] if r['observed'] != r['expected']]
     assert not failures, failures[:8]
     regressions = [r for r in before['rows'] if r['observed'] != r['expected']]
-    assert any(r['name']=='close-corner' and r['observed']=='clear' for r in regressions)
+    if args.reference_fixed:
+        assert not regressions,regressions[:8]
+        assert before['rows']==after['rows'],'Collision state changed after optimization'
+    else:
+        assert any(r['name']=='close-corner' and r['observed']=='clear' for r in regressions)
     args.report.write_text(json.dumps(dict(status='passed', before=before, after=after,
-        script_sha256=sha(__file__), core_sha256=sha(core), old_failures=len(regressions),
+        script_sha256=sha(__file__), core_sha256=sha(core), old_failures=len(regressions),reference_fixed=args.reference_fixed,
         scope='Controlled original actors/resources, empty-map fixtures; rational grid-segment '
               'oracle, walls/order/corner/spawn and416/832/3328 tick delays, RU/EN. '
               'Not the exact user session or physical GBA.'), indent=2)+'\n', encoding='utf-8')

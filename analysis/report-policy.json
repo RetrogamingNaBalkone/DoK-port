@@ -1,6 +1,7 @@
 {
   "schema": 1,
   "local_reports": [
+    "analysis/gba/g20-battles-20261101.json",
     "analysis/artifact-cleanup-20261026.json",
     "analysis/artifact-cleanup-20261027.json",
     "analysis/gba/g07-camera-regression.json",
