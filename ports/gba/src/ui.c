@@ -404,6 +404,17 @@ static unsigned screen_layout(canvas *c,const uint8_t *s,size_t n,unsigned page)
  return rows?(rows+13)/14:1;
 }
 unsigned dok_ui_screen_pages(const uint8_t *s,size_t n){return screen_layout(0,s,n,0);}
+void dok_ui_attempts(uint8_t *f,const uint8_t *f8,const uint8_t *f16,unsigned fg,unsigned bg,unsigned lives,unsigned language){
+ canvas c={f,f8,f16,fg,bg};panel(&c,0,0,240,160);
+ const char *heading=lives?ui_retry_title[language]:ui_gameover_title[language];
+ label(&c,(240-(unsigned)length(heading)*8)/2,lives?52:64,heading,16);
+ if(lives){
+  const char *left=ui_retry_left[language][lives==1?0:1];
+  label(&c,(240-(unsigned)length(left)*8)/2,80,left,8);
+ }
+ const char *hint=lives?ui_retry_hint[language]:ui_gameover_hint[language];
+ message_line(&c,(const uint8_t *)hint,length(hint));
+}
 static void screen_draw(uint8_t *f,const uint8_t *f8,const uint8_t *f16,unsigned fg,unsigned bg,const uint8_t *s,size_t n,unsigned page,const char *heading,unsigned language,unsigned display_page,unsigned pages){
  canvas c={f,f8,f16,fg,bg};panel(&c,0,0,240,160);label(&c,8,4,heading,16);
  unsigned text_pages=screen_layout(&c,s,n,page);if(!pages)pages=text_pages;

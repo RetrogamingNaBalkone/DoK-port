@@ -1,0 +1,61 @@
+{
+  "task": "UI04",
+  "date": "2026-11-03",
+  "status": "passed",
+  "title": "Dungeons of Kremlin",
+  "variant": "g22_split_active",
+  "includes": "UI03",
+  "rom": {
+    "path": "artifacts/gba/DoK-port_UI04.gba",
+    "sha256": "de2387429e623b8fb6e47edede5f10164a8581a04fa3aa062f4a17ff42f43550",
+    "bytes": 26649580
+  },
+  "screenshot": {
+    "path": "artifacts/gba/DoK-port_UI04-title-en.png",
+    "sha256": "8b43ac138db5315383b948f262b8339911fc185550b625a0d9b79d75298531cf",
+    "visually_reviewed": true
+  },
+  "build_manifest": {
+    "path": "build/gba/ui04-title/frontend-build.json",
+    "sha256": "c489fc4ca32c151d056e33173010a120238b8a25320149ebdf0272d1f5043392"
+  },
+  "ui_report": {
+    "path": "build/gba/ui04-title/ui.json",
+    "sha256": "0a1e743a15760afe3234a044b39bc9d3e661a2d9ef6a3ba181288629c40477f7",
+    "bytes": 29804
+  },
+  "checks": {
+    "real_keypad_menu": true,
+    "title_help_controls": true,
+    "statistics_removed_from_both_menus": true,
+    "chord_suppressed_use_and_language": true,
+    "paused_world_and_clock": true,
+    "pause_preserved_fraction_and_raw_timer_continued": true,
+    "resume_excluded_paused_time": true,
+    "no_resume_fire_leak": true,
+    "language_preserved_world": true,
+    "in_game_select_preserves_language": true,
+    "pause_menu_language_row": true,
+    "exact_original_font8_pixels": true,
+    "exact_original_font16_pixels": true,
+    "offline_rom_icons_no_runtime_resize": true,
+    "signed16_hud_extremes": true,
+    "bounded_240byte_stress": true,
+    "viewport_240x144_messages_240x16": true
+  },
+  "stack": {
+    "main_stack_low": 50356224,
+    "main_stack_top": 50364160,
+    "sentinel_word": 219540062,
+    "untouched_margin_bytes": 5352,
+    "high_water_bytes": 2584,
+    "irq_and_bios_excluded": true,
+    "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+  },
+  "host_executed": true,
+  "linux_compiled_only": true,
+  "thumb_compiled": true,
+  "physical_gba_tested": false,
+  "published_release_changed": false,
+  "summary_generator": "tools/reports/summarize_reports.py:summary"
+}

@@ -1,5 +1,12 @@
 # GBA: воспроизводимая сборка и кандидат G21
 
+> 3 ноября 2026: выпущены **[«Подземелья Кремля 1.0»](https://github.com/RetrogamingNaBalkone/DoK-port/releases/tag/gba-1.0)**,
+> тег `gba-1.0`, G22+UI02+UI03+UI04, 120×128. ROM поставляется в
+> `Dungeons.of.Kremlin.1.0.zip`, отдельные данные не нужны.
+> [Release notes](gba/releases/1.0.md), [приёмка и команды](gba/tasks/G21.md).
+> G21 закрыта решением пользователя о выпуске. Физическая GBA отдельно
+> для итоговой 1.0 не проверена. Остальной текст ниже — история кандидатов и бет.
+
 > 2 ноября 2026: по запросу пользователя опубликован [пре-релиз Beta2](https://github.com/RetrogamingNaBalkone/DoK-port/releases/tag/gba-beta2)
 > на G22+UI02, `g22_split_active`, 120×128. [Release notes](gba/releases/beta2.md),
 > [актуальные команды и проверки](gba/tasks/G21.md#публикация-beta2-2-ноября-2026).

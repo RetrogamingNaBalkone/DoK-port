@@ -263,7 +263,7 @@ def main():
         raw, palette = p.frame()
         _, white = ui_colors(palette)
         resources, _ = original_animations(1)
-        glyph_mask(raw, resources[b'FONT16'.hex()], 16, 20, b'KREMLIN DUNGEONS', white, height=16)
+        glyph_mask(raw, resources[b'FONT16'.hex()], 16, 20, b'DUNGEONS OF KREMLIN', white, height=16)
         p.press(5)
         p.press(8)
         assert p.ui()['state'] == 3

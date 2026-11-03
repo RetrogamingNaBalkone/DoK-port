@@ -9,7 +9,12 @@ for _layout_dir in ("scripts", "tools/originals", "tools/reports", "ports/gba/sc
 from pathlib import Path
 
 COPY = {
- "ui_title": ["ПОДЗЕМЕЛЬЯ КРЕМЛЯ", "KREMLIN DUNGEONS"],
+ "ui_retry_title": ["ПОПРОБУЙ СНОВА", "TRY AGAIN"],
+ "ui_retry_left": [["Осталась 1 попытка", "Осталось 2 попытки"], ["1 attempt left", "2 attempts left"]],
+ "ui_retry_hint": ["A: ПРОДОЛЖИТЬ  B: В МЕНЮ", "A: CONTINUE  B: MENU"],
+ "ui_gameover_title": ["ИГРА ОКОНЧЕНА", "GAME OVER"],
+ "ui_gameover_hint": ["A: В МЕНЮ", "A: MENU"],
+ "ui_title": ["ПОДЗЕМЕЛЬЯ КРЕМЛЯ", "DUNGEONS OF KREMLIN"],
  "ui_start": ["НАЧАТЬ ИГРУ", "START GAME"],
  "ui_story": ["ПРЕДЫСТОРИЯ", "STORY"],
  "ui_about": ["ОБ АВТОРАХ", "CREDITS"],

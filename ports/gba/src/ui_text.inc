@@ -1,5 +1,10 @@
 /* GBA menu copy, CP866. Original notification copy stays in ROM textpool. */
-static const char *const ui_title[2]={"\217\216\204\207\205\214\205\213\234\237 \212\220\205\214\213\237","KREMLIN DUNGEONS"};
+static const char *const ui_retry_title[2]={"\217\216\217\220\216\201\223\211 \221\215\216\202\200","TRY AGAIN"};
+static const char *const ui_retry_left[2][2]={{"\216\341\342\240\253\240\341\354 1 \257\256\257\353\342\252\240","\216\341\342\240\253\256\341\354 2 \257\256\257\353\342\252\250"},{"1 attempt left","2 attempts left"}};
+static const char *const ui_retry_hint[2]={"A: \217\220\216\204\216\213\206\210\222\234  B: \202 \214\205\215\236","A: CONTINUE  B: MENU"};
+static const char *const ui_gameover_title[2]={"\210\203\220\200 \216\212\216\215\227\205\215\200","GAME OVER"};
+static const char *const ui_gameover_hint[2]={"A: \202 \214\205\215\236","A: MENU"};
+static const char *const ui_title[2]={"\217\216\204\207\205\214\205\213\234\237 \212\220\205\214\213\237","DUNGEONS OF KREMLIN"};
 static const char *const ui_start[2]={"\215\200\227\200\222\234 \210\203\220\223","START GAME"};
 static const char *const ui_story[2]={"\217\220\205\204\233\221\222\216\220\210\237","STORY"};
 static const char *const ui_about[2]={"\216\201 \200\202\222\216\220\200\225","CREDITS"};

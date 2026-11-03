@@ -1,0 +1,30 @@
+{
+  "release": "gba-1.0",
+  "title": "Подземелья Кремля 1.0",
+  "date": "2026-11-03",
+  "archive": {
+    "path": "artifacts/gba/releases/gba-1.0/Dungeons.of.Kremlin.1.0.zip",
+    "bytes": 5603583,
+    "sha256": "7cd03eec74cd24582a321b3f4b7551c89512ad55ad5b0e08808a3f189e5099c6",
+    "contents": [
+      "Dungeons.of.Kremlin.1.0.gba",
+      "README.md",
+      "SHA256SUMS.txt"
+    ],
+    "crc_verified": true,
+    "extracted_rom_exact": true
+  },
+  "rom": {
+    "name": "Dungeons.of.Kremlin.1.0.gba",
+    "bytes": 26649580,
+    "sha256": "de2387429e623b8fb6e47edede5f10164a8581a04fa3aa062f4a17ff42f43550",
+    "source": "artifacts/gba/DoK-port_UI04.gba"
+  },
+  "source_tag": "gba-1.0",
+  "build_manifest": "build/gba/ui04-title/frontend-build.json",
+  "verified_source_hashes": true,
+  "ui_report": "build/gba/ui04-title/ui.json",
+  "prior_flow_frontend_reports": "analysis/gba/ui03-attempts-20261103.json",
+  "physical_gba_tested": false,
+  "release_authorized_by_user": true
+}

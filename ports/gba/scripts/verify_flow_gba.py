@@ -56,6 +56,33 @@ def screen_lines(data):
 class FlowProbe(UIProbe):
     preserve_title = True
 
+    def attempts_screen(self, remaining, language):
+        data, _ = original_animations(language)
+        raw, palette = self.frame()
+        _, foreground = ui_colors(palette)
+        heading = ('TRY AGAIN' if remaining else 'GAME OVER') if language else ('ПОПРОБУЙ СНОВА' if remaining else 'ИГРА ОКОНЧЕНА')
+        heading = heading.encode('cp866')
+        y = 52 if remaining else 64
+        x = (240-len(heading)*8)//2
+        glyph_mask(raw, data[b'FONT16'.hex()], x, y, heading, foreground, height=16)
+        occupied = set()
+        for row in range(y,y+16):
+            occupied.update(range(row*240+x,row*240+x+len(heading)*8))
+        if remaining:
+            left = (f'{remaining} attempt'+('s' if remaining!=1 else '')+' left') if language else ('Осталась 1 попытка' if remaining==1 else 'Осталось 2 попытки')
+            left = left.encode('cp866')
+            x = (240-len(left)*8)//2
+            glyph_mask(raw, data[b'FONT8'.hex()], x, 80, left, foreground)
+            for row in range(80,88):
+                occupied.update(range(row*240+x,row*240+x+len(left)*8))
+        # No duplicate message or other foreground text in the body.
+        assert all(raw[row*240+col]!=foreground for row in range(3,145) for col in range(3,237) if row*240+col not in occupied)
+        hint = ('A: CONTINUE  B: MENU' if remaining else 'A: MENU') if language else ('A: ПРОДОЛЖИТЬ  B: В МЕНЮ' if remaining else 'A: В МЕНЮ')
+        message_mask(raw, data[b'FONT8'.hex()], hint.encode('cp866'), foreground)
+        # The footer has no page count, including to the right of the hint.
+        assert self.flow()['page']==0 and self.flow()['pages']==1
+        return self.screen(f'ui03-attempts-{language}-{remaining}')
+
     def flow(self):
         result = dict(zip(FLOW_NAMES, self.words('g_flow_diag', len(FLOW_NAMES))))
         assert result['magic'] == 0x464c3138 and result['errors'] == 0, result
@@ -303,7 +330,7 @@ def main():
                     assert ItemsProbe.command(p, 1, 0, -100) == 1
                     p.wait_flow(3)
                     assert p.player()[16] == 2 and p.player()[0] == 0
-                    ui_screens[f'retry_{language}']=p.screen(f'flow-retry-{language}')
+                    ui_screens[f'retry_{language}']=p.attempts_screen(2,language)
                     p.press(8)
                     p.wait_flow(2)
                     after = p.player()
@@ -328,6 +355,12 @@ def main():
                                         original_pose_subset_restored=True, other_actor_fields_preserved=True,
                                         ai_visual_door_events_preserved=True, projectiles_preserved=True,
                                         existing_sound_preserved_by_busy_death_voice=True))
+                    # Continue in Pause after retry must resume play, not the
+                    # previous death screen retained by the old resume value.
+                    p.press(2,3)
+                    assert p.ui()['state']==2
+                    p.press(8)
+                    p.wait_flow(2)
                 # Counterfactual score guard is tested separately from actual
                 # PKR gameplay: its real score and total are both zero.
                 if level == 0:
@@ -352,19 +385,32 @@ def main():
             p.wait_flow(0)
         # Exhaust the original three lives via real damage; every new game is
         # a fresh world and restores three lives after Game Over.
-        p.new_game(0, 1)
-        p.source_screens('BINTRO1', 1, screens)
-        p.wait_flow(2)
         from verify_items_gba import ItemsProbe
-        for remaining in (2,1,0):
-            hp = p.player()[0]
-            assert ItemsProbe.command(p,1,0,-hp) == 1
-            p.wait_flow(3 if remaining else 6)
-            assert p.player()[16] == remaining
-            if not remaining:
-                ui_screens['gameover_en']=p.screen('flow-gameover-en')
-            p.press(8)
-            p.wait_flow(2 if remaining else 0)
+        for language in (0,1):
+            p.new_game(0, language)
+            p.source_screens('BINTRO1', language, screens)
+            p.wait_flow(2)
+            for remaining in (2,1,0):
+                hp = p.player()[0]
+                assert ItemsProbe.command(p,1,0,-hp) == 1
+                p.wait_flow(3 if remaining else 6)
+                assert p.player()[16] == remaining
+                ui_screens[f'attempts_{language}_{remaining}']=p.attempts_screen(remaining,language)
+                p.press(2) # Select changes only presentation, including singular copy.
+                p.attempts_screen(remaining,1-language)
+                assert p.player()[16]==remaining
+                p.press(2)
+                p.press(0 if not remaining and language else 3 if remaining==1 else 8)
+                p.wait_flow(2 if remaining else 0)
+        # B from retry opens the title; selecting a level creates a fresh game.
+        p.new_game(0,0)
+        p.source_screens('BINTRO1',0,screens)
+        p.wait_flow(2)
+        assert ItemsProbe.command(p,1,0,-p.player()[0])==1
+        p.wait_flow(3)
+        p.press(0)
+        p.wait_flow(0)
+        assert p.ui()['state']==1
         p.new_game(2,0)
         p.source_screens('BINTRO3',0,screens)
         p.wait_flow(2)
@@ -417,6 +463,10 @@ def main():
         assert sha(p.rom) == p.metadata['rom_sha256'], 'ROM changed during verification'
         report = dict(task='G18',status='passed',rom_sha256=sha(p.rom),script_sha256=sha(__file__),
                       levels=levels,retries=retries,screens=screens,ui_screens=ui_screens,gameover_three_lives=True,
+                      ui03_attempts=dict(locales=['ru','en'],remaining=[2,1,0],source_font_pixels=True,
+                                         no_duplicate_body_or_page_counter=True,select_preserved_lives=True,
+                                         a_and_start_retry=True,b_to_title=True,
+                                         pause_after_retry_and_new_game_resumes_play=True),
                       new_game_after_gameover=True,credits_from_title=True,
                       pause_continue_preserved_world_events_projectiles=True,
                       credits_preserved_suspended_world_events_projectiles=True,

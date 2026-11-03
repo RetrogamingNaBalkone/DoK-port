@@ -1,0 +1,90 @@
+{
+  "task": "UI03",
+  "date": "2026-11-03",
+  "status": "passed",
+  "variant": "g22_split_active",
+  "rom": {
+    "path": "artifacts/gba/DoK-port_UI03.gba",
+    "bytes": 26649576,
+    "sha256": "33c346bb44199129f37a581564815d58da0c17d5cbbba32f63e23ef904369a21"
+  },
+  "build_manifest": {
+    "path": "build/gba/ui03-attempts/frontend-build.json",
+    "sha256": "ed96a01b8c9b401fbecac807bc8d78b9a02f16f85a7a971617e311c7cbec8618"
+  },
+  "reports": {
+    "flow": {
+      "full_report": {
+        "path": "build/gba/ui03-attempts/flow.json",
+        "sha256": "06e0f96bc19ac7b403246b6f4e7b6768b4bd39d1458033249dff6452801bea1d",
+        "bytes": 28496
+      },
+      "status": "passed"
+    },
+    "frontend": {
+      "full_report": {
+        "path": "build/gba/ui03-attempts/frontend.json",
+        "sha256": "c56e122541ef0fbde4695fcdaea3fc50ff865bfdab55366eaed0b4611a4b58a0",
+        "bytes": 3694
+      },
+      "status": "passed"
+    }
+  },
+  "checks": {
+    "locales": [
+      "ru",
+      "en"
+    ],
+    "remaining": [
+      2,
+      1,
+      0
+    ],
+    "source_font_pixels": true,
+    "no_duplicate_body_or_page_counter": true,
+    "select_preserved_lives": true,
+    "a_and_start_retry": true,
+    "b_to_title": true,
+    "pause_after_retry_and_new_game_resumes_play": true
+  },
+  "worlds_checked": 6,
+  "retry_world_inventory_scheduler_projectiles_preserved": true,
+  "host_executed": true,
+  "linux_compiled_only": true,
+  "thumb_compiled": true,
+  "stack": {
+    "main_stack_low": 50356224,
+    "main_stack_top": 50364160,
+    "sentinel_word": 219540062,
+    "untouched_margin_bytes": 5352,
+    "high_water_bytes": 2584,
+    "irq_and_bios_excluded": true,
+    "scope": "observed G05/G06 startup/time-vectors/render/switch/reset paths"
+  },
+  "frontend_music": {
+    "wav": "build/gba/ui03-attempts/hardware/g22_split_active/audio-check/ui01-menu-two-loops.wav",
+    "sha256": "2100cc16923393d659b613e6058a5454398ba7f1d9d7cb27e682d4d5fd5b97b9",
+    "seconds": 86.17718505859375,
+    "loops": 2,
+    "starts": 1,
+    "underruns": 0,
+    "max_irq_gap": 411,
+    "repeat_correlation": 0.9939517782489723,
+    "stereo_channels_equal": true,
+    "stop_before_intro": true,
+    "no_menu_music_in_pause": true,
+    "restart_on_return": true
+  },
+  "screenshots": {
+    "artifacts/gba/DoK-port_UI03-attempts-en-0.png": "b549d2d35c3318e359172376fc79274a01f5696122dd9ad70da070f6d060e847",
+    "artifacts/gba/DoK-port_UI03-attempts-en-1.png": "6aecbb3ae7a0674d8ce1f33ac9d2a5b9362262a19a31513196aeb4a4d64abc67",
+    "artifacts/gba/DoK-port_UI03-attempts-en-2.png": "0a44d00aa64eb8631afc489421c701766e1058293acd6a3921c6d848b46d3bc8",
+    "artifacts/gba/DoK-port_UI03-attempts-ru-0.png": "0211cd274a442d3204d503dcf81801cb662433af112c29f808cab80e21dc7133",
+    "artifacts/gba/DoK-port_UI03-attempts-ru-1.png": "3b7f7132ce80124293aff2a225ac1f65e28c70ad65c3e3011184c8cab24de9da",
+    "artifacts/gba/DoK-port_UI03-attempts-ru-2.png": "d88b01e55e406f7d89b4d83ffa766f9704d6b75da9d63ca18b8f9b66e15cd976"
+  },
+  "physical_gba_tested": false,
+  "full_game_playthrough": false,
+  "published_release_changed": false,
+  "summary_generator": "tools/reports/summarize_reports.py:summary"
+}
