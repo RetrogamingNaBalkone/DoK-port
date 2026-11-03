@@ -1,5 +1,6 @@
 #include "effects_runtime.h"
 #include "gameplay.h"
+#include "animation_clock.h"
 #include <string.h>
 #include <stddef.h>
 #if defined(ARM9)
@@ -81,7 +82,9 @@ dok_status nds_effects_load(NdsEffectsRuntime *r,dok_render_world *world,dok_spr
             if(!m)continue;
             r->material_water[m-1u]=1;r->material_flags[m-1u]=world->bindings[glyph].images[DOK_GEOMETRY_FLOOR].flags;
             r->water[glyph]=(dok_water_state){18,0,1};
+#if !GAMEPLAY_FRONTEND
             if(dok_events_register(&r->scheduler,world->initial.objects[i].reference,4)!=DOK_STATUS_OK)return DOK_STATUS_INVALID_STATE;
+#endif
         } else if((o->class_id==3u || o->class_id==6u || o->class_id==10u) && (o->flags&0x0800u)) {
             if(dok_presentation_get(&world->presentation,(uint8_t)glyph,DOK_PRESENT_ANIMATION,&value)!=DOK_BALANCE_OK)return DOK_STATUS_INVALID_STATE;
             for(uint32_t a=0;a<sprites->animation_count;++a)if(sprites->animations[a]==value.asset_id) {
@@ -100,6 +103,16 @@ dok_status nds_effects_begin(NdsEffectsRuntime *r)
     if(!r)return DOK_STATUS_INVALID_ARGUMENT;
     if(!EFFECT_REAL_CLOCK)r->fixture_ticks+=166u; /* Explicit deterministic source-time fixture, never a claim about render FPS. */
     if(dok_events_dispatch(&r->scheduler,&report)!=DOK_STATUS_OK || r->fault)return DOK_STATUS_INVALID_STATE;
+#if GAMEPLAY_FRONTEND
+    /* Continuous18-phase water,60 phases/s. Getter/cancellation boundaries
+     * must not insert extra held frames at the end of every cycle. */
+    uint32_t now;
+    if(read_ticks(r,&now)!=DOK_STATUS_OK)return DOK_STATUS_INVALID_STATE;
+    r->water_phase=(r->water_phase+nds_animation_steps(now-r->water_ticks,60u,&r->water_fraction))%18u;
+    r->water_ticks=now;
+    for(uint32_t m=0;m<DOK_RENDER_MATERIALS;++m)
+        if(r->material_water[m])r->material_phase[m]=(uint16_t)r->water_phase;
+#endif
     return DOK_STATUS_OK;
 }
 dok_status nds_effects_arm_bounds(NdsEffectsRuntime *r,const dok_render_gather_bounds *bounds,const dok_sprite_list *sprites)
@@ -117,6 +130,11 @@ dok_status nds_effects_arm_bounds(NdsEffectsRuntime *r,const dok_render_gather_b
             if(!t || r->world->effective.objects[t-1u].class_id==2u)continue;
             uint32_t glyph=r->world->initial.maps[DOK_WORLD_FCMAP][cell];uint32_t index=r->world->initial.glyph_index[glyph],arm;
             if(!index || r->world->effective.objects[index-1u].class_id!=12u)continue;
+#if GAMEPLAY_FRONTEND
+            /* Production water is driven once by world time in begin(). */
+            (void)arm;
+            continue;
+#endif
             /* No callback dispatch occurs inside this builder sweep. First
              * getter resets18 to0 even on a capacity refusal; subsequent
              * getters of that glyph cannot rearm. Preserve first-call order. */

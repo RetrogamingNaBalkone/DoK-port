@@ -61,6 +61,17 @@ IndexedSurface Hud::classic(const IndexedSurface& scene,const PlayerState& p,con
     for(int i=0;i<2;++i)if(p.weapons[i+1])image(out,weapons_[i],i?263:150,177,41,18);
     return out;
 }
+IndexedSurface Hud::classic_mode(const IndexedSurface& scene,int frame_height,const PlayerState& p,const std::string& message)const{
+    if(scene.width()==320&&frame_height==200)return classic(scene,p,message);
+    IndexedSurface out(scene.width(),frame_height);
+    std::copy(scene.pixels.begin(),scene.pixels.end(),out.pixels.begin());
+    // Keep the accepted classic layout; only its panel is scaled, never the rendered world.
+    const auto panel=classic(IndexedSurface(320,160),p,message);
+    const int start=frame_height-int(39.0f*(float(frame_height)/200));
+    for(int y=start;y<frame_height;++y)for(int x=0;x<out.width();++x)
+        out.pixels[y*out.width()+x]=panel.pixels[(161+(y-start)*39/(frame_height-start))*320+x*320/out.width()];
+    return out;
+}
 std::vector<HudPanel> Hud::overlay(IndexedSurface& s,const PlayerState& p,const std::string& message)const{
     if(s.width()<160||s.height()<160)throw std::invalid_argument("Overlay HUD requires at least160x160");
     const int key_height=p.keys()?18:0;

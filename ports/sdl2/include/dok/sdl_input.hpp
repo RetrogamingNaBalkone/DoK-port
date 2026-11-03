@@ -6,11 +6,19 @@
 
 namespace dok {
 enum class Action : unsigned {forward,backward,strafe_left,strafe_right,turn_left,turn_right,
-    fire,use,map,pause,run,slow,next_weapon,previous_weapon,quicksave,quickload,count};
+    fire,use,map,pause,run,slow,next_weapon,previous_weapon,quicksave,quickload,strafe_modifier,weapon1,weapon2,count};
+enum class InputPreset { modern, classic, custom };
 struct InputBindings {
     std::array<std::array<SDL_Scancode,2>,static_cast<unsigned>(Action::count)> keys{};
     std::array<SDL_GameControllerButton,static_cast<unsigned>(Action::count)> buttons{};
+    std::array<SDL_GameControllerAxis,static_cast<unsigned>(Action::count)> triggers{};
+    std::array<unsigned,static_cast<unsigned>(Action::count)> mouse{};
     float stick_deadzone=0.18f,mouse_degrees_per_count=0.15f;
+    float turn_sensitivity=1.0f;
+    bool classic_pad=false;
+    InputPreset keyboard_preset=InputPreset::modern,pad_preset=InputPreset::modern;
+    void keyboard(InputPreset preset);
+    void gamepad(InputPreset preset);
     static InputBindings defaults();
 };
 class SdlInput {
@@ -22,6 +30,7 @@ public:
     void handle(const SDL_Event& event);
     InputActions sample();
     bool capture_mouse(bool enabled);
+    void clear();
     InputBindings bindings;
     std::size_t controller_count() const noexcept {return controllers_.size();}
 private:
@@ -34,7 +43,8 @@ private:
     std::map<SDL_JoystickID,Controller> controllers_;
     std::array<bool,SDL_NUM_SCANCODES> keys_{};
     std::array<bool,static_cast<unsigned>(Action::count)> previous_{};
-    bool focused_=true,capture_=false,mouse_fire_=false;
+    bool focused_=true,capture_=false;
+    std::array<bool,6> mouse_buttons_{};
     float mouse_x_=0;
 };
 } // namespace dok

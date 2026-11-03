@@ -15,6 +15,8 @@ class SoftwareScene {
 public:
     using Draw=std::function<void(const std::vector<RasterVertex>&,const Image&,Bytes,RasterAxis)>;
     SoftwareScene(const Archive& archive,const LevelDefinition& level);
+    void software_resolution(int width,int height);
+    int frame_height() const {return frame_height_;}
     const IndexedSurface& render(const World& world,Pose pose,const std::vector<PositionedImage>& dynamic={},
         const Draw& gpu={},int view_width=320,std::array<double,4> camera_offset={});
     const std::array<std::uint32_t,256>& palette() const noexcept {return palette_;}
@@ -31,6 +33,8 @@ private:
     std::vector<std::uint8_t> light_;
     std::array<std::uint32_t,256> palette_{};
     IndexedSurface surface_{320,160};
+    CameraParameters software_camera_=CameraParameters::kremlin_vga();
+    int frame_height_=200;
     std::size_t polygon_count_=0;
 };
 } // namespace dok

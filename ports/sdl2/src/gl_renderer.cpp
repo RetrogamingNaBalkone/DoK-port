@@ -106,7 +106,7 @@ void main(){
     SDL_GL_SetSwapInterval(1);
 }
 GlRenderer::~GlRenderer()=default;
-void GlRenderer::begin(){auto& g=*impl_;SDL_GL_GetDrawableSize(g.window,&g.width,&g.height);g.height=std::max(1,g.height);
+void GlRenderer::begin(){auto& g=*impl_;SDL_GL_MakeCurrent(g.window,g.context);SDL_GL_GetDrawableSize(g.window,&g.width,&g.height);g.height=std::max(1,g.height);
     g.virtual_width=std::clamp(int(192.0*g.width/g.height+0.5),160,1200);
     g.Viewport(0,0,g.width,g.height);g.Disable(GL_DEPTH_TEST);g.Disable(GL_CULL_FACE);g.Disable(GL_BLEND);g.ClearColor(0,0,0,1);g.Clear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);}
 int GlRenderer::view_width()const{return impl_->virtual_width;}

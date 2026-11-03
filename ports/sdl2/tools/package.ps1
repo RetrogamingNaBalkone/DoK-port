@@ -10,6 +10,8 @@ foreach ($name in @('dok_port.exe','SDL2.dll')) {
 }
 Copy-Item -LiteralPath (Join-Path $taskRoot 'ports/sdl2/PLAYTEST.md') -Destination (Join-Path $taskOut 'README.md') -Force
 Copy-Item -LiteralPath (Join-Path $env:LOCALAPPDATA 'Programs/SDL2/SDL2-2.32.10/LICENSE.txt') -Destination (Join-Path $taskOut 'SDL2-LICENSE.txt') -Force
+$launcher = '@echo off' + "`r`n" + '"%~dp0dok_port.exe" %*' + "`r`n"
+[IO.File]::WriteAllText((Join-Path $taskOut 'Play.cmd'), $launcher, [Text.Encoding]::ASCII)
 foreach ($mode in @('OpenGL','Software')) {
     $backend = if ($mode -eq 'OpenGL') {'gl'} else {'software'}
     $launcher = '@echo off' + "`r`n" + '"%~dp0dok_port.exe" --renderer ' + $backend + ' %*' + "`r`n"

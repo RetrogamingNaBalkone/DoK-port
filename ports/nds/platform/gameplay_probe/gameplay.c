@@ -187,6 +187,34 @@ static dok_status hero_service(NdsGameplay *g,NdsEffectsRuntime *r)
     g->started=1;++g->hero_callbacks;return DOK_STATUS_OK;
 }
 #include "dok/n23_profile.h"
+#include "animation_clock.h"
+#if GAMEPLAY_FRONTEND
+static dok_status timed_door(NdsGameplay *g,NdsEffectsRuntime *r,dok_object_ref owner,uint16_t kind)
+{
+    dok_status s;
+    const dok_world_object_seed *seed=NULL;
+    for(uint32_t i=0;i<g->items.world->object_count;++i)
+        if(g->items.world->objects[i].reference.object_id==owner.object_id){seed=&g->items.world->objects[i];break;}
+    if(!seed)return DOK_STATUS_STALE_REFERENCE;
+    uint32_t glyph=g->items.world->definition->objects[seed->definition_index].glyph,now;
+    dok_interaction_door *d=&g->interactions.doors[glyph];
+    DO(r->scheduler._config.read_ticks(r->scheduler._config.clock_context,&now));
+    uint32_t steps=1;
+    if(r->door_kind[glyph]==kind&&!d->ready){
+        steps=nds_animation_steps(now-r->door_ticks[glyph],(uint32_t)d->extent,&r->door_fraction[glyph]);
+        /* At most one complete traversal after a long frame. Core callbacks
+         * still own collision flags, sounds, occupancy and cancellation. */
+        if(steps>(uint32_t)d->extent+1u)steps=(uint32_t)d->extent+1u;
+    }else r->door_fraction[glyph]=0;
+    r->door_ticks[glyph]=now;r->door_kind[glyph]=kind;
+    while(steps--){
+        DO(dok_interactions_callback(&g->interactions,owner,kind));
+        if(d->ready)break;
+    }
+    if(d->ready)r->door_kind[glyph]=0;
+    return DOK_STATUS_OK;
+}
+#endif
 dok_status nds_gameplay_callback(NdsGameplay *g,NdsEffectsRuntime *r,dok_object_ref owner,uint16_t kind,uint32_t parameter)
 {
     dok_status s;
@@ -199,6 +227,9 @@ dok_status nds_gameplay_callback(NdsGameplay *g,NdsEffectsRuntime *r,dok_object_
     if(kind==HERO_CALLBACK)s=hero_service(g,r);
     else if(kind==DOK_AI_CALLBACK)s=dok_ai_callback(&g->ai,owner,kind);
     else if(kind>=DOK_COMBAT_PROJECTILE&&kind<=DOK_COMBAT_SWITCH)s=dok_combat_callback(&g->combat,owner,kind,parameter);
+#if GAMEPLAY_FRONTEND
+    else if(kind==DOK_INTERACTION_OPEN||kind==DOK_INTERACTION_CLOSE)s=timed_door(g,r,owner,kind);
+#endif
     else s=dok_interactions_callback(&g->interactions,owner,kind);
 #if defined(ARM9)
     uint32_t dt=cpuGetTiming()-start;g->callback_ticks+=dt;

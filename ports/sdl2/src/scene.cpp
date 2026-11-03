@@ -85,6 +85,18 @@ SoftwareScene::SoftwareScene(const Archive& archive,const LevelDefinition& level
     palette_=archive.palette(level.palette);
 }
 std::size_t SoftwareScene::resource(const std::string& name)const{return names_.at(name);}
+void SoftwareScene::software_resolution(int width,int height){
+    if(!((width==320&&height==200)||(width==640&&(height==400||height==480))||(width==800&&height==600)||(width==1024&&height==768)))
+        throw std::invalid_argument("Not an original software video mode");
+    // PKR 1008:0b8b..0b9f: K = trunc(4096 * horizontal scale).
+    // 1008:0cf0..0d18: viewport height = screen height - trunc(panel height * vertical scale).
+    const int height_argument=int(float(height)-39.0f*(float(height)/200.0f));
+    software_camera_={static_cast<std::int16_t>(width),static_cast<std::int16_t>(height_argument),8,
+        static_cast<std::int16_t>(4096.0f*(float(width)/320.0f)),200};
+    const int scene_height=(height_argument/2)*2;
+    if(surface_.width()!=width||surface_.height()!=scene_height)surface_=IndexedSurface(width,scene_height);
+    frame_height_=height;
+}
 const IndexedSurface& SoftwareScene::render(const World& world,Pose pose,const std::vector<PositionedImage>& dynamic,const Draw& gpu,int view_width,std::array<double,4> camera_offset){
     const auto& level=world.definition;const auto side=level.cell_side;
     if(dataset_!=level.dataset||level_name_!=level.name||object_images_.size()!=level.objects.size())
@@ -95,7 +107,7 @@ const IndexedSurface& SoftwareScene::render(const World& world,Pose pose,const s
         images_[object_images_[entry.first]]=door_image(entry.second,*world.objects.at(entry.first).door);
     for(const auto& entry:flowing_sources_)
         images_[object_images_[entry.first]]=flowing_surface_image(entry.second,world.simulation_ticks());
-    auto parameters=CameraParameters::kremlin_vga();if(gpu)parameters.width=static_cast<std::int16_t>(view_width);
+    auto parameters=gpu?CameraParameters::kremlin_vga():software_camera_;if(gpu)parameters.width=static_cast<std::int16_t>(view_width);
     SoftwareCamera camera(parameters);camera.set_pose(pose);
     const auto& hero=world.objects.at(*world.player);
     const GpuCamera precise_camera(pose,view_width,hero.motion?hero.motion->mouse_remainder:0,camera_offset);

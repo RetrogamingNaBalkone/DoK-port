@@ -1,0 +1,97 @@
+{
+  "task": "N23",
+  "date": "2026-11-03",
+  "passed": true,
+  "package": {
+    "path": "artifacts/nds/dok.nds",
+    "bytes": 10168832,
+    "sha256": "6271c50db8183fc9f897d1bd38bd1afff00d36193c2966e957563923a8cf220f"
+  },
+  "host_checks": 4453,
+  "core_regression_checks": 101,
+  "animation": {
+    "water_samples": 240,
+    "distinct_phases": 18,
+    "pause_frozen": true,
+    "fps_counter": [
+      1,
+      42239,
+      670,
+      4,
+      598
+    ],
+    "lcd_fps_tile_colors": 2
+  },
+  "route": {
+    "level": 2,
+    "cells": 100,
+    "video_frames": 2144,
+    "door_openings": [
+      {
+        "glyph": 103,
+        "start_frame": 622,
+        "start_ticks": 29171,
+        "first_phase": 1,
+        "extent": 58,
+        "c2": 58,
+        "end_frame": 683,
+        "end_ticks": 39394,
+        "duration_ticks": 10223
+      }
+    ],
+    "metrics": {
+      "intervals": 1225,
+      "histogram": {
+        "1": 805,
+        "2": 420
+      },
+      "virtual_fps": 44.551349788996355,
+      "median": 1,
+      "p95": 2,
+      "p99": 2,
+      "max": 2,
+      "fraction_over_one": 0.34285714285714286,
+      "fraction_over_two": 0.0,
+      "refresh_hz": 59.82609828808083,
+      "checked_one_second_windows": 720,
+      "scope": "Every product PRESENTED interval without LOADING/WARMUP/DIAGNOSTIC/SYNC flags, independent of observer phase; timestamp gaps separate UI reading time",
+      "minimum_window_cadence_fps": 29.913049144040414,
+      "minimum_new_frames_in_one_second": 29,
+      "budget_passed": true,
+      "missing_profiles": []
+    }
+  },
+  "live_levels": [
+    1,
+    2,
+    3
+  ],
+  "evidence": [
+    {
+      "path": "research/evidence/nds/n23/animation-20261103/host.json",
+      "bytes": 1496,
+      "sha256": "3b5a45a770a3bf8cd9433f43e3254353ce3557403b4560770fab0fc48ee35246"
+    },
+    {
+      "path": "research/evidence/nds/n23/animation-20261103/animation.json",
+      "bytes": 25360,
+      "sha256": "5a4730e71b03cafce2745747d98b865019acd2e44fa890a712b3cb11cfb13fb8"
+    },
+    {
+      "path": "research/evidence/nds/n23/animation-20261103/route.json",
+      "bytes": 1150546,
+      "sha256": "153b934f09aaddb61bbfee03260df3650252a1597d456e4ac16ba11af2528290"
+    },
+    {
+      "path": "research/evidence/nds/n23/animation-20261103/live.json",
+      "bytes": 3241494,
+      "sha256": "f68e95d31c3f95674fcdab2de5cbe668f4c1af12a8ade0f8cc7ec84a13867016"
+    }
+  ],
+  "limitations": [
+    "Physical DS and DraStic untested",
+    "Bounded regressions, not full N23 acceptance",
+    "Door and water timing are documented NDS adaptations of frame-dependent DOS behavior"
+  ],
+  "next_task": "N23"
+}

@@ -114,7 +114,6 @@ HudFrame Hud::desktop(int width,const PlayerState& p,const std::array<std::uint3
             const auto edge=(unsigned(180*back)<<24)|0xb49a66;
             out.rect(x+2,y,80,1,edge);out.rect(x+84,y+2,1,35,edge);
         }
-        out.text(x+4,y+3,std::to_string(slot),1,(alpha<<24)|(amber&0xffffff));
         if(front)out.rect(x+3,y+40,78,2,0xffb49a66);
     };
     if(active){card(active==1?2:1,false);card(active,true);}

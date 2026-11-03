@@ -8,250 +8,168 @@
 #include "dok/monsters.hpp"
 #include "dok/flow.hpp"
 #include "dok/hud.hpp"
-#include "dok/text.hpp"
 #include "dok/sdl_audio.hpp"
-#include "dok/gl_renderer.hpp"
-#include "dok/png.hpp"
+#include "dok/display.hpp"
+#include "dok/frontend.hpp"
 #include "dok/view_motion.hpp"
 #include "dok/cheat.hpp"
 #include <chrono>
-#include <SDL.h>
 #include <algorithm>
 #include <fstream>
 #include <iostream>
 #include <memory>
+#include <sstream>
 #include <stdexcept>
 
 namespace {
-struct SdlEnd { ~SdlEnd(){SDL_Quit();} };
-template<class T, void(*Destroy)(T*)> using SdlPtr=std::unique_ptr<T,decltype(Destroy)>;
-struct Loaded {std::filesystem::path path; dok::Archive archive;};
+struct SdlEnd {~SdlEnd(){SDL_Quit();}};
+struct Loaded {std::filesystem::path path;dok::Archive archive;};
+struct ScriptEvent {unsigned frame;std::string action,value;};
 }
-int main(int argc,char** argv) {
-    SDL_SetMainReady();
-    if(SDL_Init(SDL_INIT_VIDEO|SDL_INIT_GAMECONTROLLER|SDL_INIT_AUDIO)!=0){std::cerr<<SDL_GetError()<<'\n';return 1;}
-    SdlEnd end;
-    try {
-        unsigned frame_limit=0;std::string screenshot,level_name;std::vector<std::string> paths;bool skip_intro=false,use_gl=true,linear_filter=false;int window_width=1280,window_height=720;
-        for(int i=1;i<argc;++i) {
-            std::string arg=argv[i];
-            if(arg=="--res" && i+1<argc) paths.push_back(argv[++i]);
-            else if(arg=="--frames" && i+1<argc) frame_limit=static_cast<unsigned>(std::stoul(argv[++i]));
-            else if(arg=="--screenshot" && i+1<argc) screenshot=argv[++i];
-            else if(arg=="--level" && i+1<argc) level_name=argv[++i];
-            else if(arg=="--skip-intro")skip_intro=true;
-            else if(arg=="--filter"&&i+1<argc){const std::string filter=argv[++i];if(filter!="nearest"&&filter!="linear")throw std::runtime_error("Filter must be nearest or linear");linear_filter=filter=="linear";}
-            else if(arg=="--renderer"&&i+1<argc){const std::string mode=argv[++i];if(mode!="gl"&&mode!="software")throw std::runtime_error("Renderer must be gl or software");use_gl=mode=="gl";}
-            else if(arg=="--size"&&i+1<argc){const std::string size=argv[++i];const auto x=size.find('x');if(x==std::string::npos)throw std::runtime_error("Size must be WIDTHxHEIGHT");window_width=std::stoi(size.substr(0,x));window_height=std::stoi(size.substr(x+1));if(window_width<320||window_height<240)throw std::runtime_error("Window must be at least320x240");}
-            else throw std::runtime_error("Usage: dok_port [--res FILE]... [--level LEVEL1..4] [--renderer gl|software] [--filter nearest|linear] [--size WIDTHxHEIGHT] [--skip-intro] [--frames N] [--screenshot FILE.bmp|FILE.png]");
+int main(int argc,char** argv){
+    SDL_SetMainReady();if(SDL_Init(SDL_INIT_VIDEO|SDL_INIT_GAMECONTROLLER|SDL_INIT_AUDIO)!=0){std::cerr<<SDL_GetError()<<'\n';return 1;}SdlEnd sdl;
+    try{
+        char* pref=SDL_GetPrefPath("DoK-port","SourcePort");if(!pref)throw std::runtime_error(SDL_GetError());
+        std::filesystem::path user_path=std::filesystem::u8path(pref);SDL_free(pref);
+        for(int i=1;i+1<argc;++i)if(std::string(argv[i])=="--user-dir")user_path=std::filesystem::u8path(argv[++i]);
+        std::filesystem::create_directories(user_path);std::ofstream log(user_path/"port.log");
+        std::string warning;auto stored=dok::load_settings(user_path/"settings.ini",warning);auto settings=stored;
+        unsigned frame_limit=0;std::string screenshot,level_name,script_path;std::vector<std::string> paths;bool skip_intro=false;
+        for(int i=1;i<argc;++i){std::string arg=argv[i];
+            auto value=[&]()->std::string{if(i+1>=argc)throw std::runtime_error("Missing value for "+arg);return argv[++i];};
+            if(arg=="--res")paths.push_back(value());else if(arg=="--frames")frame_limit=std::stoul(value());
+            else if(arg=="--screenshot")screenshot=value();else if(arg=="--level")level_name=value();else if(arg=="--skip-intro")skip_intro=true;
+            else if(arg=="--user-dir")value();else if(arg=="--ui-script")script_path=value();
+            else if(arg=="--renderer"){const auto mode=value();if(mode!="gl"&&mode!="software")throw std::runtime_error("Renderer: gl|software");settings.video.renderer=mode=="gl"?dok::RendererKind::opengl:dok::RendererKind::software;}
+            else if(arg=="--filter"){const auto mode=value();if(mode!="nearest"&&mode!="linear")throw std::runtime_error("Filter: nearest|linear");settings.linear=mode=="linear";}
+            else if(arg=="--locale"){const auto lang=value();if(lang!="ru"&&lang!="en")throw std::runtime_error("Locale: ru|en");settings.locale=lang=="ru"?dok::LocaleId::ru:dok::LocaleId::en;}
+            else if(arg=="--size"||arg=="--software-mode"){
+                const auto size=value();const auto x=size.find('x');if(x==std::string::npos)throw std::runtime_error("Size: WIDTHxHEIGHT");
+                const int w=std::stoi(size.substr(0,x)),h=std::stoi(size.substr(x+1));if(w<320||h<200||w>7680||h>4320)throw std::runtime_error("Invalid window size");
+                if(arg=="--size"){settings.video.width=w;settings.video.height=h;}
+                else{int index=-1;for(int n=0;n<int(dok::software_modes.size());++n)if(dok::software_modes[n]==std::array<int,2>{w,h})index=n;
+                    if(index<0)throw std::runtime_error("Unsupported original software mode");settings.video.software_mode=index;}
+            }else throw std::runtime_error("Unknown option: "+arg);
         }
-        char* pref=SDL_GetPrefPath("DoK-port","SourcePort");
-        if(!pref)throw std::runtime_error(SDL_GetError());
-        auto user_path=std::filesystem::u8path(pref); SDL_free(pref);
-        std::ofstream log(user_path/"port.log");
-        log<<"SDL2 bootstrap; user directory: "<<user_path.u8string()<<'\n';
-        if(use_gl){SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION,2);SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION,0);SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER,1);SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE,24);}
-        SdlPtr<SDL_Window,SDL_DestroyWindow> window(SDL_CreateWindow("DoK Source Port",
-            SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED,window_width,window_height,SDL_WINDOW_RESIZABLE|SDL_WINDOW_ALLOW_HIGHDPI|(use_gl?SDL_WINDOW_OPENGL:0)),SDL_DestroyWindow);
-        if(!window) throw std::runtime_error(SDL_GetError());
-        std::unique_ptr<dok::GlRenderer> gl;
-        SdlPtr<SDL_Renderer,SDL_DestroyRenderer> renderer(nullptr,SDL_DestroyRenderer);
-        if(use_gl)gl=std::make_unique<dok::GlRenderer>(window.get());
-        else{renderer.reset(SDL_CreateRenderer(window.get(),-1,SDL_RENDERER_ACCELERATED|SDL_RENDERER_PRESENTVSYNC));
-            if(!renderer)renderer.reset(SDL_CreateRenderer(window.get(),-1,SDL_RENDERER_SOFTWARE));if(!renderer)throw std::runtime_error(SDL_GetError());}
-        SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY,"0");
-        if(renderer)SDL_RenderSetLogicalSize(renderer.get(),320,240);
-        SdlPtr<SDL_Texture,SDL_DestroyTexture> texture(nullptr,SDL_DestroyTexture);
-        std::vector<Loaded> sets;
-        auto load=[&](const std::string& path) {
-            try {
-                auto a=dok::Archive::open(std::filesystem::u8path(path));
-                if(a.identify()==dok::DatasetId::unknown)throw std::runtime_error("Unrecognized RES catalog: "+path);
-                for(const auto& s:sets)if(s.archive.identify()==a.identify())throw std::runtime_error("Dataset already loaded: "+path);
-                log<<"Loaded "<<dok::dataset_name(a.identify())<<": "<<path<<'\n';
-                sets.push_back({std::filesystem::u8path(path),std::move(a)});
-            }catch(const std::exception& e){log<<e.what()<<'\n';std::cerr<<e.what()<<'\n';SDL_SetWindowTitle(window.get(),e.what());}
-        };
-        if(paths.empty()){
-            char* base=SDL_GetBasePath();
-            if(base){const auto directory=std::filesystem::u8path(base);SDL_free(base);
-                for(const auto* name:{"PKR.RES","PKE.RES","OLD_GOLD.RES"})if(std::filesystem::exists(directory/name))paths.push_back((directory/name).u8string());
-            }
+        std::vector<ScriptEvent> script;
+        if(!script_path.empty()){std::ifstream f(std::filesystem::u8path(script_path));if(!f)throw std::runtime_error("Cannot read UI script");std::string line;
+            while(std::getline(f,line)){if(line.empty()||line[0]=='#')continue;std::istringstream in(line);ScriptEvent event{};in>>event.frame>>event.action;std::getline(in>>std::ws,event.value);script.push_back(event);}}
+        std::unique_ptr<dok::Display> display;
+        try{display=std::make_unique<dok::Display>(settings.video);}catch(const std::exception& e){
+            if(settings.video.renderer!=dok::RendererKind::opengl)throw;log<<"OpenGL fallback: "<<e.what()<<'\n';settings.video.renderer=dok::RendererKind::software;
+            display=std::make_unique<dok::Display>(settings.video);warning="OpenGL unavailable; software renderer selected.";
         }
+        SDL_ShowWindow(display->window());dok::SdlInput input(settings.input);dok::Frontend menu(settings);
+        std::vector<Loaded> sets;std::string resource_errors;
+        auto refresh_sets=[&]{std::vector<dok::FrontendDataset> items;for(auto& set:sets)items.push_back({&set.archive,set.path.filename().u8string()});menu.datasets(std::move(items),resource_errors);};
+        auto load=[&](const std::string& path){try{
+            auto a=dok::Archive::open(std::filesystem::u8path(path));if(a.identify()==dok::DatasetId::unknown)throw std::runtime_error("Unknown RES catalog");
+            for(const auto& set:sets)if(set.archive.identify()==a.identify())throw std::runtime_error("Dataset already loaded");
+            log<<"Loaded "<<dok::dataset_name(a.identify())<<": "<<path<<'\n';sets.push_back({std::filesystem::u8path(path),std::move(a)});
+            std::stable_sort(sets.begin(),sets.end(),[](const auto& a,const auto& b){auto rank=[](dok::DatasetId id){return id==dok::DatasetId::kremlin_pkr?0:id==dok::DatasetId::kremlin_pke?1:2;};return rank(a.archive.identify())<rank(b.archive.identify());});
+        }catch(const std::exception& e){resource_errors+=std::filesystem::u8path(path).filename().u8string()+": "+e.what()+"\n";log<<resource_errors;}refresh_sets();};
+        if(paths.empty()){char* base=SDL_GetBasePath();if(base){const auto directory=std::filesystem::u8path(base);SDL_free(base);
+            for(const auto* name:{"PKR.RES","PKE.RES","OLD_GOLD.RES"})if(std::filesystem::exists(directory/name))paths.push_back((directory/name).u8string());}}
         for(const auto& path:paths)load(path);
-        std::size_t current=0;
-        int menu_level=1;
-        int image_width=0,image_height=0;
-        std::unique_ptr<dok::World> world;
-        std::unique_ptr<dok::SoftwareScene> scene;
-        std::unique_ptr<dok::Weapons> weapons;
-        std::unique_ptr<dok::Projectiles> projectiles;
-        std::unique_ptr<dok::Monsters> monsters;
-        std::unique_ptr<dok::GameFlow> flow;
-        std::unique_ptr<dok::Hud> hud;
-        std::unique_ptr<dok::SdlAudio> audio;
-        std::vector<dok::TextPage> story;
-        std::size_t story_page=0;
-        bool ending=false;
-        dok::SdlInput input;
-        bool paused=false;
-        dok::ViewMotion view_motion;
-        dok::CheatSequence cheat;
-        std::vector<std::uint32_t> scene_pixels;
-        std::vector<std::uint32_t> title_pixels,ui_pixels(320*240);
-        auto point=[&](int x,int y,std::uint32_t color){if(x<0||y<0||x>=320||y>=240)return;
-            if(gl)ui_pixels[y*320+x]=color;else{SDL_SetRenderDrawColor(renderer.get(),color>>16,color>>8,color,color>>24);SDL_RenderDrawPoint(renderer.get(),x,y);}};
-        auto panel=[&](SDL_Rect r){if(gl){for(int y=r.y;y<r.y+r.h;++y)for(int x=r.x;x<r.x+r.w;++x)point(x,y,0xff0c0e14);}
-            else{SDL_SetRenderDrawColor(renderer.get(),12,14,20,255);SDL_RenderFillRect(renderer.get(),&r);}};
-        auto line=[&](const std::string& text,int y,int x=-1){
-            if(sets.empty()||!sets[current].archive.find("FONT8"))return;
-            const auto font=sets[current].archive.font("FONT8");
-            const int left=x>=0?x:std::max(0,(320-static_cast<int>(text.size())*8)/2);
-            for(std::size_t c=0;c<text.size();++c)for(int row=0;row<8;++row){
-                const auto bits=font.data[static_cast<unsigned char>(text[c])*8+row];
-                for(int bit=0;bit<8;++bit)if(bits&(0x80>>bit))point(left+static_cast<int>(c)*8+bit,y+row,0xfff0f0f0);
+        std::size_t current=menu.dataset_index();
+        std::unique_ptr<dok::World> world;std::unique_ptr<dok::SoftwareScene> scene;std::unique_ptr<dok::Weapons> weapons;
+        std::unique_ptr<dok::Projectiles> projectiles;std::unique_ptr<dok::Monsters> monsters;std::unique_ptr<dok::GameFlow> flow;
+        std::unique_ptr<dok::Hud> hud;std::unique_ptr<dok::SdlAudio> audio,music;
+        dok::ViewMotion view_motion;dok::CheatSequence cheat;std::vector<std::uint32_t> scene_pixels;
+        bool running=true,use_pending=false,use_previous=false;
+        auto clear_world=[&]{audio.reset();hud.reset();flow.reset();monsters.reset();projectiles.reset();weapons.reset();scene.reset();world.reset();view_motion.reset();cheat.reset();input.clear();input.capture_mouse(false);};
+        auto start=[&](const std::string& level){
+            clear_world();music.reset();current=menu.dataset_index();const auto& a=sets.at(current).archive;level_name=level;
+            world=std::make_unique<dok::World>(dok::load_level(a,level));weapons=std::make_unique<dok::Weapons>(*world,a);
+            projectiles=std::make_unique<dok::Projectiles>(*world,a);monsters=std::make_unique<dok::Monsters>(*world,a,*projectiles);
+            flow=std::make_unique<dok::GameFlow>(*world);hud=std::make_unique<dok::Hud>(a);scene=std::make_unique<dok::SoftwareScene>(a,world->definition);
+            try{audio=std::make_unique<dok::SdlAudio>(a);world->audio=[&](const dok::AudioCommand& c){audio->command(c);};}catch(const std::exception& e){log<<"Audio unavailable: "<<e.what()<<'\n';}
+            menu.hide();input.clear();input.capture_mouse(true);use_pending=use_previous=false;log<<"Started "<<dok::dataset_name(a.identify())<<' '<<level<<'\n';
+        };
+        if(!level_name.empty()&&!sets.empty()){
+            if(level_name=="LEVEL4")for(std::size_t i=0;i<sets.size();++i)if(sets[i].archive.identify()==dok::DatasetId::old_gold)menu.select_dataset(i);
+            if(level_name.size()!=6||level_name.substr(0,5)!="LEVEL"||level_name[5]<'1'||level_name[5]>'4')throw std::runtime_error("Invalid level");
+            menu.preview_level(level_name[5]-'0');if(skip_intro)start(level_name);
+        }
+        if(!warning.empty()){log<<"Settings/display notice: "<<warning<<'\n';menu.notice("Настройки восстановлены или OpenGL недоступен. Подробности в port.log.","Settings restored or OpenGL unavailable. See port.log for details.");}
+        std::string save_error;
+        auto persist=[&]{if(!dok::save_settings(user_path/"settings.ini",stored,save_error)){log<<"Settings save failed: "<<save_error<<'\n';menu.notice("Не удалось сохранить настройки. Проверьте доступ к папке пользователя.","Could not save settings. Check access to the user directory.");}};
+        if(!std::filesystem::exists(user_path/"settings.ini"))persist();
+        unsigned frames=0,fps_frames=0,fps_value=0;auto previous_time=SDL_GetPerformanceCounter(),fps_time=previous_time;
+        while(running){
+            const auto before=settings;const auto stored_before=dok::encode_settings(stored);bool flow_changed=false,capture_requested=false;
+            bool video_changed=false;std::vector<std::string> captures;menu.update(SDL_GetTicks64());
+            for(const auto& event:script)if(event.frame==frames){
+                if(event.action=="state"){
+                    const auto size=display->size();log<<"STATE "<<event.value<<" renderer="<<int(settings.video.renderer)<<" size="<<size[0]<<'x'<<size[1]<<" menu="<<int(menu.screen());
+                    if(world){const auto& p=*world->objects.at(*world->player).pose;const auto& player=*world->objects.at(*world->player).player_state;
+                        std::uint64_t hash=14695981039346656037ULL;for(const auto& map:world->maps)for(auto byte:map.second){hash^=static_cast<unsigned char>(byte);hash*=1099511628211ULL;}
+                        log<<" world="<<world.get()<<" ticks="<<world->simulation_ticks()<<" pose="<<p.x<<','<<p.y<<','<<p.z<<','<<p.heading<<" hp="<<player.health()<<" charge="<<player.charge()<<" maps="<<hash;
+                    }log<<'\n';
+                }
+                else if(event.action=="shot")captures.push_back(event.value);
+                else if(event.action=="key"){SDL_Event e{};e.type=SDL_KEYDOWN;e.key.keysym.scancode=SDL_GetScancodeFromName(event.value.c_str());e.key.keysym.sym=SDL_GetKeyFromScancode(e.key.keysym.scancode);SDL_PushEvent(&e);e.type=SDL_KEYUP;SDL_PushEvent(&e);}
+                else if(event.action=="pad"){SDL_Event e{};e.type=SDL_CONTROLLERBUTTONDOWN;e.cbutton.button=std::stoi(event.value);SDL_PushEvent(&e);e.type=SDL_CONTROLLERBUTTONUP;SDL_PushEvent(&e);}
+                else if(event.action=="quit"){SDL_Event e{};e.type=SDL_QUIT;SDL_PushEvent(&e);}
             }
-        };
-        auto draw_scene=[&] {
-            if(gl)return;
-            const auto pose=*world->objects.at(*world->player).pose;
-            const auto bounds=dok::original_cell_bounds(pose,world->definition.cell_side,world->definition.width,world->definition.length);
-            auto instances=monsters->images(bounds);const auto shots=projectiles->images();instances.insert(instances.end(),shots.begin(),shots.end());
-            auto frame=scene->render(*world,pose,instances);
-            weapons->overlay(frame);
-            frame=hud->classic(frame,*world->objects.at(*world->player).player_state,world->visible_message());
-            scene_pixels.resize(frame.pixels.size());
-            std::transform(frame.pixels.begin(),frame.pixels.end(),scene_pixels.begin(),[&](auto i){return scene->palette()[i];});
-            if(SDL_UpdateTexture(texture.get(),nullptr,scene_pixels.data(),frame.width()*4)!=0)throw std::runtime_error(SDL_GetError());
-        };
-        auto show=[&] {
-            audio.reset();view_motion.reset();cheat.reset();
-            story.clear();story_page=0;ending=false;
-            texture.reset();hud.reset();flow.reset();monsters.reset();projectiles.reset();weapons.reset();scene.reset();world.reset();if(sets.empty())return;
-            const auto& a=sets[current].archive;
-            if(!level_name.empty()){
-                world=std::make_unique<dok::World>(dok::load_level(a,level_name));
-                weapons=std::make_unique<dok::Weapons>(*world,a);
-                projectiles=std::make_unique<dok::Projectiles>(*world,a);
-                monsters=std::make_unique<dok::Monsters>(*world,a,*projectiles);
-                flow=std::make_unique<dok::GameFlow>(*world);
-                hud=std::make_unique<dok::Hud>(a);
-                try{audio=std::make_unique<dok::SdlAudio>(a);
-                    world->audio=[&](const dok::AudioCommand& c){audio->command(c);};
-                }catch(const std::exception& e){log<<"Audio unavailable: "<<e.what()<<'\n';}
-                scene=std::make_unique<dok::SoftwareScene>(a,world->definition);
-                image_width=320;image_height=200;
-                if(!gl){texture.reset(SDL_CreateTexture(renderer.get(),SDL_PIXELFORMAT_ARGB8888,SDL_TEXTUREACCESS_STREAMING,image_width,image_height));
-                    if(!texture)throw std::runtime_error(SDL_GetError());}
-                draw_scene();
-                paused=false;
-                if(!skip_intro)story=dok::paginate_story(a.get(a.identify()==dok::DatasetId::old_gold?"INTRO4B":"BINTRO"+level_name.substr(5)));
-                if(!input.capture_mouse(story.empty()))log<<"Mouse capture: "<<SDL_GetError()<<'\n';
-                log<<"Scene "<<level_name<<": "<<scene->polygon_count()<<" surfaces\n";
-                auto title=std::string("DoK - ")+dok::dataset_name(a.identify())+" | "+level_name+" | WASD + mouse/arrows | Esc: pause | F11: fullscreen";
-                SDL_SetWindowTitle(window.get(),title.c_str());
-                return;
-            }
-            // Temporary resource presentation, not the SP07 game renderer.
-            const std::string title_image="\x87\x80\x91\x92\x80\x82\x8a\x80_\x91\x8f\x90";
-            const std::string title_palette="\x87\x80\x91\x92\x80\x82\x8a\x80_\x8f\x80\x8b";
-            std::string image_name=a.find(title_image)?title_image:"INTRO4BSPR";
-            auto img=a.image(image_name);
-            std::string palette_name;
-            for(const auto& r:a.entries())if(r.size==768){palette_name=r.name;break;}
-            if(a.find(title_palette))palette_name=title_palette;
-            auto pal=a.palette(palette_name);
-            std::vector<std::uint32_t> pixels(img.pixels.size());
-            std::transform(img.pixels.begin(),img.pixels.end(),pixels.begin(),[&](auto i){return pal[i];});
-            title_pixels=pixels;
-            if(!gl){texture.reset(SDL_CreateTexture(renderer.get(),SDL_PIXELFORMAT_ARGB8888,SDL_TEXTUREACCESS_STATIC,img.width,img.height));
-                if(!texture || SDL_UpdateTexture(texture.get(),nullptr,pixels.data(),img.width*4)!=0)throw std::runtime_error(SDL_GetError());}
-            image_width=static_cast<int>(img.width);image_height=static_cast<int>(img.height);
-            std::string title=std::string("DoK - ")+dok::dataset_name(a.identify())+" | 1/2/3: level | Enter/A: LEVEL1 | Left/Right: dataset | Esc: exit";
-            SDL_SetWindowTitle(window.get(),title.c_str());
-        };
-        show();
-        bool running=true,fullscreen=false;unsigned frames=0;
-        bool use_previous=false,use_pending=false;
-        auto previous_time=SDL_GetPerformanceCounter();
-        auto fps_time=SDL_GetPerformanceCounter();
-        unsigned fps_frames=0,fps_value=0;
-        bool show_fps=true;
-        while(running) {
-            bool flow_changed=false;
-            bool capture_requested=false;
             SDL_Event e;
-            while(SDL_PollEvent(&e)) {
+            while(SDL_PollEvent(&e)){
+                if(e.type==SDL_WINDOWEVENT&&e.window.windowID!=SDL_GetWindowID(display->window()))continue;
                 input.handle(e);
-                if(!world||paused||!story.empty()||flow->phase()!=dok::SessionPhase::playing)cheat.reset();
-                else if(e.type==SDL_KEYDOWN&&!e.key.repeat&&!(e.key.keysym.mod&(KMOD_CTRL|KMOD_ALT|KMOD_GUI))){
-                    const auto key=e.key.keysym.scancode;
-                    if(key>=SDL_SCANCODE_A&&key<=SDL_SCANCODE_Z&&cheat.push(char('A'+key-SDL_SCANCODE_A))){
-                        weapons->grant_all();log<<"IDKFA\n";
-                    }
-                }
-                if(e.type==SDL_WINDOWEVENT&&e.window.event==SDL_WINDOWEVENT_FOCUS_LOST)cheat.reset();
-                if(e.type==SDL_QUIT)running=false;
-                if(e.type==SDL_WINDOWEVENT&&e.window.event==SDL_WINDOWEVENT_FOCUS_LOST&&world){paused=true;input.capture_mouse(false);}
-                if(e.type==SDL_DROPFILE){std::string path=e.drop.file;SDL_free(e.drop.file);load(path);if(!world)show();}
-                int direction=0;
-                bool confirm=false;int selected_level=0;
-                const bool cancel=(e.type==SDL_KEYDOWN&&!e.key.repeat&&e.key.keysym.sym==SDLK_ESCAPE)||
-                    (e.type==SDL_CONTROLLERBUTTONDOWN&&e.cbutton.button==SDL_CONTROLLER_BUTTON_B);
-                if(cancel&&!story.empty()){level_name.clear();show();input.capture_mouse(false);flow_changed=true;}
-                if(e.type==SDL_KEYDOWN && !e.key.repeat) {
-                    confirm=e.key.keysym.sym==SDLK_RETURN||e.key.keysym.sym==SDLK_SPACE;
-                    if(e.key.keysym.sym>=SDLK_1&&e.key.keysym.sym<=SDLK_3)selected_level=e.key.keysym.sym-SDLK_1+1;
-                    if(!world&&e.key.keysym.sym==SDLK_UP)menu_level=(menu_level+1)%3+1;
-                    if(!world&&e.key.keysym.sym==SDLK_DOWN)menu_level=menu_level%3+1;
-                    if(e.key.keysym.sym==SDLK_ESCAPE&&!world)running=false;
-                    if(e.key.keysym.sym==SDLK_LEFT)direction=-1;
-                    if(e.key.keysym.sym==SDLK_RIGHT)direction=1;
-                    if(e.key.keysym.sym==SDLK_F11){fullscreen=!fullscreen;SDL_SetWindowFullscreen(window.get(),fullscreen?SDL_WINDOW_FULLSCREEN_DESKTOP:0);}
-                    if(e.key.keysym.sym==SDLK_F3)show_fps=!show_fps;
-                    if(e.key.keysym.sym==SDLK_F4){linear_filter=!linear_filter;log<<"Texture filter: "<<(linear_filter?"linear":"nearest")<<'\n';}
+                if(e.type==SDL_QUIT){if(world){menu.pause();menu.request_quit();}else running=false;}
+                if(e.type==SDL_WINDOWEVENT&&e.window.event==SDL_WINDOWEVENT_FOCUS_LOST){input.clear();cheat.reset();if(world&&!menu.active())menu.pause();input.capture_mouse(false);}
+                if(e.type==SDL_DROPFILE){const std::string path=e.drop.file;SDL_free(e.drop.file);
+                    if(world)menu.notice("Добавьте ресурсы из главного меню.","Add game resources from the main menu.");else{music.reset();load(path);}continue;}
+                const bool was_menu=menu.active();
+                if(e.type==SDL_KEYDOWN&&!e.key.repeat&&!menu.capturing()){
                     if(e.key.keysym.sym==SDLK_F12)capture_requested=true;
-                }
-                if(e.type==SDL_CONTROLLERBUTTONDOWN){
-                    confirm=e.cbutton.button==SDL_CONTROLLER_BUTTON_A||e.cbutton.button==SDL_CONTROLLER_BUTTON_START;
-                    if(!world&&e.cbutton.button==SDL_CONTROLLER_BUTTON_DPAD_UP)menu_level=(menu_level+1)%3+1;
-                    if(!world&&e.cbutton.button==SDL_CONTROLLER_BUTTON_DPAD_DOWN)menu_level=menu_level%3+1;
-                    if(e.cbutton.button==SDL_CONTROLLER_BUTTON_DPAD_LEFT)direction=-1;
-                    if(e.cbutton.button==SDL_CONTROLLER_BUTTON_DPAD_RIGHT)direction=1;
-                    if(e.cbutton.button==SDL_CONTROLLER_BUTTON_BACK)running=false;
-                }
-                if(direction && !world && !sets.empty()){current=(current+sets.size()+direction)%sets.size();show();}
-                if(!flow_changed&&!story.empty()&&confirm){
-                    if(++story_page>=story.size()){
-                        story.clear();story_page=0;
-                        if(ending){level_name.clear();show();input.capture_mouse(false);}
-                        else input.capture_mouse(true);
+                    if(e.key.keysym.sym==SDLK_F3)settings.show_fps=!settings.show_fps;
+                    if(e.key.keysym.sym==SDLK_F4)settings.linear=!settings.linear;
+                    if(e.key.keysym.sym==SDLK_F11&&!menu.video_pending()){
+                        const bool next=!settings.video.fullscreen;
+                        if(SDL_SetWindowFullscreen(display->window(),next?SDL_WINDOW_FULLSCREEN_DESKTOP:0)==0){settings.video.fullscreen=next;stored.video.fullscreen=next;menu.window_mode_changed(next);}
                     }
-                    flow_changed=true;use_pending=false;
-                }else if(!flow_changed&&world&&flow->phase()!=dok::SessionPhase::playing&&confirm){
-                    if(flow->retry()){paused=false;input.capture_mouse(true);draw_scene();SDL_SetWindowTitle(window.get(),("DoK - "+level_name).c_str());}
-                    else{level_name.clear();show();input.capture_mouse(false);}
-                    flow_changed=true;use_pending=false;
-                }else if(!flow_changed&&!world&&!sets.empty()&&(confirm||selected_level)){
-                    if(selected_level)menu_level=selected_level;
-                    level_name=sets[current].archive.identify()==dok::DatasetId::old_gold?"LEVEL4":"LEVEL"+std::to_string(menu_level);
-                    show();flow_changed=true;use_pending=false;
+                }
+                if(was_menu){int w,h;SDL_GetWindowSize(display->window(),&w,&h);menu.handle(e,w,h);input.clear();use_pending=false;cheat.reset();flow_changed=true;}
+                else if(e.type==SDL_KEYDOWN&&!e.key.repeat){
+                    if(e.key.keysym.sym==SDLK_ESCAPE){menu.pause();input.clear();input.capture_mouse(false);flow_changed=true;}
+                    else if(world&&!(e.key.keysym.mod&(KMOD_CTRL|KMOD_ALT|KMOD_GUI))){const auto key=e.key.keysym.scancode;
+                        if(key>=SDL_SCANCODE_A&&key<=SDL_SCANCODE_Z&&cheat.push(char('A'+key-SDL_SCANCODE_A))){weapons->grant_all();log<<"IDKFA\n";}}
                 }
             }
-            const auto now=SDL_GetPerformanceCounter();
-            const auto elapsed_ns=static_cast<std::uint64_t>(double(now-previous_time)*1e9/SDL_GetPerformanceFrequency());previous_time=now;
+            for(const auto command:menu.commands()){
+                flow_changed=true;
+                switch(command){
+                case dok::MenuCommand::start:try{start(menu.level()==4?"LEVEL4":"LEVEL"+std::to_string(menu.level()));}catch(const std::exception& e){clear_world();menu.main_menu();menu.notice("Не удалось загрузить уровень. Подробности в port.log.","Could not load level. See port.log.");log<<e.what()<<'\n';}break;
+                case dok::MenuCommand::resume:input.clear();input.capture_mouse(true);break;
+                case dok::MenuCommand::main:clear_world();break;
+                case dok::MenuCommand::quit:running=false;break;
+                case dok::MenuCommand::retry:if(flow&&flow->retry()){view_motion.reset();input.clear();input.capture_mouse(true);}break;
+                case dok::MenuCommand::music_stop:music.reset();break;
+                case dok::MenuCommand::music_title:case dok::MenuCommand::music_story:
+                    music.reset();if(!sets.empty())try{music=std::make_unique<dok::SdlAudio>(sets[menu.dataset_index()].archive);music->volume(settings.master_volume*settings.music_volume/100);music->command({dok::AudioAction::once,1,dok::cp866("ЗАСТАВКА_ЗВУК")});}catch(const std::exception& e){log<<"Music unavailable: "<<e.what()<<'\n';}break;
+                case dok::MenuCommand::apply_video:
+                    try{auto next=std::make_unique<dok::Display>(settings.video);input.capture_mouse(false);display=std::move(next);SDL_ShowWindow(display->window());video_changed=true;}
+                    catch(const std::exception& e){log<<"Video rejected: "<<e.what()<<'\n';menu.video_failed(e.what());}break;
+                case dok::MenuCommand::keep_video:{auto old=settings;old.video=menu.previous_video();dok::merge_settings_edits(stored,old,settings);break;}
+                case dok::MenuCommand::revert_video:
+                    try{auto next=std::make_unique<dok::Display>(settings.video);display=std::move(next);SDL_ShowWindow(display->window());video_changed=true;}
+                    catch(const std::exception& e){log<<"Video rollback failed: "<<e.what()<<'\n';settings.video.renderer=dok::RendererKind::software;settings.video.fullscreen=false;display=std::make_unique<dok::Display>(settings.video);SDL_ShowWindow(display->window());menu.notice("Возврат видеорежима не удался. Включён software.","Video rollback failed. Software renderer enabled.");}break;
+                }
+            }
+            dok::merge_settings_edits(stored,before,settings,false);
+            if(dok::encode_settings(stored)!=stored_before)persist();
+            input.bindings=settings.input;
+            if(audio){audio->volume(settings.master_volume*settings.effects_volume/100);audio->pause(menu.active());}
+            if(music)music->volume(settings.master_volume*settings.music_volume/100);
+            const auto now=SDL_GetPerformanceCounter();const auto elapsed_ns=static_cast<std::uint64_t>(double(now-previous_time)*1e9/SDL_GetPerformanceFrequency());previous_time=now;
             const auto actions=input.sample();
-            bool pause_changed=false;
-            if(world&&story.empty()&&!flow_changed&&flow->phase()==dok::SessionPhase::playing&&actions.pause){paused=!paused;pause_changed=true;input.capture_mouse(!paused);}
-            if(actions.use&&!use_previous)use_pending=true;
-            use_previous=actions.use;
-            if(paused||pause_changed){use_pending=false;cheat.reset();}
-            if(audio)audio->pause(paused||!story.empty());
-            if(world&&story.empty()&&!paused&&!pause_changed&&!flow_changed&&flow->phase()==dok::SessionPhase::playing){
-                if(actions.select_weapon>=0)weapons->select(actions.select_weapon);
-                if(actions.next_weapon)weapons->cycle(1);
-                if(actions.previous_weapon)weapons->cycle(-1);
-                dok::apply_mouse_yaw(*world,actions.yaw_delta);
+            if(world&&!menu.active()&&actions.pause){menu.pause();input.clear();input.capture_mouse(false);flow_changed=true;}
+            if(actions.use&&!use_previous)use_pending=true;use_previous=actions.use;
+            if(menu.active()){use_pending=false;input.capture_mouse(false);view_motion.reset();}
+            if(world&&!menu.active()&&!flow_changed&&flow->phase()==dok::SessionPhase::playing){
+                if(actions.select_weapon>=0)weapons->select(actions.select_weapon);if(actions.next_weapon)weapons->cycle(1);if(actions.previous_weapon)weapons->cycle(-1);
+            dok::apply_mouse_yaw(*world,actions.yaw_delta);
                 world->advance_events(elapsed_ns,[&](dok::OwnerId owner,dok::CallbackId callback){
                     const auto event=static_cast<dok::GameEvent>(callback);
                     if(event==dok::GameEvent::player_tick){
@@ -276,106 +194,55 @@ int main(int argc,char** argv) {
                         view_motion.step(*world->objects.at(*world->player).pose,double(world->simulation_ticks()),[&]{
                             const bool surface_slow=dok::player_surface(*world);
                             movement.slow=movement.slow||surface_slow;
-                            dok::update_player_motion(*world,movement,static_cast<std::uint32_t>(world->simulation_ticks()));
+                            dok::update_player_motion(*world,movement,static_cast<std::uint32_t>(world->simulation_ticks()),settings.inertia);
                         });
                     }else if(event==dok::GameEvent::weapon_tick||event==dok::GameEvent::weapon_switch)weapons->event(owner,event);
                     else if(event==dok::GameEvent::projectile_tick)projectiles->event(owner);
                     else if(event==dok::GameEvent::monster_tick)monsters->event(owner);
                     else dok::door_event(*world,owner,event);
                 });
-                const auto phase=flow->observe();
-                if(phase!=dok::SessionPhase::playing){
-                    if(phase==dok::SessionPhase::completed){story=dok::paginate_story(sets[current].archive.get(sets[current].archive.identify()==dok::DatasetId::old_gold?"INTRO4E":"EINTRO"+level_name.substr(5)));story_page=0;ending=true;}
-                    input.capture_mouse(false);use_pending=false;
-                    const char* message=phase==dok::SessionPhase::retry?"Life lost - Enter/A: retry":
-                        phase==dok::SessionPhase::game_over?"Game over - Enter/A: level selection":"Level completed - Enter/A: level selection";
-                    SDL_SetWindowTitle(window.get(),message);log<<message<<'\n';
-                }
-                draw_scene();
+                const auto phase=flow->observe();if(phase!=dok::SessionPhase::playing){if(phase==dok::SessionPhase::completed)menu.ending();else menu.outcome(phase);input.capture_mouse(false);input.clear();use_pending=false;}
             }
-            if(world&&(paused||pause_changed||flow_changed||!story.empty()||flow->phase()!=dok::SessionPhase::playing))view_motion.reset();
-            if(gl){gl->set_linear_filter(linear_filter);gl->begin();std::fill(ui_pixels.begin(),ui_pixels.end(),0);
-                if(world){
-                    const auto pose=*world->objects.at(*world->player).pose;
+            if(video_changed)view_motion.reset();
+            display->begin();auto* gl=display->gl();const auto output=display->size();
+            if(menu.active()){
+                const auto& frame=menu.render(output[0],output[1]);display->pixels(frame.pixels,frame.width,frame.height,false);
+            }else if(world){
+                const auto pose=*world->objects.at(*world->player).pose;
+                if(gl){
+                    gl->set_linear_filter(settings.linear);
                     const auto bounds=dok::view_cell_bounds(pose,world->definition.cell_side,world->definition.width,world->definition.length,gl->view_width());
                     auto dynamic=monsters->images(bounds);const auto shots=projectiles->images();dynamic.insert(dynamic.end(),shots.begin(),shots.end());
                     gl->world(scene->palette());scene->render(*world,pose,dynamic,[&](const auto& vertices,const auto& image,dok::Bytes light,dok::RasterAxis axis){gl->polygon(vertices,image,light,axis);},gl->view_width(),view_motion.offset(world->presentation_ticks()));
-                    dok::IndexedSurface overlay(gl->view_width(),160);weapons->overlay(overlay);
-                    std::vector<std::uint32_t> pixels(overlay.pixels.size());
+                    dok::IndexedSurface overlay(gl->view_width(),160);weapons->overlay(overlay);std::vector<std::uint32_t> pixels(overlay.pixels.size());
                     for(std::size_t i=0;i<pixels.size();++i)if(overlay.pixels[i])pixels[i]=scene->palette()[overlay.pixels[i]];
                     gl->image(pixels,overlay.width(),overlay.height(),{0,0,320,240});
-                    int screen_width,screen_height;SDL_GL_GetDrawableSize(window.get(),&screen_width,&screen_height);
-                    const int hud_scale=std::max(1,screen_height/720);
-                    auto hud_frame=hud->desktop(std::max(320,screen_width/hud_scale),*world->objects.at(*world->player).player_state,
-                        scene->palette(),world->visible_message(),world->presentation_ticks()*119.0/dok::GameClock::pit_hz);
-                    gl->image(hud_frame.pixels,hud_frame.width,hud_frame.height,
-                        {0,screen_height-hud_frame.height*hud_scale,hud_frame.width*hud_scale,hud_frame.height*hud_scale},true);
+                    const int hud_scale=std::max(1,output[1]/720);auto frame=hud->desktop(std::max(320,output[0]/hud_scale),*world->objects.at(*world->player).player_state,scene->palette(),world->visible_message(),world->presentation_ticks()*119.0/dok::GameClock::pit_hz);
+                    gl->image(frame.pixels,frame.width,frame.height,{0,output[1]-frame.height*hud_scale,frame.width*hud_scale,frame.height*hud_scale},true);
+                }else{
+                    const auto mode=dok::software_modes[settings.video.software_mode];scene->software_resolution(mode[0],mode[1]);
+                    const auto bounds=dok::original_cell_bounds(pose,world->definition.cell_side,world->definition.width,world->definition.length);
+                    auto dynamic=monsters->images(bounds);const auto shots=projectiles->images();dynamic.insert(dynamic.end(),shots.begin(),shots.end());
+                    auto frame=scene->render(*world,pose,dynamic);weapons->overlay(frame,mode[1]);frame=hud->classic_mode(frame,mode[1],*world->objects.at(*world->player).player_state,world->visible_message());
+                    scene_pixels.resize(frame.pixels.size());std::transform(frame.pixels.begin(),frame.pixels.end(),scene_pixels.begin(),[&](auto c){return scene->palette()[c];});display->pixels(scene_pixels,frame.width(),frame.height(),true,settings.linear);
                 }
-            }else{SDL_SetRenderDrawColor(renderer.get(),12,14,20,255);SDL_RenderClear(renderer.get());}
-            if(texture||(gl&&!world&&!title_pixels.empty())) {
-                // All current title images are DOS artwork; correct 320x200 to 4:3.
-                double aspect=double(image_width)/(image_height*1.2);
-                SDL_Rect rect{0,0,320,static_cast<int>(320/aspect)};
-                if(rect.h>240){rect.h=240;rect.w=static_cast<int>(240*aspect);}
-                rect.x=(320-rect.w)/2;rect.y=level_name.empty()?(240-rect.h)/2:0;
-                if(gl)gl->image(title_pixels,image_width,image_height,rect);else{SDL_SetTextureScaleMode(texture.get(),linear_filter?SDL_ScaleModeLinear:SDL_ScaleModeNearest);SDL_RenderCopy(renderer.get(),texture.get(),nullptr,&rect);}
             }
-            if(!story.empty()){
-                panel({4,4,312,232});
-                for(std::size_t row=0;row<story[story_page].size();++row)line(story[story_page][row],12+static_cast<int>(row)*10);
-                line(std::to_string(story_page+1)+" / "+std::to_string(story.size())+"   ENTER / A: CONTINUE",218);
-            }else if(world){
-                const auto phase=flow->phase();
-                if(phase!=dok::SessionPhase::playing||paused){
-                    panel({0,88,320,56});
-                    line(phase==dok::SessionPhase::retry?"LIFE LOST":phase==dok::SessionPhase::game_over?"GAME OVER":
-                        phase==dok::SessionPhase::completed?"LEVEL COMPLETED":"PAUSED",100);
-                    line(phase==dok::SessionPhase::retry?"ENTER / A: RETRY":phase==dok::SessionPhase::playing?"ESC / START: CONTINUE":"ENTER / A: LEVEL SELECTION",120);
-                }
-            }else if(!sets.empty()){
-                panel({0,192,320,48});
-                line(sets[current].archive.identify()==dok::DatasetId::old_gold?"OLD GOLD - LEVEL4":"UP / DOWN: LEVEL "+std::to_string(menu_level),198);line("ENTER / A: START",212);line("LEFT / RIGHT: DATASET",226);
+            ++frames;++fps_frames;const auto fps_now=SDL_GetPerformanceCounter();const auto seconds=double(fps_now-fps_time)/SDL_GetPerformanceFrequency();
+            if(seconds>=0.5){fps_value=unsigned(fps_frames/seconds+0.5);fps_frames=0;fps_time=fps_now;}
+            if(settings.show_fps&&world&&!menu.active()){
+                const std::string text="FPS "+(fps_value?std::to_string(fps_value):"--");const auto font=sets[current].archive.font("FONT8");
+                const int w=int(text.size())*8+4;std::vector<std::uint32_t> pixels(w*12,0xff101010);
+                for(std::size_t c=0;c<text.size();++c)for(int y=0;y<8;++y)for(int x=0;x<8;++x)if(font.data[static_cast<unsigned char>(text[c])*8+y]&(0x80>>x))pixels[(y+2)*w+int(c)*8+x+2]=0xfff0f0f0;
+                display->overlay(pixels,w,12,{output[0]-w*2-4,4,w*2,24});
             }
-            ++frames;
-            ++fps_frames;
-            const auto fps_now=SDL_GetPerformanceCounter();
-            const auto fps_elapsed=double(fps_now-fps_time)/SDL_GetPerformanceFrequency();
-            if(fps_elapsed>=0.5){fps_value=static_cast<unsigned>(fps_frames/fps_elapsed+0.5);fps_frames=0;fps_time=fps_now;}
-            if(show_fps){panel({244,2,76,12});line("FPS "+(fps_value?std::to_string(fps_value):std::string("--")),4,246);}
-            if(gl)gl->image(ui_pixels,320,240,{0,0,320,240});
-            std::vector<std::string> captures;
-            if(frame_limit && frames==frame_limit && !screenshot.empty())captures.push_back(screenshot);
-            if(capture_requested){
-                try{
-                    const auto directory=std::filesystem::current_path()/"screenshots";
-                    std::filesystem::create_directories(directory);
-                    const auto stamp=std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
-                    captures.push_back((directory/("screenshot-"+std::to_string(stamp)+"-"+std::to_string(frames)+".png")).u8string());
-                }catch(const std::exception& error){log<<"Screenshot failed: "<<error.what()<<'\n';}
-            }
-            for(const auto& capture:captures)try{
-                if(gl)gl->screenshot(capture);
-                else{
-                int w,h;SDL_GetRendererOutputSize(renderer.get(),&w,&h);
-                SdlPtr<SDL_Surface,SDL_FreeSurface> surface(SDL_CreateRGBSurfaceWithFormat(0,w,h,32,SDL_PIXELFORMAT_ARGB8888),SDL_FreeSurface);
-                const SDL_Rect full{0,0,w,h};
-                if(!surface || SDL_RenderReadPixels(renderer.get(),&full,SDL_PIXELFORMAT_ARGB8888,surface->pixels,surface->pitch)!=0)throw std::runtime_error(SDL_GetError());
-                if(std::filesystem::u8path(capture).extension()==".png"){
-                    std::vector<std::uint32_t> pixels(std::size_t(w)*h);
-                    for(int y=0;y<h;++y){const auto* row=reinterpret_cast<const std::uint32_t*>(static_cast<const std::uint8_t*>(surface->pixels)+y*surface->pitch);
-                        std::copy(row,row+w,pixels.begin()+std::size_t(y)*w);}
-                    dok::save_png(std::filesystem::u8path(capture),w,h,pixels);
-                }else if(SDL_SaveBMP(surface.get(),capture.c_str())!=0)throw std::runtime_error(SDL_GetError());
-                }
-                log<<"Screenshot saved: "<<capture<<'\n';
-            }catch(const std::exception& error){if(!capture_requested)throw;log<<"Screenshot failed: "<<error.what()<<'\n';}
-            if(gl)gl->present();else SDL_RenderPresent(renderer.get());
-            if(frame_limit && frames>=frame_limit)running=false;
-            SDL_Delay(1);
+            if(frame_limit&&frames==frame_limit&&!screenshot.empty())captures.push_back(screenshot);
+            if(capture_requested){try{auto dir=std::filesystem::current_path()/"screenshots";std::filesystem::create_directories(dir);
+                const auto stamp=std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();captures.push_back((dir/("screenshot-"+std::to_string(stamp)+"-"+std::to_string(frames)+".png")).u8string());}catch(const std::exception& e){log<<"Screenshot failed: "<<e.what()<<'\n';}}
+            for(const auto& capture:captures)try{display->screenshot(capture);log<<"Screenshot saved: "<<capture<<'\n';}catch(const std::exception& e){log<<"Screenshot failed: "<<e.what()<<'\n';}
+            display->present();if(frame_limit&&frames>=frame_limit)running=false;SDL_Delay(1);
         }
-        log<<"Clean shutdown; frames="<<frames<<" datasets="<<sets.size()<<'\n';
+        log<<"Clean shutdown; frames="<<frames<<" datasets="<<sets.size()<<" menu="<<int(menu.screen())<<'\n';
         if(world){const auto& pose=*world->objects.at(*world->player).pose;log<<"Player x="<<pose.x<<" z="<<pose.z<<" heading="<<pose.heading<<" ticks="<<world->simulation_ticks()<<'\n';}
-        std::cout<<"SDL smoke completed: "<<frames<<" frames, "<<sets.size()<<" datasets\n";
-        return 0;
+        std::cout<<"SDL completed: "<<frames<<" frames, "<<sets.size()<<" datasets\n";return 0;
     }catch(const std::exception& e){std::cerr<<e.what()<<'\n';return 1;}
 }

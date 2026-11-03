@@ -10,8 +10,11 @@ float deadzone(float value,float zone){const auto magnitude=std::abs(value);retu
 void strongest(float& target,float value){if(std::abs(value)>std::abs(target))target=value;}
 }
 InputBindings InputBindings::defaults(){
-    InputBindings result;result.buttons.fill(SDL_CONTROLLER_BUTTON_INVALID);
-    auto bind=[&](Action a,SDL_Scancode first,SDL_Scancode second=SDL_SCANCODE_UNKNOWN){result.keys[index(a)]={first,second};};
+    InputBindings result;result.keyboard(InputPreset::modern);result.gamepad(InputPreset::modern);return result;
+}
+void InputBindings::keyboard(InputPreset preset){
+    keys={};mouse={};keyboard_preset=preset;
+    auto bind=[&](Action a,SDL_Scancode first,SDL_Scancode second=SDL_SCANCODE_UNKNOWN){keys[index(a)]={first,second};};
     bind(Action::forward,SDL_SCANCODE_W,SDL_SCANCODE_UP);bind(Action::backward,SDL_SCANCODE_S,SDL_SCANCODE_DOWN);
     bind(Action::strafe_left,SDL_SCANCODE_A,SDL_SCANCODE_Q);bind(Action::strafe_right,SDL_SCANCODE_D,SDL_SCANCODE_E);
     bind(Action::turn_left,SDL_SCANCODE_LEFT);bind(Action::turn_right,SDL_SCANCODE_RIGHT);
@@ -20,14 +23,30 @@ InputBindings InputBindings::defaults(){
     bind(Action::run,SDL_SCANCODE_LSHIFT,SDL_SCANCODE_RSHIFT);bind(Action::slow,SDL_SCANCODE_LALT);
     bind(Action::next_weapon,SDL_SCANCODE_PAGEDOWN);bind(Action::previous_weapon,SDL_SCANCODE_PAGEUP);
     bind(Action::quicksave,SDL_SCANCODE_F5);bind(Action::quickload,SDL_SCANCODE_F9);
-    result.buttons[index(Action::use)]=SDL_CONTROLLER_BUTTON_A;
-    result.buttons[index(Action::fire)]=SDL_CONTROLLER_BUTTON_X;
-    result.buttons[index(Action::map)]=SDL_CONTROLLER_BUTTON_Y;
-    result.buttons[index(Action::pause)]=SDL_CONTROLLER_BUTTON_START;
-    result.buttons[index(Action::run)]=SDL_CONTROLLER_BUTTON_LEFTSTICK;
-    result.buttons[index(Action::next_weapon)]=SDL_CONTROLLER_BUTTON_RIGHTSHOULDER;
-    result.buttons[index(Action::previous_weapon)]=SDL_CONTROLLER_BUTTON_LEFTSHOULDER;
-    return result;
+    bind(Action::weapon1,SDL_SCANCODE_1);bind(Action::weapon2,SDL_SCANCODE_2);
+    mouse[index(Action::fire)]=SDL_BUTTON_LEFT;
+    if(preset==InputPreset::classic){
+        bind(Action::forward,SDL_SCANCODE_UP);bind(Action::backward,SDL_SCANCODE_DOWN);
+        bind(Action::strafe_left,SDL_SCANCODE_UNKNOWN);bind(Action::strafe_right,SDL_SCANCODE_UNKNOWN);
+        bind(Action::slow,SDL_SCANCODE_UNKNOWN);bind(Action::strafe_modifier,SDL_SCANCODE_LALT,SDL_SCANCODE_RALT);
+        bind(Action::use,SDL_SCANCODE_SPACE);
+    }
+}
+void InputBindings::gamepad(InputPreset preset){
+    buttons.fill(SDL_CONTROLLER_BUTTON_INVALID);triggers.fill(SDL_CONTROLLER_AXIS_INVALID);
+    pad_preset=preset;classic_pad=preset==InputPreset::classic;
+    buttons[index(Action::map)]=SDL_CONTROLLER_BUTTON_BACK;buttons[index(Action::pause)]=SDL_CONTROLLER_BUTTON_START;
+    if(classic_pad){
+        buttons[index(Action::forward)]=SDL_CONTROLLER_BUTTON_DPAD_UP;buttons[index(Action::backward)]=SDL_CONTROLLER_BUTTON_DPAD_DOWN;
+        buttons[index(Action::turn_left)]=SDL_CONTROLLER_BUTTON_DPAD_LEFT;buttons[index(Action::turn_right)]=SDL_CONTROLLER_BUTTON_DPAD_RIGHT;
+        buttons[index(Action::strafe_left)]=SDL_CONTROLLER_BUTTON_LEFTSHOULDER;buttons[index(Action::strafe_right)]=SDL_CONTROLLER_BUTTON_RIGHTSHOULDER;
+        buttons[index(Action::fire)]=SDL_CONTROLLER_BUTTON_A;buttons[index(Action::run)]=SDL_CONTROLLER_BUTTON_B;
+        buttons[index(Action::use)]=SDL_CONTROLLER_BUTTON_X;buttons[index(Action::next_weapon)]=SDL_CONTROLLER_BUTTON_Y;
+    }else{
+        buttons[index(Action::use)]=SDL_CONTROLLER_BUTTON_A;
+        buttons[index(Action::next_weapon)]=SDL_CONTROLLER_BUTTON_RIGHTSHOULDER;buttons[index(Action::previous_weapon)]=SDL_CONTROLLER_BUTTON_LEFTSHOULDER;
+        triggers[index(Action::fire)]=SDL_CONTROLLER_AXIS_TRIGGERRIGHT;triggers[index(Action::run)]=SDL_CONTROLLER_AXIS_TRIGGERLEFT;
+    }
 }
 SdlInput::SdlInput(InputBindings settings):bindings(std::move(settings)){
     for(int i=0;i<SDL_NumJoysticks();++i)open(i);
@@ -47,6 +66,10 @@ bool SdlInput::capture_mouse(bool enabled){
     if(SDL_SetRelativeMouseMode(enabled&&focused_?SDL_TRUE:SDL_FALSE)!=0)return false;
     capture_=enabled;mouse_x_=0;return true;
 }
+void SdlInput::clear(){
+    keys_.fill(false);previous_.fill(false);mouse_buttons_.fill(false);mouse_x_=0;
+    for(auto& entry:controllers_){entry.second.axes.fill(0);entry.second.buttons.fill(false);}
+}
 void SdlInput::handle(const SDL_Event& event){
     switch(event.type){
     case SDL_KEYDOWN:case SDL_KEYUP:
@@ -55,7 +78,7 @@ void SdlInput::handle(const SDL_Event& event){
         break;
     case SDL_MOUSEMOTION:if(focused_&&capture_)mouse_x_+=event.motion.xrel;break;
     case SDL_MOUSEBUTTONDOWN:case SDL_MOUSEBUTTONUP:
-        if(focused_&&event.button.button==SDL_BUTTON_LEFT)mouse_fire_=event.type==SDL_MOUSEBUTTONDOWN;break;
+        if(focused_&&event.button.button<mouse_buttons_.size())mouse_buttons_[event.button.button]=event.type==SDL_MOUSEBUTTONDOWN;break;
     case SDL_CONTROLLERDEVICEADDED:open(event.cdevice.which);break;
     case SDL_CONTROLLERDEVICEREMOVED:{
         auto found=controllers_.find(event.cdevice.which);
@@ -69,7 +92,7 @@ void SdlInput::handle(const SDL_Event& event){
             found->second.buttons[event.cbutton.button]=event.type==SDL_CONTROLLERBUTTONDOWN;break;}
     case SDL_WINDOWEVENT:
         if(event.window.event==SDL_WINDOWEVENT_FOCUS_LOST){
-            focused_=false;keys_.fill(false);previous_.fill(false);mouse_x_=0;mouse_fire_=false;
+            focused_=false;clear();
             if(capture_)SDL_SetRelativeMouseMode(SDL_FALSE);
         }else if(event.window.event==SDL_WINDOWEVENT_FOCUS_GAINED){focused_=true;if(capture_)SDL_SetRelativeMouseMode(SDL_TRUE);}
         break;
@@ -81,30 +104,42 @@ InputActions SdlInput::sample(){
     std::array<bool,index(Action::count)> held{};
     for(unsigned i=0;i<held.size();++i)for(auto key:bindings.keys[i])
         if(key>SDL_SCANCODE_UNKNOWN&&key<SDL_NUM_SCANCODES)held[i]=held[i]||keys_[key];
+    for(unsigned i=0;i<held.size();++i)if(bindings.mouse[i]&&bindings.mouse[i]<mouse_buttons_.size())held[i]=held[i]||mouse_buttons_[bindings.mouse[i]];
+    // Alt modifies only keyboard turning; a second device keeps independent axes.
+    if(held[index(Action::strafe_modifier)]){
+        held[index(Action::strafe_left)] = held[index(Action::strafe_left)]||held[index(Action::turn_left)];
+        held[index(Action::strafe_right)] = held[index(Action::strafe_right)]||held[index(Action::turn_right)];
+        held[index(Action::turn_left)]=held[index(Action::turn_right)]=false;
+    }
     float pad_forward=0,pad_strafe=0,pad_turn=0;
     const auto zone=std::clamp(bindings.stick_deadzone,0.0f,0.95f);
     for(const auto& pair:controllers_){const auto& controller=pair.second;
         for(unsigned i=0;i<held.size();++i){auto button=bindings.buttons[i];
             if(button>=0&&button<SDL_CONTROLLER_BUTTON_MAX)held[i]=held[i]||controller.buttons[button];}
+        for(unsigned i=0;i<held.size();++i){auto trigger=bindings.triggers[i];
+            if(trigger==SDL_CONTROLLER_AXIS_TRIGGERLEFT||trigger==SDL_CONTROLLER_AXIS_TRIGGERRIGHT)
+                held[i]=held[i]||controller.axes[trigger]>16384;}
+        if(bindings.classic_pad)continue;
         float x=axis(controller.axes[SDL_CONTROLLER_AXIS_LEFTX]),y=axis(controller.axes[SDL_CONTROLLER_AXIS_LEFTY]);
         const auto length=std::sqrt(x*x+y*y);
         if(length>zone){const auto scale=(std::min(length,1.0f)-zone)/(1-zone)/length;x*=scale;y*=scale;}
         else x=y=0;
         strongest(pad_forward,-y);strongest(pad_strafe,x);
         strongest(pad_turn,deadzone(axis(controller.axes[SDL_CONTROLLER_AXIS_RIGHTX]),zone));
-        held[index(Action::fire)]=held[index(Action::fire)]||controller.axes[SDL_CONTROLLER_AXIS_TRIGGERRIGHT]>16384;
+
     }
     auto down=[&](Action a){return held[index(a)];};
     auto edge=[&](Action a){return held[index(a)]&&!previous_[index(a)];};
     result.forward=std::clamp(pad_forward+int(down(Action::forward))-int(down(Action::backward)),-1.0f,1.0f);
     result.strafe=std::clamp(pad_strafe+int(down(Action::strafe_right))-int(down(Action::strafe_left)),-1.0f,1.0f);
-    result.turn=std::clamp(pad_turn+int(down(Action::turn_right))-int(down(Action::turn_left)),-1.0f,1.0f);
+    result.turn=std::clamp(pad_turn*bindings.turn_sensitivity+int(down(Action::turn_right))-int(down(Action::turn_left)),-1.0f,1.0f);
     result.yaw_delta=mouse_x_*std::max(0.0f,bindings.mouse_degrees_per_count);mouse_x_=0;
-    result.fire=down(Action::fire)||mouse_fire_;result.use=down(Action::use);
+    result.fire=down(Action::fire);result.use=down(Action::use);
     result.map=edge(Action::map);result.pause=edge(Action::pause);result.run=down(Action::run);result.slow=down(Action::slow);
     result.next_weapon=edge(Action::next_weapon);result.previous_weapon=edge(Action::previous_weapon);
     result.quicksave=edge(Action::quicksave);result.quickload=edge(Action::quickload);
-    for(int i=0;i<8;++i)if(keys_[SDL_SCANCODE_1+i])result.select_weapon=i+1;
+    if(down(Action::weapon1))result.select_weapon=1;
+    if(down(Action::weapon2))result.select_weapon=2;
     previous_=held;return result;
 }
 } // namespace dok

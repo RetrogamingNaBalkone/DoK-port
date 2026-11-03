@@ -8,6 +8,7 @@ class Hud {
 public:
     explicit Hud(const Archive& archive);
     IndexedSurface classic(const IndexedSurface& scene,const PlayerState& player,const std::string& message={}) const;
+    IndexedSurface classic_mode(const IndexedSurface& scene,int frame_height,const PlayerState& player,const std::string& message={}) const;
     std::vector<HudPanel> overlay(IndexedSurface& scene,const PlayerState& player,const std::string& message={}) const;
     // Desktop presentation in screen pixels, independent of the 160-line world.
     HudFrame desktop(int width,const PlayerState& player,const std::array<std::uint32_t,256>& palette,

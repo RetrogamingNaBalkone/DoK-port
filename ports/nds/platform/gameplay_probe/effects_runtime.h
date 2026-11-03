@@ -28,6 +28,11 @@ typedef struct NdsEffectsRuntime {
     dok_sprite_asset_bank *sprites;
     uint32_t fixture_ticks,callbacks,water_callbacks,animation_callbacks,fault,percentage,schedule_refusals;
     uint32_t case_id,frame_id,last_ticks;
+#if GAMEPLAY_FRONTEND
+    uint32_t water_ticks,water_fraction,water_phase;
+    uint32_t door_ticks[256],door_fraction[256];
+    uint16_t door_kind[256];
+#endif
     volatile NdsEffectTrace *traces;
     struct NdsGameplay *game;
     dok_sprite_list *simulation_list;

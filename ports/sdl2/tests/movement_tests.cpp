@@ -23,8 +23,26 @@ static dok::LevelDefinition fixture(){
 }
 int main(){
     try{
+        for(auto profile:{dok::DatasetId::old_gold,dok::DatasetId::kremlin_pkr,dok::DatasetId::kremlin_pke})for(bool inertia:{false,true}){
+            std::vector<dok::Pose> replay_poses;
+            for(int fps:{30,60,144}){
+                auto level=fixture();level.dataset=profile;dok::World replay(level);std::uint64_t previous=0;
+                for(std::uint64_t frame=1;frame<=unsigned(fps);++frame){const auto elapsed=frame*1000000000ULL/fps;
+                    replay.advance_events(elapsed-previous,[&](auto,auto){
+                        const auto tick=std::uint32_t(replay.simulation_ticks());dok::InputActions a;
+                        if(tick<2500){a.forward=0.5f;a.strafe=0.5f;}else if(tick<5000)a.forward=-1;
+                        auto& actor=replay.objects.at(*replay.player);const auto before=*actor.pose;
+                        dok::update_player_motion(replay,a,tick,inertia);
+                        if(!inertia&&!a.forward&&!a.strafe)check(before.x==actor.pose->x&&before.z==actor.pose->z);
+                        if(!inertia&&(a.forward||a.strafe))check(actor.motion->acceleration==10000);
+                    });previous=elapsed;
+                }
+                replay_poses.push_back(*replay.objects.at(*replay.player).pose);
+            }
+            for(const auto& pose:replay_poses)check(pose.x==replay_poses[0].x&&pose.z==replay_poses[0].z);
+        }
         // Whole-tick interpolation must include forced current motion, even with no input.
-        for(int category:{100,102})for(int force:{-1400,1400})for(int fps:{30,60,144}){
+        for(bool inertia:{false,true})for(int category:{100,102})for(int force:{-1400,1400})for(int fps:{30,60,144}){
             auto level=fixture();dok::ObjectDefinition water;water.glyph='~';water.class_id=12;
             water.fields={{dok::FieldKind::word,0x66,category,{}},{dok::FieldKind::word,0x68,force,{}}};
             level.glyph_index['~']=int(level.objects.size());level.objects.push_back(water);
@@ -39,7 +57,7 @@ int main(){
                     const auto before=pose;const auto old_offset=view.offset(tick);
                     view.step(pose,tick,[&]{
                         dok::InputActions input;input.slow=dok::player_surface(current);
-                        dok::update_player_motion(current,input,std::uint32_t(tick));
+                        dok::update_player_motion(current,input,std::uint32_t(tick),inertia);
                     });
                     const auto offset=view.offset(tick);
                     // No immediate camera jump on a simulation tick.

@@ -15,7 +15,7 @@ public:
     // Spawn returns the original charge cost, zero on allocation failure.
     // Readiness is consumed even if spawning fails, as in the DOS handler.
     bool fire(const std::function<std::int16_t(std::uint8_t)>& spawn);
-    void overlay(IndexedSurface& target) const;
+    void overlay(IndexedSurface& target,int frame_height=200) const;
 private:
     void show(OwnerId owner);
     void hide_current();

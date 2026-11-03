@@ -115,16 +115,18 @@ bool Weapons::fire(const std::function<std::int16_t(std::uint8_t)>& spawn){
     if(cost)world_.sound(owner,AudioAction::once);
     return cost!=0;
 }
-void Weapons::overlay(IndexedSurface& target)const{
+void Weapons::overlay(IndexedSurface& target,int frame_height)const{
     const auto& player=*world_.objects.at(*world_.player).player_state;
     const auto owner=player.weapons.at(player.current_weapon);if(!owner)return;
     const auto& weapon=*world_.object_for_owner(owner).weapon;if(weapon.state==4)return;
     const auto& image=frame(owner).image;
     // Verified VGA scale=8, surface scale=1. Inclusive native viewport bounds.
-    const int left=(target.width()-1-static_cast<int>(image.width))/2;
-    const int top=target.height()-1-((static_cast<int>(image.height)-2)>>weapon.shift);
-    for(unsigned y=0;y<image.height;++y)for(unsigned x=0;x<image.width;++x){
-        const int dx=left+x,dy=top+y;const auto color=image.pixels[y*image.width+x];
+    const int width=frame_height==200?int(image.width):int(image.width)*target.width()/320;
+    const int height=frame_height==200?int(image.height):int(image.height)*frame_height/200;
+    const int left=(target.width()-1-width)/2;
+    const int top=target.height()-1-((height-2)>>weapon.shift);
+    for(int y=0;y<height;++y)for(int x=0;x<width;++x){
+        const int dx=left+x,dy=top+y;const auto color=image.pixels[(std::size_t(y)*image.height/height)*image.width+std::size_t(x)*image.width/width];
         if(color&&dx>=0&&dy>=0&&dx<target.width()&&dy<target.height())target.pixels[dy*target.width()+dx]=color;
     }
 }

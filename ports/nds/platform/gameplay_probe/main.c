@@ -23,6 +23,7 @@
 #include "dok/door_render.h"
 #include "effects_runtime.h"
 #include "gameplay.h"
+#include "fps_counter.h"
 #include "dok/geometry_cache.h"
 #if N23_STATIC_GEOMETRY
 #include "../../render/static_geometry.h"
@@ -789,6 +790,40 @@ static void begin_presentation_sequence(const dok_render_case *c)
 }
 
 static uint32_t previous_scene_ticks,scene_clock_epoch;
+#if GAMEPLAY_FRONTEND && GAMEPLAY_UI
+static NdsFpsCounter fps_counter;
+static void draw_fps(void)
+{
+    /* DMA cannot read the ARM9 DTCM stack. Keep this small tile in main RAM. */
+    _Alignas(32) static unsigned char pixels[64u*10u];
+    static uint32_t palette_epoch;
+    static unsigned char background,foreground;
+    if(palette_epoch!=world->initial.epoch){
+        uint32_t darkest=UINT32_MAX,brightest=0;
+        for(uint32_t i=1;i<256u;++i){
+            uint32_t rgb=storage->effects.palette[i];
+            uint32_t light=(rgb&31u)+((rgb>>5u)&31u)+((rgb>>10u)&31u);
+            if(light<darkest){darkest=light;background=(unsigned char)i;}
+            if(light>brightest){brightest=light;foreground=(unsigned char)i;}
+        }
+        palette_epoch=world->initial.epoch;
+    }
+    unsigned char label[8]={'F','P','S',' ','-','-','.','-'};
+    if(fps_counter.tenths){
+        label[4]=(unsigned char)('0'+fps_counter.tenths/100u);
+        label[5]=(unsigned char)('0'+fps_counter.tenths/10u%10u);
+        label[7]=(unsigned char)('0'+fps_counter.tenths%10u);
+    }
+    memset(pixels,background,sizeof(pixels));
+    for(uint32_t c=0;c<8u;++c)for(uint32_t y=0;y<8u;++y){
+        unsigned char bits=ui->bank[label[c]*8u+y];
+        for(uint32_t x=0;x<8u;++x)if(bits&(128u>>x))pixels[(y+1u)*64u+c*8u+x]=foreground;
+    }
+    DC_FlushRange(pixels,sizeof(pixels));
+    for(uint32_t y=0;y<10u;++y)
+        dmaCopyWords(3,pixels+y*64u,(unsigned char *)bgGetGfxPtr(hud_bg)+(y+2u)*256u+188u,64u);
+}
+#endif
 static int sprites_prepare(const dok_render_case *c,const dok_nds_render_camera *camera,uint32_t heading,uint32_t ordinal)
 {
 #if N23_FRAME_BATCH && GAMEPLAY_FRAME_STORE
@@ -1097,6 +1132,10 @@ static int render_one(const dok_render_case *c,uint32_t ordinal)
 #endif
     }
 #endif
+#if GAMEPLAY_FRONTEND && GAMEPLAY_UI
+    /* Redraw after any weapon bitmap replacement, before scene submission. */
+    draw_fps();
+#endif
     /* Weapon admission may compact raw LRU storage. Resolve every borrowed
      * sprite pointer again before effect generation/stream planning. */
     for(uint32_t n=0;n<demand_count;++n){const unsigned char *pixels=dok_texture_cache_pixels(&storage->cache,demand[n].texture.asset_id);if(pixels)demand[n].texture.pixels=pixels;}
@@ -1298,6 +1337,9 @@ static int render_one(const dok_render_case *c,uint32_t ordinal)
         if(scene_clock_epoch==world->initial.epoch&&source_end!=previous_scene_ticks&&
            dok_interactions_cadence(storage->game.c2,source_end-previous_scene_ticks,&storage->game.c2)!=DOK_STATUS_OK)return GAMEPLAY_FAILURE();
         previous_scene_ticks=source_end;scene_clock_epoch=world->initial.epoch;
+#if GAMEPLAY_FRONTEND && GAMEPLAY_UI
+        nds_fps_present(&fps_counter,world->initial.epoch,source_end);
+#endif
     }
     obs.presented_frame_id=obs.submitted_frame_id;row.presented_frame_id=obs.presented_frame_id;
     row.flags|=NDS_RENDER_FRAME_PRESENTED;observe(&stats);

@@ -105,10 +105,10 @@ void apply_mouse_yaw(World& world,float degrees){
     const auto whole=static_cast<int>(motion.mouse_remainder);motion.mouse_remainder-=whole;
     actor.pose->heading=static_cast<std::int16_t>(heading(actor.pose->heading-whole));
 }
-void update_player_motion(World& world,const InputActions& input,std::uint32_t now){
-    update_actor_motion(world,world.objects.at(*world.player).owner,input,now);
+void update_player_motion(World& world,const InputActions& input,std::uint32_t now,bool inertia){
+    update_actor_motion(world,world.objects.at(*world.player).owner,input,now,inertia);
 }
-void update_actor_motion(World& world,OwnerId owner,const InputActions& input,std::uint32_t now){
+void update_actor_motion(World& world,OwnerId owner,const InputActions& input,std::uint32_t now,bool inertia){
     require_profile(world);
     auto& actor=world.object_for_owner(owner);auto& motion=*actor.motion;auto& pose=*actor.pose;
     const auto& definition=world.definition.objects[actor.definition_index];
@@ -116,10 +116,11 @@ void update_actor_motion(World& world,OwnerId owner,const InputActions& input,st
     const bool moving=input.forward!=0||input.strafe!=0,turning=input.turn!=0;
     if(moving){motion.last_forward=input.forward;motion.last_strafe=input.strafe;}
     motion.acceleration=std::clamp(add32(motion.acceleration,moving?signed32(elapsed):sub32(0,signed32(elapsed))),0,10000);
+    if(!inertia){motion.acceleration=moving?10000:0;if(!moving)motion.last_forward=motion.last_strafe=0;}
     motion.turn_acceleration=std::min(add32(motion.turn_acceleration,signed32(elapsed)),10000);
     auto scale=static_cast<std::uint32_t>(elapsed<<8)/416;
     if(turning&&input.forward!=0){
-        motion.acceleration=motion.turn_acceleration=std::max(motion.acceleration,motion.turn_acceleration);
+        if(inertia)motion.acceleration=motion.turn_acceleration=std::max(motion.acceleration,motion.turn_acceleration);
         scale>>=1;
     }
     scale=std::clamp<std::uint32_t>(scale,256,768);
