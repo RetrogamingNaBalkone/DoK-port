@@ -11,6 +11,24 @@ namespace {
 std::int16_t word(std::int32_t n){return signed16(static_cast<std::uint16_t>(n));}
 bool joins(unsigned cls){return cls==2||cls==4||cls==7;}
 }
+Image flowing_surface_image(const Image& source,std::uint64_t ticks){
+    Image result=source;
+    const unsigned phase=(ticks/334)%18;
+    const auto flags=source.flags;
+    if(!(flags&0x3c00))return result;
+    // Match the original pair priority and divide-before-multiply crop.
+    const bool horizontal=(flags&0x0c00)!=0;
+    const int width=static_cast<int>(source.width),height=static_cast<int>(source.height);
+    const int extent=horizontal?width:height;
+    const int shift=(extent/18)*phase;
+    const int direction=(flags&0x0400)?-1:(flags&0x0800)?1:(flags&0x1000)?-1:1;
+    for(int y=0;y<height;++y)for(int x=0;x<width;++x){
+        const int sx=horizontal?(x+direction*shift+width)%width:x;
+        const int sy=horizontal?y:(y+direction*shift+height)%height;
+        result.pixels[std::size_t(y)*source.width+x]=source.pixels[std::size_t(sy)*source.width+sx];
+    }
+    return result;
+}
 CellBounds original_cell_bounds(Pose pose,int side,int map_width,int map_length){
     if(side<=0||map_width<=0||map_length<=0)throw std::invalid_argument("Invalid scene grid");
     const auto s=original_sine(pose.heading),c=original_cosine(pose.heading);
@@ -55,6 +73,11 @@ SoftwareScene::SoftwareScene(const Archive& archive,const LevelDefinition& level
             index=images_.size();images_.push_back(copy);
             door_sources_.emplace(object_images_.size(),std::move(copy));
         }
+        if(object.class_id==12&&level.dataset!=DatasetId::old_gold&&(images_[index].flags&0x3c00)){
+            Image copy=images_[index];
+            index=images_.size();images_.push_back(copy);
+            flowing_sources_.emplace(object_images_.size(),std::move(copy));
+        }
         object_images_.push_back(index);
         for(const auto& field:object.fields)if(field.kind==FieldKind::image)load(field.bytes);
     }
@@ -70,6 +93,8 @@ const IndexedSurface& SoftwareScene::render(const World& world,Pose pose,const s
     for(const auto& instance:dynamic)if(instance.replaces&&instance.replaces<=world.objects.size())replaced[instance.replaces-1]=true;
     for(const auto& entry:door_sources_)
         images_[object_images_[entry.first]]=door_image(entry.second,*world.objects.at(entry.first).door);
+    for(const auto& entry:flowing_sources_)
+        images_[object_images_[entry.first]]=flowing_surface_image(entry.second,world.simulation_ticks());
     auto parameters=CameraParameters::kremlin_vga();if(gpu)parameters.width=static_cast<std::int16_t>(view_width);
     SoftwareCamera camera(parameters);camera.set_pose(pose);
     const auto& hero=world.objects.at(*world.player);

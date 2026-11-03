@@ -1,4 +1,6 @@
 #include "dok/movement.hpp"
+#include "dok/items.hpp"
+#include "dok/view_motion.hpp"
 #include <iostream>
 #include <stdexcept>
 
@@ -21,6 +23,35 @@ static dok::LevelDefinition fixture(){
 }
 int main(){
     try{
+        // Whole-tick interpolation must include forced current motion, even with no input.
+        for(int category:{100,102})for(int force:{-1400,1400})for(int fps:{30,60,144}){
+            auto level=fixture();dok::ObjectDefinition water;water.glyph='~';water.class_id=12;
+            water.fields={{dok::FieldKind::word,0x66,category,{}},{dok::FieldKind::word,0x68,force,{}}};
+            level.glyph_index['~']=int(level.objects.size());level.objects.push_back(water);
+            level.maps["fcmap"].assign(64,'~');dok::World current(level);dok::ViewMotion view;
+            auto& pose=*current.objects.at(*current.player).pose;
+            const auto origin=pose;const int axis=category==100?0:2;const double delta=force/30;
+            std::uint64_t previous=0;double previous_visual=axis==0?origin.x:origin.z;
+            for(std::uint64_t frame=1;frame<=unsigned(fps)/2;++frame){
+                const auto elapsed=frame*1000000000ULL/fps;
+                current.advance_events(elapsed-previous,[&](auto,auto){
+                    const double tick=current.simulation_ticks();
+                    const auto before=pose;const auto old_offset=view.offset(tick);
+                    view.step(pose,tick,[&]{
+                        dok::InputActions input;input.slow=dok::player_surface(current);
+                        dok::update_player_motion(current,input,std::uint32_t(tick));
+                    });
+                    const auto offset=view.offset(tick);
+                    // No immediate camera jump on a simulation tick.
+                    check(std::abs((axis==0?pose.x:pose.z)+offset[axis]-(axis==0?before.x:before.z)-old_offset[axis])<1e-8);
+                });
+                previous=elapsed;const double now=current.presentation_ticks();
+                const double visual=(axis==0?pose.x:pose.z)+view.offset(now)[axis];
+                const double expected=(axis==0?origin.x:origin.z)+delta*std::max(0.0,now-416)/416;
+                check(std::abs(visual-expected)<1e-8);
+                check((visual-previous_visual)*force>=0);previous_visual=visual;
+            }
+        }
         dok::World world(fixture());auto& actor=world.objects.at(*world.player);const auto owner=actor.owner;
         auto initial=*actor.pose;check(initial.x==1680&&initial.z==1680);
         dok::move_actor(world,owner,-120,false);check(actor.pose->z==initial.z+90&&actor.pose->x==initial.x);

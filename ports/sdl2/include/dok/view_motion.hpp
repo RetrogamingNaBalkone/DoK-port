@@ -10,6 +10,11 @@ namespace dok {
 class ViewMotion {
 public:
     void reset() { delta_={}; }
+    template<class Update> void step(Pose& pose,double tick,Update update) {
+        const auto before=pose;
+        update();
+        record(before,pose,tick);
+    }
     void record(Pose before,Pose after,double tick) {
         tick_=tick;
         delta_={double(before.x)-after.x,double(before.y)-after.y,

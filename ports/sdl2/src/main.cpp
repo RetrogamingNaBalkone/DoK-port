@@ -272,11 +272,12 @@ int main(int argc,char** argv) {
                         }
                         dok::player_sensors(*world);
                         auto movement=actions;
-                        const bool surface_slow=dok::player_surface(*world);
-                        movement.slow=movement.slow||surface_slow;
-                        const auto before=*world->objects.at(*world->player).pose;
-                        dok::update_player_motion(*world,movement,static_cast<std::uint32_t>(world->simulation_ticks()));
-                        view_motion.record(before,*world->objects.at(*world->player).pose,double(world->simulation_ticks()));
+                        // Interpolate the entire player displacement, including currents.
+                        view_motion.step(*world->objects.at(*world->player).pose,double(world->simulation_ticks()),[&]{
+                            const bool surface_slow=dok::player_surface(*world);
+                            movement.slow=movement.slow||surface_slow;
+                            dok::update_player_motion(*world,movement,static_cast<std::uint32_t>(world->simulation_ticks()));
+                        });
                     }else if(event==dok::GameEvent::weapon_tick||event==dok::GameEvent::weapon_switch)weapons->event(owner,event);
                     else if(event==dok::GameEvent::projectile_tick)projectiles->event(owner);
                     else if(event==dok::GameEvent::monster_tick)monsters->event(owner);

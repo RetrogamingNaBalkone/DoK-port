@@ -7,6 +7,8 @@ namespace dok {
 struct CellBounds {int min_x,min_z,max_x,max_z;};
 CellBounds original_cell_bounds(Pose pose,int side,int map_width,int map_length);
 CellBounds view_cell_bounds(Pose pose,int side,int map_width,int map_length,int view_width);
+// Kremlin class12: original 18-phase cyclic image crop; fixed port cadence.
+Image flowing_surface_image(const Image& source,std::uint64_t ticks);
 // Initial-state scene. Dynamic image getters/crop and visibility activation are
 // connected by subsequent gameplay work; this class does not tick the world.
 class SoftwareScene {
@@ -25,6 +27,7 @@ private:
     std::vector<Image> images_;
     std::vector<std::size_t> object_images_;
     std::map<std::size_t,Image> door_sources_;
+    std::map<std::size_t,Image> flowing_sources_;
     std::vector<std::uint8_t> light_;
     std::array<std::uint32_t,256> palette_{};
     IndexedSurface surface_{320,160};
