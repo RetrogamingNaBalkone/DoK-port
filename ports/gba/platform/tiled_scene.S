@@ -227,7 +227,20 @@ dok_gba_coverage_span:
 .type dok_gba_tiled_masked_column,%function
 /* dst,source,v,step,count,bits,row mask,y%8. Shared coverage, source0 alpha. */
 dok_gba_tiled_masked_column:
+#ifdef DOK_HW_ZERO_RUNS
+    mov r12,#0
+    b .Lmasked_entry
+.global dok_gba_tiled_masked_runs
+.type dok_gba_tiled_masked_runs,%function
+dok_gba_tiled_masked_runs:
+    mov r12,r1
+.Lmasked_entry:
+#endif
     push {r4-r11,lr}
+#ifdef DOK_HW_ZERO_RUNS
+    sub sp,sp,#4
+    str r12,[sp]
+#endif
     mov lr,r0
     ldmia lr,{r0-r6}
     ldr r11,[lr,#28]
@@ -316,6 +329,42 @@ dok_gba_tiled_masked_column:
 .Lmasked_open:
 #ifndef DOK_HW_NO_TRANSPARENT_COUNT
     add r8,r8,r10
+#endif
+#ifdef DOK_HW_ZERO_RUNS
+    ldr r12,[sp]
+    cmp r12,#0
+    beq .Lmasked_runs_done
+    ldrb r12,[r12,r2,lsr #16]
+    cmp r12,#0
+    beq .Lmasked_runs_done
+    sub lr,r10,#1
+    mla lr,r3,lr,r2
+    mov lr,lr,lsr #16
+    sub lr,lr,r2,lsr #16
+    cmp lr,r12
+    blo .Lmasked_skip
+.Lmasked_runs_done:
+#endif
+#ifdef DOK_HW_MASKED_FULL8
+    /* Complete open tile row: fixed store offsets and shifted coverage bits
+     * avoid updating destination/mask and branching after every texel. */
+    cmp r10,#8
+    bne .Lmasked_open_tail
+    .set masked_row,0
+    .rept 8
+    ldrb r12,[r1,r2,lsr #16]
+    cmp r12,#0
+    strbne r12,[r0,#(masked_row*8)]
+    orrne r9,r9,r6,lsl #masked_row
+    addne r7,r7,#1
+    add r2,r2,r3
+    .set masked_row,masked_row+1
+    .endr
+    add r0,r0,#64
+    mov r6,r6,lsl #8
+    str r9,[r5]
+    b .Lmasked_group_done
+.Lmasked_open_tail:
 #endif
 #ifdef DOK_HW_MASKED_UNROLL
 #ifdef DOK_HW_MASKED_UNROLL_COMPACT
@@ -452,6 +501,9 @@ dok_gba_tiled_masked_column:
     sub r8,r8,r7
 #endif
     orr r0,r7,r8,lsl #16
+#ifdef DOK_HW_ZERO_RUNS
+    add sp,sp,#4
+#endif
     pop {r4-r11,lr}
     bx lr
 .size dok_gba_tiled_masked_column,.-dok_gba_tiled_masked_column

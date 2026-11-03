@@ -25,6 +25,9 @@ extern void gba_render_stage(unsigned stage);
 /* Optional per-primitive attribution. Zero by default, so normal frame
  * measurements include only its branch, never the timestamp calls. */
 volatile uint32_t g_render_work[5];
+#ifdef DOK_RENDER_HW_PERF05_PROFILE_PROTOTYPE
+volatile uint32_t g_perf05_work[32]; /* 16 classes: ticks then calls; 12..14 surfaces */
+#endif
 #ifdef DOK_RENDER_HW_FACE_CLASS_PROFILE_PROTOTYPE
 volatile uint32_t g_hw_face_class_work[4]; /* masked/opaque ticks, then calls */
 #endif
@@ -186,6 +189,12 @@ static const dok_renderer_image *face_image(const dok_renderer_workspace *w,unsi
 }
 #ifdef DOK_RENDER_PRELIT_PROTOTYPE
 static const uint32_t *prelit_view;
+#ifdef DOK_RENDER_HW_ZERO_RUNS_PROTOTYPE
+static const uint32_t *zero_runs_view;
+static const uint8_t *hw_column_runs;
+extern const uint8_t dok_zero_runs[];
+extern const uint32_t dok_zero_run_offsets[];
+#endif
 #ifdef DOK_RENDER_HW_SPARSE_POSTS_PROTOTYPE
 static const uint32_t *sparse_view;
 static const uint16_t *hw_column_posts;
@@ -976,6 +985,13 @@ static DOK_NOINLINE unsigned VISIBLE_COLUMN_NAME(dok_renderer_workspace *w,unsig
         struct {uint8_t *dst;const uint8_t *pixels;unsigned v,step,count;uint32_t *bits;unsigned mask,tile_y;} span={
             scene_pointer(w->frame,x,begin),pixels,v,step,end-begin+1,&coverage_bits[x>>1][begin>>5],1u<<(begin&31),begin&7};
         extern unsigned dok_gba_tiled_masked_column(const void *);
+#ifdef DOK_RENDER_HW_ZERO_RUNS_PROTOTYPE
+        extern unsigned dok_gba_tiled_masked_runs(const void *,const uint8_t *);
+        if(hw_column_runs) {
+            unsigned result=dok_gba_tiled_masked_runs(&span,hw_column_runs);
+            COVER_COUNT(w,x)|=128;return result;
+        }
+#endif
         unsigned result=
 #ifdef DOK_RENDER_HW_KERNEL_PROFILE_PROTOTYPE
             dok_gba_timed_masked_column(&span);
@@ -1085,6 +1101,9 @@ static unsigned visible_column(dok_renderer_workspace *w,unsigned x,unsigned beg
 }
 #endif
 static void raster(dok_renderer_workspace *,const dok_runtime *,const dok_renderer_face *,const uint8_t *,dok_renderer_stats *,int);
+#if defined(DOK_RENDER_HW_FAR_FLAT_PROTOTYPE) || defined(DOK_RENDER_HW_FAR_FENCES_PROTOTYPE)
+#include "renderer_far_lod.inc"
+#endif
 #include "renderer_surface_raster.inc"
 #ifdef DOK_RENDER_HW_FACE_BOX_PROTOTYPE
 volatile uint32_t g_hw_face_box[2]; /* cumulative tests/rejected faces */
@@ -1120,6 +1139,17 @@ static void raster(dok_renderer_workspace *w,const dok_runtime *r,const dok_rend
 #endif
     (void)light;
     dok_renderer_face f=*original;const dok_renderer_image *im=face_image(w,f.image_index);
+#ifdef DOK_RENDER_HW_FAR_FLAT_PROTOTYPE
+    unsigned far_rim=vend>=65536;if(far_rim)vend&=65535;
+#endif
+#ifdef DOK_RENDER_HW_FAR_FENCES_PROTOTYPE
+    const uint8_t *far_fence=0;
+    if(g_hw_tile_active && f.image_index<r->object_count && (im->flags&8u) &&
+       f.depth0>=PERF06_FAR && f.depth1>=PERF06_FAR) {
+        unsigned offset=dok_perf06_fence_offsets[static_view*256+f.image_index];
+        if(offset)far_fence=dok_perf06_fences+offset;
+    }
+#endif
     /* -1 selects the full source; ceiling rims supply the native V end. */
     if(vend<0 || vend>=im->height)vend=im->height-1;
     int x,first,last,span,q0,q1;int wrote=0;unsigned pixels=0,transparent=0;
@@ -1150,6 +1180,12 @@ static void raster(dok_renderer_workspace *w,const dok_runtime *r,const dok_rend
     if(g_hw_tile_active)world_obj_face(w,&f,im,g_world_obj_state->stride-1,s);
 #endif
     if(g_hw_tile_active &&
+#ifdef DOK_RENDER_HW_FAR_FLAT_PROTOTYPE
+       !far_rim &&
+#endif
+#ifdef DOK_RENDER_HW_FAR_FENCES_PROTOTYPE
+       !far_fence &&
+#endif
        (f.image_index>=r->object_count || r->level->definitions[f.image_index].class_id!=7) &&
        raster_rect(w,&f,im,s,vend))return;
 #endif
@@ -1241,6 +1277,14 @@ static void raster(dok_renderer_workspace *w,const dok_runtime *r,const dok_rend
             !sector_dynamic &&
 #endif
             coverage_contains((unsigned)x,(unsigned)begin,(unsigned)end)) continue;
+#ifdef DOK_RENDER_HW_FAR_FLAT_PROTOTYPE
+        if(far_rim) {
+            unsigned row=light_index(f.depth0+RASTER_DIV((f.depth1-f.depth0)*i,span));
+            unsigned color=w->lights[row*256+im->pixels[(im->height/2)*im->width+im->width/2]];
+            unsigned n=far_flat_column(w,(unsigned)x,begin,end,color);
+            pixels+=n;if(n)wrote=1;continue;
+        }
+#endif
 #ifdef DOK_RENDER_HW_DIRECT_GAPS_PROTOTYPE
         if(!g_hw_tile_active)coverage_sync(w,(unsigned)x);
 #else
@@ -1305,6 +1349,19 @@ static void raster(dok_renderer_workspace *w,const dok_runtime *r,const dok_rend
         }
 #endif
         u=clamp(u,0,im->width-1);
+#ifdef DOK_RENDER_HW_FAR_FENCES_PROTOTYPE
+        if(far_fence) {
+            unsigned row=light_index(f.depth0+RASTER_DIV((f.depth1-f.depth0)*i,span));
+            unsigned color=w->lights[row*256+far_fence[0]];
+            if(!color)color=g_hw_tile_black;
+            struct {uint8_t *frame;uint32_t *bits;const uint8_t *record;
+                unsigned x,u;int top,bottom,begin,end;unsigned color;} packet={
+                w->frame,coverage_bits[(unsigned)x>>1],far_fence,(unsigned)x,(unsigned)u,
+                top,bottom,begin,end,color};
+            unsigned n=dok_gba_far_fence(&packet);COVER_COUNT(w,(unsigned)x)|=128;
+            pixels+=n;if(n)wrote=1;continue;
+        }
+#endif
         /* Door owns its crop header, while the original payload stays shared.
          * LEVEL door sprites shift right (0x48) or down (0x108). Integer
          * division precedes multiplication, as native crop transform. */
@@ -1370,6 +1427,10 @@ static void raster(dok_renderer_workspace *w,const dok_runtime *r,const dok_rend
         uint32_t prelit=im->resource_id?prelit_view[im->resource_id*5+band]:0;
 #endif
         if(im->columns && prelit) {
+#ifdef DOK_RENDER_HW_ZERO_RUNS_PROTOTYPE
+            unsigned runs=zero_runs_view[im->resource_id*16+band];
+            hw_column_runs=runs?dok_zero_runs+runs+(unsigned)u*im->height:0;
+#endif
             unsigned mode=PRELIT_COLUMN_MODE(im->flags,prelit,(unsigned)u);
 #ifdef DOK_RENDER_HW_SPARSE_POSTS_PROTOTYPE
             SET_COLUMN_POSTS(im,prelit,(unsigned)u);
@@ -1382,6 +1443,9 @@ static void raster(dok_renderer_workspace *w,const dok_runtime *r,const dok_rend
                 dok_prelit_bank+prelit+(unsigned)u*im->height,
                 (unsigned)vstart,(unsigned)vstep,
                 mode,0,0);
+#ifdef DOK_RENDER_HW_ZERO_RUNS_PROTOTYPE
+            hw_column_runs=0;
+#endif
             transparent+=n>>16;n&=65535u;pixels+=n;if(n) wrote=1;
             continue;
         }
@@ -1539,6 +1603,9 @@ dok_renderer_status dok_renderer_draw(dok_renderer_workspace *w,const dok_runtim
     extern const uint32_t dok_prelit_offsets[];
 #ifdef DOK_RENDER_EXACT_LIGHT_PROTOTYPE
     prelit_view=dok_prelit_offsets+(level*2+language)*(a->resource_count+1)*16;
+#ifdef DOK_RENDER_HW_ZERO_RUNS_PROTOTYPE
+    zero_runs_view=dok_zero_run_offsets+(level*2+language)*(a->resource_count+1)*16;
+#endif
 #ifdef DOK_RENDER_HW_SPARSE_POSTS_PROTOTYPE
     sparse_view=dok_sparse_image_offsets+(level*2+language)*(a->resource_count+1)*16;
     hw_column_posts=0;
@@ -1651,6 +1718,9 @@ dok_renderer_status dok_renderer_draw(dok_renderer_workspace *w,const dok_runtim
 #endif
 #ifdef DOK_RENDERER_PROBE
     for(unsigned k=1;k<5;++k) g_render_work[k]=0;
+#ifdef DOK_RENDER_HW_PERF05_PROFILE_PROTOTYPE
+    for(unsigned k=0;k<32;++k)g_perf05_work[k]=0;
+#endif
 #ifdef DOK_RENDER_HW_KERNEL_PROFILE_PROTOTYPE
     for(unsigned k=0;k<4;++k)g_kernel_work[k]=0;
 #endif
@@ -1688,6 +1758,9 @@ dok_renderer_status dok_renderer_draw(dok_renderer_workspace *w,const dok_runtim
         const dok_renderer_surface *f=surfaces?&w->surfaces[w->surface_order[surfaces-1]]:0;
         if(f && (!walls || f->key<=w->faces[index].key)) {
             surface_raster(w,r,f,&s);--surfaces;
+#ifdef DOK_RENDER_HW_PERF05_PROFILE_PROTOTYPE
+            if(g_render_work[0]) {g_perf05_work[12+f->plane]+=render_ticks()-stamp;++g_perf05_work[28+f->plane];}
+#endif
 #ifdef DOK_RENDERER_PROBE
             if(g_render_work[0]) {g_render_work[2]+=render_ticks()-stamp;++g_render_work[4];}
 #ifdef DOK_RENDER_HW_BG_PROTOTYPE
@@ -1696,6 +1769,14 @@ dok_renderer_status dok_renderer_draw(dok_renderer_workspace *w,const dok_runtim
 #endif
         } else {
             raster(w,r,&w->faces[index],w->lights,&s,-1);--walls;
+#ifdef DOK_RENDER_HW_PERF05_PROFILE_PROTOTYPE
+            if(g_render_work[0]) {
+                unsigned id=w->faces[index].image_index;
+                unsigned cls=id<r->object_count?r->level->definitions[id].class_id:15;
+                if(cls>=12)cls=15;
+                g_perf05_work[cls]+=render_ticks()-stamp;++g_perf05_work[16+cls];
+            }
+#endif
 #ifdef DOK_RENDER_HW_FACE_CLASS_PROFILE_PROTOTYPE
             if(g_render_work[0]) {
                 unsigned group=(face_image(w,w->faces[index].image_index)->flags&8u)?0:1;

@@ -24,7 +24,16 @@ static SURFACE_RASTER_ATTR void SURFACE_RASTER_NAME(dok_renderer_workspace *w,co
         dok_renderer_face face={f->x[0],f->x[1],f->y[0],f->y[1],f->y[3],f->y[2],
             f->depth[0],f->depth[1],f->u0,f->u1,f->key,f->object,0};
         unsigned drawn=stats->faces_drawn;
+#if defined(DOK_RENDER_HW_FAR_FLAT_PROTOTYPE) || defined(DOK_RENDER_HW_FAR_FENCES_PROTOTYPE)
+        int vend=f->v0?f->v0:-1;
+#ifdef DOK_RENDER_HW_FAR_FLAT_PROTOTYPE
+        if(g_hw_tile_active && face.depth0>=PERF06_FAR && face.depth1>=PERF06_FAR)
+            vend=(vend<0?image.height-1:vend)|65536;
+#endif
+        w->images[f->object]=image;raster(w,r,&face,w->lights,stats,vend);stats->faces_drawn=drawn;
+#else
         w->images[f->object]=image;raster(w,r,&face,w->lights,stats,f->v0?f->v0:-1);stats->faces_drawn=drawn;
+#endif
         w->images[f->object]=saved;return;
     }
 #ifndef DOK_RENDER_WORLD_PLANES_PROTOTYPE
@@ -154,6 +163,19 @@ static SURFACE_RASTER_ATTR void SURFACE_RASTER_NAME(dok_renderer_workspace *w,co
         first=(first+1)&~1;
 #endif
         if(first>last) continue;
+#ifdef DOK_RENDER_HW_FAR_FLAT_PROTOTYPE
+        if(SURFACE_RASTER_TILED && SURFACE_RASTER_PLANE==1 &&
+           sar(depth-depth_step*row_step,16)>=PERF06_FAR) {
+            extern const uint8_t dok_procedural_colors[];
+            unsigned glyph=r->level->definitions[f->object].glyph;
+            unsigned color=w->lights[row*256+dok_procedural_colors[(static_view*256+glyph)*6+3]];
+            if(!color)color=g_hw_tile_black;
+            stats->pixels_written+=dok_gba_flat_span(scene_pointer(w->frame,(unsigned)first,(unsigned)y),
+                &coverage_bits[(unsigned)first>>1][(unsigned)y>>5],1u<<((unsigned)y&31),
+                (unsigned)(last-first)/2+1,color);
+            continue;
+        }
+#endif
 #if defined(DOK_RENDER_HW_LOW_ADAPTIVE_PROTOTYPE) && !defined(DOK_RENDER_HW_LOW_FEEDBACK_PROTOTYPE)
         if(mask_only) {
             extern unsigned dok_gba_coverage_span(uint32_t *,unsigned,unsigned);

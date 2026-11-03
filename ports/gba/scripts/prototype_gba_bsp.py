@@ -234,6 +234,12 @@ VARIANTS['g22_split']=VARIANTS['g20d_compact']+('HW_VISIBLE_SPLIT',)
 VARIANTS['g22_rows96_split']=VARIANTS['g22_split']+('HW_ROWS96',)
 VARIANTS['g22_split_active']=VARIANTS['g22_split']+('HW_PLANE_ACTIVE','HW_PLANE_ACTIVE_HOT')
 VARIANTS['g25_rows96']=VARIANTS['g22_split_active']+('HW_ROWS96',)
+VARIANTS['perf04_full8']=VARIANTS['g22_split_active']+('HW_MASKED_FULL8',)
+VARIANTS['perf05_profile']=VARIANTS['perf04_full8']+('HW_PERF05_PROFILE','HW_KERNEL_PROFILE',)
+VARIANTS['perf05_runs']=VARIANTS['perf04_full8']+('HW_ZERO_RUNS',)
+VARIANTS['perf06_ceiling']=VARIANTS['perf04_full8']+('HW_FAR_FLAT',)
+VARIANTS['perf06_fences']=VARIANTS['perf04_full8']+('HW_FAR_FENCES',)
+VARIANTS['perf06_both']=VARIANTS['perf04_full8']+('HW_FAR_FLAT','HW_FAR_FENCES')
 VARIANTS['g25_ceiling_lod']=VARIANTS['g22_split_active']+('HW_CEILING_LOD',)
 VARIANTS['g24_span_cache']=VARIANTS['g22_split_active']+('HW_SPAN_CACHE',)
 VARIANTS['g24_span_cache_top']=VARIANTS['g24_span_cache']+('HW_SPAN_CACHE_TOP',)
@@ -497,6 +503,14 @@ def build(base,out,variants,unreflected_control=False,assets_bin=None):
     startup=['cc','-target','arm-freestanding-eabi','-mcpu=arm7tdmi',
              '-DDOK_RENDERER_PROBE','-DDOK_RENDER_HALF_COLUMNS','-c']
     command([zig,*startup,out/'tables.S','-o',out/'tables.o'])
+    if any('HW_FAR_FENCES' in VARIANTS[v] for v in variants):
+        from gba_perf06_assets import build_fences
+        metadata['perf06_fences']=build_fences(out,assets_bin)
+        command([zig,*startup,out/'perf06-fences.S','-o',out/'perf06-fences.o'])
+    if any('HW_ZERO_RUNS' in VARIANTS[v] for v in variants):
+        from gba_zero_runs import build_zero_runs
+        metadata['zero_runs']=build_zero_runs(out,assets_bin)
+        command([zig,*startup,out/'zero-runs.S','-o',out/'zero-runs.o'])
     if any('HW_ANIMATION_COLUMNS' in VARIANTS[v] for v in variants):
         from gba_animation_columns import build_animation_columns
         metadata['animation_columns']=build_animation_columns(out,assets_bin.read_bytes())
@@ -689,6 +703,8 @@ def build(base,out,variants,unreflected_control=False,assets_bin=None):
             if 'HW_MASKED_ZERO' in defines:tiled_flags+=['-DDOK_HW_MASKED_ZERO']
             if 'HW_MASKED_UNROLL' in defines:tiled_flags+=['-DDOK_HW_MASKED_UNROLL']
             if 'HW_MASKED_UNROLL_COMPACT' in defines:tiled_flags+=['-DDOK_HW_MASKED_UNROLL_COMPACT']
+            if 'HW_MASKED_FULL8' in defines:tiled_flags+=['-DDOK_HW_MASKED_FULL8']
+            if 'HW_ZERO_RUNS' in defines:tiled_flags+=['-DDOK_HW_ZERO_RUNS']
             if 'HW_NO_TRANSPARENT_COUNT' in defines:tiled_flags+=['-DDOK_HW_NO_TRANSPARENT_COUNT']
             if 'HW_MASKED_SELECTIVE_ZERO' in defines:tiled_flags+=['-DDOK_HW_MASKED_SELECTIVE_ZERO']
             if 'HW_OPAQUE_BATCH' in defines:tiled_flags+=['-DDOK_HW_OPAQUE_BATCH']
@@ -730,6 +746,11 @@ def build(base,out,variants,unreflected_control=False,assets_bin=None):
         if variant not in ('baseline','no_scales'):
             objects.append(out/'tables.o')
         if 'HW_ANIMATION_COLUMNS' in defines:objects.append(out/'animation-columns.o')
+        if 'HW_FAR_FENCES' in defines:objects.append(out/'perf06-fences.o')
+        if 'HW_FAR_FLAT' in defines or 'HW_FAR_FENCES' in defines:
+            command([zig,*startup,ROOT/'ports/gba/platform/perf06_flat.S','-o',dest/'perf06-flat-columns.o'])
+            objects.append(dest/'perf06-flat-columns.o')
+        if 'HW_ZERO_RUNS' in defines:objects.append(out/'zero-runs.o')
         if 'HW_SPARSE_POSTS' in defines:objects.append(out/'sparse-posts.o')
         if 'STREAM_BSP' in defines:objects.append(out/'stream-tables.o')
         if 'SECTOR_CLIP' in defines:

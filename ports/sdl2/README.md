@@ -2,4 +2,10 @@
 
 Место независимого общего порта Old Gold/PKR/PKE для Windows, Linux и PortMaster. [План](../../docs/source-port/plan.md), [handoff](../../docs/source-port/handoff.md).
 
-Реализация SP01–SP20 не начата; следующая задача — SP01. Перед реализацией создать её паспорт по протоколу плана. Код и тесты размещаются внутри этого каталога, выходы — в `build/sdl2/`, отобранные сборки — в `artifacts/sdl2/`. Движок восстанавливается по оригиналам независимо от GBA и NDS.
+Подготовлена предварительная Windows-сборка для плейтеста: PKR/PKE/Old Gold,
+программный VGA и самостоятельный OpenGL2. Инструкция и ограничения —
+[PLAYTEST.md](PLAYTEST.md). Пакет: `artifacts/sdl2/windows-playtest`.
+Полный Windows v1, Linux/ARM/PortMaster, PSP и Switch остаются следующими
+этапами. Движок восстанавливается по оригиналам независимо от GBA и NDS.
+
+Команды сборки и реальные результаты: [building](../../docs/source-port/building.md).

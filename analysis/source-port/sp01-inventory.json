@@ -1,0 +1,326 @@
+{
+  "schema": 1,
+  "scope": "Existing Ghidra export inventory; not semantic equivalence",
+  "profiles": [
+    {
+      "id": "ru",
+      "sample": "originals/pkr/RUS/PKR.EXE",
+      "sha256_before": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+      "sha256_after": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+      "project": "research/ghidra/projects/ru/Kremlin.gpr",
+      "export": "decompiled/ru",
+      "summary": {
+        "program": "PKR.EXE",
+        "language": "x86:LE:16:Protected Mode",
+        "compiler": "default",
+        "functions": "921",
+        "decompiled": "921",
+        "failed": "0",
+        "prologue_functions_added": "481",
+        "prologue_candidates_rejected": "461"
+      },
+      "files": {
+        "decompiled.c": {
+          "bytes": 1156581,
+          "sha256": "5f6a57e2514b419e46516d0904d01a02b06710129807cf069c59efd59baccf2a"
+        },
+        "listing.asm": {
+          "bytes": 1821219,
+          "sha256": "7c6a8ad87cddb305f500afaa3f8af5420f8ababdd4bf67d6da966b5f7b8f7d57"
+        },
+        "functions.tsv": {
+          "bytes": 50272,
+          "sha256": "312f1104f93dd53c231dd97f8b27f011da59c2e21d08faf6f5405a862b984bb7"
+        },
+        "references.tsv": {
+          "bytes": 843865,
+          "sha256": "785994b04ab23a79e5f56c0eed1d14142814c449f04794cbef811164fd66ceb0"
+        },
+        "blocks.tsv": {
+          "bytes": 2744,
+          "sha256": "db48aeeb414786c59193e3074859f219c0c23d41b6aa2fe8b54633026ee8b46f"
+        },
+        "unrecovered.tsv": {
+          "bytes": 16715,
+          "sha256": "bfa2a18bfeac7dd30a2a66aa581229c291299b5b3e1c8885cde8ec00806189f4"
+        },
+        "ghidra.log": {
+          "bytes": 27120,
+          "sha256": "52e316e7a862a58a2b7155649338f735d74d3963c554a9006914ea72a23a6e79"
+        },
+        "summary.txt": {
+          "bytes": 175,
+          "sha256": "d04766985a54a7f1dc5348214eda01b8f10892b2b5a8f34128759bf1663560ee"
+        }
+      },
+      "warning_functions": [
+        "1000_0000.c",
+        "1000_05b8.c",
+        "1000_0838.c",
+        "1000_146a.c",
+        "1000_17bb.c",
+        "1000_19a3.c",
+        "1000_2787.c",
+        "1000_2cbb.c",
+        "1000_3e23.c",
+        "1000_41a9.c",
+        "1000_420b.c",
+        "1000_4bb3.c",
+        "1000_50ff.c",
+        "1000_5103.c",
+        "1000_5107.c",
+        "1000_510b.c",
+        "1000_549a.c",
+        "1000_5718.c",
+        "1000_5cd5.c",
+        "1000_619c.c",
+        "1098_1290.c",
+        "1110_0d82.c",
+        "1140_022c.c",
+        "1140_040f.c",
+        "1148_154e.c",
+        "1148_2723.c",
+        "1150_0352.c",
+        "1150_1497.c",
+        "1198_0000.c",
+        "1198_0004.c",
+        "1198_0008.c",
+        "1198_000c.c",
+        "1198_0010.c",
+        "1198_0014.c",
+        "1198_0018.c",
+        "1198_001c.c",
+        "1198_0020.c",
+        "1198_0024.c",
+        "1198_0028.c",
+        "1198_002c.c",
+        "1198_0030.c",
+        "1198_0034.c",
+        "1198_0038.c",
+        "1198_003c.c",
+        "1198_0040.c",
+        "1198_0044.c",
+        "1198_0048.c",
+        "1198_004c.c",
+        "1198_0050.c",
+        "1198_0054.c",
+        "1198_0058.c"
+      ],
+      "log_error_lines": []
+    },
+    {
+      "id": "en",
+      "sample": "originals/pkr/ENG/PKE.EXE",
+      "sha256_before": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b",
+      "sha256_after": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b",
+      "project": "research/ghidra/projects/en/Kremlin.gpr",
+      "export": "decompiled/en",
+      "summary": {
+        "program": "PKE.EXE",
+        "language": "x86:LE:16:Protected Mode",
+        "compiler": "default",
+        "functions": "930",
+        "decompiled": "930",
+        "failed": "0",
+        "prologue_functions_added": "488",
+        "prologue_candidates_rejected": "469"
+      },
+      "files": {
+        "decompiled.c": {
+          "bytes": 1189056,
+          "sha256": "0834bb88dbabfdf44f9d02f3c7154139173e79ad77180bf32d41f1b4acf8cbf9"
+        },
+        "listing.asm": {
+          "bytes": 1882685,
+          "sha256": "33300381889b1546c8948d61e00ad6e27025bfc53daf249242470bcb71dceb36"
+        },
+        "functions.tsv": {
+          "bytes": 50712,
+          "sha256": "00a89a6578be99b54c2344be71983437e20784457e8d4d1ca35d9eca5cca7bff"
+        },
+        "references.tsv": {
+          "bytes": 878032,
+          "sha256": "ce48a34f83eda9bb1aab05110cebe21676bdc55c0b09c8e2e7e558e40b4065e5"
+        },
+        "blocks.tsv": {
+          "bytes": 1532,
+          "sha256": "2c023795a9ba4ec530d26cc8387fa4e7482b0fc9def56f3b14b98bdd04647919"
+        },
+        "unrecovered.tsv": {
+          "bytes": 20381,
+          "sha256": "c60a3c131b9d256ea9405eee8275895ac6a31f89d9db9b44896bcfe4c7a75602"
+        },
+        "ghidra.log": {
+          "bytes": 27120,
+          "sha256": "7e9e4571aa408cc2704a2c71271d82be19fc195d1265fda725336500271e4e38"
+        },
+        "summary.txt": {
+          "bytes": 175,
+          "sha256": "f37d3df3888aa18fb8a35b82bd76a94615a588e9dcaf61563ce10f6ecfc946d1"
+        }
+      },
+      "warning_functions": [
+        "1000_0000.c",
+        "1000_05b8.c",
+        "1000_0838.c",
+        "1000_146a.c",
+        "1000_17bb.c",
+        "1000_19a3.c",
+        "1000_2787.c",
+        "1000_2cbb.c",
+        "1000_3e23.c",
+        "1000_41a9.c",
+        "1000_420b.c",
+        "1000_4bb3.c",
+        "1000_50ff.c",
+        "1000_5103.c",
+        "1000_5107.c",
+        "1000_510b.c",
+        "1000_549a.c",
+        "1000_5718.c",
+        "1000_5cd5.c",
+        "1000_619c.c",
+        "1030_1374.c",
+        "1068_0e72.c",
+        "1080_120c.c",
+        "1080_13ef.c",
+        "1088_154e.c",
+        "1088_2723.c",
+        "1090_03b2.c",
+        "1090_14f7.c",
+        "10d8_0000.c",
+        "10d8_0004.c",
+        "10d8_0008.c",
+        "10d8_000c.c",
+        "10d8_0010.c",
+        "10d8_0014.c",
+        "10d8_0018.c",
+        "10d8_001c.c",
+        "10d8_0020.c",
+        "10d8_0024.c",
+        "10d8_0028.c",
+        "10d8_002c.c",
+        "10d8_0030.c",
+        "10d8_0034.c",
+        "10d8_0038.c",
+        "10d8_003c.c",
+        "10d8_0040.c",
+        "10d8_0044.c",
+        "10d8_0048.c",
+        "10d8_004c.c",
+        "10d8_0050.c",
+        "10d8_0054.c",
+        "10d8_0058.c"
+      ],
+      "log_error_lines": []
+    },
+    {
+      "id": "old-gold",
+      "sample": "originals/Old_Gold_3D/OG.EXE",
+      "sha256_before": "7965e1d67128f196fbcf2bc449d97197f355c6b81cf043608fc9e01103ea043f",
+      "sha256_after": "7965e1d67128f196fbcf2bc449d97197f355c6b81cf043608fc9e01103ea043f",
+      "project": "research/ghidra/projects/old-gold-full/OldGold.gpr",
+      "export": "decompiled/old-gold",
+      "summary": {
+        "program": "OG.EXE",
+        "language": "x86:LE:16:Real Mode",
+        "compiler": "default",
+        "functions": "889",
+        "decompiled": "889",
+        "failed": "0",
+        "prologue_functions_added": "0",
+        "prologue_candidates_rejected": "2"
+      },
+      "files": {
+        "decompiled.c": {
+          "bytes": 805056,
+          "sha256": "8396fe150ec2e2688e9b361b0d76fc566f98a7c68ad643a2a9bb3c2f52ac9cce"
+        },
+        "listing.asm": {
+          "bytes": 1181404,
+          "sha256": "aa61a1cf5112a8c7b4ea841dc86de8ec8315929024a47e24a27459ef813679f7"
+        },
+        "functions.tsv": {
+          "bytes": 48435,
+          "sha256": "65a7735b5b2f7e636390a5927850ebb2f72a929ef04cee85036eda9fcf39d3af"
+        },
+        "references.tsv": {
+          "bytes": 584323,
+          "sha256": "f44f473ceb88ea802bd30826f4471fc0066b793b30f8bdbb1a1da3ef8129032a"
+        },
+        "blocks.tsv": {
+          "bytes": 2335,
+          "sha256": "93ad674f2eaba75f54539d3f0322b1aa9b17181b78b132d27105dc372dffb718"
+        },
+        "unrecovered.tsv": {
+          "bytes": 12679,
+          "sha256": "7d0deacdcc392406863873c4465ada34d5d32696b3ebd473f94c05f989f50d25"
+        },
+        "ghidra.log": {
+          "bytes": 17248,
+          "sha256": "4a28b43ac159619389341caf065c4f42999fc890703960166200a68a098ea67e"
+        },
+        "summary.txt": {
+          "bytes": 165,
+          "sha256": "fd1df3b923ab3a4741e37af1bded8fc3f8a6eff613dd1a33806b66a7ca1bc8e8"
+        }
+      },
+      "warning_functions": [
+        "1000_0364.c",
+        "1000_0372.c",
+        "1000_0386.c",
+        "1000_039a.c",
+        "1000_03b2.c",
+        "1000_03bc.c",
+        "1000_03ca.c",
+        "1000_03f6.c",
+        "1000_04fc.c",
+        "1000_0753.c",
+        "1000_0a5e.c",
+        "1000_0a66.c",
+        "1000_0ae8.c",
+        "1000_0da5.c",
+        "1000_0ef5.c",
+        "1000_1347.c",
+        "1000_18ea.c",
+        "1000_1b67.c",
+        "1000_25d4.c",
+        "1000_2a3f.c",
+        "1000_36ad.c",
+        "1000_3afa.c",
+        "1000_3b5a.c",
+        "18d5_0349.c",
+        "1a0c_005c.c",
+        "1ae1_0003.c",
+        "1ae1_22fa.c",
+        "1ae1_230c.c",
+        "1ae1_2959.c",
+        "1ae1_2eea.c",
+        "1f1d_0006.c",
+        "1f1d_0119.c",
+        "1f1d_04c8.c",
+        "1f1d_05c5.c",
+        "20c4_0027.c",
+        "20c4_0198.c",
+        "20c4_03b0.c",
+        "21b8_0058.c",
+        "21b8_1114.c",
+        "276a_0001.c",
+        "276a_05f1.c",
+        "2800_0081.c",
+        "2833_004f.c",
+        "29d0_0130.c",
+        "2ad5_0008.c",
+        "2ad5_02d2.c",
+        "2ad5_0322.c",
+        "2d80_154e.c",
+        "2d80_1c13.c",
+        "2d80_25ae.c",
+        "2d80_269c.c",
+        "2d80_2714.c",
+        "2ff8_003c.c"
+      ],
+      "log_error_lines": []
+    }
+  ]
+}

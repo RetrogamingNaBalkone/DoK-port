@@ -48,6 +48,7 @@ def replay(probe, level, language=0, observer=None):
     face_class=['unknown']
     face_far=[False]
     masked_classes=Counter()
+    masked_class_samples=defaultdict(Counter)
     surface_slopes=[]
 
     def covered(bits, first, offset):
@@ -126,6 +127,8 @@ def replay(probe, level, language=0, observer=None):
                 else:zero_run=0
             totals['masked_columns'] += 1
             masked_classes[face_class[0]]+=1
+            masked_class_samples[face_class[0]].update(requested=count,covered=covered_count,
+                open_zero=zero,open_nonzero=count-covered_count-zero,long_zero=long_zero)
             totals['masked_samples_requested'] += count
             totals['masked_samples_covered'] += covered_count
             totals['masked_samples_open_zero'] += zero
@@ -173,6 +176,7 @@ def replay(probe, level, language=0, observer=None):
     # and statistics. Actual PPU timing is measured by the separate mGBA sweep.
     return dict(counts=dict(totals), coverage_exact=True, stats_exact=True,
                 masked_columns_by_definition_class=dict(masked_classes),
+                masked_samples_by_definition_class={k:dict(v) for k,v in masked_class_samples.items()},
                 ceiling_uv_span_sha256=hashlib.sha256(json.dumps(surface_slopes).encode()).hexdigest(),
                 coverage_sha256=hashlib.sha256(coverage).hexdigest(),
                 ceiling_rows=[dict(y=y, spans=sum(steps.values()), unique_uv_steps=len(steps),
