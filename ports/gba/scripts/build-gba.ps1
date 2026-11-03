@@ -20,6 +20,7 @@ if (([int]$MemoryProbe.IsPresent + [int]$AssetsProbe.IsPresent + [int]$RendererP
     throw 'Select one of MemoryProbe, AssetsProbe or RendererProbe'
 }
 Push-Location $taskRoot
+$taskCacheSession = $null
 try {
     . (Join-Path $taskRoot 'scripts/build-cache.ps1')
     $taskCacheSession = Open-GbaBuildCache $taskRoot

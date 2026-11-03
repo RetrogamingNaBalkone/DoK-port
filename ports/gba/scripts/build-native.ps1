@@ -10,6 +10,7 @@ New-Item -ItemType Directory -Force "$taskRoot/build/gba/host" | Out-Null
 if ($Compiler -eq 'zig') {
     if (-not (Test-Path -LiteralPath $ZigExe)) { throw "Shared C compiler not found: $ZigExe" }
     Push-Location $taskRoot
+    $taskCacheSession = $null
     try {
         . (Join-Path $taskRoot 'scripts/build-cache.ps1')
         $taskCacheSession = Open-GbaBuildCache $taskRoot

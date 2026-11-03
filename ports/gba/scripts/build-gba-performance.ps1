@@ -8,6 +8,7 @@ $ErrorActionPreference='Stop'
 $taskRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot "../../../"))
 Push-Location (([IO.Path]::GetFullPath((Join-Path $PSScriptRoot "../../../"))))
 $taskPreviousFast=$env:DOK_PROBE_FAST_VIDEO
+$taskCacheSession = $null
 try {
  . (Join-Path $taskRoot 'scripts/build-cache.ps1')
  $taskCacheSession = Open-GbaBuildCache $taskRoot

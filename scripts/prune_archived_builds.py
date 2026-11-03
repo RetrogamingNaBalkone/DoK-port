@@ -180,6 +180,9 @@ def restore(manifest, paths=()):
         if paths and not any(row['path'] == name.rstrip('/') or
                              row['path'].startswith(name.rstrip('/')+'/') for name in paths):
             continue
+        if not (ROOT/row['archive']).exists():
+            from storage_archive import restore_path
+            restore_path(row['archive'])
         path=validate(row)
         if path.exists():
             if sha(path) != row['sha256']:

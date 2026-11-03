@@ -1,10 +1,8 @@
 /originals/
 /mqa/
 /build/
-# Selected builds are local; keep only artifact documentation in Git.
-/artifacts/**
-!/artifacts/**/
-!/artifacts/**/README.md
+# Ready-to-use builds and their generated documentation stay local.
+/artifacts/
 /decompiled/
 /research/*
 !/research/README.md

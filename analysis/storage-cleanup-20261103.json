@@ -1,0 +1,255 @@
+{
+  "status": "verified",
+  "date": "2026-11-03",
+  "scope": "Repository storage maintenance; selected game builds and task statuses unchanged",
+  "freed_bytes": 26600921635,
+  "freed_gib": 24.774,
+  "cache_files": 13803,
+  "cache_bytes": 3319532112,
+  "archived_or_generated_files": 24202,
+  "archived_or_generated_bytes": 4088314455,
+  "consumed_frontend_base_files": 1159,
+  "consumed_frontend_base_bytes": 3444801480,
+  "compressed_logs": 2,
+  "log_saved_bytes": 37119884,
+  "originals_sha256_verified": 22,
+  "tests": 35,
+  "python_syntax_files": 206,
+  "powershell_syntax_files": 6,
+  "rebuild": {
+    "variant": "g22_split_active",
+    "identical_to_published_beta2": true,
+    "rom_sha256": "53fdf1b1b868effecfd68c8feb87ffb60bcc72190a4d01f38d8684a781860247",
+    "full_emulator_regression": false,
+    "compiler_cache_sessions_left": 0,
+    "generated_banks_left": 0,
+    "base_intermediates_left": 0,
+    "sandbox_limitation": "Cold Zig objcopy self-spawn failed twice with UnableToSpawnSelf; identical rebuild passed outside sandbox"
+  },
+  "skipped": [
+    {
+      "path": "build/nds/n13p/quality/emulator/save/melonDS DS/dldi_sd_card.bin",
+      "reason": "Unrecognised test FAT: "
+    },
+    {
+      "path": "build/nds/n22/command-review-host/tmpg87qv2u4",
+      "reason": "Inaccessible directory: [WinError 5] Отказано в доступе: 'C:\\\\Source\\\\DoK-port\\\\build\\\\nds\\\\n22\\\\command-review-host\\\\tmpg87qv2u4'"
+    },
+    {
+      "path": "build/nds/n23/root-memory-review/tmps40c2e3k",
+      "reason": "Inaccessible directory: [WinError 5] Отказано в доступе: 'C:\\\\Source\\\\DoK-port\\\\build\\\\nds\\\\n23\\\\root-memory-review\\\\tmps40c2e3k'"
+    }
+  ],
+  "evidence": {
+    "after-size.json": {
+      "path": "research/evidence/maintenance/cleanup-20261103/after-size.json",
+      "bytes": 502,
+      "sha256": "85e5467b19a92a7151e01f08740f2dac6940bf0d74be1ff8922533f5850e6552"
+    },
+    "archived-builds-verified.json": {
+      "path": "research/evidence/maintenance/cleanup-20261103/archived-builds-verified.json",
+      "bytes": 259,
+      "sha256": "8f3c367cadc0012fa684aa6c7067d3176c76c418addd82b18d0ab26ed7418361"
+    },
+    "archived-builds.json": {
+      "path": "research/evidence/maintenance/cleanup-20261103/archived-builds.json",
+      "bytes": 8152675,
+      "sha256": "24e17604ad4e2a7bb3d1d78e80c0a67214d1c3fc7452e2ab0e3a448eedcd0d5b"
+    },
+    "caches-verified.json": {
+      "path": "research/evidence/maintenance/cleanup-20261103/caches-verified.json",
+      "bytes": 270,
+      "sha256": "8dc234ce66670cfd5c778e28c5b23ccd059ea66574cdfb512e2f93b519c21da2"
+    },
+    "caches.json": {
+      "path": "research/evidence/maintenance/cleanup-20261103/caches.json",
+      "bytes": 3283414,
+      "sha256": "cdbaa6aea831c1b49f49733ad47f8460ce0bf55f1899044f87c6273e524432d6"
+    },
+    "empty-directories.json": {
+      "path": "research/evidence/maintenance/cleanup-20261103/empty-directories.json",
+      "bytes": 1617781,
+      "sha256": "b3af74175fc7c6544513e22f15932d004b0c4ee70f8a284a0dffe31256287a34"
+    },
+    "final-archive-verification.json": {
+      "path": "research/evidence/maintenance/cleanup-20261103/final-archive-verification.json",
+      "bytes": 437,
+      "sha256": "ea3501098bda6b9b7fb56dd1675a474fd375323c66ce03c38765e6935db70656"
+    },
+    "frontend-bases-verified.json": {
+      "path": "research/evidence/maintenance/cleanup-20261103/frontend-bases-verified.json",
+      "bytes": 257,
+      "sha256": "e918ef8a9d3cd74738ce5dea00ec7fa97dd3d1c1398b00d6de56c8a437f744c1"
+    },
+    "frontend-bases.json": {
+      "path": "research/evidence/maintenance/cleanup-20261103/frontend-bases.json",
+      "bytes": 349024,
+      "sha256": "96046cd91f06d643f5e10d566b0428781da593c1a53cf37deaec080306ebb217"
+    },
+    "logs.json": {
+      "path": "research/evidence/maintenance/cleanup-20261103/logs.json",
+      "bytes": 898,
+      "sha256": "85984528753f148e4acf7b55dacefb33166a72a92289e8b999d5d216b42180a9"
+    },
+    "retained-archives-verified.json": {
+      "path": "research/evidence/maintenance/cleanup-20261103/retained-archives-verified.json",
+      "bytes": 68,
+      "sha256": "da35d7d86c977c9b3a9f8d12032db2a3d843897f494c7c4521b3c709f59dc91a"
+    },
+    "retained-build-inputs.json": {
+      "path": "research/evidence/maintenance/cleanup-20261103/retained-build-inputs.json",
+      "bytes": 1966,
+      "sha256": "68a3685592161c173d1121483bb6120632f8b62ded892c355abc830ee0bb1d9d"
+    },
+    "superseded-builds-verified.json": {
+      "path": "research/evidence/maintenance/cleanup-20261103/superseded-builds-verified.json",
+      "bytes": 172,
+      "sha256": "e9f5d77bc077c6a66e551d299b2a9c59decc08b52cb1b2eedbf31d493c077425"
+    },
+    "superseded-builds.json": {
+      "path": "research/evidence/maintenance/cleanup-20261103/superseded-builds.json",
+      "bytes": 1362460,
+      "sha256": "754c1d0b013cec7ecc5a34bc4eccbc2552a0bb70fd26910b9a7f2909c7753037"
+    }
+  },
+  "after_size": {
+    "total_bytes": 5599515576,
+    "total_gib": 5.215,
+    "files": 16083,
+    "directories": 11265,
+    "directories_bytes": {
+      "-": 2896,
+      ".gitignore": 2407,
+      "AGENTS.md": 9016,
+      "CMakeLists.txt": 216,
+      "LICENSE": 1098,
+      "README.md": 4837,
+      ".git": 12977992,
+      ".vscode": 2268,
+      "analysis": 67754868,
+      "artifacts": 94962120,
+      "build": 2147036311,
+      "decompiled": 17373335,
+      "docs": 4687958,
+      "originals": 7832143,
+      "ports": 7813643,
+      "research": 3238558455,
+      "scripts": 108822,
+      "tools": 387191
+    },
+    "directory_file_counts": {
+      "-": 1,
+      ".gitignore": 1,
+      "AGENTS.md": 1,
+      "CMakeLists.txt": 1,
+      "LICENSE": 1,
+      "README.md": 1,
+      ".git": 285,
+      ".vscode": 3,
+      "analysis": 397,
+      "artifacts": 48,
+      "build": 6763,
+      "decompiled": 2852,
+      "docs": 340,
+      "originals": 22,
+      "ports": 1116,
+      "research": 4143,
+      "scripts": 25,
+      "tools": 83
+    }
+  },
+  "restore_command": "py -3.14 -B scripts/prune_archived_builds.py restore --manifest research/evidence/maintenance/cleanup-20261103/archived-builds.json --path build/nds/n22/<target>",
+  "notes": [
+    "Original samples, Ghidra projects, selected releases and required prepared inputs retained.",
+    "Cold NDS evidence and historical build observations transferred losslessly into SHA-verified ZIPs.",
+    "Obsolete compiler outputs/NitroFS copies removed; rebuild them when needed.",
+    "Historical checks need selective restore of archived full reports/evidence; instructions in docs/storage-maintenance.md.",
+    "GBA game ROM unchanged; reproduced published Beta2 byte-for-byte.",
+    "Artifacts entirely ignored, including README and screenshots; tracked artifacts removed only from Git index."
+  ],
+  "first_pass_freed_bytes": 10889767931,
+  "superseded_compiler_outputs": {
+    "passed": true,
+    "deleted_files": 7210,
+    "deleted_bytes": 4767632614,
+    "manifest_sha256": "754c1d0b013cec7ecc5a34bc4eccbc2552a0bb70fd26910b9a7f2909c7753037"
+  },
+  "storage_archives": [
+    {
+      "schema": 1,
+      "archive": "research/experiments/storage-archives/gba-build-history-20261103.zip",
+      "archive_bytes": 206863408,
+      "archive_sha256": "c6fa6773a223f6fe9f61006b8090f12f84a107890db437ccbcdf24e4bd074bdd",
+      "files": 12176,
+      "source_bytes": 673748274,
+      "applied": true,
+      "saved_bytes": 466884866
+    },
+    {
+      "schema": 1,
+      "archive": "research/experiments/storage-archives/gba-cold-builds-20261103.zip",
+      "archive_bytes": 213557410,
+      "archive_sha256": "a3a4f8324479ae924f79033dcb08a3decc5c49660c9acd0eb4cb380df66eb401",
+      "files": 5962,
+      "source_bytes": 901149017,
+      "applied": true,
+      "saved_bytes": 687591607
+    },
+    {
+      "schema": 1,
+      "archive": "research/experiments/storage-archives/nds-build-history-20261103.zip",
+      "archive_bytes": 893353708,
+      "archive_sha256": "34b5d420650954f8e7aaad2e7e50c0f81b8d0b9b5f84c1ba8abab0016f88fc76",
+      "files": 17147,
+      "source_bytes": 3903638765,
+      "applied": true,
+      "saved_bytes": 3010285057
+    },
+    {
+      "schema": 1,
+      "archive": "research/experiments/storage-archives/nds-cold-builds-20261103.zip",
+      "archive_bytes": 88710634,
+      "archive_sha256": "9633b8ae9f23fa4b44cf78e723e153c05de8e3fede31e39adbe0d590424da321",
+      "files": 21415,
+      "source_bytes": 918673203,
+      "applied": true,
+      "saved_bytes": 829962569
+    },
+    {
+      "schema": 1,
+      "archive": "research/experiments/storage-archives/nds-evidence-20261103.zip",
+      "archive_bytes": 1259111308,
+      "archive_sha256": "2de62082530356f6b1dcdeae67bd81b183d2b00e9e8bd624f83d97f056e048ed",
+      "files": 102976,
+      "source_bytes": 6908258114,
+      "applied": true,
+      "saved_bytes": 5649146806
+    },
+    {
+      "schema": 1,
+      "archive": "research/experiments/storage-archives/old-decompiler-passes-20261103.zip",
+      "archive_bytes": 8599944,
+      "archive_sha256": "492ea02d5acb7644e1f48d2562d5b8c8749165752dcc5ffc52a6adf62db492ec",
+      "files": 5611,
+      "source_bytes": 37488113,
+      "applied": true,
+      "saved_bytes": 28888169
+    },
+    {
+      "schema": 1,
+      "archive": "research/experiments/storage-archives/old-experiments-20261103.zip",
+      "archive_bytes": 58096031,
+      "archive_sha256": "16179634f7843704fe4acecdf27157a75d90d41cc6fc84d94ff64c3d05d2caae",
+      "files": 14379,
+      "source_bytes": 328858047,
+      "applied": true,
+      "saved_bytes": 270762016
+    }
+  ],
+  "artifacts_gitignored": true,
+  "artifacts_tracked_files": 0,
+  "packed_files": 179666,
+  "cold_storage_selective_restore_verified": true,
+  "retained_archive_pins_before_packing": 4926,
+  "empty_directories_removed": 19235
+}
