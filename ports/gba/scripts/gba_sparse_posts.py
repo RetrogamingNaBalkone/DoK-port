@@ -10,6 +10,9 @@ import hashlib
 import struct
 
 
+from experiment_cleanup import write_generated_bytes
+
+
 def build_posts(out, package):
     data=package.read_bytes();bank=(out/'prelit.bin').read_bytes()
     offsets=(out/'exact-offsets.bin').read_bytes()
@@ -46,7 +49,7 @@ def build_posts(out, package):
            'dok_sparse_posts':('sparse-posts.bin',payload)}
     assembly=[]
     for symbol,(filename,blob) in files.items():
-        (out/filename).write_bytes(blob)
+        write_generated_bytes(out/filename,blob)
         assembly.extend(['.section .rodata.sparse_posts,"a",%progbits','.balign 4',f'.global {symbol}',
                          symbol+':',f'.incbin "{(out/filename).resolve().as_posix()}"'])
     (out/'sparse-posts.S').write_text('\n'.join(assembly)+'\n',encoding='utf-8')

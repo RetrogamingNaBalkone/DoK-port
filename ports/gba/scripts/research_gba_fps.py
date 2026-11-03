@@ -240,7 +240,8 @@ def main():
     parser.add_argument('--keep-objects',action='store_true',help='Retain experiment object files for manual relinking')
     a=parser.parse_args()
     os.chdir(ROOT)
-    os.environ['ZIG_GLOBAL_CACHE_DIR']=str(ROOT/'build/gba/zig-cache')
+    from build_cache import compiler_environment
+    os.environ.update(compiler_environment(ROOT))
     os.environ['DOK_PROBE_FAST_VIDEO']='1'
     zig=Path(os.environ['LOCALAPPDATA'])/'Programs/Zig/0.13.0/zig.exe'
     core=Path(os.environ['LOCALAPPDATA'])/'Programs/mGBA/libretro-20261024/mgba_libretro.dll'

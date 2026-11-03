@@ -11,6 +11,9 @@ from pathlib import Path
 import struct
 
 
+from experiment_cleanup import write_generated_bytes
+
+
 def build_world_obj_tables(out, data):
     u16 = lambda at:struct.unpack_from('<H',data,at)[0]
     u32 = lambda at:struct.unpack_from('<I',data,at)[0]
@@ -67,7 +70,7 @@ def build_world_obj_tables(out, data):
     for symbol,name in (('dok_world_obj_records','world-obj-records.bin'),
                         ('dok_world_obj_patch_offsets','world-obj-patch-offsets.bin'),
                         ('dok_world_obj_bank','world-obj-bank.bin')):
-        (out/name).write_bytes(files[name])
+        write_generated_bytes(out/name,files[name])
         assembly += [f'.section .rodata.{symbol},"a",%progbits','.balign 4',f'.global {symbol}',f'{symbol}:',
                      '.incbin "'+(out/name).resolve().as_posix()+'"']
     (out/'world-obj-tables.S').write_text('\n'.join(assembly)+'\n',encoding='utf-8')

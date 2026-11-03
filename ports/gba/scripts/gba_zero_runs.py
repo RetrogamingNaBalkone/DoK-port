@@ -3,6 +3,9 @@ import hashlib
 import struct
 
 
+from experiment_cleanup import write_generated_bytes
+
+
 def build_zero_runs(out, package):
     data=package.read_bytes();bank=(out/'prelit.bin').read_bytes()
     offsets=(out/'exact-offsets.bin').read_bytes()
@@ -36,8 +39,8 @@ def build_zero_runs(out, package):
                 if n<255 and j%h+n<h:assert colors[j+n]!=0
             cache[key]=len(payload);payload.extend(runs)
         index.append(cache[key])
-    (out/'zero-runs.bin').write_bytes(payload)
-    (out/'zero-run-offsets.bin').write_bytes(struct.pack('<'+'I'*len(index),*index))
+    write_generated_bytes(out/'zero-runs.bin',payload)
+    write_generated_bytes(out/'zero-run-offsets.bin',struct.pack('<'+'I'*len(index),*index))
     assembly=['@ zero runs '+hashlib.sha256(payload).hexdigest()]
     for symbol,name in [('dok_zero_runs','zero-runs.bin'),('dok_zero_run_offsets','zero-run-offsets.bin')]:
         assembly += [f'.section .rodata.{symbol},"a",%progbits','.balign 4',f'.global {symbol}',

@@ -5,14 +5,17 @@ import os
 from pathlib import Path
 import re
 import subprocess
+import sys
 
 ROOT=Path(__file__).resolve().parents[3]
+sys.path.append(str(ROOT/'scripts'))
 REFERENCE='4741642e77d93fab4a5f571b2264960d85be597e'
 
 def main():
     os.chdir(ROOT)
     out=Path('build/gba/battle-equivalence');out.mkdir(parents=True,exist_ok=True)
-    os.environ['ZIG_GLOBAL_CACHE_DIR']=str(ROOT/'build/gba/zig-cache')
+    from build_cache import compiler_environment
+    os.environ.update(compiler_environment(ROOT))
     zig=Path(os.environ['LOCALAPPDATA'])/'Programs/Zig/0.13.0/zig.exe'
     original=subprocess.check_output(['git','show',REFERENCE+':ports/gba/src/combat.c'])
     reference=out/'reference_combat.c';reference.write_bytes(original)

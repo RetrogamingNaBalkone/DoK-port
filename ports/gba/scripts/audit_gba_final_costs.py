@@ -138,7 +138,8 @@ def main():
     os.environ['DOK_PROBE_FAST_VIDEO'] = '1'
     if a.build:
         import prototype_gba_bsp as builder
-        os.environ['ZIG_GLOBAL_CACHE_DIR'] = str(ROOT/'build/gba/zig-cache')
+        from build_cache import compiler_environment
+        os.environ.update(compiler_environment(ROOT))
         builder.VARIANTS['hw_v128_final_class_profile'] = (
             tuple(d for d in builder.VARIANTS['hw_v128_entity_rect'] if d != 'HW_EDGE_RAM_CALL')
             + ('HW_FACE_CLASS_PROFILE',))

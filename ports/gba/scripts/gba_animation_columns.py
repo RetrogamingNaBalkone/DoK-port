@@ -6,6 +6,9 @@ from probe_render_layout import frames
 
 LIGHT_ROWS = (0,4,6,8,10,12,14,15)
 
+from experiment_cleanup import write_generated_bytes
+
+
 def build_animation_columns(out, data):
     u16 = lambda at: struct.unpack_from('<H', data, at)[0]
     u32 = lambda at: struct.unpack_from('<I', data, at)[0]
@@ -64,9 +67,9 @@ def build_animation_columns(out, data):
             total += len(pixels)
     index.sort()
     assert len({row[0] for row in index}) == len(index)
-    (out/'animation-columns.bin').write_bytes(bank)
+    write_generated_bytes(out/'animation-columns.bin',bank)
     words = [len(index),*(value for row in index for value in row)]
-    (out/'animation-columns-index.bin').write_bytes(struct.pack('<'+'I'*len(words),*words))
+    write_generated_bytes(out/'animation-columns-index.bin',struct.pack('<'+'I'*len(words),*words))
     # Zig does not track .incbin payloads as compiler cache dependencies.
     assembly = ['@ animation bank SHA256 '+hashlib.sha256(bank).hexdigest()]
     for symbol,filename in (('dok_animation_columns','animation-columns.bin'),

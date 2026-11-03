@@ -7,10 +7,10 @@ param(
 $ErrorActionPreference='Stop'
 $taskRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot "../../../"))
 Push-Location (([IO.Path]::GetFullPath((Join-Path $PSScriptRoot "../../../"))))
-$taskPreviousCache=$env:ZIG_GLOBAL_CACHE_DIR
 $taskPreviousFast=$env:DOK_PROBE_FAST_VIDEO
 try {
- $env:ZIG_GLOBAL_CACHE_DIR=(Join-Path (Get-Location) 'build/gba/zig-cache')
+ . (Join-Path $taskRoot 'scripts/build-cache.ps1')
+ $taskCacheSession = Open-GbaBuildCache $taskRoot
  $env:DOK_PROBE_FAST_VIDEO='1'
  if(-not $RegressionOnly){
   New-Item -ItemType Directory -Force build/gba/host | Out-Null
@@ -49,7 +49,7 @@ try {
  & $PythonExe ports/gba/scripts/report_flow.py
  if($LASTEXITCODE -ne 0){throw 'G18 aggregate failed (check fresh visual review)'}
 }finally{
- $env:ZIG_GLOBAL_CACHE_DIR=$taskPreviousCache
+ Close-GbaBuildCache $taskCacheSession
  $env:DOK_PROBE_FAST_VIDEO=$taskPreviousFast
  Pop-Location
 }

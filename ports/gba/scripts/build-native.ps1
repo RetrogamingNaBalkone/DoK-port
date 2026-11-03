@@ -10,9 +10,9 @@ New-Item -ItemType Directory -Force "$taskRoot/build/gba/host" | Out-Null
 if ($Compiler -eq 'zig') {
     if (-not (Test-Path -LiteralPath $ZigExe)) { throw "Shared C compiler not found: $ZigExe" }
     Push-Location $taskRoot
-    $taskPreviousCache = $env:ZIG_GLOBAL_CACHE_DIR
     try {
-        $env:ZIG_GLOBAL_CACHE_DIR = Join-Path $taskRoot 'build/gba/zig-cache'
+        . (Join-Path $taskRoot 'scripts/build-cache.ps1')
+        $taskCacheSession = Open-GbaBuildCache $taskRoot
         $taskCommon = @('cc','-std=c11','-Wall','-Wextra','-Werror','-O2','-I','ports/gba/include')
         & $ZigExe @taskCommon ports/gba/src/audio.c ports/gba/tests/test_audio.c -o build/gba/host/dok-audio-tests.exe
         if($LASTEXITCODE -ne 0){throw 'G16 host build failed'}
@@ -192,7 +192,7 @@ if ($Compiler -eq 'zig') {
             Write-Output 'Linux static binaries and ARM7TDMI Thumb objects compiled; cross-target binaries were not executed.'
         }
     } finally {
-        $env:ZIG_GLOBAL_CACHE_DIR = $taskPreviousCache
+        Close-GbaBuildCache $taskCacheSession
         Pop-Location
     }
     return

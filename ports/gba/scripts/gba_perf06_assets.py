@@ -4,6 +4,9 @@ import hashlib
 import struct
 
 
+from experiment_cleanup import write_generated_bytes
+
+
 def build_fences(out, package):
     b=package.read_bytes();u16=lambda p:struct.unpack_from('<H',b,p)[0]
     u32=lambda p:struct.unpack_from('<I',b,p)[0]
@@ -37,8 +40,8 @@ def build_fences(out, package):
             offsets[view*256+obj]=cache[record]
             records.append(dict(view=view,object=obj,glyph=b[defs+obj*32+10],resource=rid,
                                 original_columns=cols,kept_columns=kept,rows=rows,color=color))
-    (out/'perf06-fences.bin').write_bytes(payload)
-    (out/'perf06-fence-offsets.bin').write_bytes(struct.pack('<1536I',*offsets))
+    write_generated_bytes(out/'perf06-fences.bin',payload)
+    write_generated_bytes(out/'perf06-fence-offsets.bin',struct.pack('<1536I',*offsets))
     assembly=['@ '+hashlib.sha256(payload).hexdigest()]
     for symbol,name in [('dok_perf06_fences','perf06-fences.bin'),('dok_perf06_fence_offsets','perf06-fence-offsets.bin')]:
         assembly += [f'.section .rodata.{symbol},"a",%progbits','.balign 4',f'.global {symbol}',f'{symbol}:',f'.incbin "{(out/name).resolve().as_posix()}"']

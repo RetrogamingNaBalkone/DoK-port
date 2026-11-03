@@ -7,10 +7,10 @@ param(
 $ErrorActionPreference='Stop'
 $taskRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot "../../../"))
 Push-Location (([IO.Path]::GetFullPath((Join-Path $PSScriptRoot "../../../"))))
-$taskPreviousCache=$env:ZIG_GLOBAL_CACHE_DIR
 $taskPreviousFast=$env:DOK_PROBE_FAST_VIDEO
 try {
- $env:ZIG_GLOBAL_CACHE_DIR=(Join-Path (Get-Location) 'build/gba/zig-cache')
+ . (Join-Path $taskRoot 'scripts/build-cache.ps1')
+ $taskCacheSession = Open-GbaBuildCache $taskRoot
  $env:DOK_PROBE_FAST_VIDEO='1'
  New-Item -ItemType Directory -Force build/gba/g20 | Out-Null
  & $PythonExe -c "import json,hashlib;from pathlib import Path;d={p.as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(Path('originals').rglob('*')) if p.is_file()};Path('build/gba/g20/originals-before.json').write_text(json.dumps(d,indent=2)+'\n',encoding='utf-8')"
@@ -51,7 +51,7 @@ try {
  & $PythonExe ports/gba/scripts/report_performance.py
  if($LASTEXITCODE -ne 0){throw 'G20 aggregate failed'}
 }finally{
- $env:ZIG_GLOBAL_CACHE_DIR=$taskPreviousCache
+ Close-GbaBuildCache $taskCacheSession
  $env:DOK_PROBE_FAST_VIDEO=$taskPreviousFast
  Pop-Location
 }

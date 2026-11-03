@@ -85,7 +85,7 @@ def main():
         with (out/(label+'.log')).open('w') as log:subprocess.run(argv,stdout=log,stderr=subprocess.STDOUT,check=True)
         print(label,'done',flush=True)
     if a.stage=='build':
-        run('base-control','build_gba_frontend.py','--out',out/'base-control')
+        run('base-control','build_gba_frontend.py','--out',out/'base-control','--keep-base-objects')
         groups={}
         for name in a.variants:
             relative=Path(BUILDS[name]);groups.setdefault(relative.parent,[]).append(relative.name)
@@ -94,7 +94,7 @@ def main():
         return
     assert sha(out/BUILDS['control']/'dok-diagnostic.gba')==a.control_sha
     if a.stage=='qualify':
-        run('verified','build_gba_frontend.py','--out',out/'verified','--variant','g22_split_active','--verify')
+        run('verified','build_gba_frontend.py','--out',out/'verified','--variant','g22_split_active','--verify','--keep-base-objects')
         run('repeat','prototype_gba_bsp.py','--base',out/'verified/base','--out',out/'repeat','--variants','g22_split_active')
         from check_g21 import EXTRA
         for name,script,extra in [*EXTRA,('cache','verify_gba_static_cache.py',('reference',)),

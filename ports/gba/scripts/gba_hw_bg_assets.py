@@ -11,6 +11,9 @@ import re
 from pathlib import Path
 
 
+from experiment_cleanup import write_generated_bytes
+
+
 def hardware_background_tables(out,data,scene_rows=128):
     u16=lambda a:struct.unpack_from('<H',data,a)[0]
     u32=lambda a:struct.unpack_from('<I',data,a)[0]
@@ -97,7 +100,7 @@ def hardware_background_tables(out,data,scene_rows=128):
         for col in range(4):
             oam.extend(struct.pack('<4H',0x6300|((row*step+step//2-8)&255) if y<144 else 0x200,0x4000+col*64,0x400+(row*4+col)*8,0))
     files['hw-obj-row-oam.bin']=oam
-    for name,payload in files.items():(out/name).write_bytes(payload)
+    for name,payload in files.items():write_generated_bytes(out/name,payload)
     return dict(texture_size=32,light_rows=[0,7,15],bank_bytes=len(bank),scene_rows=scene_rows,views=summaries)
 
 
@@ -137,12 +140,12 @@ def hardware_lowered_tables(out,data,background):
             if not d:matrices.extend(bytes(12));continue
             px,pz=div(cosine*d,18000),div(sine*d,18000);depth=d-200
             matrices.extend(struct.pack('<hhii',div(px,16),div(pz,16),-div(sine*depth,1920)-div(px*477,64),div(cosine*depth,1920)-div(pz*477,64)))
-    (out/'hw-low-maps.bin').write_bytes(mapping)
-    (out/'hw-low-row-matrix.bin').write_bytes(matrices)
-    (out/'hw-low-row-cnt.bin').write_bytes(struct.pack('<144H',*controls))
+    write_generated_bytes(out/'hw-low-maps.bin',mapping)
+    write_generated_bytes(out/'hw-low-row-matrix.bin',matrices)
+    write_generated_bytes(out/'hw-low-row-cnt.bin',struct.pack('<144H',*controls))
     base=list(struct.unpack('<144H',(out/'hw-bg-row-cnt.bin').read_bytes()))
     for n,cnt in enumerate(base):
         if cnt&4:base[n]=(cnt&~0x1f00)|((((cnt>>8)&31)-4)<<8)
-    (out/'hw-bg-row-cnt.bin').write_bytes(struct.pack('<144H',*base))
+    write_generated_bytes(out/'hw-bg-row-cnt.bin',struct.pack('<144H',*base))
     return dict(height=-561,inset=400,maps_screenblocks=[20,26,20],cells_by_view=cells,row_lut_bytes=len(matrices),
                 reused_duplicate_far_maps=True)

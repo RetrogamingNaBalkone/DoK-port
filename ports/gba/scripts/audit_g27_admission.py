@@ -9,7 +9,8 @@ from verify_gba import sha
 def main():
     dest=ROOT/'build/gba/g27/admission';dest.mkdir(parents=True,exist_ok=True)
     zig=Path(os.environ['LOCALAPPDATA'])/'Programs/Zig/0.13.0/zig.exe'
-    os.environ['ZIG_GLOBAL_CACHE_DIR']=str(ROOT/'build/gba/zig-cache')
+    from build_cache import compiler_environment
+    os.environ.update(compiler_environment(ROOT))
     source=ROOT/'ports/gba/scripts/g27_admission.c'
     linker=dest/'probe.ld';linker.write_text('ENTRY(g27_admit)\nSECTIONS { . = 0x03000000; .text : { *(.text.entry) *(.text*) } /DISCARD/ : { *(.ARM.exidx*) *(.ARM.attributes*) *(.comment*) } }\n')
     commands=[[str(zig),'cc','-target','arm-freestanding-eabi','-mcpu=arm7tdmi','-marm','-O2','-ffreestanding','-fno-stack-protector','-c',str(source),'-o',str(dest/'probe.o')],

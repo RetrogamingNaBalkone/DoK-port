@@ -12,6 +12,9 @@ import struct
 SIZES=((8,16),(16,32),(32,64),(64,128))
 
 
+from experiment_cleanup import write_generated_bytes
+
+
 def sector_gpu_tables(out,data):
     u16=lambda p:struct.unpack_from('<H',data,p)[0]
     u32=lambda p:struct.unpack_from('<I',data,p)[0]
@@ -56,7 +59,7 @@ def sector_gpu_tables(out,data):
     files={'sector-gpu-bank.bin':bank,'sector-gpu-offsets.bin':struct.pack('<'+'I'*len(offsets),*offsets)}
     assembly=[]
     for symbol,file in (('dok_sector_gpu_bank','sector-gpu-bank.bin'),('dok_sector_gpu_offsets','sector-gpu-offsets.bin')):
-        (out/file).write_bytes(files[file]);assembly += [f'.section .rodata.{symbol},"a",%progbits','.balign 4',f'.global {symbol}',symbol+':',f'.incbin "{(out/file).resolve().as_posix()}"']
+        write_generated_bytes(out/file,files[file]);assembly += [f'.section .rodata.{symbol},"a",%progbits','.balign 4',f'.global {symbol}',symbol+':',f'.incbin "{(out/file).resolve().as_posix()}"']
     assembly += ['.section .rodata.dok_sector_gpu_records,"a",%progbits','.balign 4','.global dok_sector_gpu_records','dok_sector_gpu_records:']
     for pixels,first,w,h,mask,reserved in records:
         assembly += [f'.word dok_gba_assets+{pixels},{first}',f'.short {w},{h},{mask},{reserved}']

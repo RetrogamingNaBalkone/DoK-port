@@ -13,6 +13,7 @@ import os
 from pathlib import Path
 import subprocess
 import sys
+from experiment_cleanup import discard_frontend_base
 
 ROOT=Path(__file__).resolve().parents[3]
 
@@ -22,11 +23,14 @@ def main():
     parser.add_argument('--out',type=Path,default=Path('build/gba/g20b'))
     parser.add_argument('--assets-bin',type=Path,default=Path('build/gba/assets/assets.bin'))
     parser.add_argument('--verify',action='store_true')
+    parser.add_argument('--keep-base-objects',action='store_true',
+                        help='Retain the temporary baseline for further prototype builds')
     parser.add_argument('--variant',choices=('hw_v128_entity_rect','hw_v128_vblank_only','g20d_compact','g22_split_active','g25_rows96','perf04_full8'),default='hw_v128_vblank_only',
                         help='VBlank-protected default; hw_v128_entity_rect retains the Beta 1 early-present control')
     args=parser.parse_args();os.chdir(ROOT)
     args.out.mkdir(parents=True,exist_ok=True)
-    os.environ['ZIG_GLOBAL_CACHE_DIR']=str(ROOT/'build/gba/zig-cache')
+    from build_cache import compiler_environment
+    os.environ.update(compiler_environment(ROOT))
     os.environ['DOK_PROBE_FAST_VIDEO']='1'
     zig=Path(os.environ['LOCALAPPDATA'])/'Programs/Zig/0.13.0/zig.exe'
     commands=[]
@@ -40,10 +44,14 @@ def main():
     run('host',[str((args.out/'ui-tests.exe').resolve())])
     run('linux-build',[*common,'-target','x86_64-linux-musl','-static','ports/gba/src/ui.c','ports/gba/tests/test_ui.c','-o',args.out/'ui-tests-linux'])
     run('thumb-build',[*common,'-target','thumb-freestanding-eabi','-mcpu=arm7tdmi','-ffreestanding','-c','ports/gba/src/ui.c','-o',args.out/'ui-thumb.o'])
-    run('base-build',['powershell','-NoProfile','-ExecutionPolicy','Bypass','-File','ports/gba/scripts/build-gba.ps1',
-                      '-RendererProbe','-HalfColumns','-OutDir',args.out/'base','-AssetsBin',args.assets_bin])
-    run('hardware-build',[sys.executable,'ports/gba/scripts/prototype_gba_bsp.py','--base',args.out/'base',
-                          '--out',args.out/'hardware','--variants',args.variant,'--assets-bin',args.assets_bin])
+    try:
+        run('base-build',['powershell','-NoProfile','-ExecutionPolicy','Bypass','-File','ports/gba/scripts/build-gba.ps1',
+                          '-RendererProbe','-HalfColumns','-OutDir',args.out/'base','-AssetsBin',args.assets_bin])
+        run('hardware-build',[sys.executable,'ports/gba/scripts/prototype_gba_bsp.py','--base',args.out/'base',
+                              '--out',args.out/'hardware','--variants',args.variant,'--assets-bin',args.assets_bin])
+    finally:
+        if not args.keep_base_objects:
+            discard_frontend_base(args.out/'base')
     build=args.out/'hardware'/args.variant
     if args.verify:
         run('time-selftest-build',['powershell','-NoProfile','-ExecutionPolicy','Bypass','-File','ports/gba/scripts/build-gba.ps1',

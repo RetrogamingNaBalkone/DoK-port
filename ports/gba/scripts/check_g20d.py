@@ -33,7 +33,8 @@ def main():
     args=ap.parse_args();os.chdir(ROOT)
     args.out.mkdir(parents=True,exist_ok=True)
     os.environ['DOK_PROBE_FAST_VIDEO']='1'
-    os.environ['ZIG_GLOBAL_CACHE_DIR']=str(ROOT/'build/gba/zig-cache')
+    from build_cache import compiler_environment
+    os.environ.update(compiler_environment(ROOT))
     py=[sys.executable,'-X','utf8'];commands=[]
     def run(name,script,*extra):
         argv=[*py,'ports/gba/scripts/'+script,*map(str,extra)]
@@ -47,7 +48,7 @@ def main():
     builds=args.out/'hardware'
     selected=builds/'g20d_compact'
     if args.stage in ('all','build'):
-        run('clean-control','build_gba_frontend.py','--out',args.out/'clean-control')
+        run('clean-control','build_gba_frontend.py','--out',args.out/'clean-control','--keep-base-objects')
         assert sha(args.out/'clean-control/hardware/hw_v128_vblank_only/dok-diagnostic.gba')==PIN
         run('trials','prototype_gba_bsp.py','--base',args.out/'clean-control/base',
             '--out',builds,'--variants',*TRIALS,*PROFILES)
@@ -99,7 +100,7 @@ def main():
         assert [r['coverage_sha256'] for r in before['rows']]==[r['coverage_sha256'] for r in after['rows']]
         save('spatial-ppu.json',dict(status='passed',frames=len(cameras),before=before,after=after))
     if args.stage in ('all','checks'):
-        run('frontend-verified','build_gba_frontend.py','--out',args.out/'verified','--variant','g20d_compact','--verify')
+        run('frontend-verified','build_gba_frontend.py','--out',args.out/'verified','--variant','g20d_compact','--verify','--keep-base-objects')
         assert sha(args.out/'verified/hardware/g20d_compact/dok-diagnostic.gba')==sha(selected/'dok-diagnostic.gba')
         from check_g21 import EXTRA
         for name,script,extra in EXTRA:

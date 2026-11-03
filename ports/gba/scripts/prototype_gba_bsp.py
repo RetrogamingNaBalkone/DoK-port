@@ -20,7 +20,7 @@ import struct
 import sys
 
 from research_gba_fps import command
-from experiment_cleanup import clean_objects_after_build
+from experiment_cleanup import clean_objects_after_build, write_generated_bytes
 from gba_hw_bg_assets import hardware_background_tables
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -432,24 +432,24 @@ def tables(out, assets, include_sides=False, include_zero_spans=False, include_e
                 if row in (0,4,8,12,15):
                     band=(0,4,8,12,15).index(row)
                     offsets[(view*(count+1)+rid)*5+band] = cache[cache_key]
-    (out/'bounds.bin').write_bytes(b''.join(struct.pack('<hh',*b) for b in bounds))
-    (out/'prelit.bin').write_bytes(bank)
-    (out/'columns.bin').write_bytes(columns)
-    (out/'procedural.bin').write_bytes(procedural)
-    (out/'insets.bin').write_bytes(struct.pack('<'+'h'*len(insets),*insets))
-    (out/'static-cells.bin').write_bytes(static_cells)
-    (out/'side-resources.bin').write_bytes(struct.pack('<1536H',*side_resources))
-    (out/'sprite-classes.bin').write_bytes(sprite_classes)
-    (out/'ceiling-bank.bin').write_bytes(ceiling_bank)
-    (out/'ceiling-offsets.bin').write_bytes(struct.pack('<96I',*ceiling_offsets))
-    (out/'panels.bin').write_bytes(panel_bank)
-    (out/'panel-offsets.bin').write_bytes(struct.pack('<28I',*panel_offsets))
-    (out/'hw-panels.bin').write_bytes(hw_panel_bank)
-    (out/'hw-panel-offsets.bin').write_bytes(struct.pack('<28I',*hw_panel_offsets))
-    (out/'offsets.bin').write_bytes(struct.pack('<'+'I'*len(offsets),*offsets))
-    (out/'exact-offsets.bin').write_bytes(struct.pack('<'+'I'*len(exact_offsets),*exact_offsets))
-    (out/'reciprocal.bin').write_bytes(struct.pack('<16385I',0,*((1<<31)//n for n in range(1,16385))))
-    (out/'exact-reciprocal.bin').write_bytes(struct.pack('<16385I',0,0xffffffff,*((1<<32)//n for n in range(2,16385))))
+    write_generated_bytes(out/'bounds.bin',b''.join(struct.pack('<hh',*b) for b in bounds))
+    write_generated_bytes(out/'prelit.bin',bank)
+    write_generated_bytes(out/'columns.bin',columns)
+    write_generated_bytes(out/'procedural.bin',procedural)
+    write_generated_bytes(out/'insets.bin',struct.pack('<'+'h'*len(insets),*insets))
+    write_generated_bytes(out/'static-cells.bin',static_cells)
+    write_generated_bytes(out/'side-resources.bin',struct.pack('<1536H',*side_resources))
+    write_generated_bytes(out/'sprite-classes.bin',sprite_classes)
+    write_generated_bytes(out/'ceiling-bank.bin',ceiling_bank)
+    write_generated_bytes(out/'ceiling-offsets.bin',struct.pack('<96I',*ceiling_offsets))
+    write_generated_bytes(out/'panels.bin',panel_bank)
+    write_generated_bytes(out/'panel-offsets.bin',struct.pack('<28I',*panel_offsets))
+    write_generated_bytes(out/'hw-panels.bin',hw_panel_bank)
+    write_generated_bytes(out/'hw-panel-offsets.bin',struct.pack('<28I',*hw_panel_offsets))
+    write_generated_bytes(out/'offsets.bin',struct.pack('<'+'I'*len(offsets),*offsets))
+    write_generated_bytes(out/'exact-offsets.bin',struct.pack('<'+'I'*len(exact_offsets),*exact_offsets))
+    write_generated_bytes(out/'reciprocal.bin',struct.pack('<16385I',0,*((1<<31)//n for n in range(1,16385))))
+    write_generated_bytes(out/'exact-reciprocal.bin',struct.pack('<16385I',0,0xffffffff,*((1<<32)//n for n in range(2,16385))))
     hardware_bg=hardware_background_tables(out,data,scene_rows)
     if include_lowered:
         from gba_hw_bg_assets import hardware_lowered_tables
@@ -835,14 +835,15 @@ def main():
     p.add_argument('--base',type=Path,default=Path('build/gba/select-menu-fix'))
     p.add_argument('--out',type=Path,default=Path('research/experiments/g20a-prototypes'))
     p.add_argument('--variants',nargs='+',choices=VARIANTS,default=list(VARIANTS))
-    p.add_argument('--keep-objects',action='store_true',help='Retain experiment object files for manual relinking')
+    p.add_argument('--keep-objects',action='store_true',help='Retain experiment objects and generated banks for manual relinking')
     p.add_argument('--unreflected-control',action='store_true',help='Diagnostic only: disable native central-plane reflection in the private source snapshot')
     p.add_argument('--floor-control',action='store_true',help='Diagnostic only: retain the empty floor under walls for paired seam checks')
     a=p.parse_args();os.chdir(ROOT)
     if a.floor_control:
         for variant in a.variants:
             VARIANTS[variant]=tuple(d for d in VARIANTS[variant] if d!='HW_FLOOR_FILL')
-    os.environ['ZIG_GLOBAL_CACHE_DIR']=str(ROOT/'build/gba/zig-cache')
+    from build_cache import compiler_environment
+    os.environ.update(compiler_environment(ROOT))
     build(a.base,a.out,a.variants,keep_objects=a.keep_objects,unreflected_control=a.unreflected_control,assets_bin=a.assets_bin)
 
 

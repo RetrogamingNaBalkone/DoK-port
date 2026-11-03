@@ -20,9 +20,9 @@ if (([int]$MemoryProbe.IsPresent + [int]$AssetsProbe.IsPresent + [int]$RendererP
     throw 'Select one of MemoryProbe, AssetsProbe or RendererProbe'
 }
 Push-Location $taskRoot
-$taskOldCache = $env:ZIG_GLOBAL_CACHE_DIR
 try {
-    $env:ZIG_GLOBAL_CACHE_DIR = Join-Path $taskRoot 'build/gba/zig-cache'
+    . (Join-Path $taskRoot 'scripts/build-cache.ps1')
+    $taskCacheSession = Open-GbaBuildCache $taskRoot
     New-Item -ItemType Directory -Force -Path $OutDir | Out-Null
     $taskArgs = @('cc','-target','thumb-freestanding-eabi','-mcpu=arm7tdmi',
         '-std=c11','-Wall','-Wextra','-Werror','-O2','-g','-ffreestanding',
@@ -176,6 +176,6 @@ $taskColumnSource
         if ($LASTEXITCODE -ne 0) { throw 'mGBA diagnostic verification failed' }
     }
 } finally {
-    $env:ZIG_GLOBAL_CACHE_DIR = $taskOldCache
+    Close-GbaBuildCache $taskCacheSession
     Pop-Location
 }

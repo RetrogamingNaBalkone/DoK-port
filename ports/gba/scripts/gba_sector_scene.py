@@ -12,6 +12,9 @@ from compile_gba_render_scene import compile_view
 from gba_stream_scene import runtime_scene_tables
 
 
+from experiment_cleanup import write_generated_bytes
+
+
 def sector_scene_tables(out,data):
     source=runtime_scene_tables(out,data)
     assembly=[];summaries=[]
@@ -62,7 +65,7 @@ def sector_scene_tables(out,data):
         visit(0)
         for name,payload in [('nodes',nodes),('leaves',leaves),('atoms',atoms),
             ('ids',(out/f'stream-{view}-ids.bin').read_bytes()),('cells',(out/f'stream-{view}-cells.bin').read_bytes())]:
-            file=out/f'sector-{view}-{name}.bin';file.write_bytes(payload)
+            file=out/f'sector-{view}-{name}.bin';write_generated_bytes(file,payload)
             symbol=f'dok_sector_{view}_{name}'
             assembly += [f'.section .rodata.{symbol},"a",%progbits','.balign 4',f'{symbol}:',f'.incbin "{file.resolve().as_posix()}"']
         summaries.append(dict(summary,low_rectangular_leaves=low_leaves,shared_roof_resource=roof_id,
@@ -82,7 +85,7 @@ def sector_scene_tables(out,data):
             for cell in range(4096):
                 obj=u16(glyphs+data[maps+4096+cell]*2)-1
                 cells.append(255 if u16(defs+obj*32)==2 else mapping[(view*2+plane)*256+data[maps+8192+cell]])
-    file=out/'sector-material-cells.bin';file.write_bytes(cells)
+    file=out/'sector-material-cells.bin';write_generated_bytes(file,cells)
     assembly += ['.section .rodata.dok_sector_material_cells,"a",%progbits','.balign 4',
         '.global dok_sector_material_cells','dok_sector_material_cells:',f'.incbin "{file.resolve().as_posix()}"']
     (out/'sector-tables.S').write_text('\n'.join(assembly)+'\n',encoding='utf-8')

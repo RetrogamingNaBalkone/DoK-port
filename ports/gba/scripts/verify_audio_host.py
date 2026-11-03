@@ -10,7 +10,8 @@ import hashlib,json,os,subprocess
 from pathlib import Path
 def sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
 def main():
- zig=Path(os.environ['LOCALAPPDATA'])/'Programs/Zig/0.13.0/zig.exe';env=dict(os.environ,ZIG_GLOBAL_CACHE_DIR=str(Path('build/gba/zig-cache').resolve()))
+ from build_cache import compiler_environment
+ zig=Path(os.environ['LOCALAPPDATA'])/'Programs/Zig/0.13.0/zig.exe';env=compiler_environment(_layout_root)
  common=[str(zig),'cc','-std=c11','-Wall','-Wextra','-Werror','-O2','-I','ports/gba/include']
  samples=['originals/pkr/RUS/PKR.EXE','originals/pkr/ENG/PKE.EXE','originals/pkr/RUS/PKR.RES','originals/pkr/ENG/PKE.RES'];before={p:sha(p) for p in samples}
  subprocess.run(common+['ports/gba/src/audio.c','ports/gba/tests/test_audio.c','-o','build/gba/host/dok-audio-tests.exe'],env=env,check=True)

@@ -51,7 +51,8 @@ def main():
     args = parser.parse_args()
     output = ROOT/'research/evidence/render-projection'
     output.mkdir(parents=True, exist_ok=True)
-    env = dict(os.environ, ZIG_GLOBAL_CACHE_DIR=str(ROOT/'build/gba/zig-cache'))
+    from build_cache import compiler_environment
+    env = compiler_environment(ROOT)
     common = [str(args.zig), 'cc', '-std=c11', '-Wall', '-Wextra', '-Werror', '-O2', '-I', 'ports/gba/include']
     subprocess.run(common+['ports/gba/src/projection.c', 'ports/gba/tools/projection_probe.c', '-o', str(output/'probe.exe')],
                    cwd=ROOT, env=env, check=True)
