@@ -45,9 +45,15 @@ IndexedSurface Hud::classic(const IndexedSurface& scene,const PlayerState& p,con
     IndexedSurface out(320,200);std::copy(scene.pixels.begin(),scene.pixels.end(),out.pixels.begin());
     image(out,panel_,0,old_gold_?171:161,320,old_gold_?29:39,false);
     const auto line=message.substr(0,38);
-    // FONT8 advance and its one-pixel shadow fit inside the recessed field.
+    // Preserve the DOS left origin; center FONT8 ink and shadow vertically only.
+    int top=8,bottom=-1;
+    for(std::size_t i=0;i<line.size();++i)for(int y=0;y<8;++y)for(int x=0;x<8;++x)
+        if(font_[static_cast<unsigned char>(line[i])*8+y]&(0x80>>x)){
+            top=std::min(top,y);bottom=std::max(bottom,y+1);
+        }
     const int field_top=old_gold_?172:163,field_height=old_gold_?8:11;
-    text(out,(320-int(line.size())*8-1)/2,field_top+(field_height-9)/2,line);
+    if(bottom>=top)text(out,4,
+        field_top+(field_height-(bottom-top+1))/2-top,line);
     if(old_gold_){
         const auto icons=[&](const Image& icon,int x,int value,int maximum){
             const int count=value>0&&maximum>0?std::clamp(value*5/maximum,1,5):0;

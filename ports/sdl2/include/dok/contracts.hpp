@@ -32,7 +32,6 @@ struct ViewConfig {
     int scene_x{},scene_y{},scene_width{},scene_height{};
     double reference_horizontal_fov{},reference_scene_aspect{};
     double pixel_height_over_width{1.0};
-    bool force_four_three{};
     HudLayout hud{HudLayout::automatic};
 };
 // Game/save state deliberately excludes SDL objects and renderer handles.

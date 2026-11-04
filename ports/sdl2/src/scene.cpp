@@ -104,7 +104,8 @@ void SoftwareScene::software_resolution(int width,int height){
     frame_height_=height;presentation_view_width_=320;
 }
 void SoftwareScene::software_presentation(int width,int height,int reference_height){
-    if(width<1||width>32766||height<2||height>614||height%2)throw std::invalid_argument("Invalid presentation viewport");
+    if(width<1||width>32766||height<2||height>1534||height%2||reference_height<160||reference_height>200||4096.0*height/reference_height>32767)
+        throw std::invalid_argument("Invalid presentation viewport");
     presentation_view_width_=int(std::lround(width*double(reference_height)/height));
     software_camera_={static_cast<std::int16_t>(width),static_cast<std::int16_t>(height+1),8,
         static_cast<std::int16_t>(4096.0*height/reference_height),200};

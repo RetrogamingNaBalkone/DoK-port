@@ -1,4 +1,5 @@
 #include "dok/gl_renderer.hpp"
+#include "dok/display.hpp"
 #include <SDL_opengl.h>
 #include <algorithm>
 #include <array>
@@ -154,6 +155,27 @@ int main(){
         }
         std::cout<<"Sharp transitions "<<transitions[0]<<","<<transitions[1]<<","<<transitions[2]<<"; FXAA changed "<<changes<<" edge pixels; classic viewport 160/170 passed\n";
         std::cout<<"Smooth LIGHT anchors/ramp, wall occlusion, transparent depth, UI and nearest/linear passed\n";
+        gl.frame_size(320,240);gl.begin();
+        gl.image({0xffff0000},1,1,{0,0,320,120},true);
+        gl.image({0xff0000ff},1,1,{0,120,320,120},true);
+        gl.finish_frame();
+        const auto fitted=rgba();
+        const auto color=[&](int x,int y,int channel){return fitted[((383-y)*640+x)*4+channel];};
+        check(color(320,20,0)==255&&color(320,360,2)==255,"Framebuffer orientation/composition");
+        check(color(0,100,0)==0&&color(639,100,2)==0,"Framebuffer aspect bars");
+        gl.begin();gl.image({0xff00ff00},1,1,{0,0,320,240},true);gl.finish_frame();
+        const auto next=rgba();check(next[((383-100)*640+320)*4+1]==255,"Framebuffer reuse");
+        bool rejected=false;try{gl.frame_size(100000,100000);}catch(const std::exception&){rejected=true;}
+        check(rejected,"Invalid framebuffer must be rejected");
+        std::cout<<"Internal framebuffer resolution, bars, orientation, reuse and allocation rejection passed\n";
+        dok::VideoSettings settings;settings.fullscreen=true;settings.fullscreen_width=800;settings.fullscreen_height=600;
+        dok::Display display(settings,false);
+        check(display.size()==std::array<int,2>{800,600},"Display must expose internal canvas size");
+        int ww=0,wh=0;SDL_GetWindowSize(display.window(),&ww,&wh);
+        SDL_Event center{};center.type=SDL_MOUSEBUTTONDOWN;center.button.x=ww/2;center.button.y=wh/2;
+        check(display.menu_event(center)&&std::abs(center.button.x-400)<=1&&std::abs(center.button.y-300)<=1,"Fullscreen pointer mapping");
+        if(ww*3>wh*4){SDL_Event bar{};bar.type=SDL_MOUSEBUTTONDOWN;bar.button.x=0;bar.button.y=wh/2;check(!display.menu_event(bar),"Bar click reached menu");}
+        std::cout<<"Display internal size and fullscreen mouse mapping passed\n";
     }catch(const std::exception& e){std::cerr<<e.what()<<'\n';SDL_DestroyWindow(window);SDL_Quit();return 1;}
     SDL_DestroyWindow(window);SDL_Quit();
 }

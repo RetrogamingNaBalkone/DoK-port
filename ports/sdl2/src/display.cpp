@@ -1,5 +1,6 @@
 #include "dok/display.hpp"
 #include "dok/png.hpp"
+#include "dok/presentation.hpp"
 #include <algorithm>
 #include <stdexcept>
 
@@ -13,14 +14,27 @@ Display::Display(const VideoSettings& s,bool vsync){
         window_=SDL_CreateWindow("DoK Source Port",SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED,s.width,s.height,
             SDL_WINDOW_RESIZABLE|SDL_WINDOW_ALLOW_HIGHDPI|SDL_WINDOW_HIDDEN|(s.renderer==RendererKind::opengl?SDL_WINDOW_OPENGL:0));
         if(!window_)throw std::runtime_error(SDL_GetError());
-        if(s.renderer==RendererKind::opengl){gl_=std::make_unique<GlRenderer>(window_);if(!vsync)SDL_GL_SetSwapInterval(0);}
+        if(s.renderer==RendererKind::opengl){gl_=std::make_unique<GlRenderer>(window_);if(!vsync)SDL_GL_SetSwapInterval(0);
+            if(s.fullscreen){gl_->frame_size(s.fullscreen_width,s.fullscreen_height);frame_width_=s.fullscreen_width;frame_height_=s.fullscreen_height;}}
         else{renderer_=SDL_CreateRenderer(window_,-1,SDL_RENDERER_ACCELERATED|(vsync?SDL_RENDERER_PRESENTVSYNC:0));
             if(!renderer_)renderer_=SDL_CreateRenderer(window_,-1,SDL_RENDERER_SOFTWARE);if(!renderer_)throw std::runtime_error(SDL_GetError());}
         if(s.fullscreen&&SDL_SetWindowFullscreen(window_,SDL_WINDOW_FULLSCREEN_DESKTOP)!=0)throw std::runtime_error(SDL_GetError());
     }catch(...){gl_.reset();if(renderer_)SDL_DestroyRenderer(renderer_);if(window_)SDL_DestroyWindow(window_);throw;}
 }
 Display::~Display(){gl_.reset();if(texture_)SDL_DestroyTexture(texture_);if(sharp_texture_)SDL_DestroyTexture(sharp_texture_);for(const auto& overlay:overlay_textures_)SDL_DestroyTexture(overlay.second);if(renderer_)SDL_DestroyRenderer(renderer_);if(window_)SDL_DestroyWindow(window_);}
-std::array<int,2> Display::size()const{int w,h;if(gl_)SDL_GL_GetDrawableSize(window_,&w,&h);else SDL_GetRendererOutputSize(renderer_,&w,&h);return {std::max(1,w),std::max(1,h)};}
+std::array<int,2> Display::size()const{if(frame_width_)return {frame_width_,frame_height_};int w,h;if(gl_)SDL_GL_GetDrawableSize(window_,&w,&h);else SDL_GetRendererOutputSize(renderer_,&w,&h);return {std::max(1,w),std::max(1,h)};}
+bool Display::menu_event(SDL_Event& event)const{
+    if(event.type!=SDL_MOUSEMOTION&&event.type!=SDL_MOUSEBUTTONDOWN&&event.type!=SDL_MOUSEBUTTONUP)return true;
+    int ww=1,wh=1;SDL_GetWindowSize(window_,&ww,&wh);
+    int dw=1,dh=1;if(gl_)SDL_GL_GetDrawableSize(window_,&dw,&dh);else SDL_GetRendererOutputSize(renderer_,&dw,&dh);
+    const auto size=this->size();const auto rect=fit_frame(dw,dh,size[0],size[1]);
+    const int x=(event.type==SDL_MOUSEMOTION?event.motion.x:event.button.x)*dw/std::max(1,ww);
+    const int y=(event.type==SDL_MOUSEMOTION?event.motion.y:event.button.y)*dh/std::max(1,wh);
+    if(x<rect.x||y<rect.y||x>=rect.x+rect.w||y>=rect.y+rect.h)return false;
+    const int mx=(x-rect.x)*size[0]/rect.w,my=(y-rect.y)*size[1]/rect.h;
+    if(event.type==SDL_MOUSEMOTION){event.motion.x=mx;event.motion.y=my;}
+    else{event.button.x=mx;event.button.y=my;}return true;
+}
 void Display::begin(){if(gl_)gl_->begin();else{SDL_SetRenderDrawColor(renderer_,0,0,0,255);SDL_RenderClear(renderer_);}}
 void Display::pixels(const std::vector<std::uint32_t>& data,int width,int height,bool game,int filter,const SDL_Rect* target){
     const auto output=size();SDL_Rect r=target?*target:SDL_Rect{0,0,output[0],output[1]};

@@ -1,4 +1,4 @@
-param([switch]$Headless, [switch]$Fresh, [string]$Configuration = 'Debug')
+param([switch]$Headless, [switch]$Fresh, [switch]$DirectCommands, [string]$Configuration = 'Debug')
 $ErrorActionPreference = 'Stop'
 $taskRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../../..'))
 $taskZig = Join-Path $env:LOCALAPPDATA 'Programs/Zig/0.13.0/zig.exe'
@@ -27,7 +27,11 @@ $taskApp = if ($Headless) {'OFF'} else {'ON'}
 if ($Fresh) { $taskFreshArgs = @('--fresh') }
 & "$taskCmake/cmake.exe" @taskFreshArgs -S "$taskRoot/ports/sdl2" -B $taskBuild -G Ninja "-DCMAKE_MAKE_PROGRAM=$taskNinja/ninja.exe" "-DCMAKE_TOOLCHAIN_FILE=$taskToolchain" "-DCMAKE_BUILD_TYPE=$Configuration" "-DCMAKE_PREFIX_PATH=$taskSdk" "-DDOK_BUILD_APP=$taskApp"
 if ($LASTEXITCODE -ne 0) { throw 'CMake configure failed' }
-& "$taskCmake/cmake.exe" --build $taskBuild --parallel 2
+if ($DirectCommands) {
+    & py -3.14 -B "$PSScriptRoot/build_commands.py" --build-dir $taskBuild --ninja "$taskNinja/ninja.exe" all
+} else {
+    & "$taskCmake/cmake.exe" --build $taskBuild --parallel 2
+}
 if ($LASTEXITCODE -ne 0) { throw 'Build failed' }
 & "$taskCmake/ctest.exe" --test-dir $taskBuild --output-on-failure
 if ($LASTEXITCODE -ne 0) { throw 'CTest failed' }

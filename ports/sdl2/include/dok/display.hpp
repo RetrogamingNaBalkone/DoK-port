@@ -19,7 +19,9 @@ public:
     void present();
     void screenshot(const std::string& path);
     std::array<int,2> size()const;
+    bool menu_event(SDL_Event& event)const;
 private:
+    int frame_width_=0,frame_height_=0;
     SDL_Window* window_=nullptr;
     SDL_Renderer* renderer_=nullptr;
     SDL_Texture* texture_=nullptr;

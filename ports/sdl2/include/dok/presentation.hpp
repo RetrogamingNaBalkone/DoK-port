@@ -12,6 +12,7 @@ inline PresentationRect fit_frame(int width,int height,int frame_width,int frame
     return {(width-w)/2,(height-h)/2,std::max(1,w),std::max(1,h)};
 }
 inline std::string aspect_label(int width,int height){
+    if(std::int64_t(width)*10==std::int64_t(height)*16)return "16:10";
     const int divisor=std::gcd(width,height);
     return std::to_string(width/divisor)+":"+std::to_string(height/divisor);
 }
@@ -20,10 +21,10 @@ struct PresentationLayout {
     int view_width=320,view_height=160;
     bool classic=false,reserved_panel=false;
 };
-inline PresentationLayout presentation_layout(int width,int height,bool classic,bool automatic,bool old_gold){
+inline PresentationLayout presentation_layout(int width,int height,bool classic,bool automatic,bool old_gold,bool software=false){
     PresentationLayout out;
     out.frame={0,0,width,height};
-    if(std::int64_t(width)*3<std::int64_t(height)*4)out.frame=fit_frame(width,height,4,3);
+    if(software||std::int64_t(width)*3<std::int64_t(height)*4)out.frame=fit_frame(width,height,4,3);
     const auto frame=out.frame;
     const bool wide=std::int64_t(frame.w)*3>std::int64_t(frame.h)*4+3;
     out.classic=classic||(automatic&&!wide);

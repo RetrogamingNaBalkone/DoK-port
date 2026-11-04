@@ -46,7 +46,7 @@ int main(int argc,char** argv){
             dok::AppSettings s;s.locale=lang?dok::LocaleId::en:dok::LocaleId::ru;s.video.renderer=backend?dok::RendererKind::opengl:dok::RendererKind::software;s.video.width=size[0];s.video.height=size[1];
             dok::Display display(s.video);dok::Frontend menu(s);menu.datasets({{&sets[2],"OLD_GOLD.RES"},{&sets[0],"PKR.RES"},{&sets[1],"PKE.RES"}});
             dok::ResourceSources sources;for(int i=0;i<3;++i)sources.add(root/(i==0?"originals/pkr/RUS/PKR.RES":i==1?"originals/pkr/ENG/PKE.RES":"originals/Old_Gold_3D/OLD_GOLD.RES"),sets[i]);menu.resources(sources);
-            dok::World world(dok::load_level(sets[0],"LEVEL1"));world.map_revealed=true;menu.session_world(&world);
+            dok::World world(dok::load_level(sets[0],"LEVEL1"));world.map_revealed=true;menu.select_dataset(1);menu.session_world(&world);
             const auto prefix=(backend?"ux-gl-":"ux-sw-")+std::string(lang?"en-":"ru-")+std::to_string(size[0])+"-";
             auto save=[&](const char* name){shot(display,menu,out/(prefix+name+".png"));++frames;};
             auto down=[&](int n){for(int i=0;i<n;++i)key(menu,SDLK_DOWN);};

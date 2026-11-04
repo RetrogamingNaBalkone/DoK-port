@@ -2,20 +2,25 @@
 #include <SDL_opengl.h>
 #include "dok/gl_renderer.hpp"
 #include "dok/png.hpp"
+#include "dok/presentation.hpp"
 #include <algorithm>
 #include <cstring>
 #include <stdexcept>
 #include <unordered_map>
 namespace dok {
 #define GL_FUNCTIONS(X) \
- X(CreateShader) X(ShaderSource) X(CompileShader) X(GetShaderiv) X(GetShaderInfoLog) X(DeleteShader) \
+ X(GetIntegerv) X(CreateShader) X(ShaderSource) X(CompileShader) X(GetShaderiv) X(GetShaderInfoLog) X(DeleteShader) \
  X(CreateProgram) X(AttachShader) X(BindAttribLocation) X(LinkProgram) X(GetProgramiv) X(GetProgramInfoLog) X(DeleteProgram) \
  X(UseProgram) X(GetUniformLocation) X(Uniform1i) X(Uniform2f) X(GenBuffers) X(BindBuffer) X(BufferData) X(DeleteBuffers) \
  X(EnableVertexAttribArray) X(DisableVertexAttribArray) X(VertexAttribPointer) X(GenTextures) X(BindTexture) X(TexParameteri) X(TexImage2D) X(TexSubImage2D) \
  X(DeleteTextures) X(ActiveTexture) X(PixelStorei) X(DrawArrays) X(Viewport) X(ClearColor) X(Clear) \
  X(Enable) X(Disable) X(BlendFunc) X(ReadPixels) X(CopyTexSubImage2D)
+#define FRAME_FUNCTIONS(X) \
+ X(GenFramebuffers) X(BindFramebuffer) X(FramebufferTexture2D) X(CheckFramebufferStatus) X(DeleteFramebuffers) \
+ X(GenRenderbuffers) X(BindRenderbuffer) X(RenderbufferStorage) X(FramebufferRenderbuffer) X(DeleteRenderbuffers)
 struct GlRenderer::Impl {
     SDL_Window* window;SDL_GLContext context=nullptr;int width=1,height=1,virtual_width=320,virtual_height=160;
+    int frame_width=0,frame_height=0;GLuint framebuffer=0,frame_texture=0,frame_depth=0;bool frame_finished=false;
     SDL_Rect scene_rect{};GLuint post_texture=0;int post_width=0,post_height=0;
     GLuint program=0,vbo=0,light=0;
     struct UiTexture {GLuint id=0;std::vector<std::uint32_t> pixels;};
@@ -44,6 +49,7 @@ struct GlRenderer::Impl {
     std::vector<float> triangle_vertices;
 #define DECLARE(name) decltype(&gl##name) name=nullptr;
     GL_FUNCTIONS(DECLARE)
+    FRAME_FUNCTIONS(DECLARE)
 #undef DECLARE
     GLuint shader(GLenum kind,const char* body){
         int profile=0;SDL_GL_GetAttribute(SDL_GL_CONTEXT_PROFILE_MASK,&profile);
@@ -82,6 +88,9 @@ struct GlRenderer::Impl {
     }
     ~Impl(){if(context){SDL_GL_MakeCurrent(window,context);
         if(DeleteTextures){for(auto t:textures)DeleteTextures(1,&t.second);for(const auto& t:ui_textures)DeleteTextures(1,&t.second.id);DeleteTextures(1,&light);if(post_texture)DeleteTextures(1,&post_texture);}
+        if(DeleteFramebuffers&&framebuffer)DeleteFramebuffers(1,&framebuffer);
+        if(DeleteRenderbuffers&&frame_depth)DeleteRenderbuffers(1,&frame_depth);
+        if(DeleteTextures&&frame_texture)DeleteTextures(1,&frame_texture);
         if(DeleteBuffers&&vbo)DeleteBuffers(1,&vbo);if(DeleteProgram&&program)DeleteProgram(program);SDL_GL_DeleteContext(context);}}
 };
 GlRenderer::GlRenderer(SDL_Window* window):impl_(std::make_unique<Impl>()){
@@ -89,6 +98,9 @@ GlRenderer::GlRenderer(SDL_Window* window):impl_(std::make_unique<Impl>()){
 #define LOAD(name) g.name=reinterpret_cast<decltype(g.name)>(SDL_GL_GetProcAddress("gl" #name));if(!g.name)throw std::runtime_error("Missing gl" #name);
     GL_FUNCTIONS(LOAD)
 #undef LOAD
+#define LOAD_FRAME(name) g.name=reinterpret_cast<decltype(g.name)>(SDL_GL_GetProcAddress("gl" #name));if(!g.name)g.name=reinterpret_cast<decltype(g.name)>(SDL_GL_GetProcAddress("gl" #name "EXT"));
+    FRAME_FUNCTIONS(LOAD_FRAME)
+#undef LOAD_FRAME
     const auto vertex=g.shader(GL_VERTEX_SHADER,R"(
 attribute vec4 position; attribute vec2 uv; attribute float depth; attribute vec4 material;
 VARYING vec2 texcoord; VARYING float shade; VARYING vec4 mat;
@@ -177,7 +189,41 @@ void main(){
     SDL_GL_SetSwapInterval(1);
 }
 GlRenderer::~GlRenderer()=default;
+void GlRenderer::frame_size(int width,int height){
+    auto& g=*impl_;SDL_GL_MakeCurrent(g.window,g.context);
+#define REQUIRE_FRAME(name) if(!g.name)throw std::runtime_error("Fullscreen internal resolution requires gl" #name);
+    FRAME_FUNCTIONS(REQUIRE_FRAME)
+#undef REQUIRE_FRAME
+    if(width<=0||height<=0)throw std::invalid_argument("Invalid fullscreen frame size");
+    GLint limit=0;g.GetIntegerv(GL_MAX_TEXTURE_SIZE,&limit);
+    if(width>limit||height>limit)throw std::runtime_error("Fullscreen resolution exceeds GL texture limit");
+    g.GenFramebuffers(1,&g.framebuffer);g.BindFramebuffer(GL_FRAMEBUFFER,g.framebuffer);
+    g.GenTextures(1,&g.frame_texture);g.texture(g.frame_texture,0,width,height,GL_RGBA,nullptr);
+    g.FramebufferTexture2D(GL_FRAMEBUFFER,GL_COLOR_ATTACHMENT0,GL_TEXTURE_2D,g.frame_texture,0);
+    g.GenRenderbuffers(1,&g.frame_depth);g.BindRenderbuffer(GL_RENDERBUFFER,g.frame_depth);
+    g.RenderbufferStorage(GL_RENDERBUFFER,GL_DEPTH_COMPONENT16,width,height);
+    g.FramebufferRenderbuffer(GL_FRAMEBUFFER,GL_DEPTH_ATTACHMENT,GL_RENDERBUFFER,g.frame_depth);
+    const bool complete=g.CheckFramebufferStatus(GL_FRAMEBUFFER)==GL_FRAMEBUFFER_COMPLETE;
+    g.BindFramebuffer(GL_FRAMEBUFFER,0);
+    if(!complete)throw std::runtime_error("Cannot allocate fullscreen frame buffer");
+    g.frame_width=width;g.frame_height=height;
+}
+void GlRenderer::finish_frame(){
+    flush_world();auto& g=*impl_;if(!g.framebuffer||g.frame_finished)return;
+    g.frame_finished=true;g.BindFramebuffer(GL_FRAMEBUFFER,0);
+    SDL_GL_GetDrawableSize(g.window,&g.width,&g.height);
+    g.Viewport(0,0,g.width,g.height);g.Disable(GL_DEPTH_TEST);g.Disable(GL_BLEND);
+    g.ClearColor(0,0,0,1);g.Clear(GL_COLOR_BUFFER_BIT);
+    const auto r=fit_frame(g.width,g.height,g.frame_width,g.frame_height);
+    g.Viewport(r.x,g.height-r.y-r.h,r.w,r.h);
+    g.ActiveTexture(GL_TEXTURE0);g.BindTexture(GL_TEXTURE_2D,g.frame_texture);
+    g.UseProgram(g.program);g.Uniform1i(g.filter_location,0);
+    g.Uniform2f(g.size_location,float(g.frame_width),float(g.frame_height));
+    g.draw({-1,-1,0,1,0,0,0,1,-1,0,1,1,0,0,1,1,0,1,1,1,0,-1,1,0,1,0,1,0},2);
+}
 void GlRenderer::begin(){auto& g=*impl_;SDL_GL_MakeCurrent(g.window,g.context);SDL_GL_GetDrawableSize(g.window,&g.width,&g.height);g.height=std::max(1,g.height);
+    g.frame_finished=false;if(g.BindFramebuffer)g.BindFramebuffer(GL_FRAMEBUFFER,g.framebuffer);
+    if(g.framebuffer){g.width=g.frame_width;g.height=g.frame_height;}
     g.commands.clear();g.world_vertices.clear();g.deferred=false;g.immutable_images=false;
     if(g.ui_textures.size()>16){for(const auto& t:g.ui_textures)g.DeleteTextures(1,&t.second.id);g.ui_textures.clear();}
     // Bound CPU snapshots when a persistent Display visits many levels.
@@ -319,8 +365,8 @@ void GlRenderer::image(const std::vector<std::uint32_t>& pixels,int width,int he
     const float l=2.f*r.x/rw-1,rr=2.f*(r.x+r.w)/rw-1,t=1-2.f*r.y/rh,b=1-2.f*(r.y+r.h)/rh;
     g.draw({l,t,0,1,0,0,0,rr,t,0,1,1,0,0,rr,b,0,1,1,1,0,l,b,0,1,0,1,0},2);
 }
-void GlRenderer::present(){flush_world();SDL_GL_SwapWindow(impl_->window);}
-void GlRenderer::screenshot(const std::string& path){flush_world();auto& g=*impl_;std::vector<std::uint8_t> bytes(std::size_t(g.width)*g.height*4);
+void GlRenderer::present(){finish_frame();flush_world();SDL_GL_SwapWindow(impl_->window);}
+void GlRenderer::screenshot(const std::string& path){finish_frame();flush_world();auto& g=*impl_;std::vector<std::uint8_t> bytes(std::size_t(g.width)*g.height*4);
     g.ReadPixels(0,0,g.width,g.height,GL_RGBA,GL_UNSIGNED_BYTE,bytes.data());
     if(std::filesystem::u8path(path).extension()==".png"){
         std::vector<std::uint32_t> pixels(std::size_t(g.width)*g.height);

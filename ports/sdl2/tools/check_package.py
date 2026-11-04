@@ -29,7 +29,13 @@ def main():
     header = struct.unpack_from('<I', pe, 0x3c)[0]
     assert pe[header:header+4] == b'PE\0\0'
     assert struct.unpack_from('<H', pe, header+24+68)[0] == 2, 'Game must use Windows GUI subsystem'
-    assert not list(package.rglob('*.res')) and not list(package.rglob('*.RES'))
+    resources = {'OLD_GOLD.RES': 'originals/Old_Gold_3D/OLD_GOLD.RES',
+                 'PKR.RES': 'originals/pkr/RUS/PKR.RES',
+                 'PKE.RES': 'originals/pkr/ENG/PKE.RES'}
+    bundled = any((package / name).exists() for name in resources)
+    if bundled:
+        for name, source in resources.items():
+            assert (package / name).read_bytes() == (ROOT / source).read_bytes(), name
     readme = (package / 'README.md').read_text(encoding='utf-8')
     assert 'Старое золото' in readme and '????' not in readme and '\ufffd' not in readme
     out = ROOT / 'research/evidence/source-port/sp08-sp16-checkpoint' / package.name
@@ -40,7 +46,7 @@ def main():
         ('old-gold', 'originals/Old_Gold_3D/OLD_GOLD.RES', 'LEVEL4'),
         ('ru', 'originals/pkr/RUS/PKR.RES', 'LEVEL1'),
         ('en', 'originals/pkr/ENG/PKE.RES', 'LEVEL1'),
-        ('no-res', None, None),
+        ('bundled-auto' if bundled else 'no-res', None, None),
     ]:
         for backend in ['gl', 'software']:
             name = dataset + '-' + backend
@@ -59,13 +65,13 @@ def main():
             log = (profile / 'port.log').read_text(encoding='utf-8')
             assert process.returncode == 0 and picture.is_file(), (name, process.stderr)
             assert 'Clean shutdown;' in log and 'OpenGL fallback:' not in log, (name, log)
-            assert ('Started ' in log) if res else 'datasets=0' in log
+            assert ('Started ' in log) if res else ('datasets=3' if bundled else 'datasets=0') in log
             results.append(dict(name=name, command=command, exit_code=process.returncode,
                                 screenshot=str(picture.relative_to(ROOT)), log=log))
             print(name, 'PASS', flush=True)
     report = dict(package=str(package.relative_to(ROOT)), processes=results,
                   executable_sha256=hashlib.sha256(exe.read_bytes()).hexdigest(),
-                  readme_utf8=True, original_resources_included=False, windows_gui_subsystem=True, batch_launchers=False,
+                  readme_utf8=True, original_resources_included=bundled, windows_gui_subsystem=True, batch_launchers=False,
                   boundary='Packaged executable smoke checks, not full playthroughs.')
     (out / 'report.json').write_text(json.dumps(report, ensure_ascii=False, indent=2) + '\n',
                                      encoding='utf-8')

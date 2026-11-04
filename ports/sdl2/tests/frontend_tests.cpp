@@ -24,11 +24,18 @@ int main(){
         s.locale=s.locale==dok::LocaleId::ru?dok::LocaleId::en:dok::LocaleId::ru;
         s.video={dok::RendererKind::software,800,600,3,true};s.input.keyboard(dok::InputPreset::classic);s.input.gamepad(dok::InputPreset::classic);
         s.inertia=false;s.master_volume=45;s.music_volume=15;s.input.keys[0][0]=SDL_SCANCODE_I;s.input.keyboard_preset=dok::InputPreset::custom;
-        s.frame_filter=2;s.fxaa=true;s.classic_hud=true;s.auto_hud=false;s.force_4_3=true;s.base_fov=90;
+        s.frame_filter=2;s.fxaa=true;s.classic_hud=true;s.auto_hud=false;
         s.resource_paths={"C:/Games/Старое золото/OLD_GOLD.RES","C:/Games/edition=two.RES"};
         s.resource_choices[1]=s.resource_paths[0];
         check(dok::save_settings(path,s,warning),"Save settings");auto loaded=dok::load_settings(path,warning);
         check(warning.empty()&&dok::encode_settings(s)==dok::encode_settings(loaded),"Full roundtrip and locale persistence");
+        {std::ofstream out(path);out<<"[settings]\nversion=1\n[video]\nwidth=800\nheight=600\nbase_fov=obsolete\nforce_4_3=obsolete\n[interface]\nfps=0\n";}
+        loaded=dok::load_settings(path,warning);
+        check(warning.empty()&&!loaded.show_fps&&loaded.video.fullscreen_width==800&&loaded.video.fullscreen_height==600,"Ignore legacy projection keys without resetting settings");
+        s.video.fullscreen_width=1280;s.video.fullscreen_height=800;
+        check(dok::save_settings(path,s,warning),"Save independent fullscreen size");
+        loaded=dok::load_settings(path,warning);
+        check(loaded.video.width==800&&loaded.video.fullscreen_width==1280&&loaded.video.fullscreen_height==800,"Independent window/fullscreen size roundtrip");
         auto stored=s,before=s;before.video.renderer=dok::RendererKind::opengl;before.video.width=1920;before.locale=dok::LocaleId::en;auto after=before;after.master_volume=60;
         check(dok::merge_settings_edits(stored,before,after),"Changed persistent setting must be dirty");check(stored.video==s.video&&stored.locale==s.locale&&stored.master_volume==60,"CLI overrides leaked to disk");
         check(!dok::merge_settings_edits(stored,before,after),"Already stored edit must not write again");
@@ -87,6 +94,14 @@ int main(){
             click.button.button=SDL_BUTTON_LEFT;click.button.x=(int(at%f.width)+8)*size[0]/f.width;click.button.y=(int(at/f.width)+4)*size[1]/f.height;pointer.handle(click,size[0],size[1]);
             check(pointer.screen()==dok::MenuScreen::settings,"Centered menu mouse hit at both aspects");
         }
+        dok::AppSettings fs;fs.video.width=800;fs.video.height=600;fs.video.fullscreen_width=1280;fs.video.fullscreen_height=800;
+        dok::Frontend fullscreen(fs);fullscreen.render(640,480);down(fullscreen,1);key(fullscreen,SDLK_RETURN);key(fullscreen,SDLK_RETURN);
+        down(fullscreen,1);key(fullscreen,SDLK_RIGHT);down(fullscreen,1);key(fullscreen,SDLK_RIGHT);
+        check(!fs.video.fullscreen&&fs.video.fullscreen_height==800,"Fullscreen selection must remain staged");
+        down(fullscreen,2);key(fullscreen,SDLK_RETURN);
+        check(fullscreen.video_pending()&&fs.video.fullscreen&&fs.video.width==800&&fs.video.height==600&&fs.video.fullscreen_width==1280&&fs.video.fullscreen_height==720,"Fullscreen preset must not change window size");
+        key(fullscreen,SDLK_RETURN);check(!fullscreen.video_pending()&&command(fullscreen,dok::MenuCommand::keep_video),"Confirm fullscreen mode");
+        down(fullscreen,2);check(fullscreen.focused_row()==7,"HUD row navigation");down(fullscreen,1);check(fullscreen.focused_row()==9,"Read-only aspect must be skipped");
         dok::Frontend background(s);background.render(640,480);SDL_Event event{};event.type=SDL_WINDOWEVENT;event.window.event=SDL_WINDOWEVENT_FOCUS_LOST;background.handle(event,640,480);
         event.type=SDL_CONTROLLERAXISMOTION;event.caxis.axis=SDL_CONTROLLER_AXIS_LEFTY;event.caxis.value=25000;background.handle(event,640,480);
         check(background.focused_row()==0,"Background pad moved menu focus");

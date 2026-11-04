@@ -1,12 +1,32 @@
-param([string]$PackageName = 'windows-playtest')
+param([string]$PackageName = 'windows-playtest', [switch]$WithoutResources)
 $ErrorActionPreference = 'Stop'
 if ($PackageName -notmatch '^[a-zA-Z0-9_-]+$') { throw 'PackageName must be a directory name' }
 $taskRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../../..'))
 $taskBuild = Join-Path $taskRoot 'build/sdl2/windows'
 $taskOut = Join-Path $taskRoot "artifacts/sdl2/$PackageName"
+$taskResources = @{
+    'OLD_GOLD.RES' = 'originals/Old_Gold_3D/OLD_GOLD.RES'
+    'PKR.RES' = 'originals/pkr/RUS/PKR.RES'
+    'PKE.RES' = 'originals/pkr/ENG/PKE.RES'
+}
+if (!$WithoutResources) {
+    foreach ($taskSource in $taskResources.Values) {
+        if (!(Test-Path -LiteralPath (Join-Path $taskRoot $taskSource) -PathType Leaf)) {
+            throw "Required RES file missing: $taskSource"
+        }
+    }
+}
 New-Item -ItemType Directory -Force -Path $taskOut | Out-Null
 foreach ($name in @('dok_port.exe','SDL2.dll')) {
     Copy-Item -LiteralPath (Join-Path $taskBuild $name) -Destination (Join-Path $taskOut $name) -Force
+}
+foreach ($taskName in $taskResources.Keys) {
+    $taskDestination = Join-Path $taskOut $taskName
+    if ($WithoutResources) {
+        Remove-Item -LiteralPath $taskDestination -Force -ErrorAction SilentlyContinue
+    } else {
+        Copy-Item -LiteralPath (Join-Path $taskRoot $taskResources[$taskName]) -Destination $taskDestination -Force
+    }
 }
 Copy-Item -LiteralPath (Join-Path $taskRoot 'ports/sdl2/PLAYTEST.md') -Destination (Join-Path $taskOut 'README.md') -Force
 $taskSdlLicense = [IO.File]::ReadAllText((Join-Path $env:LOCALAPPDATA 'Programs/SDL2/SDL2-2.32.10/LICENSE.txt'))

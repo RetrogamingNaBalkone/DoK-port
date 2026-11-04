@@ -64,13 +64,12 @@ int main(int argc,char** argv){
             else if(arg=="--frame-filter"){const auto mode=value();if(mode!="nearest"&&mode!="linear"&&mode!="sharp")throw std::runtime_error("Frame filter: nearest|linear|sharp");settings.frame_filter=mode=="sharp"?2:mode=="linear"?1:0;}
             else if(arg=="--fxaa"){const auto mode=value();if(mode!="on"&&mode!="off")throw std::runtime_error("FXAA: on|off");settings.fxaa=mode=="on";}
             else if(arg=="--hud"){const auto mode=value();if(mode!="classic"&&mode!="desktop"&&mode!="auto")throw std::runtime_error("HUD: auto|classic|desktop");settings.auto_hud=mode=="auto";settings.classic_hud=mode=="classic";}
-            else if(arg=="--aspect"){const auto mode=value();if(mode!="auto"&&mode!="4:3")throw std::runtime_error("Aspect: auto|4:3");settings.force_4_3=mode=="4:3";}
-            else if(arg=="--fov"){const auto mode=value();std::size_t parsed=0;settings.base_fov=mode=="original"?0:std::stoi(mode,&parsed);if(mode!="original"&&parsed!=mode.size())throw std::runtime_error("FOV: original|45..110");dok::presentation_focal(settings.base_fov);}
+            else if(arg=="--aspect"||arg=="--fov")throw std::runtime_error("FOV and aspect are automatic; select a resolution with --size instead");
             else if(arg=="--locale"){const auto lang=value();if(lang!="ru"&&lang!="en")throw std::runtime_error("Locale: ru|en");settings.locale=lang=="ru"?dok::LocaleId::ru:dok::LocaleId::en;}
             else if(arg=="--size"||arg=="--software-mode"){
                 const auto size=value();const auto x=size.find('x');if(x==std::string::npos)throw std::runtime_error("Size: WIDTHxHEIGHT");
                 const int w=std::stoi(size.substr(0,x)),h=std::stoi(size.substr(x+1));if(w<320||h<200||w>7680||h>4320)throw std::runtime_error("Invalid window size");
-                if(arg=="--size"){settings.video.width=w;settings.video.height=h;}
+                if(arg=="--size"){settings.video.width=w;settings.video.height=h;settings.video.fullscreen_width=w;settings.video.fullscreen_height=h;}
                 else{int index=-1;for(int n=0;n<int(dok::software_modes.size());++n)if(dok::software_modes[n]==std::array<int,2>{w,h})index=n;
                     if(index<0)throw std::runtime_error("Unsupported original software mode");settings.video.software_mode=index;}
             }else throw std::runtime_error("Unknown option: "+arg);
@@ -184,7 +183,7 @@ int main(int argc,char** argv){
             bool video_changed=false;std::vector<std::string> captures;menu.update(SDL_GetTicks64());
             for(const auto& event:script)if(event.frame==frames){
                 if(event.action=="state"){
-                    const auto size=display->size();log<<"STATE "<<event.value<<" renderer="<<int(settings.video.renderer)<<" size="<<size[0]<<'x'<<size[1]<<" menu="<<int(menu.screen())<<" frame_filter="<<settings.frame_filter<<" fxaa="<<settings.fxaa<<" classic_hud="<<settings.classic_hud<<" auto_hud="<<settings.auto_hud<<" force_4_3="<<settings.force_4_3<<" base_fov="<<settings.base_fov;
+                    const auto size=display->size();log<<"STATE "<<event.value<<" renderer="<<int(settings.video.renderer)<<" size="<<size[0]<<'x'<<size[1]<<" menu="<<int(menu.screen())<<" frame_filter="<<settings.frame_filter<<" fxaa="<<settings.fxaa<<" classic_hud="<<settings.classic_hud<<" auto_hud="<<settings.auto_hud<<" automatic_projection="<<true;
                     if(world){const auto& p=*world->objects.at(*world->player).pose;const auto& player=*world->objects.at(*world->player).player_state;
                         std::uint64_t hash=14695981039346656037ULL;for(const auto& map:world->maps)for(auto byte:map.second){hash^=static_cast<unsigned char>(byte);hash*=1099511628211ULL;}
                         log<<" world="<<world.get()<<" ticks="<<world->simulation_ticks()<<" pose="<<p.x<<','<<p.y<<','<<p.z<<','<<p.heading<<" hp="<<player.health()<<" charge="<<player.charge()<<" maps="<<hash;
@@ -222,12 +221,15 @@ int main(int argc,char** argv){
                     if(e.key.keysym.sym==SDLK_F4){if(settings.video.renderer==dok::RendererKind::opengl)settings.linear=!settings.linear;else settings.frame_filter=(settings.frame_filter+1)%3;}
                     if(e.key.keysym.sym==SDLK_F11&&!menu.video_pending()){
                         const bool next=!settings.video.fullscreen;
-                        if(SDL_SetWindowFullscreen(display->window(),next?SDL_WINDOW_FULLSCREEN_DESKTOP:0)==0){settings.video.fullscreen=next;stored.video.fullscreen=next;menu.window_mode_changed(next);}
+                        auto video=settings.video;video.fullscreen=next;
+                        if(next)SDL_GetWindowSize(display->window(),&video.width,&video.height);
+                        try{auto replacement=std::make_unique<dok::Display>(video,!replay&&!hidden);display=std::move(replacement);settings.video=video;stored.video.fullscreen=next;settings_dirty=true;menu.window_mode_changed(next);video_changed=true;if(!replay&&!hidden)SDL_ShowWindow(display->window());}
+                        catch(const std::exception& error){log<<"Fullscreen switch rejected: "<<error.what()<<'\n';}
                     }
                 }
-                if(was_menu&&!was_map){int w,h;SDL_GetWindowSize(display->window(),&w,&h);menu.handle(e,w,h);input.clear();fire_press.clear();use_pending=false;cheat.reset();flow_changed=true;}
+                if(was_menu&&!was_map){auto mapped=e;const auto size=display->size();if(display->menu_event(mapped))menu.handle(mapped,size[0],size[1]);input.clear();fire_press.clear();use_pending=false;cheat.reset();flow_changed=true;}
                 else {
-                    if(was_map){int w,h;SDL_GetWindowSize(display->window(),&w,&h);menu.handle(e,w,h);map_closed|=!map_visible();}
+                    if(was_map){auto mapped=e;const auto size=display->size();if(display->menu_event(mapped))menu.handle(mapped,size[0],size[1]);map_closed|=!map_visible();}
                     if(!map_closed&&e.type==SDL_KEYDOWN&&!e.key.repeat){
                     if(e.key.keysym.sym==SDLK_ESCAPE){menu.pause();input.clear();fire_press.clear();input.capture_mouse(false);flow_changed=true;}
                     else if(world&&!(e.key.keysym.mod&(KMOD_CTRL|KMOD_ALT|KMOD_GUI))){const auto key=e.key.keysym.scancode;
@@ -364,56 +366,44 @@ int main(int argc,char** argv){
                 display->pixels(frame.pixels,frame.width,frame.height,false);
             }else if(world){
                 const auto pose=*world->objects.at(*world->player).pose;
-                auto& frame_rect=gameplay_rect;
-                const bool classic=settings.classic_hud||(settings.auto_hud&&(settings.force_4_3||output[0]*3<=output[1]*4));
-                if(classic||settings.force_4_3){
-                    frame_rect.w=std::min(output[0],output[1]*4/3);frame_rect.h=frame_rect.w*3/4;
-                    frame_rect.x=(output[0]-frame_rect.w)/2;frame_rect.y=(output[1]-frame_rect.h)/2;
-                }
-                const int scene_height=classic&&world->definition.dataset==dok::DatasetId::old_gold?170:160;
-                SDL_Rect scene_rect=frame_rect;
-                if(classic)scene_rect.h=frame_rect.h*scene_height/200;
-                const int view_width=classic?320:std::clamp(int(std::lround(192.0*scene_rect.w/scene_rect.h)),160,1200);
-                const int cull_width=int(std::ceil(view_width*200.0/dok::presentation_focal(settings.base_fov)));
-                scene->base_fov(settings.base_fov);
+                const auto layout=dok::presentation_layout(output[0],output[1],settings.classic_hud,settings.auto_hud,world->definition.dataset==dok::DatasetId::old_gold,!gl);
+                const auto rect=[](dok::PresentationRect r){return SDL_Rect{r.x,r.y,r.w,r.h};};
+                const auto frame_rect=rect(layout.frame),scene_rect=rect(layout.scene);
+                gameplay_rect=frame_rect;
+                const int view_width=layout.view_width,scene_height=layout.view_height;
+                const auto bounds=dok::view_cell_bounds(pose,world->definition.cell_side,world->definition.width,world->definition.length,view_width);
+                auto dynamic=monsters->images(bounds);const auto shots=projectiles->images();dynamic.insert(dynamic.end(),shots.begin(),shots.end());
                 if(gl){
                     gl->set_linear_filter(settings.linear);
                     gl->scene_view(scene_rect,view_width,scene_height);
-                    const auto bounds=dok::view_cell_bounds(pose,world->definition.cell_side,world->definition.width,world->definition.length,cull_width);
-                    auto dynamic=monsters->images(bounds);const auto shots=projectiles->images();dynamic.insert(dynamic.end(),shots.begin(),shots.end());
-                    gl->world(scene->palette(),true,true);scene->render(*world,pose,dynamic,[&](const auto& vertices,const auto& image,dok::Bytes light,dok::RasterAxis axis){gl->polygon(vertices,image,light,axis);},view_width,view_motion.offset(world->presentation_ticks()),[&](auto owner){return animations->image(owner);},scene_height);gl->finish_scene(settings.fxaa);
-                    dok::IndexedSurface overlay(view_width,scene_height);weapons->overlay(overlay);std::vector<std::uint32_t> pixels(overlay.pixels.size());
-                    for(std::size_t i=0;i<pixels.size();++i)if(overlay.pixels[i])pixels[i]=scene->palette()[overlay.pixels[i]];
-                    gl->image(pixels,overlay.width(),overlay.height(),scene_rect,true);
-                    if(classic){
-                        const auto panel=hud->classic(dok::IndexedSurface(320,scene_height),*world->objects.at(*world->player).player_state,world->visible_message(settings.locale));
-                        const int panel_height=200-scene_height;
-                        pixels.resize(320*panel_height);
-                        for(std::size_t i=0;i<pixels.size();++i)pixels[i]=scene->palette()[panel.pixels[scene_height*320+i]];
-                        gl->image(pixels,320,panel_height,{frame_rect.x,scene_rect.y+scene_rect.h,frame_rect.w,frame_rect.h-scene_rect.h},true);
-                    }else{
-                        const int hud_scale=std::max(1,frame_rect.h/720);const auto& frame=hud->desktop(std::max(320,frame_rect.w/hud_scale),*world->objects.at(*world->player).player_state,scene->palette(),world->visible_message(settings.locale),world->presentation_ticks()*119.0/dok::GameClock::pit_hz);
-                        gl->image(frame.pixels,frame.width,frame.height,{frame_rect.x,frame_rect.y+frame_rect.h-frame.height*hud_scale,frame.width*hud_scale,frame.height*hud_scale},true);
-                    }
+                    gl->world(scene->palette(),true,true);
+                    scene->render(*world,pose,dynamic,[&](const auto& vertices,const auto& image,dok::Bytes light,dok::RasterAxis axis){gl->polygon(vertices,image,light,axis);},view_width,view_motion.offset(world->presentation_ticks()),[&](auto owner){return animations->image(owner);},scene_height);
+                    gl->finish_scene(settings.fxaa);
                 }else{
                     const auto mode=dok::software_modes[settings.video.software_mode];
-                    if(classic)scene->software_resolution(mode[0],mode[1]);
-                    else{
-                        const int h=(mode[1]*160/200)/2*2,w=int(std::lround(h*1.2*scene_rect.w/scene_rect.h));
-                        scene->software_presentation(w,h);
-                    }
-                    const auto bounds=dok::view_cell_bounds(pose,world->definition.cell_side,world->definition.width,world->definition.length,cull_width);
-                    auto dynamic=monsters->images(bounds);const auto shots=projectiles->images();dynamic.insert(dynamic.end(),shots.begin(),shots.end());
-                    auto frame=scene->render(*world,pose,dynamic,{},320,{},[&](auto owner){return animations->image(owner);});
-                    if(classic){weapons->overlay(frame,mode[1]);frame=hud->classic_mode(frame,mode[1],*world->objects.at(*world->player).player_state,world->visible_message(settings.locale));}
-                    scene_pixels.resize(frame.pixels.size());std::transform(frame.pixels.begin(),frame.pixels.end(),scene_pixels.begin(),[&](auto c){return scene->palette()[c];});display->pixels(scene_pixels,frame.width(),frame.height(),false,settings.frame_filter,&frame_rect);
-                    if(!classic){
-                        dok::IndexedSurface overlay(view_width,160);weapons->overlay(overlay);std::vector<std::uint32_t> pixels(overlay.pixels.size());
-                        for(std::size_t i=0;i<pixels.size();++i)if(overlay.pixels[i])pixels[i]=scene->palette()[overlay.pixels[i]];
-                        display->overlay(pixels,overlay.width(),overlay.height(),scene_rect);
-                        const int hud_scale=std::max(1,frame_rect.h/720);const auto& hud_frame=hud->desktop(std::max(320,frame_rect.w/hud_scale),*world->objects.at(*world->player).player_state,scene->palette(),world->visible_message(settings.locale),world->presentation_ticks()*119.0/dok::GameClock::pit_hz);
-                        display->overlay(hud_frame.pixels,hud_frame.width,hud_frame.height,{frame_rect.x,frame_rect.y+frame_rect.h-hud_frame.height*hud_scale,hud_frame.width*hud_scale,hud_frame.height*hud_scale});
-                    }
+                    const int h=std::max(2,(mode[1]*scene_height/200)/2*2);
+                    const int w=std::max(1,int(std::lround(double(h)*view_width/scene_height)));
+                    scene->software_presentation(w,h,scene_height);
+                    const auto& frame=scene->render(*world,pose,dynamic,{},320,{},[&](auto owner){return animations->image(owner);});
+                    scene_pixels.resize(frame.pixels.size());
+                    std::transform(frame.pixels.begin(),frame.pixels.end(),scene_pixels.begin(),[&](auto c){return scene->palette()[c];});
+                    display->pixels(scene_pixels,frame.width(),frame.height(),false,settings.frame_filter,&scene_rect);
+                }
+                // Weapons use a fixed central DOS canvas, independent of the expanded world.
+                dok::IndexedSurface weapon(320,scene_height);weapons->overlay(weapon);
+                std::vector<std::uint32_t> pixels(weapon.pixels.size());
+                for(std::size_t i=0;i<pixels.size();++i)if(weapon.pixels[i])pixels[i]=scene->palette()[weapon.pixels[i]];
+                display->overlay(pixels,weapon.width(),weapon.height(),rect(layout.weapon));
+                if(layout.classic){
+                    const int native_height=world->definition.dataset==dok::DatasetId::old_gold?170:160;
+                    const auto panel=hud->classic(dok::IndexedSurface(320,native_height),*world->objects.at(*world->player).player_state,world->visible_message(settings.locale));
+                    pixels.resize(320*(200-native_height));
+                    for(std::size_t i=0;i<pixels.size();++i)pixels[i]=scene->palette()[panel.pixels[native_height*320+i]];
+                    display->overlay(pixels,320,200-native_height,rect(layout.panel));
+                }else{
+                    const int hud_scale=std::max(1,frame_rect.h/720);
+                    const auto& frame=hud->desktop(std::max(320,frame_rect.w/hud_scale),*world->objects.at(*world->player).player_state,scene->palette(),world->visible_message(settings.locale),world->presentation_ticks()*119.0/dok::GameClock::pit_hz);
+                    display->overlay(frame.pixels,frame.width,frame.height,{frame_rect.x,frame_rect.y+frame_rect.h-frame.height*hud_scale,frame.width*hud_scale,frame.height*hud_scale});
                 }
             }
             ++frames;++fps_frames;const auto fps_now=SDL_GetPerformanceCounter();const auto seconds=double(fps_now-fps_time)/SDL_GetPerformanceFrequency();

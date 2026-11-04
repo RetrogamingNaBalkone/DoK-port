@@ -1,3 +1,4 @@
+#include "dok/presentation.hpp"
 #include "dok/frontend.hpp"
 #include "dok/localization.hpp"
 #include "dok/automap.hpp"
@@ -146,10 +147,10 @@ void Frontend::build_rows(){
         const bool software=draft_.renderer==RendererKind::software;
         row(tr(MenuString::renderer),software?tr(MenuString::software):"OpenGL");
         row(tr(MenuString::window_mode),draft_.fullscreen?tr(MenuString::borderless):tr(MenuString::windowed));
-        auto mode=software?software_modes[draft_.software_mode]:std::array<int,2>{draft_.width,draft_.height};
-        row(software?tr(MenuString::original_resolution):tr(MenuString::window_resolution),std::to_string(mode[0])+" x "+std::to_string(mode[1]),
+        auto mode=software?software_modes[draft_.software_mode]:draft_.fullscreen?std::array<int,2>{draft_.fullscreen_width,draft_.fullscreen_height}:std::array<int,2>{draft_.width,draft_.height};
+        row(software?tr(MenuString::original_resolution):draft_.fullscreen?tr("Разрешение кадра","Frame resolution"):tr(MenuString::window_resolution),std::to_string(mode[0])+" x "+std::to_string(mode[1]),
             software?tr(MenuString::software_framebuffer_size_also_resizes_a_window_manual):
-            tr(MenuString::borderless_uses_the_desktop_resolution),software||!draft_.fullscreen);
+            tr("В fullscreen кадр вписывается с полями. FOV рассчитывается автоматически.","Fullscreen fits the frame with bars. FOV is automatic."));
         row(tr(MenuString::video_texture_filter),s_.linear?"Linear":"Nearest",
             tr(MenuString::linear_scene_filtering_text_and_menus_remain_sharp),!software);
         row(tr(MenuString::apply_video_mode));
@@ -157,8 +158,9 @@ void Frontend::build_rows(){
             tr(MenuString::video_frame_scaling_help),software);
         row("FXAA",on(s_.fxaa),tr(MenuString::video_fxaa_help),!software);
         row(tr(MenuString::video_hud),s_.auto_hud?tr(MenuString::automatic):s_.classic_hud?tr(MenuString::classic):tr(MenuString::modern));
-        row(tr(MenuString::video_base_fov),s_.base_fov?std::to_string(s_.base_fov):tr(MenuString::original),tr(MenuString::video_base_fov_help));
-        row(tr(MenuString::video_aspect_ratio),s_.force_4_3?"4:3":tr(MenuString::automatic));
+        const bool current_window=!draft_.fullscreen&&draft_.width==s_.video.width&&draft_.height==s_.video.height&&!s_.video.fullscreen;
+        const auto aspect_mode=(software||current_window)&&output_width_>0?std::array<int,2>{output_width_,output_height_}:mode;
+        row(tr(MenuString::video_aspect_ratio),software?"4:3":aspect_label(aspect_mode[0],aspect_mode[1]),software?tr("Программный рендерер использует кадр 4:3 с полями.","The software renderer uses a 4:3 frame with bars."):tr("Определяется разрешением. Обзор: Hor+ и Vert+.","Determined by resolution. View expands with Hor+ and Vert+."),false);
         defaults();backrow();break;}
     case MenuScreen::sound:row(tr(MenuString::master_volume),std::to_string(s_.master_volume)+"%");row(tr(MenuString::effects),std::to_string(s_.effects_volume)+"%");row(tr(MenuString::title_music),std::to_string(s_.music_volume)+"%");defaults();backrow();break;
     case MenuScreen::controls:row(tr(MenuString::keyboard_and_mouse));row(tr(MenuString::gamepad));backrow();break;
@@ -257,9 +259,16 @@ void Frontend::choose(int delta){
         else if(focus_==1)draft_.fullscreen=!draft_.fullscreen;
         else if(focus_==2){
             if(draft_.renderer==RendererKind::software){draft_.software_mode=(draft_.software_mode+d+5)%5;const auto size=software_modes[draft_.software_mode];draft_.width=size[0];draft_.height=size[1];}
-            else{const std::array<std::array<int,2>,6> sizes{{{640,480},{800,600},{1024,768},{1280,720},{1600,900},{1920,1080}}};int at=-1;
-                for(int i=0;i<int(sizes.size());++i)if(sizes[i][0]==draft_.width&&sizes[i][1]==draft_.height)at=i;
-                at=(at+d+int(sizes.size()))%int(sizes.size());draft_.width=sizes[at][0];draft_.height=sizes[at][1];}
+            else{
+                std::vector<std::array<int,2>> sizes{{640,480},{800,600},{1024,768},{1280,800},{1280,720},{1280,768},{1600,900},{1920,1080},{2560,1440}};
+                SDL_DisplayMode desktop{};if(SDL_GetDesktopDisplayMode(0,&desktop)==0&&desktop.w>=320&&desktop.h>=200&&desktop.w<=7680&&desktop.h<=4320)sizes.push_back({desktop.w,desktop.h});
+                int& w=draft_.fullscreen?draft_.fullscreen_width:draft_.width;
+                int& h=draft_.fullscreen?draft_.fullscreen_height:draft_.height;
+                if(std::find(sizes.begin(),sizes.end(),std::array<int,2>{w,h})==sizes.end())sizes.push_back({w,h});
+                std::vector<std::array<int,2>> unique;for(const auto size:sizes)if(std::find(unique.begin(),unique.end(),size)==unique.end())unique.push_back(size);
+                int at=0;for(int i=0;i<int(unique.size());++i)if(unique[i]==std::array<int,2>{w,h})at=i;
+                at=(at+d+int(unique.size()))%int(unique.size());w=unique[at][0];h=unique[at][1];
+            }
         }else if(focus_==3)s_.linear=!s_.linear;
         else if(focus_==4){old_video_=s_.video;s_.video=draft_;video_deadline_=now_+15000;enter(MenuScreen::video_confirm);commands_.push_back(MenuCommand::apply_video);}
         else if(focus_==5)s_.frame_filter=(s_.frame_filter+d+3)%3;
@@ -267,12 +276,7 @@ void Frontend::choose(int delta){
         else if(focus_==7){
             int layout=s_.auto_hud?0:s_.classic_hud?1:2;layout=(layout+d+3)%3;
             s_.auto_hud=layout==0;s_.classic_hud=layout==1;
-        }else if(focus_==8){
-            const std::array<int,7> fovs{{0,45,60,75,90,100,110}};int index=0;
-            for(int i=0;i<int(fovs.size());++i)if(fovs[i]==s_.base_fov)index=i;
-            s_.base_fov=fovs[(index+d+int(fovs.size()))%int(fovs.size())];
-        }else if(focus_==9)s_.force_4_3=!s_.force_4_3;
-        else if(focus_==10){draft_=VideoSettings{};s_.linear=false;s_.frame_filter=0;s_.fxaa=false;s_.classic_hud=false;s_.auto_hud=true;s_.base_fov=0;s_.force_4_3=false;}else back();break;
+        }else if(focus_==9){draft_=VideoSettings{};s_.linear=false;s_.frame_filter=0;s_.fxaa=false;s_.classic_hud=false;s_.auto_hud=true;}else back();break;
     case MenuScreen::sound:if(focus_<3){auto& v=focus_==0?s_.master_volume:focus_==1?s_.effects_volume:s_.music_volume;v=std::clamp(v+d*5,0,100);}else if(focus_==3)s_.master_volume=s_.effects_volume=s_.music_volume=100;else back();break;
     case MenuScreen::controls:if(focus_<2)enter(focus_?MenuScreen::pad:MenuScreen::keyboard);else back();break;
     case MenuScreen::keyboard:case MenuScreen::pad:{
@@ -459,6 +463,7 @@ std::vector<TextPage> Frontend::story(const std::string& name,int columns,int ro
     auto result=paginate_story(bytes,columns,rows);if(result.empty())result.push_back({});return result;
 }
 const MenuFrame& Frontend::render(int width,int height){
+    output_width_=width;output_height_=height;
     native_text_=false;
     if(screen_==MenuScreen::map&&world_&&archive()){
         const auto indexed=native_automap(*world_);const auto palette=archive()->palette(world_->definition.palette);

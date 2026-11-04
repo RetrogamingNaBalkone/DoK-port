@@ -1,0 +1,32 @@
+{
+  "schema": 1,
+  "exe_sha256": "e4a26fb13d734820e9ce0da7499c34ffccb2b5de6651cba3ffb33dbcb6da2010",
+  "frame_count": 142,
+  "datasets": [
+    "old_gold",
+    "kremlin_pkr",
+    "kremlin_pke"
+  ],
+  "locales": [
+    "ru",
+    "en"
+  ],
+  "renderers": [
+    "software",
+    "opengl"
+  ],
+  "aspects": [
+    "4:3",
+    "16:10",
+    "16:9",
+    "5:3",
+    "12:5"
+  ],
+  "software_aspect": "4:3 with bars, including live fullscreen GL-to-software transition PASS",
+  "fullscreen": "internal canvas, bars, menu, F11 world preservation PASS",
+  "cli": "legacy FOV/aspect rejected",
+  "report": "research\\evidence\\source-port\\sp21-video\\report.json",
+  "limitations": [
+    "Physical mixed-DPI and controller checks not performed"
+  ]
+}

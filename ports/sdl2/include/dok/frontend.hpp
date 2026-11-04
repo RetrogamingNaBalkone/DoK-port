@@ -82,6 +82,7 @@ private:
     const Archive* themed_=nullptr;
     std::map<std::string,std::pair<Image,std::array<std::uint32_t,256>>> art_;
     int line_height_=24,text_height_=16;
+    int output_width_=0,output_height_=0;
     bool native_text_=false;
     int last_axis_=0;
     std::string tr(MenuString id) const;

@@ -7,6 +7,8 @@ class GlRenderer {
 public:
     explicit GlRenderer(SDL_Window* window);
     ~GlRenderer();
+    void frame_size(int width,int height);
+    void finish_frame();
     void begin();
     int view_width() const;
     void set_linear_filter(bool enabled);
