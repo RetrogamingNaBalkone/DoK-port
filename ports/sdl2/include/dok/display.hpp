@@ -22,7 +22,9 @@ private:
     SDL_Window* window_=nullptr;
     SDL_Renderer* renderer_=nullptr;
     SDL_Texture* texture_=nullptr;
+    SDL_Texture* overlay_texture_=nullptr;
     int texture_width_=0,texture_height_=0;
+    int overlay_width_=0,overlay_height_=0;
     std::unique_ptr<GlRenderer> gl_;
 };
 }

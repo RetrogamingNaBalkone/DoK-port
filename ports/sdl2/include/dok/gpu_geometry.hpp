@@ -12,7 +12,7 @@ public:
 private:
     struct Point {double x,y,z,u,v;};
     Point transform(double x,double y,double z,double u,double v) const;
-    std::optional<RenderPolygon> project(std::vector<Point> points,std::uint8_t flags,RasterAxis axis) const;
+    std::optional<RenderPolygon> project(const std::array<Point,4>& points,std::uint8_t flags,RasterAxis axis) const;
     Pose pose_;std::array<double,4> offset_;int width_;double sine_,cosine_;
 };
 }

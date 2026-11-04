@@ -19,7 +19,7 @@ Display::Display(const VideoSettings& s){
         if(s.fullscreen&&SDL_SetWindowFullscreen(window_,SDL_WINDOW_FULLSCREEN_DESKTOP)!=0)throw std::runtime_error(SDL_GetError());
     }catch(...){gl_.reset();if(renderer_)SDL_DestroyRenderer(renderer_);if(window_)SDL_DestroyWindow(window_);throw;}
 }
-Display::~Display(){gl_.reset();if(texture_)SDL_DestroyTexture(texture_);if(renderer_)SDL_DestroyRenderer(renderer_);if(window_)SDL_DestroyWindow(window_);}
+Display::~Display(){gl_.reset();if(texture_)SDL_DestroyTexture(texture_);if(overlay_texture_)SDL_DestroyTexture(overlay_texture_);if(renderer_)SDL_DestroyRenderer(renderer_);if(window_)SDL_DestroyWindow(window_);}
 std::array<int,2> Display::size()const{int w,h;if(gl_)SDL_GL_GetDrawableSize(window_,&w,&h);else SDL_GetRendererOutputSize(renderer_,&w,&h);return {std::max(1,w),std::max(1,h)};}
 void Display::begin(){if(gl_)gl_->begin();else{SDL_SetRenderDrawColor(renderer_,0,0,0,255);SDL_RenderClear(renderer_);}}
 void Display::pixels(const std::vector<std::uint32_t>& data,int width,int height,bool game,bool linear){
@@ -35,9 +35,14 @@ void Display::pixels(const std::vector<std::uint32_t>& data,int width,int height
 void Display::present(){if(gl_)gl_->present();else SDL_RenderPresent(renderer_);}
 void Display::overlay(const std::vector<std::uint32_t>& pixels,int w,int h,SDL_Rect r){
     if(gl_){gl_->image(pixels,w,h,r,true);return;}
-    auto* texture=SDL_CreateTexture(renderer_,SDL_PIXELFORMAT_ARGB8888,SDL_TEXTUREACCESS_STATIC,w,h);
-    if(!texture)throw std::runtime_error(SDL_GetError());SDL_SetTextureBlendMode(texture,SDL_BLENDMODE_BLEND);
-    SDL_UpdateTexture(texture,nullptr,pixels.data(),w*4);SDL_SetTextureScaleMode(texture,SDL_ScaleModeNearest);SDL_RenderCopy(renderer_,texture,nullptr,&r);SDL_DestroyTexture(texture);
+    if(!overlay_texture_||overlay_width_!=w||overlay_height_!=h){
+        if(overlay_texture_)SDL_DestroyTexture(overlay_texture_);
+        overlay_texture_=SDL_CreateTexture(renderer_,SDL_PIXELFORMAT_ARGB8888,SDL_TEXTUREACCESS_STREAMING,w,h);
+        if(!overlay_texture_)throw std::runtime_error(SDL_GetError());
+        overlay_width_=w;overlay_height_=h;SDL_SetTextureBlendMode(overlay_texture_,SDL_BLENDMODE_BLEND);
+        SDL_SetTextureScaleMode(overlay_texture_,SDL_ScaleModeNearest);
+    }
+    SDL_UpdateTexture(overlay_texture_,nullptr,pixels.data(),w*4);SDL_RenderCopy(renderer_,overlay_texture_,nullptr,&r);
 }
 void Display::screenshot(const std::string& path){
     if(gl_){gl_->screenshot(path);return;}const auto output=size();std::vector<std::uint32_t> data(std::size_t(output[0])*output[1]);

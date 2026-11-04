@@ -25,6 +25,7 @@ inline constexpr std::array<std::array<int,2>,5> software_modes{{{320,200},{640,
 AppSettings load_settings(const std::filesystem::path& file,std::string& warning);
 bool save_settings(const std::filesystem::path& file,const AppSettings& value,std::string& error);
 // Persist explicit user edits, without copying unrelated command-line overrides.
-void merge_settings_edits(AppSettings& stored,const AppSettings& before,const AppSettings& after,bool video=true);
+// Returns whether persistent values actually changed (no serialization needed).
+bool merge_settings_edits(AppSettings& stored,const AppSettings& before,const AppSettings& after,bool video=true);
 std::string encode_settings(const AppSettings& value);
 } // namespace dok

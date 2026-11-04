@@ -1,6 +1,7 @@
 #include "dok/scene.hpp"
 #include "dok/gl_renderer.hpp"
 #include <SDL_opengl.h>
+#include <algorithm>
 #include <iostream>
 #include <stdexcept>
 static void check(bool b,const char* message){if(!b)throw std::runtime_error(message);}
@@ -61,6 +62,27 @@ int main(int argc,char** argv){try{
                     }
                 }
                 check(directions==0x3c00,"Missing original water directions");
+                // Reuse one scene across phase reversal and divisor changes,
+                // comparing against an uncached scene on every transition.
+                for(auto& object:world.objects)if(object.door){
+                    const auto saved=*object.door;
+                    const auto glyph=world.definition.objects[object.definition_index].glyph;
+                    const auto& map=world.maps.at("tmap");
+                    const auto found=std::find(map.begin(),map.end(),glyph);
+                    if(found==map.end())continue;
+                    const auto cell=std::size_t(found-map.begin());
+                    const int side=world.definition.cell_side;
+                    dok::Pose pose{int(cell%world.definition.width)*side+side/2,-300,
+                        int(cell/world.definition.width)*side+side/2+side,0};
+                    for(auto key:{std::pair<int,int>{1,30},{1,18},{17,18},{0,30},{29,30},{1,30}}){
+                        object.door->phase=key.first;object.door->extent=key.second;
+                        dok::SoftwareScene fresh(archive,world.definition);
+                        const auto expected=fresh.render(world,pose).pixels;
+                        check(scene.render(world,pose).pixels==expected,"Door phase/extent cache differs from fresh scene");
+                        check(scene.render(world,pose).pixels==expected,"Door winding changed on redraw");
+                    }
+                    *object.door=saved;
+                }
                 std::cout<<argv[arg]<<' '<<name<<": four water directions, software/GL passed\n";
             }
         }

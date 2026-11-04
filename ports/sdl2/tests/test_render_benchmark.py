@@ -125,6 +125,11 @@ class ComparisonTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "already exists"):
             self.compare()
 
+    def test_diagnostic_timers_not_mixed(self):
+        self.edit(lambda d: d["jobs"][0]["native"].update(profile_submission=True))
+        with self.assertRaisesRegex(ValueError, "Timing instrumentation differs"):
+            self.compare()
+
     def test_gl_driver_mismatch(self):
         for root, renderer in ((self.a, "GPU A"), (self.b, "GPU B")):
             path = root / "manifest.json"

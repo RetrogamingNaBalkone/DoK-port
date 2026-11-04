@@ -63,10 +63,10 @@ def record(args):
     write_json(args.output / "manifest.json", report)
     modes = []
     if args.renderer in ("software", "both"):
-        sizes = [(320, 200)] if args.matrix == "quick" else [(320, 200), (640, 400), (640, 480), (800, 600), (1024, 768)]
+        sizes = [(1024, 768)] if args.matrix == "target" else ([(320, 200)] if args.matrix == "quick" else [(320, 200), (640, 400), (640, 480), (800, 600), (1024, 768)])
         modes += [("software", w, h, "nearest") for w, h in sizes]
     if args.renderer in ("gl", "both"):
-        sizes = [(640, 480)] if args.matrix == "quick" else [(480, 320), (640, 480)]
+        sizes = [(1024, 768)] if args.matrix == "target" else ([(640, 480)] if args.matrix == "quick" else [(480, 320), (640, 480)])
         modes += [("gl", w, h, f) for w, h in sizes for f in ("nearest", "linear")]
     datasets = set()
     for source_index, source in enumerate(resources):
@@ -75,6 +75,8 @@ def record(args):
             folder = f"res{source_index}-{backend}-{w}x{h}-{filtering}"
             command = [str(executable), str(source), str((args.output / folder).resolve()), args.level,
                        backend, str(w), str(h), filtering, args.suite, str(args.warmup), str(args.samples)]
+            if args.profile_submission:
+                command.append("profile")
             print(f"Recording {source.name}: {backend} {w}x{h} {filtering}", flush=True)
             with (args.output / (folder + ".log")).open("w", encoding="utf-8") as log:
                 subprocess.run(command, stdout=log, stderr=subprocess.STDOUT, check=True)
@@ -184,6 +186,8 @@ def compare(args):
             raise ValueError(f"Resource mismatch: {key}")
         if any(a["native"][k] != b["native"][k] for k in config):
             raise ValueError(f"Configuration mismatch: {key}")
+        if bool(a["native"].get("profile_submission", False)) != bool(b["native"].get("profile_submission", False)):
+            raise ValueError(f"Timing instrumentation differs: {key}; compare ordinary runs separately")
         ca, cb = a["native"]["cases"], b["native"]["cases"]
         if [{k: c[k] for k in state} for c in ca] != [{k: c[k] for k in state} for c in cb]:
             raise ValueError(f"Fixture state/order mismatch: {key}")
@@ -242,12 +246,13 @@ def main():
     rec.add_argument("--res", type=Path, action="append", required=True)
     rec.add_argument("--output", type=Path, required=True)
     rec.add_argument("--renderer", choices=("software", "gl", "both"), default="both")
-    rec.add_argument("--matrix", choices=("quick", "full"), default="quick")
+    rec.add_argument("--matrix", choices=("quick", "full", "target"), default="quick", help="target: both backends at 1024x768")
     rec.add_argument("--suite", choices=("quick", "full", "stress"), default="quick")
     rec.add_argument("--level", default="all")
     rec.add_argument("--warmup", type=int, default=10)
     rec.add_argument("--samples", type=int, default=120)
     rec.add_argument("--label", default="", help="Device/firmware/clock/power profile; recorded verbatim")
+    rec.add_argument("--profile-submission", action="store_true", help="Extra per-polygon timers in native log; not comparable to ordinary timing runs")
     cmp = sub.add_parser("compare")
     cmp.add_argument("baseline", type=Path)
     cmp.add_argument("current", type=Path)

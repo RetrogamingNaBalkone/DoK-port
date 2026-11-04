@@ -23,6 +23,29 @@ struct Edge {
     int index{},direction{},remaining{};
     std::int32_t coordinate{},u{},v{},step_coordinate{},step_u{},step_v{};
 };
+// Keep axis/transparency outside the pixel loop. Unsigned accumulators retain
+// the original wrapping ADD; extracting the high word is the same SAR16.
+template<bool Vertical,bool Transparent>
+void span_pixels(IndexedSurface& target,const Image& image,const std::uint8_t* colors,
+                 int position,int begin,int end,std::int32_t u0,std::int32_t v0,
+                 std::int32_t du,std::int32_t dv){
+    auto u=std::uint32_t(u0),v=std::uint32_t(v0);
+    std::size_t destination=Vertical?std::size_t(begin)*target.width()+position:std::size_t(position)*target.width()+begin;
+    const auto stride=Vertical?target.width():1;
+    for(int pixel=begin;pixel<=end;++pixel){
+        const auto tu=signed16(static_cast<std::uint16_t>(u>>16));
+        const auto tv=signed16(static_cast<std::uint16_t>(v>>16));
+        const auto offset=std::int64_t(tv)*image.width+tu;
+        if(offset<0||offset>=static_cast<std::int64_t>(image.pixels.size()))
+            throw std::out_of_range("Native sampler escaped texture payload");
+        const auto mapped=colors[image.pixels[static_cast<std::size_t>(offset)]];
+        if constexpr(Transparent){if(mapped)target.pixels[destination]=mapped;}
+        else target.pixels[destination]=mapped;
+        destination+=stride;
+        if constexpr(!Vertical)u+=std::uint32_t(du);
+        v+=std::uint32_t(dv);
+    }
+}
 }
 void rasterize(IndexedSurface& target,const std::vector<RasterVertex>& vertices,
                const Image& image,Bytes light,ClipRect clip,RasterAxis axis,std::int16_t light_near){
@@ -91,18 +114,10 @@ void rasterize(IndexedSurface& target,const std::vector<RasterVertex>& vertices,
                 }
                 end=std::min(end,max_clip);
                 const auto row=light_row(depth,light_near);
-                for(auto pixel=begin;pixel<=end;++pixel){
-                    const auto tu=sar32(u,16),tv=sar32(v,16);
-                    const auto offset=std::int64_t(tv)*image.width+tu;
-                    if(offset<0||offset>=static_cast<std::int64_t>(image.pixels.size()))
-                        throw std::out_of_range("Native sampler escaped texture payload");
-                    auto mapped=light.data[row*256+image.pixels[static_cast<std::size_t>(offset)]];
-                    if(!vertical||!(image.flags&8)||mapped){
-                        const auto x=vertical?position:pixel,y=vertical?pixel:position;
-                        target.pixels[static_cast<std::size_t>(y)*target.width()+x]=mapped;
-                    }
-                    u=add32(u,du);v=add32(v,dv);
-                }
+                const auto* colors=light.data+row*256;
+                if(!vertical)span_pixels<false,false>(target,image,colors,position,begin,end,u,v,du,dv);
+                else if(image.flags&8)span_pixels<true,true>(target,image,colors,position,begin,end,u,v,du,dv);
+                else span_pixels<true,false>(target,image,colors,position,begin,end,u,v,du,dv);
             }
         }
         advance(first);advance(second);depth=add32(depth,step_depth);

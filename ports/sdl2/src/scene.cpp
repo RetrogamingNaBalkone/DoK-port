@@ -103,12 +103,28 @@ const IndexedSurface& SoftwareScene::render(const World& world,Pose pose,const s
         throw std::invalid_argument("Scene/world mismatch");
     std::vector<bool> replaced(world.objects.size(),false);
     for(const auto& instance:dynamic)if(instance.replaces&&instance.replaces<=world.objects.size())replaced[instance.replaces-1]=true;
-    for(const auto& entry:door_sources_)
-        images_[object_images_[entry.first]]=door_image(entry.second,*world.objects.at(entry.first).door);
-    for(const auto& entry:flowing_sources_)
-        images_[object_images_[entry.first]]=flowing_surface_image(entry.second,world.simulation_ticks());
+    for(const auto& entry:door_sources_){
+        const auto& state=*world.objects.at(entry.first).door;
+        const auto key=std::make_pair(int(state.phase),int(state.extent));
+        auto& image=images_[object_images_[entry.first]];
+        const auto found=door_phases_.find(entry.first);
+        if(found==door_phases_.end()||found->second!=key){
+            image=door_image(entry.second,state);
+            door_phases_[entry.first]=key;
+        }
+        // Raster winding is mutable and was reset by the old per-frame copy.
+        image.flags=entry.second.flags;
+    }
+    const unsigned flowing_phase=(world.simulation_ticks()/334)%18;
+    for(const auto& entry:flowing_sources_){
+        auto& image=images_[object_images_[entry.first]];
+        if(flowing_phase_!=flowing_phase)
+            image=flowing_surface_image(entry.second,world.simulation_ticks());
+        image.flags=entry.second.flags;
+    }
+    flowing_phase_=flowing_phase;
     auto parameters=gpu?CameraParameters::kremlin_vga():software_camera_;if(gpu)parameters.width=static_cast<std::int16_t>(view_width);
-    SoftwareCamera camera(parameters);camera.set_pose(pose);
+    SoftwareCamera camera(parameters);if(!gpu)camera.set_pose(pose);
     const auto& hero=world.objects.at(*world.player);
     const GpuCamera precise_camera(pose,view_width,hero.motion?hero.motion->mouse_remainder:0,camera_offset);
     const auto vertical_plane=[&](const SoftwareCamera& c,Pose a,Pose b,std::int16_t h,int tw,int th,
@@ -124,9 +140,11 @@ const IndexedSurface& SoftwareScene::render(const World& world,Pose pose,const s
     };
     std::vector<RenderPolygon> polygons;
     const auto bounds=view_cell_bounds(pose,side,level.width,level.length,gpu?view_width:320);
+    const auto& tmap=world.maps.at("tmap");const auto& fcmap=world.maps.at("fcmap");const auto& mmap=world.maps.at("mmap");
     auto at=[&](const char* map,int x,int z)->const ObjectDefinition&{
         x=std::clamp(x,0,level.width-1);z=std::clamp(z,0,level.length-1);
-        return *level.object(world.maps.at(map)[static_cast<std::size_t>(z)*level.width+x]);
+        const auto& cells=map[0]=='t'?tmap:map[0]=='f'?fcmap:mmap;
+        return *level.object(cells[static_cast<std::size_t>(z)*level.width+x]);
     };
     auto picture=[&](const ObjectDefinition& object){return object_images_.at(static_cast<std::size_t>(level.glyph_index[object.glyph]));};
     auto add=[&](std::optional<RenderPolygon> polygon,std::size_t material){
@@ -198,6 +216,7 @@ const IndexedSurface& SoftwareScene::render(const World& world,Pose pose,const s
         }
     }
     const auto static_images=images_.size();
+    std::vector<const Image*> borrowed;
     struct RestoreImages {std::vector<Image>& images;std::size_t count;~RestoreImages(){images.resize(count);}} restore{images_,static_images};
     for(const auto& instance:dynamic){
         if(!instance.image)continue;
@@ -205,7 +224,11 @@ const IndexedSurface& SoftwareScene::render(const World& world,Pose pose,const s
         auto polygon=billboard(camera,instance.pose,word(image.width*instance.scale),word(image.height*instance.scale),
             image.width,image.height,static_cast<std::uint8_t>(instance.flags));
         if(polygon){
-            const auto material=images_.size();images_.push_back(image);images_.back().flags|=8;
+            const auto material=images_.size();
+            // GPU sprites do not mutate winding. Reuse already-transparent
+            // immutable animation frames; retain the copy fallback for other flags.
+            if(gpu&&(image.flags&8)){images_.push_back({image.width,image.height,image.flags,{}});borrowed.push_back(&image);}
+            else{images_.push_back(image);images_.back().flags|=8;borrowed.push_back(nullptr);}
             add(std::move(polygon),material);
         }
     }
@@ -213,9 +236,13 @@ const IndexedSurface& SoftwareScene::render(const World& world,Pose pose,const s
     // Native column occlusion is quantized and unsuitable for subpixel GPU geometry.
     if(!gpu)sort_and_cull(polygons,camera.clip());
     else std::stable_sort(polygons.begin(),polygons.end(),[](const auto& a,const auto& b){return a.sort_key>b.sort_key;});
-    surface_.clear();
+    if(!gpu||surface_dirty_)surface_.clear();
+    surface_dirty_=!gpu;
     const Bytes light{light_.data(),light_.size()};
     for(const auto& polygon:polygons)if(polygon.flags&1){
+        if(gpu&&polygon.material>=static_images&&borrowed[polygon.material-static_images]){
+            gpu(polygon.vertices,*borrowed[polygon.material-static_images],light,polygon.axis);continue;
+        }
         auto& image=images_[polygon.material];
         if(polygon.axis==RasterAxis::vertical&&polygon.updates_image_winding)
             image.flags=static_cast<std::uint16_t>((image.flags&~0x20)|(polygon.reverse_edges?0x20:0));

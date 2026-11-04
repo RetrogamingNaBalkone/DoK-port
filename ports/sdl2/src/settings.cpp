@@ -94,16 +94,18 @@ bool save_settings(const std::filesystem::path& file,const AppSettings& s,std::s
         return true;
     }catch(const std::exception& e){error=e.what();std::error_code ec;std::filesystem::remove(temp,ec);return false;}
 }
-void merge_settings_edits(AppSettings& stored,const AppSettings& a,const AppSettings& b,bool video){
+bool merge_settings_edits(AppSettings& stored,const AppSettings& a,const AppSettings& b,bool video){
+    bool changed=false;
     if(video){
-#define EDIT_VIDEO(f) if(a.video.f!=b.video.f)stored.video.f=b.video.f;
+#define EDIT_VIDEO(f) if(a.video.f!=b.video.f&&stored.video.f!=b.video.f){stored.video.f=b.video.f;changed=true;}
         EDIT_VIDEO(renderer) EDIT_VIDEO(width) EDIT_VIDEO(height) EDIT_VIDEO(software_mode) EDIT_VIDEO(fullscreen)
 #undef EDIT_VIDEO
     }
-#define EDIT(f) if(a.f!=b.f)stored.f=b.f;
+#define EDIT(f) if(a.f!=b.f&&stored.f!=b.f){stored.f=b.f;changed=true;}
     EDIT(locale) EDIT(linear) EDIT(show_fps) EDIT(inertia) EDIT(master_volume) EDIT(effects_volume) EDIT(music_volume) EDIT(last_dataset)
     EDIT(input.keys) EDIT(input.buttons) EDIT(input.triggers) EDIT(input.mouse) EDIT(input.classic_pad)
     EDIT(input.keyboard_preset) EDIT(input.pad_preset) EDIT(input.mouse_degrees_per_count) EDIT(input.turn_sensitivity) EDIT(input.stick_deadzone)
 #undef EDIT
+    return changed;
 }
 } // namespace dok

@@ -125,9 +125,16 @@ void Weapons::overlay(IndexedSurface& target,int frame_height)const{
     const int height=frame_height==200?int(image.height):int(image.height)*frame_height/200;
     const int left=(target.width()-1-width)/2;
     const int top=target.height()-1-((height-2)>>weapon.shift);
-    for(int y=0;y<height;++y)for(int x=0;x<width;++x){
-        const int dx=left+x,dy=top+y;const auto color=image.pixels[(std::size_t(y)*image.height/height)*image.width+std::size_t(x)*image.width/width];
-        if(color&&dx>=0&&dy>=0&&dx<target.width()&&dy<target.height())target.pixels[dy*target.width()+dx]=color;
+    // The rest of the animation image is outside the target and cannot contribute.
+    const int y0=std::max(0,-top),y1=std::min(height,target.height()-top);
+    const int x0=std::max(0,-left),x1=std::min(width,target.width()-left);
+    if(x0>=x1||y0>=y1)return;
+    for(int y=y0;y<y1;++y){
+        const auto* source=image.pixels.data()+(std::size_t(y)*image.height/height)*image.width;
+        auto* destination=target.pixels.data()+(top+y)*target.width()+left+x0;
+        for(int x=x0;x<x1;++x){const auto color=source[std::size_t(x)*image.width/width];
+            if(color)*destination=color;++destination;
+        }
     }
 }
 }

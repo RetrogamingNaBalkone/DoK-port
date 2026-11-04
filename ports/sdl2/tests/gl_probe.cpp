@@ -1,5 +1,6 @@
 #include "dok/gl_renderer.hpp"
 #include <SDL_opengl.h>
+#include <algorithm>
 #include <array>
 #include <iostream>
 #include <stdexcept>
@@ -61,6 +62,61 @@ int main(){
         gl.set_linear_filter(false);
         gl.begin();gl.world(palette);gl.polygon(quad(100),checker,light,dok::RasterAxis::vertical);
         check(sample(160,80)==220,"Nearest toggle did not restore crisp texels");
+        // A reused allocation is not a content identity, including within a frame.
+        dok::Image changing{2,2,0,{1,1,1,1}};
+        gl.begin();gl.world(palette);
+        gl.polygon(quad(200),changing,light,dok::RasterAxis::vertical);
+        check(sample(160,80)==35,"Initial cached texture");
+        std::fill(changing.pixels.begin(),changing.pixels.end(),2);
+        gl.polygon(quad(100),changing,light,dok::RasterAxis::vertical);
+        check(sample(160,80)==220,"In-place texture mutation reused stale hash");
+        changing.width=1;changing.height=4;
+        auto narrow=quad(50);for(auto& v:narrow)v.u=0;
+        gl.polygon(narrow,changing,light,dok::RasterAxis::vertical);
+        check(sample(160,80)==220,"Reshaped texture cache");
+        std::fill(changing.pixels.begin(),changing.pixels.end(),1);
+        gl.begin();gl.world(palette);gl.polygon(narrow,changing,light,dok::RasterAxis::vertical);
+        check(sample(160,80)==35,"Cross-frame texture mutation reused stale hash");
+        for(bool linear:{false,true}){
+            gl.set_linear_filter(linear);
+            auto frame=[&](bool deferred){
+                gl.begin();gl.world(palette,deferred);
+                gl.polygon(quad(2100),checker,light,dok::RasterAxis::horizontal);
+                gl.polygon(quad(100),sprite,light,dok::RasterAxis::vertical);
+                gl.polygon(quad(2200),image,light,dok::RasterAxis::vertical);
+                gl.polygon(quad(2100),changing,light,dok::RasterAxis::vertical);
+                gl.flush_world();
+                std::vector<unsigned char> pixels(640*384*4);
+                read(0,0,640,384,GL_RGBA,GL_UNSIGNED_BYTE,pixels.data());return pixels;
+            };
+            check(frame(false)==frame(true),"Deferred VBO changed polygon order or state");
+        }
+        gl.set_linear_filter(false);palette[35]=0xff4d4d4d;
+        gl.begin();gl.world(palette);gl.polygon(narrow,changing,light,dok::RasterAxis::vertical);
+        check(sample(160,80)==77,"Palette change did not invalidate composed LIGHT");
+        for(int value:{2,1,2}){
+            std::fill(changing.pixels.begin(),changing.pixels.end(),value);
+            gl.begin();gl.world(palette,true,true);
+            gl.polygon(narrow,changing,light,dok::RasterAxis::vertical);
+            gl.flush_world();check(sample(160,80)==(value==1?77:220),"Immutable pass reused previous frame pixels");
+        }
+        std::vector<dok::Image> materials;
+        for(int i=1;i<=10;++i){materials.push_back({1,1,0,{static_cast<std::uint8_t>(i)}});
+            for(int row=0;row<16;++row)lut[row*256+i]=i*17;}
+        for(bool mixed:{false,true})for(bool linear:{false,true}){
+            for(std::size_t i=0;i<materials.size();++i)materials[i].flags=mixed&&i%3==0?8:0;
+            gl.set_linear_filter(linear);
+            auto many=[&](bool deferred){
+                gl.begin();gl.world(palette,deferred,true);
+                for(int i=0;i<10;++i){auto vertices=quad(100);
+                    vertices[0].x=vertices[3].x=10+i*28;vertices[1].x=vertices[2].x=44+i*28;
+                    gl.polygon(vertices,materials[i],light,dok::RasterAxis::vertical);
+                }
+                gl.flush_world();std::vector<unsigned char> pixels(640*384*4);
+                read(0,0,640,384,GL_RGBA,GL_UNSIGNED_BYTE,pixels.data());return pixels;
+            };
+            check(many(false)==many(true),"Seven-material batch rollover/blend changed pixels");
+        }
         std::cout<<"Smooth LIGHT anchors/ramp, wall occlusion, transparent depth, UI and nearest/linear passed\n";
     }catch(const std::exception& e){std::cerr<<e.what()<<'\n';SDL_DestroyWindow(window);SDL_Quit();return 1;}
     SDL_DestroyWindow(window);SDL_Quit();

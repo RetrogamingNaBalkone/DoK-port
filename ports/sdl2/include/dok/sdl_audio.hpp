@@ -18,6 +18,9 @@ private:
     unsigned rate_=48000;
     bool old_gold_=false;
     int volume_=100;
+    // Main-thread control state; callback reads volume_ under SDL's audio lock.
+    int requested_volume_=100;
+    bool paused_=false;
     MonoVoice voice_;
     std::map<std::string,Sound> sounds_;
 };

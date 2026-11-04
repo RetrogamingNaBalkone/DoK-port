@@ -27,7 +27,12 @@ int main(){
         check(dok::save_settings(path,s,warning),"Save settings");auto loaded=dok::load_settings(path,warning);
         check(warning.empty()&&dok::encode_settings(s)==dok::encode_settings(loaded),"Full roundtrip and locale persistence");
         auto stored=s,before=s;before.video.renderer=dok::RendererKind::opengl;before.video.width=1920;before.locale=dok::LocaleId::en;auto after=before;after.master_volume=60;
-        dok::merge_settings_edits(stored,before,after);check(stored.video==s.video&&stored.locale==s.locale&&stored.master_volume==60,"CLI overrides leaked to disk");
+        check(dok::merge_settings_edits(stored,before,after),"Changed persistent setting must be dirty");check(stored.video==s.video&&stored.locale==s.locale&&stored.master_volume==60,"CLI overrides leaked to disk");
+        check(!dok::merge_settings_edits(stored,before,after),"Already stored edit must not write again");
+        check(!dok::merge_settings_edits(stored,after,after),"Idle frame must not serialize/save settings");
+        auto video_after=after;video_after.video.width=1024;
+        check(!dok::merge_settings_edits(stored,after,video_after,false),"Unconfirmed video must not persist");
+        check(dok::merge_settings_edits(stored,after,video_after,true),"Confirmed video must persist");
         {std::ofstream out(path);out<<"[settings]\nversion=999\n";}loaded=dok::load_settings(path,warning);check(!warning.empty()&&loaded.inertia,"Bad version fallback");
         {std::ofstream out(path);out<<"[settings]\nversion=1\n[input]\ndeadzone=nan\n";}loaded=dok::load_settings(path,warning);check(!warning.empty(),"Reject NaN");
         // Failed replacement must preserve the old destination, not unlink it first.

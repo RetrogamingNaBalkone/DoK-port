@@ -42,6 +42,26 @@ int main(int argc,char** argv){
         check(weapons.select(2),"Cannot select second granted weapon");advance(1000000000);
         check(player.current_weapon==2,"Weapon switch failed");
         weapons.grant_all();check(player.current_weapon==2,"Repeated cheat changed equipped weapon");
+        // Compare reuse against forced repaint with identical animation history.
+        dok::Hud cached(archive),repaint(archive);
+        auto sample=player;auto colors=scene.palette();
+        for(int step=0;step<80;++step){
+            const double time=step*0.05;
+            if(step==4)sample.attributes[0]-=7;
+            if(step==8)sample.current_weapon=1;
+            if(step==12)sample.attributes[1]-=3;
+            if(step==16)sample.attributes[2]+=10;
+            if(step==20)sample.attributes[10]=1;
+            if(step==24)sample.score+=1;
+            if(step==28)colors[2]^=0x00112345;
+            if(step==32)sample.weapons[2]=0;
+            const std::string message=step<36?"":"changed";
+            const int width=step<40?1024:800;
+            repaint.desktop(width+1,sample,colors,message,time);
+            const auto expected=repaint.desktop(width,sample,colors,message,time).pixels;
+            check(cached.desktop(width,sample,colors,message,time).pixels==expected,"HUD cache froze state/animation");
+            check(cached.desktop(width,sample,colors,message,time).pixels==expected,"HUD redraw differs");
+        }
         check(SDL_Init(SDL_INIT_VIDEO)==0,"SDL init");
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION,2);SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION,0);
         SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE,24);

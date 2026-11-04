@@ -68,8 +68,16 @@ IndexedSurface Hud::classic_mode(const IndexedSurface& scene,int frame_height,co
     // Keep the accepted classic layout; only its panel is scaled, never the rendered world.
     const auto panel=classic(IndexedSurface(320,160),p,message);
     const int start=frame_height-int(39.0f*(float(frame_height)/200));
-    for(int y=start;y<frame_height;++y)for(int x=0;x<out.width();++x)
-        out.pixels[y*out.width()+x]=panel.pixels[(161+(y-start)*39/(frame_height-start))*320+x*320/out.width()];
+    std::vector<int> columns(out.width());
+    for(int x=0;x<out.width();++x)columns[x]=x*320/out.width();
+    int previous=-1;
+    for(int y=start;y<frame_height;++y){
+        const int row=161+(y-start)*39/(frame_height-start);
+        auto* dst=out.pixels.data()+y*out.width();
+        if(row==previous)std::copy_n(dst-out.width(),out.width(),dst);
+        else for(int x=0;x<out.width();++x)dst[x]=panel.pixels[row*320+columns[x]];
+        previous=row;
+    }
     return out;
 }
 std::vector<HudPanel> Hud::overlay(IndexedSurface& s,const PlayerState& p,const std::string& message)const{

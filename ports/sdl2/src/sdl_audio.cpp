@@ -19,8 +19,11 @@ void SdlAudio::callback(void* ptr,Uint8* stream,int bytes){
     auto& self=*static_cast<SdlAudio*>(ptr);self.voice_.render(reinterpret_cast<std::int16_t*>(stream),bytes/2,self.rate_);
     auto* samples=reinterpret_cast<std::int16_t*>(stream);for(int i=0;i<bytes/2;++i)samples[i]=static_cast<std::int16_t>(int(samples[i])*self.volume_/100);
 }
-void SdlAudio::volume(int percent){SDL_LockAudioDevice(device_);volume_=std::clamp(percent,0,100);SDL_UnlockAudioDevice(device_);}
-void SdlAudio::pause(bool paused){SDL_PauseAudioDevice(device_,paused?1:0);}
+void SdlAudio::volume(int percent){
+    percent=std::clamp(percent,0,100);if(percent==requested_volume_)return;
+    SDL_LockAudioDevice(device_);volume_=percent;SDL_UnlockAudioDevice(device_);requested_volume_=percent;
+}
+void SdlAudio::pause(bool paused){if(paused==paused_)return;SDL_PauseAudioDevice(device_,paused?1:0);paused_=paused;}
 void SdlAudio::command(const AudioCommand& c){
     const auto sound=sounds_.find(c.resource);
     SDL_LockAudioDevice(device_);

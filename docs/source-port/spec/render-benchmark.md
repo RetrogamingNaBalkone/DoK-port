@@ -3,7 +3,8 @@
 `ports/sdl2/tools/render_benchmark.py` запускает Release-цель `dok_render_bench`
 и сравнивает результаты. Python 3.9+ и стандартная библиотека; Pillow не нужен.
 Для Windows используем общие Zig/SDL2 из `docs/building.md`, Python 3.14.
-Это инструмент разработки; игровые рендереры и их алгоритмы не изменены.
+Это инструмент разработки. Первоначальный стенд не менял игровые рендереры;
+последующие [оптимизации от4 ноября](render-optimization-20261104.md) проверены им.
 
 ## Что измеряется
 
@@ -109,6 +110,15 @@ py -3.14 -B ports/sdl2/tools/render_benchmark.py record --res originals/pkr/RUS/
 `--renderer software|gl|both`, `--level LEVEL2` сокращают выборку.
 По умолчанию `--matrix quick`: software320×200, GL640×480 nearest/linear.
 `--matrix full`: все пять software-режимов и GL480×320/640×480 nearest/linear.
+`--matrix target`: software1024×768 и GL1024×768 nearest/linear, без снижения
+внутреннего разрешения.
+
+Опциональный `--profile-submission` добавляет только в стенде таймеры геометрии,
+вызовов polygon и flush; native.json содержит `profile_submission=true`.
+Обычный режим не вызывает эти таймеры. Compare запрещает смешивать обычный
+и диагностический режимы; отсутствие поля в старой базе означает false.
+GL flush включён в scene. После batching число полигонов сцены не равно числу
+физических draw calls; порядок треугольников сохраняется.
 Матрица разрешений и набор сцен выбираются независимо.
 
 После изменения и повторной Release-сборки выполнить **ту же команду record**

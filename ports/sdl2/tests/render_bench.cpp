@@ -117,7 +117,8 @@ struct Sdl {Sdl(){SDL_SetMainReady();require(SDL_Init(SDL_INIT_VIDEO|SDL_INIT_TI
 struct Window {SDL_Window* p=nullptr;~Window(){if(p)SDL_DestroyWindow(p);}};
 }
 int main(int argc,char** argv){try{
-    if(argc!=11)throw std::invalid_argument("Usage: dok_render_bench RES OUT LEVEL|all software|gl W H nearest|linear quick|full|stress WARMUP SAMPLES");
+    if(argc!=11&&argc!=12)throw std::invalid_argument("Usage: dok_render_bench RES OUT LEVEL|all software|gl W H nearest|linear quick|full|stress WARMUP SAMPLES [profile]");
+    const bool profile=argc==12;require(!profile||std::string(argv[11])=="profile","Unknown diagnostic mode");
     const auto archive=dok::Archive::open(std::filesystem::u8path(argv[1]));
     const auto root=std::filesystem::u8path(argv[2]);const std::string level_arg=argv[3],backend=argv[4],filter=argv[7],suite=argv[8];
     const int width=std::stoi(argv[5]),height=std::stoi(argv[6]),warmup=std::stoi(argv[9]),iterations=std::stoi(argv[10]);
@@ -144,7 +145,7 @@ int main(int argc,char** argv){try{
     SDL_version sdl_version{};SDL_GetVersion(&sdl_version);
     report<<"{\"schema\":1,\"fixture_version\":4,\"dataset\":"<<quote(dok::dataset_name(archive.identify()))
         <<",\"backend\":"<<quote(backend)<<",\"width\":"<<width<<",\"height\":"<<height<<",\"filter\":"<<quote(filter)
-        <<",\"suite\":"<<quote(suite)<<",\"warmup\":"<<warmup<<",\"iterations\":"<<iterations
+        <<",\"suite\":"<<quote(suite)<<",\"warmup\":"<<warmup<<",\"iterations\":"<<iterations<<",\"profile_submission\":"<<(profile?"true":"false")
         <<",\"build_type\":"<<quote(DOK_BENCH_BUILD_TYPE)<<",\"compiler\":"<<quote(
 #ifdef __clang__
         __clang_version__
@@ -211,21 +212,27 @@ int main(int argc,char** argv){try{
             std::vector<std::uint8_t> indices;std::vector<std::uint32_t> colors;
             std::array<std::vector<double>,5> timings;
             std::size_t draws=0,vertices=0,picture_bytes=0;
+            double submission_total=0,flush_total=0;
             auto render=[&](bool measure){
                 SDL_PumpEvents();if(gl)finish();const auto t0=Clock::now();if(gl)gl->begin();
                 const auto bounds=gl?dok::view_cell_bounds(c.pose,definition.cell_side,definition.width,definition.length,gl->view_width()):dok::original_cell_bounds(c.pose,definition.cell_side,definition.width,definition.length);
                 auto dynamic=monsters.images(bounds);const auto shots=projectiles.images();dynamic.insert(dynamic.end(),shots.begin(),shots.end());
                 const auto t1=Clock::now();draws=vertices=picture_bytes=0;
                 std::optional<dok::IndexedSurface> frame;
-                if(gl){gl->world(scene.palette());scene.render(world,c.pose,dynamic,[&](const auto& v,const auto& image,auto light,auto axis){
-                    ++draws;vertices+=v.size();picture_bytes+=image.pixels.size();gl->polygon(v,image,light,axis);
-                },gl->view_width(),c.offset);}else frame=scene.render(world,c.pose,dynamic);
+                double submission=0,flush=0;
+                if(gl){gl->world(scene.palette(),true,true);scene.render(world,c.pose,dynamic,[&](const auto& v,const auto& image,auto light,auto axis){
+                    ++draws;vertices+=v.size();picture_bytes+=image.pixels.size();
+                    if(profile){const auto begin=Clock::now();gl->polygon(v,image,light,axis);submission+=ms(begin,Clock::now());}
+                    else gl->polygon(v,image,light,axis);
+                },gl->view_width(),c.offset);
+                    if(profile){const auto begin=Clock::now();gl->flush_world();flush=ms(begin,Clock::now());}else gl->flush_world();
+                }else frame=scene.render(world,c.pose,dynamic);
                 const auto t2=Clock::now();
                 if(gl){
                     dok::IndexedSurface overlay(gl->view_width(),160);weapons.overlay(overlay);std::vector<std::uint32_t> pixels(overlay.pixels.size());
                     for(std::size_t i=0;i<pixels.size();++i)if(overlay.pixels[i])pixels[i]=scene.palette()[overlay.pixels[i]];
                     gl->image(pixels,overlay.width(),overlay.height(),{0,0,320,240});
-                    const int scale=std::max(1,height/720);auto h=hud.desktop(std::max(320,width/scale),*world.objects.at(*world.player).player_state,scene.palette(),world.visible_message(),1.0);
+                    const int scale=std::max(1,height/720);const auto& h=hud.desktop(std::max(320,width/scale),*world.objects.at(*world.player).player_state,scene.palette(),world.visible_message(),1.0);
                     gl->image(h.pixels,h.width,h.height,{0,height-h.height*scale,h.width*scale,h.height*scale},true);
                 }else{
                     weapons.overlay(*frame,height);*frame=hud.classic_mode(*frame,height,*world.objects.at(*world.player).player_state,world.visible_message());
@@ -233,6 +240,7 @@ int main(int argc,char** argv){try{
                 }
                 const auto t3=Clock::now();if(gl)finish();const auto t4=Clock::now();
                 if(measure){const std::array<double,5> times{ms(t0,t1),ms(t1,t2),ms(t2,t3),ms(t3,t4),ms(t0,t4)};for(int i=0;i<5;++i)timings[i].push_back(times[i]);}
+                if(measure&&profile){submission_total+=submission;flush_total+=flush;}
                 // Capture storage is outside the timed range.
                 if(!gl)indices=std::move(frame->pixels);
             };
@@ -257,7 +265,10 @@ int main(int argc,char** argv){try{
                 <<",\"active_projectiles\":"<<projectiles.active()<<",\"impacts\":"<<impacts<<",\"presentation_state_fnv64\":"<<quote(state_hash)<<",\"polygons\":"<<scene.polygon_count()
                 <<",\"world_polygon_submissions\":"<<draws<<",\"submitted_vertices\":"<<vertices<<",\"submitted_image_bytes\":"<<picture_bytes<<",\"timings_ms\":{";
             const char* names[]={"prepare","scene","ui_convert","gpu_wait","total"};for(int i=0;i<5;++i){if(i)report<<',';report<<quote(names[i])<<':';samples(report,timings[i]);}report<<"}}";
-            std::cout<<dok::dataset_name(archive.identify())<<' '<<backend<<' '<<id<<'\n';
+            std::cout<<dok::dataset_name(archive.identify())<<' '<<backend<<' '<<id;
+            if(profile){double scene_total=0;for(auto t:timings[1])scene_total+=t;
+                std::cout<<" geometry_ms="<<(scene_total-submission_total-flush_total)/iterations<<" polygon_ms="<<submission_total/iterations<<" flush_ms="<<flush_total/iterations;}
+            std::cout<<'\n';
         }
     }
     report<<"]}\n";require(bool(report),"Report write failed");return 0;

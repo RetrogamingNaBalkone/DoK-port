@@ -30,9 +30,12 @@ private:
     std::vector<std::size_t> object_images_;
     std::map<std::size_t,Image> door_sources_;
     std::map<std::size_t,Image> flowing_sources_;
+    std::map<std::size_t,std::pair<int,int>> door_phases_;
+    unsigned flowing_phase_=18;
     std::vector<std::uint8_t> light_;
     std::array<std::uint32_t,256> palette_{};
     IndexedSurface surface_{320,160};
+    bool surface_dirty_=false;
     CameraParameters software_camera_=CameraParameters::kremlin_vga();
     int frame_height_=200;
     std::size_t polygon_count_=0;

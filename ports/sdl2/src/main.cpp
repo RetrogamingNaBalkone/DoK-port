@@ -96,8 +96,10 @@ int main(int argc,char** argv){
         auto persist=[&]{if(!dok::save_settings(user_path/"settings.ini",stored,save_error)){log<<"Settings save failed: "<<save_error<<'\n';menu.notice("Не удалось сохранить настройки. Проверьте доступ к папке пользователя.","Could not save settings. Check access to the user directory.");}};
         if(!std::filesystem::exists(user_path/"settings.ini"))persist();
         unsigned frames=0,fps_frames=0,fps_value=0;auto previous_time=SDL_GetPerformanceCounter(),fps_time=previous_time;
+        unsigned drawn_fps=0;dok::DatasetId fps_dataset=dok::DatasetId::unknown;
+        std::vector<std::uint32_t> fps_pixels;int fps_width=0;
         while(running){
-            const auto before=settings;const auto stored_before=dok::encode_settings(stored);bool flow_changed=false,capture_requested=false;
+            const auto before=settings;bool settings_dirty=false,flow_changed=false,capture_requested=false;
             bool video_changed=false;std::vector<std::string> captures;menu.update(SDL_GetTicks64());
             for(const auto& event:script)if(event.frame==frames){
                 if(event.action=="state"){
@@ -151,14 +153,14 @@ int main(int argc,char** argv){
                 case dok::MenuCommand::apply_video:
                     try{auto next=std::make_unique<dok::Display>(settings.video);input.capture_mouse(false);display=std::move(next);SDL_ShowWindow(display->window());video_changed=true;}
                     catch(const std::exception& e){log<<"Video rejected: "<<e.what()<<'\n';menu.video_failed(e.what());}break;
-                case dok::MenuCommand::keep_video:{auto old=settings;old.video=menu.previous_video();dok::merge_settings_edits(stored,old,settings);break;}
+                case dok::MenuCommand::keep_video:{auto old=settings;old.video=menu.previous_video();settings_dirty|=dok::merge_settings_edits(stored,old,settings);break;}
                 case dok::MenuCommand::revert_video:
                     try{auto next=std::make_unique<dok::Display>(settings.video);display=std::move(next);SDL_ShowWindow(display->window());video_changed=true;}
                     catch(const std::exception& e){log<<"Video rollback failed: "<<e.what()<<'\n';settings.video.renderer=dok::RendererKind::software;settings.video.fullscreen=false;display=std::make_unique<dok::Display>(settings.video);SDL_ShowWindow(display->window());menu.notice("Возврат видеорежима не удался. Включён software.","Video rollback failed. Software renderer enabled.");}break;
                 }
             }
-            dok::merge_settings_edits(stored,before,settings,false);
-            if(dok::encode_settings(stored)!=stored_before)persist();
+            settings_dirty|=dok::merge_settings_edits(stored,before,settings,false);
+            if(settings_dirty)persist();
             input.bindings=settings.input;
             if(audio){audio->volume(settings.master_volume*settings.effects_volume/100);audio->pause(menu.active());}
             if(music)music->volume(settings.master_volume*settings.music_volume/100);
@@ -213,11 +215,11 @@ int main(int argc,char** argv){
                     gl->set_linear_filter(settings.linear);
                     const auto bounds=dok::view_cell_bounds(pose,world->definition.cell_side,world->definition.width,world->definition.length,gl->view_width());
                     auto dynamic=monsters->images(bounds);const auto shots=projectiles->images();dynamic.insert(dynamic.end(),shots.begin(),shots.end());
-                    gl->world(scene->palette());scene->render(*world,pose,dynamic,[&](const auto& vertices,const auto& image,dok::Bytes light,dok::RasterAxis axis){gl->polygon(vertices,image,light,axis);},gl->view_width(),view_motion.offset(world->presentation_ticks()));
+                    gl->world(scene->palette(),true,true);scene->render(*world,pose,dynamic,[&](const auto& vertices,const auto& image,dok::Bytes light,dok::RasterAxis axis){gl->polygon(vertices,image,light,axis);},gl->view_width(),view_motion.offset(world->presentation_ticks()));gl->flush_world();
                     dok::IndexedSurface overlay(gl->view_width(),160);weapons->overlay(overlay);std::vector<std::uint32_t> pixels(overlay.pixels.size());
                     for(std::size_t i=0;i<pixels.size();++i)if(overlay.pixels[i])pixels[i]=scene->palette()[overlay.pixels[i]];
                     gl->image(pixels,overlay.width(),overlay.height(),{0,0,320,240});
-                    const int hud_scale=std::max(1,output[1]/720);auto frame=hud->desktop(std::max(320,output[0]/hud_scale),*world->objects.at(*world->player).player_state,scene->palette(),world->visible_message(),world->presentation_ticks()*119.0/dok::GameClock::pit_hz);
+                    const int hud_scale=std::max(1,output[1]/720);const auto& frame=hud->desktop(std::max(320,output[0]/hud_scale),*world->objects.at(*world->player).player_state,scene->palette(),world->visible_message(),world->presentation_ticks()*119.0/dok::GameClock::pit_hz);
                     gl->image(frame.pixels,frame.width,frame.height,{0,output[1]-frame.height*hud_scale,frame.width*hud_scale,frame.height*hud_scale},true);
                 }else{
                     const auto mode=dok::software_modes[settings.video.software_mode];scene->software_resolution(mode[0],mode[1]);
@@ -230,10 +232,13 @@ int main(int argc,char** argv){
             ++frames;++fps_frames;const auto fps_now=SDL_GetPerformanceCounter();const auto seconds=double(fps_now-fps_time)/SDL_GetPerformanceFrequency();
             if(seconds>=0.5){fps_value=unsigned(fps_frames/seconds+0.5);fps_frames=0;fps_time=fps_now;}
             if(settings.show_fps&&world&&!menu.active()){
+                if(fps_pixels.empty()||drawn_fps!=fps_value||fps_dataset!=world->definition.dataset){
                 const std::string text="FPS "+(fps_value?std::to_string(fps_value):"--");const auto font=sets[current].archive.font("FONT8");
-                const int w=int(text.size())*8+4;std::vector<std::uint32_t> pixels(w*12,0xff101010);
+                const int w=int(text.size())*8+4;fps_pixels.assign(w*12,0xff101010);auto& pixels=fps_pixels;
                 for(std::size_t c=0;c<text.size();++c)for(int y=0;y<8;++y)for(int x=0;x<8;++x)if(font.data[static_cast<unsigned char>(text[c])*8+y]&(0x80>>x))pixels[(y+2)*w+int(c)*8+x+2]=0xfff0f0f0;
-                display->overlay(pixels,w,12,{output[0]-w*2-4,4,w*2,24});
+                fps_width=w;drawn_fps=fps_value;fps_dataset=world->definition.dataset;
+                }
+                display->overlay(fps_pixels,fps_width,12,{output[0]-fps_width*2-4,4,fps_width*2,24});
             }
             if(frame_limit&&frames==frame_limit&&!screenshot.empty())captures.push_back(screenshot);
             if(capture_requested){try{auto dir=std::filesystem::current_path()/"screenshots";std::filesystem::create_directories(dir);

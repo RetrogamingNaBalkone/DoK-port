@@ -66,7 +66,7 @@ std::vector<std::string> wrap(std::string value,int columns) {
 }
 }
 
-HudFrame Hud::desktop(int width,const PlayerState& p,const std::array<std::uint32_t,256>& palette,
+const HudFrame& Hud::desktop(int width,const PlayerState& p,const std::array<std::uint32_t,256>& palette,
                       const std::string& message,double seconds) {
     if(width<320)throw std::invalid_argument("Desktop HUD requires width >=320");
     const int hp=std::max(0,int(p.health())),ammo=std::max(0,int(p.charge()));
@@ -75,6 +75,13 @@ HudFrame Hud::desktop(int width,const PlayerState& p,const std::array<std::uint3
     if(previous_health_>=0&&hp!=previous_health_){health_delta_=hp-previous_health_;health_changed_=seconds;}
     if(previous_weapon_>=0&&active!=previous_weapon_){old_weapon_=previous_weapon_;weapon_changed_=seconds;}
     previous_health_=hp;previous_weapon_=active;
+    const double health_age=seconds-health_changed_;
+    const double t=std::clamp((seconds-weapon_changed_)/0.18,0.0,1.0);
+    const bool animated=health_age<1.0||t<1.0;
+    if(desktop_valid_&&desktop_frame_.width==width&&desktop_player_.attributes==p.attributes&&
+       desktop_player_.weapons==p.weapons&&desktop_player_.current_weapon==p.current_weapon&&
+       desktop_player_.score==p.score&&desktop_message_==message&&desktop_palette_==palette&&
+       desktop_animated_==animated&&(!animated||desktop_seconds_==seconds))return desktop_frame_;
     Painter out{{width,100,std::vector<std::uint32_t>(std::size_t(width)*100)},palette,font_};
     constexpr std::uint32_t bone=0xffe7dfc9,amber=0xffe3bd7c;
     const auto health_text=std::to_string(hp),ammo_text=std::to_string(ammo);
@@ -84,7 +91,6 @@ HudFrame Hud::desktop(int width,const PlayerState& p,const std::array<std::uint3
     out.image(health_,18,42,38,26);
     out.text(64,42,health_text,3,hp<=p.max_health()/4?0xffffa18a:bone);
     const double ratio=p.max_health()>0?std::clamp(double(hp)/p.max_health(),0.0,1.0):0;
-    const double health_age=seconds-health_changed_;
     const double trail=p.max_health()>0?std::clamp(double(hp-health_delta_)/p.max_health(),0.0,1.0):ratio;
     for(int i=0;i<10;++i){
         std::uint32_t color=0x704d3430;
@@ -99,7 +105,6 @@ HudFrame Hud::desktop(int width,const PlayerState& p,const std::array<std::uint3
     }
 
     const int deck_x=health_right+18;
-    const double t=std::clamp((seconds-weapon_changed_)/0.18,0.0,1.0);
     const double ease=t*t*(3-2*t);
     auto card=[&](int slot,bool front){
         if(slot<1||slot>2||!p.weapons[slot])return;
@@ -147,6 +152,8 @@ HudFrame Hud::desktop(int width,const PlayerState& p,const std::array<std::uint3
         out.rect(x-10,y-3,2,box_height-6,0xb0b49a66);
         for(std::size_t row=0;row<lines.size();++row)out.text(x,y+int(row)*(8*scale+3),lines[row],scale,bone);
     }
-    return std::move(out.frame);
+    desktop_frame_=std::move(out.frame);desktop_player_=p;desktop_palette_=palette;desktop_message_=message;
+    desktop_valid_=true;desktop_animated_=animated;desktop_seconds_=seconds;
+    return desktop_frame_;
 }
 }
