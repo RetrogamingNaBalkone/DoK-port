@@ -1,0 +1,531 @@
+{
+  "task": "N23",
+  "passed": true,
+  "candidate": "discovery32-ru",
+  "published": {
+    "path": "artifacts/nds/dok.nds",
+    "bytes": 10172928,
+    "sha256": "6828fe9bda4550621755aa609d854bd616a0ae74108f05fba751a2d1f6e86f76"
+  },
+  "evidence": [
+    {
+      "path": "research/evidence/nds/n23/ceiling-20261103/host.json",
+      "bytes": 10235,
+      "sha256": "285993b23d18d9cd54a967bdd0b46412f5156bfd4718bb9e104c460843f4ddb0"
+    },
+    {
+      "path": "research/evidence/nds/n23/ceiling-20261103/map_host.json",
+      "bytes": 7586,
+      "sha256": "2b3e832ffcccf825b91d1acf9439147fff95cd62a32af1aa3937399c3abb42c8"
+    },
+    {
+      "path": "research/evidence/nds/n23/ceiling-20261103/stationary_baseline.json",
+      "bytes": 488236,
+      "sha256": "e7f770c960f796507c138b0a6ea02b3ff64825a7ca56f8aaeaa175eff6c15c5d"
+    },
+    {
+      "path": "research/evidence/nds/n23/ceiling-20261103/stationary_candidate.json",
+      "bytes": 569713,
+      "sha256": "92983c8501b44f6a5d254cdcfd43287bd63264e9bddc92df0620e13d4136587a"
+    },
+    {
+      "path": "research/evidence/nds/n23/ceiling-20261103/turn.json",
+      "bytes": 2789966,
+      "sha256": "85c1e3ba2c14cd97ed93dd2bb5a81fabf343c38a3bf8073678681709bc1008df"
+    },
+    {
+      "path": "research/evidence/nds/n23/ceiling-20261103/live.json",
+      "bytes": 3703777,
+      "sha256": "60d6998ce4c7d37dc64e253286f81a711efb5cc9ef96f467c9dc2044736d726e"
+    },
+    {
+      "path": "research/evidence/nds/n23/ceiling-20261103/route.json",
+      "bytes": 2292918,
+      "sha256": "2a7b3abcd19317ca24d21b22ed7c7fec7cca741d181075a30d009c4c64ad7a69"
+    }
+  ],
+  "live_process_observation": {
+    "path": "research/evidence/nds/n23/ceiling-20261103/live-stationary80.json",
+    "bytes": 747385,
+    "sha256": "de8b3c37126ba647721b6fc0e55393ec441fd26c48625badbaf8e74f75ffe98c"
+  },
+  "live_observation_limitations": "Original live sampler checked even sequence once; possible publication crossing, not strict causal replay. Corrected double-read sampler could not rerun after user closed PID40272.",
+  "host": [
+    {
+      "level": 1,
+      "capacity": 256,
+      "static_geometry": 0,
+      "passed": true,
+      "cases": 2048,
+      "hits": 854,
+      "overflow_fallbacks": 0,
+      "cache_bytes": 3656
+    },
+    {
+      "level": 2,
+      "capacity": 256,
+      "static_geometry": 0,
+      "passed": true,
+      "cases": 2048,
+      "hits": 854,
+      "overflow_fallbacks": 0,
+      "cache_bytes": 3656
+    },
+    {
+      "level": 3,
+      "capacity": 256,
+      "static_geometry": 0,
+      "passed": true,
+      "cases": 2048,
+      "hits": 854,
+      "overflow_fallbacks": 0,
+      "cache_bytes": 3656
+    },
+    {
+      "level": 1,
+      "capacity": 8,
+      "static_geometry": 0,
+      "passed": true,
+      "cases": 2048,
+      "hits": 10,
+      "overflow_fallbacks": 2024,
+      "cache_bytes": 680
+    },
+    {
+      "level": 2,
+      "capacity": 8,
+      "static_geometry": 0,
+      "passed": true,
+      "cases": 2048,
+      "hits": 6,
+      "overflow_fallbacks": 2032,
+      "cache_bytes": 680
+    },
+    {
+      "level": 3,
+      "capacity": 8,
+      "static_geometry": 0,
+      "passed": true,
+      "cases": 2048,
+      "hits": 6,
+      "overflow_fallbacks": 2032,
+      "cache_bytes": 680
+    },
+    {
+      "level": 1,
+      "capacity": 256,
+      "static_geometry": 1,
+      "passed": true,
+      "cases": 2048,
+      "hits": 854,
+      "overflow_fallbacks": 0,
+      "cache_bytes": 3656
+    },
+    {
+      "level": 2,
+      "capacity": 256,
+      "static_geometry": 1,
+      "passed": true,
+      "cases": 2048,
+      "hits": 854,
+      "overflow_fallbacks": 0,
+      "cache_bytes": 3656
+    },
+    {
+      "level": 3,
+      "capacity": 256,
+      "static_geometry": 1,
+      "passed": true,
+      "cases": 2048,
+      "hits": 854,
+      "overflow_fallbacks": 0,
+      "cache_bytes": 3656
+    }
+  ],
+  "stationary": {
+    "stationary_baseline": [
+      {
+        "angle": 233,
+        "pose": [
+          23173,
+          -300,
+          23929,
+          236
+        ],
+        "health": 78,
+        "frames": 240,
+        "presentations": 192,
+        "fps": 48.06113335276786,
+        "stages_ms": {
+          "cpu_excluding_wait": {
+            "samples": 192,
+            "mean": 15.838011840848992,
+            "median": 15.452117865313648,
+            "p95": 19.37316789153852,
+            "p99": 20.25468056884437,
+            "maximum": 20.28272856385732
+          },
+          "simulation": {
+            "samples": 192,
+            "mean": 0.8252729350892015,
+            "median": 0.857582366667142,
+            "p95": 1.9246593854469456,
+            "p99": 2.2671134692380033,
+            "maximum": 2.346065591370193
+          },
+          "geometry": {
+            "samples": 192,
+            "mean": 4.09084280977613,
+            "median": 4.090710557760638,
+            "p95": 4.093246812628831,
+            "p99": 4.093246812628831,
+            "maximum": 4.093276650921397
+          },
+          "sprites": {
+            "samples": 192,
+            "mean": 4.479064172131699,
+            "median": 4.478996258934554,
+            "p95": 4.542969558198128,
+            "p99": 4.620012029606031,
+            "maximum": 4.6699613313631305
+          },
+          "discovery": {
+            "samples": 192,
+            "mean": 3.1668755260118004,
+            "median": 3.165395266966486,
+            "p95": 3.174883844002781,
+            "p99": 3.17518222692845,
+            "maximum": 3.17518222692845
+          },
+          "effects": {
+            "samples": 192,
+            "mean": 0.7872805520394442,
+            "median": 0.7796745847747963,
+            "p95": 0.8665935310223656,
+            "p99": 0.8666233693149324,
+            "maximum": 0.8666233693149324
+          },
+          "submit_including_wait": {
+            "samples": 192,
+            "mean": 3.508753357777658,
+            "median": 3.5040598876015387,
+            "p95": 3.53118289554491,
+            "p99": 3.531212733837477,
+            "maximum": 3.531272410422611
+          },
+          "map": {
+            "samples": 192,
+            "mean": 1.4405829744433234,
+            "median": 1.088918648938822,
+            "p95": 4.5010765954341085,
+            "p99": 4.662084022125452,
+            "maximum": 4.703081836112462
+          },
+          "map_raster": {
+            "samples": 192,
+            "mean": 0.01661091530891992,
+            "median": 0.0,
+            "p95": 0.11977090636379766,
+            "p99": 0.26791802895877903,
+            "maximum": 0.3069465156363693
+          },
+          "wait_vblank": {
+            "samples": 192,
+            "mean": 4.859604816083428,
+            "median": 1.7381700569034142,
+            "p95": 16.502366087085683,
+            "p99": 16.659733242083856,
+            "maximum": 16.666834755714795
+          }
+        },
+        "quads": {
+          "samples": 192,
+          "mean": 216.16145833333334,
+          "median": 216,
+          "p95": 217,
+          "p99": 217,
+          "maximum": 217
+        },
+        "geometry_wait": {
+          "samples": 192,
+          "mean": 0.0011636934101116364,
+          "median": 0.0011636934101116364,
+          "p95": 0.0011636934101116364,
+          "p99": 0.0011636934101116364,
+          "maximum": 0.0011636934101116364
+        },
+        "upload_bytes": 98304,
+        "captures": [
+          {
+            "path": "C:\\Source\\DoK-port\\build\\nds\\n23\\mapcache31-ru\\stationary-user-mushrooms\\angle-233.png",
+            "sha256": "4428b9bd391d109927cf69037f884e73de51dd1954e7adb72acbbbaae8886dc7"
+          },
+          {
+            "path": "C:\\Source\\DoK-port\\build\\nds\\n23\\mapcache31-ru\\stationary-user-mushrooms\\angle-233-top.png",
+            "sha256": "a061d21a7e4a12807727434730b9d1a727084894c0f0e8c2c6f0adb0c1f26904"
+          },
+          {
+            "path": "C:\\Source\\DoK-port\\build\\nds\\n23\\mapcache31-ru\\stationary-user-mushrooms\\angle-233-bottom.png",
+            "sha256": "7cadd8ab4cf4041f3d65299f48b73047e0ed26583c1c1cb6b040855e5a6d0dcd"
+          }
+        ]
+      }
+    ],
+    "stationary_candidate": [
+      {
+        "angle": 233,
+        "pose": [
+          23158,
+          -300,
+          23869,
+          241
+        ],
+        "health": 78,
+        "frames": 240,
+        "presentations": 240,
+        "fps": 59.82609828808083,
+        "stages_ms": {
+          "cpu_excluding_wait": {
+            "samples": 240,
+            "mean": 13.09181841377926,
+            "median": 12.879311088727087,
+            "p95": 16.249904293676593,
+            "p99": 17.33577943677358,
+            "maximum": 17.90661581187219
+          },
+          "simulation": {
+            "samples": 240,
+            "mean": 0.7367283302831636,
+            "median": 0.8191804841334581,
+            "p95": 1.7262049015840613,
+            "p99": 1.9512453041241116,
+            "maximum": 1.9569145797118348
+          },
+          "geometry": {
+            "samples": 240,
+            "mean": 3.7578738529687903,
+            "median": 3.75780472759101,
+            "p95": 3.75780472759101,
+            "p99": 3.760311144166635,
+            "maximum": 3.7603708207517688
+          },
+          "sprites": {
+            "samples": 240,
+            "mean": 2.601877106098583,
+            "median": 2.606315179139262,
+            "p95": 2.6601136206375,
+            "p99": 2.7176418487066085,
+            "maximum": 2.8117219851702493
+          },
+          "discovery": {
+            "samples": 240,
+            "mean": 1.3399990537282818,
+            "median": 1.3399780425972658,
+            "p95": 1.3399780425972658,
+            "p99": 1.3399780425972658,
+            "maximum": 1.3425142974654578
+          },
+          "effects": {
+            "samples": 240,
+            "mean": 0.7379181321992713,
+            "median": 0.7375429156702418,
+            "p95": 0.7444952378383446,
+            "p99": 0.7445250761309116,
+            "maximum": 0.7445250761309116
+          },
+          "submit_including_wait": {
+            "samples": 240,
+            "mean": 3.275490858313007,
+            "median": 3.275409051660886,
+            "p95": 3.275409051660886,
+            "p99": 3.277915468236511,
+            "maximum": 3.277915468236511
+          },
+          "map": {
+            "samples": 240,
+            "mean": 1.3076765989788979,
+            "median": 1.060035181734,
+            "p95": 4.408756918231919,
+            "p99": 4.540224435281967,
+            "maximum": 4.844306474831908
+          },
+          "map_raster": {
+            "samples": 240,
+            "mean": 0.012668468740400151,
+            "median": 0.0,
+            "p95": 0.1098347549389983,
+            "p99": 0.21990821621853232,
+            "maximum": 0.5446383542248128
+          },
+          "wait_vblank": {
+            "samples": 240,
+            "mean": 3.5070327761509605,
+            "median": 3.6707067515880385,
+            "p95": 4.424630889877545,
+            "p99": 4.8125883698332235,
+            "maximum": 4.948352601012915
+          }
+        },
+        "quads": {
+          "samples": 240,
+          "mean": 200.0,
+          "median": 200,
+          "p95": 200,
+          "p99": 200,
+          "maximum": 200
+        },
+        "geometry_wait": {
+          "samples": 240,
+          "mean": 0.0011636934101116364,
+          "median": 0.0011636934101116364,
+          "p95": 0.0011636934101116364,
+          "p99": 0.0011636934101116364,
+          "maximum": 0.0011636934101116364
+        },
+        "upload_bytes": 0,
+        "captures": [
+          {
+            "path": "C:\\Source\\DoK-port\\build\\nds\\n23\\discovery32-ru\\stationary-user-mushrooms\\angle-233.png",
+            "sha256": "3808a94db0fa0587e4236f81a974c834f53bfaa7fec07bc679b6234ef54784f1"
+          },
+          {
+            "path": "C:\\Source\\DoK-port\\build\\nds\\n23\\discovery32-ru\\stationary-user-mushrooms\\angle-233-top.png",
+            "sha256": "0047a3ca9dabe312f8af60ee67a367f15894afaf7dec7cb918c01282d1bce21d"
+          },
+          {
+            "path": "C:\\Source\\DoK-port\\build\\nds\\n23\\discovery32-ru\\stationary-user-mushrooms\\angle-233-bottom.png",
+            "sha256": "79d59266124ebd7132138bd64572d5dda92404e9e9832878bed7493ca5b3d441"
+          }
+        ]
+      }
+    ]
+  },
+  "turns": {
+    "idle": {
+      "presentations": 120,
+      "fps": 59.82609828808083,
+      "cpu_ms": {
+        "samples": 120,
+        "mean": 10.51613174465511,
+        "p95": 11.63618814380219,
+        "maximum": 14.967185934515332
+      },
+      "map_raster_ms": {
+        "samples": 1,
+        "mean": 0.10156954789794898,
+        "p95": 0.10156954789794898,
+        "maximum": 0.10156954789794898
+      },
+      "map_total_ms": {
+        "samples": 120,
+        "mean": 1.0759121372088818,
+        "p95": 1.0481893795849146,
+        "maximum": 4.37492029446098
+      },
+      "maximum_vblanks": 1
+    },
+    "right": {
+      "presentations": 470,
+      "fps": 58.579721240412475,
+      "cpu_ms": {
+        "samples": 470,
+        "mean": 13.032256335738293,
+        "p95": 16.48118089936314,
+        "maximum": 26.13607657842628
+      },
+      "map_raster_ms": {
+        "samples": 42,
+        "mean": 0.12161235527650179,
+        "p95": 0.25586335876172517,
+        "maximum": 0.3890316584880901
+      },
+      "map_total_ms": {
+        "samples": 470,
+        "mean": 1.317409373871275,
+        "p95": 4.3916595765910476,
+        "maximum": 5.2996984959889275
+      },
+      "maximum_vblanks": 2
+    },
+    "left": {
+      "presentations": 467,
+      "fps": 58.20580812611197,
+      "cpu_ms": {
+        "samples": 467,
+        "mean": 12.993001244976114,
+        "p95": 15.468170866714674,
+        "maximum": 22.27031690832799
+      },
+      "map_raster_ms": {
+        "samples": 22,
+        "mean": 0.03274210094814104,
+        "p95": 0.11780157905437796,
+        "maximum": 0.11836850661315029
+      },
+      "map_total_ms": {
+        "samples": 467,
+        "mean": 1.1648191507470482,
+        "p95": 1.0503974132348701,
+        "maximum": 4.395717584380155
+      },
+      "maximum_vblanks": 2
+    },
+    "settle": {
+      "presentations": 60,
+      "fps": 59.82609828808083,
+      "cpu_ms": {
+        "samples": 60,
+        "mean": 11.865826129921935,
+        "p95": 13.308773633643415,
+        "maximum": 15.731583313495841
+      },
+      "map_raster_ms": {
+        "samples": 3,
+        "mean": 0.11817953076022618,
+        "p95": 0.11854753636855209,
+        "maximum": 0.11854753636855209
+      },
+      "map_total_ms": {
+        "samples": 60,
+        "mean": 1.2155056159346667,
+        "p95": 1.0481595412923477,
+        "maximum": 4.396911116082833
+      },
+      "maximum_vblanks": 1
+    }
+  },
+  "route": {
+    "intervals": 2110,
+    "histogram": {
+      "1": 1976,
+      "2": 134
+    },
+    "virtual_fps": 56.25359509262502,
+    "median": 1,
+    "p95": 2,
+    "p99": 2,
+    "max": 2,
+    "fraction_over_one": 0.06350710900473934,
+    "fraction_over_two": 0.0,
+    "refresh_hz": 59.82609828808083,
+    "checked_one_second_windows": 1350,
+    "scope": "Every product PRESENTED interval without LOADING/WARMUP/DIAGNOSTIC/SYNC flags, independent of observer phase; timestamp gaps separate UI reading time",
+    "minimum_window_cadence_fps": 43.87247207792594,
+    "minimum_new_frames_in_one_second": 43,
+    "budget_passed": true,
+    "missing_profiles": []
+  },
+  "live_levels": [
+    1,
+    2,
+    3
+  ],
+  "arm_cache_bytes": 3644,
+  "arm_map_runtime_bytes": 11852,
+  "limitations": [
+    "Nearby stationary poses differ; no identical-pose causal FPS comparison",
+    "New ROM not yet measured in the user standalone melonDS",
+    "Physical DS and stable60 entire-game acceptance remain open"
+  ],
+  "next_task": "N23"
+}

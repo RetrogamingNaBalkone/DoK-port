@@ -1,0 +1,426 @@
+{
+  "task": "N23",
+  "date": "2026-11-03",
+  "passed": true,
+  "candidate": "mapcache31-ru",
+  "published": {
+    "path": "artifacts/nds/dok.nds",
+    "bytes": 10171904,
+    "sha256": "3c8bfe1577464310522aad1c3ac1a2409f8d70a2b016f7e2cb88ff42c106aae5"
+  },
+  "host": {
+    "pixels": {
+      "passed": true,
+      "raster_cases": 17524,
+      "rect_cases": 7784,
+      "guard_cases": 44,
+      "alignments": 4,
+      "pixels_compared": 9628385280
+    },
+    "runtime-0-0": "N21P dirty map checks=16972175 draws=44 skips=164 deferred=111 PASS\n{\"passed\":true,\"checks\":16972366,\"scope\":\"Existing production map lifetime suite plus retained button pixels/font/capture/language/invalidation\"}",
+    "runtime-0-1": "N21P dirty map checks=16972175 draws=44 skips=164 deferred=111 PASS\n{\"passed\":true,\"checks\":16976335,\"scope\":\"Existing production map lifetime suite plus retained button pixels/font/capture/language/invalidation\"}",
+    "runtime-1-0": "N21P dirty map checks=16972175 draws=44 skips=164 deferred=111 PASS\n{\"passed\":true,\"checks\":16972366,\"scope\":\"Existing production map lifetime suite plus retained button pixels/font/capture/language/invalidation\"}",
+    "runtime-1-1": "N21P dirty map checks=16972175 draws=44 skips=164 deferred=111 PASS\n{\"passed\":true,\"checks\":16976335,\"scope\":\"Existing production map lifetime suite plus retained button pixels/font/capture/language/invalidation\"}"
+  },
+  "turns": {
+    "turn_baseline": {
+      "idle": {
+        "presentations": 120,
+        "fps": 59.82609828808083,
+        "cpu_ms": {
+          "samples": 120,
+          "mean": 12.062466445596748,
+          "p95": 12.490727004627502,
+          "maximum": 17.498368292970977
+        },
+        "map_raster_ms": {
+          "samples": 1,
+          "mean": 2.922063991082886,
+          "p95": 2.922063991082886,
+          "maximum": 2.922063991082886
+        },
+        "map_total_ms": {
+          "samples": 120,
+          "mean": 1.1395733776626922,
+          "p95": 1.0978402984163445,
+          "maximum": 6.100677621656537
+        },
+        "maximum_vblanks": 1
+      },
+      "right": {
+        "presentations": 425,
+        "fps": 52.9710245259049,
+        "cpu_ms": {
+          "samples": 425,
+          "mean": 14.518670902613652,
+          "p95": 19.74179015791081,
+          "maximum": 22.824801899099903
+        },
+        "map_raster_ms": {
+          "samples": 44,
+          "mean": 3.1214936445982997,
+          "p95": 3.177807996674343,
+          "maximum": 3.180374089835102
+        },
+        "map_total_ms": {
+          "samples": 425,
+          "mean": 1.6214730563359918,
+          "p95": 6.35991270747833,
+          "maximum": 6.8829779761772265
+        },
+        "maximum_vblanks": 2
+      },
+      "left": {
+        "presentations": 442,
+        "fps": 55.089865506941095,
+        "cpu_ms": {
+          "samples": 442,
+          "mean": 14.39027375396964,
+          "p95": 19.66835811990351,
+          "maximum": 22.61080166480963
+        },
+        "map_raster_ms": {
+          "samples": 23,
+          "mean": 3.1777496174062776,
+          "p95": 3.17783783496691,
+          "maximum": 3.17783783496691
+        },
+        "map_total_ms": {
+          "samples": 442,
+          "mean": 1.3544727695473353,
+          "p95": 1.1007047745027732,
+          "maximum": 6.357764350413508
+        },
+        "maximum_vblanks": 2
+      },
+      "settle": {
+        "presentations": 60,
+        "fps": 59.82609828808083,
+        "cpu_ms": {
+          "samples": 60,
+          "mean": 13.514904018269151,
+          "p95": 13.751126320948671,
+          "maximum": 18.612768843761987
+        },
+        "map_raster_ms": {
+          "samples": 2,
+          "mean": 3.177718481796642,
+          "p95": 3.177718481796642,
+          "maximum": 3.177718481796642
+        },
+        "map_total_ms": {
+          "samples": 60,
+          "mean": 1.273147726820406,
+          "p95": 1.0978104601237777,
+          "maximum": 6.356988554806767
+        },
+        "maximum_vblanks": 1
+      }
+    },
+    "turn_candidate": {
+      "idle": {
+        "presentations": 120,
+        "fps": 59.82609828808083,
+        "cpu_ms": {
+          "samples": 120,
+          "mean": 12.02828867068079,
+          "p95": 12.469959553000894,
+          "maximum": 15.864005655908032
+        },
+        "map_raster_ms": {
+          "samples": 1,
+          "mean": 0.10228566691955614,
+          "p95": 0.10228566691955614,
+          "maximum": 0.10228566691955614
+        },
+        "map_total_ms": {
+          "samples": 120,
+          "mean": 1.1053500993505734,
+          "p95": 1.0770728467897368,
+          "maximum": 4.466523852641563
+        },
+        "maximum_vblanks": 1
+      },
+      "right": {
+        "presentations": 454,
+        "fps": 56.58551796414312,
+        "cpu_ms": {
+          "samples": 454,
+          "mean": 14.232744426748047,
+          "p95": 17.642427569484283,
+          "maximum": 21.590033676093757
+        },
+        "map_raster_ms": {
+          "samples": 45,
+          "mean": 0.1174594332996101,
+          "p95": 0.22975485276563076,
+          "maximum": 0.42385294591373834
+        },
+        "map_total_ms": {
+          "samples": 454,
+          "mean": 1.3897032285445563,
+          "p95": 4.963629806807201,
+          "maximum": 5.369430585717925
+        },
+        "maximum_vblanks": 2
+      },
+      "left": {
+        "presentations": 464,
+        "fps": 57.83189501181146,
+        "cpu_ms": {
+          "samples": 464,
+          "mean": 14.230870761693556,
+          "p95": 17.260139365116327,
+          "maximum": 22.30397450234353
+        },
+        "map_raster_ms": {
+          "samples": 22,
+          "mean": 0.03281398410750691,
+          "p95": 0.1188757575867887,
+          "maximum": 0.11893543417192264
+        },
+        "map_total_ms": {
+          "samples": 464,
+          "mean": 1.2012637431600113,
+          "p95": 1.079638939950496,
+          "maximum": 4.487321142560738
+        },
+        "maximum_vblanks": 2
+      },
+      "settle": {
+        "presentations": 60,
+        "fps": 59.82609828808083,
+        "cpu_ms": {
+          "samples": 60,
+          "mean": 14.104231680576383,
+          "p95": 14.672294089076017,
+          "maximum": 18.088271337019876
+        },
+        "map_raster_ms": {
+          "samples": 2,
+          "mean": 0.11886083844050521,
+          "p95": 0.11860721295368602,
+          "maximum": 0.11911446392732442
+        },
+        "map_total_ms": {
+          "samples": 60,
+          "mean": 1.1907572387747498,
+          "p95": 1.079579263365362,
+          "maximum": 4.488663865726251
+        },
+        "maximum_vblanks": 1
+      }
+    }
+  },
+  "routes": {
+    "route_baseline": {
+      "cells": 100,
+      "metrics": {
+        "intervals": 2866,
+        "histogram": {
+          "1": 2565,
+          "2": 301
+        },
+        "virtual_fps": 54.1400687381243,
+        "median": 1,
+        "p95": 2,
+        "p99": 2,
+        "max": 2,
+        "fraction_over_one": 0.10502442428471738,
+        "fraction_over_two": 0.0,
+        "refresh_hz": 59.82609828808083,
+        "checked_one_second_windows": 1957,
+        "scope": "Every product PRESENTED interval without LOADING/WARMUP/DIAGNOSTIC/SYNC flags, independent of observer phase; timestamp gaps separate UI reading time",
+        "minimum_window_cadence_fps": 39.88406552538722,
+        "minimum_new_frames_in_one_second": 39,
+        "budget_passed": true,
+        "missing_profiles": []
+      },
+      "map_stages": {
+        "map": {
+          "samples": 2866,
+          "mean": 1.6146414517348409,
+          "median": 1.1096264239802958,
+          "p95": 6.531184506812709,
+          "p99": 6.679391305992824,
+          "maximum": 7.739307134556556
+        },
+        "map_snapshot": {
+          "samples": 2866,
+          "mean": 0.7482230879394255,
+          "median": 0.8303698438460699,
+          "p95": 0.8306383884791727,
+          "p99": 0.9312829493075457,
+          "maximum": 1.3290572275177566
+        },
+        "map_raster": {
+          "samples": 2866,
+          "mean": 0.3538727381845819,
+          "median": 0.0,
+          "p95": 3.3552264842775172,
+          "p99": 3.355375675740352,
+          "maximum": 3.4317617047117825
+        },
+        "map_postvisited": {
+          "samples": 2866,
+          "mean": 0.24790951732283922,
+          "median": 0.2478965346463455,
+          "p95": 0.2478965346463455,
+          "p99": 0.2478965346463455,
+          "maximum": 0.25117874682871166
+        },
+        "map_buttons": {
+          "samples": 2866,
+          "mean": 0.008565859592601588,
+          "median": 0.0,
+          "p95": 0.07769891384437695,
+          "p99": 0.07769891384437695,
+          "maximum": 0.42418116713197496
+        },
+        "map_dma": {
+          "samples": 2866,
+          "mean": 0.13624166468301815,
+          "median": 0.0,
+          "p95": 1.2702161145757016,
+          "p99": 1.2702161145757016,
+          "maximum": 1.5237819248097704
+        },
+        "map_publish": {
+          "samples": 2866,
+          "mean": 0.10017293673441512,
+          "median": 0.01232321483015656,
+          "p95": 0.8325182009108915,
+          "p99": 0.8325480392034584,
+          "maximum": 0.8358302513858246
+        }
+      }
+    },
+    "route_candidate": {
+      "cells": 100,
+      "metrics": {
+        "intervals": 2007,
+        "histogram": {
+          "1": 1743,
+          "2": 264
+        },
+        "virtual_fps": 52.8714131502326,
+        "median": 1,
+        "p95": 2,
+        "p99": 2,
+        "max": 2,
+        "fraction_over_one": 0.13153961136023917,
+        "fraction_over_two": 0.0,
+        "refresh_hz": 59.82609828808083,
+        "checked_one_second_windows": 1093,
+        "scope": "Every product PRESENTED interval without LOADING/WARMUP/DIAGNOSTIC/SYNC flags, independent of observer phase; timestamp gaps separate UI reading time",
+        "minimum_window_cadence_fps": 38.88696388725254,
+        "minimum_new_frames_in_one_second": 38,
+        "budget_passed": true,
+        "missing_profiles": []
+      },
+      "map_stages": {
+        "map": {
+          "samples": 2007,
+          "mean": 1.4629538521641827,
+          "median": 1.0887694574759872,
+          "p95": 4.517636847808774,
+          "p99": 5.299608981111227,
+          "maximum": 7.715406662210417
+        },
+        "map_snapshot": {
+          "samples": 2007,
+          "mean": 0.8461132079181025,
+          "median": 0.8093636858789266,
+          "p95": 2.044997219369516,
+          "p99": 2.554307035195042,
+          "maximum": 2.7367980325346
+        },
+        "map_raster": {
+          "samples": 2007,
+          "mean": 0.047423959348670344,
+          "median": 0.0,
+          "p95": 0.14495442529031613,
+          "p99": 0.8580001027630796,
+          "maximum": 3.860657322069338
+        },
+        "map_postvisited": {
+          "samples": 2007,
+          "mean": 0.2480570102467281,
+          "median": 0.24804572610918035,
+          "p95": 0.24804572610918035,
+          "p99": 0.24804572610918035,
+          "maximum": 0.25135777658411346
+        },
+        "map_buttons": {
+          "samples": 2007,
+          "mean": 0.011305471852595941,
+          "median": 0.0,
+          "p95": 0.07772875213694391,
+          "p99": 0.07772875213694391,
+          "maximum": 0.424151328839408
+        },
+        "map_dma": {
+          "samples": 2007,
+          "mean": 0.17936814572422005,
+          "median": 0.0,
+          "p95": 1.2702459528682686,
+          "p99": 1.2702459528682686,
+          "maximum": 1.5238117631023373
+        },
+        "map_publish": {
+          "samples": 2007,
+          "mean": 0.11084872167026492,
+          "median": 0.012412729707857454,
+          "p95": 0.7104795843120044,
+          "p99": 0.7105094226045714,
+          "maximum": 0.7130755157653305
+        }
+      }
+    }
+  },
+  "live_levels": [
+    1,
+    2,
+    3
+  ],
+  "evidence": [
+    {
+      "path": "research/evidence/nds/n23/map-cache-20261103/host.json",
+      "bytes": 7586,
+      "sha256": "294df7cef48b6a18ce7a9984b622e86bcff32f6e44cc465c21cfed52f889ee1f"
+    },
+    {
+      "path": "research/evidence/nds/n23/map-cache-20261103/turn_baseline.json",
+      "bytes": 2618445,
+      "sha256": "a696578ce8f872aa1b72023e9aaad846e668732342e02f4bc81b2e374785eb4a"
+    },
+    {
+      "path": "research/evidence/nds/n23/map-cache-20261103/turn_candidate.json",
+      "bytes": 2744070,
+      "sha256": "92fe8cb85f8e165e7c17e29b8397f869588f8d954401864ab1dd9e1b10a07ecb"
+    },
+    {
+      "path": "research/evidence/nds/n23/map-cache-20261103/route_baseline.json",
+      "bytes": 2858425,
+      "sha256": "1e655bb42d904d6f0c069d2f854f748d6fbed854bf032e71be8322d35d567dad"
+    },
+    {
+      "path": "research/evidence/nds/n23/map-cache-20261103/route_candidate.json",
+      "bytes": 2015070,
+      "sha256": "0589367bfa7555249027ac895b9441bbb0ea8ea5c2f0a9aaf4833415a3a345b2"
+    },
+    {
+      "path": "research/evidence/nds/n23/map-cache-20261103/live.json",
+      "bytes": 3241448,
+      "sha256": "a02ccbb4d3763695f75af9c54f7aa5155c75a667e80cbdae460889703be61d53"
+    }
+  ],
+  "next_task": "N23",
+  "limitations": [
+    "melonDS DS 1.4.0 only; physical DS and DraStic untested",
+    "Equal-duration turning input; route policies and simulated poses can differ, route averages are not causal pairs",
+    "Pan/zoom, inventory reveal and glyph metadata changes retain complete redraw",
+    "Map DMA remains the complete visible bitmap; hardware affine pan/zoom not implemented",
+    "Full N23 FPS acceptance and N24 remain open"
+  ]
+}

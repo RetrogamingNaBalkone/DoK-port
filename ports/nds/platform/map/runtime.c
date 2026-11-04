@@ -137,6 +137,51 @@ static uint32_t prepare_buttons(NdsMapRuntime *m,unsigned char *out,const unsign
     return DOK_MAP_VIEW_BYTES;
 }
 #endif
+/* Union of source cells whose primitives can change. +/-1 intentionally
+ * follows native linear-index row wrapping; +/-width covers wall adjacency.
+ * Rebuilding this region in native pass/order preserves overlapping strokes. */
+static void dirty_cell(int32_t box[4],int32_t index,uint32_t width,uint32_t count,
+                       int32_t left,int32_t top,int32_t scale)
+{
+    if(index<0||(uint32_t)index>=count)return;
+    int32_t x=(int32_t)width-1-index%(int32_t)width,z=index/(int32_t)width;
+    int32_t x1=x*scale-left,y1=z*scale-top,x2=x1+scale,y2=y1+scale;
+    if(x2<0||y2<0||x1>255||y1>159)return;
+    if(x1<box[0])box[0]=x1;
+    if(y1<box[1])box[1]=y1;
+    if(x2>box[2])box[2]=x2;
+    if(y2>box[3])box[3]=y2;
+}
+static void dirty_region(int32_t box[4],const NdsMapRuntime *m,const dok_render_world *w,
+                         uint32_t count,int32_t left,int32_t top)
+{
+    int32_t width=m->control.width,scale=dok_map_scales[m->control.zoom];
+    uintptr_t alignment=(uintptr_t)m->planes|(uintptr_t)m->visited_snapshot|
+        (uintptr_t)w->initial.maps;
+    for(uint32_t n=0;n<count;++n){
+        /* Most of the map is unchanged. Reject four cells with eight WORD
+         * loads before entering the byte/dependency path. */
+        if(!(alignment&3u)&&!(n&3u)&&n+4u<=count){
+            uint32_t bits=*(const map_alias_word *)(const void *)(m->visited_snapshot+n)^
+                *(const map_alias_word *)(const void *)(w->initial.maps[3]+n);
+            for(uint32_t p=0;p<3u;++p)bits|=*(const map_alias_word *)(const void *)(m->planes+p*DOK_LEVEL_MAX_CELLS+n)^
+                *(const map_alias_word *)(const void *)(w->initial.maps[p]+n);
+            if(!bits){n+=3u;continue;}
+        }
+        uint32_t dirty=m->visited_snapshot[n]!=w->initial.maps[3][n];
+        for(uint32_t p=0;p<3u&&!dirty;++p){
+            uint8_t old=m->planes[p*DOK_LEVEL_MAX_CELLS+n],next=w->initial.maps[p][n];
+            dirty=old!=next;
+        }
+        if(dirty){
+            dirty_cell(box,(int32_t)n,width,count,left,top,scale);
+            dirty_cell(box,(int32_t)n-1,width,count,left,top,scale);
+            dirty_cell(box,(int32_t)n+1,width,count,left,top,scale);
+            dirty_cell(box,(int32_t)n-width,width,count,left,top,scale);
+            dirty_cell(box,(int32_t)n+width,width,count,left,top,scale);
+        }
+    }
+}
 void nds_map_prepare(NdsMapRuntime *m,dok_render_world *w,NdsGameplay *g,
     const unsigned char *font,uint32_t language,unsigned char *pixels,
     uint32_t ticks,uint32_t level,uint32_t serial,uint32_t frame,uint32_t ordinal,uint32_t case_id,
@@ -158,34 +203,49 @@ void nds_map_prepare(NdsMapRuntime *m,dok_render_world *w,NdsGameplay *g,
 #else
     heading_changed=m->snapshot.heading!=(uint16_t)g->hero.heading;
 #endif
-    if(m->snapshot.hero_x!=hero_x||m->snapshot.hero_z!=hero_z||heading_changed||
+    if(m->snapshot.hero_x!=hero_x||m->snapshot.hero_z!=hero_z||
        m->snapshot.map_available!=(uint8_t)g->items.inventory.map_available||m->left!=left||m->top!=top)changed=1;
+    /* A pending turn already guarantees the next 12Hz update. Compare the
+     * other raster inputs at that deadline, not on every intervening frame.
+     * The class1 world side effect below still runs on every frame. */
+    uint32_t compare_inputs=!heading_changed||(uint32_t)(profile_start-m->last_draw_ticks)>=BUS_CLOCK/12u;
     /* A cheap known difference already establishes the dirty OR. Avoid
      * rescanning the full planes while aggregating the same pending movement. */
-    for(uint32_t i=0;i<w->effective.object_count&&!changed;++i){const dok_level_object *o=&w->effective.objects[i];
+    for(uint32_t i=0;i<w->effective.object_count&&!changed&&compare_inputs;++i){const dok_level_object *o=&w->effective.objects[i];
         const dok_map_glyph *p=&m->glyphs[o->glyph];uint8_t marker=o->marker;
         if(o->class_id==7u&&g->interactions.doors[o->glyph].ready)marker=g->interactions.doors[o->glyph].marker;
         if(p->class_id!=o->class_id||p->marker!=marker||p->monster_state!=monsters[o->glyph])changed=1;
     }
     /* Exact comparisons avoid hash collisions. Only active cells affect the
      * source raster; full fixed-stride planes are copied on a real redraw. */
-    for(uint32_t n=0;n<3u&&!changed;++n)if(bytes_differ(m->planes+n*DOK_LEVEL_MAX_CELLS,w->initial.maps[n],count))changed=1;
+    for(uint32_t n=0;n<3u&&!changed&&compare_inputs;++n)if(bytes_differ(m->planes+n*DOK_LEVEL_MAX_CELLS,w->initial.maps[n],count))changed=1;
     /* FCMap used PRE: class1 POST writes leave one floor-fill redraw debt. */
-    if(!changed&&bytes_differ(m->visited_snapshot,w->initial.maps[3],count))changed=1;
+    if(!changed&&compare_inputs&&bytes_differ(m->visited_snapshot,w->initial.maps[3],count))changed=1;
     if(m->force)reason|=m->force==2u?2u:1u;
     if(m->language!=language)reason|=4u;
-    if(changed&&(uint32_t)(profile_start-m->last_draw_ticks)>=BUS_CLOCK/12u)reason|=8u;
-    if(changed&&!reason)++m->deferred;
+    uint32_t reuse=m->updates&&!m->force&&m->language==language&&m->left==left&&m->top==top&&
+        m->snapshot.map_available==(uint8_t)g->items.inventory.map_available;
+    if((changed||heading_changed)&&(uint32_t)(profile_start-m->last_draw_ticks)>=BUS_CLOCK/12u)reason|=8u;
+    if((changed||heading_changed)&&!reason)++m->deferred;
     m->profile[0]=cpuGetTiming()-phase;
     for(uint32_t i=1;i<8u;++i)m->profile[i]=0;
     m->profile[10]=UINT32_MAX;m->profile[11]=UINT32_MAX;
     if(reason){
         nds_map_begin();
         phase=cpuGetTiming();
+        uint32_t glyph_changed=0;
+        int32_t box[4]={256,160,-1,-1};
         for(uint32_t i=0;i<w->effective.object_count;++i){const dok_level_object *o=&w->effective.objects[i];
-            dok_map_glyph *p=&m->glyphs[o->glyph];p->class_id=o->class_id;p->marker=o->marker;p->monster_state=monsters[o->glyph];
-            if(o->class_id==7u&&g->interactions.doors[o->glyph].ready)p->marker=g->interactions.doors[o->glyph].marker;
+            dok_map_glyph *p=&m->glyphs[o->glyph];
+            uint8_t marker=o->marker;
+            if(o->class_id==7u&&g->interactions.doors[o->glyph].ready)marker=g->interactions.doors[o->glyph].marker;
+            glyph_changed|=p->class_id!=o->class_id||p->marker!=marker||p->monster_state!=monsters[o->glyph];
+            p->class_id=o->class_id;p->marker=marker;p->monster_state=monsters[o->glyph];
         }
+        /* Definition/door-marker/corpse changes are infrequent and can affect
+         * many occurrences of a glyph. Use the bounded complete path then. */
+        if(glyph_changed)reuse=0;
+        if(reuse&&changed)dirty_region(box,m,w,count,left,top);
         memcpy(m->planes,w->initial.maps,3u*DOK_LEVEL_MAX_CELLS);
         memcpy(m->visited_snapshot,w->initial.maps[3],sizeof(m->visited_snapshot));
         m->snapshot=(dok_map_snapshot){{m->planes,m->planes+DOK_LEVEL_MAX_CELLS,m->planes+2u*DOK_LEVEL_MAX_CELLS},
@@ -193,7 +253,12 @@ void nds_map_prepare(NdsMapRuntime *m,dok_render_world *w,NdsGameplay *g,
             (uint16_t)g->hero.heading,(uint8_t)g->items.inventory.map_available};
         m->left=left;m->top=top;
         m->profile[0]+=cpuGetTiming()-phase;phase=cpuGetTiming();
-        if(!dok_map_raster(pixels,&m->snapshot,dok_map_scales[m->control.zoom],-left,-top))m->fault=3;
+        if(reuse){
+            dok_map_arrow_restore(pixels,&m->arrow_patch);
+            if(!dok_map_raster_region(pixels,&m->snapshot,dok_map_scales[m->control.zoom],-left,-top,
+                                      box[0],box[1],box[2],box[3]))m->fault=3;
+            dok_map_arrow_draw(pixels,&m->snapshot,dok_map_scales[m->control.zoom],-left,-top,&m->arrow_patch);
+        }else if(!dok_map_raster_patched(pixels,&m->snapshot,dok_map_scales[m->control.zoom],-left,-top,&m->arrow_patch))m->fault=3;
         m->profile[1]=cpuGetTiming()-phase;
     }
     phase=cpuGetTiming();

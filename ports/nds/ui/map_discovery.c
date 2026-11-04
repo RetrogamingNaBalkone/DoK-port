@@ -378,11 +378,11 @@ DOK_NDS_HOT_CODE static dok_status map_cell(const dok_initial_world *w,const dok
     *count=n;return DOK_STATUS_OK;
 }
 
-DOK_NDS_HOT_CODE dok_status dok_map_discovery_update(const dok_initial_world *world,
+DOK_NDS_HOT_CODE dok_status dok_map_discovery_update_cached(const dok_initial_world *world,
     const dok_geometry_binding bindings[256],const dok_sprite_list *sprites,
     const uint16_t *flags,const dok_nds_render_camera *camera,uint32_t heading,
     dok_map_discovery_workspace *workspace,unsigned char visited[DOK_LEVEL_MAX_CELLS],
-    dok_map_discovery_stats *out)
+    dok_map_discovery_stats *out,dok_map_static_cache *cache)
 {
     dok_render_gather_bounds bounds;map_shape shapes[DOK_GEOMETRY_CELL_MAX];
     int32_t x,z;uint32_t i,plane;
@@ -390,7 +390,13 @@ DOK_NDS_HOT_CODE dok_status dok_map_discovery_update(const dok_initial_world *wo
         (sprites&&(sprites->world_epoch!=world->epoch || sprites->count>DOK_SPRITE_LIMIT)) ||
         dok_map_discovery_bounds(world,camera,heading,&bounds)!=DOK_STATUS_OK)
         return DOK_STATUS_INVALID_ARGUMENT;
-    dok_geometry_prepare_fields(world->definition,workspace->field54);
+    uint32_t reuse=cache&&cache->valid&&cache->world==world&&cache->epoch==world->epoch&&
+        cache->bindings==bindings&&cache->definition==world->definition&&cache->heading==heading&&
+        !memcmp(&cache->camera,camera,sizeof(*camera))&&cache->has_flags==(flags!=NULL)&&
+        (!flags||!memcmp(cache->flags,flags,sizeof(cache->flags)));
+    uint32_t cursor=0,cached_count=0,overflow=0;
+    if(cache){if(reuse)++cache->hits;else {++cache->misses;cache->valid=0;}}
+    if(!reuse)dok_geometry_prepare_fields(world->definition,workspace->field54);
     workspace->count=0;
 #if N23_DISCOVERY_CACHE
     memset(workspace->point_valid,0,sizeof(workspace->point_valid));
@@ -413,6 +419,13 @@ DOK_NDS_HOT_CODE dok_status dok_map_discovery_update(const dok_initial_world *wo
     }
     for(z=bounds.min_z;z<=bounds.max_z;++z)for(x=bounds.min_x;x<=bounds.max_x;++x) {
         uint32_t count;
+        if(reuse){
+            uint32_t cell=(uint32_t)z*64u+(uint32_t)x;
+            while(cursor<cache->count&&cache->records[cursor].cell==cell){
+                dok_status status=append(workspace,cache->records[cursor++]);
+                if(status!=DOK_STATUS_OK)return status;
+            }
+        }else{
         if(map_cell(world,bindings,(uint32_t)x,(uint32_t)z,shapes,&count,workspace->field54)!=DOK_STATUS_OK)
             return DOK_STATUS_INVALID_STATE;
         for(i=0;i<count;++i) {
@@ -427,7 +440,12 @@ DOK_NDS_HOT_CODE dok_status dok_map_discovery_update(const dok_initial_world *wo
                 q.vertices[3].x=s->ax;q.vertices[3].z=s->az;
             } else {q.vertices[0].z=s->az;q.vertices[1].z=s->bz;}
             status=record_geometry(&q,camera,&r,workspace);if(status!=DOK_STATUS_OK)return status;
+            if(cache&&(r.flags&1u)){
+                if(cached_count<DOK_MAP_STATIC_RECORDS)cache->records[cached_count++]=r;
+                else overflow=1;
+            }
             status=append(workspace,r);if(status!=DOK_STATUS_OK)return status;
+        }
         }
         /* Native cell order: TMap billboard then MMap billboard. N12 gathers
          * MMap first; select by explicit plane rather than copying its order. */
@@ -443,5 +461,22 @@ DOK_NDS_HOT_CODE dok_status dok_map_discovery_update(const dok_initial_world *wo
             status=append(workspace,r);if(status!=DOK_STATUS_OK)return status;
         }
     }
-    return dok_map_discovery_records(workspace,visited,out);
+    dok_status status=dok_map_discovery_records(workspace,visited,out);
+    if(status==DOK_STATUS_OK&&cache&&!reuse&&!overflow){
+        cache->world=world;cache->bindings=bindings;cache->definition=world->definition;
+        cache->epoch=world->epoch;cache->heading=heading;cache->camera=*camera;
+        cache->count=cached_count;cache->has_flags=flags!=NULL;
+        if(flags)memcpy(cache->flags,flags,sizeof(cache->flags));
+        cache->valid=1;
+    }
+    return status;
+}
+
+dok_status dok_map_discovery_update(const dok_initial_world *world,
+    const dok_geometry_binding bindings[256],const dok_sprite_list *sprites,
+    const uint16_t *flags,const dok_nds_render_camera *camera,uint32_t heading,
+    dok_map_discovery_workspace *workspace,unsigned char visited[DOK_LEVEL_MAX_CELLS],
+    dok_map_discovery_stats *out)
+{
+    return dok_map_discovery_update_cached(world,bindings,sprites,flags,camera,heading,workspace,visited,out,NULL);
 }

@@ -34,6 +34,22 @@ typedef struct dok_map_discovery_workspace {
 typedef struct dok_map_discovery_stats {
     uint32_t records, eligible, occluded, newly_visited;
 } dok_map_discovery_stats;
+
+/* Optional cache for a level whose base geometry is immutable (N23 static
+ * geometry contract). Dynamic sprite records and source sort/disclosure still
+ * run every update. Overflow falls back to the full path, without truncation. */
+#ifndef DOK_MAP_STATIC_RECORDS
+#define DOK_MAP_STATIC_RECORDS 256u
+#endif
+typedef struct dok_map_static_cache {
+    dok_map_render_record records[DOK_MAP_STATIC_RECORDS];
+    const dok_initial_world *world;
+    const dok_geometry_binding *bindings;
+    const dok_level_definition *definition;
+    dok_nds_render_camera camera;
+    uint16_t flags[256];
+    uint32_t epoch,heading,count,valid,has_flags,hits,misses;
+} dok_map_static_cache;
 _Static_assert(sizeof(dok_map_discovery_workspace)<=DOK_NDS_SCRATCH_BYTES,
     "N20 transient records fit shared scratch");
 
@@ -64,4 +80,9 @@ dok_status dok_map_discovery_update(const dok_initial_world *,
     const dok_nds_render_camera *,uint32_t heading,
     dok_map_discovery_workspace *,unsigned char [DOK_LEVEL_MAX_CELLS],
     dok_map_discovery_stats *out);
+dok_status dok_map_discovery_update_cached(const dok_initial_world *,
+    const dok_geometry_binding [256],const dok_sprite_list *,const uint16_t *,
+    const dok_nds_render_camera *,uint32_t heading,
+    dok_map_discovery_workspace *,unsigned char [DOK_LEVEL_MAX_CELLS],
+    dok_map_discovery_stats *,dok_map_static_cache *);
 #endif

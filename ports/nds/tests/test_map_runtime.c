@@ -11,6 +11,7 @@ static NdsGameplay game;
 static NdsMapRuntime map;
 static unsigned char planes[12288],post[4096],pixels[49152],vram[49152],font[2048];
 static unsigned char saved_planes[12288],saved_pre[4096],saved_post[4096],saved_pixels[49152];
+static unsigned char reference_pixels[DOK_MAP_VIEW_BYTES];
 static uint32_t clock_ticks=100,dmas,checks,frame;
 uint16_t test_sub_palette[256];
 uint32_t cpuGetTiming(void){return clock_ticks++;}
@@ -26,6 +27,8 @@ static void update(uint32_t language){
     nds_map_update(&map,&world,&game,font,language,pixels,vram,frame*123u,1,7,frame,0,63,&camera,0);
     CHECK(!(g_nds_map_probe[2]&1u));CHECK(g_nds_map_probe[1]==2u);CHECK(g_nds_map_probe[5]==frame);
     CHECK(map.live[0]==frame);CHECK(!map.fault);CHECK(!memcmp(pixels,vram,sizeof(pixels)));
+    CHECK(dok_map_raster(reference_pixels,&map.snapshot,dok_map_scales[map.control.zoom],-map.left,-map.top));
+    CHECK(!memcmp(reference_pixels,pixels,sizeof(reference_pixels)));
 }
 static void remember(void){
     memcpy(saved_planes,planes,sizeof(planes));memcpy(saved_pre,map.visited_snapshot,sizeof(saved_pre));
@@ -108,6 +111,40 @@ static void split_presentation(void){
     CHECK(map.profile[10]==UINT32_MAX&&map.profile[11]==UINT32_MAX);
     CHECK(map.profile[7]>=prepare_cpu&&map.profile[7]<BUS_CLOCK/10u);
     CHECK(g_nds_map_probe[5]==frame&&map.live[0]==frame);retained();
+}
+static uint32_t random_state=0x93bc41a7u;
+static uint32_t random_word(void){random_state^=random_state<<13;random_state^=random_state>>17;random_state^=random_state<<5;return random_state;}
+static void incremental_updates(void)
+{
+    static const unsigned dims[3][2]={{7,9},{31,27},{64,64}};
+    for(unsigned d=0;d<3u;++d)for(unsigned zoom=0;zoom<5u;++zoom){
+        memset(&world,0,sizeof(world));memset(&game,0,sizeof(game));
+        unsigned width=dims[d][0],length=dims[d][1],count=width*length;
+        world.effective.settings[DOK_LEVEL_WIDTH]=(int16_t)width;
+        world.effective.settings[DOK_LEVEL_LENGTH]=(int16_t)length;
+        world.effective.object_count=18;
+        for(unsigned i=0;i<16u;++i)world.effective.objects[i]=(dok_level_object){.glyph=(uint8_t)i,.class_id=(uint16_t)(i%14u),.marker=(uint8_t)(20u+i)};
+        world.effective.objects[16]=(dok_level_object){.glyph=32,.marker=86};
+        world.effective.objects[17]=(dok_level_object){.glyph=219,.marker=12};
+        for(unsigned n=0;n<count;++n){
+            for(unsigned p=0;p<3u;++p)world.initial.maps[p][n]=(uint8_t)(random_word()%16u);
+            world.initial.maps[3][n]=(uint8_t)(random_word()&1u);
+        }
+        game.hero.x=(int32_t)(width/2u)*480;game.hero.z=(int32_t)(length/2u)*480;
+        nds_map_load(&map,&world,&game,1);map.control.zoom=(uint8_t)zoom;map.control.follow=0;update(1);
+        for(unsigned step=0;step<100u;++step){
+            unsigned n=random_word()%count;
+            if(step%3u==0u)world.initial.maps[step%3u][n]=(uint8_t)(random_word()%16u);
+            else if(step%3u==1u)world.initial.maps[3][n]^=1u;
+            else world.effective.objects[random_word()%18u].marker^=(uint8_t)random_word();
+            /* Include linear-index row-wrap dependencies at both edges. */
+            world.initial.maps[1][step&1u?width-1u:width]=(uint8_t)(random_word()%16u);
+            game.hero.heading=(int16_t)(random_word()%362u);
+            if(step%11u==0u){game.hero.x=(int32_t)(random_word()%width)*480;game.hero.z=(int32_t)(random_word()%length)*480;}
+            if(step%19u==0u)game.items.inventory.map_available^=1u;
+            clock_ticks+=BUS_CLOCK/12u;update(1);
+        }
+    }
 }
 int main(void){
     world.effective.settings[DOK_LEVEL_WIDTH]=64;world.effective.settings[DOK_LEVEL_LENGTH]=64;
@@ -202,7 +239,18 @@ int main(void){
 #endif
     CHECK(dmas==map.updates);
     uint32_t primary_draws=dmas,primary_skips=map.skips,primary_deferred=map.deferred;
-    exact_comparisons();all_class1_dimensions();split_presentation();
+    /* Rotate without translation, then combine turns with each map plane,
+     * visitation and glyph changes. Every displayed byte must still match
+     * the complete raster, including the floor debt from class1 writes. */
+    for(unsigned h=0;h<=361u;++h){
+        game.hero.heading=(int16_t)h;
+        if(h%17u==0u)world.initial.maps[(h/17u)%3u][10]^=4u;
+        if(h%29u==0u)world.initial.maps[3][10]^=1u;
+        if(h%31u==0u)world.effective.objects[4].marker^=8u;
+        clock_ticks+=BUS_CLOCK/12u;update(1);
+    }
+
+    incremental_updates();exact_comparisons();all_class1_dimensions();split_presentation();
     printf("N21P dirty map checks=%u draws=%u skips=%u deferred=%u PASS\n",checks,primary_draws,primary_skips,primary_deferred);
     return 0;
 }

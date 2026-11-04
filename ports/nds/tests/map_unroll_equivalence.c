@@ -20,16 +20,29 @@ static int buffer_equal(uint32_t alignment)
 }
 static int raster(const dok_map_snapshot *s,unsigned scale,int32_t x,int32_t z,uint32_t alignment)
 {
+    dok_map_arrow_patch patch;
     int a,b;memset(old_buffer,0xa5,sizeof(old_buffer));memset(new_buffer,0xa5,sizeof(new_buffer));
     a=baseline_dok_map_raster(old_buffer+GUARD+alignment,s,scale,x,z);
-    b=dok_map_raster(new_buffer+GUARD+alignment,s,scale,x,z);
-    if(a!=b || !buffer_equal(alignment))return 0;++raster_cases;return 1;
+    b=dok_map_raster_patched(new_buffer+GUARD+alignment,s,scale,x,z,&patch);
+    if(a!=b || !buffer_equal(alignment))return 0;
+    if(b){
+        static const uint16_t headings[]={0,20,65,110,155,200,245,290,341,360,361,65535};
+        dok_map_snapshot turned=*s;
+        for(unsigned h=0;h<sizeof(headings)/sizeof(headings[0]);++h){
+            turned.heading=headings[h];
+            dok_map_arrow_restore(new_buffer+GUARD+alignment,&patch);
+            dok_map_arrow_draw(new_buffer+GUARD+alignment,&turned,scale,x,z,&patch);
+            baseline_dok_map_raster(old_buffer+GUARD+alignment,&turned,scale,x,z);
+            if(!buffer_equal(alignment))return 0;
+        }
+    }
+    ++raster_cases;return 1;
 }
 static int rectangle(int32_t x1,int32_t y1,int32_t x2,int32_t y2,uint32_t alignment)
 {
     uint8_t colour=(uint8_t)random32();memset(old_buffer,0xa5,sizeof(old_buffer));memset(new_buffer,0xa5,sizeof(new_buffer));
     baseline_rect(old_buffer+GUARD+alignment,x1,y1,x2,y2,colour);
-    rect(new_buffer+GUARD+alignment,x1,y1,x2,y2,colour);
+    clipped_rect(new_buffer+GUARD+alignment,x1,y1,x2,y2,colour,0,0,255,159);
     if(!buffer_equal(alignment))return 0;++rect_cases;return 1;
 }
 int main(void)

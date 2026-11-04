@@ -41,7 +41,7 @@ static int rectangle(int32_t x1,int32_t y1,int32_t x2,int32_t y2,uint32_t alignm
 {
     uint8_t colour=(uint8_t)random32();memset(old_buffer,0xa5,sizeof(old_buffer));memset(new_buffer,0xa5,sizeof(new_buffer));
     baseline_rect(old_buffer+GUARD+alignment,x1,y1,x2,y2,colour);
-    rect(new_buffer+GUARD+alignment,x1,y1,x2,y2,colour);
+    clipped_rect(new_buffer+GUARD+alignment,x1,y1,x2,y2,colour,0,0,255,159);
     if(!buffer_equal(alignment))return 0;++rect_cases;return 1;
 }
 static int edges_and_source_order(void)

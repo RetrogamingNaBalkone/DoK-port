@@ -842,9 +842,15 @@ static int sprites_prepare(const dok_render_case *c,const dok_nds_render_camera 
     if(!map_ui->paused){
         uint32_t discovery_start=cpuGetTiming();
         dok_map_discovery_stats discovery;
-        if(dok_map_discovery_update(&world->initial,world->bindings,list,storage->game.collision.flags,
+        if(dok_map_discovery_update_cached(&world->initial,world->bindings,list,storage->game.collision.flags,
             camera,heading,(dok_map_discovery_workspace *)(void *)scratch,world->initial.maps[DOK_WORLD_VISITED],
-            &discovery)!=DOK_STATUS_OK){map_ui->fault=5;return GAMEPLAY_FAILURE();}
+            &discovery,
+#if N23_STATIC_GEOMETRY
+            &map_ui->discovery_cache
+#else
+            NULL
+#endif
+            )!=DOK_STATUS_OK){map_ui->fault=5;return GAMEPLAY_FAILURE();}
         map_ui->profile[8]=cpuGetTiming()-discovery_start;
         map_ui->discovery_records=discovery.records;map_ui->discovery_marked+=discovery.newly_visited;
     }

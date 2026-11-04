@@ -23,7 +23,7 @@ def main():
         exe = target / f'map-runtime-{audit}.exe'
         run([*common, f'-DN21P_AUDIT={audit}', '-o', exe], env=env)
         output = run([exe])
-        assert 'checks=16948549' in output and 'draws=44 skips=164 deferred=111 PASS' in output
+        assert 'checks=16972175' in output and 'draws=44 skips=164 deferred=111 PASS' in output
         results.append(dict(audit=audit, output=output.strip(), artifact=artifact(exe)))
     linux = target / 'map-runtime-linux'
     run([*common, '-DN21P_AUDIT=0', '-target', 'x86_64-linux-musl', '-static', '-o', linux], env=env)
@@ -47,7 +47,7 @@ def main():
                                 first_sha256=hashlib.sha256(before).hexdigest(),
                                 followup_sha256=hashlib.sha256(after).hexdigest(),
                                 export_manifest=artifact(ROOT / 'research/evidence/automap' / language / 'manifest.json')))
-    report = dict(task='N21P', passed=True, checks_per_mode=16948549, modes=results,
+    report = dict(task='N21P', passed=True, checks_per_mode=16972175, modes=results,
                   native_followup_vectors=native_rows,
                   linux_execution=False, linux_artifact=artifact(linux),
                   scope=['actual production runtime with deterministic RAM/DMA device',
@@ -72,7 +72,7 @@ def main():
                       'ports/nds/tools/map/original_map.py',
                       'ports/nds/tools/check_map_dirty.py']])
     (evidence / 'host-dirty-map.json').write_text(json.dumps(report, indent=2) + '\n', encoding='utf8')
-    print(json.dumps(dict(passed=True, checks=33897098, native_followup_vectors=2,
+    print(json.dumps(dict(passed=True, checks=33944350, native_followup_vectors=2,
                           report='research/evidence/nds/n21p/host-dirty-map.json')))
 
 

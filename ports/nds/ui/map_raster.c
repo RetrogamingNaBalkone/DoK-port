@@ -24,23 +24,28 @@ extern uint32_t cpuGetTiming(void);
 uint32_t dok_n23_map_phases[4];
 #endif
 
-DOK_NDS_HOT_CODE static void pixel(uint8_t *out, int32_t x, int32_t y, uint8_t colour)
+DOK_NDS_HOT_CODE static void pixel(uint8_t *out, int32_t x, int32_t y, uint8_t colour,
+                                 dok_map_arrow_patch *patch)
 {
-    if ((uint32_t)x < 256u && (uint32_t)y < 160u)
-        out[(unsigned)y * 256u + (unsigned)x] = colour;
+    if ((uint32_t)x < 256u && (uint32_t)y < 160u) {
+        unsigned offset=(unsigned)y*256u+(unsigned)x;
+        if(patch){unsigned n=patch->count++;patch->offsets[n]=(uint16_t)offset;patch->colours[n]=out[offset];}
+        out[offset] = colour;
+    }
 }
 
-DOK_NDS_HOT_CODE static void rect(uint8_t *out, int32_t x1, int32_t y1,
-                 int32_t x2, int32_t y2, uint8_t colour)
+DOK_NDS_HOT_CODE static void clipped_rect(uint8_t *out, int32_t x1, int32_t y1,
+                 int32_t x2, int32_t y2, uint8_t colour,
+                 int32_t clip_x1,int32_t clip_y1,int32_t clip_x2,int32_t clip_y2)
 {
     int32_t y, t;
     if (x1 > x2) { t = x1; x1 = x2; x2 = t; }
     if (y1 > y2) { t = y1; y1 = y2; y2 = t; }
-    if (x2 < 0 || y2 < 0 || x1 > 255 || y1 > 159) return;
-    if (x1 < 0) x1 = 0;
-    if (y1 < 0) y1 = 0;
-    if (x2 > 255) x2 = 255;
-    if (y2 > 159) y2 = 159;
+    if (x2 < clip_x1 || y2 < clip_y1 || x1 > clip_x2 || y1 > clip_y2) return;
+    if (x1 < clip_x1) x1 = clip_x1;
+    if (y1 < clip_y1) y1 = clip_y1;
+    if (x2 > clip_x2) x2 = clip_x2;
+    if (y2 > clip_y2) y2 = clip_y2;
 #if N23_MAP_VERTICAL
     if (x1 == x2) {
         uint8_t *column=out+(unsigned)y1*256u+(unsigned)x1;
@@ -75,8 +80,10 @@ DOK_NDS_HOT_CODE static int blocks_line(unsigned class_id)
     return class_id == 2 || class_id == 4 || class_id == 7;
 }
 
-DOK_NDS_HOT_CODE int dok_map_raster(uint8_t *out, const dok_map_snapshot *s, unsigned scale,
-                   int32_t offset_x, int32_t offset_z)
+#define rect(...) clipped_rect(__VA_ARGS__,clip_x1,clip_y1,clip_x2,clip_y2)
+DOK_NDS_HOT_CODE static int raster_region(uint8_t *out, const dok_map_snapshot *s, unsigned scale,
+                   int32_t offset_x, int32_t offset_z, dok_map_arrow_patch *patch,
+                   int32_t clip_x1,int32_t clip_y1,int32_t clip_x2,int32_t clip_y2,int arrow)
 {
     unsigned x, z, xbegin, xend;
     uint8_t background, excluded;
@@ -93,7 +100,15 @@ DOK_NDS_HOT_CODE int dok_map_raster(uint8_t *out, const dok_map_snapshot *s, uns
 #if N23_MAP_FINE
     uint32_t phase_stamp=cpuGetTiming(),phase_next;
 #endif
-    memset(out, background, DOK_MAP_VIEW_BYTES);
+    if(clip_x1<0)clip_x1=0;
+    if(clip_y1<0)clip_y1=0;
+    if(clip_x2>255)clip_x2=255;
+    if(clip_y2>159)clip_y2=159;
+    if(clip_x1>clip_x2||clip_y1>clip_y2)return 1;
+    if(clip_x1==0&&clip_x2==255&&clip_y1==0&&clip_y2==159)
+        memset(out, background, DOK_MAP_VIEW_BYTES);
+    else for(int32_t row=clip_y1;row<=clip_y2;++row)
+        memset(out+(unsigned)row*256u+(unsigned)clip_x1,background,(size_t)(clip_x2-clip_x1+1));
     count = (int)s->width * s->length;
     /* Visible outer rectangles form one contiguous range, including their
      * boundary strokes. Determine it once without per-cell clipping work. */
@@ -101,7 +116,7 @@ DOK_NDS_HOT_CODE int dok_map_raster(uint8_t *out, const dok_map_snapshot *s, uns
     for (x = 0; x < s->width; ++x) {
         right = offset_x + (int32_t)(s->width - x) * (int32_t)scale;
         left = right - (int32_t)scale;
-        if (right >= 0 && left <= 255) {
+        if (right >= clip_x1 && left <= clip_x2) {
             if (xbegin == s->width) xbegin = x;
             xend = x + 1;
         }
@@ -112,7 +127,7 @@ DOK_NDS_HOT_CODE int dok_map_raster(uint8_t *out, const dok_map_snapshot *s, uns
 #endif
     for (z = 0; z < s->length; ++z) {
         top = offset_z + (int32_t)z * (int32_t)scale;
-        if (top > 159 || top + (int32_t)scale < 0) continue;
+        if (top > clip_y2 || top + (int32_t)scale < clip_y1) continue;
         for (x = xbegin, index = (int)z * s->width + (int)xbegin;
              x < xend; ++x, ++index) {
             uint8_t colour = s->glyphs[s->maps[2][index]].marker;
@@ -138,7 +153,7 @@ DOK_NDS_HOT_CODE int dok_map_raster(uint8_t *out, const dok_map_snapshot *s, uns
 #endif
     for (z = 0; z < s->length; ++z) {
         top = offset_z + (int32_t)z * (int32_t)scale;
-        if (top > 159 || top + (int32_t)scale < 0) continue;
+        if (top > clip_y2 || top + (int32_t)scale < clip_y1) continue;
         for (x = xbegin, index = (int)z * s->width + (int)xbegin;
              x < xend; ++x, ++index) {
             const dok_map_glyph *o = &s->glyphs[s->maps[0][index]];
@@ -203,6 +218,41 @@ DOK_NDS_HOT_CODE int dok_map_raster(uint8_t *out, const dok_map_snapshot *s, uns
 #if N23_MAP_FINE
     phase_next=cpuGetTiming();dok_n23_map_phases[2]=phase_next-phase_stamp;phase_stamp=phase_next;
 #endif
+    if(arrow)dok_map_arrow_draw(out,s,scale,offset_x,offset_z,patch);
+#if N23_MAP_FINE
+    dok_n23_map_phases[3]=cpuGetTiming()-phase_stamp;
+#endif
+    return 1;
+}
+#undef rect
+
+int dok_map_raster(uint8_t *out,const dok_map_snapshot *s,unsigned scale,int32_t x,int32_t z)
+{
+    return dok_map_raster_patched(out,s,scale,x,z,NULL);
+}
+
+int dok_map_raster_patched(uint8_t *out,const dok_map_snapshot *s,unsigned scale,
+                          int32_t x,int32_t z,dok_map_arrow_patch *patch)
+{
+    return raster_region(out,s,scale,x,z,patch,0,0,255,159,1);
+}
+
+int dok_map_raster_region(uint8_t *out,const dok_map_snapshot *s,unsigned scale,
+                         int32_t x,int32_t z,int32_t x1,int32_t y1,int32_t x2,int32_t y2)
+{
+    return raster_region(out,s,scale,x,z,NULL,x1,y1,x2,y2,0);
+}
+
+void dok_map_arrow_restore(uint8_t *out,const dok_map_arrow_patch *patch)
+{
+    for(unsigned n=patch->count;n>0;--n)out[patch->offsets[n-1]]=patch->colours[n-1];
+}
+
+void dok_map_arrow_draw(uint8_t *out,const dok_map_snapshot *s,unsigned scale,
+                        int32_t offset_x,int32_t offset_z,dok_map_arrow_patch *patch)
+{
+    int32_t left,top;
+    if(patch)patch->count=0;
     /* Drawing once after the traversal removes native uninitialized-stack
      * residue; the three final pixels and native angle cutoffs are preserved. */
     if (s->hero_x >= 0 && s->hero_x < s->width && s->hero_z >= 0 && s->hero_z < s->length) {
@@ -215,13 +265,9 @@ DOK_NDS_HOT_CODE int dok_map_raster(uint8_t *out, const dok_map_snapshot *s, uns
             uint8_t colour = s->glyphs[s->maps[0][hero_index]].marker;
             left = offset_x + (int32_t)(s->width - s->hero_x - 1) * (int32_t)scale;
             top = offset_z + (int32_t)s->hero_z * (int32_t)scale;
-            pixel(out, left + dx[sector], top + dz[sector], colour);
-            pixel(out, left + 2, top + 2, 0);
-            pixel(out, left + 4 - dx[sector], top + 4 - dz[sector], 0);
+            pixel(out, left + dx[sector], top + dz[sector], colour,patch);
+            pixel(out, left + 2, top + 2, 0,patch);
+            pixel(out, left + 4 - dx[sector], top + 4 - dz[sector], 0,patch);
         }
     }
-#if N23_MAP_FINE
-    dok_n23_map_phases[3]=cpuGetTiming()-phase_stamp;
-#endif
-    return 1;
 }

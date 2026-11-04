@@ -2,6 +2,7 @@
 #define NDS_MAP_RUNTIME_H
 #include "dok/map_control.h"
 #include "dok/map_raster.h"
+#include "dok/map_discovery.h"
 #include "../gameplay_probe/gameplay.h"
 #include "dok/render_materials.h"
 #include "dok/time.h"
@@ -35,6 +36,9 @@ typedef struct NdsMapRuntime {
     uint32_t pending_upload_bytes,button_valid,button_capture,button_language;
     const unsigned char *button_pixels;
     unsigned char button_font[64];
+    /* Keep existing planes/visited/profile alignment and observer offsets. */
+    dok_map_arrow_patch arrow_patch;
+    dok_map_static_cache discovery_cache;
 } NdsMapRuntime;
 #ifdef N21P_HOST_TEST
 int nds_map_test_bytes_differ(const void *,const void *,uint32_t);

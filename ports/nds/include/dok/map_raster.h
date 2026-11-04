@@ -39,4 +39,21 @@ static inline unsigned dok_map_arrow_sector(uint32_t h)
 int dok_map_raster(uint8_t *out, const dok_map_snapshot *snapshot,
                    unsigned scale, int32_t offset_x, int32_t offset_z);
 
+/* Save exactly the pixels covered by the arrow, including clipped arrows.
+ * The caller may restore/redraw it only while all other raster inputs and
+ * the output buffer are unchanged. Restore in reverse write order. */
+typedef struct dok_map_arrow_patch {
+    uint16_t offsets[3];
+    uint8_t colours[3], count;
+} dok_map_arrow_patch;
+int dok_map_raster_patched(uint8_t *, const dok_map_snapshot *, unsigned,
+                          int32_t, int32_t, dok_map_arrow_patch *);
+void dok_map_arrow_restore(uint8_t *, const dok_map_arrow_patch *);
+void dok_map_arrow_draw(uint8_t *, const dok_map_snapshot *, unsigned,
+                        int32_t, int32_t, dok_map_arrow_patch *);
+/* Rebuild background/geometry/objects in an inclusive screen rectangle.
+ * Leaves the arrow to the caller so its saved background remains coherent. */
+int dok_map_raster_region(uint8_t *, const dok_map_snapshot *, unsigned,
+                          int32_t, int32_t, int32_t, int32_t, int32_t, int32_t);
+
 #endif
