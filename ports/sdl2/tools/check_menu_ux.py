@@ -54,12 +54,11 @@ def main():
             ['--renderer', 'software', '--res', res, '--level', level, '--skip-intro',
              '--hud', 'desktop', '--size', '1280x720'], frames=4)
 
-    log, _ = run('map-pause', ['--renderer', 'software', '--res', RES[1], '--level', 'LEVEL1', '--skip-intro'],
-                 '1 keydown Tab\n2 state open\n3 state still\n3 shot ' + str(OUT / 'map-open.png') + '\n4 keyup Tab\n5 key Tab\n6 state resumed\n')
+    log, _ = run('map-toggle', ['--renderer', 'software', '--res', RES[1], '--level', 'LEVEL1', '--skip-intro'],
+                 '1 keydown Tab\n2 keyup Tab\n3 state open\n3 shot ' + str(OUT / 'map-open.png') + '\n5 keydown Tab\n6 keyup Tab\n7 state resumed\n', frames=9)
     states = {m[1]: dict(re.findall(r'(\w+)=([^\s]*)', m[2])) for m in re.finditer(r'^STATE (\w+) (.*)$', log, re.M)}
-    for key in ('world', 'ticks', 'pose', 'hp', 'charge', 'maps'):
-        assert states['open'][key] == states['still'][key], (key, states)
-    assert states['resumed']['menu'] == '0' and states['resumed']['world'] == states['open']['world']
+    assert states['open']['menu'] == '27' and states['resumed']['menu'] == '0', states
+    assert states['resumed']['world'] == states['open']['world']
 
     # A valid image-payload variant retains its own source and must be explicitly chosen.
     fixture = ROOT / 'build/sdl2/checks/sp15-resource-fixture'
@@ -105,10 +104,10 @@ def main():
             path.unlink(missing_ok=True)
 
     assert before == {str(p.relative_to(ROOT)): hashlib.sha256(p.read_bytes()).hexdigest() for p in RES}
-    report = dict(task='SP15', processes=checks, map_preserves_world=True,
+    report = dict(task='SP15', processes=checks, map_toggle_preserves_world=True,
                   source_choice_restart=True, browser_add_restart=True, originals_sha256=before)
     (OUT / 'process-report.json').write_text(json.dumps(report, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
-    print(f'PASS: {len(checks)} real processes; map pause, source choice and browser restart')
+    print(f'PASS: {len(checks)} real processes; map toggle, source choice and browser restart')
 
 
 if __name__ == '__main__':

@@ -76,6 +76,8 @@ void SdlInput::handle(const SDL_Event& event){
     switch(event.type){
     case SDL_KEYDOWN:case SDL_KEYUP:
         if(focused_&&event.key.keysym.scancode>SDL_SCANCODE_UNKNOWN&&event.key.keysym.scancode<SDL_NUM_SCANCODES){
+            if(event.type==SDL_KEYUP&&keys_[event.key.keysym.scancode])
+                for(auto key:bindings.keys[index(Action::map)])if(key==event.key.keysym.scancode)presses_[index(Action::map)]=true;
             if(event.type==SDL_KEYDOWN&&!keys_[event.key.keysym.scancode])
                 for(auto action:{Action::fire,Action::weapon1,Action::weapon2})for(auto key:bindings.keys[index(action)])
                     if(key==event.key.keysym.scancode)presses_[index(action)]=true;
@@ -85,6 +87,8 @@ void SdlInput::handle(const SDL_Event& event){
     case SDL_MOUSEMOTION:if(focused_&&capture_)mouse_x_+=event.motion.xrel;break;
     case SDL_MOUSEBUTTONDOWN:case SDL_MOUSEBUTTONUP:
         if(focused_&&event.button.button<mouse_buttons_.size()){
+            if(event.type==SDL_MOUSEBUTTONUP&&mouse_buttons_[event.button.button]&&bindings.mouse[index(Action::map)]==event.button.button)
+                presses_[index(Action::map)]=true;
             if(event.type==SDL_MOUSEBUTTONDOWN&&!mouse_buttons_[event.button.button])
                 for(auto action:{Action::fire,Action::weapon1,Action::weapon2})if(bindings.mouse[index(action)]&&bindings.mouse[index(action)]==event.button.button)presses_[index(action)]=true;
             mouse_buttons_[event.button.button]=event.type==SDL_MOUSEBUTTONDOWN;
@@ -96,6 +100,8 @@ void SdlInput::handle(const SDL_Event& event){
     case SDL_CONTROLLERAXISMOTION:{
         auto found=controllers_.find(event.caxis.which);
         if(focused_&&found!=controllers_.end()&&event.caxis.axis<SDL_CONTROLLER_AXIS_MAX){
+            if(event.caxis.value<=16384&&found->second.axes[event.caxis.axis]>16384&&bindings.triggers[index(Action::map)]==event.caxis.axis)
+                presses_[index(Action::map)]=true;
             if(event.caxis.value>16384&&found->second.axes[event.caxis.axis]<=16384)
                 for(auto action:{Action::fire,Action::weapon1,Action::weapon2})if(bindings.triggers[index(action)]==event.caxis.axis)presses_[index(action)]=true;
             found->second.axes[event.caxis.axis]=event.caxis.value;
@@ -103,6 +109,8 @@ void SdlInput::handle(const SDL_Event& event){
     case SDL_CONTROLLERBUTTONDOWN:case SDL_CONTROLLERBUTTONUP:{
         auto found=controllers_.find(event.cbutton.which);
         if(focused_&&found!=controllers_.end()&&event.cbutton.button<SDL_CONTROLLER_BUTTON_MAX){
+            if(event.type==SDL_CONTROLLERBUTTONUP&&found->second.buttons[event.cbutton.button]&&bindings.buttons[index(Action::map)]==event.cbutton.button)
+                presses_[index(Action::map)]=true;
             if(event.type==SDL_CONTROLLERBUTTONDOWN&&!found->second.buttons[event.cbutton.button])
                 for(auto action:{Action::fire,Action::weapon1,Action::weapon2})if(bindings.buttons[index(action)]==event.cbutton.button)presses_[index(action)]=true;
             found->second.buttons[event.cbutton.button]=event.type==SDL_CONTROLLERBUTTONDOWN;
@@ -153,7 +161,9 @@ InputActions SdlInput::sample(){
     result.yaw_delta=mouse_x_*std::max(0.0f,bindings.mouse_degrees_per_count);mouse_x_=0;
     result.fire=down(Action::fire);result.use=down(Action::use);
     result.fire_pressed=presses_[index(Action::fire)]||edge(Action::fire);
-    result.map=edge(Action::map);result.pause=edge(Action::pause);result.run=down(Action::run);result.slow=down(Action::slow);
+    // Originals toggle the map on release (keyboard state 2), not key repeat.
+    result.map=presses_[index(Action::map)]||(!down(Action::map)&&previous_[index(Action::map)]);
+    result.pause=edge(Action::pause);result.run=down(Action::run);result.slow=down(Action::slow);
     result.next_weapon=edge(Action::next_weapon);result.previous_weapon=edge(Action::previous_weapon);
     result.quicksave=edge(Action::quicksave);result.quickload=edge(Action::quickload);
     if(presses_[index(Action::weapon1)]||edge(Action::weapon1))result.select_weapon=1;

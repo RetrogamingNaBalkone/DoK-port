@@ -145,8 +145,9 @@ const IndexedSurface& SoftwareScene::render(const World& world,Pose pose,const s
             material.flags=image->flags;
         }
     auto parameters=gpu?CameraParameters::kremlin_vga():software_camera_;if(gpu)parameters.width=static_cast<std::int16_t>(view_width);
-    const double focal=presentation_focal(base_fov_);
-    if(base_fov_)parameters.focal_q12=static_cast<std::int16_t>(parameters.focal_q12*focal/200.0);
+    if(discovering_)parameters={320,static_cast<std::int16_t>(dataset_==DatasetId::old_gold?171:161),8,4096,200};
+    const double focal=discovering_?200.0:presentation_focal(base_fov_);
+    if(base_fov_&&!discovering_)parameters.focal_q12=static_cast<std::int16_t>(parameters.focal_q12*focal/200.0);
     SoftwareCamera camera(parameters);camera.set_pose(pose);
     const auto& hero=world.objects.at(*world.player);
     const GpuCamera precise_camera(pose,view_width,hero.motion?hero.motion->mouse_remainder:0,camera_offset,gpu_height,focal);
@@ -173,7 +174,8 @@ const IndexedSurface& SoftwareScene::render(const World& world,Pose pose,const s
         }return result;
     };
     std::vector<RenderPolygon> polygons;
-    const auto bounds=view_cell_bounds(pose,side,level.width,level.length,int(std::ceil((gpu?view_width:presentation_view_width_)*200.0/focal)));
+    const auto bounds=discovering_?original_cell_bounds(pose,side,level.width,level.length):
+        view_cell_bounds(pose,side,level.width,level.length,int(std::ceil((gpu?view_width:presentation_view_width_)*200.0/focal)));
     const auto& tmap=world.maps.at("tmap");const auto& fcmap=world.maps.at("fcmap");const auto& mmap=world.maps.at("mmap");
     auto at=[&](const char* map,int x,int z)->const ObjectDefinition&{
         x=std::clamp(x,0,level.width-1);z=std::clamp(z,0,level.length-1);
@@ -181,8 +183,9 @@ const IndexedSurface& SoftwareScene::render(const World& world,Pose pose,const s
         return *level.object(cells[static_cast<std::size_t>(z)*level.width+x]);
     };
     auto picture=[&](const ObjectDefinition& object){return object_images_.at(static_cast<std::size_t>(level.glyph_index[object.glyph]));};
+    int map_cell=-1;
     auto add=[&](std::optional<RenderPolygon> polygon,std::size_t material){
-        if(polygon){polygon->material=material;polygons.push_back(std::move(*polygon));}
+        if(polygon){polygon->material=material;polygon->map_cell=map_cell;polygons.push_back(std::move(*polygon));}
     };
     auto edge=[&](int x,int y,int z,int width,int height,int orientation,std::size_t material,
                    std::uint8_t flags,int v0=0,int v1=0){
@@ -197,6 +200,7 @@ const IndexedSurface& SoftwareScene::render(const World& world,Pose pose,const s
         add(std::move(polygon),material);
     };
     for(int z=bounds.min_z;z<=bounds.max_z;++z)for(int x=bounds.min_x;x<=bounds.max_x;++x){
+        map_cell=z*level.width+x;
         const auto& object=at("tmap",x,z);const auto& surface=at("fcmap",x,z);
         const int px=x*side,pz=z*side,base=negate16(surface.height_parameter),inset=surface.number(0x54);
         const auto material=picture(object);const auto& image=images_[material];
@@ -258,6 +262,8 @@ const IndexedSurface& SoftwareScene::render(const World& world,Pose pose,const s
         auto polygon=billboard(camera,instance.pose,word(image.width*instance.scale),word(image.height*instance.scale),
             image.width,image.height,static_cast<std::uint8_t>(instance.flags));
         if(polygon){
+            const int x=std::clamp(instance.pose.x/side,0,level.width-1),z=std::clamp(instance.pose.z/side,0,level.length-1);
+            polygon->map_cell=z*level.width+x;
             const auto material=images_.size();
             // GPU sprites do not mutate winding. Reuse already-transparent
             // immutable animation frames; retain the copy fallback for other flags.
@@ -271,11 +277,19 @@ const IndexedSurface& SoftwareScene::render(const World& world,Pose pose,const s
         for(auto& v:p.vertices)v.shade_depth=shade;
         for(auto& v:p.secondary)v.shade_depth=shade;
     }
-    if(geometry_observer_)geometry_observer_(polygons);
-    polygon_count_=polygons.size();
+    if(geometry_observer_&&!discovering_)geometry_observer_(polygons);
+    if(!discovering_)polygon_count_=polygons.size();
     // Native column occlusion is quantized and unsuitable for subpixel GPU geometry.
     if(!gpu)sort_and_cull(polygons,camera.clip());
     else std::stable_sort(polygons.begin(),polygons.end(),[](const auto& a,const auto& b){return a.sort_key>b.sort_key;});
+    if(discovering_){
+        discovered_.clear();
+        for(const auto& polygon:polygons)if((polygon.flags&1)&&polygon.map_cell>=0)
+            discovered_.push_back(static_cast<std::size_t>(polygon.map_cell));
+        std::sort(discovered_.begin(),discovered_.end());
+        discovered_.erase(std::unique(discovered_.begin(),discovered_.end()),discovered_.end());
+        return surface_;
+    }
     if(!gpu||surface_dirty_)surface_.clear();
     surface_dirty_=!gpu;
     const Bytes light{light_.data(),light_.size()};
@@ -294,5 +308,13 @@ const IndexedSurface& SoftwareScene::render(const World& world,Pose pose,const s
         }
     }
     return surface_;
+}
+std::vector<std::size_t> SoftwareScene::discovered_cells(const World& world,Pose pose,
+    const std::vector<PositionedImage>& dynamic,const ImageGetter& getter){
+    if(discovering_)throw std::logic_error("Recursive map discovery");
+    discovering_=true;
+    struct Reset {bool& value;~Reset(){value=false;}} reset{discovering_};
+    render(world,pose,dynamic,{},320,{},getter);
+    return discovered_;
 }
 } // namespace dok

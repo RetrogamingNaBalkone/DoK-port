@@ -133,8 +133,12 @@ int main(int argc,char** argv){
         std::unique_ptr<dok::Hud> hud;std::unique_ptr<dok::SdlAudio> audio,music;
         dok::ViewMotion view_motion;dok::CheatSequence cheat;std::vector<std::uint32_t> scene_pixels;
         dok::FirePressLatch fire_press;
+        std::uint64_t discovery_ticks=~std::uint64_t(0);
+        std::array<std::int32_t,4> discovery_pose{};
+        auto map_visible=[&]{return world&&menu.screen()==dok::MenuScreen::map;};
+        auto menu_blocks=[&]{return menu.active()&&!map_visible();};
         bool running=true,use_pending=false,use_previous=false;
-        auto clear_world=[&]{menu.session_world(nullptr);audio.reset();hud.reset();flow.reset();monsters.reset();projectiles.reset();weapons.reset();animations.reset();scene.reset();world.reset();view_motion.reset();cheat.reset();input.clear();fire_press.clear();input.capture_mouse(false);};
+        auto clear_world=[&]{menu.session_world(nullptr);audio.reset();hud.reset();flow.reset();monsters.reset();projectiles.reset();weapons.reset();animations.reset();scene.reset();world.reset();discovery_ticks=~std::uint64_t(0);view_motion.reset();cheat.reset();input.clear();fire_press.clear();input.capture_mouse(false);};
         auto start=[&](const std::string& level){
             clear_world();music.reset();current=menu.dataset_index();const auto& a=sets.at(current).archive;level_name=level;
             if(replay&&!replay->finished()){const auto id=a.identify();const std::string dataset=id==dok::DatasetId::old_gold?"old_gold":id==dok::DatasetId::kremlin_pkr?"kremlin_pkr":"kremlin_pke";
@@ -165,7 +169,7 @@ int main(int argc,char** argv){
         unsigned drawn_fps=0;dok::DatasetId fps_dataset=dok::DatasetId::unknown;
         std::vector<std::uint32_t> fps_pixels;int fps_width=0;
         while(running){
-            const auto before=settings;bool settings_dirty=false,flow_changed=false,capture_requested=false;
+            const auto before=settings;bool settings_dirty=false,flow_changed=false,capture_requested=false,map_closed=false;
             bool video_changed=false;std::vector<std::string> captures;menu.update(SDL_GetTicks64());
             for(const auto& event:script)if(event.frame==frames){
                 if(event.action=="state"){
@@ -197,10 +201,10 @@ int main(int argc,char** argv){
                 if(e.type==SDL_WINDOWEVENT&&e.window.event==SDL_WINDOWEVENT_FOCUS_LOST)fire_press.clear();
                 if(e.type==SDL_CONTROLLERDEVICEREMOVED)fire_press.clear();
                 if(e.type==SDL_QUIT){if(world){menu.pause();menu.request_quit();}else running=false;}
-                if(!replay&&!hidden&&e.type==SDL_WINDOWEVENT&&e.window.event==SDL_WINDOWEVENT_FOCUS_LOST){input.clear();fire_press.clear();cheat.reset();if(world&&!menu.active())menu.pause();input.capture_mouse(false);}
+                if(!replay&&!hidden&&e.type==SDL_WINDOWEVENT&&e.window.event==SDL_WINDOWEVENT_FOCUS_LOST){input.clear();fire_press.clear();cheat.reset();if(world&&!menu_blocks())menu.pause();input.capture_mouse(false);}
                 if(e.type==SDL_DROPFILE){const std::string path=e.drop.file;SDL_free(e.drop.file);
                     if(world){log<<"Resource load deferred: active world\n";menu.notice("Добавьте ресурсы из главного меню.","Add game resources from the main menu.");}else{music.reset();load(path);if(const auto found=sources.find_source(std::filesystem::u8path(path))){const auto id=sources.sources()[*found].archive.identify();if(!sources.selected(id))settings.resource_choices[static_cast<unsigned>(id)].clear();if(std::find(settings.resource_paths.begin(),settings.resource_paths.end(),path)==settings.resource_paths.end())settings.resource_paths.push_back(path);}}continue;}
-                const bool was_menu=menu.active();
+                const bool was_menu=menu.active(),was_map=map_visible();
                 if(e.type==SDL_KEYDOWN&&!e.key.repeat&&!menu.capturing()){
                     if(e.key.keysym.sym==SDLK_F12)capture_requested=true;
                     if(e.key.keysym.sym==SDLK_F3)settings.show_fps=!settings.show_fps;
@@ -210,15 +214,18 @@ int main(int argc,char** argv){
                         if(SDL_SetWindowFullscreen(display->window(),next?SDL_WINDOW_FULLSCREEN_DESKTOP:0)==0){settings.video.fullscreen=next;stored.video.fullscreen=next;menu.window_mode_changed(next);}
                     }
                 }
-                if(was_menu){int w,h;SDL_GetWindowSize(display->window(),&w,&h);menu.handle(e,w,h);input.clear();fire_press.clear();use_pending=false;cheat.reset();flow_changed=true;}
-                else if(e.type==SDL_KEYDOWN&&!e.key.repeat){
+                if(was_menu&&!was_map){int w,h;SDL_GetWindowSize(display->window(),&w,&h);menu.handle(e,w,h);input.clear();fire_press.clear();use_pending=false;cheat.reset();flow_changed=true;}
+                else {
+                    if(was_map){int w,h;SDL_GetWindowSize(display->window(),&w,&h);menu.handle(e,w,h);map_closed|=!map_visible();}
+                    if(!map_closed&&e.type==SDL_KEYDOWN&&!e.key.repeat){
                     if(e.key.keysym.sym==SDLK_ESCAPE){menu.pause();input.clear();fire_press.clear();input.capture_mouse(false);flow_changed=true;}
                     else if(world&&!(e.key.keysym.mod&(KMOD_CTRL|KMOD_ALT|KMOD_GUI))){const auto key=e.key.keysym.scancode;
                         if(key>=SDL_SCANCODE_A&&key<=SDL_SCANCODE_Z&&cheat.push(char('A'+key-SDL_SCANCODE_A))){weapons->grant_all();log<<"IDKFA\n";}}
+                    }
                 }
             }
             for(const auto command:menu.commands()){
-                flow_changed=true;
+                flow_changed|=!(map_closed&&command==dok::MenuCommand::resume);
                 switch(command){
                 case dok::MenuCommand::start:try{start(menu.level()==4?"LEVEL4":"LEVEL"+std::to_string(menu.level()));}catch(const std::exception& e){clear_world();menu.main_menu();menu.notice("Не удалось загрузить уровень. Подробности в port.log.","Could not load level. See port.log.");log<<e.what()<<'\n';}break;
                 case dok::MenuCommand::add_resource:
@@ -235,7 +242,7 @@ int main(int argc,char** argv){
                         for(const auto& candidate:sources.sources())if(std::find(settings.resource_paths.begin(),settings.resource_paths.end(),candidate.path.u8string())==settings.resource_paths.end())settings.resource_paths.push_back(candidate.path.u8string());
                         refresh_sets();
                     }break;
-                case dok::MenuCommand::resume:input.clear();fire_press.clear();input.capture_mouse(!replay&&!hidden);break;
+                case dok::MenuCommand::resume:if(!map_closed){input.clear();fire_press.clear();}input.capture_mouse(!replay&&!hidden);break;
                 case dok::MenuCommand::main:clear_world();break;
                 case dok::MenuCommand::quit:running=false;break;
                 case dok::MenuCommand::retry:
@@ -257,17 +264,17 @@ int main(int argc,char** argv){
             settings_dirty|=dok::merge_settings_edits(stored,before,settings,false);
             if(settings_dirty)persist();
             input.bindings=settings.input;
-            if(audio){audio->volume(settings.master_volume*settings.effects_volume/100);audio->pause(menu.active());}
+            if(audio){audio->volume(settings.master_volume*settings.effects_volume/100);audio->pause(menu_blocks());}
             if(music)music->volume(settings.master_volume*settings.music_volume/100);
             const auto now=SDL_GetPerformanceCounter();const auto elapsed_ns=replay?16666667ULL:static_cast<std::uint64_t>(double(now-previous_time)*1e9/SDL_GetPerformanceFrequency());previous_time=now;
             const auto actions=input.sample();
-            if(world&&!menu.active()&&actions.map){menu.show_map();input.clear();fire_press.clear();input.capture_mouse(false);flow_changed=true;}
-            if(world&&!menu.active()&&actions.pause){menu.pause();input.clear();fire_press.clear();input.capture_mouse(false);flow_changed=true;}
+            if(world&&!menu.active()&&actions.map&&!map_closed)menu.show_map();
+            if(world&&!menu_blocks()&&actions.pause&&!map_closed){menu.pause();input.clear();fire_press.clear();input.capture_mouse(false);flow_changed=true;}
             if((!replay||replay_live_input)&&actions.use&&!use_previous)use_pending=true;use_previous=actions.use;
-            if(menu.active()){use_pending=false;fire_press.clear();input.capture_mouse(false);view_motion.reset();}
-            if(world&&!menu.active()&&!flow_changed&&flow->phase()==dok::SessionPhase::playing&&(!replay||replay_live_input))fire_press.observe(actions);
+            if(menu_blocks()){use_pending=false;fire_press.clear();input.capture_mouse(false);view_motion.reset();}
+            if(world&&!menu_blocks()&&!flow_changed&&flow->phase()==dok::SessionPhase::playing&&(!replay||replay_live_input))fire_press.observe(actions);
             else fire_press.clear();
-            if(world&&!menu.active()&&!flow_changed&&flow->phase()==dok::SessionPhase::playing){
+            if(world&&!menu_blocks()&&!flow_changed&&flow->phase()==dok::SessionPhase::playing){
                 if(!replay||replay_live_input){
                     if(actions.select_weapon>=0)weapons->select(actions.select_weapon);if(actions.next_weapon)weapons->cycle(1);if(actions.previous_weapon)weapons->cycle(-1);
                     dok::apply_mouse_yaw(*world,actions.yaw_delta);
@@ -308,11 +315,6 @@ int main(int argc,char** argv){
                             if(world->object_for_owner(item).weapon)weapons->picked_up(item);
                         }
                         dok::player_sensors(*world);
-                        const auto explored_pose=*world->objects.at(*world->player).pose;
-                        const auto& explored_map=world->definition;
-                        for(int dz=-1;dz<=1;++dz)for(int dx=-1;dx<=1;++dx){const int x=explored_pose.x/explored_map.cell_side+dx,z=explored_pose.z/explored_map.cell_side+dz;
-                            if(x>=0&&z>=0&&x<explored_map.width&&z<explored_map.length)world->visited[z*explored_map.width+x]=1;
-                        }
                         auto movement=tick_actions;
                         // Interpolate the entire player displacement, including currents.
                         view_motion.step(*world->objects.at(*world->player).pose,double(world->simulation_ticks()),[&]{
@@ -329,12 +331,30 @@ int main(int argc,char** argv){
                 const auto phase=flow->observe();if(replay&&!frame_limit&&phase!=dok::SessionPhase::playing&&!replay->finished())throw std::runtime_error("Input replay interrupted by game outcome before its final sample");if(phase!=dok::SessionPhase::playing){if(phase==dok::SessionPhase::completed)menu.ending();else menu.outcome(phase);input.capture_mouse(false);input.clear();fire_press.clear();use_pending=false;}
             }
             if(video_changed)view_motion.reset();
+            if(world&&!menu_blocks()&&flow->phase()==dok::SessionPhase::playing){
+                const auto p=*world->objects.at(*world->player).pose;
+                const std::array<std::int32_t,4> key{{p.x,p.y,p.z,p.heading}};
+                if(discovery_ticks!=world->simulation_ticks()||discovery_pose!=key){
+                    const auto bounds=dok::original_cell_bounds(p,world->definition.cell_side,world->definition.width,world->definition.length);
+                    auto dynamic=monsters->images(bounds);const auto shots=projectiles->images();dynamic.insert(dynamic.end(),shots.begin(),shots.end());
+                    for(const auto cell:scene->discovered_cells(*world,p,dynamic,[&](auto owner){return animations->image(owner);}))world->visited.at(cell)=1;
+                    discovery_ticks=world->simulation_ticks();discovery_pose=key;
+                }
+                if(map_visible()){
+                    const int x=std::clamp(p.x/world->definition.cell_side,0,world->definition.width-1),z=std::clamp(p.z/world->definition.cell_side,0,world->definition.length-1);
+                    world->visited.at(z*world->definition.width+x)=1;
+                }
+            }
             display->begin();auto* gl=display->gl();const auto output=display->size();
-            if(menu.active()){
-                const auto& frame=menu.render(output[0],output[1]);display->pixels(frame.pixels,frame.width,frame.height,false);
+            SDL_Rect gameplay_rect{0,0,output[0],output[1]};
+            const bool full_map=map_visible()&&world->definition.dataset!=dok::DatasetId::old_gold;
+            if(menu_blocks()||full_map){
+                const auto& frame=menu.render(output[0],output[1]);
+                if(full_map){const int w=std::min(output[0],output[1]*4/3),h=w*3/4;const SDL_Rect r{(output[0]-w)/2,(output[1]-h)/2,w,h};display->pixels(frame.pixels,frame.width,frame.height,false,0,&r);}
+                else display->pixels(frame.pixels,frame.width,frame.height,false);
             }else if(world){
                 const auto pose=*world->objects.at(*world->player).pose;
-                SDL_Rect frame_rect{0,0,output[0],output[1]};
+                auto& frame_rect=gameplay_rect;
                 const bool classic=settings.classic_hud||(settings.auto_hud&&(settings.force_4_3||output[0]*3<=output[1]*4));
                 if(classic||settings.force_4_3){
                     frame_rect.w=std::min(output[0],output[1]*4/3);frame_rect.h=frame_rect.w*3/4;
@@ -385,6 +405,10 @@ int main(int argc,char** argv){
                         display->overlay(hud_frame.pixels,hud_frame.width,hud_frame.height,{frame_rect.x,frame_rect.y+frame_rect.h-hud_frame.height*hud_scale,hud_frame.width*hud_scale,hud_frame.height*hud_scale});
                     }
                 }
+            }
+            if(map_visible()&&!full_map){
+                const auto& frame=menu.render(output[0],output[1]);const int w=std::min(gameplay_rect.w,gameplay_rect.h*4/3),h=w*3/4;
+                display->overlay(frame.pixels,frame.width,frame.height,{gameplay_rect.x,gameplay_rect.y,w,h});
             }
             ++frames;++fps_frames;const auto fps_now=SDL_GetPerformanceCounter();const auto seconds=double(fps_now-fps_time)/SDL_GetPerformanceFrequency();
             if(seconds>=0.5){fps_value=unsigned(fps_frames/seconds+0.5);fps_frames=0;fps_time=fps_now;}

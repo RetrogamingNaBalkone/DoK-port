@@ -1,0 +1,39 @@
+{
+  "task": "SP15",
+  "date": "2026-11-04",
+  "scope": "Independent original PKR/PKE map appearance/input and three-profile native discovery audit",
+  "native_full_indexed_frames": 12,
+  "native_heading_frames": 50,
+  "native_input_samples": 16,
+  "discovery_capture_cases": 22,
+  "discovery_kremlin_cases": 18,
+  "discovery_old_gold_cases": 4,
+  "discovery_missing_cells": 0,
+  "discovery_extra_cells": 0,
+  "discovery_world_and_pixels_immutable": true,
+  "discovery_presentation_independent": true,
+  "original_tab_action": "toggle_on_release",
+  "original_map_pauses_world": false,
+  "map_item_reveals_unvisited": false,
+  "original_sha256": {
+    "originals\\pkr\\RUS\\PKR.EXE": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+    "originals\\pkr\\RUS\\PKR.RES": "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816",
+    "originals\\pkr\\ENG\\PKE.EXE": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b",
+    "originals\\pkr\\ENG\\PKE.RES": "865da340621fa6f90548a84e9ae9bf0a85071befb32a40ca1d359e488f74d458",
+    "originals\\Old_Gold_3D\\OG.EXE": "7965e1d67128f196fbcf2bc449d97197f355c6b81cf043608fc9e01103ea043f",
+    "originals\\Old_Gold_3D\\OLD_GOLD.RES": "e376855167b64a7190ec2da0ba9bd1da129ba178c4033aebadebca3f08b2be25"
+  },
+  "report_sha256": {
+    "pkr-native-report.json": "f705ae4488571a6e01e1ee551f4ffcd8b8e348b69fa67f6ce5b45e53a5163ae3",
+    "pkr-input-report.json": "a3c1ea4fa83645c928947fbbf3b4740e52e13734a0fac0e3f75671bb6cf456c6",
+    "discovery-native-report.json": "4f11b5def516d6a8fbb09c6d908ad8930ab50118cfc7c3705b0c4f521fb18f81"
+  },
+  "comparison_probe_sha256": "33008eb9f696deba2151d3b8f3afcd5e75276b05070bf97ca9df6e76817b8a2c",
+  "audit": "docs/source-port/spec/map-originals-audit.md",
+  "boundaries": [
+    "Original x86 map oracle replaces VGA primitives, x87 scale and uninitialized hero stack locals.",
+    "Input timing is proved by source IRQ/ASM and native poll execution, not a fresh interactive DOS session.",
+    "Discovery compares per-frame native final descriptor cells, not cumulative unknown DOS visited history.",
+    "All scenes use the recorded native snapshot state; all possible dynamic scenes are not claimed."
+  ]
+}

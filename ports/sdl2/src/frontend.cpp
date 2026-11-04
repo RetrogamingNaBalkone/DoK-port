@@ -1,5 +1,6 @@
 #include "dok/frontend.hpp"
 #include "dok/localization.hpp"
+#include "dok/automap.hpp"
 #include <algorithm>
 #include <cmath>
 #include <iomanip>
@@ -77,7 +78,7 @@ void Frontend::enter(MenuScreen screen,int focus){if(screen_==MenuScreen::path)S
 void Frontend::resources(const ResourceSources& sources){
     source_rows_.clear();for(std::size_t i=0;i<sources.sources().size();++i){const auto& source=sources.sources()[i];const auto id=source.archive.identify();source_rows_.push_back({i,id,source.path.u8string(),sources.selected(id)==i});}
 }
-void Frontend::show_map(){if(!world_)return;map_trigger_released_=false;map_return_=screen_;enter(MenuScreen::map);}
+void Frontend::show_map(){if(!world_)return;map_trigger_released_=true;map_return_=screen_;enter(MenuScreen::map);}
 void Frontend::browse(const std::filesystem::path& path){
     std::error_code error;auto absolute=std::filesystem::absolute(path,error);if(error)return;
     std::vector<FileRow> rows;
@@ -358,15 +359,18 @@ void Frontend::handle(const SDL_Event& e,int ww,int wh){
     }
     if(screen_==MenuScreen::map){
         const auto map=static_cast<unsigned>(Action::map);bool toggle=false;
-        if(e.type==SDL_KEYDOWN&&!e.key.repeat&&e.key.keysym.scancode!=SDL_SCANCODE_UNKNOWN)
+        if(e.type==SDL_KEYUP&&e.key.keysym.scancode!=SDL_SCANCODE_UNKNOWN)
             for(auto key:s_.input.keys[map])toggle|=key==e.key.keysym.scancode;
-        if(e.type==SDL_MOUSEBUTTONDOWN&&s_.input.mouse[map])toggle|=s_.input.mouse[map]==e.button.button;
-        if(e.type==SDL_CONTROLLERBUTTONDOWN&&s_.input.buttons[map]>=0)toggle|=s_.input.buttons[map]==e.cbutton.button;
+        if(e.type==SDL_MOUSEBUTTONUP&&s_.input.mouse[map])toggle|=s_.input.mouse[map]==e.button.button;
+        if(e.type==SDL_CONTROLLERBUTTONUP&&s_.input.buttons[map]>=0)toggle|=s_.input.buttons[map]==e.cbutton.button;
         if(e.type==SDL_CONTROLLERAXISMOTION&&s_.input.triggers[map]>=0&&s_.input.triggers[map]==e.caxis.axis){
-            if(e.caxis.value<10000)map_trigger_released_=true;
-            else if(e.caxis.value>16384&&map_trigger_released_)toggle=true;
+            if(e.caxis.value>16384)map_trigger_released_=false;
+            else if(e.caxis.value<10000&&!map_trigger_released_){toggle=true;map_trigger_released_=true;}
         }
         if(toggle){back();return;}
+        if((e.type==SDL_KEYDOWN&&e.key.keysym.sym==SDLK_ESCAPE)||
+           (e.type==SDL_CONTROLLERBUTTONDOWN&&e.cbutton.button==SDL_CONTROLLER_BUTTON_B))back();
+        return; // The map has no menu rows: Space/Enter/A remain gameplay input.
     }
     if(e.type==SDL_KEYDOWN||e.type==SDL_MOUSEBUTTONDOWN||e.type==SDL_MOUSEMOTION)pad_=false;
     if(e.type==SDL_CONTROLLERBUTTONDOWN||e.type==SDL_CONTROLLERAXISMOTION)pad_=true;
@@ -446,6 +450,14 @@ std::vector<TextPage> Frontend::story(const std::string& name,int columns,int ro
 }
 const MenuFrame& Frontend::render(int width,int height){
     native_text_=false;
+    if(screen_==MenuScreen::map&&world_&&archive()){
+        const auto indexed=native_automap(*world_);const auto palette=archive()->palette(world_->definition.palette);
+        frame_.width=320;frame_.height=200;frame_.pixels.assign(64000,0);hits_.clear();
+        const bool og=world_->definition.dataset==DatasetId::old_gold;
+        for(int y=0;y<200;++y)for(int x=0;x<320;++x)
+            if(!og||(x<=world_->definition.width*2&&y<=world_->definition.length*2))frame_.pixels[y*320+x]=palette[indexed.pixels[y*320+x]];
+        return frame_;
+    }
     // The same reference canvas and full-height glyphs are used at every aspect.
     // Large desktop windows get larger text, never horizontally stretched glyphs.
     const int scale=std::max(1,std::min(width/320,height/360));
@@ -526,35 +538,9 @@ const MenuFrame& Frontend::render(int width,int height){
         const int saved=page_;page_=credit_page_;pages_at(content,{content_x,top+pad,content_w,bottom-top-stacked_actions_height-pad*2});credit_page_=page_;page_=saved;top=bottom-stacked_actions_height;
     }else if(screen_==MenuScreen::help){
         const auto content=tr(
-            "УПРАВЛЕНИЕ ПО УМОЛЧАНИЮ\n\nWASD: движение. Мышь: поворот. ЛКМ: огонь. Пробел или Enter: открыть дверь. 1/2 и PgUp/PgDn: оружие. Tab: карта. Esc: пауза.\n\nНазначения и чувствительность можно изменить в настройках управления. Меню работает с клавиатурой, мышью и геймпадом.\n\nСТАРОЕ ЗОЛОТО\n\nВы начинаете без палочки с магией 0/0. Сначала найдите палочку: после этого можно стрелять и подбирать пополнения магии. Соберите 105 монет и найдите выход.\n\nКАРТА\n\nОткрываются посещённые клетки и ближайшее окружение. Найденная карта раскрывает весь уровень. Светлая стрелка показывает героя, жёлтые клетки - двери. Пока карта открыта, игра на паузе.",
-            "DEFAULT CONTROLS\n\nWASD: move. Mouse: turn. Left mouse: fire. Space or Enter: open a door. 1/2 and PgUp/PgDn: weapons. Tab: map. Esc: pause.\n\nChange bindings and sensitivity in Controls. Menus support keyboard, mouse and gamepad.\n\nOLD GOLD\n\nYou start without a wand, with magic at 0/0. Find a wand first: you can then fire and pick up magic refills. Collect 105 coins and find the exit.\n\nMAP\n\nVisited cells and their surroundings are shown. A map pickup reveals the whole level. The bright arrow marks your position; yellow cells are doors. The game is paused while the map is open.");
+            "УПРАВЛЕНИЕ ПО УМОЛЧАНИЮ\n\nWASD: движение. Мышь: поворот. ЛКМ: огонь. Пробел или Enter: открыть дверь. 1/2 и PgUp/PgDn: оружие. Tab: карта. Esc: пауза.\n\nНазначения и чувствительность можно изменить в настройках управления. Меню работает с клавиатурой, мышью и геймпадом.\n\nСТАРОЕ ЗОЛОТО\n\nВы начинаете без палочки с магией 0/0. Сначала найдите палочку: после этого можно стрелять и подбирать пополнения магии. Соберите 105 монет и найдите выход.",
+            "DEFAULT CONTROLS\n\nWASD: move. Mouse: turn. Left mouse: fire. Space or Enter: open a door. 1/2 and PgUp/PgDn: weapons. Tab: map. Esc: pause.\n\nChange bindings and sensitivity in Controls. Menus support keyboard, mouse and gamepad.\n\nOLD GOLD\n\nYou start without a wand, with magic at 0/0. Find a wand first: you can then fire and pick up magic refills. Collect 105 coins and find the exit.");
         pages_at(content,{content_x,top+pad,content_w,bottom-top-stacked_actions_height-pad*2});top=bottom-stacked_actions_height;
-    }else if(screen_==MenuScreen::map&&world_){
-        const auto& d=world_->definition;const auto hero=*world_->objects.at(*world_->player).pose;
-        const int hx=hero.x/d.cell_side,hz=hero.z/d.cell_side;
-        int minx=0,minz=0,maxx=d.width-1,maxz=d.length-1;
-        if(!world_->map_revealed){minx=std::max(0,hx-1);maxx=std::min(d.width-1,hx+1);minz=std::max(0,hz-1);maxz=std::min(d.length-1,hz+1);
-            for(int z=0;z<d.length;++z)for(int x=0;x<d.width;++x)if(world_->visited[z*d.width+x]){minx=std::min(minx,x);maxx=std::max(maxx,x);minz=std::min(minz,z);maxz=std::max(maxz,z);}
-            minx=std::max(0,minx-2);maxx=std::min(d.width-1,maxx+2);minz=std::max(0,minz-2);maxz=std::min(d.length-1,maxz+2);
-        }
-        const int cols=maxx-minx+1,rows=maxz-minz+1,available_h=bottom-top-stacked_actions_height-text_height_-8-pad*2;
-        const int cell=std::max(1,std::min({12,content_w/cols,available_h/rows}));
-        const int ox=margin+(panel_width-cell*cols)/2,oy=top+pad;
-        fill({ox-1,oy-1,cols*cell+2,rows*cell+2},0xff191919);
-        for(int z=minz;z<=maxz;++z)for(int x=minx;x<=maxx;++x){const auto at=z*d.width+x;
-            if(!world_->map_revealed&&!world_->visited[at]&&(std::abs(x-hx)>1||std::abs(z-hz)>1))continue;
-            const auto* object=d.object(world_->maps.at("tmap")[at]);const auto color=object->class_id==2?0xff908574:object->class_id==7?0xffd7b65b:0xff35393a;
-            fill({ox+(x-minx)*cell,oy+(z-minz)*cell,cell,cell},color);
-        }
-        const int px=ox+(hx-minx)*cell,py=oy+(hz-minz)*cell;
-        fill({px,py,cell,cell},0xffe7faff);
-        const double angle=hero.heading*3.14159265358979323846/180;const int dx=int(std::lround(-std::sin(angle)*std::max(2,cell))),dz=int(std::lround(std::cos(angle)*std::max(2,cell)));
-        fill({px+cell/2+dx,py+cell/2+dz,2,2},0xff7fe1ef);
-        const int legend_y=bottom-stacked_actions_height-text_height_-4;
-        fill({content_x,legend_y+4,8,8},0xffe7faff);text(tr("Вы","You"),content_x+14,legend_y,ink_);
-        fill({content_x+72,legend_y+4,8,8},0xffd7b65b);text(tr("Дверь","Door"),content_x+86,legend_y,ink_);
-        text(tr("Тёмное: не исследовано","Dark: unexplored"),content_x+150,legend_y,ink_);
-        top=bottom-stacked_actions_height;
     }else if(screen_==MenuScreen::path){
         paragraph(tr("Введите путь или вставьте его сочетанием Ctrl+V.","Type a path, or paste it with Ctrl+V."),{content_x,top+pad,content_w,text_height_*3});
         const auto path=cp866(path_buffer_);const auto visible=path.size()>std::size_t(content_w/8-1)?path.substr(path.size()-(content_w/8-1)):path;

@@ -1,0 +1,440 @@
+{
+  "task": "SP11/SP09 short input taps r3",
+  "date": "2026-11-04",
+  "status": "REPRODUCED on immutable r2; matching short-tap loss FIXED",
+  "reproduced": "DOWN+UP within one render frame loses fire/weapon selection in r2 while walking/ticks work.",
+  "correction": "Preserve press edges through SDL sampling and one nearest player-tick attempt; keep held fire, clear on lifecycle/input reset.",
+  "before_executable_sha256": "31c7e17d668a1450687fd3faf4bcf65563c38f4c4006277f7575b42fc2b87e80",
+  "after_executable_sha256": "afaeda129934f9597a4061cacab501182f317fe4514bb1e940819d5d22802290",
+  "actual_processes": [
+    {
+      "name": "before-r2-gl",
+      "states": {
+        "ready": {
+          "menu": "0",
+          "ticks": "6764",
+          "pose": "8904,-200,15960,83",
+          "charge": "300",
+          "weapon": "1",
+          "shots": "0",
+          "gun_state": "7",
+          "gun_events": "1"
+        },
+        "after-ctrl-tap": {
+          "menu": "0",
+          "ticks": "12616",
+          "pose": "8904,-200,15960,83",
+          "charge": "300",
+          "weapon": "1",
+          "shots": "0",
+          "gun_state": "7",
+          "gun_events": "1"
+        },
+        "after-mouse-tap": {
+          "menu": "0",
+          "ticks": "18559",
+          "pose": "8904,-200,15960,83",
+          "charge": "300",
+          "weapon": "1",
+          "shots": "0",
+          "gun_state": "7",
+          "gun_events": "1"
+        },
+        "after-2-tap": {
+          "menu": "0",
+          "ticks": "29404",
+          "pose": "8904,-200,15960,83",
+          "charge": "300",
+          "weapon": "1",
+          "shots": "0",
+          "gun_state": "7",
+          "gun_events": "1"
+        },
+        "moved": {
+          "menu": "0",
+          "ticks": "43063",
+          "pose": "7869,-218,16098,83",
+          "charge": "300",
+          "weapon": "1",
+          "shots": "0",
+          "gun_state": "7",
+          "gun_events": "1"
+        }
+      }
+    },
+    {
+      "name": "before-r2-software",
+      "states": {
+        "ready": {
+          "menu": "0",
+          "ticks": "10673",
+          "pose": "8904,-200,15960,83",
+          "charge": "300",
+          "weapon": "1",
+          "shots": "0",
+          "gun_state": "7",
+          "gun_events": "1"
+        },
+        "after-ctrl-tap": {
+          "menu": "0",
+          "ticks": "19752",
+          "pose": "8904,-200,15960,83",
+          "charge": "300",
+          "weapon": "1",
+          "shots": "0",
+          "gun_state": "7",
+          "gun_events": "1"
+        },
+        "after-mouse-tap": {
+          "menu": "0",
+          "ticks": "29257",
+          "pose": "8904,-200,15960,83",
+          "charge": "300",
+          "weapon": "1",
+          "shots": "0",
+          "gun_state": "7",
+          "gun_events": "1"
+        },
+        "after-2-tap": {
+          "menu": "0",
+          "ticks": "46290",
+          "pose": "8904,-200,15960,83",
+          "charge": "300",
+          "weapon": "1",
+          "shots": "0",
+          "gun_state": "7",
+          "gun_events": "1"
+        },
+        "moved": {
+          "menu": "0",
+          "ticks": "67494",
+          "pose": "7239,-182,16182,83",
+          "charge": "300",
+          "weapon": "1",
+          "shots": "0",
+          "gun_state": "7",
+          "gun_events": "1"
+        }
+      }
+    },
+    {
+      "name": "after-gl",
+      "states": {
+        "ready": {
+          "menu": "0",
+          "ticks": "6870",
+          "pose": "8904,-200,15960,83",
+          "charge": "300",
+          "weapon": "1",
+          "shots": "0",
+          "gun_state": "7",
+          "gun_events": "1"
+        },
+        "after-ctrl-tap": {
+          "menu": "0",
+          "ticks": "12810",
+          "pose": "8904,-200,15960,83",
+          "charge": "299",
+          "weapon": "1",
+          "shots": "1",
+          "gun_state": "7",
+          "gun_events": "1"
+        },
+        "after-mouse-tap": {
+          "menu": "0",
+          "ticks": "18740",
+          "pose": "8904,-200,15960,83",
+          "charge": "298",
+          "weapon": "1",
+          "shots": "1",
+          "gun_state": "7",
+          "gun_events": "1"
+        },
+        "after-2-tap": {
+          "menu": "0",
+          "ticks": "29471",
+          "pose": "8904,-200,15960,83",
+          "charge": "298",
+          "weapon": "2",
+          "shots": "0",
+          "gun_state": "7",
+          "gun_events": "1"
+        },
+        "moved": {
+          "menu": "0",
+          "ticks": "43212",
+          "pose": "7824,-214,16104,83",
+          "charge": "298",
+          "weapon": "2",
+          "shots": "0",
+          "gun_state": "7",
+          "gun_events": "1"
+        }
+      }
+    },
+    {
+      "name": "after-software",
+      "states": {
+        "ready": {
+          "menu": "0",
+          "ticks": "10767",
+          "pose": "8904,-200,15960,83",
+          "charge": "300",
+          "weapon": "1",
+          "shots": "0",
+          "gun_state": "7",
+          "gun_events": "1"
+        },
+        "after-ctrl-tap": {
+          "menu": "0",
+          "ticks": "19854",
+          "pose": "8904,-200,15960,83",
+          "charge": "299",
+          "weapon": "1",
+          "shots": "1",
+          "gun_state": "7",
+          "gun_events": "1"
+        },
+        "after-mouse-tap": {
+          "menu": "0",
+          "ticks": "29037",
+          "pose": "8904,-200,15960,83",
+          "charge": "298",
+          "weapon": "1",
+          "shots": "1",
+          "gun_state": "7",
+          "gun_events": "1"
+        },
+        "after-2-tap": {
+          "menu": "0",
+          "ticks": "46217",
+          "pose": "8904,-200,15960,83",
+          "charge": "298",
+          "weapon": "2",
+          "shots": "0",
+          "gun_state": "7",
+          "gun_events": "1"
+        },
+        "moved": {
+          "menu": "0",
+          "ticks": "67284",
+          "pose": "7284,-178,16176,83",
+          "charge": "298",
+          "weapon": "2",
+          "shots": "0",
+          "gun_state": "7",
+          "gun_events": "1"
+        }
+      }
+    },
+    {
+      "name": "gap-reset-gl",
+      "states": {
+        "unready-press-consumed": {
+          "menu": "0",
+          "ticks": "1671",
+          "pose": "8904,-200,15960,83",
+          "charge": "300",
+          "weapon": "1",
+          "shots": "0",
+          "gun_state": "7",
+          "gun_events": "1"
+        },
+        "between-player-ticks": {
+          "menu": "0",
+          "ticks": "2005",
+          "pose": "8904,-200,15960,83",
+          "charge": "300",
+          "weapon": "1",
+          "shots": "0",
+          "gun_state": "7",
+          "gun_events": "1"
+        },
+        "next-player-tick": {
+          "menu": "0",
+          "ticks": "2339",
+          "pose": "8904,-200,15960,83",
+          "charge": "299",
+          "weapon": "1",
+          "shots": "1",
+          "gun_state": "2",
+          "gun_events": "1"
+        },
+        "no-repeat": {
+          "menu": "0",
+          "ticks": "5013",
+          "pose": "8904,-200,15960,83",
+          "charge": "299",
+          "weapon": "1",
+          "shots": "1",
+          "gun_state": "7",
+          "gun_events": "1"
+        },
+        "paused": {
+          "menu": "18",
+          "ticks": "7018",
+          "pose": "8904,-200,15960,83",
+          "charge": "299",
+          "weapon": "1",
+          "shots": "1",
+          "gun_state": "7",
+          "gun_events": "1"
+        },
+        "resumed-no-stale-fire": {
+          "menu": "0",
+          "ticks": "8355",
+          "pose": "8904,-200,15960,83",
+          "charge": "299",
+          "weapon": "1",
+          "shots": "1",
+          "gun_state": "7",
+          "gun_events": "1"
+        },
+        "held-2-progress": {
+          "menu": "0",
+          "ticks": "13368",
+          "pose": "8904,-200,15960,83",
+          "charge": "299",
+          "weapon": "2",
+          "shots": "0",
+          "gun_state": "5",
+          "gun_events": "1"
+        },
+        "held-2-completed": {
+          "menu": "0",
+          "ticks": "20053",
+          "pose": "8904,-200,15960,83",
+          "charge": "299",
+          "weapon": "2",
+          "shots": "0",
+          "gun_state": "7",
+          "gun_events": "1"
+        },
+        "held-fire": {
+          "menu": "0",
+          "ticks": "33422",
+          "pose": "8904,-200,15960,83",
+          "charge": "297",
+          "weapon": "2",
+          "shots": "1",
+          "gun_state": "6",
+          "gun_events": "1"
+        }
+      }
+    },
+    {
+      "name": "gap-reset-software",
+      "states": {
+        "unready-press-consumed": {
+          "menu": "0",
+          "ticks": "1671",
+          "pose": "8904,-200,15960,83",
+          "charge": "300",
+          "weapon": "1",
+          "shots": "0",
+          "gun_state": "7",
+          "gun_events": "1"
+        },
+        "between-player-ticks": {
+          "menu": "0",
+          "ticks": "2005",
+          "pose": "8904,-200,15960,83",
+          "charge": "300",
+          "weapon": "1",
+          "shots": "0",
+          "gun_state": "7",
+          "gun_events": "1"
+        },
+        "next-player-tick": {
+          "menu": "0",
+          "ticks": "2339",
+          "pose": "8904,-200,15960,83",
+          "charge": "299",
+          "weapon": "1",
+          "shots": "1",
+          "gun_state": "2",
+          "gun_events": "1"
+        },
+        "no-repeat": {
+          "menu": "0",
+          "ticks": "5013",
+          "pose": "8904,-200,15960,83",
+          "charge": "299",
+          "weapon": "1",
+          "shots": "1",
+          "gun_state": "7",
+          "gun_events": "1"
+        },
+        "paused": {
+          "menu": "18",
+          "ticks": "7018",
+          "pose": "8904,-200,15960,83",
+          "charge": "299",
+          "weapon": "1",
+          "shots": "1",
+          "gun_state": "7",
+          "gun_events": "1"
+        },
+        "resumed-no-stale-fire": {
+          "menu": "0",
+          "ticks": "8355",
+          "pose": "8904,-200,15960,83",
+          "charge": "299",
+          "weapon": "1",
+          "shots": "1",
+          "gun_state": "7",
+          "gun_events": "1"
+        },
+        "held-2-progress": {
+          "menu": "0",
+          "ticks": "13368",
+          "pose": "8904,-200,15960,83",
+          "charge": "299",
+          "weapon": "2",
+          "shots": "0",
+          "gun_state": "5",
+          "gun_events": "1"
+        },
+        "held-2-completed": {
+          "menu": "0",
+          "ticks": "20053",
+          "pose": "8904,-200,15960,83",
+          "charge": "299",
+          "weapon": "2",
+          "shots": "0",
+          "gun_state": "7",
+          "gun_events": "1"
+        },
+        "held-fire": {
+          "menu": "0",
+          "ticks": "33422",
+          "pose": "8904,-200,15960,83",
+          "charge": "297",
+          "weapon": "2",
+          "shots": "1",
+          "gun_state": "6",
+          "gun_events": "1"
+        }
+      }
+    }
+  ],
+  "source_settings_unchanged": true,
+  "originals_sha256": {
+    "originals\\Old_Gold_3D\\OLD_GOLD.RES": "e376855167b64a7190ec2da0ba9bd1da129ba178c4033aebadebca3f08b2be25",
+    "originals\\Old_Gold_3D\\OG.EXE": "7965e1d67128f196fbcf2bc449d97197f355c6b81cf043608fc9e01103ea043f"
+  },
+  "limitations": [
+    "Scripted raw SDL events; not a capture of the physical user event timings.",
+    "This proves a matching failure mechanism, not every possible cause of the user report.",
+    "Fixed-clock gap/reset checks are separate from ordinary-clock before/after checks."
+  ],
+  "tests": [
+    "Input unit: same-frame DOWN+UP Ctrl/mouse/1/2/trigger, 30/60/144 FPS tick gap, single attempt, clear/focus, held fire.",
+    "21 pre-existing OG grant/pickup/show/hide/fire/recovery scenarios with real Projectiles PASS."
+  ],
+  "transient_state": "InputActions.fire_pressed, SdlInput.presses_, FirePressLatch pending are input transient state, cleared on pause/menu/focus/unplug/retry/new world; not serialized.",
+  "full_report": {
+    "path": "research\\evidence\\source-port\\sp11-idkfa-r3\\report.json",
+    "sha256": "2cd37b8ba97eced02b2d4305fa8af3a057331d5d7a6914a8d8df239395b00e92"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "task": "SP15",
+  "revision": "r3-authentic-maps",
+  "render_cases": 42,
+  "indexed_pixels_per_case": 64000,
+  "pixel_differences": 0,
+  "discovery_native_captures": 22,
+  "discovery_missing_extra": 0,
+  "actual_processes": 12,
+  "menu_regression_processes": 17,
+  "map_toggle": "release",
+  "time": "live",
+  "tips": false,
+  "old_gold": "native 2px top-left overlay; original palette and dot",
+  "kremlin": "native 3px mirrored map; original palette and 8-direction marker",
+  "evidence_reports": {
+    "research/evidence/source-port/sp15-map/og-native-report.json": "daa5a0155e1732f3476fd0312b87e0a9cb330b0054aede44b43e980f682bbc32",
+    "research/evidence/source-port/sp15-map/process/report.json": "29f70c259aa2e133b081734c0413d384595ba8dfbb54b0a961d69cc2e23ccf6f",
+    "research/evidence/source-port/sp15-map/discovery-native-report.json": "4f11b5def516d6a8fbb09c6d908ad8930ab50118cfc7c3705b0c4f521fb18f81"
+  },
+  "limits": [
+    "Pixel oracle replaces graphics device calls and excludes undefined Kremlin stale-stack arrow traces.",
+    "Discovery compares per-frame cells, not cumulative unknown DOS route.",
+    "Actual screenshots precede final modern-wide OG anchor correction; root verifies final anchor in r3."
+  ]
+}

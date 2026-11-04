@@ -123,7 +123,7 @@ SaveSnapshot, не реализация сохранений.
 | Аудиокоманды | World отправляет синхронно, очереди в текущем коде нет | snapshot между callbacks; не из SDL audio callback |
 | ViewMotion | delta_[4], tick_ | T: reset на load/retry; не влияют на симуляцию |
 | Scene/GL/HUD | изображения, палитры, geometry/material caches, viewport и выходные буферы | R; не включать host pointers/GPU IDs |
-| Main/Input/Frontend | use_pending/use_previous, pressed keys, mouse capture, cheat, wall-clock previous frame, меню | T: очистить; пользовательские settings отдельно |
+| Main/Input/Frontend | use_pending/use_previous, FirePressLatch pending edge, SdlInput presses_/pressed keys, mouse capture, cheat, wall-clock previous frame, меню | T: очистить; пользовательские settings отдельно; fire press не переносится между player/session lifecycle |
 
 Snapshot допустим только между завершёнными simulation sweeps и при
 согласованном audio lock. Транзакционный load строит независимый World и

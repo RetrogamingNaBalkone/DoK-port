@@ -14,6 +14,8 @@ struct RenderPolygon {
     RasterAxis axis=RasterAxis::vertical;
     std::size_t material=0,secondary_material=0;
     std::vector<RasterVertex> secondary;
+    // Native render record +4: automap discovery consumes surviving records.
+    int map_cell=-1;
 };
 // Explicit endpoints avoid conflating cell-edge and cell-centred orientations.
 std::optional<RenderPolygon> vertical_plane(const SoftwareCamera& camera,

@@ -49,7 +49,9 @@ int main(){
         dok::SdlInput input;
         key(input,SDL_SCANCODE_W,true);key(input,SDL_SCANCODE_D,true);key(input,SDL_SCANCODE_RIGHT,true);
         auto state=input.sample();check(state.forward==1&&state.strafe==1&&state.turn==1);
-        key(input,SDL_SCANCODE_TAB,true);check(input.sample().map);check(!input.sample().map);
+        key(input,SDL_SCANCODE_TAB,true);check(!input.sample().map);
+        key(input,SDL_SCANCODE_TAB,false);check(input.sample().map);check(!input.sample().map);
+        key(input,SDL_SCANCODE_TAB,true);key(input,SDL_SCANCODE_TAB,false);check(input.sample().map);check(!input.sample().map);
         SDL_Event focus{};focus.type=SDL_WINDOWEVENT;focus.window.event=SDL_WINDOWEVENT_FOCUS_LOST;input.handle(focus);
         state=input.sample();check(!state.forward&&!state.strafe&&!state.turn&&!state.map);
         focus.window.event=SDL_WINDOWEVENT_FOCUS_GAINED;input.handle(focus);check(!input.sample().forward);
@@ -117,7 +119,7 @@ int main(){
             switch(entry.second){
             case dok::Action::use:check(state.use);break;
             case dok::Action::next_weapon:check(state.next_weapon&&!input.sample().next_weapon);break;
-            case dok::Action::map:check(state.map&&!input.sample().map);break;
+            case dok::Action::map:check(!state.map);button.type=SDL_CONTROLLERBUTTONUP;input.handle(button);check(input.sample().map&&!input.sample().map);break;
             case dok::Action::pause:check(state.pause&&!input.sample().pause);break;
             case dok::Action::strafe_right:check(state.strafe==1);break;
             default:check(false);
