@@ -1,8 +1,8 @@
 {
-  "archive": "artifacts/sdl2/windows-playtest-20261104-sp08-sp16-r2.zip",
-  "bytes": 1269196,
-  "sha256": "bbbb2b211e77643b6a7a49a14c511d2ca937760715c32c3a3ea91285d9d1fa25",
-  "executable_sha256": "31c7e17d668a1450687fd3faf4bcf65563c38f4c4006277f7575b42fc2b87e80",
+  "archive": "artifacts/sdl2/windows-playtest-20261104-sp08-sp16-r3.zip",
+  "bytes": 1290418,
+  "sha256": "392e6f52f5e6d0d2b0b515c60bd389a28c94f9fe2517b68b020f6bb022994425",
+  "executable_sha256": "e9a924c4d0889a01b89a409762696b474f4d1b9c24f5dd73162d1e72ff875bbf",
   "entries": 10,
   "payloads_verified": 9,
   "original_resources_included": false,
@@ -17,6 +17,10 @@
   "dataset_transition_processes": 4,
   "completed_tail_processes": 12,
   "completed_tail_pending": false,
-  "idkfa_user_report": "open_not_reproduced",
-  "previous_archive": "artifacts/sdl2/windows-playtest-20261104-sp08-sp16-r1.zip"
+  "idkfa_user_report": "short_tap_loss_reproduced_and_fixed",
+  "authentic_map_pixel_frames": 42,
+  "native_discovery_cases": 22,
+  "authentic_map_app_processes": 12,
+  "full_route_reference": "Recorded predecessor executables; final completed tails on r2",
+  "previous_archive": "artifacts/sdl2/windows-playtest-20261104-sp08-sp16-r2.zip"
 }

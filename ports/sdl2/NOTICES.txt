@@ -2,6 +2,3 @@ UI review methodology: Unslop by Damir Sokolovsky (@heydamir).
 https://heydamir.design/unslop
 Licensed under Creative Commons Attribution 4.0 (CC BY 4.0).
 https://creativecommons.org/licenses/by/4.0/
-
-The project uses its own native SDL2 interface and the original games' visual
-resources supplied by the user. No Unslop sample interface code is included.

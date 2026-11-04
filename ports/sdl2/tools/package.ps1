@@ -9,13 +9,12 @@ foreach ($name in @('dok_port.exe','SDL2.dll')) {
     Copy-Item -LiteralPath (Join-Path $taskBuild $name) -Destination (Join-Path $taskOut $name) -Force
 }
 Copy-Item -LiteralPath (Join-Path $taskRoot 'ports/sdl2/PLAYTEST.md') -Destination (Join-Path $taskOut 'README.md') -Force
-Copy-Item -LiteralPath (Join-Path $taskRoot 'ports/sdl2/NOTICES.txt') -Destination (Join-Path $taskOut 'NOTICES.txt') -Force
-Copy-Item -LiteralPath (Join-Path $env:LOCALAPPDATA 'Programs/SDL2/SDL2-2.32.10/LICENSE.txt') -Destination (Join-Path $taskOut 'SDL2-LICENSE.txt') -Force
-$launcher = '@echo off' + "`r`n" + '"%~dp0dok_port.exe" %*' + "`r`n"
-[IO.File]::WriteAllText((Join-Path $taskOut 'Play.cmd'), $launcher, [Text.Encoding]::ASCII)
-foreach ($mode in @('OpenGL','Software')) {
-    $backend = if ($mode -eq 'OpenGL') {'gl'} else {'software'}
-    $launcher = '@echo off' + "`r`n" + '"%~dp0dok_port.exe" --renderer ' + $backend + ' %*' + "`r`n"
-    [IO.File]::WriteAllText((Join-Path $taskOut "Play-$mode.cmd"), $launcher, [Text.Encoding]::ASCII)
+$taskSdlLicense = [IO.File]::ReadAllText((Join-Path $env:LOCALAPPDATA 'Programs/SDL2/SDL2-2.32.10/LICENSE.txt'))
+$taskAttribution = [IO.File]::ReadAllText((Join-Path $taskRoot 'ports/sdl2/NOTICES.txt'))
+$taskLicenses = "SDL2`r`n====`r`n" + $taskSdlLicense + "`r`nUI methodology`r`n==============`r`n" + $taskAttribution
+[IO.File]::WriteAllText((Join-Path $taskOut 'LICENSES.txt'), $taskLicenses, [Text.UTF8Encoding]::new($false))
+foreach ($name in @('Play.cmd','Play-OpenGL.cmd','Play-Software.cmd','NOTICES.txt','SDL2-LICENSE.txt')) {
+    # Remove only our known obsolete files when refreshing an existing package.
+    Remove-Item -LiteralPath (Join-Path $taskOut $name) -Force -ErrorAction SilentlyContinue
 }
 Get-ChildItem -LiteralPath $taskOut -File | Get-FileHash -Algorithm SHA256 | Select-Object Hash,Path

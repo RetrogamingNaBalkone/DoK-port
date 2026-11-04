@@ -1,0 +1,39 @@
+{
+  "task": "SP15",
+  "revision": "r4",
+  "date": "2026-11-04",
+  "changes": [
+    "720p text scale; 16/24/32px at 720p/1080p/1440p",
+    "Unframed original splash with keyboard/mouse/pad continuation",
+    "README over original FON/GAMEP1 instead of title illustration",
+    "Semantic paragraphs and repaired word wrapping; one desktop credits page"
+  ],
+  "checks": {
+    "ctest": {
+      "passed": 17,
+      "total": 17
+    },
+    "cpu_menu_frames": 572,
+    "backend_menu_frames": 336,
+    "menu_ux_processes": 17,
+    "frontend_processes": 6,
+    "locale_switch_processes": 12,
+    "packaged_processes": 8
+  },
+  "evidence": [
+    "research/evidence/source-port/sp15-ui/r4-final/report.json",
+    "research/evidence/source-port/sp15-ui/r4-process/process-report.json",
+    "research/evidence/source-port/sp15-ui/r4-originals/ru/manifest.json",
+    "research/evidence/source-port/sp15-ui/r4-originals/en/manifest.json",
+    "research/evidence/source-port/sp14-localization/report.json",
+    "research/evidence/source-port/sp08-sp16-checkpoint/windows-playtest-20261104-sp15-r4/report.json"
+  ],
+  "package": "artifacts/sdl2/windows-playtest-20261104-sp15-r4",
+  "archive_sha256": "2392fe2c56bd97804c294b070722db45842197082a4958c9560a93cea996242a",
+  "executable_sha256": "16373ef2a07ca9c707c8d16a3dc4dac07ef5f2b4ab4af551c4ce4c1ce59436c5",
+  "boundaries": [
+    "No new full playthrough matrix",
+    "Physical controller and handheld profile not accepted",
+    "Original RES and EXE unchanged"
+  ]
+}

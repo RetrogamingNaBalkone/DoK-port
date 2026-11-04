@@ -58,9 +58,33 @@ int main(){
         menu.pause();down(menu,1);key(menu,SDLK_RETURN);down(menu,4);key(menu,SDLK_RETURN);auto locale=s.locale;key(menu,SDLK_RIGHT);check(s.locale!=locale,"Live menu locale");
         key(menu,SDLK_ESCAPE);key(menu,SDLK_ESCAPE);check(menu.screen()==dok::MenuScreen::pause,"Settings returns to pause");key(menu,SDLK_UP);key(menu,SDLK_RETURN);check(!menu.active()&&command(menu,dok::MenuCommand::resume),"Resume flow");
         menu.pause();menu.request_quit();key(menu,SDLK_RETURN);check(menu.screen()==dok::MenuScreen::pause,"Exit default is cancel");
-        for(auto size:{std::array<int,2>{1280,720},std::array<int,2>{960,720}}){
-            dok::Frontend pointer(s);pointer.render(size[0],size[1]);SDL_Event click{};click.type=SDL_MOUSEBUTTONDOWN;
-            click.button.button=SDL_BUTTON_LEFT;click.button.x=size[0]/2;click.button.y=210;pointer.handle(click,size[0],size[1]);
+        // Resizing followed by focus/hover used to change the help reservation
+        // and recenter the entire panel on rows without a description.
+        for(auto size:{std::array<int,2>{800,600},std::array<int,2>{1280,720},std::array<int,2>{1920,1080}}){
+            dok::Frontend stable(s);key(stable,SDLK_DOWN);key(stable,SDLK_RETURN);key(stable,SDLK_RETURN);
+            int anchor=-1;
+            for(int row=0;row<12;++row){
+                const auto& f=stable.render(size[0],size[1]);
+                const auto border=std::find(f.pixels.begin(),f.pixels.end(),0xffe0e0e0);
+                check(border!=f.pixels.end(),"Menu header missing");
+                const int top=int(border-f.pixels.begin())/f.width;
+                if(anchor<0)anchor=top;check(top==anchor,"Menu moved when focus changed after resize");
+                const auto selected=std::find(f.pixels.begin(),f.pixels.end(),0xff302b20);
+                check(selected!=f.pixels.end(),"Selected settings row missing");
+                const auto at=selected-f.pixels.begin();SDL_Event motion{};motion.type=SDL_MOUSEMOTION;
+                const int focused=stable.focused_row();
+                motion.motion.x=(int(at%f.width)+8)*size[0]/f.width;motion.motion.y=(int(at/f.width)+4)*size[1]/f.height;
+                stable.handle(motion,size[0],size[1]);
+                check(stable.focused_row()==focused,"Hover target moved after resize");
+                key(stable,SDLK_DOWN);
+            }
+        }
+        for(auto size:{std::array<int,2>{1280,720},std::array<int,2>{960,720},std::array<int,2>{1920,1080},std::array<int,2>{2560,1440}}){
+            dok::Frontend pointer(s);key(pointer,SDLK_DOWN);const auto& f=pointer.render(size[0],size[1]);
+            const auto selected=std::find(f.pixels.begin(),f.pixels.end(),0xff302b20);
+            check(selected!=f.pixels.end(),"Focused menu row must be visible");const auto at=selected-f.pixels.begin();
+            SDL_Event click{};click.type=SDL_MOUSEBUTTONDOWN;
+            click.button.button=SDL_BUTTON_LEFT;click.button.x=(int(at%f.width)+8)*size[0]/f.width;click.button.y=(int(at/f.width)+4)*size[1]/f.height;pointer.handle(click,size[0],size[1]);
             check(pointer.screen()==dok::MenuScreen::settings,"Centered menu mouse hit at both aspects");
         }
         dok::Frontend background(s);background.render(640,480);SDL_Event event{};event.type=SDL_WINDOWEVENT;event.window.event=SDL_WINDOWEVENT_FOCUS_LOST;background.handle(event,640,480);

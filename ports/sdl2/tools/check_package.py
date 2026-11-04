@@ -6,6 +6,7 @@ import os
 from pathlib import Path
 import subprocess
 import sys
+import struct
 
 ROOT = Path(__file__).resolve().parents[3]
 
@@ -17,9 +18,17 @@ def main():
     args = parser.parse_args()
     package = args.package.resolve()
     exe = package / 'dok_port.exe'
-    required = {'dok_port.exe', 'SDL2.dll', 'README.md', 'NOTICES.txt',
-                'SDL2-LICENSE.txt', 'Play.cmd', 'Play-OpenGL.cmd', 'Play-Software.cmd'}
+    required = {'dok_port.exe', 'SDL2.dll', 'README.md', 'LICENSES.txt'}
     assert required <= {p.name for p in package.iterdir()}
+    assert not list(package.glob('*.cmd')) and not list(package.glob('*.bat'))
+    assert not (package / 'NOTICES.txt').exists() and not (package / 'SDL2-LICENSE.txt').exists()
+    licenses = (package / 'LICENSES.txt').read_text(encoding='utf-8')
+    sdl_license = (Path(os.environ['LOCALAPPDATA']) / 'Programs/SDL2/SDL2-2.32.10/LICENSE.txt').read_text(encoding='utf-8')
+    assert sdl_license in licenses and 'CC BY 4.0' in licenses
+    pe = exe.read_bytes()
+    header = struct.unpack_from('<I', pe, 0x3c)[0]
+    assert pe[header:header+4] == b'PE\0\0'
+    assert struct.unpack_from('<H', pe, header+24+68)[0] == 2, 'Game must use Windows GUI subsystem'
     assert not list(package.rglob('*.res')) and not list(package.rglob('*.RES'))
     readme = (package / 'README.md').read_text(encoding='utf-8')
     assert 'Старое золото' in readme and '????' not in readme and '\ufffd' not in readme
@@ -56,7 +65,7 @@ def main():
             print(name, 'PASS', flush=True)
     report = dict(package=str(package.relative_to(ROOT)), processes=results,
                   executable_sha256=hashlib.sha256(exe.read_bytes()).hexdigest(),
-                  readme_utf8=True, original_resources_included=False,
+                  readme_utf8=True, original_resources_included=False, windows_gui_subsystem=True, batch_launchers=False,
                   boundary='Packaged executable smoke checks, not full playthroughs.')
     (out / 'report.json').write_text(json.dumps(report, ensure_ascii=False, indent=2) + '\n',
                                      encoding='utf-8')

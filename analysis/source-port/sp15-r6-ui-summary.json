@@ -1,0 +1,55 @@
+{
+  "tasks": [
+    "SP15",
+    "SP19"
+  ],
+  "revision": "r6",
+  "date": "2026-11-04",
+  "ctest_passed": 17,
+  "menu_processes": 17,
+  "frontend_processes": 6,
+  "reports": [
+    {
+      "summary_schema": 1,
+      "full_report": {
+        "path": "research/evidence/source-port/sp15-ui/r6/report.json",
+        "sha256": "5be09cbc8c2841d4aa87382b9dd2d36d3086a5ac2fb61cf14367429444b58ee9",
+        "bytes": 112
+      },
+      "scope": "Summary of a recorded run; not a new verification. Full report is local and ignored by Git.",
+      "result": {
+        "menu_frames": 518,
+        "readback_frames": 288,
+        "font_contact_sheets": 3,
+        "source_fonts": 6,
+        "no_res": true,
+        "audio": false
+      }
+    },
+    {
+      "summary_schema": 1,
+      "full_report": {
+        "path": "research/evidence/source-port/sp08-sp16-checkpoint/windows-playtest-20261104-sp15-r6/report.json",
+        "sha256": "023874467584b29c7868e62b7583437c534d2e575e8d73c7449b60b7139472be",
+        "bytes": 11424
+      },
+      "scope": "Summary of a recorded run; not a new verification. Full report is local and ignored by Git.",
+      "result": {
+        "package": "artifacts\\sdl2\\windows-playtest-20261104-sp15-r6",
+        "processes": {
+          "detail_pointer": "/processes",
+          "items": 8
+        },
+        "executable_sha256": "db60e73aa546621fd30c55be7d673c3db2d21f1b35c337f02647e4eee1a64c80",
+        "readme_utf8": true,
+        "original_resources_included": false,
+        "windows_gui_subsystem": true,
+        "batch_launchers": false,
+        "boundary": "Packaged executable smoke checks, not full playthroughs."
+      }
+    }
+  ],
+  "package": "artifacts\\sdl2\\windows-playtest-20261104-sp15-r6.zip",
+  "zip_sha256": "3e07c2a854bb84f4e8dfec231b470fbd3e4c7e4ea3f22865c9126701b3adb01f",
+  "exe_sha256": "db60e73aa546621fd30c55be7d673c3db2d21f1b35c337f02647e4eee1a64c80"
+}

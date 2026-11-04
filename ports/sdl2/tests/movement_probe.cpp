@@ -1,4 +1,5 @@
 #include "dok/movement.hpp"
+#include "dok/items.hpp"
 #include <iostream>
 #include <stdexcept>
 
@@ -45,6 +46,21 @@ int main(int argc,char** argv){try{
             for(int step=1;step<=count;++step)dok::update_player_motion(w,input,elapsed*static_cast<unsigned>(step));
             std::cout<<actor.pose->x<<','<<actor.pose->y<<','<<actor.pose->z<<','<<actor.pose->heading<<','
                      <<actor.motion->acceleration<<','<<actor.motion->turn_acceleration<<','<<actor.motion->turn_direction<<','<<actor.motion->bob_direction<<'\n';
+        }else if(op==5||op==6){
+            auto level=definition;for(auto& pair:level.maps)pair.second.assign(pair.second.size(),' ');
+            level.maps["mmap"][0]=hero;
+            dok::ObjectDefinition water;water.glyph='~';water.class_id=12;
+            water.fields={{dok::FieldKind::word,0x66,nx,{}},{dok::FieldKind::word,0x68,nz,{}}};
+            level.glyph_index['~']=int(level.objects.size());level.objects.push_back(water);
+            level.maps["fcmap"].assign(level.maps["fcmap"].size(),'~');
+            dok::World w(level);auto& actor=w.objects.at(*w.player);actor.pose=pose;
+            int count;std::cin>>count;
+            if(op==5){for(int step=0;step<count;++step)dok::player_surface(w);}
+            else for(int frame=0;frame<count;++frame){
+                const auto dt=(std::uint64_t(frame+1)*1000000000/count)-(std::uint64_t(frame)*1000000000/count);
+                w.advance_events(dt,[&](auto,auto){dok::player_surface(w);});
+            }
+            std::cout<<actor.pose->x<<','<<actor.pose->z<<'\n';
         }else throw std::runtime_error("Unknown movement operation");
     }
     return 0;

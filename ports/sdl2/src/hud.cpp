@@ -44,7 +44,10 @@ IndexedSurface Hud::classic(const IndexedSurface& scene,const PlayerState& p,con
     if(scene.width()!=320||scene.height()!=(old_gold_?170:160))throw std::invalid_argument("Classic HUD requires native VGA scene dimensions");
     IndexedSurface out(320,200);std::copy(scene.pixels.begin(),scene.pixels.end(),out.pixels.begin());
     image(out,panel_,0,old_gold_?171:161,320,old_gold_?29:39,false);
-    text(out,4,old_gold_?173:164,message.substr(0,38));
+    const auto line=message.substr(0,38);
+    // FONT8 advance and its one-pixel shadow fit inside the recessed field.
+    const int field_top=old_gold_?172:163,field_height=old_gold_?8:11;
+    text(out,(320-int(line.size())*8-1)/2,field_top+(field_height-9)/2,line);
     if(old_gold_){
         const auto icons=[&](const Image& icon,int x,int value,int maximum){
             const int count=value>0&&maximum>0?std::clamp(value*5/maximum,1,5):0;

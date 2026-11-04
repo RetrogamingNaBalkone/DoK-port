@@ -9,6 +9,7 @@ struct VideoSettings {
     int width=1280,height=720;
     int software_mode=0;
     bool fullscreen=false;
+    int fullscreen_width=1280,fullscreen_height=720;
 };
 bool operator==(const VideoSettings& a,const VideoSettings& b);
 inline bool operator!=(const VideoSettings& a,const VideoSettings& b){return !(a==b);}
@@ -18,8 +19,7 @@ struct AppSettings {
     bool linear=false,show_fps=true,inertia=true;
     // Independent presentation options; never enter simulation state.
     int frame_filter=0; // nearest, linear, sharp bilinear
-    bool fxaa=false,classic_hud=false,auto_hud=true,force_4_3=false;
-    int base_fov=0; // 0 = original projection; otherwise reference-scene degrees 45..110.
+    bool fxaa=false,classic_hud=false,auto_hud=true;
     int master_volume=100,effects_volume=100,music_volume=100;
     DatasetId last_dataset=DatasetId::unknown;
     InputBindings input=InputBindings::defaults();

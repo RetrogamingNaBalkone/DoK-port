@@ -1,0 +1,167 @@
+{
+  "task": "SP15",
+  "revision": "r5",
+  "date": "2026-11-04",
+  "ctest": {
+    "passed": 17,
+    "total": 17
+  },
+  "reports": [
+    {
+      "summary_schema": 1,
+      "full_report": {
+        "path": "research/evidence/source-port/sp15-ui/r5-final/report.json",
+        "sha256": "978ba8faad5f2ef8f7b71e71e95aada55ecd01be7afa2ff1c1535bd94db647f3",
+        "bytes": 112
+      },
+      "scope": "Summary of a recorded run; not a new verification. Full report is local and ignored by Git.",
+      "result": {
+        "menu_frames": 572,
+        "readback_frames": 336,
+        "font_contact_sheets": 3,
+        "source_fonts": 6,
+        "no_res": true,
+        "audio": false
+      }
+    },
+    {
+      "summary_schema": 1,
+      "full_report": {
+        "path": "research/evidence/source-port/sp15-ui/r5-water/report.json",
+        "sha256": "93220765f19254da060ea81682a5ac9abb3aac801a5a79a29b4bbb34aa5196b0",
+        "bytes": 8588
+      },
+      "scope": "Summary of a recorded run; not a new verification. Full report is local and ignored by Git.",
+      "result": {
+        "sample": "originals/Old_Gold_3D/OG.EXE",
+        "sha256_before": "7965e1d67128f196fbcf2bc449d97197f355c6b81cf043608fc9e01103ea043f",
+        "sha256_after": "7965e1d67128f196fbcf2bc449d97197f355c6b81cf043608fc9e01103ea043f",
+        "address_system": "Ghidra MZ segment:offset, not file offset or DPMI selector",
+        "interval": 416,
+        "tick_hz": 10026.73949579832,
+        "nominal_calls_per_second": 24.102739172592116,
+        "cell_side": 336,
+        "nominal_cells_per_second": 7.173434277557177,
+        "placed_surface_definitions": [
+          {
+            "glyph": 120,
+            "class": 12,
+            "flags": 16,
+            "width": 7,
+            "height": 0,
+            "marker": 4,
+            "sprite_flags": 16,
+            "sprite": "8f8e8b82",
+            "animation": "8e90938688859194",
+            "sound": "8f9085848c85925f8782938a",
+            "fields": {
+              "detail_pointer": "/placed_surface_definitions/0/fields",
+              "items": 7
+            }
+          },
+          {
+            "glyph": 176,
+            "class": 12,
+            "flags": 16,
+            "width": 7,
+            "height": 0,
+            "marker": 4,
+            "sprite_flags": 1032,
+            "sprite": "828e848031",
+            "animation": "8e90938688859194",
+            "sound": "8f9085848c85925f8782938a",
+            "fields": {
+              "detail_pointer": "/placed_surface_definitions/1/fields",
+              "items": 7
+            }
+          },
+          {
+            "glyph": 178,
+            "class": 12,
+            "flags": 16,
+            "width": 7,
+            "height": 0,
+            "marker": 2,
+            "sprite_flags": 4104,
+            "sprite": "97889780",
+            "animation": "8e90938688859194",
+            "sound": "8f9085848c85925f8782938a",
+            "fields": {
+              "detail_pointer": "/placed_surface_definitions/2/fields",
+              "items": 7
+            }
+          },
+          {
+            "glyph": 115,
+            "class": 12,
+            "flags": 16,
+            "width": 7,
+            "height": 0,
+            "marker": 13,
+            "sprite_flags": 16,
+            "sprite": "8f8e8b82",
+            "animation": "8e90938688859194",
+            "sound": "8f9085848c85925f8782938a",
+            "fields": {
+              "detail_pointer": "/placed_surface_definitions/3/fields",
+              "items": 7
+            }
+          }
+        ],
+        "checks": {
+          "detail_pointer": "/checks",
+          "items": 30
+        },
+        "boundary": "Native surface arguments + native stat/collision in open geometry; DOS frame delay and bank collision differ explicitly"
+      }
+    },
+    {
+      "summary_schema": 1,
+      "full_report": {
+        "path": "research/evidence/source-port/sp15-map/process/report.json",
+        "sha256": "29f70c259aa2e133b081734c0413d384595ba8dfbb54b0a961d69cc2e23ccf6f",
+        "bytes": 2847
+      },
+      "scope": "Summary of a recorded run; not a new verification. Full report is local and ignored by Git.",
+      "result": {
+        "processes": {
+          "detail_pointer": "/processes",
+          "items": 12
+        },
+        "clock": "fixed diagnostic elapsed; raw SdlInput; ordinary world callbacks",
+        "audio": "dummy",
+        "windows": "hidden"
+      }
+    },
+    {
+      "summary_schema": 1,
+      "full_report": {
+        "path": "research/evidence/source-port/sp08-sp16-checkpoint/windows-playtest-20261104-sp15-r5/report.json",
+        "sha256": "1a2d7101cd2831aeeda758048419caf1a4975461015495aaf8085bdf560bc2bf",
+        "bytes": 11361
+      },
+      "scope": "Summary of a recorded run; not a new verification. Full report is local and ignored by Git.",
+      "result": {
+        "package": "artifacts\\sdl2\\windows-playtest-20261104-sp15-r5",
+        "processes": {
+          "detail_pointer": "/processes",
+          "items": 8
+        },
+        "executable_sha256": "338badc7f5acac7e1f4a746b6532976b1e135b9f6d32a72feab1c7b21b13a8d8",
+        "readme_utf8": true,
+        "original_resources_included": false,
+        "boundary": "Packaged executable smoke checks, not full playthroughs."
+      }
+    }
+  ],
+  "menu_processes": 17,
+  "frontend_processes": 6,
+  "package": "artifacts\\sdl2\\windows-playtest-20261104-sp15-r5.zip",
+  "zip_sha256": "82b780e853d0826a6d7b8212ec04dfa1bec849be868461cdbc945c0e979d24b5",
+  "exe_sha256": "338badc7f5acac7e1f4a746b6532976b1e135b9f6d32a72feab1c7b21b13a8d8",
+  "limitations": [
+    "DOS frame-delay is not emulated; current audit verifies nominal interval and displacement",
+    "Full native automap unchanged; OG fullscreen is a requested presentation adaptation",
+    "No new complete playthrough or physical controller test"
+  ]
+}

@@ -39,7 +39,7 @@ int main(int argc,char** argv){
             key(menu,SDLK_RETURN);shot(display,menu,out/(prefix+"title.png"));key(menu,SDLK_RETURN);
             for(int page=0;menu.screen()==dok::MenuScreen::readme&&page<100;++page)key(menu,SDLK_RETURN);
             shot(display,menu,out/(prefix+"levels.png"));menu.main_menu();key(menu,SDLK_DOWN);key(menu,SDLK_RETURN);key(menu,SDLK_RETURN);shot(display,menu,out/(prefix+"graphics.png"));
-            key(menu,SDLK_ESCAPE);key(menu,SDLK_ESCAPE);for(int i=0;i<3;++i)key(menu,SDLK_DOWN);key(menu,SDLK_RETURN);shot(display,menu,out/(prefix+"credits.png"));frames+=6;
+            key(menu,SDLK_ESCAPE);key(menu,SDLK_ESCAPE);for(int i=0;i<2;++i)key(menu,SDLK_DOWN);key(menu,SDLK_RETURN);check(menu.screen()==dok::MenuScreen::credits,"Credits route");shot(display,menu,out/(prefix+"credits.png"));frames+=6;
         }
         // Readable layout and navigation checks use actual GL/software readback.
         for(int backend=0;backend<2;++backend)for(int lang=0;lang<2;++lang)for(auto size:{std::array<int,2>{1024,768},std::array<int,2>{1280,720}}){

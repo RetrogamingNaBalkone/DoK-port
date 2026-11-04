@@ -39,6 +39,25 @@ int main(int argc,char** argv){
                     for(int y=0;y<rows;++y)for(int x=0;x<8;++x)if(font[chars[i]*rows+y]&(128>>x))for(int dy=0;dy<3;++dy)for(int dx=0;dx<3;++dx)pixels[(band*64+y*3+dy)*w+i*64+12+x*3+dx]=0xffeeeeee;
                 }
                 dok::save_png(out/(std::to_string(dataset)+"-source-vs-menu.png"),w,h,pixels);
+                for(int input=0;input<3;++input){
+                    menu.main_menu();key(menu,SDLK_RETURN);
+                    check(menu.screen()==dok::MenuScreen::title,"Splash route");
+                    key(menu,SDLK_DOWN);check(menu.focused_row()==0,"Splash must have no invisible menu selection");
+                    if(input==0)key(menu,SDLK_RETURN);
+                    else{SDL_Event next{};
+                        if(input==1){next.type=SDL_MOUSEBUTTONDOWN;next.button.button=SDL_BUTTON_LEFT;next.button.x=5;next.button.y=5;}
+                        else{next.type=SDL_CONTROLLERBUTTONDOWN;next.cbutton.button=SDL_CONTROLLER_BUTTON_A;}
+                        menu.handle(next,640,480);menu.render(640,480);
+                    }
+                    check(menu.screen()==(dataset==2?dok::MenuScreen::levels:dok::MenuScreen::readme),"Splash proceeds by keyboard, mouse and pad");
+                    if(dataset!=2){
+                        key(menu,SDLK_DOWN);check(menu.focused_row()==0,"README must have no invisible menu selection");
+                        for(int page=0;menu.screen()==dok::MenuScreen::readme&&page<100;++page)key(menu,SDLK_RETURN);
+                        check(menu.screen()==dok::MenuScreen::levels,"README pages must reach level selection");
+                    }
+                    menu.main_menu();key(menu,SDLK_RETURN);key(menu,SDLK_ESCAPE);
+                    check(menu.screen()==dok::MenuScreen::main,"Splash Escape returns to parent");
+                }
             }
             for(auto size:{std::array<int,2>{320,240},{640,480},{1280,720},{1920,1080}}){
                 const auto prefix=std::to_string(dataset)+"-"+std::to_string(size[0]);
@@ -50,9 +69,11 @@ int main(int argc,char** argv){
                 settings.locale=lang?dok::LocaleId::en:dok::LocaleId::ru;
                 const auto prefix=std::string(lang?"layout-en-":"layout-")+std::to_string(dataset)+"-"+std::to_string(size[0])+"x"+std::to_string(size[1]);
                 auto save=[&](const char* name){shot(menu,size[0],size[1],out/(prefix+"-"+name+".png"));++frames;};
+                menu.main_menu();save("main");
+                for(int i=0;i<3;++i)key(menu,SDLK_DOWN);key(menu,SDLK_RETURN);save("credits");
                 menu.main_menu();key(menu,SDLK_DOWN);key(menu,SDLK_RETURN);key(menu,SDLK_RETURN);save("graphics");
                 menu.pause();save("pause");menu.outcome(dok::SessionPhase::retry);save("outcome");
-                if(size[0]==320){SDL_Event click{};click.type=SDL_MOUSEBUTTONDOWN;click.button.button=SDL_BUTTON_LEFT;click.button.x=30;click.button.y=154;menu.handle(click,320,200);check(menu.screen()==dok::MenuScreen::main,"Second outcome row must be visible and clickable at 320x200");}
+                if(size[0]==320){key(menu,SDLK_DOWN);const auto& f=menu.render(320,200);const auto selected=std::find(f.pixels.begin(),f.pixels.end(),0xff302b20);check(selected!=f.pixels.end(),"Second outcome row must be visible");const auto at=selected-f.pixels.begin();SDL_Event click{};click.type=SDL_MOUSEBUTTONDOWN;click.button.button=SDL_BUTTON_LEFT;click.button.x=int(at%f.width)+8;click.button.y=int(at/f.width)+4;menu.handle(click,320,200);check(menu.screen()==dok::MenuScreen::main,"Second outcome row must be clickable at 320x200");}
                 menu.main_menu();key(menu,SDLK_RETURN);save("title");key(menu,SDLK_RETURN);save("readme");
                 menu.preview_level(1);save("intro");
                 if(size[0]==320){SDL_Event click{};click.type=SDL_MOUSEBUTTONDOWN;click.button.button=SDL_BUTTON_LEFT;click.button.x=30;click.button.y=158;menu.handle(click,320,200);check(!menu.active(),"Intro Start mouse hit at 320x200");}
@@ -63,6 +84,8 @@ int main(int argc,char** argv){
                 dok::Display display(settings.video,false);
                 const auto prefix="readback-"+std::to_string(dataset)+(backend?"-gl":"-sw")+(lang?"-en-":"-ru-")+std::to_string(size[0])+"x"+std::to_string(size[1]);
                 auto save=[&](const char* name){const auto actual=display.size();const auto& frame=menu.render(actual[0],actual[1]);display.begin();display.pixels(frame.pixels,frame.width,frame.height,false);display.screenshot((out/(prefix+"-"+name+".png")).u8string());display.present();++readbacks;};
+                menu.main_menu();key(menu,SDLK_RETURN);save("title");key(menu,SDLK_RETURN);save("readme");
+                menu.main_menu();for(int i=0;i<3;++i)key(menu,SDLK_DOWN);key(menu,SDLK_RETURN);save("credits");
                 menu.preview_level(1);save("intro");menu.outcome(dok::SessionPhase::retry);save("outcome");
                 menu.main_menu();key(menu,SDLK_DOWN);key(menu,SDLK_RETURN);key(menu,SDLK_DOWN);key(menu,SDLK_DOWN);key(menu,SDLK_RETURN);key(menu,SDLK_RETURN);key(menu,SDLK_DOWN);key(menu,SDLK_RETURN);save("bindings");
             }

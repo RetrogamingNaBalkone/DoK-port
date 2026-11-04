@@ -15,7 +15,7 @@ LocaleId system_locale(){
     const bool russian=locales&&locales[0].language&&std::string(locales[0].language)=="ru";
     SDL_free(locales);return russian?LocaleId::ru:LocaleId::en;
 }
-bool operator==(const VideoSettings& a,const VideoSettings& b){return a.renderer==b.renderer&&a.width==b.width&&a.height==b.height&&a.software_mode==b.software_mode&&a.fullscreen==b.fullscreen;}
+bool operator==(const VideoSettings& a,const VideoSettings& b){return a.renderer==b.renderer&&a.width==b.width&&a.height==b.height&&a.software_mode==b.software_mode&&a.fullscreen==b.fullscreen&&a.fullscreen_width==b.fullscreen_width&&a.fullscreen_height==b.fullscreen_height;}
 namespace {
 using Values=std::map<std::string,std::string>;
 std::string path_hex(const std::string& value){const char* digits="0123456789abcdef";std::string out;for(unsigned char c:value){out+=digits[c>>4];out+=digits[c&15];}return out;}
@@ -45,7 +45,7 @@ std::string encode_settings(const AppSettings& s){
     if(s.resource_paths.size()>64)throw std::invalid_argument("Too many saved resource paths");
     std::ostringstream o;o<<"[settings]\nversion=1\n[video]\nrenderer="<<int(s.video.renderer)<<"\nwidth="<<s.video.width<<"\nheight="<<s.video.height
       <<"\nsoftware_mode="<<s.video.software_mode<<"\nfullscreen="<<s.video.fullscreen<<"\nlinear="<<s.linear
-      <<"\nframe_filter="<<s.frame_filter<<"\nfxaa="<<s.fxaa<<"\nclassic_hud="<<s.classic_hud<<"\nauto_hud="<<s.auto_hud<<"\nforce_4_3="<<s.force_4_3<<"\nbase_fov="<<s.base_fov
+      <<"\nframe_filter="<<s.frame_filter<<"\nfxaa="<<s.fxaa<<"\nclassic_hud="<<s.classic_hud<<"\nauto_hud="<<s.auto_hud<<"\nfullscreen_width="<<s.video.fullscreen_width<<"\nfullscreen_height="<<s.video.fullscreen_height
       <<"\n[interface]\nlocale="<<int(s.locale)<<"\nfps="<<s.show_fps<<"\nlast_dataset="<<int(s.last_dataset)
       <<"\n[gameplay]\ninertia="<<s.inertia<<"\n[audio]\nmaster="<<s.master_volume<<"\neffects="<<s.effects_volume<<"\nmusic="<<s.music_volume
       <<"\n[input]\nkeyboard_preset="<<int(s.input.keyboard_preset)<<"\npad_preset="<<int(s.input.pad_preset)<<"\nclassic_pad="<<s.input.classic_pad
@@ -73,8 +73,9 @@ AppSettings load_settings(const std::filesystem::path& file,std::string& warning
         s.video.renderer=RendererKind(integer(m,"video.renderer",int(s.video.renderer),0,1));
         s.video.width=integer(m,"video.width",1280,320,7680);s.video.height=integer(m,"video.height",720,200,4320);
         s.video.software_mode=integer(m,"video.software_mode",0,0,4);s.video.fullscreen=integer(m,"video.fullscreen",0,0,1);
-        s.base_fov=integer(m,"video.base_fov",0,0,110);if(s.base_fov&&s.base_fov<45)throw std::runtime_error("Invalid base FOV");
-        s.force_4_3=integer(m,"video.force_4_3",0,0,1);s.auto_hud=integer(m,"video.auto_hud",1,0,1);
+        s.video.fullscreen_width=integer(m,"video.fullscreen_width",s.video.width,320,7680);
+        s.video.fullscreen_height=integer(m,"video.fullscreen_height",s.video.height,200,4320);
+        s.auto_hud=integer(m,"video.auto_hud",1,0,1);
         s.frame_filter=integer(m,"video.frame_filter",0,0,2);s.fxaa=integer(m,"video.fxaa",0,0,1);s.classic_hud=integer(m,"video.classic_hud",0,0,1);
         s.linear=integer(m,"video.linear",0,0,1);s.locale=LocaleId(integer(m,"interface.locale",int(s.locale),0,1));
         s.show_fps=integer(m,"interface.fps",1,0,1);s.last_dataset=DatasetId(integer(m,"interface.last_dataset",0,0,3));
@@ -113,11 +114,11 @@ bool merge_settings_edits(AppSettings& stored,const AppSettings& a,const AppSett
     bool changed=false;
     if(video){
 #define EDIT_VIDEO(f) if(a.video.f!=b.video.f&&stored.video.f!=b.video.f){stored.video.f=b.video.f;changed=true;}
-        EDIT_VIDEO(renderer) EDIT_VIDEO(width) EDIT_VIDEO(height) EDIT_VIDEO(software_mode) EDIT_VIDEO(fullscreen)
+        EDIT_VIDEO(renderer) EDIT_VIDEO(width) EDIT_VIDEO(height) EDIT_VIDEO(software_mode) EDIT_VIDEO(fullscreen) EDIT_VIDEO(fullscreen_width) EDIT_VIDEO(fullscreen_height)
 #undef EDIT_VIDEO
     }
 #define EDIT(f) if(a.f!=b.f&&stored.f!=b.f){stored.f=b.f;changed=true;}
-    EDIT(resource_paths) EDIT(resource_choices) EDIT(base_fov) EDIT(force_4_3) EDIT(auto_hud) EDIT(frame_filter) EDIT(fxaa) EDIT(classic_hud) EDIT(locale) EDIT(linear) EDIT(show_fps) EDIT(inertia) EDIT(master_volume) EDIT(effects_volume) EDIT(music_volume) EDIT(last_dataset)
+    EDIT(resource_paths) EDIT(resource_choices) EDIT(auto_hud) EDIT(frame_filter) EDIT(fxaa) EDIT(classic_hud) EDIT(locale) EDIT(linear) EDIT(show_fps) EDIT(inertia) EDIT(master_volume) EDIT(effects_volume) EDIT(music_volume) EDIT(last_dataset)
     EDIT(input.keys) EDIT(input.buttons) EDIT(input.triggers) EDIT(input.mouse) EDIT(input.classic_pad)
     EDIT(input.keyboard_preset) EDIT(input.pad_preset) EDIT(input.mouse_degrees_per_count) EDIT(input.turn_sensitivity) EDIT(input.stick_deadzone)
 #undef EDIT

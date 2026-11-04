@@ -11,6 +11,7 @@
 #include "dok/hud.hpp"
 #include "dok/sdl_audio.hpp"
 #include "dok/display.hpp"
+#include "dok/presentation.hpp"
 #include "dok/frontend.hpp"
 #include "dok/view_motion.hpp"
 #include "dok/cheat.hpp"
@@ -31,12 +32,22 @@ struct Loaded {std::filesystem::path path;dok::Archive archive;};
 struct ScriptEvent {unsigned frame;std::string action,value;};
 }
 int main(int argc,char** argv){
-    SDL_SetMainReady();if(SDL_Init(SDL_INIT_VIDEO|SDL_INIT_GAMECONTROLLER|SDL_INIT_AUDIO)!=0){std::cerr<<SDL_GetError()<<'\n';return 1;}SdlEnd sdl;
+    const bool diagnostic_hidden=std::any_of(argv+1,argv+argc,[](const char* arg){return std::string(arg)=="--hidden";});
+    std::filesystem::path log_path;
+    const auto fail=[&](const char* message){
+        std::cerr<<message<<'\n';
+        if(!log_path.empty()){std::ofstream log(log_path,std::ios::app);log<<"Fatal error: "<<message<<'\n';}
+#ifdef _WIN32
+        if(!diagnostic_hidden)SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR,"DoK Source Port",message,nullptr);
+#endif
+        return 1;
+    };
+    SDL_SetMainReady();if(SDL_Init(SDL_INIT_VIDEO|SDL_INIT_GAMECONTROLLER|SDL_INIT_AUDIO)!=0)return fail(SDL_GetError());SdlEnd sdl;
     try{
         char* pref=SDL_GetPrefPath("DoK-port","SourcePort");if(!pref)throw std::runtime_error(SDL_GetError());
         std::filesystem::path user_path=std::filesystem::u8path(pref);SDL_free(pref);
         for(int i=1;i+1<argc;++i)if(std::string(argv[i])=="--user-dir")user_path=std::filesystem::u8path(argv[++i]);
-        std::filesystem::create_directories(user_path);std::ofstream log(user_path/"port.log");
+        std::filesystem::create_directories(user_path);log_path=user_path/"port.log";std::ofstream log(log_path);
         std::string warning;auto stored=dok::load_settings(user_path/"settings.ini",warning);auto settings=stored;
         unsigned frame_limit=0;std::string screenshot,level_name,script_path,replay_path;std::optional<dok::InputReplay> replay;std::vector<std::string> paths,source_choices;bool skip_intro=false,replay_live_input=false,hidden=false;
         for(int i=1;i<argc;++i){std::string arg=argv[i];
@@ -347,11 +358,10 @@ int main(int argc,char** argv){
             }
             display->begin();auto* gl=display->gl();const auto output=display->size();
             SDL_Rect gameplay_rect{0,0,output[0],output[1]};
-            const bool full_map=map_visible()&&world->definition.dataset!=dok::DatasetId::old_gold;
+            const bool full_map=map_visible();
             if(menu_blocks()||full_map){
                 const auto& frame=menu.render(output[0],output[1]);
-                if(full_map){const int w=std::min(output[0],output[1]*4/3),h=w*3/4;const SDL_Rect r{(output[0]-w)/2,(output[1]-h)/2,w,h};display->pixels(frame.pixels,frame.width,frame.height,false,0,&r);}
-                else display->pixels(frame.pixels,frame.width,frame.height,false);
+                display->pixels(frame.pixels,frame.width,frame.height,false);
             }else if(world){
                 const auto pose=*world->objects.at(*world->player).pose;
                 auto& frame_rect=gameplay_rect;
@@ -406,10 +416,6 @@ int main(int argc,char** argv){
                     }
                 }
             }
-            if(map_visible()&&!full_map){
-                const auto& frame=menu.render(output[0],output[1]);const int w=std::min(gameplay_rect.w,gameplay_rect.h*4/3),h=w*3/4;
-                display->overlay(frame.pixels,frame.width,frame.height,{gameplay_rect.x,gameplay_rect.y,w,h});
-            }
             ++frames;++fps_frames;const auto fps_now=SDL_GetPerformanceCounter();const auto seconds=double(fps_now-fps_time)/SDL_GetPerformanceFrequency();
             if(seconds>=0.5){fps_value=unsigned(fps_frames/seconds+0.5);fps_frames=0;fps_time=fps_now;}
             if(settings.show_fps&&world&&!menu.active()){
@@ -435,5 +441,5 @@ int main(int argc,char** argv){
         log<<"Clean shutdown; frames="<<frames<<" datasets="<<sets.size()<<" menu="<<int(menu.screen())<<'\n';
         if(world){const auto& pose=*world->objects.at(*world->player).pose;log<<"Player x="<<pose.x<<" z="<<pose.z<<" heading="<<pose.heading<<" ticks="<<world->simulation_ticks()<<'\n';}
         std::cout<<"SDL completed: "<<frames<<" frames, "<<sets.size()<<" datasets\n";return 0;
-    }catch(const std::exception& e){std::cerr<<e.what()<<'\n';return 1;}
+    }catch(const std::exception& e){return fail(e.what());}
 }

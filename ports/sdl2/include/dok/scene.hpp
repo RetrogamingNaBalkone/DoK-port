@@ -19,7 +19,7 @@ public:
     void software_resolution(int width,int height);
     // Modern viewport: square game coordinates plus 1.2 VGA pixel correction.
     // Native software_resolution remains the independent DOS reference path.
-    void software_presentation(int width,int height);
+    void software_presentation(int width,int height,int reference_height=160);
     void base_fov(int degrees){presentation_focal(degrees);base_fov_=degrees;}
     // Explicit diagnostic hooks; never enabled by the gameplay application.
     void native_light_history(bool enabled){if(enabled)raster_reference_.emplace();else raster_reference_.reset();}
