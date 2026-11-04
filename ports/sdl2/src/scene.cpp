@@ -44,8 +44,10 @@ CellBounds original_cell_bounds(Pose pose,int side,int map_width,int map_length)
         add32(z,sar32(sub32(multiply32(side*9,rc),multiply32(side*6,rs)),15)),
         add32(z,sar32(sub32(multiply32(side*9,rc),multiply32(side*-6,rs)),15))}};
     for(auto& n:xs)n=word(divide32(n,side));for(auto& n:zs)n=word(divide32(n,side));
+    // PKR 1098:3335/3343 compares the already reduced minimum, not near corner 1.
+    // Keeping that asymmetric native bound preserves equal-depth polygon ordering.
     return {std::max(0,*std::min_element(xs.begin(),xs.end())),std::max(0,*std::min_element(zs.begin(),zs.end())),
-        std::min(map_width-1,*std::max_element(xs.begin(),xs.end())),std::min(map_length-1,*std::max_element(zs.begin(),zs.end()))};
+        std::min(map_width-1,std::max({xs[0],xs[2],xs[3]})),std::min(map_length-1,std::max({zs[0],zs[2],zs[3]}))};
 }
 CellBounds view_cell_bounds(Pose pose,int side,int width,int length,int view_width){
     auto b=original_cell_bounds(pose,side,width,length);const int margin=std::max(0,(view_width-320+31)/32);
@@ -78,11 +80,12 @@ SoftwareScene::SoftwareScene(const Archive& archive,const LevelDefinition& level
             index=images_.size();images_.push_back(copy);
             flowing_sources_.emplace(object_images_.size(),std::move(copy));
         }
-        object_images_.push_back(index);
+        object_images_.push_back(index);bound_images_.push_back(nullptr);
         for(const auto& field:object.fields)if(field.kind==FieldKind::image)load(field.bytes);
     }
     auto light=archive.light(level.dataset==DatasetId::old_gold?"\x91\x82\x85\x92_\x97":level.light);light_.assign(light.data,light.data+light.size);
     palette_=archive.palette(level.palette);
+    software_resolution(320,200);
 }
 std::size_t SoftwareScene::resource(const std::string& name)const{return names_.at(name);}
 void SoftwareScene::software_resolution(int width,int height){
@@ -90,14 +93,16 @@ void SoftwareScene::software_resolution(int width,int height){
         throw std::invalid_argument("Not an original software video mode");
     // PKR 1008:0b8b..0b9f: K = trunc(4096 * horizontal scale).
     // 1008:0cf0..0d18: viewport height = screen height - trunc(panel height * vertical scale).
-    const int height_argument=int(float(height)-39.0f*(float(height)/200.0f));
+    // OG 203d:00cb and measured LEVEL4 RAM: 320x171 -> clip320x170.
+    const float panel_height=dataset_==DatasetId::old_gold?29.0f:39.0f;
+    const int height_argument=int(float(height)-panel_height*(float(height)/200.0f));
     software_camera_={static_cast<std::int16_t>(width),static_cast<std::int16_t>(height_argument),8,
         static_cast<std::int16_t>(4096.0f*(float(width)/320.0f)),200};
     const int scene_height=(height_argument/2)*2;
     if(surface_.width()!=width||surface_.height()!=scene_height)surface_=IndexedSurface(width,scene_height);
     frame_height_=height;
 }
-const IndexedSurface& SoftwareScene::render(const World& world,Pose pose,const std::vector<PositionedImage>& dynamic,const Draw& gpu,int view_width,std::array<double,4> camera_offset){
+const IndexedSurface& SoftwareScene::render(const World& world,Pose pose,const std::vector<PositionedImage>& dynamic,const Draw& gpu,int view_width,std::array<double,4> camera_offset,const ImageGetter& getter){
     const auto& level=world.definition;const auto side=level.cell_side;
     if(dataset_!=level.dataset||level_name_!=level.name||object_images_.size()!=level.objects.size())
         throw std::invalid_argument("Scene/world mismatch");
@@ -123,20 +128,39 @@ const IndexedSurface& SoftwareScene::render(const World& world,Pose pose,const s
         image.flags=entry.second.flags;
     }
     flowing_phase_=flowing_phase;
+    // Update all base materials, including animated walls, before dimensions
+    // enter the polygon constructors. Copy keeps raster winding private to Scene.
+    if(getter)for(std::size_t i=0;i<world.objects.size();++i)
+        if(const auto* image=getter(world.objects[i].owner)){
+            auto& material=images_[object_images_[i]];
+            if(bound_images_[i]!=image){material=*image;bound_images_[i]=image;}
+            material.flags=image->flags;
+        }
     auto parameters=gpu?CameraParameters::kremlin_vga():software_camera_;if(gpu)parameters.width=static_cast<std::int16_t>(view_width);
-    SoftwareCamera camera(parameters);if(!gpu)camera.set_pose(pose);
+    SoftwareCamera camera(parameters);camera.set_pose(pose);
     const auto& hero=world.objects.at(*world.player);
     const GpuCamera precise_camera(pose,view_width,hero.motion?hero.motion->mouse_remainder:0,camera_offset);
     const auto vertical_plane=[&](const SoftwareCamera& c,Pose a,Pose b,std::int16_t h,int tw,int th,
         std::uint8_t flags=1,std::int16_t bias=0,int v0=0,int v1=0,bool reflection=false){
-        return gpu?precise_camera.vertical(a,b,h,tw,th,flags,v0,v1,reflection):
+        auto result=gpu?precise_camera.vertical(a,b,h,tw,th,flags,v0,v1,reflection):
             dok::vertical_plane(c,a,b,h,tw,th,flags,bias,v0,v1,reflection);
+        if(gpu&&dataset_==DatasetId::old_gold&&result){const auto p=c.transform(a.x,a.y,a.z);result->old_gold_light=old_gold_light_row(p.lateral,p.depth,1008);}return result;
     };
     const auto billboard=[&](const SoftwareCamera& c,Pose p,std::int16_t w,std::int16_t h,int tw,int th,std::uint8_t flags=1){
-        return gpu?precise_camera.sprite(p,w,h,tw,th,flags):dok::billboard(c,p,w,h,tw,th,flags);
+        auto result=gpu?precise_camera.sprite(p,w,h,tw,th,flags):dok::billboard(c,p,w,h,tw,th,flags);
+        if(gpu&&dataset_==DatasetId::old_gold&&result){const auto v=c.transform(p.x,p.y,p.z);result->old_gold_light=old_gold_light_row(sub32(p.x,pose.x),v.depth,2184);}return result;
     };
     const auto horizontal_plane=[&](const SoftwareCamera& c,Pose p,std::int16_t side,int tw,int th,bool ceiling=false){
-        return gpu?precise_camera.horizontal(p,side,tw,th,ceiling):dok::horizontal_plane(c,p,side,tw,th,ceiling);
+        auto result=gpu?precise_camera.horizontal(p,side,tw,th,ceiling):dok::horizontal_plane(c,p,side,tw,th,ceiling);
+        if(dataset_==DatasetId::old_gold&&result){
+            auto a=c.transform(p.x,p.y,add32(p.z,side)),b=c.transform(add32(p.x,side),p.y,p.z);
+            if(a.depth<0)a.depth=sar32(a.depth,5);if(b.depth<0)b.depth=sar32(b.depth,5);
+            result->old_gold_light=old_gold_light_row(a.lateral,a.depth,1008);
+            // OG 24cf:1964..19a0 / 1f8f..1fcb adds camera-relative Y/4,
+            // then ABS, unlike Kremlin's max(0, average depth).
+            const auto key=add32(sar32(add32(a.depth,b.depth),1),sar32(sub32(p.y,pose.y),2));
+            result->sort_key=key<0?sub32(0,key):key;
+        }return result;
     };
     std::vector<RenderPolygon> polygons;
     const auto bounds=view_cell_bounds(pose,side,level.width,level.length,gpu?view_width:320);
@@ -232,6 +256,12 @@ const IndexedSurface& SoftwareScene::render(const World& world,Pose pose,const s
             add(std::move(polygon),material);
         }
     }
+    if(dataset_==DatasetId::old_gold)for(auto& p:polygons){
+        const float shade=1920.0f+120.0f*p.old_gold_light;
+        for(auto& v:p.vertices)v.shade_depth=shade;
+        for(auto& v:p.secondary)v.shade_depth=shade;
+    }
+    if(geometry_observer_)geometry_observer_(polygons);
     polygon_count_=polygons.size();
     // Native column occlusion is quantized and unsuitable for subpixel GPU geometry.
     if(!gpu)sort_and_cull(polygons,camera.clip());
@@ -246,10 +276,11 @@ const IndexedSurface& SoftwareScene::render(const World& world,Pose pose,const s
         auto& image=images_[polygon.material];
         if(polygon.axis==RasterAxis::vertical&&polygon.updates_image_winding)
             image.flags=static_cast<std::uint16_t>((image.flags&~0x20)|(polygon.reverse_edges?0x20:0));
-        if(gpu)gpu(polygon.vertices,image,light,polygon.axis);else rasterize(surface_,polygon.vertices,image,light,camera.clip(),polygon.axis);
+        if(gpu)gpu(polygon.vertices,image,light,polygon.axis);else if(dataset_==DatasetId::old_gold)rasterize_old_gold(surface_,polygon.vertices,image,light,camera.clip(),polygon.old_gold_light,polygon.axis);else rasterize(surface_,polygon.vertices,image,light,camera.clip(),polygon.axis,1920,raster_reference_?&*raster_reference_:nullptr);
         if(!polygon.secondary.empty()){
             if(gpu)gpu(polygon.secondary,images_[polygon.secondary_material],light,RasterAxis::horizontal);
-            else rasterize(surface_,polygon.secondary,images_[polygon.secondary_material],light,camera.clip(),RasterAxis::horizontal);
+            else if(dataset_==DatasetId::old_gold)rasterize_old_gold(surface_,polygon.secondary,images_[polygon.secondary_material],light,camera.clip(),polygon.old_gold_light,RasterAxis::horizontal);
+            else rasterize(surface_,polygon.secondary,images_[polygon.secondary_material],light,camera.clip(),RasterAxis::horizontal,1920,raster_reference_?&*raster_reference_:nullptr);
         }
     }
     return surface_;

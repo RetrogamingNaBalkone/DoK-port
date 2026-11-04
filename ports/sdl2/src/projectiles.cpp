@@ -40,8 +40,9 @@ std::int16_t Projectiles::spawn(OwnerId source,std::uint8_t glyph){
     const auto& actor=world_.object_for_owner(source);
     if(!actor.pose)return 0;
     for(unsigned slot=0;slot<256;++slot){
-        // Static live definitions are reserved. Reclaim of flags400 actors is
-        // connected with the AI object lifecycle; no live definition is erased.
+        // Static definitions are reserved. Native flags0400 marks a completed
+        // dynamic projectile; this port releases its optional slot immediately
+        // after cancelling the callback, so the same lowest slot is reusable.
         if(world_.definition.glyph_index[slot]>=0||world_.projectiles[slot])continue;
         const auto& d=world_.definition.objects[index];ProjectileState p;
         const bool og=world_.definition.dataset==DatasetId::old_gold;

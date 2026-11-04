@@ -16,6 +16,7 @@ class SoftwareCamera {
 public:
     explicit SoftwareCamera(CameraParameters parameters);
     void set_pose(Pose pose);
+    Pose pose() const noexcept { return pose_; }
     CameraPoint transform(std::int32_t x,std::int32_t y,std::int32_t z) const;
     ScreenPoint project(CameraPoint point) const;
     ClipRect clip() const noexcept { return clip_; }

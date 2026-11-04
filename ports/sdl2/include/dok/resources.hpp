@@ -2,6 +2,7 @@
 #include <array>
 #include <cstdint>
 #include <filesystem>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -25,6 +26,8 @@ public:
     const Resource* find(const std::string& name) const;
     Bytes get(const std::string& name) const;
     DatasetId identify() const;
+    // Exact named payload comparison; directory order, offsets and cache bytes are ignored.
+    bool same_resources(const Archive& other) const;
     Image image(const std::string& name) const;
     std::vector<AnimationFrame> animation(const std::string& name) const;
     Sound sound(const std::string& name) const;
@@ -34,5 +37,19 @@ public:
 private:
     std::vector<std::uint8_t> bytes_;
     std::vector<Resource> entries_;
+};
+struct ResourceSource { std::filesystem::path path; Archive archive; std::vector<std::filesystem::path> aliases; };
+class ResourceSources {
+public:
+    // Returns the existing index for an identical copy. A new distinct candidate
+    // invalidates the selection for its dataset, even after an explicit choice.
+    std::size_t add(std::filesystem::path path, Archive archive);
+    const std::vector<ResourceSource>& sources() const { return sources_; }
+    std::optional<std::size_t> find_source(const std::filesystem::path& path) const;
+    std::optional<std::size_t> selected(DatasetId dataset) const;
+    void select(DatasetId dataset, std::size_t source);
+private:
+    std::vector<ResourceSource> sources_;
+    std::array<std::optional<std::size_t>,4> choices_{};
 };
 }

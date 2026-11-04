@@ -3,9 +3,11 @@
 #include <optional>
 
 namespace dok {
+std::uint8_t old_gold_light_row(std::int32_t x,std::int32_t depth,int bias);
 struct RenderPolygon {
     std::vector<RasterVertex> vertices;
     std::int32_t sort_key{};
+    std::uint8_t old_gold_light{};
     std::uint8_t flags=1;
     bool reverse_edges=false;
     bool updates_image_winding=true;

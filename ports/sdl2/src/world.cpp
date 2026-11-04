@@ -42,6 +42,8 @@ World::World(LevelDefinition level):definition(std::move(level)) {
         state.definition_index=i;
         state.owner=static_cast<OwnerId>(i+1);
         state.flags=d.objects[i].flags;
+        if(d.objects[i].class_id==6)state.switch_state.emplace();
+        if(d.objects[i].class_id==12)state.surface.emplace();
         if(d.objects[i].class_id==7)state.door.emplace();
         if(d.objects[i].class_id==10)state.weapon.emplace();
         if(d.objects[i].class_id==9){state.monster.emplace();state.monster->health=static_cast<std::int16_t>(d.objects[i].number(0xa4));}

@@ -41,10 +41,10 @@ void Hud::text(IndexedSurface& s,int x,int y,const std::string& value)const{
     }
 }
 IndexedSurface Hud::classic(const IndexedSurface& scene,const PlayerState& p,const std::string& message)const{
-    if(scene.width()!=320||scene.height()!=160)throw std::invalid_argument("Classic Kremlin HUD requires VGA scene320x160");
+    if(scene.width()!=320||scene.height()!=(old_gold_?170:160))throw std::invalid_argument("Classic HUD requires native VGA scene dimensions");
     IndexedSurface out(320,200);std::copy(scene.pixels.begin(),scene.pixels.end(),out.pixels.begin());
-    image(out,panel_,0,161,320,39,false);
-    text(out,4,164,message.substr(0,38));
+    image(out,panel_,0,old_gold_?171:161,320,old_gold_?29:39,false);
+    text(out,4,old_gold_?173:164,message.substr(0,38));
     if(old_gold_){
         const auto icons=[&](const Image& icon,int x,int value,int maximum){
             const int count=value>0&&maximum>0?std::clamp(value*5/maximum,1,5):0;
@@ -66,13 +66,14 @@ IndexedSurface Hud::classic_mode(const IndexedSurface& scene,int frame_height,co
     IndexedSurface out(scene.width(),frame_height);
     std::copy(scene.pixels.begin(),scene.pixels.end(),out.pixels.begin());
     // Keep the accepted classic layout; only its panel is scaled, never the rendered world.
-    const auto panel=classic(IndexedSurface(320,160),p,message);
-    const int start=frame_height-int(39.0f*(float(frame_height)/200));
+    const int panel_height=old_gold_?29:39;
+    const auto panel=classic(IndexedSurface(320,old_gold_?170:160),p,message);
+    const int start=frame_height-int(float(panel_height)*(float(frame_height)/200));
     std::vector<int> columns(out.width());
     for(int x=0;x<out.width();++x)columns[x]=x*320/out.width();
     int previous=-1;
     for(int y=start;y<frame_height;++y){
-        const int row=161+(y-start)*39/(frame_height-start);
+        const int row=200-panel_height+(y-start)*panel_height/(frame_height-start);
         auto* dst=out.pixels.data()+y*out.width();
         if(row==previous)std::copy_n(dst-out.width(),out.width(),dst);
         else for(int x=0;x<out.width();++x)dst[x]=panel.pixels[row*320+columns[x]];

@@ -35,7 +35,11 @@ bool space(char c){return c==' '||c=='\t';}
 struct Scanner {
     std::string_view line;std::size_t at{};
     std::string token(){while(at<line.size()&&space(line[at]))++at;auto first=at;while(at<line.size()&&!space(line[at]))++at;if(first==at)throw std::runtime_error("Missing LEVEL field");return std::string(line.substr(first,at-first));}
-    std::int32_t integer(std::int64_t low=-32768,std::int64_t high=32767){auto t=token();std::int64_t value{};auto r=std::from_chars(t.data(),t.data()+t.size(),value);if(r.ec!=std::errc{}||r.ptr!=t.data()+t.size()||value<low||value>high)throw std::runtime_error("Invalid LEVEL integer: "+t);return static_cast<std::int32_t>(value);}
+    std::int32_t integer(std::int64_t low=-32768,std::int64_t high=32767){auto t=token();std::int64_t value{};const char* first=t.data();
+        // Borland's signed extractor accepts '+', unlike from_chars. Do not
+        // accept a second sign after removing it (e.g. '+-1').
+        if(t[0]=='+'){++first;if(first==t.data()+t.size()||*first<'0'||*first>'9')throw std::runtime_error("Invalid LEVEL integer: "+t);}
+        auto r=std::from_chars(first,t.data()+t.size(),value);if(r.ec!=std::errc{}||r.ptr!=t.data()+t.size()||value<low||value>high)throw std::runtime_error("Invalid LEVEL integer: "+t);return static_cast<std::int32_t>(value);}
     std::uint8_t character(){while(at<line.size()&&space(line[at]))++at;if(at==line.size())throw std::runtime_error("Missing LEVEL character");return static_cast<std::uint8_t>(line[at++]);}
     std::string text(){auto s=std::string(line.substr(at,39));at=line.size();return s;}
     bool done(){while(at<line.size()&&space(line[at]))++at;return at==line.size();}
@@ -61,7 +65,9 @@ LevelDefinition load_level(const Archive& a,const std::string& name){
         if(at<text.size()&&text[at++]=='\r'&&at<text.size()&&text[at]=='\n')++at;
         ++line_number;if(line.empty()||line[0]=='#')continue;
         try{
-            if(line[0]=='['){auto close=line.find(']');if(close==std::string::npos)throw std::runtime_error("Unclosed section");section=lower(line.substr(1,close-1));continue;}
+            if(line[0]=='['){auto close=line.find(']');if(close==std::string::npos)throw std::runtime_error("Unclosed section");section=lower(line.substr(1,close-1));
+                if(section!="game ini"&&section!="palette"&&section!="light"&&section!="game object"&&section!="tmap"&&section!="mmap"&&section!="fcmap")throw std::runtime_error("Unknown LEVEL section");
+                continue;}
             if(section=="game ini"){
                 if(!out.maps.empty())throw std::runtime_error("Settings changed after map data");
                 auto key=lower(line);bool found=false;
@@ -72,10 +78,10 @@ LevelDefinition load_level(const Archive& a,const std::string& name){
             else if(section=="light")out.light=value(line);
             else if(section=="tmap"||section=="mmap"||section=="fcmap"){
                 if(out.width<1||out.width>64||out.length<1||out.length>64||out.height!=1||line.size()!=static_cast<std::size_t>(out.width))throw std::runtime_error("Invalid map dimensions/row");
-                auto& map=out.maps[section];map.insert(map.end(),line.begin(),line.end());
+                auto& map=out.maps[section];if(map.size()+line.size()>static_cast<std::size_t>(out.width*out.length))throw std::runtime_error("Too many map rows");map.insert(map.end(),line.begin(),line.end());
             }else if(section=="game object"){
                 auto key=lower(line);
-                if(starts(key,"sprite")){auto v=value(line);Scanner scan{v};sprite=scan.token();sprite_flags=static_cast<std::uint16_t>(scan.integer(0,65535));continue;}
+                if(starts(key,"sprite")){auto v=value(line);Scanner scan{v};sprite=scan.token();sprite_flags=static_cast<std::uint16_t>(scan.integer(0,65535));if(!scan.done())throw std::runtime_error("Extra Sprite data");continue;}
                 if(starts(key,"flic")){animation=value(line);continue;}
                 if(starts(key,"sound")){sound=value(line);continue;}
                 Scanner scan{line};ObjectDefinition obj;obj.glyph=scan.character();if(obj.glyph=='_')obj.glyph=' ';

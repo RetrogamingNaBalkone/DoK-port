@@ -84,6 +84,51 @@ DatasetId Archive::identify() const {
     if (matches(*this, catalog_en)) return DatasetId::kremlin_pke;
     return DatasetId::unknown;
 }
+bool Archive::same_resources(const Archive& other) const {
+    if(entries_.size()!=other.entries_.size())return false;
+    // Compare the complete ordered list for repeated names: lookup uses the
+    // first entry, but do not silently discard differing shadowed payloads.
+    for(const auto& r:entries_){
+        std::vector<const Resource*> left,right;
+        for(const auto& e:entries_)if(e.name==r.name)left.push_back(&e);
+        for(const auto& e:other.entries_)if(e.name==r.name)right.push_back(&e);
+        if(left.size()!=right.size())return false;
+        for(std::size_t i=0;i<left.size();++i){
+            if(left[i]->size!=right[i]->size)return false;
+            if(!std::equal(bytes_.begin()+left[i]->offset,bytes_.begin()+left[i]->offset+left[i]->size,
+                           other.bytes_.begin()+right[i]->offset))return false;
+        }
+    }
+    return true;
+}
+std::size_t ResourceSources::add(std::filesystem::path path,Archive archive){
+    const auto dataset=archive.identify();require(dataset!=DatasetId::unknown,"Unknown or ambiguous RES catalog");
+    bool existing=false;
+    for(std::size_t i=0;i<sources_.size();++i)if(sources_[i].archive.identify()==dataset){
+        existing=true;if(sources_[i].archive.same_resources(archive)){sources_[i].aliases.push_back(std::move(path));return i;}
+    }
+    const auto index=sources_.size();sources_.push_back({std::move(path),std::move(archive),{}});
+    auto& choice=choices_[static_cast<std::size_t>(dataset)];
+    if(existing)choice.reset();else choice=index;
+    return index;
+}
+std::optional<std::size_t> ResourceSources::find_source(const std::filesystem::path& path)const{
+    const auto normalized=std::filesystem::absolute(path).lexically_normal();
+    for(std::size_t i=0;i<sources_.size();++i){
+        if(std::filesystem::absolute(sources_[i].path).lexically_normal()==normalized)return i;
+        for(const auto& alias:sources_[i].aliases)if(std::filesystem::absolute(alias).lexically_normal()==normalized)return i;
+    }
+    return std::nullopt;
+}
+std::optional<std::size_t> ResourceSources::selected(DatasetId dataset)const{
+    const auto index=static_cast<std::size_t>(dataset);
+    return index<choices_.size()?choices_[index]:std::nullopt;
+}
+void ResourceSources::select(DatasetId dataset,std::size_t source){
+    require(dataset!=DatasetId::unknown&&source<sources_.size()&&sources_[source].archive.identify()==dataset,
+            "Source does not belong to the requested dataset");
+    choices_[static_cast<std::size_t>(dataset)]=source;
+}
 Image Archive::image(const std::string& name) const {
     return decode_image(get(name));
 }

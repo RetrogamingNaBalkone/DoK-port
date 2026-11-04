@@ -7,7 +7,13 @@
 
 namespace dok {
 struct Pose {std::int32_t x{},y{},z{};std::int16_t heading{};};
-enum class GameEvent : CallbackId { player_tick = 1, door_open, door_close, door_auto, weapon_tick, weapon_switch, projectile_tick, monster_tick };
+enum class GameEvent : CallbackId { player_tick = 1, door_open, door_close, door_auto, weapon_tick, weapon_switch, projectile_tick, monster_tick, base_animation };
+struct AnimationState {
+    std::int16_t frame=0,parameter_a=0,parameter_b=0,interval=0,remaining=0;
+};
+// Confirmed constructor words; semantic consumers are audited in SP07/SP10.
+struct SwitchState {std::int16_t native_54=0,native_56=0,native_58=0,interval=0;};
+struct SurfaceState {std::int16_t phase=18,interval=0;};
 struct MonsterState {
     std::int16_t health=0,state=0,next_frame=-1,display_frame=0,display_clip=0;
     std::int16_t course_counter=0,shot_count=0;
@@ -65,6 +71,9 @@ struct WorldObject {
     std::optional<DoorState> door;
     std::optional<WeaponState> weapon;
     std::optional<MonsterState> monster;
+    std::optional<AnimationState> animation;
+    std::optional<SwitchState> switch_state;
+    std::optional<SurfaceState> surface;
 };
 class World {
 public:

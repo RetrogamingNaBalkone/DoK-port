@@ -241,7 +241,7 @@ void GlRenderer::polygon(const std::vector<RasterVertex>& vertices,const Image& 
         const auto v=p.precise.value_or(std::array<float,5>{float(p.x),float(p.y),float(p.depth),float(p.u),float(p.v)});
         const float w=std::max(1.0f,v[2]+200.0f);
         data.insert(data.end(),{(2.0f*(v[0]+0.5f)/g.virtual_width-1)*w,(1-2.0f*(v[1]+0.5f)/160)*w,w-2.0f,w,
-            (v[3]+0.5f)/image.width,(v[4]+0.5f)/image.height,std::max(0.0f,v[2])});}
+            (v[3]+0.5f)/image.width,(v[4]+0.5f)/image.height,p.shade_depth.value_or(std::max(0.0f,v[2]))});}
     const int mode=(axis==RasterAxis::vertical&&(image.flags&8))?1:0;
     if(g.deferred){
         g.commands.push_back({id,static_cast<GLint>(g.world_vertices.size()/7),static_cast<GLsizei>(data.size()/7),image.width,image.height,mode,g.linear_filter,blend});

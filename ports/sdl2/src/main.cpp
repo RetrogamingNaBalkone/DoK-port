@@ -6,6 +6,7 @@
 #include "dok/items.hpp"
 #include "dok/weapons.hpp"
 #include "dok/monsters.hpp"
+#include "dok/animations.hpp"
 #include "dok/flow.hpp"
 #include "dok/hud.hpp"
 #include "dok/sdl_audio.hpp"
@@ -34,10 +35,11 @@ int main(int argc,char** argv){
         for(int i=1;i+1<argc;++i)if(std::string(argv[i])=="--user-dir")user_path=std::filesystem::u8path(argv[++i]);
         std::filesystem::create_directories(user_path);std::ofstream log(user_path/"port.log");
         std::string warning;auto stored=dok::load_settings(user_path/"settings.ini",warning);auto settings=stored;
-        unsigned frame_limit=0;std::string screenshot,level_name,script_path;std::vector<std::string> paths;bool skip_intro=false;
+        unsigned frame_limit=0;std::string screenshot,level_name,script_path;std::vector<std::string> paths,source_choices;bool skip_intro=false;
         for(int i=1;i<argc;++i){std::string arg=argv[i];
             auto value=[&]()->std::string{if(i+1>=argc)throw std::runtime_error("Missing value for "+arg);return argv[++i];};
             if(arg=="--res")paths.push_back(value());else if(arg=="--frames")frame_limit=std::stoul(value());
+            else if(arg=="--res-source")source_choices.push_back(value());
             else if(arg=="--screenshot")screenshot=value();else if(arg=="--level")level_name=value();else if(arg=="--skip-intro")skip_intro=true;
             else if(arg=="--user-dir")value();else if(arg=="--ui-script")script_path=value();
             else if(arg=="--renderer"){const auto mode=value();if(mode!="gl"&&mode!="software")throw std::runtime_error("Renderer: gl|software");settings.video.renderer=mode=="gl"?dok::RendererKind::opengl:dok::RendererKind::software;}
@@ -60,28 +62,51 @@ int main(int argc,char** argv){
             display=std::make_unique<dok::Display>(settings.video);warning="OpenGL unavailable; software renderer selected.";
         }
         SDL_ShowWindow(display->window());dok::SdlInput input(settings.input);dok::Frontend menu(settings);
-        std::vector<Loaded> sets;std::string resource_errors;
-        auto refresh_sets=[&]{std::vector<dok::FrontendDataset> items;for(auto& set:sets)items.push_back({&set.archive,set.path.filename().u8string()});menu.datasets(std::move(items),resource_errors);};
+        std::vector<Loaded> sets;dok::ResourceSources sources;std::string resource_errors;
+        auto refresh_sets=[&]{
+            sets.clear();std::string errors=resource_errors;
+            for(const auto id:{dok::DatasetId::kremlin_pkr,dok::DatasetId::kremlin_pke,dok::DatasetId::old_gold}){
+                if(const auto selected=sources.selected(id)){const auto& source=sources.sources()[*selected];sets.push_back({source.path,source.archive});}
+                else{
+                    bool heading=false;
+                    for(const auto& source:sources.sources())if(source.archive.identify()==id){
+                        if(!heading){errors+=std::string(dok::dataset_name(id))+": choose a source with --res-source PATH\n";heading=true;}
+                        errors+=source.path.u8string()+"\n";
+                    }
+                }
+            }
+            std::vector<dok::FrontendDataset> items;for(auto& set:sets)items.push_back({&set.archive,set.path.filename().u8string()});menu.datasets(std::move(items),errors);
+        };
         auto load=[&](const std::string& path){try{
             auto a=dok::Archive::open(std::filesystem::u8path(path));if(a.identify()==dok::DatasetId::unknown)throw std::runtime_error("Unknown RES catalog");
-            for(const auto& set:sets)if(set.archive.identify()==a.identify())throw std::runtime_error("Dataset already loaded");
-            log<<"Loaded "<<dok::dataset_name(a.identify())<<": "<<path<<'\n';sets.push_back({std::filesystem::u8path(path),std::move(a)});
-            std::stable_sort(sets.begin(),sets.end(),[](const auto& a,const auto& b){auto rank=[](dok::DatasetId id){return id==dok::DatasetId::kremlin_pkr?0:id==dok::DatasetId::kremlin_pke?1:2;};return rank(a.archive.identify())<rank(b.archive.identify());});
+            // Validate all level references before admitting a candidate. One bad
+            // file must not invalidate a previously usable source or other games.
+            for(const auto& entry:a.entries())if(entry.name.rfind("LEVEL",0)==0)dok::load_level(a,entry.name);
+            const auto dataset=a.identify();const auto count=sources.sources().size();sources.add(std::filesystem::u8path(path),std::move(a));
+            log<<(sources.sources().size()==count?"Duplicate ignored ":"Loaded ")<<dok::dataset_name(dataset)<<": "<<path<<'\n';
+            if(!sources.selected(dataset))log<<"Source selection required: "<<dok::dataset_name(dataset)<<'\n';
         }catch(const std::exception& e){resource_errors+=std::filesystem::u8path(path).filename().u8string()+": "+e.what()+"\n";log<<resource_errors;}refresh_sets();};
         if(paths.empty()){char* base=SDL_GetBasePath();if(base){const auto directory=std::filesystem::u8path(base);SDL_free(base);
             for(const auto* name:{"PKR.RES","PKE.RES","OLD_GOLD.RES"})if(std::filesystem::exists(directory/name))paths.push_back((directory/name).u8string());}}
         for(const auto& path:paths)load(path);
+        for(const auto& path:source_choices){
+            const auto chosen=sources.find_source(std::filesystem::u8path(path));
+            if(!chosen)throw std::runtime_error("--res-source must name an admitted --res source: "+path);
+            const auto& source=sources.sources()[*chosen];sources.select(source.archive.identify(),*chosen);log<<"Selected source: "<<source.path.u8string()<<'\n';
+        }
+        refresh_sets();
         std::size_t current=menu.dataset_index();
         std::unique_ptr<dok::World> world;std::unique_ptr<dok::SoftwareScene> scene;std::unique_ptr<dok::Weapons> weapons;
-        std::unique_ptr<dok::Projectiles> projectiles;std::unique_ptr<dok::Monsters> monsters;std::unique_ptr<dok::GameFlow> flow;
+        std::unique_ptr<dok::Projectiles> projectiles;std::unique_ptr<dok::Monsters> monsters;std::unique_ptr<dok::GameFlow> flow;std::unique_ptr<dok::Animations> animations;
         std::unique_ptr<dok::Hud> hud;std::unique_ptr<dok::SdlAudio> audio,music;
         dok::ViewMotion view_motion;dok::CheatSequence cheat;std::vector<std::uint32_t> scene_pixels;
         bool running=true,use_pending=false,use_previous=false;
-        auto clear_world=[&]{audio.reset();hud.reset();flow.reset();monsters.reset();projectiles.reset();weapons.reset();scene.reset();world.reset();view_motion.reset();cheat.reset();input.clear();input.capture_mouse(false);};
+        auto clear_world=[&]{audio.reset();hud.reset();flow.reset();monsters.reset();projectiles.reset();weapons.reset();animations.reset();scene.reset();world.reset();view_motion.reset();cheat.reset();input.clear();input.capture_mouse(false);};
         auto start=[&](const std::string& level){
             clear_world();music.reset();current=menu.dataset_index();const auto& a=sets.at(current).archive;level_name=level;
             world=std::make_unique<dok::World>(dok::load_level(a,level));weapons=std::make_unique<dok::Weapons>(*world,a);
             projectiles=std::make_unique<dok::Projectiles>(*world,a);monsters=std::make_unique<dok::Monsters>(*world,a,*projectiles);
+            animations=std::make_unique<dok::Animations>(*world,a);
             flow=std::make_unique<dok::GameFlow>(*world);hud=std::make_unique<dok::Hud>(a);scene=std::make_unique<dok::SoftwareScene>(a,world->definition);
             try{audio=std::make_unique<dok::SdlAudio>(a);world->audio=[&](const dok::AudioCommand& c){audio->command(c);};}catch(const std::exception& e){log<<"Audio unavailable: "<<e.what()<<'\n';}
             menu.hide();input.clear();input.capture_mouse(true);use_pending=use_previous=false;log<<"Started "<<dok::dataset_name(a.identify())<<' '<<level<<'\n';
@@ -112,6 +137,7 @@ int main(int argc,char** argv){
                 else if(event.action=="shot")captures.push_back(event.value);
                 else if(event.action=="key"){SDL_Event e{};e.type=SDL_KEYDOWN;e.key.keysym.scancode=SDL_GetScancodeFromName(event.value.c_str());e.key.keysym.sym=SDL_GetKeyFromScancode(e.key.keysym.scancode);SDL_PushEvent(&e);e.type=SDL_KEYUP;SDL_PushEvent(&e);}
                 else if(event.action=="pad"){SDL_Event e{};e.type=SDL_CONTROLLERBUTTONDOWN;e.cbutton.button=std::stoi(event.value);SDL_PushEvent(&e);e.type=SDL_CONTROLLERBUTTONUP;SDL_PushEvent(&e);}
+                else if(event.action=="drop"){SDL_Event e{};e.type=SDL_DROPFILE;e.drop.file=SDL_strdup(event.value.c_str());if(SDL_PushEvent(&e)!=1)SDL_free(e.drop.file);}
                 else if(event.action=="quit"){SDL_Event e{};e.type=SDL_QUIT;SDL_PushEvent(&e);}
             }
             SDL_Event e;
@@ -121,7 +147,7 @@ int main(int argc,char** argv){
                 if(e.type==SDL_QUIT){if(world){menu.pause();menu.request_quit();}else running=false;}
                 if(e.type==SDL_WINDOWEVENT&&e.window.event==SDL_WINDOWEVENT_FOCUS_LOST){input.clear();cheat.reset();if(world&&!menu.active())menu.pause();input.capture_mouse(false);}
                 if(e.type==SDL_DROPFILE){const std::string path=e.drop.file;SDL_free(e.drop.file);
-                    if(world)menu.notice("Добавьте ресурсы из главного меню.","Add game resources from the main menu.");else{music.reset();load(path);}continue;}
+                    if(world){log<<"Resource load deferred: active world\n";menu.notice("Добавьте ресурсы из главного меню.","Add game resources from the main menu.");}else{music.reset();load(path);}continue;}
                 const bool was_menu=menu.active();
                 if(e.type==SDL_KEYDOWN&&!e.key.repeat&&!menu.capturing()){
                     if(e.key.keysym.sym==SDLK_F12)capture_requested=true;
@@ -180,6 +206,8 @@ int main(int argc,char** argv){
                         // backend, window size and frame timing must not widen it.
                         monsters->consider(dok::original_cell_bounds(*world->objects.at(*world->player).pose,
                             world->definition.cell_side,world->definition.width,world->definition.length));
+                        animations->consider(dok::original_cell_bounds(*world->objects.at(*world->player).pose,
+                            world->definition.cell_side,world->definition.width,world->definition.length));
                         if(actions.fire)weapons->fire([&](std::uint8_t glyph){return projectiles->spawn(owner,glyph);});
                         if(use_pending){
                             const auto result=dok::player_use(*world);use_pending=false;
@@ -201,6 +229,7 @@ int main(int argc,char** argv){
                     }else if(event==dok::GameEvent::weapon_tick||event==dok::GameEvent::weapon_switch)weapons->event(owner,event);
                     else if(event==dok::GameEvent::projectile_tick)projectiles->event(owner);
                     else if(event==dok::GameEvent::monster_tick)monsters->event(owner);
+                    else if(event==dok::GameEvent::base_animation)animations->event(owner);
                     else dok::door_event(*world,owner,event);
                 });
                 const auto phase=flow->observe();if(phase!=dok::SessionPhase::playing){if(phase==dok::SessionPhase::completed)menu.ending();else menu.outcome(phase);input.capture_mouse(false);input.clear();use_pending=false;}
@@ -215,7 +244,7 @@ int main(int argc,char** argv){
                     gl->set_linear_filter(settings.linear);
                     const auto bounds=dok::view_cell_bounds(pose,world->definition.cell_side,world->definition.width,world->definition.length,gl->view_width());
                     auto dynamic=monsters->images(bounds);const auto shots=projectiles->images();dynamic.insert(dynamic.end(),shots.begin(),shots.end());
-                    gl->world(scene->palette(),true,true);scene->render(*world,pose,dynamic,[&](const auto& vertices,const auto& image,dok::Bytes light,dok::RasterAxis axis){gl->polygon(vertices,image,light,axis);},gl->view_width(),view_motion.offset(world->presentation_ticks()));gl->flush_world();
+                    gl->world(scene->palette(),true,true);scene->render(*world,pose,dynamic,[&](const auto& vertices,const auto& image,dok::Bytes light,dok::RasterAxis axis){gl->polygon(vertices,image,light,axis);},gl->view_width(),view_motion.offset(world->presentation_ticks()),[&](auto owner){return animations->image(owner);});gl->flush_world();
                     dok::IndexedSurface overlay(gl->view_width(),160);weapons->overlay(overlay);std::vector<std::uint32_t> pixels(overlay.pixels.size());
                     for(std::size_t i=0;i<pixels.size();++i)if(overlay.pixels[i])pixels[i]=scene->palette()[overlay.pixels[i]];
                     gl->image(pixels,overlay.width(),overlay.height(),{0,0,320,240});
@@ -225,7 +254,7 @@ int main(int argc,char** argv){
                     const auto mode=dok::software_modes[settings.video.software_mode];scene->software_resolution(mode[0],mode[1]);
                     const auto bounds=dok::original_cell_bounds(pose,world->definition.cell_side,world->definition.width,world->definition.length);
                     auto dynamic=monsters->images(bounds);const auto shots=projectiles->images();dynamic.insert(dynamic.end(),shots.begin(),shots.end());
-                    auto frame=scene->render(*world,pose,dynamic);weapons->overlay(frame,mode[1]);frame=hud->classic_mode(frame,mode[1],*world->objects.at(*world->player).player_state,world->visible_message());
+                    auto frame=scene->render(*world,pose,dynamic,{},320,{},[&](auto owner){return animations->image(owner);});weapons->overlay(frame,mode[1]);frame=hud->classic_mode(frame,mode[1],*world->objects.at(*world->player).player_state,world->visible_message());
                     scene_pixels.resize(frame.pixels.size());std::transform(frame.pixels.begin(),frame.pixels.end(),scene_pixels.begin(),[&](auto c){return scene->palette()[c];});display->pixels(scene_pixels,frame.width(),frame.height(),true,settings.linear);
                 }
             }
