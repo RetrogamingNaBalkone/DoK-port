@@ -1,0 +1,17 @@
+{
+  "task": "SP14",
+  "semantic_keys": 77,
+  "source_aliases": 158,
+  "original_object_fields": 609,
+  "fields_per_profile": {
+    "og": 77,
+    "ru": 266,
+    "en": 266
+  },
+  "real_process_locale_switches": 12,
+  "originals_unchanged": true,
+  "evidence": "research/evidence/source-port/sp14-localization/report.json",
+  "fonts_checked": 6,
+  "glyphs_per_font": 126,
+  "story_readbacks": 12
+}

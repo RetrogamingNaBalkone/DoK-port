@@ -5,7 +5,11 @@ from check_render import ROOT,read_archive
 from level_reference import parse
 p=argparse.ArgumentParser();p.add_argument('capture',type=Path);p.add_argument('--language',choices=['ru','en','og'],required=True);p.add_argument('--water-phase',type=int);p.add_argument('--memory');p.add_argument('--output',default='native-state');p.add_argument('--level',required=True);a=p.parse_args()
 r=json.loads((a.capture/'report.json').read_text());og=a.language=='og';source=ROOT/({'ru':'originals/pkr/RUS/PKR.RES','en':'originals/pkr/ENG/PKE.RES','og':'originals/Old_Gold_3D/OLD_GOLD.RES'}[a.language])
-memory_path=a.capture/(a.memory or ('memory-6.bin' if og else 'memory.bin'));m=memory_path.read_bytes();m=__import__('zlib').decompress(m) if memory_path.suffix=='.z' else m;entries=dict(read_archive(source.read_bytes()));level=parse(entries[a.level.encode()],a.level,old_gold=og)
+memory_path=a.capture/(a.memory or ('memory-6.bin' if og else 'memory.bin'))
+if not memory_path.exists():
+ import subprocess
+ subprocess.run([sys.executable,'-B',str(ROOT/'scripts/storage_archive.py'),'restore',memory_path.resolve().relative_to(ROOT).as_posix()],check=True)
+m=memory_path.read_bytes();m=__import__('zlib').decompress(m) if memory_path.suffix=='.z' else m;entries=dict(read_archive(source.read_bytes()));level=parse(entries[a.level.encode()],a.level,old_gold=og)
 ldt=0 if og else int(r['surface_address']['ldt_linear'],16)
 def far(at):
  off,sel=struct.unpack_from('<HH',m,at)

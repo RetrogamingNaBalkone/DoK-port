@@ -2,6 +2,19 @@
 #include <algorithm>
 #include <stdexcept>
 namespace dok {
+std::string cp866(const std::string& text){
+    std::string out;
+    for(std::size_t i=0;i<text.size();){
+        unsigned c=static_cast<unsigned char>(text[i++]);
+        if(c>=0xc0){const int count=c<0xe0?1:c<0xf0?2:3;c&=count==1?31:count==2?15:7;
+            for(int n=0;n<count&&i<text.size();++n)c=(c<<6)|(static_cast<unsigned char>(text[i++])&63);}
+        if(c<128)out+=char(c);else if(c>=0x410&&c<=0x42f)out+=char(c-0x410+0x80);
+        else if(c>=0x430&&c<=0x43f)out+=char(c-0x430+0xa0);else if(c>=0x440&&c<=0x44f)out+=char(c-0x440+0xe0);
+        else if(c==0x401||c==0x451)out+=char(c==0x401?0xf0:0xf1);
+        else if(c==0x2014||c==0x2013)out+='-';else if(c==0xab||c==0xbb)out+='"';else if(c==0xd7)out+='x';
+        else if(c==0xa0)out+=' ';else if(c==0x2026)out+="...";else if(c==0x2019||c==0x2018)out+='\'';else out+='?';
+    }return out;
+}
 std::vector<TextPage> paginate_story(Bytes bytes,unsigned columns,unsigned rows){
     if(!columns||!rows)throw std::invalid_argument("Empty text page dimensions");
     std::string source(reinterpret_cast<const char*>(bytes.data),bytes.size);

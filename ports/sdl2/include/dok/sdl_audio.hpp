@@ -3,6 +3,7 @@
 #include <SDL.h>
 #include <map>
 namespace dok {
+struct SdlAudioSnapshot {VoiceSnapshot voice;std::string resource;bool paused=false;int volume=100;};
 class SdlAudio {
 public:
     explicit SdlAudio(const Archive& archive);
@@ -12,6 +13,8 @@ public:
     void command(const AudioCommand& command);
     void pause(bool paused);
     void volume(int percent);
+    SdlAudioSnapshot snapshot();
+    bool restore(const SdlAudioSnapshot& state);
 private:
     static void callback(void* self,Uint8* stream,int bytes);
     SDL_AudioDeviceID device_=0;

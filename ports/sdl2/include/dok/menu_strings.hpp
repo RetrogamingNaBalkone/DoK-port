@@ -1,7 +1,7 @@
 #pragma once
 #include "settings.hpp"
 namespace dok {
-// Menu-only catalogue. Resource stories retain their original language.
+// Interface catalogue; gameplay and story keys live in localization.hpp.
 enum class MenuString {
     south_a,
     east_b,
@@ -63,7 +63,7 @@ enum class MenuString {
     off_instant_start_and_stop_water_currents_still_move_th,
     saving,
     in_development,
-    story_and_in_game_messages_currently_use_the_original_r,
+    all_game_texts_follow_selected_language,
     show_fps,
     resume,
     main_menu,
@@ -112,6 +112,16 @@ enum class MenuString {
     arrows_select_enter_ok_esc_back,
     arrows_level_l1_r1_text,
     arrows_level_pgup_dn_text,
+    video_texture_filter,
+    video_frame_scaling,
+    video_frame_scaling_help,
+    video_fxaa_help,
+    video_hud,
+    automatic,
+    video_base_fov,
+    original,
+    video_base_fov_help,
+    video_aspect_ratio,
     count
 };
 inline const char* menu_text(MenuString id,LocaleId locale){
@@ -135,8 +145,8 @@ inline const char* menu_text(MenuString id,LocaleId locale){
         {"Об авторах","Credits"},
         {"Выход","Quit"},
         {"Подземелья Кремля","Dungeons of Kremlin"},
-        {"Русское издание - PKR","Russian edition - PKR"},
-        {"Английское издание - PKE","English edition - PKE"},
+        {"Русское издание","Russian edition"},
+        {"Английское издание","English edition"},
         {"Исходное издание","Original edition"},
         {"Издания имеют разные игровые параметры. Язык интерфейса выбирается в настройках.","Editions have different game parameters. Interface language is selected in Settings."},
         {"Графика","Graphics"},
@@ -176,7 +186,7 @@ inline const char* menu_text(MenuString id,LocaleId locale){
         {"Выкл.: мгновенный старт и остановка. Течение воды сохраняется.","Off: instant start and stop. Water currents still move the player."},
         {"Сохранения","Saving"},
         {"В разработке","In development"},
-        {"Сюжет и игровые сообщения пока используют язык исходного RES.","Story and in-game messages currently use the original RES language."},
+        {"Язык интерфейса, сюжета и игровых сообщений. Набор и правила игры не меняются.","Language of menus, story and game messages. The dataset and game rules stay the same."},
         {"Показывать FPS","Show FPS"},
         {"Продолжить","Resume"},
         {"В главное меню","Main menu"},
@@ -192,7 +202,7 @@ inline const char* menu_text(MenuString id,LocaleId locale){
         {"Продолжить","Continue"},
         {"Повторить","Retry"},
         {"Выбор уровня","Level selection"},
-        {"ПОДЗЕМЕЛЬЯ КРЕМЛЯ / OLD GOLD","DUNGEONS OF KREMLIN / OLD GOLD"},
+        {"ПОДЗЕМЕЛЬЯ КРЕМЛЯ / СТАРОЕ ЗОЛОТО","DUNGEONS OF KREMLIN / OLD GOLD"},
         {"НАСТРОЙКИ","SETTINGS"},
         {"ГРАФИКА","GRAPHICS"},
         {"ЗВУК","SOUND"},
@@ -210,8 +220,8 @@ inline const char* menu_text(MenuString id,LocaleId locale){
         {"УРОВЕНЬ ПРОЙДЕН","LEVEL COMPLETED"},
         {"НУЖНЫ РЕСУРСЫ ИГРЫ","GAME RESOURCES REQUIRED"},
         {"ПОДЗЕМЕЛЬЯ КРЕМЛЯ\n\nАвторы трёхмерной технологии:\nАлександр Разбаков\nАндрей Разбаков\n\nХудожник: Дмитрий Цирухин\n\nИздатель: NewCom\nМосква, 1995","DUNGEONS OF KREMLIN\n\n3-D technology:\nAlexander Razbakov\nAndrey Razbakov\n\nArtist: Dmitri Tsirukhin\n\nPublisher: NewCom\nMoscow, 1995"},
-        {"OLD GOLD\n\nАвторы:\nАндрей Разбаков\nАлександр Разбаков\n\nГруппа Gelios\n\nПо титрам и README оригинала.","OLD GOLD\n\nAuthors:\nAndrey Razbakov\nAlexander Razbakov\n\nGelios\n\nFrom the original credits and README."},
-        {"SDL2-ПОРТ\n\nРетрогейминг на балконе\n\nOld Gold / PKR / PKE\n\nОригинальные материалы принадлежат\nих авторам и правообладателям.","SDL2 PORT\n\nРетрогейминг на балконе\n\nOld Gold / PKR / PKE\n\nOriginal materials belong to their\nauthors and rights holders."},
+        {"СТАРОЕ ЗОЛОТО\n\nАвторы:\nАндрей Разбаков\nАлександр Разбаков\n\nГруппа Gelios\n\nПо титрам и README оригинала.","OLD GOLD\n\nAuthors:\nAndrey Razbakov\nAlexander Razbakov\n\nGelios\n\nFrom the original credits and README."},
+        {"SDL2-ПОРТ\n\nРетрогейминг на балконе\n\nСтарое золото / Подземелья Кремля\n\nОригинальные материалы принадлежат\nих авторам и правообладателям.","SDL2 PORT\n\nРетрогейминг на балконе\n\nOld Gold / Dungeons of Kremlin\n\nOriginal materials belong to their\nauthors and rights holders."},
         {"Нажмите новую кнопку.\nEsc - отмена.\nГеймпад: удерживайте Start и нажмите Select для отмены.","Press a new control.\nEsc - cancel.\nGamepad: hold Start and press Select to cancel."},
         {"Не удалось включить OpenGL.\nИспользовать программный рендерер?","OpenGL could not be enabled.\nUse the software renderer?"},
         {"Текущее прохождение будет потеряно.\nПродолжить?","Current progress will be lost.\nContinue?"},
@@ -225,6 +235,16 @@ inline const char* menu_text(MenuString id,LocaleId locale){
         {"Стрелки: выбор  Enter: ОК  Esc: назад","Arrows: select  Enter: OK  Esc: back"},
         {"Стрелки: уровень; L1/R1: текст","Arrows: level; L1/R1: text"},
         {"Стрелки: уровень; PgUp/Dn: текст","Arrows: level; PgUp/Dn: text"},
+        {"Фильтр текстур","Texture filter"},
+        {"Масштабирование кадра","Frame scaling"},
+        {"Масштабирование software-кадра. GL рисует сцену в размере окна.","Software frame scaling. GL renders the scene at window resolution."},
+        {"Сцена до оружия и интерфейса. Только OpenGL.","Scene before weapons and interface. OpenGL only."},
+        {"Панель","HUD"},
+        {"Авто","Auto"},
+        {"Базовый FOV","Base FOV"},
+        {"Оригинал","Original"},
+        {"Угол эталонной сцены. Широкий экран расширяет обзор по горизонтали.","Reference scene angle. Widescreen expands the horizontal view."},
+        {"Пропорции","Aspect ratio"},
     };
     static_assert(sizeof(entries)/sizeof(entries[0])==static_cast<unsigned>(MenuString::count));
     return entries[static_cast<unsigned>(id)][locale==LocaleId::ru?0:1];

@@ -1,0 +1,22 @@
+{
+  "schema": 1,
+  "scope": "SP10 original door callbacks, class6 base handler, OG surface arguments and bounded original-map movement; not full playthrough",
+  "callback_vectors": 720,
+  "callback_mismatches": 0,
+  "class6_native_vectors": 168,
+  "og_surface_native_vectors": 12,
+  "cpp_surface_scenarios": 36,
+  "walk_processes": 3,
+  "walk_levels": 7,
+  "walk_rendered_frames": 9828,
+  "walk_pass": true,
+  "originals_unchanged": true,
+  "full_reports": {
+    "callbacks": "research/evidence/source-port/sp10-interactions/callback-report.json",
+    "walk": "research/evidence/source-port/sp10-interactions/walk-report.json"
+  },
+  "report_sha256": {
+    "callback-report.json": "f5077245720b5ccecf01a3b3b9345f0a18b77fff28113a55cc5b2a6dc157ca04",
+    "walk-report.json": "1c8d331db0c707fe628e60060386a5927e6afaee7bc3747af8a35dffbbb17a96"
+  }
+}

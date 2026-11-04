@@ -6,11 +6,10 @@
 #include <functional>
 
 namespace dok {
-std::string cp866(const std::string& utf8);
 struct FrontendDataset {const Archive* archive;std::string filename;};
 enum class MenuScreen {hidden,main,datasets,title,readme,levels,settings,graphics,sound,controls,keyboard,pad,
-    bindings,key_slots,gameplay,interface,credits,resources,pause,confirm,capture,conflict,video_confirm,notice,ending,outcome};
-enum class MenuCommand {start,resume,main,quit,apply_video,keep_video,revert_video,music_title,music_stop,music_story,retry};
+    bindings,key_slots,gameplay,interface,credits,resources,pause,confirm,capture,conflict,video_confirm,notice,ending,outcome,help,map,files};
+enum class MenuCommand {start,resume,main,quit,apply_video,keep_video,revert_video,music_title,music_stop,music_story,retry,add_resource,select_source};
 struct MenuFrame {int width=640,height=480;std::vector<std::uint32_t> pixels;};
 class Frontend {
 public:
@@ -28,6 +27,12 @@ public:
     void ending();
     void video_failed(const std::string& reason);
     void notice(const std::string& ru,const std::string& en);
+    void resources(const ResourceSources& sources);
+    void session_world(const World* world){world_=world;}
+    void show_map();
+    const std::string& pending_resource()const{return pending_resource_;}
+    std::size_t pending_source()const{return pending_source_;}
+    int focused_row()const{return focus_;}
     MenuScreen screen() const {return screen_;}
     bool active() const {return screen_!=MenuScreen::hidden;}
     bool capturing() const {return screen_==MenuScreen::capture;}
@@ -43,6 +48,17 @@ private:
     struct Hit {SDL_Rect rect;int row;};
     AppSettings& s_;
     std::vector<FrontendDataset> sets_;
+    const World* world_=nullptr;
+    struct SourceRow {std::size_t index;DatasetId dataset;std::string path;bool selected;};
+    std::vector<SourceRow> source_rows_;
+    struct FileRow {std::filesystem::path path;bool directory;};
+    std::vector<FileRow> file_rows_;
+    std::filesystem::path browser_path_=std::filesystem::current_path();
+    std::string browser_error_,pending_resource_;
+    std::size_t pending_source_=0;
+    std::map<MenuScreen,int> remembered_focus_;
+    MenuScreen help_return_=MenuScreen::main,map_return_=MenuScreen::hidden;
+    bool focused_=true;
     std::size_t dataset_=0;
     MenuScreen screen_=MenuScreen::main,return_screen_=MenuScreen::main,notice_return_=MenuScreen::main;
     MenuScreen binding_parent_=MenuScreen::keyboard;
@@ -74,6 +90,7 @@ private:
     void back();
     void choose(int delta=0);
     void begin_game();
+    void browse(const std::filesystem::path& path);
     void accept_binding();
     void capture(const SDL_Event& event);
     void build_rows();

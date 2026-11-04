@@ -13,9 +13,10 @@ namespace dok {
  X(UseProgram) X(GetUniformLocation) X(Uniform1i) X(Uniform2f) X(GenBuffers) X(BindBuffer) X(BufferData) X(DeleteBuffers) \
  X(EnableVertexAttribArray) X(DisableVertexAttribArray) X(VertexAttribPointer) X(GenTextures) X(BindTexture) X(TexParameteri) X(TexImage2D) X(TexSubImage2D) \
  X(DeleteTextures) X(ActiveTexture) X(PixelStorei) X(DrawArrays) X(Viewport) X(ClearColor) X(Clear) \
- X(Enable) X(Disable) X(BlendFunc) X(ReadPixels)
+ X(Enable) X(Disable) X(BlendFunc) X(ReadPixels) X(CopyTexSubImage2D)
 struct GlRenderer::Impl {
-    SDL_Window* window;SDL_GLContext context=nullptr;int width=1,height=1,virtual_width=320;
+    SDL_Window* window;SDL_GLContext context=nullptr;int width=1,height=1,virtual_width=320,virtual_height=160;
+    SDL_Rect scene_rect{};GLuint post_texture=0;int post_width=0,post_height=0;
     GLuint program=0,vbo=0,light=0;
     struct UiTexture {GLuint id=0;std::vector<std::uint32_t> pixels;};
     std::unordered_map<std::uint64_t,UiTexture> ui_textures;
@@ -31,7 +32,7 @@ struct GlRenderer::Impl {
     std::unordered_map<const void*,ImageHash> image_hashes;
     std::uint64_t image_epoch=0;
     bool immutable_images=false;
-    GLint mode_location=-1,filter_location=-1,size_location=-1,batch_location=-1;
+    GLint mode_location=-1,filter_location=-1,size_location=-1,batch_location=-1,output_scale_location=-1;
     std::vector<std::uint8_t> rgba_bytes;
     std::vector<float> polygon_data;
     struct Command {GLuint texture;GLint first;GLsizei count;unsigned width,height;int mode;bool linear,blend;};
@@ -80,7 +81,7 @@ struct GlRenderer::Impl {
         DrawArrays(GL_TRIANGLE_FAN,0,static_cast<GLsizei>(vertices.size()/7));
     }
     ~Impl(){if(context){SDL_GL_MakeCurrent(window,context);
-        if(DeleteTextures){for(auto t:textures)DeleteTextures(1,&t.second);for(const auto& t:ui_textures)DeleteTextures(1,&t.second.id);DeleteTextures(1,&light);}
+        if(DeleteTextures){for(auto t:textures)DeleteTextures(1,&t.second);for(const auto& t:ui_textures)DeleteTextures(1,&t.second.id);DeleteTextures(1,&light);if(post_texture)DeleteTextures(1,&post_texture);}
         if(DeleteBuffers&&vbo)DeleteBuffers(1,&vbo);if(DeleteProgram&&program)DeleteProgram(program);SDL_GL_DeleteContext(context);}}
 };
 GlRenderer::GlRenderer(SDL_Window* window):impl_(std::make_unique<Impl>()){
@@ -97,7 +98,7 @@ void main(){gl_Position=position;texcoord=uv;shade=depth/4096.0;mat=material;}
 uniform sampler2D picture; uniform sampler2D lighting;
 uniform sampler2D picture1; uniform sampler2D picture2; uniform sampler2D picture3;
 uniform sampler2D picture4; uniform sampler2D picture5; uniform sampler2D picture6;
-uniform int mode; uniform int filtering; uniform int batched; uniform vec2 pictureSize;
+uniform int mode; uniform int filtering; uniform int batched; uniform vec2 pictureSize; uniform vec2 outputScale;
 VARYING vec2 texcoord; VARYING float shade; VARYING vec4 mat;
 vec4 samplePicture(vec2 uv){
  float slot=batched==1?mat.z:0.0;
@@ -118,8 +119,33 @@ vec4 texelColor(vec2 uv,float row){
  float lower=floor(row);
  return mix(litColor(index,lower),litColor(index,min(lower+1.0,15.0)),fract(row));
 }
+float luma(vec3 rgb){return dot(rgb,vec3(0.299,0.587,0.114));}
+vec4 frameColor(vec2 uv){return texture2D(picture,uv);}
 void main(){
- if(mode==2){vec4 color=texture2D(picture,texcoord);if(color.a==0.0)discard;gl_FragColor=color;return;}
+ if(mode==3){
+  // Contrast-adaptive directional FXAA, two/four taps along a local edge.
+  vec2 step=1.0/pictureSize;
+  vec3 nw=frameColor(texcoord+vec2(-1.0,1.0)*step).rgb,ne=frameColor(texcoord+step).rgb;
+  vec3 sw=frameColor(texcoord-step).rgb,se=frameColor(texcoord+vec2(1.0,-1.0)*step).rgb;
+  vec3 center=frameColor(texcoord).rgb;
+  float a=luma(nw),b=luma(ne),c=luma(sw),d=luma(se),m=luma(center);
+  float lo=min(m,min(min(a,b),min(c,d))),hi=max(m,max(max(a,b),max(c,d)));
+  if(hi-lo<max(0.0312,hi*0.125)){gl_FragColor=vec4(center,1.0);return;}
+  vec2 direction=vec2(-((a+b)-(c+d)),(a+c)-(b+d));
+  float reduce=max((a+b+c+d)*0.03125,0.0078125);
+  direction=clamp(direction/(min(abs(direction.x),abs(direction.y))+reduce),vec2(-8.0),vec2(8.0))*step;
+  vec3 narrow=0.5*(frameColor(texcoord-direction/6.0).rgb+frameColor(texcoord+direction/6.0).rgb);
+  vec3 wide=0.5*narrow+0.25*(frameColor(texcoord-direction*0.5).rgb+frameColor(texcoord+direction*0.5).rgb);
+  float value=luma(wide);gl_FragColor=vec4(value<lo||value>hi?narrow:wide,1.0);return;
+ }
+ if(mode==2){
+  vec2 uv=texcoord;
+  if(filtering==2){
+   vec2 p=uv*pictureSize-0.5,scale=max(floor(outputScale),vec2(1.0));
+   uv=(floor(p)+clamp((fract(p)-0.5)*scale+0.5,0.0,1.0)+0.5)/pictureSize;
+  }
+  vec4 color=texture2D(picture,uv);if(color.a==0.0)discard;gl_FragColor=color;return;
+ }
  float row=clamp((shade*4096.0-1920.0)/120.0,0.0,15.0);
  // Interpolate actual palette colors, never palette indices. Keep native
  // LIGHT colors at each anchor, while removing discrete distance bands.
@@ -145,6 +171,7 @@ void main(){
     g.mode_location=g.GetUniformLocation(g.program,"mode");
     g.filter_location=g.GetUniformLocation(g.program,"filtering");
     g.size_location=g.GetUniformLocation(g.program,"pictureSize");
+    g.output_scale_location=g.GetUniformLocation(g.program,"outputScale");
     g.batch_location=g.GetUniformLocation(g.program,"batched");
     g.GenBuffers(1,&g.vbo);g.GenTextures(1,&g.light);g.PixelStorei(GL_UNPACK_ALIGNMENT,1);
     SDL_GL_SetSwapInterval(1);
@@ -155,10 +182,29 @@ void GlRenderer::begin(){auto& g=*impl_;SDL_GL_MakeCurrent(g.window,g.context);S
     if(g.ui_textures.size()>16){for(const auto& t:g.ui_textures)g.DeleteTextures(1,&t.second.id);g.ui_textures.clear();}
     // Bound CPU snapshots when a persistent Display visits many levels.
     if(g.image_hashes.size()>1024)g.image_hashes.clear();
-    g.virtual_width=std::clamp(int(192.0*g.width/g.height+0.5),160,1200);
+    g.virtual_width=std::clamp(int(192.0*g.width/g.height+0.5),160,1200);g.virtual_height=160;g.scene_rect={0,0,g.width,g.height};
     g.Viewport(0,0,g.width,g.height);g.Disable(GL_DEPTH_TEST);g.Disable(GL_CULL_FACE);g.Disable(GL_BLEND);g.ClearColor(0,0,0,1);g.Clear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);}
 int GlRenderer::view_width()const{return impl_->virtual_width;}
 void GlRenderer::set_linear_filter(bool enabled){impl_->linear_filter=enabled;}
+void GlRenderer::scene_view(SDL_Rect r,int width,int height){
+    flush_world();auto& g=*impl_;
+    if(r.w<=0||r.h<=0||width<=0||height<=0)throw std::invalid_argument("Invalid GL scene viewport");
+    g.scene_rect=r;g.virtual_width=width;g.virtual_height=height;
+    g.Viewport(r.x,g.height-r.y-r.h,r.w,r.h);
+}
+void GlRenderer::finish_scene(bool fxaa){
+    flush_world();auto& g=*impl_;if(!fxaa)return;
+    const auto r=g.scene_rect;
+    if(!g.post_texture)g.GenTextures(1,&g.post_texture);
+    if(g.post_width!=r.w||g.post_height!=r.h){
+        g.texture(g.post_texture,0,r.w,r.h,GL_RGBA,nullptr);g.post_width=r.w;g.post_height=r.h;
+    }else{g.ActiveTexture(GL_TEXTURE0);g.BindTexture(GL_TEXTURE_2D,g.post_texture);}
+    g.CopyTexSubImage2D(GL_TEXTURE_2D,0,0,0,r.x,g.height-r.y-r.h,r.w,r.h);
+    g.TexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);g.TexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+    g.Disable(GL_DEPTH_TEST);g.Disable(GL_BLEND);g.UseProgram(g.program);
+    g.Uniform2f(g.size_location,float(r.w),float(r.h));
+    g.draw({-1,-1,0,1,0,0,0,1,-1,0,1,1,0,0,1,1,0,1,1,1,0,-1,1,0,1,0,1,0},3);
+}
 void GlRenderer::world(const std::array<std::uint32_t,256>& palette,bool defer,bool immutable_images){
     flush_world();auto& g=*impl_;
     if(++g.image_epoch==0){g.image_hashes.clear();++g.image_epoch;}
@@ -204,7 +250,7 @@ void GlRenderer::polygon(const std::vector<RasterVertex>& vertices,const Image& 
     for(const auto& p:vertices){
         const auto v=p.precise.value_or(std::array<float,5>{float(p.x),float(p.y),float(p.depth),float(p.u),float(p.v)});
         const float w=std::max(1.0f,v[2]+200.0f);
-        const float x=(2.0f*(v[0]+0.5f)/g.virtual_width-1)*w,y=(1-2.0f*(v[1]+0.5f)/160)*w;
+        const float x=(2.0f*(v[0]+0.5f)/g.virtual_width-1)*w,y=(1-2.0f*(v[1]+0.5f)/g.virtual_height)*w;
         left&=x<-w;right&=x>w;above&=y>w;below&=y<-w;
     }
     // Keep the first-polygon LIGHT contract even if that polygon is offscreen.
@@ -240,7 +286,7 @@ void GlRenderer::polygon(const std::vector<RasterVertex>& vertices,const Image& 
     for(const auto& p:vertices){
         const auto v=p.precise.value_or(std::array<float,5>{float(p.x),float(p.y),float(p.depth),float(p.u),float(p.v)});
         const float w=std::max(1.0f,v[2]+200.0f);
-        data.insert(data.end(),{(2.0f*(v[0]+0.5f)/g.virtual_width-1)*w,(1-2.0f*(v[1]+0.5f)/160)*w,w-2.0f,w,
+        data.insert(data.end(),{(2.0f*(v[0]+0.5f)/g.virtual_width-1)*w,(1-2.0f*(v[1]+0.5f)/g.virtual_height)*w,w-2.0f,w,
             (v[3]+0.5f)/image.width,(v[4]+0.5f)/image.height,p.shade_depth.value_or(std::max(0.0f,v[2]))});}
     const int mode=(axis==RasterAxis::vertical&&(image.flags&8))?1:0;
     if(g.deferred){
@@ -253,7 +299,7 @@ void GlRenderer::polygon(const std::vector<RasterVertex>& vertices,const Image& 
         g.draw(data,mode);
     }
 }
-void GlRenderer::image(const std::vector<std::uint32_t>& pixels,int width,int height,SDL_Rect r,bool screen_pixels){
+void GlRenderer::image(const std::vector<std::uint32_t>& pixels,int width,int height,SDL_Rect r,bool screen_pixels,int filter){
     flush_world();
     auto& g=*impl_;
     const auto key=(std::uint64_t(width)<<32)|unsigned(height);
@@ -262,6 +308,12 @@ void GlRenderer::image(const std::vector<std::uint32_t>& pixels,int width,int he
     else if(std::memcmp(texture.pixels.data(),pixels.data(),count*sizeof(std::uint32_t))!=0){
         g.rgba(texture.id,0,width,height,pixels.data(),true);std::copy_n(pixels.data(),count,texture.pixels.data());
     }else{g.ActiveTexture(GL_TEXTURE0);g.BindTexture(GL_TEXTURE_2D,texture.id);}
+    g.Viewport(0,0,g.width,g.height);
+    g.UseProgram(g.program);g.Uniform1i(g.filter_location,filter);
+    g.Uniform2f(g.size_location,float(width),float(height));
+    g.Uniform2f(g.output_scale_location,float(r.w)/width,float(r.h)/height);
+    g.TexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,filter?GL_LINEAR:GL_NEAREST);
+    g.TexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,filter?GL_LINEAR:GL_NEAREST);
     g.Disable(GL_DEPTH_TEST);g.Enable(GL_BLEND);g.BlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
     const float rw=screen_pixels?float(g.width):320.f,rh=screen_pixels?float(g.height):240.f;
     const float l=2.f*r.x/rw-1,rr=2.f*(r.x+r.w)/rw-1,t=1-2.f*r.y/rh,b=1-2.f*(r.y+r.h)/rh;

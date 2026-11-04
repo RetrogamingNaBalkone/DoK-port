@@ -2,6 +2,8 @@
 #include "world.hpp"
 
 namespace dok {
+// Presentation zoom relative to the 320-wide reference camera. Zero preserves native arithmetic.
+double presentation_focal(int degrees);
 std::int32_t original_sine(int heading);
 std::int32_t original_cosine(int heading);
 struct CameraParameters {

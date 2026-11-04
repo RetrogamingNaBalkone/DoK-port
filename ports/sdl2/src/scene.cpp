@@ -4,6 +4,7 @@
 #include "dok/gpu_geometry.hpp"
 #include <algorithm>
 #include <stdexcept>
+#include <cmath>
 
 namespace dok {
 using namespace original;
@@ -100,9 +101,16 @@ void SoftwareScene::software_resolution(int width,int height){
         static_cast<std::int16_t>(4096.0f*(float(width)/320.0f)),200};
     const int scene_height=(height_argument/2)*2;
     if(surface_.width()!=width||surface_.height()!=scene_height)surface_=IndexedSurface(width,scene_height);
-    frame_height_=height;
+    frame_height_=height;presentation_view_width_=320;
 }
-const IndexedSurface& SoftwareScene::render(const World& world,Pose pose,const std::vector<PositionedImage>& dynamic,const Draw& gpu,int view_width,std::array<double,4> camera_offset,const ImageGetter& getter){
+void SoftwareScene::software_presentation(int width,int height){
+    if(width<1||width>32766||height<2||height>614||height%2)throw std::invalid_argument("Invalid presentation viewport");
+    presentation_view_width_=int(std::lround(width*160.0/height));
+    software_camera_={static_cast<std::int16_t>(width),static_cast<std::int16_t>(height+1),8,
+        static_cast<std::int16_t>(4096.0*height/160.0),200};
+    if(surface_.width()!=width||surface_.height()!=height)surface_=IndexedSurface(width,height);
+}
+const IndexedSurface& SoftwareScene::render(const World& world,Pose pose,const std::vector<PositionedImage>& dynamic,const Draw& gpu,int view_width,std::array<double,4> camera_offset,const ImageGetter& getter,int gpu_height){
     const auto& level=world.definition;const auto side=level.cell_side;
     if(dataset_!=level.dataset||level_name_!=level.name||object_images_.size()!=level.objects.size())
         throw std::invalid_argument("Scene/world mismatch");
@@ -137,9 +145,11 @@ const IndexedSurface& SoftwareScene::render(const World& world,Pose pose,const s
             material.flags=image->flags;
         }
     auto parameters=gpu?CameraParameters::kremlin_vga():software_camera_;if(gpu)parameters.width=static_cast<std::int16_t>(view_width);
+    const double focal=presentation_focal(base_fov_);
+    if(base_fov_)parameters.focal_q12=static_cast<std::int16_t>(parameters.focal_q12*focal/200.0);
     SoftwareCamera camera(parameters);camera.set_pose(pose);
     const auto& hero=world.objects.at(*world.player);
-    const GpuCamera precise_camera(pose,view_width,hero.motion?hero.motion->mouse_remainder:0,camera_offset);
+    const GpuCamera precise_camera(pose,view_width,hero.motion?hero.motion->mouse_remainder:0,camera_offset,gpu_height,focal);
     const auto vertical_plane=[&](const SoftwareCamera& c,Pose a,Pose b,std::int16_t h,int tw,int th,
         std::uint8_t flags=1,std::int16_t bias=0,int v0=0,int v1=0,bool reflection=false){
         auto result=gpu?precise_camera.vertical(a,b,h,tw,th,flags,v0,v1,reflection):
@@ -163,7 +173,7 @@ const IndexedSurface& SoftwareScene::render(const World& world,Pose pose,const s
         }return result;
     };
     std::vector<RenderPolygon> polygons;
-    const auto bounds=view_cell_bounds(pose,side,level.width,level.length,gpu?view_width:320);
+    const auto bounds=view_cell_bounds(pose,side,level.width,level.length,int(std::ceil((gpu?view_width:presentation_view_width_)*200.0/focal)));
     const auto& tmap=world.maps.at("tmap");const auto& fcmap=world.maps.at("fcmap");const auto& mmap=world.maps.at("mmap");
     auto at=[&](const char* map,int x,int z)->const ObjectDefinition&{
         x=std::clamp(x,0,level.width-1);z=std::clamp(z,0,level.length-1);

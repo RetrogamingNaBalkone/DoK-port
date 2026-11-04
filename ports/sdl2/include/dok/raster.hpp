@@ -22,8 +22,8 @@ private:
 };
 // Independent native affine edge/span implementation, not triangle/GPU mapping.
 // Crop transforms must be applied to image pixels before this call.
-// Diagnostic replay of the original shared DS high-vertex index. Production
-// rendering passes nullptr and deliberately fixes its stale-value LIGHT bug.
+// Diagnostic replay of shared DS high-vertex history and the skipped UV step
+// at a 64KiB destination wrap. Production nullptr fixes both original bugs.
 struct RasterReferenceState {int maximum_vertex=0;};
 void rasterize(IndexedSurface& target,const std::vector<RasterVertex>& vertices,
                const Image& image,Bytes light,ClipRect clip,RasterAxis axis,

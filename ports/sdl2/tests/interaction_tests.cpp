@@ -2,6 +2,7 @@
 #include "dok/scene.hpp"
 #include <iostream>
 #include <stdexcept>
+#include <string>
 
 static void check(bool v,const char* message){if(!v)throw std::runtime_error(message);}
 static dok::LevelDefinition fixture(){
@@ -61,9 +62,11 @@ static void scenarios(){
     check(out.pixels[86]==0&&out.pixels[87]==42&&out.pixels[96]==0,"Native divide-before-multiply crop");
     image.width=3;image.height=96;image.flags=0x108;out=dok::door_image(image,crop);
     check(out.pixels[260]==0&&out.pixels[261]==42,"Vertical crop");
+    for(auto profile:{dok::DatasetId::old_gold,dok::DatasetId::kremlin_pkr,dok::DatasetId::kremlin_pke}){
     std::vector<std::uint64_t> reference;
     for(unsigned fps:{30,60,144}){
-        dok::World replay(automatic);replay.objects[1].player_state->attributes[10]=1;dok::player_use(replay);
+        auto level=automatic;level.dataset=profile;
+        dok::World replay(level);replay.objects[1].player_state->attributes[10]=1;dok::player_use(replay);
         std::vector<std::uint64_t> trace;std::uint64_t previous=0;
         for(unsigned f=1;f<=fps*10;++f){
             const auto now=std::uint64_t(f)*1000000000ULL/fps;
@@ -75,10 +78,22 @@ static void scenarios(){
         }
         if(reference.empty())reference=trace;else check(trace==reference,"Door cadence depends on FPS");
     }
+    }
+    auto og_level=fixture();og_level.dataset=dok::DatasetId::old_gold;
+    dok::World og(og_level);auto& og_door=og.objects[2];og.objects[1].player_state->attributes[10]=1;
+    check(dok::player_use(og)==dok::UseResult::scheduled,"OG door use");
+    advance(og,300000000);check(og_door.door->phase==8&&!(og_door.flags&0x10),"OG door passed before completed OPEN");
+    advance(og,1000000000);check(og_door.door->state==1&&(og_door.flags&0x10),"OG door did not pass at OPEN completion");
+    check(dok::player_use(og)==dok::UseResult::scheduled,"OG close use");
+    advance(og,50000000);check(!(og_door.flags&0x10),"OG closing door retained passability");
+    advance(og,1500000000);check(og_door.flags==0x48,"OG must restore per-step saved flags, including bit8");
+    check(!og.visible_message().empty(),"Native door notification missing");
 }
 static void real_maps(const char* path){
     auto archive=dok::Archive::open(std::filesystem::u8path(path));unsigned doors=0,frames=0,sensors=0;
-    for(auto name:{"LEVEL1","LEVEL2","LEVEL3"}){
+    const auto levels=archive.identify()==dok::DatasetId::old_gold?
+        std::vector<const char*>{"LEVEL4"}:std::vector<const char*>{"LEVEL1","LEVEL2","LEVEL3"};
+    for(auto name:levels){
         dok::World w(dok::load_level(archive,name));dok::SoftwareScene scene(archive,w.definition);
         const auto owner=w.objects.at(*w.player).owner;w.objects.at(*w.player).player_state->attributes[10]=-1;
         for(auto& object:w.objects)if(object.door){check(dok::use_door(w,object.owner,owner)==dok::UseResult::scheduled,"Actual door scheduling");++doors;}
@@ -102,7 +117,25 @@ static void real_maps(const char* path){
     }
     std::cout<<doors<<" actual doors; "<<frames<<" animated scene frames; "<<sensors<<" sensor cells\n";
 }
+// One callback per fixture, paired with the independent original-instruction
+// oracle. Nonzero intervals exclude the port's explicit FPS adaptation.
+static void native_matrix(){
+    for(auto profile:{dok::DatasetId::old_gold,dok::DatasetId::kremlin_pkr,dok::DatasetId::kremlin_pke})
+    for(auto event:{dok::GameEvent::door_open,dok::GameEvent::door_close,dok::GameEvent::door_auto})
+    for(int state:{1,2})for(int phase:{0,7,8,28,29})for(int occupants:{0,1})for(bool ready:{false,true})
+    for(int flags:{0x42,0x5a}){
+        auto level=fixture();level.dataset=profile;dok::World w(level);
+        auto& object=w.objects[2];auto& door=*object.door;
+        door.phase=phase;door.extent=30;door.interval=7;door.state=state;door.ready=ready;
+        door.saved_flags=0x2442;object.flags=flags;object.door_occupants=occupants;
+        w.events.schedule(object.owner,static_cast<dok::CallbackId>(event),1,0);
+        w.events.dispatch([]{return 2u;},[&](auto owner,auto callback){dok::door_event(w,owner,static_cast<dok::GameEvent>(callback));});
+        std::cout<<static_cast<int>(profile)<<','<<static_cast<int>(event)<<','<<state<<','<<phase<<','<<occupants<<','<<ready<<','<<flags<<','
+                 <<door.phase<<','<<int(door.state)<<','<<door.ready<<','<<object.flags<<','<<door.saved_flags<<'\n';
+    }
+}
 int main(int argc,char** argv){
-    try{scenarios();for(int i=1;i<argc;++i)real_maps(argv[i]);std::cout<<"Door keys, thresholds, occupancy, AUTO, crop and FPS checks passed\n";}
+    try{if(argc==2&&std::string(argv[1])=="--native-matrix"){native_matrix();return 0;}
+        scenarios();for(int i=1;i<argc;++i)real_maps(argv[i]);std::cout<<"Door keys, thresholds, occupancy, AUTO, crop and FPS checks passed\n";}
     catch(const std::exception& e){std::cerr<<e.what()<<'\n';return 1;}
 }

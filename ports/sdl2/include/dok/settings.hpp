@@ -16,9 +16,15 @@ struct AppSettings {
     VideoSettings video;
     LocaleId locale=system_locale();
     bool linear=false,show_fps=true,inertia=true;
+    // Independent presentation options; never enter simulation state.
+    int frame_filter=0; // nearest, linear, sharp bilinear
+    bool fxaa=false,classic_hud=false,auto_hud=true,force_4_3=false;
+    int base_fov=0; // 0 = original projection; otherwise reference-scene degrees 45..110.
     int master_volume=100,effects_volume=100,music_volume=100;
     DatasetId last_dataset=DatasetId::unknown;
     InputBindings input=InputBindings::defaults();
+    std::vector<std::string> resource_paths;
+    std::array<std::string,4> resource_choices{};
 };
 // The only permitted software framebuffer sizes. Presentation/window size is separate.
 inline constexpr std::array<std::array<int,2>,5> software_modes{{{320,200},{640,400},{640,480},{800,600},{1024,768}}};

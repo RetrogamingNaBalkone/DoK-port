@@ -37,19 +37,40 @@ int main(int argc,char** argv){
             shot(display,menu,out/(prefix+"main.png"));key(menu,SDLK_RETURN);shot(display,menu,out/(prefix+"datasets.png"));
             key(menu,SDLK_RETURN);shot(display,menu,out/(prefix+"title.png"));key(menu,SDLK_RETURN);
             for(int page=0;menu.screen()==dok::MenuScreen::readme&&page<100;++page)key(menu,SDLK_RETURN);
-            shot(display,menu,out/(prefix+"levels.png"));key(menu,SDLK_ESCAPE);key(menu,SDLK_DOWN);key(menu,SDLK_RETURN);key(menu,SDLK_RETURN);shot(display,menu,out/(prefix+"graphics.png"));
-            key(menu,SDLK_ESCAPE);key(menu,SDLK_ESCAPE);key(menu,SDLK_DOWN);key(menu,SDLK_RETURN);shot(display,menu,out/(prefix+"credits.png"));frames+=6;
+            shot(display,menu,out/(prefix+"levels.png"));menu.main_menu();key(menu,SDLK_DOWN);key(menu,SDLK_RETURN);key(menu,SDLK_RETURN);shot(display,menu,out/(prefix+"graphics.png"));
+            key(menu,SDLK_ESCAPE);key(menu,SDLK_ESCAPE);for(int i=0;i<3;++i)key(menu,SDLK_DOWN);key(menu,SDLK_RETURN);shot(display,menu,out/(prefix+"credits.png"));frames+=6;
+        }
+        // Readable layout and navigation checks use actual GL/software readback.
+        for(int backend=0;backend<2;++backend)for(int lang=0;lang<2;++lang)for(auto size:{std::array<int,2>{1024,768},std::array<int,2>{1280,720}}){
+            dok::AppSettings s;s.locale=lang?dok::LocaleId::en:dok::LocaleId::ru;s.video.renderer=backend?dok::RendererKind::opengl:dok::RendererKind::software;s.video.width=size[0];s.video.height=size[1];
+            dok::Display display(s.video);dok::Frontend menu(s);menu.datasets({{&sets[2],"OLD_GOLD.RES"},{&sets[0],"PKR.RES"},{&sets[1],"PKE.RES"}});
+            dok::ResourceSources sources;for(int i=0;i<3;++i)sources.add(root/(i==0?"originals/pkr/RUS/PKR.RES":i==1?"originals/pkr/ENG/PKE.RES":"originals/Old_Gold_3D/OLD_GOLD.RES"),sets[i]);menu.resources(sources);
+            dok::World world(dok::load_level(sets[0],"LEVEL1"));world.map_revealed=true;menu.session_world(&world);
+            const auto prefix=(backend?"ux-gl-":"ux-sw-")+std::string(lang?"en-":"ru-")+std::to_string(size[0])+"-";
+            auto save=[&](const char* name){shot(display,menu,out/(prefix+name+".png"));++frames;};
+            auto down=[&](int n){for(int i=0;i<n;++i)key(menu,SDLK_DOWN);};
+            auto setting=[&](int index){menu.main_menu();down(1);key(menu,SDLK_RETURN);if(index>=0){down(index);key(menu,SDLK_RETURN);}};
+            setting(-1);save("settings");setting(1);save("sound");setting(2);save("controls");key(menu,SDLK_RETURN);save("keyboard");down(1);key(menu,SDLK_RETURN);save("bindings");
+            key(menu,SDLK_RETURN);save("key-slots");key(menu,SDLK_RETURN);save("capture");
+            SDL_Event focus{};focus.type=SDL_WINDOWEVENT;focus.window.event=SDL_WINDOWEVENT_FOCUS_LOST;menu.handle(focus,size[0],size[1]);check(!menu.capturing(),"Focus must cancel binding capture");focus.window.event=SDL_WINDOWEVENT_FOCUS_GAINED;menu.handle(focus,size[0],size[1]);
+            setting(2);down(1);key(menu,SDLK_RETURN);save("pad");setting(3);save("gameplay");setting(4);save("interface");key(menu,SDLK_ESCAPE);check(menu.focused_row()==4,"Back must restore parent section");
+            menu.main_menu();down(3);key(menu,SDLK_RETURN);save("help");key(menu,SDLK_RETURN);save("help-page2");
+            menu.main_menu();down(2);key(menu,SDLK_RETURN);save("resources");key(menu,SDLK_RETURN);save("files");key(menu,SDLK_ESCAPE);check(menu.screen()==dok::MenuScreen::resources,"Files back to resources");
+            menu.pause();save("pause");down(2);key(menu,SDLK_RETURN);check(menu.screen()==dok::MenuScreen::map,"Pause map route");save("map");key(menu,SDLK_ESCAPE);check(menu.screen()==dok::MenuScreen::pause&&menu.focused_row()==2,"Map returns to pause row");
+            menu.hide();menu.show_map();key(menu,SDLK_TAB);check(!menu.active(),"Map action toggles overlay");
+            menu.notice("Notice","Notice");save("notice");menu.outcome(dok::SessionPhase::retry);save("retry");menu.outcome(dok::SessionPhase::game_over);save("game-over");
+            menu.main_menu();menu.datasets({});dok::ResourceSources empty;menu.resources(empty);down(2);key(menu,SDLK_RETURN);save("no-resources");menu.main_menu();down(3);key(menu,SDLK_RETURN);save("no-res-help");
         }
         std::ofstream modes(out/"software-modes.tsv");modes<<"dataset\tlevel\twidth\theight\tscene_height\tfnv64\n";
         for(int dataset=0;dataset<3;++dataset){const auto& a=sets[dataset];const int count=dataset==2?1:3;
             for(int level=1;level<=count;++level){const auto name=dataset==2?"LEVEL4":"LEVEL"+std::to_string(level);dok::World world(dok::load_level(a,name));dok::SoftwareScene scene(a,world.definition);dok::Hud hud(a);
                 std::vector<std::uint8_t> vga;
                 for(auto size:dok::software_modes){scene.software_resolution(size[0],size[1]);const auto& frame=scene.render(world,*world.objects.at(*world.player).pose);
-                    check(frame.width()==size[0]&&frame.height()==(int(size[1]-39.0f*(float(size[1])/200))/2)*2,"Native viewport dimensions");
+                    check(frame.width()==size[0]&&frame.height()==(int(size[1]-(dataset==2?29.0f:39.0f)*(float(size[1])/200))/2)*2,"Native viewport dimensions");
                     const auto composed=hud.classic_mode(frame,size[1],*world.objects.at(*world.player).player_state);
                     check(composed.width()==size[0]&&composed.height()==size[1],"Native framebuffer dimensions");
                     if(size[0]==320)vga=frame.pixels;
-                    else{std::size_t differences=0;for(int y=0;y<frame.height();++y)for(int x=0;x<frame.width();++x)differences+=frame.pixels[y*frame.width()+x]!=vga[(y*160/frame.height())*320+x*320/frame.width()];
+                    else{std::size_t differences=0;for(int y=0;y<frame.height();++y)for(int x=0;x<frame.width();++x)differences+=frame.pixels[y*frame.width()+x]!=vga[(y*(dataset==2?170:160)/frame.height())*320+x*320/frame.width()];
                         check(differences>frame.pixels.size()/100,"High-resolution world must not upscale VGA");}
                     modes<<dataset<<'\t'<<name<<'\t'<<size[0]<<'\t'<<size[1]<<'\t'<<frame.height()<<'\t'<<digest(frame.pixels)<<'\n';++software;
                 }

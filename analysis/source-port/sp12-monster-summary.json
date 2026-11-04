@@ -1,0 +1,33 @@
+{
+  "date": "2026-11-04",
+  "task": "SP12",
+  "originals_unchanged": true,
+  "native_damage_vectors": 630,
+  "native_death_vectors": 96,
+  "parameter_groups": {
+    "old_gold": 20,
+    "kremlin": 27,
+    "total": 47
+  },
+  "fps_backend_callback_replays": 42,
+  "fixes": [
+    "OG signed height SAR on each death frame",
+    "OG melee hurt keeps attack clip",
+    "Release passage during fully transparent death tail without skipping duration/audio",
+    "Preserve entering actor during corpse map finalization",
+    "Release dead actor door occupancy exactly once"
+  ],
+  "invisible_corpse_scenarios": 24,
+  "real_gl_anchor": {
+    "old_base_y": -150,
+    "new_base_y": -75,
+    "old_bottom": 189,
+    "new_bottom": 219
+  },
+  "software_anchor": {
+    "old_bottom": 92,
+    "new_bottom": 107
+  },
+  "evidence": "research/evidence/source-port/sp12-monsters/checks-report.json",
+  "boundary": "Hit/death native instruction oracle; original parameter groups in test arenas; isolated actual GL/software image anchor. No full map playthrough."
+}

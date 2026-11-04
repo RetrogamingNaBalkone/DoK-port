@@ -1,4 +1,5 @@
 #include "dok/monsters.hpp"
+#include "dok/arithmetic.hpp"
 #include <algorithm>
 #include <iostream>
 #include <set>
@@ -39,8 +40,12 @@ static void death(Run& r,std::size_t index,bool terrain){
     check(message==d.objects[index].resource(0xbe),"Death message delayed until animation end");
     const auto message_until=r.world.message_until;
     const auto frames=r.world.definition.objects[index].resource(0xec);
+    const auto initial_y=enemy.pose->y;
     r.until(r.next(owner));
     check(enemy.monster->state==4&&enemy.monster->display_clip==2&&enemy.monster->display_frame==0&&!enemy.monster->corpse,"Death first frame");
+    const auto expected_y=d.dataset==dok::DatasetId::old_gold?
+        dok::original::negate16(static_cast<std::int16_t>(dok::original::sar32(dok::original::negate16(static_cast<std::int16_t>(initial_y)),1))):initial_y;
+    check(enemy.pose->y==expected_y,"Profile-specific death height");
     unsigned guard=0;
     while(!enemy.monster->corpse){check(++guard<100,"Death callback loop");r.until(r.next(owner));}
     check(r.world.message_until==message_until,"Corpse repeated death message");
@@ -51,14 +56,51 @@ static void death(Run& r,std::size_t index,bool terrain){
     if(terrain)check(r.world.maps.at("tmap")[cell]==obstacle&&r.world.maps.at("mmap")[cell]==d.objects[index].glyph,"Corpse overwrote occupied TMap");
     else check(r.world.maps.at("tmap")[cell]==d.objects[index].glyph&&r.world.maps.at("mmap")[cell]==' ',"Corpse not placed into empty TMap");
 }
+static void native_matrix(const dok::Archive& archive){
+    auto definition=dok::load_level(archive,archive.identify()==dok::DatasetId::old_gold?"LEVEL4":"LEVEL1");
+    for(int health:{-32768,-1,0,1,7,300,32767})for(int state:{0,1,2,3,4})
+        for(int amount:{-32768,-5,0,1,7,32767}){
+            Run run(definition,archive);auto found=std::find_if(run.world.objects.begin(),run.world.objects.end(),[](const auto& o){return o.monster&&o.pose;});
+            check(found!=run.world.objects.end(),"No original monster");auto& m=*found->monster;
+            const auto course=static_cast<std::int16_t>(definition.objects[found->definition_index].number(0xae));
+            m.health=static_cast<std::int16_t>(health);m.state=static_cast<std::int16_t>(state);
+            m.next_frame=9;m.shot_count=5;m.course_counter=2;
+            const bool accepted=run.monsters.damage(found->owner,static_cast<std::int16_t>(amount));
+            std::cout<<int(archive.identify())<<','<<health<<','<<state<<','<<amount<<','<<course<<','
+                <<m.health<<','<<m.state<<','<<m.next_frame<<','<<m.shot_count<<','<<m.course_counter<<','<<accepted<<'\n';
+        }
+}
+static void death_matrix(const dok::Archive& archive){
+    auto definition=dok::load_level(archive,archive.identify()==dok::DatasetId::old_gold?"LEVEL4":"LEVEL1");
+    for(int height:{-32768,-301,-1,0,1,300,301,32767})for(int state:{1,4})for(int phase:{0,1}){
+        Run run(definition,archive);auto found=std::find_if(run.world.objects.begin(),run.world.objects.end(),[](const auto& o){return o.monster&&o.pose;});
+        check(found!=run.world.objects.end(),"No original monster");const auto owner=found->owner;
+        run.monsters.wake(owner);auto& m=*found->monster;m.health=0;m.state=static_cast<std::int16_t>(state);m.next_frame=static_cast<std::int16_t>(phase);
+        found->pose->y=dok::original::negate16(static_cast<std::int16_t>(height));
+        const auto count=archive.animation(definition.objects[found->definition_index].resource(0xec)).size();
+        check(count>1,"Death oracle needs2 frames");run.until(run.next(owner));
+        std::cout<<int(archive.identify())<<','<<height<<','<<state<<','<<phase<<','<<count<<','<<m.next_frame<<','<<m.state<<','
+            <<dok::original::negate16(static_cast<std::int16_t>(found->pose->y))<<'\n';
+    }
+}
 int main(int argc,char** argv){
     try{
         if(argc<2)throw std::invalid_argument("Usage: dok_monster_probe RES...");
+        if(std::string(argv[1])=="--native-matrix"){
+            for(int arg=2;arg<argc;++arg)native_matrix(dok::Archive::open(std::filesystem::u8path(argv[arg])));
+            return 0;
+        }
+        if(std::string(argv[1])=="--death-matrix"){
+            for(int arg=2;arg<argc;++arg)death_matrix(dok::Archive::open(std::filesystem::u8path(argv[arg])));
+            return 0;
+        }
         check(dok::original_direction(1,0)==0&&dok::original_direction(0,1)==90&&dok::original_direction(-1,0)==180&&dok::original_direction(0,-1)==270,"Direction axes");
         check(dok::original_direction(100,100)==45&&dok::original_direction(0,0)==0,"Direction diagonals/origin");
         unsigned groups=0,replays=0;
         for(int arg=1;arg<argc;++arg){const auto archive=dok::Archive::open(std::filesystem::u8path(argv[arg]));
-            for(auto level:{"LEVEL1","LEVEL2","LEVEL3"}){
+            const auto levels=archive.identify()==dok::DatasetId::old_gold?std::vector<std::string>{"LEVEL4"}:
+                std::vector<std::string>{"LEVEL1","LEVEL2","LEVEL3"};
+            for(const auto& level:levels){
                 const auto definition=dok::load_level(archive,level);dok::World initial(definition);std::set<std::string> signatures;bool replayed=false;
                 for(std::size_t index=0;index<definition.objects.size();++index){const auto& d=definition.objects[index];
                     if(d.class_id!=9||!initial.objects[index].pose)continue;
@@ -77,7 +119,8 @@ int main(int argc,char** argv){
                     melee.until(duration-1);check(hero.player_state->health()==30000,"Early melee damage");
                     melee.until(duration);check(hero.player_state->health()==29995,"Melee must deal5 after full attack cycle");
                     const auto hp=enemy.monster->health;melee.monsters.damage(owner,1);check(enemy.monster->health==hp-1,"Monster damage");
-                    melee.until(melee.next(owner));check(enemy.monster->state==2&&enemy.monster->display_clip==2,"Contact hurt frame");
+                    melee.until(melee.next(owner));check(enemy.monster->state==2&&
+                        enemy.monster->display_clip==(definition.dataset==dok::DatasetId::old_gold?1:2),"Profile-specific contact hurt frame");
                     death(melee,index,false);
                     Run blocked(definition,archive);arena(blocked,index,1);blocked.monsters.wake(blocked.world.objects[index].owner);death(blocked,index,true);
                     Run moving(definition,archive);arena(moving,index,6);auto& actor=moving.world.objects[index];moving.monsters.wake(actor.owner);

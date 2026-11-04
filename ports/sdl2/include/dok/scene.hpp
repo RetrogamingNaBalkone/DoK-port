@@ -17,13 +17,17 @@ public:
     using Draw=std::function<void(const std::vector<RasterVertex>&,const Image&,Bytes,RasterAxis)>;
     SoftwareScene(const Archive& archive,const LevelDefinition& level);
     void software_resolution(int width,int height);
+    // Modern viewport: square game coordinates plus 1.2 VGA pixel correction.
+    // Native software_resolution remains the independent DOS reference path.
+    void software_presentation(int width,int height);
+    void base_fov(int degrees){presentation_focal(degrees);base_fov_=degrees;}
     // Explicit diagnostic hooks; never enabled by the gameplay application.
     void native_light_history(bool enabled){if(enabled)raster_reference_.emplace();else raster_reference_.reset();}
     using GeometryObserver=std::function<void(const std::vector<RenderPolygon>&)>;
     void inspect_geometry(GeometryObserver observer){geometry_observer_=std::move(observer);}
     int frame_height() const {return frame_height_;}
     const IndexedSurface& render(const World& world,Pose pose,const std::vector<PositionedImage>& dynamic={},
-        const Draw& gpu={},int view_width=320,std::array<double,4> camera_offset={},const ImageGetter& getter={});
+        const Draw& gpu={},int view_width=320,std::array<double,4> camera_offset={},const ImageGetter& getter={},int gpu_height=160);
     const std::array<std::uint32_t,256>& palette() const noexcept {return palette_;}
     std::size_t polygon_count() const noexcept {return polygon_count_;}
 private:
@@ -45,7 +49,7 @@ private:
     IndexedSurface surface_{320,160};
     bool surface_dirty_=false;
     CameraParameters software_camera_=CameraParameters::kremlin_vga();
-    int frame_height_=200;
+    int frame_height_=200,base_fov_=0,presentation_view_width_=320;
     std::size_t polygon_count_=0;
 };
 } // namespace dok

@@ -1,0 +1,210 @@
+{
+  "schema": 1,
+  "scope": "Windows SP08 primary video stage; not GLES/RK3326 or complete level playthroughs",
+  "counts": {
+    "gl_frames": 48,
+    "software_frames": 9,
+    "software_modes": 120,
+    "fov_cases": 36,
+    "aspect_cases": 12,
+    "weapons": 12
+  },
+  "settings_restart": true,
+  "forced43_max_differing_pixels": 19,
+  "gl_pixel_probe": [
+    "Transitions 0,311,1",
+    "Sharp transitions 0,311,1; FXAA changed 1708 edge pixels; classic viewport 160/170 passed",
+    "Smooth LIGHT anchors/ramp, wall occlusion, transparent depth, UI and nearest/linear passed"
+  ],
+  "ceilings": [
+    {
+      "dataset": "Kremlin PKR",
+      "cell": [
+        31,
+        47
+      ],
+      "cell_height": 960,
+      "inset": 10,
+      "floor_y": 0,
+      "roof_y": -951,
+      "eye_y": -300,
+      "clearance": 951,
+      "eye_to_roof": 651,
+      "scene_vertices": 12,
+      "projection_anchors": 2
+    },
+    {
+      "dataset": "Kremlin PKR",
+      "cell": [
+        26,
+        47
+      ],
+      "cell_height": 960,
+      "inset": 400,
+      "floor_y": 0,
+      "roof_y": -561,
+      "eye_y": -300,
+      "clearance": 561,
+      "eye_to_roof": 261,
+      "scene_vertices": 9,
+      "projection_anchors": 2
+    },
+    {
+      "dataset": "Kremlin PKR",
+      "cell": [
+        57,
+        52
+      ],
+      "cell_height": 960,
+      "inset": 400,
+      "floor_y": 0,
+      "roof_y": -561,
+      "eye_y": -300,
+      "clearance": 561,
+      "eye_to_roof": 261,
+      "scene_vertices": 12,
+      "projection_anchors": 2
+    },
+    {
+      "dataset": "Kremlin PKR",
+      "cell": [
+        20,
+        33
+      ],
+      "cell_height": 960,
+      "inset": 400,
+      "floor_y": 0,
+      "roof_y": -561,
+      "eye_y": -300,
+      "clearance": 561,
+      "eye_to_roof": 261,
+      "scene_vertices": 11,
+      "projection_anchors": 2
+    },
+    {
+      "dataset": "Kremlin PKE",
+      "cell": [
+        31,
+        48
+      ],
+      "cell_height": 960,
+      "inset": 10,
+      "floor_y": 0,
+      "roof_y": -951,
+      "eye_y": -300,
+      "clearance": 951,
+      "eye_to_roof": 651,
+      "scene_vertices": 12,
+      "projection_anchors": 2
+    },
+    {
+      "dataset": "Kremlin PKE",
+      "cell": [
+        26,
+        47
+      ],
+      "cell_height": 960,
+      "inset": 400,
+      "floor_y": 0,
+      "roof_y": -561,
+      "eye_y": -300,
+      "clearance": 561,
+      "eye_to_roof": 261,
+      "scene_vertices": 9,
+      "projection_anchors": 2
+    },
+    {
+      "dataset": "Kremlin PKE",
+      "cell": [
+        57,
+        52
+      ],
+      "cell_height": 960,
+      "inset": 400,
+      "floor_y": 0,
+      "roof_y": -561,
+      "eye_y": -300,
+      "clearance": 561,
+      "eye_to_roof": 261,
+      "scene_vertices": 12,
+      "projection_anchors": 2
+    },
+    {
+      "dataset": "Kremlin PKE",
+      "cell": [
+        20,
+        33
+      ],
+      "cell_height": 960,
+      "inset": 400,
+      "floor_y": 0,
+      "roof_y": -561,
+      "eye_y": -300,
+      "clearance": 561,
+      "eye_to_roof": 261,
+      "scene_vertices": 11,
+      "projection_anchors": 2
+    }
+  ],
+  "ghidra": [
+    {
+      "profile": "ru",
+      "sample": "originals/pkr/RUS/PKR.EXE",
+      "sha256_before": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+      "sha256_after": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+      "ranges": [
+        [
+          "entry-world",
+          "1098:30c1",
+          "0x1300"
+        ],
+        [
+          "entry-roof-pair",
+          "1098:4413",
+          "0x100"
+        ],
+        [
+          "entry-pair-constructor",
+          "10b0:1007",
+          "0x550"
+        ]
+      ],
+      "address_system": "Ghidra MZ/NE, not runtime selector or file offset"
+    },
+    {
+      "profile": "en",
+      "sample": "originals/pkr/ENG/PKE.EXE",
+      "sha256_before": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b",
+      "sha256_after": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b",
+      "ranges": [
+        [
+          "entry-world",
+          "1030:3571",
+          "0x1600"
+        ],
+        [
+          "entry-roof-pair",
+          "1030:4ccf",
+          "0x180"
+        ],
+        [
+          "entry-pair-constructor",
+          "1040:102b",
+          "0x550"
+        ]
+      ],
+      "address_system": "Ghidra MZ/NE, not runtime selector or file offset"
+    }
+  ],
+  "reports": [
+    "research/evidence/source-port/sp08-video/checks/report.json",
+    "research/evidence/source-port/sp08-video/ceiling.json",
+    "research/evidence/source-port/sp08-video/gl-probe.log"
+  ],
+  "limits": [
+    "GLES/RK3326 hardware not tested",
+    "Mixed-DPI monitor transition not tested",
+    "Mipmaps/trilinear/anisotropy and xBR are subsequent extension stages",
+    "Native software default verified separately; modern viewport/FOV/FXAA are presentation adaptations"
+  ]
+}

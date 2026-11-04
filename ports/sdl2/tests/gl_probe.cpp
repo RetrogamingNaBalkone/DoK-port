@@ -117,6 +117,42 @@ int main(){
             };
             check(many(false)==many(true),"Seven-material batch rollover/blend changed pixels");
         }
+        // Independent frame scaling: crisp interiors at a non-integer scale.
+        auto rgba=[&]{std::vector<unsigned char> bytes(640*384*4);read(0,0,640,384,GL_RGBA,GL_UNSIGNED_BYTE,bytes.data());return bytes;};
+        const std::vector<std::uint32_t> split{0xff000000,0xffffffff,0xff000000,0xffffffff};
+        std::array<int,3> transitions{};
+        for(int filter=0;filter<3;++filter){
+            gl.begin();gl.image(split,2,2,{0,0,625,375},true,filter);
+            const auto pixels=rgba();for(int x=0;x<625;++x){const auto c=pixels[((384-1-100)*640+x)*4];transitions[filter]+=c>0&&c<255;}
+        }
+        std::cout<<"Transitions "<<transitions[0]<<","<<transitions[1]<<","<<transitions[2]<<"\n";
+        check(transitions[0]==0&&transitions[1]>100&&transitions[2]>0&&transitions[2]<=3,"Sharp Bilinear did not confine interpolation to texel borders");
+        // FXAA changes diagonal scene edges, leaves flat regions exact, and UI
+        // submitted afterwards remains byte-exact. No temporal history involved.
+        const dok::Image white{1,1,0,{255}};
+        for(int row=0;row<16;++row)lut[row*256+255]=255;
+        gl.set_linear_filter(false);
+        auto diagonal=[&](bool enabled){
+            gl.begin();gl.world(palette,true);
+            gl.polygon({{20,20,100,0,0},{300,140,100,0,0},{20,140,100,0,0}},white,light,dok::RasterAxis::vertical);
+            gl.finish_scene(enabled);return rgba();
+        };
+        const auto off=diagonal(false),on=diagonal(true);unsigned changes=0;
+        for(std::size_t i=0;i<off.size();i+=4)changes+=off[i]!=on[i];
+        check(changes>50,"FXAA did not smooth a diagonal edge");
+        check(off[0]==on[0]&&on[0]==0,"FXAA modified flat background");
+        gl.image(std::vector<std::uint32_t>(4,0xffeeeeee),2,2,{100,100,20,20},true);
+        auto ui=rgba();check(ui[((384-1-110)*640+110)*4]==238,"FXAA affected later UI");
+        check(diagonal(false)==off,"FXAA off did not restore exact scene");
+        // Classic scene stays above its native panel; resize/reallocation is local.
+        for(int height:{160,170}){
+            gl.begin();gl.scene_view({20,10,600,300},320,height);gl.world(palette);
+            auto full=quad(100);for(auto& v:full){v.x=v.x<160?0:320;v.y=v.y<80?0:height;}
+            gl.polygon(full,white,light,dok::RasterAxis::vertical);gl.finish_scene(true);
+            auto pixels=rgba();check(pixels[((384-1-350)*640+320)*4]==0,"Scene invaded classic panel");
+            check(pixels[((384-1-150)*640+320)*4]==255,"Classic scene viewport missing");
+        }
+        std::cout<<"Sharp transitions "<<transitions[0]<<","<<transitions[1]<<","<<transitions[2]<<"; FXAA changed "<<changes<<" edge pixels; classic viewport 160/170 passed\n";
         std::cout<<"Smooth LIGHT anchors/ramp, wall occlusion, transparent depth, UI and nearest/linear passed\n";
     }catch(const std::exception& e){std::cerr<<e.what()<<'\n';SDL_DestroyWindow(window);SDL_Quit();return 1;}
     SDL_DestroyWindow(window);SDL_Quit();

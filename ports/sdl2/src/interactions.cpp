@@ -6,9 +6,13 @@
 
 namespace dok {
 namespace {
+#include "door_messages.inc"
+const char* message(DatasetId profile,unsigned index){
+    return (profile==DatasetId::old_gold?door_old_gold:profile==DatasetId::kremlin_pkr?door_ru:door_en)[index];
+}
 void profile(const World& w){
     if(w.definition.dataset==DatasetId::unknown)
-        throw std::invalid_argument("Door behaviour currently verified for Kremlin only");
+        throw std::invalid_argument("Unknown interaction profile");
 }
 bool schedule(World& w,OwnerId owner,GameEvent event,std::int32_t delay){
     return w.events.schedule(owner,static_cast<CallbackId>(event),delay,static_cast<std::uint32_t>(w.simulation_ticks()));
@@ -27,7 +31,11 @@ UseResult use_door(World& world,OwnerId target,OwnerId source){
     const auto keys=world.definition.objects[actor.definition_index].class_id==13?0xffff:
         (actor.player_state?actor.player_state->keys():0);
     const auto mask=static_cast<std::uint16_t>(definition.number(0x5c));
-    if(mask&&!(mask&keys)){world.sound(target,AudioAction::once);return UseResult::locked;}
+    if(mask&&!(mask&keys)){
+        world.sound(target,AudioAction::once);
+        world.notify(message(world.definition.dataset,mask==1?2:mask==2?3:mask==4?4:mask==8?5:6));
+        return UseResult::locked;
+    }
     if(door.state==2){
         bool ok=schedule(world,target,GameEvent::door_open,416);
         if(definition.number(0x5e)==1)ok=schedule(world,target,GameEvent::door_auto,definition.number(0x66))&&ok;
@@ -72,25 +80,32 @@ void door_event(World& world,OwnerId owner,GameEvent event){
     if(!object.door)throw std::logic_error("Door callback on non-door");
     auto& door=*object.door;
     const auto& definition=world.definition.objects[object.definition_index];
+    const bool old_gold=world.definition.dataset==DatasetId::old_gold;
     switch(event){
     case GameEvent::door_open:
         if(door.state==2&&door.phase<door.extent-1){
             world.sound(owner,AudioAction::loop);
-            object.flags|=8;door.ready=false;world.events.set_first_interval(period(door));
-            ++door.phase;if(door.phase>door.extent/4)object.flags|=0x10;
+            if(old_gold)door.saved_flags=object.flags;
+            object.flags|=8;if(old_gold)object.flags&=~2;
+            door.ready=false;world.events.set_first_interval(period(door));
+            ++door.phase;if(!old_gold&&door.phase>door.extent/4)object.flags|=0x10;
         }else{
             door.state=1;object.flags|=0x10;door.ready=true;world.events.cancel_current();
             world.sound(owner,AudioAction::stop);
+            world.notify(message(world.definition.dataset,0));
         }
         break;
     case GameEvent::door_close:
         if(object.door_occupants>0)break;
         if(door.state==1&&door.phase>0){
+            if(old_gold)object.flags&=~0x10;
             world.sound(owner,AudioAction::loop);
             --door.phase;door.ready=false;world.events.set_first_interval(period(door));
         }else{
-            door.state=2;door.phase=0;object.flags=definition.flags;door.ready=true;world.events.cancel_current();
+            door.state=2;if(!old_gold)door.phase=0;
+            object.flags=door.saved_flags;door.ready=true;world.events.cancel_current();
             world.sound(owner,AudioAction::stop);
+            world.notify(message(world.definition.dataset,1));
         }
         break;
     case GameEvent::door_auto:

@@ -1,4 +1,5 @@
 #include "dok/frontend.hpp"
+#include "dok/localization.hpp"
 #include <algorithm>
 #include <cmath>
 #include <iomanip>
@@ -61,18 +62,6 @@ std::array<std::uint8_t,4096> bootstrap_font(){
     return out;
 }
 }
-std::string cp866(const std::string& text){
-    std::string out;
-    for(std::size_t i=0;i<text.size();){
-        unsigned c=static_cast<unsigned char>(text[i++]);
-        if(c>=0xc0){const int count=c<0xe0?1:c<0xf0?2:3;c&=count==1?31:count==2?15:7;
-            for(int n=0;n<count&&i<text.size();++n)c=(c<<6)|(static_cast<unsigned char>(text[i++])&63);}
-        if(c<128)out+=char(c);else if(c>=0x410&&c<=0x42f)out+=char(c-0x410+0x80);
-        else if(c>=0x430&&c<=0x43f)out+=char(c-0x430+0xa0);else if(c>=0x440&&c<=0x44f)out+=char(c-0x440+0xe0);
-        else if(c==0x401||c==0x451)out+=char(c==0x401?0xf0:0xf1);
-        else if(c==0x2014||c==0x2013)out+='-';else if(c==0xab||c==0xbb)out+='"';else if(c==0xd7)out+='x';else out+='?';
-    }return out;
-}
 Frontend::Frontend(AppSettings& settings):s_(settings){font_=bootstrap_font();for(int c=0;c<256;++c)for(int y=0;y<8;++y)font8_[c*8+y]=font_[c*16+y*2+1];frame_.pixels.resize(640*480);}
 std::string Frontend::tr(MenuString id)const{return menu_text(id,s_.locale);}
 std::string Frontend::tr(const char* ru,const char* en)const{return s_.locale==LocaleId::ru?ru:en;}
@@ -84,7 +73,23 @@ void Frontend::datasets(std::vector<FrontendDataset> sets,const std::string& err
 }
 void Frontend::select_dataset(std::size_t index){if(index<sets_.size()){dataset_=index;s_.last_dataset=archive()->identify();themed_=nullptr;art_.clear();}}
 void Frontend::preview_level(int level){level_=level;in_session_=false;enter(MenuScreen::levels);}
-void Frontend::enter(MenuScreen screen,int focus){screen_=screen;focus_=focus;page_=0;capture_start_=false;hits_.clear();}
+void Frontend::enter(MenuScreen screen,int focus){remembered_focus_[screen_]=focus_;screen_=screen;focus_=focus;page_=0;capture_start_=false;last_axis_=0;hits_.clear();}
+void Frontend::resources(const ResourceSources& sources){
+    source_rows_.clear();for(std::size_t i=0;i<sources.sources().size();++i){const auto& source=sources.sources()[i];const auto id=source.archive.identify();source_rows_.push_back({i,id,source.path.u8string(),sources.selected(id)==i});}
+}
+void Frontend::show_map(){if(!world_)return;map_return_=screen_;enter(MenuScreen::map);}
+void Frontend::browse(const std::filesystem::path& path){
+    std::error_code error;auto absolute=std::filesystem::absolute(path,error);if(error)return;
+    std::vector<FileRow> rows;
+    for(std::filesystem::directory_iterator i(absolute,std::filesystem::directory_options::skip_permission_denied,error),end;i!=end&&!error;i.increment(error)){
+        std::error_code type_error;const bool dir=i->is_directory(type_error);auto ext=i->path().extension().u8string();std::transform(ext.begin(),ext.end(),ext.begin(),[](unsigned char c){return char(std::tolower(c));});
+        if(!type_error&&(dir||ext==".res"))rows.push_back({i->path(),dir});
+        if(rows.size()>=1024)break;
+    }
+    if(error){notice("Не удалось открыть папку: "+error.message(),"Could not open folder: "+error.message());return;}
+    std::sort(rows.begin(),rows.end(),[](const auto& a,const auto& b){return a.directory!=b.directory?a.directory>b.directory:a.path.filename()<b.path.filename();});
+    browser_path_=absolute;file_rows_=std::move(rows);browser_error_.clear();enter(MenuScreen::files);
+}
 void Frontend::hide(){enter(MenuScreen::hidden);in_session_=true;}
 void Frontend::main_menu(){in_session_=false;enter(MenuScreen::main);commands_.push_back(MenuCommand::music_stop);}
 void Frontend::pause(){in_session_=true;enter(MenuScreen::pause);}
@@ -98,7 +103,7 @@ void Frontend::video_failed(const std::string& why){
 std::vector<MenuCommand> Frontend::commands(){auto result=std::move(commands_);commands_.clear();return result;}
 void Frontend::update(std::uint64_t ms){now_=ms;if(video_pending()&&ms>=video_deadline_){s_.video=old_video_;draft_=old_video_;enter(MenuScreen::graphics,4);commands_.push_back(MenuCommand::revert_video);}}
 void Frontend::begin_game(){
-    if(!archive()){enter(MenuScreen::resources);return;}
+    if(!archive()){enter(MenuScreen::resources,0);return;}
     s_.last_dataset=archive()->identify();level_=archive()->identify()==DatasetId::old_gold?4:1;
     enter(MenuScreen::title);commands_.push_back(MenuCommand::music_title);
 }
@@ -130,11 +135,11 @@ void Frontend::build_rows(){
     const auto backrow=[&]{row(tr(MenuString::back));};
     const auto preset=[&](InputPreset p){return p==InputPreset::classic?tr(MenuString::classic):p==InputPreset::modern?tr(MenuString::modern):tr(MenuString::custom);};
     switch(screen_){
-    case MenuScreen::main:row(tr(MenuString::start_game));row(tr(MenuString::settings));row(tr(MenuString::credits));row(tr(MenuString::quit));break;
+    case MenuScreen::main:row(tr(MenuString::start_game));row(tr(MenuString::settings));row(tr("Ресурсы игр","Game resources"));row(tr("Как играть","How to play"));row(tr(MenuString::credits));row(tr(MenuString::quit));break;
     case MenuScreen::datasets:
-        for(const auto& item:sets_){const auto id=item.archive->identify();row(id==DatasetId::old_gold?"Old Gold":tr(MenuString::dungeons_of_kremlin),
+        for(const auto& item:sets_){const auto id=item.archive->identify();row(game_dataset_title(id,s_.locale),
             id==DatasetId::kremlin_pkr?tr(MenuString::russian_edition_pkr):id==DatasetId::kremlin_pke?tr(MenuString::english_edition_pke):tr(MenuString::original_edition),
-            tr(MenuString::editions_have_different_game_parameters_interface_langu));}backrow();break;
+            game_dataset_description(id,s_.locale));}backrow();break;
     case MenuScreen::settings:for(const auto& label:{tr(MenuString::graphics),tr(MenuString::sound),tr(MenuString::controls),tr(MenuString::gameplay),tr(MenuString::interface)})row(label);backrow();break;
     case MenuScreen::graphics:{
         const bool software=draft_.renderer==RendererKind::software;
@@ -144,8 +149,16 @@ void Frontend::build_rows(){
         row(software?tr(MenuString::original_resolution):tr(MenuString::window_resolution),std::to_string(mode[0])+" x "+std::to_string(mode[1]),
             software?tr(MenuString::software_framebuffer_size_also_resizes_a_window_manual):
             tr(MenuString::borderless_uses_the_desktop_resolution),software||!draft_.fullscreen);
-        row(tr(MenuString::smoothing),on(s_.linear),tr(MenuString::linear_scene_filtering_text_and_menus_remain_sharp));
-        row(tr(MenuString::apply_video_mode));defaults();backrow();break;}
+        row(tr(MenuString::video_texture_filter),s_.linear?"Linear":"Nearest",
+            tr(MenuString::linear_scene_filtering_text_and_menus_remain_sharp),!software);
+        row(tr(MenuString::apply_video_mode));
+        row(tr(MenuString::video_frame_scaling),s_.frame_filter==2?"Sharp Bilinear":s_.frame_filter==1?"Linear":"Nearest",
+            tr(MenuString::video_frame_scaling_help),software);
+        row("FXAA",on(s_.fxaa),tr(MenuString::video_fxaa_help),!software);
+        row(tr(MenuString::video_hud),s_.auto_hud?tr(MenuString::automatic):s_.classic_hud?tr(MenuString::classic):tr(MenuString::modern));
+        row(tr(MenuString::video_base_fov),s_.base_fov?std::to_string(s_.base_fov):tr(MenuString::original),tr(MenuString::video_base_fov_help));
+        row(tr(MenuString::video_aspect_ratio),s_.force_4_3?"4:3":tr(MenuString::automatic));
+        defaults();backrow();break;}
     case MenuScreen::sound:row(tr(MenuString::master_volume),std::to_string(s_.master_volume)+"%");row(tr(MenuString::effects),std::to_string(s_.effects_volume)+"%");row(tr(MenuString::title_music),std::to_string(s_.music_volume)+"%");defaults();backrow();break;
     case MenuScreen::controls:row(tr(MenuString::keyboard_and_mouse));row(tr(MenuString::gamepad));backrow();break;
     case MenuScreen::keyboard:
@@ -156,16 +169,31 @@ void Frontend::build_rows(){
         row(tr(MenuString::turn_sensitivity),decimal(s_.input.turn_sensitivity));
         row(tr(MenuString::deadzone),std::to_string(int(s_.input.stick_deadzone*100+0.5f))+"%");defaults();backrow();break;
     case MenuScreen::bindings:
-        for(int i=0;i<actions;++i){const bool future=i==int(Action::map)||i==int(Action::quicksave)||i==int(Action::quickload);
+        for(int i=0;i<actions;++i){const bool future=i==int(Action::quicksave)||i==int(Action::quickload);
             row(action_name(i),binding_name(i,binding_parent_==MenuScreen::pad),future?tr(MenuString::this_game_action_is_not_implemented_yet):tr(MenuString::select_an_action_to_change_its_binding));}backrow();break;
     case MenuScreen::key_slots:row(tr(MenuString::primary_key),binding_name(action_,false,0));row(tr(MenuString::secondary_key),binding_name(action_,false,1));row(tr(MenuString::mouse_button),binding_name(action_,false,2));row(tr(MenuString::clear_bindings));backrow();break;
     case MenuScreen::gameplay:row(tr(MenuString::movement_inertia),on(s_.inertia),tr(MenuString::off_instant_start_and_stop_water_currents_still_move_th));row(tr(MenuString::saving),tr(MenuString::in_development),{},false);defaults();backrow();break;
-    case MenuScreen::interface:row("Язык / Language",s_.locale==LocaleId::ru?"Русский":"English",tr(MenuString::story_and_in_game_messages_currently_use_the_original_r));row(tr(MenuString::show_fps),on(s_.show_fps));defaults();backrow();break;
-    case MenuScreen::pause:row(tr(MenuString::resume));row(tr(MenuString::settings));row(tr(MenuString::main_menu));row(tr(MenuString::quit));break;
+    case MenuScreen::interface:row("Язык / Language",s_.locale==LocaleId::ru?"Русский":"English",tr(MenuString::all_game_texts_follow_selected_language));row(tr(MenuString::show_fps),on(s_.show_fps));defaults();backrow();break;
+    case MenuScreen::pause:row(tr(MenuString::resume));row(tr(MenuString::settings));row(tr("Карта","Map"),{},{},world_!=nullptr);row(tr("Как играть","How to play"));row(tr(MenuString::main_menu));row(tr(MenuString::quit));break;
     case MenuScreen::confirm:row(fallback_?tr(MenuString::use_software_renderer):tr(MenuString::yes));row(tr(MenuString::cancel));break;
     case MenuScreen::conflict:row(tr(MenuString::replace_binding));row(tr(MenuString::cancel));break;
     case MenuScreen::video_confirm:row(tr(MenuString::keep_video_mode));row(tr(MenuString::revert));break;
-    case MenuScreen::resources:case MenuScreen::notice:backrow();break;
+    case MenuScreen::resources:
+        row(tr("Добавить файл RES…","Add a RES file…"),{},tr("Выберите папку и файл. Можно также перетащить RES в окно.","Browse folders and choose a file. You can also drop a RES onto this window."));
+        for(const auto id:{DatasetId::old_gold,DatasetId::kremlin_pkr,DatasetId::kremlin_pke}){
+            int count=0;bool selected=false;for(const auto& source:source_rows_)if(source.dataset==id){++count;selected|=source.selected;}
+            const auto label=game_dataset_title(id,s_.locale)+(id==DatasetId::kremlin_pkr?tr(" — русское"," — Russian"):id==DatasetId::kremlin_pke?tr(" — английское"," — English"):"");
+            row(label,selected?tr("Готово","Ready"):count?tr("Выберите файл ниже","Choose a file below"):tr("Нет файла RES","RES file missing"),{},false);
+        }
+        for(const auto& source:source_rows_)row(std::filesystem::u8path(source.path).filename().u8string(),source.selected?tr("Выбран","Selected"):tr("Выбрать","Select"),source.path);
+        backrow();break;
+    case MenuScreen::files:
+        row(tr("На папку выше","Parent folder"),"..",browser_path_.u8string());
+        for(const auto& file:file_rows_)row((file.directory?"[+] ":"")+file.path.filename().u8string(),file.directory?tr("Папка","Folder"):"RES",file.path.u8string());
+        backrow();break;
+    case MenuScreen::map:row(tr(MenuString::back));break;
+    case MenuScreen::help:row(tr(MenuString::next_page));backrow();break;
+    case MenuScreen::notice:backrow();break;
     case MenuScreen::credits:row(tr(MenuString::next_page));backrow();break;
     case MenuScreen::levels:
         row(tr(MenuString::start));row(tr(MenuString::next_page));backrow();break;
@@ -182,13 +210,21 @@ void Frontend::back(){
     case MenuScreen::main:commands_.push_back(MenuCommand::quit);break;
     case MenuScreen::pause:hide();commands_.push_back(MenuCommand::resume);break;
     case MenuScreen::settings:enter(in_session_?MenuScreen::pause:MenuScreen::main,1);break;
-    case MenuScreen::graphics:case MenuScreen::sound:case MenuScreen::controls:case MenuScreen::gameplay:case MenuScreen::interface:enter(MenuScreen::settings);break;
+    case MenuScreen::graphics:case MenuScreen::sound:case MenuScreen::controls:case MenuScreen::gameplay:case MenuScreen::interface:{const int index=screen_==MenuScreen::graphics?0:screen_==MenuScreen::sound?1:screen_==MenuScreen::controls?2:screen_==MenuScreen::gameplay?3:4;enter(MenuScreen::settings,index);break;}
     case MenuScreen::keyboard:case MenuScreen::pad:enter(MenuScreen::controls,screen_==MenuScreen::pad?1:0);break;
     case MenuScreen::bindings:enter(binding_parent_,1);break;
     case MenuScreen::key_slots:enter(MenuScreen::bindings,action_);break;
     case MenuScreen::capture:case MenuScreen::conflict:enter(binding_parent_==MenuScreen::pad?MenuScreen::bindings:MenuScreen::key_slots,binding_parent_==MenuScreen::pad?action_:slot_);break;
-    case MenuScreen::confirm:if(fallback_){fallback_=false;enter(MenuScreen::graphics);}else enter(MenuScreen::pause);break;
-    case MenuScreen::notice:enter(notice_return_);break;
+    case MenuScreen::confirm:if(fallback_){fallback_=false;enter(MenuScreen::graphics,4);}else enter(MenuScreen::pause,remembered_focus_[MenuScreen::pause]);break;
+    case MenuScreen::notice:enter(notice_return_,remembered_focus_[notice_return_]);break;
+    case MenuScreen::help:enter(help_return_,remembered_focus_[help_return_]);break;
+    case MenuScreen::map:if(map_return_==MenuScreen::hidden){hide();commands_.push_back(MenuCommand::resume);}else enter(map_return_,remembered_focus_[map_return_]);break;
+    case MenuScreen::files:enter(MenuScreen::resources,0);break;
+    case MenuScreen::resources:enter(MenuScreen::main,remembered_focus_[MenuScreen::main]);break;
+    case MenuScreen::credits:enter(MenuScreen::main,4);break;
+    case MenuScreen::title:commands_.push_back(MenuCommand::music_stop);enter(sets_.size()>1?MenuScreen::datasets:MenuScreen::main,sets_.size()>1?int(dataset_):0);break;
+    case MenuScreen::readme:commands_.push_back(MenuCommand::music_stop);enter(MenuScreen::title);break;
+    case MenuScreen::levels:commands_.push_back(MenuCommand::music_stop);enter(sets_.size()>1?MenuScreen::datasets:MenuScreen::main,sets_.size()>1?int(dataset_):0);break;
     case MenuScreen::video_confirm:s_.video=old_video_;draft_=old_video_;enter(MenuScreen::graphics,4);commands_.push_back(MenuCommand::revert_video);break;
     case MenuScreen::ending:case MenuScreen::outcome:commands_.push_back(MenuCommand::main);main_menu();break;
     default:commands_.push_back(MenuCommand::music_stop);enter(MenuScreen::main);break;
@@ -198,7 +234,7 @@ void Frontend::choose(int delta){
     build_rows();if(rows_.empty()||!rows_[focus_].enabled)return;
     const int d=delta?delta:1;
     switch(screen_){
-    case MenuScreen::main:if(focus_==0){if(sets_.size()>1)enter(MenuScreen::datasets);else begin_game();}else if(focus_==1)enter(MenuScreen::settings);else if(focus_==2){credit_page_=0;enter(MenuScreen::credits);}else commands_.push_back(MenuCommand::quit);break;
+    case MenuScreen::main:if(focus_==0){if(sets_.size()>1)enter(MenuScreen::datasets);else begin_game();}else if(focus_==1)enter(MenuScreen::settings);else if(focus_==2)enter(MenuScreen::resources,0);else if(focus_==3){help_return_=screen_;enter(MenuScreen::help);}else if(focus_==4){credit_page_=0;enter(MenuScreen::credits);}else commands_.push_back(MenuCommand::quit);break;
     case MenuScreen::datasets:if(focus_==int(sets_.size()))back();else{select_dataset(focus_);begin_game();}break;
     case MenuScreen::title:
         if(focus_==1){back();break;}commands_.push_back(MenuCommand::music_stop);
@@ -222,7 +258,17 @@ void Frontend::choose(int delta){
                 at=(at+d+int(sizes.size()))%int(sizes.size());draft_.width=sizes[at][0];draft_.height=sizes[at][1];}
         }else if(focus_==3)s_.linear=!s_.linear;
         else if(focus_==4){old_video_=s_.video;s_.video=draft_;video_deadline_=now_+15000;enter(MenuScreen::video_confirm);commands_.push_back(MenuCommand::apply_video);}
-        else if(focus_==5){draft_=VideoSettings{};s_.linear=false;}else back();break;
+        else if(focus_==5)s_.frame_filter=(s_.frame_filter+d+3)%3;
+        else if(focus_==6)s_.fxaa=!s_.fxaa;
+        else if(focus_==7){
+            int layout=s_.auto_hud?0:s_.classic_hud?1:2;layout=(layout+d+3)%3;
+            s_.auto_hud=layout==0;s_.classic_hud=layout==1;
+        }else if(focus_==8){
+            const std::array<int,7> fovs{{0,45,60,75,90,100,110}};int index=0;
+            for(int i=0;i<int(fovs.size());++i)if(fovs[i]==s_.base_fov)index=i;
+            s_.base_fov=fovs[(index+d+int(fovs.size()))%int(fovs.size())];
+        }else if(focus_==9)s_.force_4_3=!s_.force_4_3;
+        else if(focus_==10){draft_=VideoSettings{};s_.linear=false;s_.frame_filter=0;s_.fxaa=false;s_.classic_hud=false;s_.auto_hud=true;s_.base_fov=0;s_.force_4_3=false;}else back();break;
     case MenuScreen::sound:if(focus_<3){auto& v=focus_==0?s_.master_volume:focus_==1?s_.effects_volume:s_.music_volume;v=std::clamp(v+d*5,0,100);}else if(focus_==3)s_.master_volume=s_.effects_volume=s_.music_volume=100;else back();break;
     case MenuScreen::controls:if(focus_<2)enter(focus_?MenuScreen::pad:MenuScreen::keyboard);else back();break;
     case MenuScreen::keyboard:case MenuScreen::pad:{
@@ -237,7 +283,7 @@ void Frontend::choose(int delta){
     case MenuScreen::key_slots:if(focus_<3){slot_=focus_;enter(MenuScreen::capture);}else if(focus_==3){s_.input.keys[action_]={};s_.input.mouse[action_]=0;s_.input.keyboard_preset=InputPreset::custom;}else back();break;
     case MenuScreen::gameplay:if(focus_==0)s_.inertia=!s_.inertia;else if(focus_==2)s_.inertia=true;else if(focus_==3)back();break;
     case MenuScreen::interface:if(focus_==0)s_.locale=s_.locale==LocaleId::ru?LocaleId::en:LocaleId::ru;else if(focus_==1)s_.show_fps=!s_.show_fps;else if(focus_==2){s_.locale=system_locale();s_.show_fps=true;}else back();break;
-    case MenuScreen::pause:if(focus_==0){hide();commands_.push_back(MenuCommand::resume);}else if(focus_==1)enter(MenuScreen::settings);else{confirm_quit_=focus_==3;fallback_=false;enter(MenuScreen::confirm,1);}break;
+    case MenuScreen::pause:if(focus_==0){hide();commands_.push_back(MenuCommand::resume);}else if(focus_==1)enter(MenuScreen::settings);else if(focus_==2)show_map();else if(focus_==3){help_return_=screen_;enter(MenuScreen::help);}else{confirm_quit_=focus_==5;fallback_=false;enter(MenuScreen::confirm,1);}break;
     case MenuScreen::confirm:if(focus_==1)back();else if(fallback_){fallback_=false;old_video_=s_.video;draft_=s_.video;draft_.renderer=RendererKind::software;s_.video=draft_;video_deadline_=now_+15000;enter(MenuScreen::video_confirm);commands_.push_back(MenuCommand::apply_video);}else{commands_.push_back(confirm_quit_?MenuCommand::quit:MenuCommand::main);if(!confirm_quit_)main_menu();}break;
     case MenuScreen::conflict:if(focus_==0)accept_binding();else back();break;
     case MenuScreen::video_confirm:if(focus_==0){draft_=s_.video;enter(MenuScreen::graphics,4);commands_.push_back(MenuCommand::keep_video);}else back();break;
@@ -245,7 +291,16 @@ void Frontend::choose(int delta){
     case MenuScreen::ending:if(focus_==1)back();else{const auto name=archive()->identify()==DatasetId::old_gold?"INTRO4E":"EINTRO"+std::to_string(level_);
         if(++page_>=page_count_){commands_.push_back(MenuCommand::main);in_session_=false;enter(MenuScreen::levels);}}break;
     case MenuScreen::outcome:if(focus_==1)back();else if(action_==int(SessionPhase::retry)){hide();commands_.push_back(MenuCommand::retry);}else{commands_.push_back(MenuCommand::main);in_session_=false;enter(MenuScreen::levels);}break;
-    case MenuScreen::notice:case MenuScreen::resources:back();break;
+    case MenuScreen::resources:
+        if(focus_==0)browse(browser_path_);
+        else if(focus_>=4&&focus_<4+int(source_rows_.size())){pending_source_=source_rows_[focus_-4].index;commands_.push_back(MenuCommand::select_source);}
+        else back();break;
+    case MenuScreen::files:
+        if(focus_==0)browse(browser_path_.parent_path());
+        else if(focus_<=int(file_rows_.size())){const auto file=file_rows_[focus_-1];if(file.directory)browse(file.path);else{pending_resource_=file.path.u8string();enter(MenuScreen::resources,0);commands_.push_back(MenuCommand::add_resource);}}
+        else back();break;
+    case MenuScreen::help:if(focus_==0)page_=(page_+d+page_count_)%page_count_;else back();break;
+    case MenuScreen::map:case MenuScreen::notice:back();break;
     default:break;
     }
 }
@@ -279,6 +334,11 @@ void Frontend::accept_binding(){
 }
 void Frontend::handle(const SDL_Event& e,int ww,int wh){
     if(!active())return;
+    if(e.type==SDL_WINDOWEVENT&&e.window.event==SDL_WINDOWEVENT_FOCUS_LOST){focused_=false;last_axis_=0;capture_start_=false;if(capturing())back();return;}
+    if(e.type==SDL_WINDOWEVENT&&e.window.event==SDL_WINDOWEVENT_FOCUS_GAINED){focused_=true;last_axis_=0;return;}
+    if(e.type==SDL_CONTROLLERDEVICEREMOVED){last_axis_=0;capture_start_=false;if(capturing())back();return;}
+    if(!focused_)return;
+    if(screen_==MenuScreen::map&&((e.type==SDL_KEYDOWN&&e.key.keysym.sym==SDLK_TAB)||(e.type==SDL_CONTROLLERBUTTONDOWN&&e.cbutton.button==SDL_CONTROLLER_BUTTON_BACK))){back();return;}
     if(e.type==SDL_KEYDOWN||e.type==SDL_MOUSEBUTTONDOWN||e.type==SDL_MOUSEMOTION)pad_=false;
     if(e.type==SDL_CONTROLLERBUTTONDOWN||e.type==SDL_CONTROLLERAXISMOTION)pad_=true;
     if(screen_==MenuScreen::capture){capture(e);return;}
@@ -306,6 +366,7 @@ void Frontend::handle(const SDL_Event& e,int ww,int wh){
     if(nav){for(int i=0;i<int(rows_.size());++i){focus_=(focus_+nav+int(rows_.size()))%int(rows_.size());if(rows_[focus_].enabled)break;}}
     if(adjust){
         if(screen_==MenuScreen::levels&&archive()->identify()!=DatasetId::old_gold){level_=(level_-1+adjust+3)%3+1;page_=0;}
+        else if(screen_==MenuScreen::help)page_=(page_+adjust+page_count_)%page_count_;
         else if(screen_==MenuScreen::credits)credit_page_=(credit_page_+adjust+page_count_)%page_count_;
         else if(screen_==MenuScreen::graphics||screen_==MenuScreen::sound||screen_==MenuScreen::keyboard||screen_==MenuScreen::pad||screen_==MenuScreen::gameplay||screen_==MenuScreen::interface){
             if(focus_<int(rows_.size())-2)choose(adjust);
@@ -346,16 +407,32 @@ void Frontend::picture(const std::string& name,const std::string& palette,SDL_Re
     for(int y=0;y<h;++y)for(int x=0;x<w;++x)fill({ox+x,oy+y,1,1},colors[image.pixels[std::size_t(y)*image.height/h*image.width+std::size_t(x)*image.width/w]]);
 }
 std::vector<TextPage> Frontend::story(const std::string& name,int columns,int rows)const{
-    if(!archive()||!archive()->find(name))return {{}};auto result=paginate_story(archive()->get(name),columns,rows);if(result.empty())result.push_back({});return result;
+    if(!archive()||!archive()->find(name))return {{}};
+    const auto translated=game_text(game_story_key(archive()->identify(),name),s_.locale);
+    const auto encoded=cp866(translated);
+    const auto bytes=translated.empty()?archive()->get(name):Bytes{reinterpret_cast<const std::uint8_t*>(encoded.data()),encoded.size()};
+    auto result=paginate_story(bytes,columns,rows);if(result.empty())result.push_back({});return result;
 }
 const MenuFrame& Frontend::render(int width,int height){
-    // Integer-sized glyphs. On VGA-sized windows use FONT16 sampled to eight rows.
-    const int scale=std::max(1,std::min(width/640,height/360));
-    frame_.width=std::clamp(width/scale,320,1280);frame_.height=std::max(200,height/scale);
-    text_height_=frame_.height<400?8:16;line_height_=text_height_+10;
+    // The same reference canvas and full-height glyphs are used at every aspect.
+    // Large desktop windows get larger text, never horizontally stretched glyphs.
+    const int scale=std::max(1,std::min(width/320,height/360));
+    frame_.width=std::max(320,width/scale);frame_.height=std::max(200,height/scale);
+    text_height_=frame_.height<280?8:16;line_height_=text_height_+12;
     frame_.pixels.assign(std::size_t(frame_.width)*frame_.height,shade_);theme();hits_.clear();build_rows();
     const int w=frame_.width,h=frame_.height;
-    if(!background_.pixels.empty())for(int y=0;y<h;++y)for(int x=0;x<w;++x)frame_.pixels[y*w+x]=colors_[background_.pixels[(y%background_.height)*background_.width+x%background_.width]];
+    if(!background_.pixels.empty())for(int y=0;y<h;++y)for(int x=0;x<w;++x){
+        const auto c=colors_[background_.pixels[(y%background_.height)*background_.width+x%background_.width]];
+        frame_.pixels[y*w+x]=0xff000000|((c&0x00fefefe)>>1);
+    }
+    const int panel_width=std::min(w-24,screen_==MenuScreen::levels||screen_==MenuScreen::ending||screen_==MenuScreen::readme?520:420);
+    const int margin=(w-panel_width)/2,pad=12,header_y=h<280?6:14;
+    const int header_height=text_height_+20;
+    const bool story_screen=screen_==MenuScreen::levels||screen_==MenuScreen::ending||screen_==MenuScreen::readme;
+    const bool reading=story_screen||screen_==MenuScreen::help||screen_==MenuScreen::credits||screen_==MenuScreen::map;
+    const int footer_height=reading?text_height_+14:2*text_height_+34;
+    const int footer_top=h-footer_height-8;
+    int top=header_y+header_height+12,bottom=footer_top-10;
     std::string heading=tr(MenuString::dungeons_of_kremlin_old_gold);
     switch(screen_){
     case MenuScreen::settings:heading=tr(MenuString::settings_2);break;case MenuScreen::graphics:heading=tr(MenuString::graphics_2);break;
@@ -364,89 +441,120 @@ const MenuFrame& Frontend::render(int width,int height){
     case MenuScreen::gameplay:heading=tr(MenuString::gameplay_2);break;case MenuScreen::interface:heading=tr(MenuString::interface_2);break;
     case MenuScreen::datasets:heading=tr(MenuString::select_game);break;case MenuScreen::credits:heading=tr(MenuString::credits_2);break;
     case MenuScreen::pause:heading=tr(MenuString::paused);break;case MenuScreen::bindings:heading=tr(MenuString::remap_controls_2);break;
-    case MenuScreen::key_slots:heading=action_name(action_);break;case MenuScreen::levels:heading=archive()&&archive()->identify()==DatasetId::old_gold?"OLD GOLD":tr(MenuString::select_level);break;
+    case MenuScreen::key_slots:heading=action_name(action_);break;case MenuScreen::levels:heading=archive()&&archive()->identify()==DatasetId::old_gold?game_dataset_title(DatasetId::old_gold,s_.locale):tr(MenuString::select_level);break;
     case MenuScreen::readme:heading=tr(MenuString::story);break;case MenuScreen::ending:heading=tr(MenuString::level_completed);break;
-    case MenuScreen::capture:heading=action_name(action_);break;case MenuScreen::resources:heading=tr(MenuString::game_resources_required);break;
+    case MenuScreen::capture:heading=action_name(action_);break;case MenuScreen::resources:heading=tr("Ресурсы игр","Game resources");break;
+    case MenuScreen::help:heading=tr("Как играть","How to play");break;case MenuScreen::map:heading=tr("Карта","Map");break;case MenuScreen::files:heading=tr("Добавить файл RES","Add a RES file");break;
     default:break;
     }
-    const int margin=std::max(8,std::min(32,w/24));
-    int top=std::max(40,h/5),bottom=h-100;
-    const int header_y=h<300?4:12;
-    box({margin,header_y,w-2*margin,text_height_+12});centered(heading,header_y+6,accent_);
-    if(screen_==MenuScreen::title){picture(title_sprite,title_palette,{margin,48,w-2*margin,h-110});top=h-58;bottom=h-18;}
-    else if(screen_==MenuScreen::levels||screen_==MenuScreen::ending||screen_==MenuScreen::readme){
+    box({margin,header_y,panel_width,header_height});centered(heading,header_y+10,accent_);
+    box({margin,top,panel_width,std::max(1,bottom-top)});
+    const int content_x=margin+pad,content_w=panel_width-pad*2;
+    auto pages_at=[&](const std::string& content,SDL_Rect r,bool encoded=false){
+        const auto bytes=encoded?content:cp866(content);auto pages=paginate_story({reinterpret_cast<const std::uint8_t*>(bytes.data()),bytes.size()},std::max(1,r.w/8),std::max(1,(r.h-text_height_-8)/(text_height_+4)));
+        if(pages.empty())pages.push_back({});page_count_=int(pages.size());page_=(page_%page_count_+page_count_)%page_count_;
+        int y=r.y;for(const auto& line:pages[page_]){text(line,r.x,y,ink_,true);y+=text_height_+4;}
+        text(std::to_string(page_+1)+" / "+std::to_string(page_count_),r.x,r.y+r.h-text_height_,accent_);
+    };
+    if(screen_==MenuScreen::title){picture(title_sprite,title_palette,{content_x,top+pad,content_w,std::max(16,bottom-top-2*line_height_-pad*2)});top=bottom-2*line_height_;}
+    else if(story_screen){
         const bool og=archive()&&archive()->identify()==DatasetId::old_gold;
-        int art_top=header_y+text_height_+22;
+        int art_top=top+pad;
         if(screen_==MenuScreen::levels&&!og){
-            static const char* ru[]={"ХОРОМЫ НЕЧИСТИ","ПОДЗЕМНАЯ РЕКА","ПОДВАЛЫ КРЕМЛЯ"};
-            static const char* en[]={"PALACE OF EVIL","SACRED RIVER","UNDERGROUND KREMLIN"};
-            const int cell=(w-2*margin)/3;
-            for(int i=0;i<3;++i){SDL_Rect r{margin+i*cell,art_top,cell-2,text_height_+10};box(r);const std::string label=archive()->identify()==DatasetId::kremlin_pkr?ru[i]:en[i];
-                if(w>=600)text(label,r.x+std::max(4,(r.w-int(cp866(label).size())*8)/2),r.y+6,level_==i+1?accent_:ink_);
-                else text(std::to_string(i+1),r.x+r.w/2-4,r.y+6,level_==i+1?accent_:ink_);
-                hits_.push_back({r,101+i});}
-            art_top+=text_height_+18;
+            const int cell=content_w/3;
+            for(int i=0;i<3;++i){SDL_Rect r{content_x+i*cell,art_top,cell-4,text_height_+10};
+                fill(r,i+1==level_?0xff3d3322:0xff181818);const auto label=std::to_string(i+1)+". "+game_level_name(archive()->identify(),i+1,s_.locale);
+                if(int(cp866(label).size())*8<=r.w-8)text(label,r.x+4,r.y+5,level_==i+1?accent_:ink_);
+                else text(std::to_string(i+1),r.x+r.w/2-4,r.y+5,level_==i+1?accent_:ink_);
+                hits_.push_back({r,101+i});
+            }art_top+=text_height_+18;
         }
-        const bool side=w>=600;const int content_bottom=h-int(rows_.size())*line_height_-text_height_-16;
-        SDL_Rect image_rect,text_rect;
-        if(side){image_rect={margin,art_top,(w-3*margin)/2,content_bottom-art_top};text_rect={image_rect.x+image_rect.w+margin,art_top,w-3*margin-image_rect.w,content_bottom-art_top};}
-        else{const int available=content_bottom-art_top;const int image_height=std::max(16,std::min((available-8)/2,available-46));image_rect={margin,art_top,w-2*margin,image_height};text_rect={margin,art_top+image_height+8,w-2*margin,available-image_height-8};}
+        const int content_bottom=bottom-3*line_height_-8;
+        const bool side=content_w>=540;SDL_Rect image_rect,text_rect;
+        if(side){image_rect={content_x,art_top,content_w*2/5,content_bottom-art_top};text_rect={image_rect.x+image_rect.w+pad,art_top,content_w-image_rect.w-pad,content_bottom-art_top};}
+        else{const int image_height=std::max(24,(content_bottom-art_top)/3);image_rect={content_x,art_top,content_w,image_height};text_rect={content_x,art_top+image_height+8,content_w,std::max(32,content_bottom-art_top-image_height-8)};}
         const bool end=screen_==MenuScreen::ending;
         const auto sprite=screen_==MenuScreen::readme?std::string(title_sprite):og?"INTRO4BSPR":(end?"ESPR":"BSPR")+std::to_string(level_);
-        const auto palette=screen_==MenuScreen::readme?std::string(title_palette):og?"GAMEPAL":"GAMEP"+std::to_string(level_);
-        // OG's story palette is selected by its resource catalog (see SP15 evidence).
-        std::string actual_palette=palette;
-        if(!archive()->find(cp866(actual_palette)))actual_palette=og?"МЕНЮ_ПАЛ":palette;
-        picture(sprite,actual_palette,image_rect);box(text_rect);
+        std::string palette=screen_==MenuScreen::readme?std::string(title_palette):og?"GAMEPAL":"GAMEP"+std::to_string(level_);
+        if(!archive()->find(cp866(palette)))palette=og?"МЕНЮ_ПАЛ":palette;
+        picture(sprite,palette,image_rect);
         const auto resource=screen_==MenuScreen::readme?"README":og?(end?"INTRO4E":"INTRO4B"):(end?"EINTRO":"BINTRO")+std::to_string(level_);
-        auto pages=story(resource,std::max(1,(text_rect.w-16)/8),std::max(1,(text_rect.h-28)/(text_height_+3)));
-        page_count_=int(pages.size());page_=page_%page_count_;int y=text_rect.y+8;for(const auto& line:pages[page_]){text(line,text_rect.x+8,y,ink_,true);y+=text_height_+3;}
-        text(std::to_string(page_+1)+" / "+std::to_string(pages.size()),text_rect.x+8,text_rect.y+text_rect.h-18,accent_);
-        top=content_bottom+8;bottom=h-text_height_-4;
+        auto pages=story(resource,std::max(1,text_rect.w/8),std::max(1,(text_rect.h-text_height_-8)/(text_height_+4)));
+        page_count_=std::max(1,int(pages.size()));page_%=page_count_;int y=text_rect.y;
+        if(!pages.empty())for(const auto& line:pages[page_]){text(line,text_rect.x,y,ink_,true);y+=text_height_+4;}
+        text(std::to_string(page_+1)+" / "+std::to_string(page_count_),text_rect.x,text_rect.y+text_rect.h-text_height_,accent_);
+        top=bottom-3*line_height_;
     }else if(screen_==MenuScreen::credits){
-        std::array<std::string,3> content;
-        content[0]=tr(MenuString::dungeons_of_kremlin_n_n3_d_technology_nalexander_razbak);
-        content[1]=tr(MenuString::old_gold_n_nauthors_nandrey_razbakov_nalexander_razbako);
-        content[2]=tr(MenuString::sdl2_port_n_n_n_nold_gold_pkr_pke_n_noriginal_materials);
-        SDL_Rect r{margin,header_y+text_height_+16,w-2*margin,h-(header_y+text_height_+16)-2*line_height_-28};box(r);
-        std::vector<TextPage> pages;
-        for(const auto& block:content){const auto encoded=cp866(block);auto section=paginate_story({reinterpret_cast<const std::uint8_t*>(encoded.data()),encoded.size()},std::max(1,(r.w-32)/8),std::max(1,(r.h-36)/(text_height_+3)));pages.insert(pages.end(),section.begin(),section.end());}
-        page_count_=std::max(1,int(pages.size()));credit_page_%=page_count_;int y=r.y+8;
-        if(!pages.empty())for(const auto& line:pages[credit_page_]){text(line,r.x+16,y,ink_,true);y+=text_height_+3;}
-        text(std::to_string(credit_page_+1)+" / "+std::to_string(page_count_),r.x+16,r.y+r.h-16,accent_);
-        top=r.y+r.h+6;bottom=h-12;
-    }else if(screen_==MenuScreen::capture){
-        paragraph(tr(MenuString::press_a_new_control_nesc_cancel_ngamepad_hold_start_and),{margin+16,top,w-2*margin-32,120});
-    }else if(screen_==MenuScreen::confirm||screen_==MenuScreen::conflict||screen_==MenuScreen::video_confirm||screen_==MenuScreen::notice||screen_==MenuScreen::resources||screen_==MenuScreen::outcome){
+        const auto content=tr(MenuString::dungeons_of_kremlin_n_n3_d_technology_nalexander_razbak)+"\n\n"+tr(MenuString::old_gold_n_nauthors_nandrey_razbakov_nalexander_razbako)+"\n\n"+tr(MenuString::sdl2_port_n_n_n_nold_gold_pkr_pke_n_noriginal_materials);
+        const int saved=page_;page_=credit_page_;pages_at(content,{content_x,top+pad,content_w,bottom-top-2*line_height_-pad*2});credit_page_=page_;page_=saved;top=bottom-2*line_height_;
+    }else if(screen_==MenuScreen::help){
+        const auto content=tr(
+            "УПРАВЛЕНИЕ ПО УМОЛЧАНИЮ\n\nWASD: движение. Мышь: поворот. ЛКМ: огонь. Пробел или Enter: открыть дверь. 1/2 и PgUp/PgDn: оружие. Tab: карта. Esc: пауза.\n\nНазначения и чувствительность можно изменить в настройках управления. Меню работает с клавиатурой, мышью и геймпадом.\n\nСТАРОЕ ЗОЛОТО\n\nВы начинаете без палочки с магией 0/0. Сначала найдите палочку: после этого можно стрелять и подбирать пополнения магии. Соберите 105 монет и найдите выход.\n\nКАРТА\n\nОткрываются посещённые клетки и ближайшее окружение. Найденная карта раскрывает весь уровень. Светлая стрелка показывает героя, жёлтые клетки - двери. Пока карта открыта, игра на паузе.",
+            "DEFAULT CONTROLS\n\nWASD: move. Mouse: turn. Left mouse: fire. Space or Enter: open a door. 1/2 and PgUp/PgDn: weapons. Tab: map. Esc: pause.\n\nChange bindings and sensitivity in Controls. Menus support keyboard, mouse and gamepad.\n\nOLD GOLD\n\nYou start without a wand, with magic at 0/0. Find a wand first: you can then fire and pick up magic refills. Collect 105 coins and find the exit.\n\nMAP\n\nVisited cells and their surroundings are shown. A map pickup reveals the whole level. The bright arrow marks your position; yellow cells are doors. The game is paused while the map is open.");
+        pages_at(content,{content_x,top+pad,content_w,bottom-top-2*line_height_-pad*2});top=bottom-2*line_height_;
+    }else if(screen_==MenuScreen::map&&world_){
+        const auto& d=world_->definition;const int available_h=bottom-top-line_height_-pad*2;
+        const int cell=std::max(1,std::min(content_w/d.width,available_h/d.length));
+        const int ox=margin+(panel_width-cell*d.width)/2,oy=top+pad;
+        for(int z=0;z<d.length;++z)for(int x=0;x<d.width;++x){const auto at=z*d.width+x;if(!world_->map_revealed&&!world_->visited[at])continue;
+            const auto* object=d.object(world_->maps.at("tmap")[at]);const auto color=object->class_id==2?0xff807868:object->class_id==7?0xffd7b65b:0xff272a2b;
+            fill({ox+x*cell,oy+z*cell,cell,cell},color);
+        }
+        if(world_->player){const auto p=*world_->objects.at(*world_->player).pose;const int x=p.x/d.cell_side,z=p.z/d.cell_side;
+            fill({ox+x*cell,oy+z*cell,cell,cell},0xffe7faff);
+            const double a=p.heading*3.14159265358979323846/180;const int dx=int(std::lround(-std::sin(a)*std::max(2,cell))),dz=int(std::lround(std::cos(a)*std::max(2,cell)));
+            fill({ox+x*cell+cell/2+dx,oy+z*cell+cell/2+dz,2,2},0xff7fe1ef);
+        }
+        top=bottom-line_height_;
+    }else if(screen_==MenuScreen::capture){paragraph(tr(MenuString::press_a_new_control_nesc_cancel_ngamepad_hold_start_and),{content_x,top+pad,content_w,bottom-top-pad*2});}
+    else if(screen_==MenuScreen::confirm||screen_==MenuScreen::conflict||screen_==MenuScreen::video_confirm||screen_==MenuScreen::notice||screen_==MenuScreen::outcome){
         std::string message;
         if(screen_==MenuScreen::confirm)message=fallback_?tr(MenuString::opengl_could_not_be_enabled_nuse_the_software_renderer):tr(MenuString::current_progress_will_be_lost_ncontinue);
         else if(screen_==MenuScreen::conflict){message=tr(MenuString::control_already_assigned_n);for(const auto& c:conflicts_)message+=action_name(c.first)+"\n";}
         else if(screen_==MenuScreen::video_confirm)message=tr(MenuString::keep_the_new_display_settings_nreverting_in)+std::to_string((video_deadline_>now_?video_deadline_-now_:0)/1000+1)+tr(MenuString::s);
         else if(screen_==MenuScreen::notice)message=s_.locale==LocaleId::ru?notice_ru_:notice_en_;
-        else if(screen_==MenuScreen::outcome)message=action_==int(SessionPhase::retry)?tr(MenuString::life_lost):tr(MenuString::game_over);
-        else message=tr(MenuString::place_pkr_res_pke_res_or_old_gold_res_next_to_the_progr)+"\n\n"+errors_;
-        box({margin,top,w-2*margin,h/3});paragraph(message,{margin+12,top+12,w-2*margin-24,h/3-24});top+=h/3+16;bottom=h-22;
+        else message=action_==int(SessionPhase::retry)?tr(MenuString::life_lost):tr(MenuString::game_over);
+        paragraph(message,{content_x,top+pad,content_w,std::max(20,bottom-top-2*line_height_-pad*2)});top=bottom-2*line_height_;
     }
-    // Dataset descriptions use two lines so RU/EN edition labels stay prominent.
+    if(screen_==MenuScreen::files){paragraph(browser_path_.u8string(),{content_x,top+8,content_w,text_height_+4});top+=text_height_+20;}
     const bool editions=screen_==MenuScreen::datasets;
-    const bool split_values=w<600&&std::any_of(rows_.begin(),rows_.end(),[&](const auto& row){return !row.value.empty()&&int(cp866(row.label).size()+cp866(row.value).size())*8>w-2*margin-48;});
-    const int stride=editions||split_values?line_height_*2+4:line_height_;
-    const int visible=std::max(1,(bottom-top)/stride),first=std::max(0,focus_-visible+1);
-    for(int i=first;i<int(rows_.size())&&i<first+visible;++i){const auto& row=rows_[i];const int y=top+(i-first)*stride;
-        SDL_Rect r{margin,y,w-2*margin,stride-3};box(r);const auto color=!row.enabled?0xff888888:i==focus_?accent_:ink_;
-        text(i==focus_?">":" ",r.x+5,y+4,color);text(row.label,r.x+20,y+4,color);
+    auto row_height=[&](int i){const auto& row=rows_[i];const int chars=std::max(1,(content_w-28)/8);
+        int lines=std::max(1,(int(cp866(row.label).size())+chars-1)/chars);
+        if(!row.value.empty()&&(editions||int(cp866(row.label).size()+cp866(row.value).size())*8>content_w-44))++lines;
+        return lines*(text_height_+4)+10+(screen_==MenuScreen::graphics&&i==5?12:0);
+    };
+    top+=4;bottom-=4;
+    int first=0;
+    for(int i=0,total=0;i<=focus_&&i<int(rows_.size());++i){total+=row_height(i);while(total>bottom-top&&first<i){total-=row_height(first++);}}
+    int y=top,last=first;
+    for(int i=first;i<int(rows_.size());++i){const auto& row=rows_[i];const int rh=row_height(i);if(y+rh>bottom&&i>first)break;
+        const int gap=screen_==MenuScreen::graphics&&i==5?12:0;
+        if(gap)fill({content_x,y+3,content_w,1},0xff575047);
+        SDL_Rect r{content_x-4,y+gap,content_w+8,std::min(rh-gap-4,bottom-y-gap)};
+        if(i==focus_){fill(r,0xff302b20);fill({r.x,y,2,r.h},accent_);}
+        const auto color=!row.enabled?0xff99958b:i==focus_?accent_:ink_;
+        int ty=y+gap+4;const int chars=std::max(1,(content_w-28)/8);auto label=cp866(row.label);
+        auto wrapped=paginate_story({reinterpret_cast<const std::uint8_t*>(label.data()),label.size()},chars,10);
+        if(!wrapped.empty())for(const auto& line:wrapped[0]){text(line,content_x+12,ty,color,true);ty+=text_height_+4;}
         if(!row.value.empty()){
-            if(editions||split_values)text(row.value,r.x+20,y+4+line_height_,color);
-            else{const int vx=std::max(r.x+20,r.x+r.w-12-int(cp866(row.value).size())*8);text(row.value,vx,y+4,color);}
+            const bool split=editions||int(cp866(row.label).size()+cp866(row.value).size())*8>content_w-44;
+            text(row.value,split?content_x+12:content_x+content_w-12-int(cp866(row.value).size())*8,split?ty:y+gap+4,color);
         }
-        hits_.push_back({r,i});
+        hits_.push_back({r,i});y+=rh;last=i+1;
     }
-    if(first>0)text("^",w-margin-12,top-text_height_-2,accent_);
-    if(first+visible<int(rows_.size()))text("v",w-margin-12,std::min(bottom,h-20),accent_);
-    const bool normal=screen_!=MenuScreen::levels&&screen_!=MenuScreen::title&&screen_!=MenuScreen::readme&&screen_!=MenuScreen::ending&&screen_!=MenuScreen::credits;
-    if(normal&&!rows_.empty()&&!rows_[focus_].help.empty()){box({margin,h-88,w-2*margin,62});paragraph(rows_[focus_].help,{margin+8,h-81,w-2*margin-16,51});}
-    if(normal&&screen_!=MenuScreen::capture)centered(pad_?tr(MenuString::d_pad_select_a_ok_b_back):tr(MenuString::arrows_select_enter_ok_esc_back),h-text_height_-5,ink_);
-    if(screen_==MenuScreen::levels)centered(pad_?tr(MenuString::arrows_level_l1_r1_text):tr(MenuString::arrows_level_pgup_dn_text),h-text_height_-4,ink_);
+    if(first>0||last<int(rows_.size())){
+        const int track=std::max(1,bottom-top),thumb=std::max(8,track*(last-first)/int(rows_.size()));
+        fill({margin+panel_width-7,top,2,track},0xff444038);
+        fill({margin+panel_width-7,top+(track-thumb)*first/std::max(1,int(rows_.size())-(last-first)),2,thumb},accent_);
+    }
+    if(!reading&&!rows_.empty()){
+        fill({margin,footer_top,panel_width,footer_height},shade_);
+        const auto& help=rows_[focus_].help;
+        if(!help.empty())paragraph(help,{content_x,footer_top+4,content_w,text_height_*2+8});
+        else if(screen_==MenuScreen::resources&&!errors_.empty())paragraph(errors_,{content_x,footer_top+4,content_w,text_height_*2+8});
+    }
+    const auto hint=pad_?tr(MenuString::d_pad_select_a_ok_b_back):tr(MenuString::arrows_select_enter_ok_esc_back);
+    centered(hint,h-text_height_-8,ink_);
     return frame_;
 }
 } // namespace dok

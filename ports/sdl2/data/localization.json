@@ -1,0 +1,491 @@
+{
+  "schema": 1,
+  "sources": {
+    "og": {
+      "path": "originals/Old_Gold_3D/OLD_GOLD.RES",
+      "sha256": "e376855167b64a7190ec2da0ba9bd1da129ba178c4033aebadebca3f08b2be25",
+      "encoding": "CP866"
+    },
+    "ru": {
+      "path": "originals/pkr/RUS/PKR.RES",
+      "sha256": "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816",
+      "encoding": "CP866"
+    },
+    "en": {
+      "path": "originals/pkr/ENG/PKE.RES",
+      "sha256": "865da340621fa6f90548a84e9ae9bf0a85071befb32a40ca1d359e488f74d458",
+      "encoding": "CP866"
+    }
+  },
+  "policy": "UTF-8 authored translations. Kremlin stories and credits follow the original RU/PKE texts with edited English grammar; gameplay English is corrected without changing meanings. English Old Gold is newly translated from Russian. Source bindings and aliases retain provenance, not runtime dependencies.",
+  "texts": {
+    "death.boyar.killed": {
+      "ru": "УБИЛ КРОВАВОГО БОЯРИНА!",
+      "en": "KILLED A GHOST LORD!"
+    },
+    "death.boyar.died": {
+      "ru": "ПОМЕР БОЯРИН",
+      "en": "THE OLD LORD DIED"
+    },
+    "death.monster.croaked": {
+      "ru": "ИЗДОХ ДУШЕГУБ!",
+      "en": "THE MONSTER CROAKED!"
+    },
+    "death.boyar.surprised": {
+      "ru": "ПОДИ НЕ ЖДАЛ, БАРИН?",
+      "en": "SURPRISED, MY LORD?"
+    },
+    "death.boyar.quiet": {
+      "ru": "ТАК-ТО. И НЕ ГУНДОСЬ!",
+      "en": "THAT'S IT. STOP WHINING!"
+    },
+    "death.boyar.bloodthirsty": {
+      "ru": "ЭКИЙ БЫЛ КРОВОЖАДНЫЙ!",
+      "en": "THAT ONE WAS BLOODTHIRSTY!"
+    },
+    "death.monster.begone": {
+      "ru": "ПРОПАДИ!",
+      "en": "BEGONE!"
+    },
+    "death.monster.one_less": {
+      "ru": "БАЦ! ОДНИМ ИЗУВЕРОМ МЕНЬШЕ!",
+      "en": "ZAP! ONE MONSTER LESS!"
+    },
+    "death.witch.farewell": {
+      "ru": "БЫВАЙ, БАБУЛЯ!",
+      "en": "SO LONG, GRANNY!"
+    },
+    "death.bat.killed": {
+      "ru": "УБИЛ МУТАНТА - ЛЕТУЧУЮ МЫШЬ",
+      "en": "KILLED A MUTANT BAT"
+    },
+    "death.beast.one_less": {
+      "ru": "ОДНОЙ ТВАРЬЮ МЕНЬШЕ!",
+      "en": "ONE BEAST LESS!"
+    },
+    "death.bat.take_that": {
+      "ru": "ВОТ ВАМ, МУТАНТАМ!",
+      "en": "TAKE THAT, MUTANTS!"
+    },
+    "death.bat.try_again": {
+      "ru": "СУНЬТЕСЬ МНЕ ЕЩЕ!",
+      "en": "COME AT ME AGAIN!"
+    },
+    "death.beast.smashed": {
+      "ru": "БАЦ - НА КУСКИ!",
+      "en": "SMASHED TO PIECES!"
+    },
+    "death.bat.bloodsuckers": {
+      "ru": "ВСЕМ ВАМ, КРОВОСОСАМ, КРЫШКА!",
+      "en": "YOU'RE FINISHED, BLOODSUCKERS!"
+    },
+    "death.bat.farewell": {
+      "ru": "ПРОЩАЙ, ПТАШКА!",
+      "en": "FAREWELL, BIRDIE!"
+    },
+    "death.witch.killed": {
+      "ru": "УБИЛ ВЕДЬМУ!",
+      "en": "KILLED A WITCH!"
+    },
+    "death.witch.baba_yaga": {
+      "ru": "ПОПАЛ! ПРОПАЛА БАБА-ЯГА...",
+      "en": "ZAP! BABA YAGA IS FINISHED..."
+    },
+    "death.witch.old_lady": {
+      "ru": "ЧТО, СТАРАЯ, ДОПРЫГАЛАСЬ?",
+      "en": "END OF THE ROAD, OLD LADY!"
+    },
+    "death.witch.broom": {
+      "ru": "СГОРЕЛА ВМЕСТЕ С ПОМЕЛОМ",
+      "en": "BURNED WITH HER BROOM"
+    },
+    "death.witch.mortar": {
+      "ru": "ОДНА СТУПА ОСТАЛАСЬ!",
+      "en": "ONLY HER MORTAR IS LEFT!"
+    },
+    "death.witch.stop_flying": {
+      "ru": "АГА! НЕ ЛЕТАЙ, ГДЕ НЕ НАДО!",
+      "en": "DON'T FLY WHERE YOU SHOULDN'T!"
+    },
+    "death.executioner.killed": {
+      "ru": "УБИЛ ПАЛАЧА!",
+      "en": "KILLED AN EXECUTIONER!"
+    },
+    "death.executioner.died": {
+      "ru": "СГИНУЛ ПАЛАЧ!",
+      "en": "THE BUTCHER DIED"
+    },
+    "death.executioner.axe": {
+      "ru": "АГА! НЕ МАШИ ТУТ ТОПОРИКОМ!",
+      "en": "DON'T WAVE YOUR AXE HERE!"
+    },
+    "death.executioner.smashed": {
+      "ru": "ЛИХО МЫ ЕГО!",
+      "en": "WE SMASHED HIM!"
+    },
+    "death.executioner.bent": {
+      "ru": "ЭК ЕГО СКРЮЧИЛО!",
+      "en": "WE BENT HIM WELL!"
+    },
+    "death.executioner.hell": {
+      "ru": "ТАК ТЕБЕ, ИСЧАДИЕ АДА!",
+      "en": "TAKE THAT, CREATURE OF HELL!"
+    },
+    "death.executioner.end": {
+      "ru": "КОНЕЦ ИЗВЕРГУ!",
+      "en": "THE END OF THE MONSTER!"
+    },
+    "item.key.copper": {
+      "ru": "ВЗЯЛ МЕДНЫЙ КЛЮЧ",
+      "en": "TOOK THE COPPER KEY"
+    },
+    "item.key.iron": {
+      "ru": "ВЗЯЛ ЖЕЛЕЗНЫЙ КЛЮЧ",
+      "en": "TOOK THE IRON KEY"
+    },
+    "item.key.gold": {
+      "ru": "ВЗЯЛ ЗОЛОТОЙ КЛЮЧ",
+      "en": "TOOK THE GOLD KEY"
+    },
+    "item.health.water": {
+      "ru": "КОВШ ЖИВОЙ ВОДЫ ДАЛ 10 ЛЕТ ЖИЗНИ",
+      "en": "LIVING WATER ADDED 10 YEARS"
+    },
+    "item.health.porridge": {
+      "ru": "ГОРШОК ДОБРОЙ КАШИ ДАЛ 15 ЛЕТ ЖИЗНИ",
+      "en": "PORRIDGE ADDED 15 YEARS"
+    },
+    "item.ammo.50": {
+      "ru": "ПРИБАВИЛОСЬ 50 ЗАРЯДОВ",
+      "en": "50 SHOTS ADDED"
+    },
+    "item.harm.mushroom": {
+      "ru": "МУХОМОРЫ ОТНЯЛИ 10 ЛЕТ ЖИЗНИ",
+      "en": "TOADSTOOLS TOOK 10 YEARS OF LIFE"
+    },
+    "item.harm.swill": {
+      "ru": "ЗЕЛЬЕ ОТНЯЛО 15 ЛЕТ ЖИЗНИ",
+      "en": "SWILL TOOK 15 YEARS OF LIFE"
+    },
+    "item.map": {
+      "ru": "ВЗЯЛ КАРТУ",
+      "en": "TOOK THE MAP"
+    },
+    "item.weapon.rifle": {
+      "ru": "ВЗЯЛ РУЖЬЕ",
+      "en": "TOOK THE RIFLE"
+    },
+    "item.weapon.laser": {
+      "ru": "ВЗЯЛ ЛАЗЕРНЫЙ ПИСТОЛЕТ",
+      "en": "TOOK THE LASER GUN"
+    },
+    "old_gold.death.monster": {
+      "ru": "ЗАБИЛ МОНСТРА",
+      "en": "KILLED A MONSTER"
+    },
+    "old_gold.exit.need_gold": {
+      "ru": "ДЛЯ ВЫХОДА СОБЕРИТЕ ВСЕ ДЕНЬГИ",
+      "en": "COLLECT ALL THE GOLD TO LEAVE"
+    },
+    "old_gold.item.money": {
+      "ru": "ВЗЯЛ 1 РУБЛЬ",
+      "en": "TOOK 1 RUBLE"
+    },
+    "old_gold.item.health.10": {
+      "ru": "ДОБАВЛЕНО 10 ЖИЗНЕЙ",
+      "en": "10 HEALTH ADDED"
+    },
+    "old_gold.item.magic.50": {
+      "ru": "ДОБАВЛЕНО 50 МАГИИ",
+      "en": "50 MAGIC ADDED"
+    },
+    "old_gold.item.magic.5": {
+      "ru": "ДОБАВЛЕНО 5 МАГИИ",
+      "en": "5 MAGIC ADDED"
+    },
+    "old_gold.item.magic.10": {
+      "ru": "ДОБАВЛЕНО 10 МАГИИ",
+      "en": "10 MAGIC ADDED"
+    },
+    "old_gold.item.harm.10": {
+      "ru": "УМЕНЬШИЛА НА 10 ЖИЗНЬ",
+      "en": "LOST 10 HEALTH"
+    },
+    "old_gold.item.wand": {
+      "ru": "МАГИЧЕСКАЯ ПАЛОЧКА",
+      "en": "MAGIC WAND"
+    },
+    "cheat.idkfa": {
+      "ru": "Ах ты хитрый думер!",
+      "en": "You sneaky Doomer!"
+    },
+    "door.opened": {
+      "ru": "ДВЕРЬ ОТКРЫТА",
+      "en": "DOOR OPENED"
+    },
+    "door.closed": {
+      "ru": "ДВЕРЬ ЗАКРЫТА",
+      "en": "DOOR CLOSED"
+    },
+    "door.key.copper": {
+      "ru": "НУЖЕН МЕДНЫЙ КЛЮЧ",
+      "en": "YOU NEED A COPPER KEY"
+    },
+    "door.key.iron": {
+      "ru": "НУЖЕН ЖЕЛЕЗНЫЙ КЛЮЧ",
+      "en": "YOU NEED AN IRON KEY"
+    },
+    "door.key.gold": {
+      "ru": "НУЖЕН ЗОЛОТОЙ КЛЮЧ",
+      "en": "YOU NEED A GOLD KEY"
+    },
+    "door.secret": {
+      "ru": "СЕКРЕТНАЯ ДВЕРЬ",
+      "en": "SECRET DOOR"
+    },
+    "door.key.unknown": {
+      "ru": "НУЖЕН КЛЮЧ",
+      "en": "YOU NEED A KEY"
+    },
+    "level.palace": {
+      "ru": "ХОРОМЫ НЕЧИСТИ",
+      "en": "PALACE OF EVIL"
+    },
+    "level.river": {
+      "ru": "ПОДЗЕМНАЯ РЕКА",
+      "en": "SACRED RIVER"
+    },
+    "level.kremlin": {
+      "ru": "ПОДВАЛЫ КРЕМЛЯ",
+      "en": "UNDERGROUND KREMLIN"
+    },
+    "level.old_gold": {
+      "ru": "СТАРОЕ ЗОЛОТО",
+      "en": "OLD GOLD"
+    },
+    "kremlin.story.prologue": {
+      "ru": "В раскопках под Кремлем археологи нашли таинственные деревянные хоромы... Что-то разбудило недобрый дух древних хозяев. Проснулись под землей силы зла, размножились летучие мыши-мутанты.\n\nСпасти город от нависшей опасности может только бесстрашный диггер. Он будет осторожней и смелее своих несчастных предшественников...\n\nУ него есть задание: очистить подвалы Кремля от нечисти!",
+      "en": "During excavations beneath the Kremlin, archaeologists discovered mysterious wooden chambers. Something awakened the wicked spirits of their ancient masters. Evil forces stirred underground, and mutant bats multiplied in the darkness.\n\nOnly a fearless digger can save the city from the danger hanging over it. He must be more careful and braver than his unfortunate predecessors.\n\nHis mission is to clear the Kremlin's cellars of evil!"
+    },
+    "kremlin.story.begin.1": {
+      "ru": "Вот они, таинственные хоромы, поросшие ядовитыми грибами... Здесь столетиями пряталась нечисть...\n\nДвери с хитрыми замками, чарки с горьким пойлом и ковши с живой водою... Духи злых хозяев и летучие мыши-мутанты.\n\nВаши предшественники сложили здесь головы, бросив оружие и патроны... Проснувшееся зло надо уничтожить!",
+      "en": "Here they are: the mysterious chambers, overgrown with poisonous mushrooms. Evil has lurked here for centuries.\n\nDoors with cunning locks, cups of bitter swill and scoops of living water. The spirits of wicked masters and mutant bats.\n\nYour predecessors lost their lives here, abandoning their weapons and ammunition. The awakened evil must be destroyed!"
+    },
+    "kremlin.story.end.1": {
+      "ru": "Исправив роковую ошибку\n\nархеологов, вы уничтожили\n\nгнездо нечистой силы!",
+      "en": "By correcting the archaeologists' fatal mistake, you have destroyed the den of evil!"
+    },
+    "kremlin.story.begin.2": {
+      "ru": "Замурованное под землей русло древней реки...\n\nСюда вырвались духи зла из своей вековой могилы. Притаились в заводях ведьмы, воют воем духи бояр-нелюдей.\n\nБесстрашный диггер должен преградить им путь на волю!",
+      "en": "The bed of an ancient river, sealed beneath the ground.\n\nThe evil spirits have escaped here from their age-old tomb. Witches lurk in the backwaters, and the spirits of inhuman boyars howl.\n\nThe fearless digger must block their path to freedom!"
+    },
+    "kremlin.story.end.2": {
+      "ru": "Дело сделано!\n\nВы отрезали путь нечисти.\n\nТеперь ей не вырваться\n\nиз подземелий!",
+      "en": "The job is done!\n\nYou have cut off the evil spirits' escape route. Now they will never break out of the dungeons!"
+    },
+    "kremlin.story.begin.3": {
+      "ru": "Нечистая сила проникла в подземные сооружения современного Кремля!\n\nИз древних могил вырвался в подвалы затхлый дух тлена, разнося споры ядовитых грибов.\n\nПо бункерам разлетелись жуткие воплощения пыток и жестокостей давних времен.\n\nБесстрашный диггер должен навсегда похоронить их, снять с подземелий Кремля колдовские чары!",
+      "en": "Evil forces have entered the underground structures of the modern Kremlin!\n\nThe stale breath of decay has burst from ancient graves into the cellars, spreading the spores of poisonous mushrooms.\n\nTerrible embodiments of torture and the cruelties of bygone times have scattered through the bunkers.\n\nThe fearless digger must bury them forever and lift the spell from the Kremlin's dungeons!"
+    },
+    "kremlin.story.end.3": {
+      "ru": "Вы выполнили задание\n\nс честью!\n\nТеперь ничего не грозит\n\nродному городу.\n\nСилы зла навеки покинули\n\nподземелья Кремля!",
+      "en": "You have completed your mission with honor!\n\nYour home city is safe at last. The forces of evil have left the Kremlin's dungeons forever!"
+    },
+    "kremlin.story.credits": {
+      "ru": "ПОДЗЕМЕЛЬЯ КРЕМЛЯ\n\n(С) NewCom\n\nМосква, 1995\n\nАвторы трехмерной технологии Александр Разбаков Андрей Разбаков\n\nХудожник Дмитрий Цирухин",
+      "en": "DUNGEONS OF KREMLIN\n\n(C) NewCom\nMoscow, Russia, 1995\n\n3D technology\nAlexander Razbakov\nAndrey Razbakov\n\nArtist\nDmitri Tsirukhin"
+    },
+    "old_gold.story.begin": {
+      "ru": "Страшные монстры поселились в развалинах древнего города и окрестных лесах. Местные жители решили нанять отважного героя, способного истребить мерзких тварей. Желающих было хоть отбавляй, но после того как люди узнавали с чем предстоит иметь дело они находили разные причины отказаться от дела. Только Вас удалось уговорить на это безрассудное дело. Местные жители рассказали что монстры охраняют старое золото, давно исчезнувшей цивилизации. Древняя легенда гласит, что только тот кто соберет все золото сможет победить монстров и вернутся назад. Жители пожелали Вам победы и счастливого пути. Да только забыли люди Вам сказать самое главное из за чего все отказывались идти. Вы уже 13 кто вышел на борьбу с монстрами остальные к сожалению не вернулись.",
+      "en": "Terrible monsters have settled among the ruins of an ancient city and in the surrounding forests. The local people decided to hire a brave hero who could wipe out the foul creatures. There were plenty of volunteers, but once they learned what they would face, each found a reason to refuse. Only you could be persuaded to attempt this reckless task.\n\nThe villagers told you that the monsters guard the old gold of a civilization that vanished long ago. An ancient legend says that only someone who gathers all the gold can defeat the monsters and return alive. The villagers wished you victory and a safe journey.\n\nBut they forgot to mention the very thing that had made everyone else refuse: you are the thirteenth person to set out against the monsters. Sadly, none of the others came back."
+    },
+    "old_gold.story.end": {
+      "ru": "Да на этот раз Вам повезло, в\n\nэтой жестокой битве Вы с честью\n\nвышли победителем.",
+      "en": "This time luck was on your side. You fought this cruel battle with honor and emerged victorious."
+    },
+    "old_gold.story.credits": {
+      "ru": "Мы надеемся, что эта игра Вам\n\nпонравилась и может быть когда ни-\n\nбудь Вы захотите покупать Наши игры.\n\nЕсли у Вас есть желание (и возмож-\n\nности) принять участие в финансиро-\n\nвании, тиражировании и распростране-\n\nнии Наших игр то все пожелания можно\n\nвысказать по телефону:\n\n534-35-34 с 10 до 18\n\nРазбаков Андрей и Александр",
+      "en": "We hope you enjoyed this game and that one day you may want to buy our games.\n\nIf you would like, and are able, to help finance, publish or distribute our games, please call:\n\n534-35-34, 10:00 to 18:00\n\nAndrey and Alexander Razbakov"
+    },
+    "dataset.old_gold.title": {
+      "ru": "Старое золото",
+      "en": "Old Gold"
+    },
+    "dataset.kremlin.title": {
+      "ru": "Подземелья Кремля",
+      "en": "Dungeons of Kremlin"
+    },
+    "dataset.old_gold.description": {
+      "ru": "Отдельное приключение: один лабиринт, две волшебные палочки и 105 монет",
+      "en": "A separate adventure: one maze, two magic wands and 105 coins"
+    },
+    "dataset.kremlin_ru.description": {
+      "ru": "Русское издание. Язык всех текстов можно выбрать в настройках.",
+      "en": "Russian edition. Choose the language of all texts in settings."
+    },
+    "dataset.kremlin_en.description": {
+      "ru": "Есть небольшие отличия в картах и балансе монстров",
+      "en": "There are small differences in maps and monster balance"
+    }
+  },
+  "aliases": {
+    "УБИЛ КРОВАВОГО БОЯРИНА!": "death.boyar.killed",
+    "KILLED A GHOST LORD!": "death.boyar.killed",
+    "KILLED AN GHOST LORD!": "death.boyar.killed",
+    "ПОМЕР БОЯРИН": "death.boyar.died",
+    "THE OLD LORD DIED": "death.boyar.died",
+    "OLD LORD DIED": "death.boyar.died",
+    "ИЗДОХ ДУШЕГУБ!": "death.monster.croaked",
+    "THE MONSTER CROAKED!": "death.monster.croaked",
+    "MONSTER CROAKED!": "death.monster.croaked",
+    "ПОДИ НЕ ЖДАЛ, БАРИН?": "death.boyar.surprised",
+    "SURPRISED, MY LORD?": "death.boyar.surprised",
+    "SURPRIZED, MY LORD?": "death.boyar.surprised",
+    "ТАК-ТО. И НЕ ГУНДОСЬ!": "death.boyar.quiet",
+    "THAT'S IT. STOP WHINING!": "death.boyar.quiet",
+    "COOL! DO NOT BUZZ!": "death.boyar.quiet",
+    "ЭКИЙ БЫЛ КРОВОЖАДНЫЙ!": "death.boyar.bloodthirsty",
+    "THAT ONE WAS BLOODTHIRSTY!": "death.boyar.bloodthirsty",
+    "THIS ONE WAS VERY BLOODY": "death.boyar.bloodthirsty",
+    "ПРОПАДИ!": "death.monster.begone",
+    "BEGONE!": "death.monster.begone",
+    "DIE!": "death.monster.begone",
+    "БАЦ! ОДНИМ ИЗУВЕРОМ МЕНЬШЕ!": "death.monster.one_less",
+    "ZAP! ONE MONSTER LESS!": "death.monster.one_less",
+    "БЫВАЙ, БАБУЛЯ!": "death.witch.farewell",
+    "SO LONG, GRANNY!": "death.witch.farewell",
+    "SO LONG, GRANMA!": "death.witch.farewell",
+    "УБИЛ МУТАНТА - ЛЕТУЧУЮ МЫШЬ": "death.bat.killed",
+    "KILLED A MUTANT BAT": "death.bat.killed",
+    "ОДНОЙ ТВАРЬЮ МЕНЬШЕ!": "death.beast.one_less",
+    "ONE BEAST LESS!": "death.beast.one_less",
+    "ВОТ ВАМ, МУТАНТАМ!": "death.bat.take_that",
+    "TAKE THAT, MUTANTS!": "death.bat.take_that",
+    "HERE YOU, MUTANTS!": "death.bat.take_that",
+    "СУНЬТЕСЬ МНЕ ЕЩЕ!": "death.bat.try_again",
+    "COME AT ME AGAIN!": "death.bat.try_again",
+    "YOU ARE WELCOME AGAIN!": "death.bat.try_again",
+    "БАЦ - НА КУСКИ!": "death.beast.smashed",
+    "SMASHED TO PIECES!": "death.beast.smashed",
+    "SMASHED!": "death.beast.smashed",
+    "ВСЕМ ВАМ, КРОВОСОСАМ, КРЫШКА!": "death.bat.bloodsuckers",
+    "YOU'RE FINISHED, BLOODSUCKERS!": "death.bat.bloodsuckers",
+    "HERE YOU ARE, BLOODSUCKERS!": "death.bat.bloodsuckers",
+    "ПРОЩАЙ, ПТАШКА!": "death.bat.farewell",
+    "FAREWELL, BIRDIE!": "death.bat.farewell",
+    "FAREWELL, BIRDY!": "death.bat.farewell",
+    "УБИЛ ВЕДЬМУ!": "death.witch.killed",
+    "KILLED A WITCH!": "death.witch.killed",
+    "KILLED A WITCH": "death.witch.killed",
+    "ПОПАЛ! ПРОПАЛА БАБА-ЯГА...": "death.witch.baba_yaga",
+    "ZAP! BABA YAGA IS FINISHED...": "death.witch.baba_yaga",
+    "ZAP! THE WITCH ???": "death.witch.baba_yaga",
+    "ЧТО, СТАРАЯ, ДОПРЫГАЛАСЬ?": "death.witch.old_lady",
+    "END OF THE ROAD, OLD LADY!": "death.witch.old_lady",
+    "END OF OLD LADY": "death.witch.old_lady",
+    "СГОРЕЛА ВМЕСТЕ С ПОМЕЛОМ": "death.witch.broom",
+    "BURNED WITH HER BROOM": "death.witch.broom",
+    "ОДНА СТУПА ОСТАЛАСЬ!": "death.witch.mortar",
+    "ONLY HER MORTAR IS LEFT!": "death.witch.mortar",
+    "SUNK IN HER BUCKET!": "death.witch.mortar",
+    "АГА! НЕ ЛЕТАЙ, ГДЕ НЕ НАДО!": "death.witch.stop_flying",
+    "DON'T FLY WHERE YOU SHOULDN'T!": "death.witch.stop_flying",
+    "WOW! DON'T FLY HERE ANYMORE!": "death.witch.stop_flying",
+    "УБИЛ ПАЛАЧА!": "death.executioner.killed",
+    "KILLED AN EXECUTIONER!": "death.executioner.killed",
+    "KILLED AN EXECUTER!": "death.executioner.killed",
+    "СГИНУЛ ПАЛАЧ!": "death.executioner.died",
+    "THE BUTCHER DIED": "death.executioner.died",
+    "BUTCHER DIED": "death.executioner.died",
+    "АГА! НЕ МАШИ ТУТ ТОПОРИКОМ!": "death.executioner.axe",
+    "DON'T WAVE YOUR AXE HERE!": "death.executioner.axe",
+    "YES! DON'T WAVE YOUR AXE HERE": "death.executioner.axe",
+    "ЛИХО МЫ ЕГО!": "death.executioner.smashed",
+    "WE SMASHED HIM!": "death.executioner.smashed",
+    "ЭК ЕГО СКРЮЧИЛО!": "death.executioner.bent",
+    "WE BENT HIM WELL!": "death.executioner.bent",
+    "ТАК ТЕБЕ, ИСЧАДИЕ АДА!": "death.executioner.hell",
+    "TAKE THAT, CREATURE OF HELL!": "death.executioner.hell",
+    "QUIT YOU, CREATURE OF HELL!": "death.executioner.hell",
+    "КОНЕЦ ИЗВЕРГУ!": "death.executioner.end",
+    "THE END OF THE MONSTER!": "death.executioner.end",
+    "THIS IS THE END OF MONSTER!": "death.executioner.end",
+    "ВЗЯЛ МЕДНЫЙ КЛЮЧ": "item.key.copper",
+    "TOOK THE COPPER KEY": "item.key.copper",
+    "TOOK THE COOPER KEY": "item.key.copper",
+    "ВЗЯЛ ЖЕЛЕЗНЫЙ КЛЮЧ": "item.key.iron",
+    "TOOK THE IRON KEY": "item.key.iron",
+    "ВЗЯЛ ЗОЛОТОЙ КЛЮЧ": "item.key.gold",
+    "TOOK THE GOLD KEY": "item.key.gold",
+    "TOOK THE GOLDEN KEY": "item.key.gold",
+    "КОВШ ЖИВОЙ ВОДЫ ДАЛ 10 ЛЕТ ЖИЗНИ": "item.health.water",
+    "LIVING WATER ADDED 10 YEARS": "item.health.water",
+    "SCOOP OF WATER ADDED 10 YEARS": "item.health.water",
+    "ГОРШОК ДОБРОЙ КАШИ ДАЛ 15 ЛЕТ ЖИЗНИ": "item.health.porridge",
+    "PORRIDGE ADDED 15 YEARS": "item.health.porridge",
+    "POT OF PORRIDGE ADDED 15 YEARS": "item.health.porridge",
+    "ПРИБАВИЛОСЬ 50 ЗАРЯДОВ": "item.ammo.50",
+    "50 SHOTS ADDED": "item.ammo.50",
+    "50 SHELLS ADDED": "item.ammo.50",
+    "МУХОМОРЫ ОТНЯЛИ 10 ЛЕТ ЖИЗНИ": "item.harm.mushroom",
+    "TOADSTOOLS TOOK 10 YEARS OF LIFE": "item.harm.mushroom",
+    "ЗЕЛЬЕ ОТНЯЛО 15 ЛЕТ ЖИЗНИ": "item.harm.swill",
+    "SWILL TOOK 15 YEARS OF LIFE": "item.harm.swill",
+    "ВЗЯЛ КАРТУ": "item.map",
+    "TOOK THE MAP": "item.map",
+    "ВЗЯЛ РУЖЬЕ": "item.weapon.rifle",
+    "TOOK THE RIFLE": "item.weapon.rifle",
+    "ВЗЯЛ ЛАЗЕРНЫЙ ПИСТОЛЕТ": "item.weapon.laser",
+    "TOOK THE LASER GUN": "item.weapon.laser",
+    "ЗАБИЛ МОНСТРА": "old_gold.death.monster",
+    "KILLED A MONSTER": "old_gold.death.monster",
+    "ДЛЯ ВЫХОДА СОБЕРИТЕ ВСЕ ДЕНЬГИ": "old_gold.exit.need_gold",
+    "COLLECT ALL THE GOLD TO LEAVE": "old_gold.exit.need_gold",
+    "ВЗЯЛ 1 РУБЛЬ": "old_gold.item.money",
+    "TOOK 1 RUBLE": "old_gold.item.money",
+    "ДОБАВЛЕНО 10 ЖИЗНЕЙ": "old_gold.item.health.10",
+    "10 HEALTH ADDED": "old_gold.item.health.10",
+    "ДОБАВЛЕНО 50 МАГИИ": "old_gold.item.magic.50",
+    "50 MAGIC ADDED": "old_gold.item.magic.50",
+    "ДОБАВЛЕНО 5 МАГИИ": "old_gold.item.magic.5",
+    "5 MAGIC ADDED": "old_gold.item.magic.5",
+    "ДОБАВЛЕНО 10 МАГИИ": "old_gold.item.magic.10",
+    "10 MAGIC ADDED": "old_gold.item.magic.10",
+    "УМЕНЬШИЛА НА 10 ЖИЗНЬ": "old_gold.item.harm.10",
+    "LOST 10 HEALTH": "old_gold.item.harm.10",
+    "МАГИЧЕСКАЯ ПАЛОЧКА": "old_gold.item.wand",
+    "MAGIC WAND": "old_gold.item.wand",
+    "Ах ты хитрый думер!": "cheat.idkfa",
+    "YOU SLY DOOMER!": "cheat.idkfa",
+    "ДВЕРЬ ОТКРЫТА": "door.opened",
+    "DOOR OPENED": "door.opened",
+    "ДВЕРЬ ЗАКРЫТА": "door.closed",
+    "DOOR CLOSED": "door.closed",
+    "НУЖЕН МЕДНЫЙ КЛЮЧ": "door.key.copper",
+    "YOU NEED A COPPER KEY": "door.key.copper",
+    "НУЖЕН ЖЕЛЕЗНЫЙ КЛЮЧ": "door.key.iron",
+    "YOU NEED AN IRON KEY": "door.key.iron",
+    "НУЖЕН ЗОЛОТОЙ КЛЮЧ": "door.key.gold",
+    "YOU NEED A GOLD KEY": "door.key.gold",
+    "СЕКРЕТНАЯ ДВЕРЬ": "door.secret",
+    "SECRET DOOR": "door.secret",
+    "НУЖЕН КЛЮЧ": "door.key.unknown",
+    "YOU NEED A KEY": "door.key.unknown",
+    "ХОРОМЫ НЕЧИСТИ": "level.palace",
+    "PALACE OF EVIL": "level.palace",
+    "ПОДЗЕМНАЯ РЕКА": "level.river",
+    "SACRED RIVER": "level.river",
+    "ПОДВАЛЫ КРЕМЛЯ": "level.kremlin",
+    "UNDERGROUND KREMLIN": "level.kremlin",
+    "СТАРОЕ ЗОЛОТО": "level.old_gold",
+    "OLD GOLD": "level.old_gold",
+    "ДВЕРЬ ОТКРЫЛАСЬ": "door.opened",
+    "ДВЕРЬ ЗАКРЫЛАСЬ": "door.closed",
+    "НЕИЗВЕСТНЫЙ КЛЮЧ": "door.key.unknown",
+    "DOOR OPEN": "door.opened",
+    "COOPER KEY IS NEEDED": "door.key.copper",
+    "IRON KEY IS NEEDED": "door.key.iron",
+    "GOLDEN KEY IS NEEDED": "door.key.gold",
+    "UNKNOWN KEY": "door.key.unknown"
+  }
+}

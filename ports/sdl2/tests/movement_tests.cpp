@@ -1,6 +1,7 @@
 #include "dok/movement.hpp"
 #include "dok/items.hpp"
 #include "dok/view_motion.hpp"
+#include <algorithm>
 #include <iostream>
 #include <stdexcept>
 
@@ -23,6 +24,23 @@ static dok::LevelDefinition fixture(){
 }
 int main(){
     try{
+        // OG applies class12 WORD values directly; Kremlin alone divides by
+        // reference FPS and slows motion. In particular -1 must hurt in OG.
+        for(auto profile:{dok::DatasetId::old_gold,dok::DatasetId::kremlin_pkr,dok::DatasetId::kremlin_pke})
+        for(int category:{0,100,102})for(int value:{-100,-1,1,100}){
+            auto level=fixture();level.dataset=profile;
+            dok::ObjectDefinition surface;surface.glyph='~';surface.class_id=12;
+            surface.fields={{dok::FieldKind::word,0x66,category,{}},{dok::FieldKind::word,0x68,value,{}}};
+            level.glyph_index['~']=int(level.objects.size());level.objects.push_back(surface);
+            level.maps["fcmap"].assign(64,'~');dok::World w(level);
+            auto& actor=w.objects.at(*w.player);const auto before=*actor.pose;
+            actor.player_state->attributes[0]=50;
+            const bool og=profile==dok::DatasetId::old_gold;
+            check(dok::player_surface(w)==!og);
+            const int delta=og?value:value/30;
+            if(category==0)check(actor.player_state->health()==std::clamp(50+delta,0,100));
+            else{check(actor.pose->x==before.x+(category==100?delta:0));check(actor.pose->z==before.z+(category==102?delta:0));}
+        }
         for(auto profile:{dok::DatasetId::old_gold,dok::DatasetId::kremlin_pkr,dok::DatasetId::kremlin_pke})for(bool inertia:{false,true}){
             std::vector<dok::Pose> replay_poses;
             for(int fps:{30,60,144}){

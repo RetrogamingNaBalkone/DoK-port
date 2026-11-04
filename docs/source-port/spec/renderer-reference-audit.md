@@ -1,123 +1,195 @@
-﻿# SP07: сверка полного VGA-кадра, 4 ноября 2026
+# SP07 — приёмка renderer, 4 ноября 2026
 
-Промежуточное проверенное доказательство. Воспроизводимый скрипт:
-`py -3.14 -B ports/sdl2/tools/check_scene_reference.py`.
-Полные отчёты и кадры: `research/evidence/source-port/sp07-render/`.
-Эталоны `research/evidence/reference/{ru-03,en-02}/level1-start.idx` не менялись.
+Актуальная сводка заменяет промежуточные выводы предыдущего исследования.
+Полные RAM, indexed кадры, diffs и read-only Ghidra exports находятся в
+`research/evidence/source-port/sp07-render/`; исходные DOS-эталоны не менялись.
+Компактная машинная матрица: `analysis/source-port/sp07-render-summary.json`.
 
-| Профиль | Обычный deterministic raster | Replay исходной истории LIGHT |
-|---|---:|---:|
-| PKR LEVEL1 | 49999/51200 | 51200/51200 |
-| PKE LEVEL1 | 50146/51200 | 51196/51200 |
+## Матрица критериев
 
-PKR Ghidra NE `1120:0bb7` и `1120:0bef..0c13`: перед обходом вершин
-инициализируется только минимум. DS:c146, индекс максимальной вершины,
-переписывается `1120:0c03` только при строго большем major coordinate.
-Если максимум уже vertex0, индекс остаётся от предыдущего полигона.
-Vertical raster использует ту же переменную. При floor/ceiling это меняет
-интерполяцию LIGHT, хотя геометрия совпадает. Сохранённые Ghidra листинги:
-`research/evidence/rendering/{ru,en}/evidence.asm` и `sprites/{ru,en}/evidence.asm`.
-В production сохранена инициализация high=0: намеренное исправление зависимости
-освещения поверхности от предыдущего draw. Diagnostic RasterReferenceState
-принадлежит экземпляру сцены, не global; включается только render_probe флагом
-`--native-light-history`. Не используется в обычной игре.
+| Критерий | Статус | Результат |
+|---|---|---|
+| Старт и контрольные позы всех семи уровней | PASS | PKR/PKE LEVEL1–3: heading90/0/45/135, каждый51200/51200; OG LEVEL4:83/0/45/135, каждый54400/54400 |
+| Геометрия контрольных поз | PASS | Все массивы найдены в coherent RAM; OG center сравнивается по XY, поскольку depth slots исходник не инициализирует и не читает |
+| PKR VESA640×480/800×600/1024×768 | PASS | Каждый при0/45/135:247040/247040,385600/385600,632832/632832 |
+| PKE VESA | PASS с указанной историей framebuffer | При0/135 exact; при45 неперерисованные щели1/1/2 pixels удерживают предыдущий кадр; см. проверку sentinel ниже |
+| 640×400 | NOT_NATIVE | Недостижимый backend mode100h в данных PKR/PKE; размер порта — расширение |
+| OG VESA | NOT_NATIVE | Исходный OG backend только VGA; высокие размеры порта — расширение |
+| Getters/общие анимации | PASS | 20 clips, включая стену OG H=72, предмет $=36 и Kremlin X/Y/Z; class 6 — base getter |
+| Размеры/flags/cache | PASS | 7 уровней×5 размеров; software/real GL, изменение размеров/flags immutable image, повтор/возврат/свежая сцена |
+| GL Hor+/HUD/фильтры | OUT_OF_SCOPE | Существующий modern viewport намеренный; отдельная матрица SP08/SP15 не закрыта |
+| Время class 12 воды | ADAPTATION | Непрерывные18 фаз/334 ticks; исходный interval0/redraw pacing не эмулируется |
 
-Остаток PKE: (103,58), (108,60), (108,100), (105,101).
-Точки находятся на стыках соседних floor/ceiling quads. Причина ещё проверяется;
-не следует приписывать их анимации без доказательства.
+PASS относится к указанным кадрам и контрактам, а не к полным прохождениям.
+Обычный renderer исправляет две ошибки исходника и очищает framebuffer. Для pixel equality включён
+только диагностический replay этих ошибок, недоступный в UI и обычной игре.
 
-Каждый полный массив (x,y,depth) первичных/вторичных полигонов сериализован как
-little-endian signed int32 и найден целиком в 16MiB исходной гостевой RAM:
-PKR213/214, PKE214/215. Отчёт содержит каждый linear_ram_offset. Это линейные
-адреса RAM, не Ghidra адреса и не DPMI selector*16. Базы data image:
-PKR0x1d38e0/PKE0x1d7090; см. originals/rendering-reference.md.
-Ненайденный массив соответствует class9: исходный снимок уже содержит движение
-монстра. В PKE найдена реальная pose по RAM0x200fcc=(12555,0,24720,270),
-native type9 по object+0x12, object base0x200fa6. Его quad RAM0x302781:
-(244,54,2565),(281,54,2565),(281,100,2565),(244,100,2565).
-Точная идентификация host glyph и влияние на сортировку пока не приняты.
+## Метод coherent capture
 
-OG/VESA и контрольные позы всех уровней пока не покрыты этой сверкой.
-Этот результат не закрывает весь SP07 и не является gameplay parity.
+`capture_vesa_reference.py` и `capture_og_reference.py` запускают изолированную
+копию игры через DOSBox-Staging HTTP; каждый процесс имеет собственный порт.
+Native glyph читается из object+14h (class+12h), pose+26h, image far+44h.
+`extract_render_state.py` связывает glyph/class с definition/owner, передаёт
+настоящие pose/flags/door extent и pixels/crop state; положения не угадываются.
+Getter crop: пары right/left/down/up, shift=(dimension/divisor)*index,
+циклический вариант имеет приоритет. Scene принимает immutable Image.
 
-## Новые DOS-опыты OG/VESA
+`native_draw_trap.py` временно заменяет две **guest RAM** инструкции эпилога
+на EB FE, проверяет реальный CS:IP и читает offscreen framebuffer + RAM после
+завершения world draw, до flip. Затем finally восстанавливает исходные байты
+и проверяет их чтением; subprocess завершается при успехе и ошибке.
+Оригинальные EXE не патчатся. Trap-адреса:
 
-`capture_og_reference.py`: изолированная копия OG.EXE -n, input через
-исходную таблицу DS:c563/count:c560/scan:c562 (2800:006a/025d/02f2).
-Корректный data anchor `Not same device` по Ghidra3255:189d; runtime DS23f8,
-линейная база0x23f80. GAMEPAL как anchor неверен: строка найдена в каталоге RES,
-а не DGROUP; первый og-dos-01 не используется как игровой эталон.
-`og-dos-02/enter-6.idx` — стабильный LEVEL4, цветной `level4-color.png` использует
-GAMEPAL из оригинального RES. PNG от generic capture — только grayscale indices.
-Оригинальные файлы SHA до/после совпали.
+- PKR Ghidra NE1100:05a3, runtime03e7:05a3, linear1b7f73, bytes5f5e.
+- PKE Ghidra NE1060:1531; фактические runtime selector/linear в capture report.
+- OG Ghidra MZ203d:04e4, runtime11e0:04e4, linear122e4, bytes5e5d.
 
-OG203d:00cb и RAM data+1fba: D200,W320,H171,cx159,cy84;
-clip data+1fc6=(0,0,319,169),scale data+1fd6=8.
-Camera pose data+1fea=(8904,-200,15960),sin/cos32523/3993 (heading83).
-SoftwareScene исправлен на170 строк OG, panel29 вместо39. GL сохраняет современный
-160-row/Hor+ viewport как явную адаптацию; это не native OG projection.
-Старое сравнение после одной коррекции камеры:25785/54400 индексов.
+Protected-mode selector разрешается через LDT, **не** selector×16.
+Например PKR DS04df descriptor1ff0208 = eef0e0381df20000,
+base1d38e0; LDT1fefd30. Surface065f:0000 descriptor1ff0388 =
+ffff40721ef20000, linear1e7240. OG real-mode DS23f8 определяется строкой
+`Not same device` в DS:189d; camera DS:1fba, framebuffer far DS:ce92.
+Старая строка GAMEPAL в каталоге ресурсов не является DGROUP anchor.
 
-Обнаружено принципиальное отличие OG от Kremlin: OG рисует горизонтальными
-Bresenham scanlines с полушагом UV и исключительным правым концом,
-image.width/height вместо width-1/height-1. Ghidra2b57:0b36/0d35/0f01/1301;
-far/LES, signed WORD edge deltas, wrap32 UV ADD/IDIV проверяются по ASM.
-Каждый polygon выбирает одну LIGHT row через2ce3:0160. Constructors
-24cf:000b/07d8/1363/1a81 используют abs16(lateral)+abs16(depth),
-WORD sum/sub1008, clamp0, /154; billboard24cf:0f01 использует исходный world dx
-и rotated depth, sub2184. Clamp row15 в palette setter. Billboard ASM0fb4/0fbe
-подтверждает world dx, а не rotated lateral. Реализация в работе, финальная
-сверка пока не заявляется. Свежие disassembly missing draw entries06a5/1271
-получены через ExportSourcePortRender.java в readOnly Ghidra session.
+Основные samples: `{ru,en}-level{1,2,3}-vga-08` — три контрольных heading,
+`*-vga-11` — стартовый heading90, `og-dos-03` — четыре OG heading.
+VESA PKR: `ru-level1-{2,3}-09`, `ru-level1-4-10`; PKE: `en-level1-{2,3,4}-12`.
+Первичные polling/menu snapshots не используются как критерий PASS.
 
-VESA capture через`capture_vesa_reference.py`: PKR -r/-r2/-r3/-r4, S3 DOSBox.
-В полной32MiB RAM найден LDT: runtime DS04df descriptor0x1ff0208 имеет
-base1d38e0, limitf0ee; LDTbase1fefd30. Surface selector065f:0000,
-descriptor1ff0388=ffff40721ef20000 -> linear1e7240. Surface большой длины
-читается из contiguous guest RAM, selector не умножается на16.
-Исходный HTTP API LFB0xe0000000 возвращает500; он не использован.
+## Восстановленные различия и ошибки
 
-| Запуск | Размер | Height argument | Clip bottom | K |
-|---|---|---:|---:|---:|
-| -r / -r2 |640x480|386|385|8192|
-| -r3 |800x600|483|481|10240|
-| -r4 |1024x768|618|617|13107|
+**LIGHT history.** PKR 1120:0bb7/0bef–0c13 и vertical counterpart сохраняют
+DS:c146, когда vertex0 уже имеет максимальную major coordinate. Следующий
+polygon использует старый индекс при интерполяции depth/LIGHT. Старый RU
+начальный кадр: default49999/51200, replay51200/51200; все1201 pixels объяснены.
+Default high=0 — намеренное исправление. `RasterReferenceState` отдельно
+воспроизводит историю; bounds проверяются после выбора high, что сохраняет
+переход quad→triangle. Проверены обе ветви и invalid прежний index.
 
-В этом DOSBox -r реально выбирает640x480:640x400 пока не получен.
-Снимки/полные RAM: ru-vesa-{2,3,4}-02. Первичный ru-vesa-auto содержит
-transient message и не является стабильным эталоном.800x600 native-history
-probe385141/385600;459 отличий ещё не локализованы. Остальные сравнения pending.
+**Packed sampler.** PKR 1010:0030–00af упаковывает fracV/address в ESI,
+fracU/counter в EAX/ECX. ADD/ADC перенос младшего WORD влияет на texel;
+независимые Q16 U/V не эквивалентны. OG 2b57:1067–10e3 использует тот же
+ADC, но в младшем U word находятся destination offset/+1. Перенос
+воспроизведён явно unsigned32/64. Unit-vector отрицательного whole U step
+показывает исходный texel8 вместо0. Это устранило наклонные seam differences.
 
-## Getter audit и текущая регрессия
+**VESA bank boundary.** PKR 1010:009d/00ba при wrap destination DI пропускает
+UV advancement. Именно это объясняет все23/71/78 и12/16/16 отличий PKR
+640/800 до replay;1024 не пересекает банк внутри строки. В обычном renderer
+шаг не пропускается: исправлена исходная горизонтальная полоса. Только
+`--native-light-history` render_probe включает оба legacy diagnostics.
+Synthetic257×257 проверяет normal/replay на границе65535→65536.
 
-Class6 **не имеет отдельного image getter**. Свежие Ghidra data bytes:
-PKR1190:063d vtable slot+8 =1068:04ae;
-PKE10d0:0656 slot+8 =1020:098e;
-OG3255:0612 slot+8 =1ae1:0389. Это base getter SP06, уже подключённый
-ImageGetter/Animations. Наличие SwitchState native54/56/58 не является
-доказательством отдельной анимации class6. Его use/callback остаётся SP10.
-Дверьclass7 имеет отдельный crop getter PKR1068:320b, vtable1190:0625+8;
-Scene применяет door_image перед геометрией. Class12 сохраняет документированную
-адаптацию fixed-tick18 phases вместо redraw-side-effect native interval0.
+**История framebuffer.** PKE VESA heading45 оставляет1/1/2 неперерисованных
+пикселя:640(396,309),800(737,446),1024(851,549)/(944,572).
+В native они равны предыдущему heading0 (46/46/45/45), в очищаемом порте0.
+Контроль `en-level1-{2,3,4}-13`: после trap framebuffer залит251, следующий
+исходный draw оставил во всех четырёх точках251. Это прямое доказательство
+дырок покрытия и зависимости от старого кадра, а не предположение по цвету.
+`check_framebuffer_history.py` проверяет sentinel и предыдущие значения;
+`framebuffer-history.json` сохраняет результат. Production clear=0 оставлен
+намеренно; не заполняем дырки чужими DOS pixels ради PASS.
 
-OG raster после уточнения default UV wrapper2b57:0a0d даёт **54393/54400**
-на LEVEL4. Семь открытых pixels: (105,42),(106,43),(108,46),(110,49),
-(74,80),(10,83),(313,122). Это не объявлено полной pixel equivalence.
-Geometry166/168 массивов полностью найдены в исходной RAM; два ненайденных
-массива material79 относятся к центральным вертикальным плоскостям.
-Default floor UV=width-1/height-1; explicit wall/billboard UV=width/height.
-Раннее утверждение «все UV=dimension» выше уточняется этим wrapper.
+**Асимметричные cell bounds.** PKR 1098:3335/3343, PKE 1030:3859/386b,
+OG 21b8:1a81/1a8f при вычислении максимума сравнивают уже уменьшенный минимум,
+а не второй ближний угол. Порт восстановил исходный набор клеток. Для
+RU LEVEL2 pose(20880,-300,3120,135), side480: X34…44/Z0…8, не X34…45.
+Лишние три offscreen primitives меняли Shellsort равных ключей:115→112,
+остаток151→23, затем packed ADC устранил23. Native/port sorted112 descriptors
+и159 vertex arrays совпадают. Unit-tests проверяют bounds и влияние лишнего
+невидимого элемента на equal-key order. Это общая граница activation,
+поэтому повторены7-level cadence и27 monster groups/36 FPS replays;
+статус SP12 этим не меняется.
 
-GL получает OG постоянный palette row отдельным shade_depth атрибутом вершины;
-геометрическая глубина, perspective, depth test и shader filters не изменены.
-Modern GL170/native viewport не заявлен: сохранены160/Hor+ и современный HUD.
-Software classic panel использует29 строк OG; weapon bottom берётся из170-row
-scene, соответствуя исходному clip.bottom169 (OG1ae1:2959).
-PKR/PKE camera/HUD остались прежними. Legacy fixed0 lighting и native-history
-обе ветви покрыты тестом, включая перенос high index между разными полигонами.
-OG raster тестирует half-step/exclusive bounds и raw transparency перед LIGHT.
+**OG camera/raster/sort.** Реальная camera W320/H171, clip320×170,
+center159,84, D200/k8/K4096. Classic panel29 строк, weapon bottom169;
+Kremlin остаётся clip320×160/panel39. OG использует Bresenham horizontal
+edges, half-step UV, исключительные правую/нижнюю границы, raw transparency
+до LIGHT. Default floor UV=width−1/height−1, explicit wall UV=width/height.
+Ghidra2b57:0a0d/0b36/0d35/0f01/1301. Один LIGHT row на polygon:
+abs16(lateral)+abs16(depth), WORD sub1008/clamp0,/154, cap15;
+billboard использует world dx и sub2184 (24cf:0fb4/0fbe).
+Floor sort24cf:1964–19a0/1f8f–1fcb = ABS(mean depth + camera-relative Y/4).
+Именно отсутствующий Y/4 оставлял последние4 pixels OG 83: floor ошибочно
+перекрывал wall. После исправления все4 OG кадра exact.
+Center constructor OG хранит XY, оставляя depth slots неинициализированными;
+проверка их случайных байтов была ложным требованием. Raster их не читает,
+LIGHT и sort вычисляются отдельно. GL получает постоянный OG row отдельным
+shade_depth; geometric depth/perspective/depth test сохранены.
 
-`dok_animation_scene_tests`:35 software scenes,20 real clips с software/real GL
-readback, reversal/fresh-cache/repeated draw, без изменения simulation ticks.
-`dok_old_gold_probe`:600 rendered simulation frames,105 money,2 wands,exit PASS.
-`check_render.py`: исходные дверные texels PKR1622/PKE1388 PASS.
+**Режимы.** PKR 1138:0180/PKE 1080:0180 — stub: return(mode==101h).
+Auto проверяет100h, получает0 и выбирает101h; -r1/-r2 явно101h,
+-r3=103h, -r4=105h. Поэтому640×400 отсутствует в достижимой матрице
+этих EXE независимо от BIOS. S3 и oldvbe подтвердили640×480; ET4000 без
+VBE дал неинициализированные0×0, что не принято за кадр. OG main20c4:03b0
+имеет sound switches, его backend2b57:005b выбирает только VGA.
+
+| Native mode | Camera H | Clip rows | K |
+|---|---:|---:|---:|
+| Kremlin320×200 |161|160|4096|
+| Kremlin640×480 |386|386|8192|
+| Kremlin800×600 |483|482|10240|
+| Kremlin1024×768 |618|618|13107|
+| OG 320×200 |171|170|4096|
+
+Software frame rows при800×600 равны482; последний clip row481.
+Modern GL сохраняет160-row logical view, Hor+ и современный HUD;
+GL classic HUD/filters остаются SP08. Software high-mode HUD масштабируется
+из VGA и не заявляет попиксельной DOS VESA панели.
+
+## Getters и кадровые кеши
+
+Animations::image(owner) связан с software и GL, включая стены. При смене
+immutable pointer обновляются размеры, flags и pixels, не только texture.
+Class6 vtable slot+8: PKR 1190:063d→1068:04ae,
+PKE 10d0:0656→1020:098e, OG 3255:0612→1ae1:0389 — base getter SP06.
+SwitchState не доказывает отдельную анимацию; его callback/use относится кSP10.
+Class7 crop getter PKR 1068:320b потребляется door_image. Class12 setter
+10f8:0592/getter05c9 задаёт crop divisor/index и scratch pixels;
+порт использует чистое преобразование и стабильные18 фаз/334 ticks.
+Monster/projectile/weapon draw state остаётся у соответствующих служб;
+этот этап не меняет баланс и не закрывает SP10–SP12.
+
+## Воспроизведение
+
+```powershell
+py -3.14 -B ports/sdl2/tools/export_render_audit.py
+py -3.14 -B ports/sdl2/tools/capture_vesa_reference.py --language ru --level 2 --mode vga --label NEW --controls --trap
+py -3.14 -B ports/sdl2/tools/capture_og_reference.py --label NEW
+py -3.14 -B ports/sdl2/tools/check_trap_matrix.py
+py -3.14 -B ports/sdl2/tools/check_vesa_trap_matrix.py
+py -3.14 -B ports/sdl2/tools/check_native_order.py
+py -3.14 -B ports/sdl2/tools/check_framebuffer_history.py
+powershell -NoProfile -ExecutionPolicy Bypass -File ports/sdl2/tools/build.ps1 -Configuration Release
+build/sdl2/windows/dok_animation_scene_tests.exe originals/pkr/RUS/PKR.RES originals/pkr/ENG/PKE.RES originals/Old_Gold_3D/OLD_GOLD.RES
+```
+
+Capture не перезаписывает существующий label. Матрицы ссылаются на перечисленные
+контрольные samples; новый label требует явного добавления в список.
+ExportSourcePortRender.java запускается read-only, проверяет SHA-256 EXE
+до/после и сохраняет manifest. `checks/report.json` содержит команды и коды
+финальных resource regressions. CTest 15/15; animation35 scenes/20 clips,
+cadence7 levels, monsters27 groups/36 replays, OG 600 frames/105 рублей/2 палочки/exit,
+исходные door texels PKR 1622/PKE 1388 — PASS.
+
+## Хранение итогового исследования
+
+Coherent `heading-*-memory.z`, indexed frames, state bindings, Ghidra exports
+и все текущие входы матриц остаются распакованы. 61 холодный полный RAM
+(1,526,726,656 bytes) упакован в проверенный
+`research/experiments/storage-archives/sp07-cold-memory-20261104.zip`
+(39,332,775 bytes), с SHA-256 каждой записи. Исторический
+`check_state_matrix.py` вызывает extractor, который при отсутствии raw RAM
+восстанавливает **конкретный файл** через `scripts/storage_archive.py restore`.
+Например:
+
+```powershell
+py -3.14 -B scripts/storage_archive.py restore research/evidence/source-port/sp07-render/ru-level2-vga-05/memory.bin
+```
+
+`check_scene_reference.py` использует старые `reference/ru-03,en-02`,
+не затронутые этой упаковкой. Дубли isolated game copies удалены после проверки
+resolved paths внутри SP07 research; оригиналы и build inputs сохранены.
+`archive_render_research.py` и `storage-report.json` фиксируют операцию.
+Пакет проверен шестью реальными процессами (три профиля × software/GL),
+все exit0, без GL fallback; `checks/package-report.json` содержит hashes/команды.

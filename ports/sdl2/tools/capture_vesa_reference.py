@@ -3,7 +3,7 @@ import sys,os,json,shutil,subprocess,time,struct,argparse
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[3];sys.path.insert(0,str(ROOT/'tools/originals'))
 from dos_reference import Api,sha,wait_for,key,ANCHOR
-parser=argparse.ArgumentParser();parser.add_argument('--headings',default='0,45,135');parser.add_argument('--machine',default='svga_s3',choices=['svga_s3','svga_et4000','vesa_oldvbe']);parser.add_argument('--mode',required=True,choices=['vga','auto','1','2','3','4']);parser.add_argument('--trap',action='store_true');parser.add_argument('--port',type=int,default=18737);parser.add_argument('--controls',action='store_true');parser.add_argument('--language',choices=['ru','en'],default='ru');parser.add_argument('--level',type=int,choices=[1,2,3],default=1);parser.add_argument('--label',default='04');args=parser.parse_args()
+parser=argparse.ArgumentParser();parser.add_argument('--clear-surface',type=int);parser.add_argument('--headings',default='0,45,135');parser.add_argument('--machine',default='svga_s3',choices=['svga_s3','svga_et4000','vesa_oldvbe']);parser.add_argument('--mode',required=True,choices=['vga','auto','1','2','3','4']);parser.add_argument('--trap',action='store_true');parser.add_argument('--port',type=int,default=18737);parser.add_argument('--controls',action='store_true');parser.add_argument('--language',choices=['ru','en'],default='ru');parser.add_argument('--level',type=int,choices=[1,2,3],default=1);parser.add_argument('--label',default='04');args=parser.parse_args()
 out=ROOT/f'research/evidence/source-port/sp07-render/{args.language}-level{args.level}-{args.mode}-{args.label}';out.mkdir(parents=True,exist_ok=False)
 delta=0 if args.language=='ru' else 0xb0;prefix='PKR' if args.language=='ru' else 'PKE';source=ROOT/'originals/pkr'/('RUS' if args.language=='ru' else 'ENG');before={p.name:sha(p) for p in source.iterdir() if p.is_file()};shutil.copytree(source,out/'game')
 dosbox=Path(os.environ['LOCALAPPDATA'])/'Programs/DOSBox-Staging/wasdify-webserver-20261024/dosbox.exe'
@@ -85,6 +85,11 @@ try:
    if args.trap:
     from native_draw_trap import hold,release
     trap=hold(a,m,args.language,ldt)
+    if args.clear_surface is not None:
+     try:a.write(address,bytes([args.clear_surface])*(w*h))
+     finally:release(a,trap)
+     report.setdefault('traps',[]).append(trap);report['diagnostic_clear_index']=args.clear_surface
+     trap=hold(a,m,args.language,ldt)
     try:selected=a.read(0,len(m));frame=selected[address:address+w*h]
     finally:release(a,trap)
     sample=0;report.setdefault('traps',[]).append(trap)

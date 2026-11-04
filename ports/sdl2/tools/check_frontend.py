@@ -37,7 +37,6 @@ def main():
 9 key Down
 10 key Right
 11 key Down
-12 key Down
 13 key Return
 15 state staged
 16 key Return

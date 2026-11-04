@@ -9,7 +9,9 @@ struct Painter {
     HudFrame frame;
     const std::array<std::uint32_t,256>& palette;
     const std::array<std::uint8_t,2048>& font;
+    int origin_x=0,origin_y=0;
     void pixel(int x,int y,std::uint32_t color) {
+        x+=origin_x;y+=origin_y;
         if(x<0||y<0||x>=frame.width||y>=frame.height)return;
         auto& dst=frame.pixels[y*frame.width+x];
         const unsigned a=color>>24,da=dst>>24,out=a+(da*(255-a)+127)/255;
@@ -82,11 +84,14 @@ const HudFrame& Hud::desktop(int width,const PlayerState& p,const std::array<std
        desktop_player_.weapons==p.weapons&&desktop_player_.current_weapon==p.current_weapon&&
        desktop_player_.score==p.score&&desktop_message_==message&&desktop_palette_==palette&&
        desktop_animated_==animated&&(!animated||desktop_seconds_==seconds))return desktop_frame_;
-    Painter out{{width,100,std::vector<std::uint32_t>(std::size_t(width)*100)},palette,font_};
+    Painter out{{width,142,std::vector<std::uint32_t>(std::size_t(width)*142)},palette,font_};
     constexpr std::uint32_t bone=0xffe7dfc9,amber=0xffe3bd7c;
     const auto health_text=std::to_string(hp),ammo_text=std::to_string(ammo);
     // Never reserve five digits for ordinary values; do expand for real extremes.
     const int health_right=64+std::max(3,int(health_text.size()))*24;
+    const int stat_deck=health_right+18,stat_ammo=stat_deck+(active?105:8);
+    const int stat_right=old_gold_?stat_ammo+25+std::max(3,int(ammo_text.size()))*24+42+int((std::to_string(p.score)+"/105").size())*16:stat_ammo+32+std::max(3,int(ammo_text.size()))*24;
+    out.origin_x=std::max(0,(width-(stat_right-8))/2-8);out.origin_y=48;
     out.shadow(8,30,health_right,60);
     out.image(health_,18,42,38,26);
     out.text(64,42,health_text,3,hp<=p.max_health()/4?0xffffa18a:bone);
@@ -135,22 +140,15 @@ const HudFrame& Hud::desktop(int width,const PlayerState& p,const std::array<std
         right+=42+int(money_text.size())*16;
     }
     if(!message.empty()){
-        int x=right+26,y=42;
-        int scale=3; // Same FONT8 scale as health and charge numerals.
-        int columns=std::min(24,(width-x-24)/(8*scale));
-        // Safe fallback for small desktop windows; portable layout is separate work.
-        if(columns<18){scale=2;columns=std::min(24,(width-x-24)/(8*scale));}
-        if(columns<12){x=18;y=2;scale=1;columns=std::max(1,std::min(38,(width-36)/8));}
-        const auto lines=wrap(message.substr(0,38),columns);
-        if(scale>1)y=std::max(6,std::min(42,80-(int(lines.size())*(8*scale+3)-3)));
-        int longest=0;for(const auto& line:lines)longest=std::max(longest,int(line.size()));
-        const int box_width=longest*8*scale+20,box_height=int(lines.size())*(8*scale+3)+12;
-        for(int dy=0;dy<box_height;++dy)for(int dx=0;dx<box_width;++dx){
-            const int fade=std::min(24,box_width-1-dx);
-            out.pixel(x-10+dx,y-6+dy,std::uint32_t(160*fade/24)<<24);
-        }
-        out.rect(x-10,y-3,2,box_height-6,0xb0b49a66);
-        for(std::size_t row=0;row<lines.size();++row)out.text(x,y+int(row)*(8*scale+3),lines[row],scale,bone);
+        out.origin_x=out.origin_y=0;
+        const int scale=2,columns=std::max(1,std::min(48,(width-32)/(8*scale)));
+        const auto lines=wrap(message,columns);
+        const int shown=std::min(3,int(lines.size())),line_height=18;
+        int longest=0;for(int i=0;i<shown;++i)longest=std::max(longest,int(lines[i].size()));
+        const int box_width=longest*16+24,x=(width-box_width)/2;
+        out.rect(x,0,box_width,shown*line_height+12,0xb8101010);
+        out.rect(x,0,box_width,1,0xffb49a66);
+        for(int i=0;i<shown;++i)out.text((width-int(lines[i].size())*16)/2,6+i*line_height,lines[i],scale,bone);
     }
     desktop_frame_=std::move(out.frame);desktop_player_=p;desktop_palette_=palette;desktop_message_=message;
     desktop_valid_=true;desktop_animated_=animated;desktop_seconds_=seconds;

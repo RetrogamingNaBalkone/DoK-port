@@ -64,7 +64,9 @@ static void scenarios(){
 }
 static void real_maps(const char* path){
     const auto archive=dok::Archive::open(std::filesystem::u8path(path));unsigned count=0;
-    for(auto name:{"LEVEL1","LEVEL2","LEVEL3"}){
+    const bool old_gold=archive.identify()==dok::DatasetId::old_gold;
+    const std::vector<std::string> names=old_gold?std::vector<std::string>{"LEVEL4"}:std::vector<std::string>{"LEVEL1","LEVEL2","LEVEL3"};
+    for(const auto& name:names){
         const auto definition=dok::load_level(archive,name);dok::World initial(definition);
         for(std::size_t cell=0;cell<initial.maps.at("tmap").size();++cell){
             const auto* object=definition.object(initial.maps.at("tmap")[cell]);
@@ -73,17 +75,26 @@ static void real_maps(const char* path){
             actor.pose->x=static_cast<int>(cell%definition.width)*definition.cell_side+definition.cell_side/2;
             actor.pose->z=static_cast<int>(cell/definition.width)*definition.cell_side+definition.cell_side/2;
             p.attributes[0]=50;p.attributes[1]=0;
+            // An isolated replenishment test needs a nonzero capacity. OG
+            // deliberately starts at max charge0 until the first wand pickup.
+            if(old_gold)p.attributes[3]=300;
             check(dok::player_pickup(world)!=0,"Placed item rejected");
             check(world.visible_message()==object->resource(0x58).substr(0,38),"Pickup message differs from original LEVEL text");
             unsigned changed=0;
             for(std::size_t i=0;i<initial.maps.at("tmap").size();++i)changed+=initial.maps.at("tmap")[i]!=world.maps.at("tmap")[i];
-            check(changed==1&&world.maps.at("tmap")[cell]==' ',"Placed pickup cell mutation");
             const auto category=object->number(0x54),value=object->number(0x56);
+            check(category==1000?(changed==0&&world.maps.at("tmap")[cell]==object->glyph):(changed==1&&world.maps.at("tmap")[cell]==' '),"Placed pickup cell mutation");
             if(category==0)check(p.health()==50+value,"Placed health value");
             else if(category==1)check(p.charge()==value,"Placed charge value");
             else if(category==10)check(p.keys()==value,"Placed key value");
             else if(category==200)check(world.map_revealed,"Placed map flag");
-            else if(category==3)check(p.max_charge()==initial.objects.at(*initial.player).player_state->max_charge()+value,"Placed max charge");
+            else if(category==3)check(p.max_charge()==(old_gold?300:initial.objects.at(*initial.player).player_state->max_charge())+value,"Placed max charge");
+            else if(category==99)check(p.score==value,"Placed money value");
+            else if(category==1000){
+                check(!world.level_complete&&p.health()==50,"Premature placed exit accepted");
+                p.score=world.total_money;check(!dok::player_pickup(world)&&world.level_complete&&p.health()==-1,"Funded placed exit rejected");
+                check(world.maps.at("tmap")[cell]==object->glyph,"Exit object removed");
+            }
             else throw std::runtime_error("Unexpected placed item category");
             ++count;
         }

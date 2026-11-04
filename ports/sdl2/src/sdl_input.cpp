@@ -58,8 +58,10 @@ void SdlInput::open(int device_index){
     auto id=SDL_JoystickInstanceID(SDL_GameControllerGetJoystick(handle));
     if(controllers_.count(id)){SDL_GameControllerClose(handle);return;}
     Controller controller;controller.handle=handle;
-    for(int i=0;i<SDL_CONTROLLER_AXIS_MAX;++i)controller.axes[i]=SDL_GameControllerGetAxis(handle,static_cast<SDL_GameControllerAxis>(i));
-    for(int i=0;i<SDL_CONTROLLER_BUTTON_MAX;++i)controller.buttons[i]=SDL_GameControllerGetButton(handle,static_cast<SDL_GameControllerButton>(i))!=0;
+    if(focused_){
+        for(int i=0;i<SDL_CONTROLLER_AXIS_MAX;++i)controller.axes[i]=SDL_GameControllerGetAxis(handle,static_cast<SDL_GameControllerAxis>(i));
+        for(int i=0;i<SDL_CONTROLLER_BUTTON_MAX;++i)controller.buttons[i]=SDL_GameControllerGetButton(handle,static_cast<SDL_GameControllerButton>(i))!=0;
+    }
     controllers_.emplace(id,controller);
 }
 bool SdlInput::capture_mouse(bool enabled){
@@ -85,10 +87,10 @@ void SdlInput::handle(const SDL_Event& event){
         if(found!=controllers_.end()){SDL_GameControllerClose(found->second.handle);controllers_.erase(found);}break;}
     case SDL_CONTROLLERAXISMOTION:{
         auto found=controllers_.find(event.caxis.which);
-        if(found!=controllers_.end()&&event.caxis.axis<SDL_CONTROLLER_AXIS_MAX)found->second.axes[event.caxis.axis]=event.caxis.value;break;}
+        if(focused_&&found!=controllers_.end()&&event.caxis.axis<SDL_CONTROLLER_AXIS_MAX)found->second.axes[event.caxis.axis]=event.caxis.value;break;}
     case SDL_CONTROLLERBUTTONDOWN:case SDL_CONTROLLERBUTTONUP:{
         auto found=controllers_.find(event.cbutton.which);
-        if(found!=controllers_.end()&&event.cbutton.button<SDL_CONTROLLER_BUTTON_MAX)
+        if(focused_&&found!=controllers_.end()&&event.cbutton.button<SDL_CONTROLLER_BUTTON_MAX)
             found->second.buttons[event.cbutton.button]=event.type==SDL_CONTROLLERBUTTONDOWN;break;}
     case SDL_WINDOWEVENT:
         if(event.window.event==SDL_WINDOWEVENT_FOCUS_LOST){

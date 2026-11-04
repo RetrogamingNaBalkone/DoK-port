@@ -18,6 +18,9 @@ LocaleId system_locale(){
 bool operator==(const VideoSettings& a,const VideoSettings& b){return a.renderer==b.renderer&&a.width==b.width&&a.height==b.height&&a.software_mode==b.software_mode&&a.fullscreen==b.fullscreen;}
 namespace {
 using Values=std::map<std::string,std::string>;
+std::string path_hex(const std::string& value){const char* digits="0123456789abcdef";std::string out;for(unsigned char c:value){out+=digits[c>>4];out+=digits[c&15];}return out;}
+std::string path_unhex(const std::string& value){if(value.size()%2||value.size()>16384)throw std::runtime_error("Invalid resource path");std::string out;for(std::size_t i=0;i<value.size();i+=2){auto digit=[](char c){if(c>='0'&&c<='9')return c-'0';if(c>='a'&&c<='f')return c-'a'+10;throw std::runtime_error("Invalid resource path encoding");};const char c=char(digit(value[i])*16+digit(value[i+1]));if(!c||c=='\n'||c=='\r')throw std::runtime_error("Invalid resource path character");out+=c;}return out;}
+
 std::string trim(std::string s){const auto a=s.find_first_not_of(" \t\r");if(a==std::string::npos)return {};return s.substr(a,s.find_last_not_of(" \t\r")-a+1);}
 Values values(const std::string& text){
     Values result;std::istringstream in(text);std::string line,section;
@@ -41,6 +44,7 @@ float number(const Values& m,const std::string& key,float fallback,float lo,floa
 std::string encode_settings(const AppSettings& s){
     std::ostringstream o;o<<"[settings]\nversion=1\n[video]\nrenderer="<<int(s.video.renderer)<<"\nwidth="<<s.video.width<<"\nheight="<<s.video.height
       <<"\nsoftware_mode="<<s.video.software_mode<<"\nfullscreen="<<s.video.fullscreen<<"\nlinear="<<s.linear
+      <<"\nframe_filter="<<s.frame_filter<<"\nfxaa="<<s.fxaa<<"\nclassic_hud="<<s.classic_hud<<"\nauto_hud="<<s.auto_hud<<"\nforce_4_3="<<s.force_4_3<<"\nbase_fov="<<s.base_fov
       <<"\n[interface]\nlocale="<<int(s.locale)<<"\nfps="<<s.show_fps<<"\nlast_dataset="<<int(s.last_dataset)
       <<"\n[gameplay]\ninertia="<<s.inertia<<"\n[audio]\nmaster="<<s.master_volume<<"\neffects="<<s.effects_volume<<"\nmusic="<<s.music_volume
       <<"\n[input]\nkeyboard_preset="<<int(s.input.keyboard_preset)<<"\npad_preset="<<int(s.input.pad_preset)<<"\nclassic_pad="<<s.input.classic_pad
@@ -48,7 +52,11 @@ std::string encode_settings(const AppSettings& s){
     for(unsigned i=0;i<static_cast<unsigned>(Action::count);++i){
         o<<"key"<<i<<"a="<<int(s.input.keys[i][0])<<"\nkey"<<i<<"b="<<int(s.input.keys[i][1])
          <<"\nmouse"<<i<<'='<<s.input.mouse[i]<<"\nbutton"<<i<<'='<<int(s.input.buttons[i])<<"\ntrigger"<<i<<'='<<int(s.input.triggers[i])<<'\n';
-    }return o.str();
+    }
+    o<<"[resources]\ncount="<<s.resource_paths.size()<<'\n';
+    for(std::size_t i=0;i<s.resource_paths.size();++i)o<<"path"<<i<<'='<<path_hex(s.resource_paths[i])<<'\n';
+    for(unsigned i=1;i<4;++i)o<<"choice"<<i<<'='<<path_hex(s.resource_choices[i])<<'\n';
+    return o.str();
 }
 AppSettings load_settings(const std::filesystem::path& file,std::string& warning){
     warning.clear();AppSettings s;
@@ -58,9 +66,15 @@ AppSettings load_settings(const std::filesystem::path& file,std::string& warning
         std::ifstream f(file,std::ios::binary);if(!f)throw std::runtime_error("Cannot read settings");
         std::ostringstream text;text<<f.rdbuf();const auto m=values(text.str());
         if(integer(m,"settings.version",0,1,1)!=1)throw std::runtime_error("Unsupported settings version");
+        const int resource_count=integer(m,"resources.count",0,0,64);
+        for(int i=0;i<resource_count;++i){const auto it=m.find("resources.path"+std::to_string(i));if(it==m.end())throw std::runtime_error("Missing resource path");s.resource_paths.push_back(path_unhex(it->second));}
+        for(unsigned i=1;i<4;++i){const auto it=m.find("resources.choice"+std::to_string(i));if(it!=m.end())s.resource_choices[i]=path_unhex(it->second);}
         s.video.renderer=RendererKind(integer(m,"video.renderer",int(s.video.renderer),0,1));
         s.video.width=integer(m,"video.width",1280,320,7680);s.video.height=integer(m,"video.height",720,200,4320);
         s.video.software_mode=integer(m,"video.software_mode",0,0,4);s.video.fullscreen=integer(m,"video.fullscreen",0,0,1);
+        s.base_fov=integer(m,"video.base_fov",0,0,110);if(s.base_fov&&s.base_fov<45)throw std::runtime_error("Invalid base FOV");
+        s.force_4_3=integer(m,"video.force_4_3",0,0,1);s.auto_hud=integer(m,"video.auto_hud",1,0,1);
+        s.frame_filter=integer(m,"video.frame_filter",0,0,2);s.fxaa=integer(m,"video.fxaa",0,0,1);s.classic_hud=integer(m,"video.classic_hud",0,0,1);
         s.linear=integer(m,"video.linear",0,0,1);s.locale=LocaleId(integer(m,"interface.locale",int(s.locale),0,1));
         s.show_fps=integer(m,"interface.fps",1,0,1);s.last_dataset=DatasetId(integer(m,"interface.last_dataset",0,0,3));
         s.inertia=integer(m,"gameplay.inertia",1,0,1);s.master_volume=integer(m,"audio.master",100,0,100);
@@ -102,7 +116,7 @@ bool merge_settings_edits(AppSettings& stored,const AppSettings& a,const AppSett
 #undef EDIT_VIDEO
     }
 #define EDIT(f) if(a.f!=b.f&&stored.f!=b.f){stored.f=b.f;changed=true;}
-    EDIT(locale) EDIT(linear) EDIT(show_fps) EDIT(inertia) EDIT(master_volume) EDIT(effects_volume) EDIT(music_volume) EDIT(last_dataset)
+    EDIT(resource_paths) EDIT(resource_choices) EDIT(base_fov) EDIT(force_4_3) EDIT(auto_hud) EDIT(frame_filter) EDIT(fxaa) EDIT(classic_hud) EDIT(locale) EDIT(linear) EDIT(show_fps) EDIT(inertia) EDIT(master_volume) EDIT(effects_volume) EDIT(music_volume) EDIT(last_dataset)
     EDIT(input.keys) EDIT(input.buttons) EDIT(input.triggers) EDIT(input.mouse) EDIT(input.classic_pad)
     EDIT(input.keyboard_preset) EDIT(input.pad_preset) EDIT(input.mouse_degrees_per_count) EDIT(input.turn_sensitivity) EDIT(input.stick_deadzone)
 #undef EDIT

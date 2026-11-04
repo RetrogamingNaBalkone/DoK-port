@@ -77,10 +77,12 @@ bool player_surface(World& world){
     const auto x=std::clamp(pose.x/d.cell_side,0,d.width-1),z=std::clamp(pose.z/d.cell_side,0,d.length-1);
     const auto& surface=*d.object(world.maps.at("fcmap")[z*d.width+x]);
     if(surface.class_id!=12)return false;
-    // DOS divides by measured FPS. Stabilize to the same 30 FPS reference
-    // used for doors; category1000 ignores the resulting zero delta.
+    // OG 1ae1:1e16 applies +68 directly and does not request slow movement.
+    // Kremlin divides it by measured FPS and slows movement on class12.
+    // The port stabilizes that Kremlin divisor at the accepted 30 FPS profile.
+    const bool old_gold=world.definition.dataset==DatasetId::old_gold;
     change_player_stat(world,static_cast<std::int16_t>(surface.number(0x66)),
-        static_cast<std::int16_t>(surface.number(0x68)/30));
-    return true; // Original class12 never removes its FCMap cell.
+        static_cast<std::int16_t>(old_gold?surface.number(0x68):surface.number(0x68)/30));
+    return !old_gold; // Original class12 never removes its FCMap cell.
 }
 }

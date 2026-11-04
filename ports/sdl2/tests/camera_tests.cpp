@@ -47,6 +47,19 @@ int main(){
             if(step)check(x<previous&&previous-x<0.1f);
             previous=x;
         }
+        check(dok::presentation_focal(0)==200.0);
+        check(std::abs(dok::presentation_focal(90)-160.0)<1e-10);
+        float previous_extent=1000;
+        for(int fov:{45,60,75,90,110}){
+            dok::GpuCamera zoom({0,-300,0,0},320,0,{},160,dok::presentation_focal(fov));
+            const auto wall=zoom.vertical({-240,0,2000,0},{240,0,2000,0},640,96,128,1);
+            const auto& top=*wall->vertices[0].precise;const auto& bottom=*wall->vertices[3].precise;
+            const float extent=159.5f-top[0];check(extent<previous_extent);previous_extent=extent;
+            // Zoom acts equally on X and Y; source texel/weapon ratios cannot stretch.
+            check(std::abs((bottom[1]-top[1])/extent-640.0/240.0)<0.0001);
+            check(top[2]==2000&&bottom[2]==2000);
+        }
+        bool bad_fov=false;try{dok::presentation_focal(44);}catch(const std::invalid_argument&){bad_fov=true;}check(bad_fov);
         dok::ViewMotion motion;
         motion.record({0,-300,0,359},{100,-300,200,1},416);
         check(motion.offset(416)[0]==-100&&motion.offset(624)[0]==-50);

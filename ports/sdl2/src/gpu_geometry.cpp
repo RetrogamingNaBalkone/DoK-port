@@ -2,7 +2,7 @@
 #include <cmath>
 #include <algorithm>
 namespace dok {
-GpuCamera::GpuCamera(Pose pose,int width,float yaw_remainder,std::array<double,4> offset):pose_(pose),offset_(offset),width_(width){
+GpuCamera::GpuCamera(Pose pose,int width,float yaw_remainder,std::array<double,4> offset,int height,double focal):pose_(pose),offset_(offset),width_(width),height_(height),focal_(focal){
     const double angle=(pose.heading-yaw_remainder+offset_[3])*3.14159265358979323846/180.0;
     sine_=std::sin(angle);cosine_=std::cos(angle);
 }
@@ -21,8 +21,8 @@ std::optional<RenderPolygon> GpuCamera::project(const std::array<Point,4>& point
     if(count<3)return std::nullopt;
     RenderPolygon out;out.flags=flags|1;out.axis=axis;out.updates_image_winding=false;
     out.vertices.reserve(count);
-    for(std::size_t i=0;i<count;++i){const auto& p=clipped[i];const double scale=200.0/(p.z+200.0);
-        const float x=float(width_*0.5-0.5+p.x*scale),y=float(79.5+p.y*scale);
+    for(std::size_t i=0;i<count;++i){const auto& p=clipped[i];const double scale=focal_/(p.z+200.0);
+        const float x=float(width_*0.5-0.5+p.x*scale),y=float(height_*0.5-0.5+p.y*scale);
         RasterVertex vertex{int(std::floor(x)),int(std::floor(y)),int(p.z),int(p.u),int(p.v)};
         vertex.precise=std::array<float,5>{x,y,float(p.z),float(p.u),float(p.v)};
         out.vertices.push_back(vertex);

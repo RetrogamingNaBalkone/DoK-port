@@ -3,6 +3,7 @@
 #include "clock.hpp"
 #include "events.hpp"
 #include "audio.hpp"
+#include "contracts.hpp"
 #include <optional>
 
 namespace dok {
@@ -18,7 +19,7 @@ struct MonsterState {
     std::int16_t health=0,state=0,next_frame=-1,display_frame=0,display_clip=0;
     std::int16_t course_counter=0,shot_count=0;
     Stopwatch burst_clock;
-    bool corpse=false;
+    bool corpse=false,passage_released=false;
 };
 struct ProjectileState {
     Pose pose;
@@ -34,6 +35,7 @@ struct ProjectileState {
 struct WeaponState {std::int16_t state=4,shift=0,frame=0;bool acquired=false;};
 struct DoorState {
     std::int16_t phase=0,extent=1,interval=0;
+    std::uint16_t saved_flags=0; // Native +6a; OG updates this during OPEN.
     std::uint8_t state=2;
     bool ready=true;
 };
@@ -86,6 +88,7 @@ public:
     void notify(const std::string& text);
     void notify(const ObjectDefinition& object,int offset);
     std::string visible_message() const;
+    std::string visible_message(LocaleId locale) const;
     void sound(OwnerId owner,AudioAction action,unsigned binding=0x4c);
     std::function<void(const AudioCommand&)> audio;
     WorldObject& object_for_owner(OwnerId owner);
@@ -100,6 +103,7 @@ public:
     std::int16_t total_money{};
     bool map_revealed=false,level_complete=false;
     std::string message; // Original CP866 bytes; retained for save-state support.
+    std::string message_key; // Stable semantic key; locale is presentation state.
     std::uint64_t message_until=0;
     Events events;
 private:

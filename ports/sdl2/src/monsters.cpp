@@ -29,7 +29,7 @@ int original_direction(std::int32_t z,std::int32_t x){
 }
 Monsters::Monsters(World& w,const Archive& archive,Projectiles& shots):world_(w),projectiles_(shots){
     if(archive.identify()!=w.definition.dataset)
-        throw std::invalid_argument("Monster profile currently verified for Kremlin only");
+        throw std::invalid_argument("Monster archive/world profile mismatch");
     for(const auto& object:w.objects)if(object.monster){
         const auto& d=w.definition.objects[object.definition_index];
         std::array<std::vector<AnimationFrame>,3> frames{{archive.animation(d.animation),archive.animation(d.resource(0xe8)),archive.animation(d.resource(0xec))}};
@@ -102,14 +102,38 @@ void Monsters::event(OwnerId owner){
     auto& o=world_.object_for_owner(owner);auto& m=*o.monster;const auto& d=world_.definition.objects[o.definition_index];
     const auto& clips=clips_.at(owner);const auto now=static_cast<std::uint32_t>(world_.simulation_ticks());
     if(m.health<=0){
+        const auto release_passage=[&]{
+            if(m.passage_released)return;
+            const auto at=cell(*o.pose);
+            // A dead actor leaves door occupancy exactly once, even if its
+            // transparent animation tail continues after another actor enters.
+            if(world_.maps.at("mmap")[at]==d.glyph){
+                auto& terrain=world_.objects.at(world_.definition.glyph_index[world_.maps.at("tmap")[at]]);
+                if(terrain.door&&terrain.door_occupants>0)--terrain.door_occupants;
+            }
+            o.flags|=0x10;m.passage_released=true;
+        };
         if(m.state!=4){m.state=4;m.next_frame=0;world_.sound(owner,AudioAction::stop_all);world_.sound(owner,AudioAction::once,0xf4);}
         if(m.next_frame>=static_cast<int>(clips[2].size())){
             const auto at=cell(*o.pose);auto& mmap=world_.maps.at("mmap");auto& tmap=world_.maps.at("tmap");
+            release_passage();
             if(mmap[at]==d.glyph)mmap[at]=' ';
-            if(world_.definition.object(tmap[at])->class_id==0)tmap[at]=d.glyph;else mmap[at]=d.glyph;
-            o.flags|=0x10;m.corpse=true;o.pose->y=0;world_.sound(owner,AudioAction::stop,0xf4);world_.events.cancel_current();return;
+            if(world_.definition.object(tmap[at])->class_id==0)tmap[at]=d.glyph;
+            else if(mmap[at]==' ')mmap[at]=d.glyph; // Never erase an actor that entered the released cell.
+            m.corpse=true;o.pose->y=0;world_.sound(owner,AudioAction::stop,0xf4);world_.events.cancel_current();return;
         }
-        display(o,2,m.next_frame++);return;
+        display(o,2,m.next_frame++);
+        // Port fix: an entirely transparent final tail must not keep an
+        // invisible solid obstacle alive for the native frame duration.
+        // Keep the event and audio duration; visible death frames still block.
+        if(std::all_of(clips[2].begin()+m.display_frame,clips[2].end(),[](const auto& frame){
+            return std::none_of(frame.image.pixels.begin(),frame.image.pixels.end(),[](auto p){return p!=0;});
+        }))release_passage();
+        // OG 1ae1:38ca halves the signed object height (+19) on every death
+        // frame. Pose stores its negative, so preserve SAR's rounding here.
+        if(world_.definition.dataset==DatasetId::old_gold)
+            o.pose->y=negate16(word(sar32(negate16(word(o.pose->y)),1)));
+        return;
     }
     auto front_pose=*o.pose;auto front=lookup(front_pose,-world_.definition.cell_side,false);
     if(front.cls==0)front=lookup(front_pose,-world_.definition.cell_side,true);
@@ -121,7 +145,11 @@ void Monsters::event(OwnerId owner){
             m.next_frame=0;
         }
         display(o,1,m.next_frame);
-        if(m.state==3){display(o,2,0);m.state=2;}
+        if(m.state==3){
+            // OG 1ae1:34ee only resumes attack; Kremlin substitutes hurt frame0.
+            if(world_.definition.dataset!=DatasetId::old_gold)display(o,2,0);
+            m.state=2;
+        }
         return;
     }
     m.state=1;

@@ -1,0 +1,733 @@
+{
+  "task": "SP07",
+  "status": "complete",
+  "date": "2026-11-04",
+  "scope": "software renderer and image bindings; source-equivalent diagnostic replay distinct from corrected production",
+  "vga": [
+    {
+      "language": "ru",
+      "level": 1,
+      "heading": 0,
+      "matching": 51200,
+      "total": 51200,
+      "geometry_matches": 204,
+      "geometry_total": 204,
+      "capture": "research\\evidence\\source-port\\sp07-render\\ru-level1-vga-08"
+    },
+    {
+      "language": "ru",
+      "level": 1,
+      "heading": 45,
+      "matching": 51200,
+      "total": 51200,
+      "geometry_matches": 275,
+      "geometry_total": 275,
+      "capture": "research\\evidence\\source-port\\sp07-render\\ru-level1-vga-08"
+    },
+    {
+      "language": "ru",
+      "level": 1,
+      "heading": 135,
+      "matching": 51200,
+      "total": 51200,
+      "geometry_matches": 272,
+      "geometry_total": 272,
+      "capture": "research\\evidence\\source-port\\sp07-render\\ru-level1-vga-08"
+    },
+    {
+      "language": "ru",
+      "level": 2,
+      "heading": 0,
+      "matching": 51200,
+      "total": 51200,
+      "geometry_matches": 133,
+      "geometry_total": 133,
+      "capture": "research\\evidence\\source-port\\sp07-render\\ru-level2-vga-08"
+    },
+    {
+      "language": "ru",
+      "level": 2,
+      "heading": 45,
+      "matching": 51200,
+      "total": 51200,
+      "geometry_matches": 187,
+      "geometry_total": 187,
+      "capture": "research\\evidence\\source-port\\sp07-render\\ru-level2-vga-08"
+    },
+    {
+      "language": "ru",
+      "level": 2,
+      "heading": 135,
+      "matching": 51200,
+      "total": 51200,
+      "geometry_matches": 159,
+      "geometry_total": 159,
+      "capture": "research\\evidence\\source-port\\sp07-render\\ru-level2-vga-08"
+    },
+    {
+      "language": "ru",
+      "level": 3,
+      "heading": 0,
+      "matching": 51200,
+      "total": 51200,
+      "geometry_matches": 91,
+      "geometry_total": 91,
+      "capture": "research\\evidence\\source-port\\sp07-render\\ru-level3-vga-08"
+    },
+    {
+      "language": "ru",
+      "level": 3,
+      "heading": 45,
+      "matching": 51200,
+      "total": 51200,
+      "geometry_matches": 122,
+      "geometry_total": 122,
+      "capture": "research\\evidence\\source-port\\sp07-render\\ru-level3-vga-08"
+    },
+    {
+      "language": "ru",
+      "level": 3,
+      "heading": 135,
+      "matching": 51200,
+      "total": 51200,
+      "geometry_matches": 167,
+      "geometry_total": 167,
+      "capture": "research\\evidence\\source-port\\sp07-render\\ru-level3-vga-08"
+    },
+    {
+      "language": "en",
+      "level": 1,
+      "heading": 0,
+      "matching": 51200,
+      "total": 51200,
+      "geometry_matches": 203,
+      "geometry_total": 203,
+      "capture": "research\\evidence\\source-port\\sp07-render\\en-level1-vga-08"
+    },
+    {
+      "language": "en",
+      "level": 1,
+      "heading": 45,
+      "matching": 51200,
+      "total": 51200,
+      "geometry_matches": 276,
+      "geometry_total": 276,
+      "capture": "research\\evidence\\source-port\\sp07-render\\en-level1-vga-08"
+    },
+    {
+      "language": "en",
+      "level": 1,
+      "heading": 135,
+      "matching": 51200,
+      "total": 51200,
+      "geometry_matches": 270,
+      "geometry_total": 270,
+      "capture": "research\\evidence\\source-port\\sp07-render\\en-level1-vga-08"
+    },
+    {
+      "language": "en",
+      "level": 2,
+      "heading": 0,
+      "matching": 51200,
+      "total": 51200,
+      "geometry_matches": 177,
+      "geometry_total": 177,
+      "capture": "research\\evidence\\source-port\\sp07-render\\en-level2-vga-08"
+    },
+    {
+      "language": "en",
+      "level": 2,
+      "heading": 45,
+      "matching": 51200,
+      "total": 51200,
+      "geometry_matches": 241,
+      "geometry_total": 241,
+      "capture": "research\\evidence\\source-port\\sp07-render\\en-level2-vga-08"
+    },
+    {
+      "language": "en",
+      "level": 2,
+      "heading": 135,
+      "matching": 51200,
+      "total": 51200,
+      "geometry_matches": 170,
+      "geometry_total": 170,
+      "capture": "research\\evidence\\source-port\\sp07-render\\en-level2-vga-08"
+    },
+    {
+      "language": "en",
+      "level": 3,
+      "heading": 0,
+      "matching": 51200,
+      "total": 51200,
+      "geometry_matches": 91,
+      "geometry_total": 91,
+      "capture": "research\\evidence\\source-port\\sp07-render\\en-level3-vga-08"
+    },
+    {
+      "language": "en",
+      "level": 3,
+      "heading": 45,
+      "matching": 51200,
+      "total": 51200,
+      "geometry_matches": 122,
+      "geometry_total": 122,
+      "capture": "research\\evidence\\source-port\\sp07-render\\en-level3-vga-08"
+    },
+    {
+      "language": "en",
+      "level": 3,
+      "heading": 135,
+      "matching": 51200,
+      "total": 51200,
+      "geometry_matches": 173,
+      "geometry_total": 173,
+      "capture": "research\\evidence\\source-port\\sp07-render\\en-level3-vga-08"
+    },
+    {
+      "language": "og",
+      "level": 4,
+      "heading": 83,
+      "matching": 54400,
+      "total": 54400,
+      "geometry_matches": 168,
+      "geometry_total": 168,
+      "capture": "research\\evidence\\source-port\\sp07-render\\og-dos-03"
+    },
+    {
+      "language": "og",
+      "level": 4,
+      "heading": 0,
+      "matching": 54400,
+      "total": 54400,
+      "geometry_matches": 140,
+      "geometry_total": 140,
+      "capture": "research\\evidence\\source-port\\sp07-render\\og-dos-03"
+    },
+    {
+      "language": "og",
+      "level": 4,
+      "heading": 45,
+      "matching": 54400,
+      "total": 54400,
+      "geometry_matches": 183,
+      "geometry_total": 183,
+      "capture": "research\\evidence\\source-port\\sp07-render\\og-dos-03"
+    },
+    {
+      "language": "og",
+      "level": 4,
+      "heading": 135,
+      "matching": 54400,
+      "total": 54400,
+      "geometry_matches": 145,
+      "geometry_total": 145,
+      "capture": "research\\evidence\\source-port\\sp07-render\\og-dos-03"
+    },
+    {
+      "language": "ru",
+      "level": 1,
+      "heading": 90,
+      "matching": 51200,
+      "total": 51200,
+      "geometry_matches": 213,
+      "geometry_total": 213,
+      "capture": "research\\evidence\\source-port\\sp07-render\\ru-level1-vga-11"
+    },
+    {
+      "language": "ru",
+      "level": 2,
+      "heading": 90,
+      "matching": 51200,
+      "total": 51200,
+      "geometry_matches": 128,
+      "geometry_total": 128,
+      "capture": "research\\evidence\\source-port\\sp07-render\\ru-level2-vga-11"
+    },
+    {
+      "language": "ru",
+      "level": 3,
+      "heading": 90,
+      "matching": 51200,
+      "total": 51200,
+      "geometry_matches": 106,
+      "geometry_total": 106,
+      "capture": "research\\evidence\\source-port\\sp07-render\\ru-level3-vga-11"
+    },
+    {
+      "language": "en",
+      "level": 1,
+      "heading": 90,
+      "matching": 51200,
+      "total": 51200,
+      "geometry_matches": 214,
+      "geometry_total": 214,
+      "capture": "research\\evidence\\source-port\\sp07-render\\en-level1-vga-11"
+    },
+    {
+      "language": "en",
+      "level": 2,
+      "heading": 90,
+      "matching": 51200,
+      "total": 51200,
+      "geometry_matches": 165,
+      "geometry_total": 165,
+      "capture": "research\\evidence\\source-port\\sp07-render\\en-level2-vga-11"
+    },
+    {
+      "language": "en",
+      "level": 3,
+      "heading": 90,
+      "matching": 51200,
+      "total": 51200,
+      "geometry_matches": 108,
+      "geometry_total": 108,
+      "capture": "research\\evidence\\source-port\\sp07-render\\en-level3-vga-11"
+    }
+  ],
+  "vesa": [
+    {
+      "language": "ru",
+      "width": 640,
+      "height": 480,
+      "heading": 0,
+      "matching": 247040,
+      "total": 247040,
+      "capture": "research\\evidence\\source-port\\sp07-render\\ru-level1-2-09",
+      "unwritten_history_pixels": 0
+    },
+    {
+      "language": "ru",
+      "width": 640,
+      "height": 480,
+      "heading": 45,
+      "matching": 247040,
+      "total": 247040,
+      "capture": "research\\evidence\\source-port\\sp07-render\\ru-level1-2-09",
+      "unwritten_history_pixels": 0
+    },
+    {
+      "language": "ru",
+      "width": 640,
+      "height": 480,
+      "heading": 135,
+      "matching": 247040,
+      "total": 247040,
+      "capture": "research\\evidence\\source-port\\sp07-render\\ru-level1-2-09",
+      "unwritten_history_pixels": 0
+    },
+    {
+      "language": "ru",
+      "width": 800,
+      "height": 600,
+      "heading": 0,
+      "matching": 385600,
+      "total": 385600,
+      "capture": "research\\evidence\\source-port\\sp07-render\\ru-level1-3-09",
+      "unwritten_history_pixels": 0
+    },
+    {
+      "language": "ru",
+      "width": 800,
+      "height": 600,
+      "heading": 45,
+      "matching": 385600,
+      "total": 385600,
+      "capture": "research\\evidence\\source-port\\sp07-render\\ru-level1-3-09",
+      "unwritten_history_pixels": 0
+    },
+    {
+      "language": "ru",
+      "width": 800,
+      "height": 600,
+      "heading": 135,
+      "matching": 385600,
+      "total": 385600,
+      "capture": "research\\evidence\\source-port\\sp07-render\\ru-level1-3-09",
+      "unwritten_history_pixels": 0
+    },
+    {
+      "language": "ru",
+      "width": 1024,
+      "height": 768,
+      "heading": 0,
+      "matching": 632832,
+      "total": 632832,
+      "capture": "research\\evidence\\source-port\\sp07-render\\ru-level1-4-10",
+      "unwritten_history_pixels": 0
+    },
+    {
+      "language": "ru",
+      "width": 1024,
+      "height": 768,
+      "heading": 45,
+      "matching": 632832,
+      "total": 632832,
+      "capture": "research\\evidence\\source-port\\sp07-render\\ru-level1-4-10",
+      "unwritten_history_pixels": 0
+    },
+    {
+      "language": "ru",
+      "width": 1024,
+      "height": 768,
+      "heading": 135,
+      "matching": 632832,
+      "total": 632832,
+      "capture": "research\\evidence\\source-port\\sp07-render\\ru-level1-4-10",
+      "unwritten_history_pixels": 0
+    },
+    {
+      "language": "en",
+      "width": 640,
+      "height": 480,
+      "heading": 0,
+      "matching": 247040,
+      "total": 247040,
+      "capture": "research\\evidence\\source-port\\sp07-render\\en-level1-2-12",
+      "unwritten_history_pixels": 0
+    },
+    {
+      "language": "en",
+      "width": 640,
+      "height": 480,
+      "heading": 45,
+      "matching": 247039,
+      "total": 247040,
+      "capture": "research\\evidence\\source-port\\sp07-render\\en-level1-2-12",
+      "unwritten_history_pixels": 1
+    },
+    {
+      "language": "en",
+      "width": 640,
+      "height": 480,
+      "heading": 135,
+      "matching": 247040,
+      "total": 247040,
+      "capture": "research\\evidence\\source-port\\sp07-render\\en-level1-2-12",
+      "unwritten_history_pixels": 0
+    },
+    {
+      "language": "en",
+      "width": 800,
+      "height": 600,
+      "heading": 0,
+      "matching": 385600,
+      "total": 385600,
+      "capture": "research\\evidence\\source-port\\sp07-render\\en-level1-3-12",
+      "unwritten_history_pixels": 0
+    },
+    {
+      "language": "en",
+      "width": 800,
+      "height": 600,
+      "heading": 45,
+      "matching": 385599,
+      "total": 385600,
+      "capture": "research\\evidence\\source-port\\sp07-render\\en-level1-3-12",
+      "unwritten_history_pixels": 1
+    },
+    {
+      "language": "en",
+      "width": 800,
+      "height": 600,
+      "heading": 135,
+      "matching": 385600,
+      "total": 385600,
+      "capture": "research\\evidence\\source-port\\sp07-render\\en-level1-3-12",
+      "unwritten_history_pixels": 0
+    },
+    {
+      "language": "en",
+      "width": 1024,
+      "height": 768,
+      "heading": 0,
+      "matching": 632832,
+      "total": 632832,
+      "capture": "research\\evidence\\source-port\\sp07-render\\en-level1-4-12",
+      "unwritten_history_pixels": 0
+    },
+    {
+      "language": "en",
+      "width": 1024,
+      "height": 768,
+      "heading": 45,
+      "matching": 632830,
+      "total": 632832,
+      "capture": "research\\evidence\\source-port\\sp07-render\\en-level1-4-12",
+      "unwritten_history_pixels": 2
+    },
+    {
+      "language": "en",
+      "width": 1024,
+      "height": 768,
+      "heading": 135,
+      "matching": 632832,
+      "total": 632832,
+      "capture": "research\\evidence\\source-port\\sp07-render\\en-level1-4-12",
+      "unwritten_history_pixels": 0
+    }
+  ],
+  "framebuffer_history": [
+    {
+      "mode": "2",
+      "pixels": [
+        {
+          "x": 396,
+          "y": 309,
+          "actual": 0,
+          "expected": 46,
+          "previous_frame": 46,
+          "sentinel_result": 251
+        }
+      ]
+    },
+    {
+      "mode": "3",
+      "pixels": [
+        {
+          "x": 737,
+          "y": 446,
+          "actual": 0,
+          "expected": 46,
+          "previous_frame": 46,
+          "sentinel_result": 251
+        }
+      ]
+    },
+    {
+      "mode": "4",
+      "pixels": [
+        {
+          "x": 851,
+          "y": 549,
+          "actual": 0,
+          "expected": 45,
+          "previous_frame": 45,
+          "sentinel_result": 251
+        },
+        {
+          "x": 944,
+          "y": 572,
+          "actual": 0,
+          "expected": 45,
+          "previous_frame": 45,
+          "sentinel_result": 251
+        }
+      ]
+    }
+  ],
+  "traps_restored": 52,
+  "original_hashes_unchanged": true,
+  "production_fixes": [
+    "initialize maximum vertex index",
+    "advance UV across 64KiB destination boundary",
+    "clear framebuffer before draw"
+  ],
+  "adaptations": [
+    "class12 fixed18phase/334tick pacing",
+    "modern GL160/Hor+",
+    "software high-resolution HUD scaled from VGA",
+    "640x400 and OG high modes are port extensions"
+  ],
+  "checks": [
+    {
+      "name": "animations",
+      "command": [
+        "build/sdl2/windows/dok_animation_scene_tests.exe",
+        "originals/pkr/RUS/PKR.RES",
+        "originals/pkr/ENG/PKE.RES",
+        "originals/Old_Gold_3D/OLD_GOLD.RES"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "cadence",
+      "command": [
+        "build/sdl2/windows/dok_simulation_cadence_tests.exe",
+        "originals/pkr/RUS/PKR.RES",
+        "originals/pkr/ENG/PKE.RES",
+        "originals/Old_Gold_3D/OLD_GOLD.RES"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "monsters",
+      "command": [
+        "build/sdl2/windows/dok_monster_probe.exe",
+        "originals/pkr/RUS/PKR.RES",
+        "originals/pkr/ENG/PKE.RES"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "old-gold",
+      "command": [
+        "build/sdl2/windows/dok_old_gold_probe.exe",
+        "originals/Old_Gold_3D/OLD_GOLD.RES"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "doors",
+      "command": [
+        "C:\\Users\\dspev\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+        "-B",
+        "ports/sdl2/tools/check_render.py"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "package": {
+    "runs": [
+      {
+        "profile": "ru",
+        "renderer": "software",
+        "exit_code": 0,
+        "command": [
+          "C:\\Source\\DoK-port\\artifacts\\sdl2\\windows-playtest-20261104-sp07\\dok_port.exe",
+          "--res",
+          "C:\\Source\\DoK-port\\originals\\pkr\\RUS\\PKR.RES",
+          "--level",
+          "LEVEL2",
+          "--skip-intro",
+          "--frames",
+          "3",
+          "--renderer",
+          "software",
+          "--size",
+          "640x480",
+          "--software-mode",
+          "320x200"
+        ],
+        "log": "research\\evidence\\source-port\\sp07-render\\checks\\package-ru-software.log"
+      },
+      {
+        "profile": "ru",
+        "renderer": "gl",
+        "exit_code": 0,
+        "command": [
+          "C:\\Source\\DoK-port\\artifacts\\sdl2\\windows-playtest-20261104-sp07\\dok_port.exe",
+          "--res",
+          "C:\\Source\\DoK-port\\originals\\pkr\\RUS\\PKR.RES",
+          "--level",
+          "LEVEL2",
+          "--skip-intro",
+          "--frames",
+          "3",
+          "--renderer",
+          "gl",
+          "--size",
+          "640x480",
+          "--software-mode",
+          "320x200"
+        ],
+        "log": "research\\evidence\\source-port\\sp07-render\\checks\\package-ru-gl.log"
+      },
+      {
+        "profile": "en",
+        "renderer": "software",
+        "exit_code": 0,
+        "command": [
+          "C:\\Source\\DoK-port\\artifacts\\sdl2\\windows-playtest-20261104-sp07\\dok_port.exe",
+          "--res",
+          "C:\\Source\\DoK-port\\originals\\pkr\\ENG\\PKE.RES",
+          "--level",
+          "LEVEL1",
+          "--skip-intro",
+          "--frames",
+          "3",
+          "--renderer",
+          "software",
+          "--size",
+          "640x480",
+          "--software-mode",
+          "320x200"
+        ],
+        "log": "research\\evidence\\source-port\\sp07-render\\checks\\package-en-software.log"
+      },
+      {
+        "profile": "en",
+        "renderer": "gl",
+        "exit_code": 0,
+        "command": [
+          "C:\\Source\\DoK-port\\artifacts\\sdl2\\windows-playtest-20261104-sp07\\dok_port.exe",
+          "--res",
+          "C:\\Source\\DoK-port\\originals\\pkr\\ENG\\PKE.RES",
+          "--level",
+          "LEVEL1",
+          "--skip-intro",
+          "--frames",
+          "3",
+          "--renderer",
+          "gl",
+          "--size",
+          "640x480",
+          "--software-mode",
+          "320x200"
+        ],
+        "log": "research\\evidence\\source-port\\sp07-render\\checks\\package-en-gl.log"
+      },
+      {
+        "profile": "og",
+        "renderer": "software",
+        "exit_code": 0,
+        "command": [
+          "C:\\Source\\DoK-port\\artifacts\\sdl2\\windows-playtest-20261104-sp07\\dok_port.exe",
+          "--res",
+          "C:\\Source\\DoK-port\\originals\\Old_Gold_3D\\OLD_GOLD.RES",
+          "--level",
+          "LEVEL4",
+          "--skip-intro",
+          "--frames",
+          "3",
+          "--renderer",
+          "software",
+          "--size",
+          "640x480",
+          "--software-mode",
+          "320x200"
+        ],
+        "log": "research\\evidence\\source-port\\sp07-render\\checks\\package-og-software.log"
+      },
+      {
+        "profile": "og",
+        "renderer": "gl",
+        "exit_code": 0,
+        "command": [
+          "C:\\Source\\DoK-port\\artifacts\\sdl2\\windows-playtest-20261104-sp07\\dok_port.exe",
+          "--res",
+          "C:\\Source\\DoK-port\\originals\\Old_Gold_3D\\OLD_GOLD.RES",
+          "--level",
+          "LEVEL4",
+          "--skip-intro",
+          "--frames",
+          "3",
+          "--renderer",
+          "gl",
+          "--size",
+          "640x480",
+          "--software-mode",
+          "320x200"
+        ],
+        "log": "research\\evidence\\source-port\\sp07-render\\checks\\package-og-gl.log"
+      }
+    ],
+    "files": {
+      "dok_port.exe": "3002e2fb5039cdc1ffd513eaaf2a1f8797802a42165ff2c14829afc3b8c8e411",
+      "Play-OpenGL.cmd": "28da51dea98e23b4fd43868c558841aabf56628cd612789972e98ad26f9e1def",
+      "Play-Software.cmd": "fa2422cb7698f70ca849ff9e4c62f9290e239d15b52a0b4df7eaf4351371b718",
+      "Play.cmd": "76937f744878d305391bc5e71c789b660388c69d570c671442f206c9976f0dd3",
+      "README.md": "5202cac3d426bd0ae884e10d858d3642cee02287ca7c41b40a2a09fa82039486",
+      "SDL2-LICENSE.txt": "97f35b302b361680ec1e891e95d2d52097bb95abff361434916d99dc1305f127",
+      "SDL2.dll": "53e8fa7e9ed43c30bd650c39396f0d9d2067d2fff0b926c9433b75202592e4aa"
+    }
+  },
+  "next_task": "SP08",
+  "session_stop": "User requested stop after SP07; do not launch SP08",
+  "storage": {
+    "archive": "research\\experiments\\storage-archives\\sp07-cold-memory-20261104.zip",
+    "packed_memory_files": 61,
+    "current_matrix_ram": "heading-*-memory.z remain unpacked",
+    "historical_restore": "extract_render_state.py restores missing concrete memory path through storage_archive.py"
+  }
+}

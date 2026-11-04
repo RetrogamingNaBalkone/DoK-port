@@ -1,5 +1,7 @@
 #include "dok/world.hpp"
 #include "dok/arithmetic.hpp"
+#include "dok/localization.hpp"
+#include "dok/text.hpp"
 #include <stdexcept>
 
 namespace dok {
@@ -16,6 +18,7 @@ void World::sound(OwnerId owner,AudioAction action,unsigned binding){
     audio({action,sound_id(owner,binding),resource});
 }
 void World::notify(const std::string& text){
+    message_key=game_message_key(text);
     message=text.substr(0,std::min<std::size_t>(38,text.find('\0')));
     // Native HUD keeps a message for measured_FPS*4 redraws. Use simulation
     // time so refresh rate and pauses cannot shorten or extend it.
@@ -25,6 +28,11 @@ void World::notify(const ObjectDefinition& object,int offset){
     for(const auto& field:object.fields)if(field.offset==offset&&field.kind==FieldKind::text){notify(field.bytes);return;}
 }
 std::string World::visible_message()const{return simulated_ticks_<message_until?message:std::string{};}
+std::string World::visible_message(LocaleId locale)const{
+    if(simulated_ticks_>=message_until)return {};
+    const auto translated=game_text(message_key,locale);
+    return translated.empty()?message:cp866(translated);
+}
 World::World(LevelDefinition level):definition(std::move(level)) {
     const auto& d=definition;
     if(d.width!=d.length||d.height!=1)throw std::runtime_error("Original world initialization requires square one-layer map");
@@ -44,7 +52,7 @@ World::World(LevelDefinition level):definition(std::move(level)) {
         state.flags=d.objects[i].flags;
         if(d.objects[i].class_id==6)state.switch_state.emplace();
         if(d.objects[i].class_id==12)state.surface.emplace();
-        if(d.objects[i].class_id==7)state.door.emplace();
+        if(d.objects[i].class_id==7){state.door.emplace();state.door->saved_flags=state.flags;}
         if(d.objects[i].class_id==10)state.weapon.emplace();
         if(d.objects[i].class_id==9){state.monster.emplace();state.monster->health=static_cast<std::int16_t>(d.objects[i].number(0xa4));}
         if(d.objects[i].class_id==1||d.objects[i].class_id==5||d.objects[i].class_id==9)state.motion.emplace();

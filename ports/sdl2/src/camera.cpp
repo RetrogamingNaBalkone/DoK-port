@@ -1,12 +1,18 @@
 #include "dok/camera.hpp"
 #include "dok/arithmetic.hpp"
 #include <stdexcept>
+#include <cmath>
 
 namespace dok {
 namespace {
 #include "trig.inc"
 }
 using namespace original;
+double presentation_focal(int degrees){
+    if(!degrees)return 200.0;
+    if(degrees<45||degrees>110)throw std::invalid_argument("Base FOV must be original or 45..110 degrees");
+    return 160.0/std::tan(degrees*3.14159265358979323846/360.0);
+}
 std::int32_t original_sine(int heading){if(heading<0||heading>360)throw std::out_of_range("Trig heading");return sine[heading];}
 std::int32_t original_cosine(int heading){if(heading<0||heading>360)throw std::out_of_range("Trig heading");return cosine[heading];}
 SoftwareCamera::SoftwareCamera(CameraParameters parameters):parameters_(parameters){

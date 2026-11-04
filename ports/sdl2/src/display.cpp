@@ -19,30 +19,52 @@ Display::Display(const VideoSettings& s){
         if(s.fullscreen&&SDL_SetWindowFullscreen(window_,SDL_WINDOW_FULLSCREEN_DESKTOP)!=0)throw std::runtime_error(SDL_GetError());
     }catch(...){gl_.reset();if(renderer_)SDL_DestroyRenderer(renderer_);if(window_)SDL_DestroyWindow(window_);throw;}
 }
-Display::~Display(){gl_.reset();if(texture_)SDL_DestroyTexture(texture_);if(overlay_texture_)SDL_DestroyTexture(overlay_texture_);if(renderer_)SDL_DestroyRenderer(renderer_);if(window_)SDL_DestroyWindow(window_);}
+Display::~Display(){gl_.reset();if(texture_)SDL_DestroyTexture(texture_);if(sharp_texture_)SDL_DestroyTexture(sharp_texture_);for(const auto& overlay:overlay_textures_)SDL_DestroyTexture(overlay.second);if(renderer_)SDL_DestroyRenderer(renderer_);if(window_)SDL_DestroyWindow(window_);}
 std::array<int,2> Display::size()const{int w,h;if(gl_)SDL_GL_GetDrawableSize(window_,&w,&h);else SDL_GetRendererOutputSize(renderer_,&w,&h);return {std::max(1,w),std::max(1,h)};}
 void Display::begin(){if(gl_)gl_->begin();else{SDL_SetRenderDrawColor(renderer_,0,0,0,255);SDL_RenderClear(renderer_);}}
-void Display::pixels(const std::vector<std::uint32_t>& data,int width,int height,bool game,bool linear){
-    const auto output=size();SDL_Rect r{0,0,output[0],output[1]};
+void Display::pixels(const std::vector<std::uint32_t>& data,int width,int height,bool game,int filter,const SDL_Rect* target){
+    const auto output=size();SDL_Rect r=target?*target:SDL_Rect{0,0,output[0],output[1]};
     if(game){r.w=std::min(output[0],output[1]*4/3);r.h=r.w*3/4;r.x=(output[0]-r.w)/2;r.y=(output[1]-r.h)/2;}
-    if(gl_){gl_->image(data,width,height,r,true);return;}
+    if(gl_){gl_->image(data,width,height,r,true,filter);return;}
     if(!texture_||texture_width_!=width||texture_height_!=height){if(texture_)SDL_DestroyTexture(texture_);
         texture_=SDL_CreateTexture(renderer_,SDL_PIXELFORMAT_ARGB8888,SDL_TEXTUREACCESS_STREAMING,width,height);texture_width_=width;texture_height_=height;
         if(!texture_)throw std::runtime_error(SDL_GetError());}
-    SDL_SetTextureScaleMode(texture_,linear?SDL_ScaleModeLinear:SDL_ScaleModeNearest);
-    if(SDL_UpdateTexture(texture_,nullptr,data.data(),width*4)!=0||SDL_RenderCopy(renderer_,texture_,nullptr,&r)!=0)throw std::runtime_error(SDL_GetError());
+    SDL_SetTextureScaleMode(texture_,filter==1?SDL_ScaleModeLinear:SDL_ScaleModeNearest);
+    if(SDL_UpdateTexture(texture_,nullptr,data.data(),width*4)!=0)throw std::runtime_error(SDL_GetError());
+    SDL_Texture* source=texture_;
+    if(filter==2){
+        // Nearest integer prescale, then linear presentation. This leaves texel
+        // interiors sharp and confines interpolation to one output-pixel edge.
+        const int sx=std::max(1,r.w/width),sy=std::max(1,r.h/height);
+        const int sw=width*sx,sh=height*sy;
+        if(!sharp_texture_||sharp_width_!=sw||sharp_height_!=sh){
+            if(sharp_texture_)SDL_DestroyTexture(sharp_texture_);
+            sharp_texture_=SDL_CreateTexture(renderer_,SDL_PIXELFORMAT_ARGB8888,SDL_TEXTUREACCESS_TARGET,sw,sh);
+            sharp_width_=sw;sharp_height_=sh;
+            if(!sharp_texture_)throw std::runtime_error(SDL_GetError());
+        }
+        if(SDL_SetRenderTarget(renderer_,sharp_texture_)!=0)throw std::runtime_error(SDL_GetError());
+        const int copied=SDL_RenderCopy(renderer_,texture_,nullptr,nullptr);
+        const int restored=SDL_SetRenderTarget(renderer_,nullptr);
+        if(copied!=0||restored!=0)throw std::runtime_error(SDL_GetError());
+        SDL_SetTextureScaleMode(sharp_texture_,SDL_ScaleModeLinear);source=sharp_texture_;
+    }
+    if(SDL_RenderCopy(renderer_,source,nullptr,&r)!=0)throw std::runtime_error(SDL_GetError());
 }
 void Display::present(){if(gl_)gl_->present();else SDL_RenderPresent(renderer_);}
 void Display::overlay(const std::vector<std::uint32_t>& pixels,int w,int h,SDL_Rect r){
     if(gl_){gl_->image(pixels,w,h,r,true);return;}
-    if(!overlay_texture_||overlay_width_!=w||overlay_height_!=h){
-        if(overlay_texture_)SDL_DestroyTexture(overlay_texture_);
-        overlay_texture_=SDL_CreateTexture(renderer_,SDL_PIXELFORMAT_ARGB8888,SDL_TEXTUREACCESS_STREAMING,w,h);
-        if(!overlay_texture_)throw std::runtime_error(SDL_GetError());
-        overlay_width_=w;overlay_height_=h;SDL_SetTextureBlendMode(overlay_texture_,SDL_BLENDMODE_BLEND);
-        SDL_SetTextureScaleMode(overlay_texture_,SDL_ScaleModeNearest);
+    // Weapon, HUD and FPS layers coexist every frame. Retain each shape instead
+    // of reallocating a texture for every consecutive layer.
+    const auto key=(std::uint64_t(w)<<32)|unsigned(h);
+    if(overlay_textures_.size()>16){for(const auto& entry:overlay_textures_)SDL_DestroyTexture(entry.second);overlay_textures_.clear();}
+    auto& texture=overlay_textures_[key];
+    if(!texture){
+        texture=SDL_CreateTexture(renderer_,SDL_PIXELFORMAT_ARGB8888,SDL_TEXTUREACCESS_STREAMING,w,h);
+        if(!texture)throw std::runtime_error(SDL_GetError());
+        SDL_SetTextureBlendMode(texture,SDL_BLENDMODE_BLEND);SDL_SetTextureScaleMode(texture,SDL_ScaleModeNearest);
     }
-    SDL_UpdateTexture(overlay_texture_,nullptr,pixels.data(),w*4);SDL_RenderCopy(renderer_,overlay_texture_,nullptr,&r);
+    if(SDL_UpdateTexture(texture,nullptr,pixels.data(),w*4)!=0||SDL_RenderCopy(renderer_,texture,nullptr,&r)!=0)throw std::runtime_error(SDL_GetError());
 }
 void Display::screenshot(const std::string& path){
     if(gl_){gl_->screenshot(path);return;}const auto output=size();std::vector<std::uint32_t> data(std::size_t(output[0])*output[1]);

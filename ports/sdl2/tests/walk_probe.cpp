@@ -10,7 +10,9 @@ int main(int argc,char** argv){
         if(argc!=2)throw std::invalid_argument("Usage: dok_walk_probe RES");
         const auto archive=dok::Archive::open(std::filesystem::u8path(argv[1]));
         unsigned rendered=0;
-        for(const auto* name:{"LEVEL1","LEVEL2","LEVEL3"}){
+        const auto levels=archive.identify()==dok::DatasetId::old_gold?
+            std::vector<const char*>{"LEVEL4"}:std::vector<const char*>{"LEVEL1","LEVEL2","LEVEL3"};
+        for(const auto* name:levels){
             dok::Pose expected{};
             for(int fps:{30,60,144}){
                 dok::World world(dok::load_level(archive,name));
