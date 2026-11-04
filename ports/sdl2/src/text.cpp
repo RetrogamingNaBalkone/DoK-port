@@ -2,6 +2,22 @@
 #include <algorithm>
 #include <stdexcept>
 namespace dok {
+void menu_yo16(std::array<std::uint8_t,4096>& font){
+    for(const auto pair:{std::pair<int,int>{0x85,0xf0},{0xa5,0xf1}}){
+        std::array<std::uint8_t,16> body{};
+        std::copy_n(font.begin()+pair.first*16,16,body.begin());
+        int first=0,last=15;
+        while(first<16&&!body[first])++first;
+        while(last>=first&&!body[last])--last;
+        if(first==16)continue;
+        const int top=std::max(3,first),bottom=std::min(15,top+last-first);
+        auto dest=font.begin()+pair.second*16;std::fill_n(dest,16,0);
+        for(int row=top;row<=bottom;++row)
+            dest[row]=body[first+(row-top)*(last-first+1)/(bottom-top+1)];
+        // Two separated dots, then a clear row before the letter body.
+        dest[top-3]=dest[top-2]=0x6c;
+    }
+}
 std::string cp866(const std::string& text){
     std::string out;
     for(std::size_t i=0;i<text.size();){

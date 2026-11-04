@@ -14,8 +14,8 @@
       "name": "main-route-gl",
       "state": {
         "ticks": "356116",
-        "pose": "8904,-200,15960,90",
-        "hp": "98",
+        "pose": "8904,-226,15960,90",
+        "hp": "100",
         "charge": "147",
         "score": "2",
         "current": "1",
@@ -28,8 +28,8 @@
       "name": "main-route-software",
       "state": {
         "ticks": "356116",
-        "pose": "8904,-200,15960,90",
-        "hp": "98",
+        "pose": "8904,-226,15960,90",
+        "hp": "100",
         "charge": "147",
         "score": "2",
         "current": "1",
@@ -42,13 +42,13 @@
       "name": "main-firing-gl",
       "state": {
         "ticks": "185160",
-        "pose": "16632,-200,15960,180",
+        "pose": "16632,-198,15960,180",
         "hp": "100",
         "charge": "147",
         "score": "2",
         "current": "1",
         "weapons": "112,0",
-        "shots": "4"
+        "shots": "6"
       },
       "screenshot": "research\\evidence\\source-port\\sp11-combat\\main-firing-gl.png"
     },
@@ -56,20 +56,20 @@
       "name": "main-firing-software",
       "state": {
         "ticks": "185160",
-        "pose": "16632,-200,15960,180",
+        "pose": "16632,-198,15960,180",
         "hp": "100",
         "charge": "147",
         "score": "2",
         "current": "1",
         "weapons": "112,0",
-        "shots": "4"
+        "shots": "6"
       },
       "screenshot": "research\\evidence\\source-port\\sp11-combat\\main-firing-software.png"
     }
   ],
   "original_hashes_unchanged": true,
   "fix": "OG class12 raw value/no slow instead of shared Kremlin /30 + slow",
-  "finding": "OG starts unarmed at magic0/0. Positive magic is legitimately refused until a wand raises capacity. Current main pickup and fire failures did not reproduce on audited route.",
+  "finding": "Ordinary route pickup/fire works in audited current main. User later reported refusal after IDKFA: separate OPEN follow-up, not reproduced; see sp11-idkfa-r2-summary.json.",
   "limitations": [
     "Scripted logical input and mouse headings, not physical device testing.",
     "Spawn->money->first wand->fire->magic route, not complete level.",
@@ -84,7 +84,9 @@
     },
     "gameplay-report.json": {
       "path": "research\\evidence\\source-port\\sp11-combat\\gameplay-report.json",
-      "sha256": "0b821fc79d607dc926fd5dce90a3322edededb00e9e373964bda2b6088042e7a"
+      "sha256": "cc72e0d5a9210ed9a21f595a758a68eca0e4c30fd4a7a7a7efa0503b026f7186"
     }
-  }
+  },
+  "post_sp10_native_bobbing": true,
+  "gameplay_executable_sha256": "31c7e17d668a1450687fd3faf4bcf65563c38f4c4006277f7575b42fc2b87e80"
 }

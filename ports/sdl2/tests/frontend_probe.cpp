@@ -6,6 +6,7 @@
 #include "dok/png.hpp"
 #include <algorithm>
 #include <fstream>
+#include <cstring>
 #include <iostream>
 #include <stdexcept>
 
@@ -55,9 +56,14 @@ int main(int argc,char** argv){
             SDL_Event focus{};focus.type=SDL_WINDOWEVENT;focus.window.event=SDL_WINDOWEVENT_FOCUS_LOST;menu.handle(focus,size[0],size[1]);check(!menu.capturing(),"Focus must cancel binding capture");focus.window.event=SDL_WINDOWEVENT_FOCUS_GAINED;menu.handle(focus,size[0],size[1]);
             setting(2);down(1);key(menu,SDLK_RETURN);save("pad");setting(3);save("gameplay");setting(4);save("interface");key(menu,SDLK_ESCAPE);check(menu.focused_row()==4,"Back must restore parent section");
             menu.main_menu();down(3);key(menu,SDLK_RETURN);save("help");key(menu,SDLK_RETURN);save("help-page2");
-            menu.main_menu();down(2);key(menu,SDLK_RETURN);save("resources");key(menu,SDLK_RETURN);save("files");key(menu,SDLK_ESCAPE);check(menu.screen()==dok::MenuScreen::resources,"Files back to resources");
-            menu.pause();save("pause");down(2);key(menu,SDLK_RETURN);check(menu.screen()==dok::MenuScreen::map,"Pause map route");save("map");key(menu,SDLK_ESCAPE);check(menu.screen()==dok::MenuScreen::pause&&menu.focused_row()==2,"Map returns to pause row");
+            menu.main_menu();down(2);key(menu,SDLK_RETURN);save("resources");key(menu,SDLK_RETURN);save("files");key(menu,SDLK_DOWN);key(menu,SDLK_RETURN);save("path");
+            const auto entered=(root/"originals/pkr/RUS/PKR.RES").u8string();const auto quoted="\""+entered+"\"";
+            for(std::size_t at=0;at<quoted.size();at+=31){SDL_Event text{};text.type=SDL_TEXTINPUT;const auto n=std::min<std::size_t>(31,quoted.size()-at);std::memcpy(text.text.text,quoted.data()+at,n);menu.handle(text,size[0],size[1]);}
+            key(menu,SDLK_RETURN);check(menu.screen()==dok::MenuScreen::resources&&menu.pending_resource()==entered,"Quoted direct RES path input");
+            const auto pending=menu.commands();check(std::find(pending.begin(),pending.end(),dok::MenuCommand::add_resource)!=pending.end(),"Path input must request resource admission");
+            menu.pause();save("pause");down(2);key(menu,SDLK_RETURN);check(menu.screen()==dok::MenuScreen::map,"Pause map route");save("map");SDL_Event back_pad{};back_pad.type=SDL_CONTROLLERBUTTONDOWN;back_pad.cbutton.button=SDL_CONTROLLER_BUTTON_B;menu.handle(back_pad,size[0],size[1]);check(menu.screen()==dok::MenuScreen::pause&&menu.focused_row()==2,"Map returns to pause row");
             menu.hide();menu.show_map();key(menu,SDLK_TAB);check(!menu.active(),"Map action toggles overlay");
+            s.input.keys[static_cast<unsigned>(dok::Action::map)][0]=SDL_SCANCODE_M;menu.show_map();key(menu,SDLK_m);check(!menu.active(),"Remapped map action toggles overlay");
             menu.notice("Notice","Notice");save("notice");menu.outcome(dok::SessionPhase::retry);save("retry");menu.outcome(dok::SessionPhase::game_over);save("game-over");
             menu.main_menu();menu.datasets({});dok::ResourceSources empty;menu.resources(empty);down(2);key(menu,SDLK_RETURN);save("no-resources");menu.main_menu();down(3);key(menu,SDLK_RETURN);save("no-res-help");
         }

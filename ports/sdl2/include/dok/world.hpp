@@ -58,6 +58,7 @@ struct MotionState {
     Stopwatch clock;
     std::int32_t acceleration=0,turn_acceleration=0;
     std::int16_t turn_direction=0;
+    std::int16_t bob_direction=1; // OG native +80; 1 adds Y, 0 subtracts Y.
     float last_forward=0,last_strafe=0;
     float mouse_remainder=0;
 };

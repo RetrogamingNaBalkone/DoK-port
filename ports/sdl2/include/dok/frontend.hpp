@@ -8,7 +8,7 @@
 namespace dok {
 struct FrontendDataset {const Archive* archive;std::string filename;};
 enum class MenuScreen {hidden,main,datasets,title,readme,levels,settings,graphics,sound,controls,keyboard,pad,
-    bindings,key_slots,gameplay,interface,credits,resources,pause,confirm,capture,conflict,video_confirm,notice,ending,outcome,help,map,files};
+    bindings,key_slots,gameplay,interface,credits,resources,pause,confirm,capture,conflict,video_confirm,notice,ending,outcome,help,map,files,path};
 enum class MenuCommand {start,resume,main,quit,apply_video,keep_video,revert_video,music_title,music_stop,music_story,retry,add_resource,select_source};
 struct MenuFrame {int width=640,height=480;std::vector<std::uint32_t> pixels;};
 class Frontend {
@@ -54,11 +54,11 @@ private:
     struct FileRow {std::filesystem::path path;bool directory;};
     std::vector<FileRow> file_rows_;
     std::filesystem::path browser_path_=std::filesystem::current_path();
-    std::string browser_error_,pending_resource_;
+    std::string browser_error_,pending_resource_,path_buffer_;
     std::size_t pending_source_=0;
     std::map<MenuScreen,int> remembered_focus_;
     MenuScreen help_return_=MenuScreen::main,map_return_=MenuScreen::hidden;
-    bool focused_=true;
+    bool focused_=true,path_selected_=false,map_trigger_released_=false;
     std::size_t dataset_=0;
     MenuScreen screen_=MenuScreen::main,return_screen_=MenuScreen::main,notice_return_=MenuScreen::main;
     MenuScreen binding_parent_=MenuScreen::keyboard;
@@ -74,6 +74,7 @@ private:
     std::vector<Row> rows_;
     MenuFrame frame_;
     std::array<std::uint8_t,4096> font_{};
+    std::array<std::uint8_t,4096> menu_font_{};
     std::array<std::uint8_t,2048> font8_{};
     Image background_;
     std::array<std::uint32_t,256> colors_{};
@@ -81,6 +82,7 @@ private:
     const Archive* themed_=nullptr;
     std::map<std::string,std::pair<Image,std::array<std::uint32_t,256>>> art_;
     int line_height_=24,text_height_=16;
+    bool native_text_=false;
     int last_axis_=0;
     std::string tr(MenuString id) const;
     std::string tr(const char* ru,const char* en) const;

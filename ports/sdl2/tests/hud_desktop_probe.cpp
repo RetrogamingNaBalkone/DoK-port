@@ -77,7 +77,7 @@ int main(int argc,char** argv){
                 for(std::size_t i=0;i<pixels.size();++i)if(overlay.pixels[i])pixels[i]=scene.palette()[overlay.pixels[i]];
                 gl.image(pixels,overlay.width(),overlay.height(),{0,0,320,240});
                 auto frame=hud.desktop(1280,player,scene.palette(),message,time);
-                check(frame.height==142&&frame.pixels.size()==181760,"HUD bounds");
+                check(frame.height==100&&frame.pixels.size()==128000,"HUD bounds");
                 for(int x=0;x<1280;++x)check(frame.pixels[(frame.height-1)*1280+x]==0,"HUD bottom margin");
                 gl.image(frame.pixels,frame.width,frame.height,{0,720-frame.height,1280,frame.height},true);
                 gl.screenshot(std::string(argv[2])+suffix+".png");
@@ -90,7 +90,7 @@ int main(int argc,char** argv){
             player.attributes[0]=32767;player.attributes[1]=32767;
             for(int width:{640,800,1280,1920}){
                 const auto frame=hud.desktop(width,player,scene.palette(),std::string(38,'W'),6);
-                check(frame.width==width&&frame.pixels.size()==std::size_t(width*142),"HUD extreme values");
+                check(frame.width==width&&frame.pixels.size()==std::size_t(width*100),"HUD extreme values");
             }
         }
         SDL_DestroyWindow(window);SDL_Quit();

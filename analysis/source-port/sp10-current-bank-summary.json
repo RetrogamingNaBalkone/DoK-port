@@ -1,0 +1,17 @@
+{
+  "schema": 1,
+  "scope": "Explicit local fixture; original player1e16 instructions with controlled stopwatch; no spawn playthrough or live sound",
+  "native_invariant_poses": 990,
+  "native_sweep_cases": 14400,
+  "native_sweep_entries": {
+    "416": 0,
+    "832": 0,
+    "1248": 24,
+    "1664": 130,
+    "2496": 210
+  },
+  "cpp_exit": 0,
+  "originals_unchanged": true,
+  "report_sha256": "ede290a21fa0d7f24ee6763fd72839d826aedd5e028d844791ad79c3184e8f9e",
+  "full_report": "research/evidence/source-port/sp10-current-bank/report.json"
+}

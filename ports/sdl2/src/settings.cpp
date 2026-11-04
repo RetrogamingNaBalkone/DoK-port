@@ -42,6 +42,7 @@ float number(const Values& m,const std::string& key,float fallback,float lo,floa
 }
 }
 std::string encode_settings(const AppSettings& s){
+    if(s.resource_paths.size()>64)throw std::invalid_argument("Too many saved resource paths");
     std::ostringstream o;o<<"[settings]\nversion=1\n[video]\nrenderer="<<int(s.video.renderer)<<"\nwidth="<<s.video.width<<"\nheight="<<s.video.height
       <<"\nsoftware_mode="<<s.video.software_mode<<"\nfullscreen="<<s.video.fullscreen<<"\nlinear="<<s.linear
       <<"\nframe_filter="<<s.frame_filter<<"\nfxaa="<<s.fxaa<<"\nclassic_hud="<<s.classic_hud<<"\nauto_hud="<<s.auto_hud<<"\nforce_4_3="<<s.force_4_3<<"\nbase_fov="<<s.base_fov
@@ -56,7 +57,7 @@ std::string encode_settings(const AppSettings& s){
     o<<"[resources]\ncount="<<s.resource_paths.size()<<'\n';
     for(std::size_t i=0;i<s.resource_paths.size();++i)o<<"path"<<i<<'='<<path_hex(s.resource_paths[i])<<'\n';
     for(unsigned i=1;i<4;++i)o<<"choice"<<i<<'='<<path_hex(s.resource_choices[i])<<'\n';
-    return o.str();
+    auto result=o.str();if(result.size()>65536)throw std::invalid_argument("Settings file too large");return result;
 }
 AppSettings load_settings(const std::filesystem::path& file,std::string& warning){
     warning.clear();AppSettings s;

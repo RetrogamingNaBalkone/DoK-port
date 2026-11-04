@@ -69,29 +69,44 @@ bool SdlInput::capture_mouse(bool enabled){
     capture_=enabled;mouse_x_=0;return true;
 }
 void SdlInput::clear(){
-    keys_.fill(false);previous_.fill(false);mouse_buttons_.fill(false);mouse_x_=0;
+    keys_.fill(false);previous_.fill(false);presses_.fill(false);mouse_buttons_.fill(false);mouse_x_=0;
     for(auto& entry:controllers_){entry.second.axes.fill(0);entry.second.buttons.fill(false);}
 }
 void SdlInput::handle(const SDL_Event& event){
     switch(event.type){
     case SDL_KEYDOWN:case SDL_KEYUP:
-        if(focused_&&event.key.keysym.scancode>SDL_SCANCODE_UNKNOWN&&event.key.keysym.scancode<SDL_NUM_SCANCODES)
+        if(focused_&&event.key.keysym.scancode>SDL_SCANCODE_UNKNOWN&&event.key.keysym.scancode<SDL_NUM_SCANCODES){
+            if(event.type==SDL_KEYDOWN&&!keys_[event.key.keysym.scancode])
+                for(auto action:{Action::fire,Action::weapon1,Action::weapon2})for(auto key:bindings.keys[index(action)])
+                    if(key==event.key.keysym.scancode)presses_[index(action)]=true;
             keys_[event.key.keysym.scancode]=event.type==SDL_KEYDOWN;
+        }
         break;
     case SDL_MOUSEMOTION:if(focused_&&capture_)mouse_x_+=event.motion.xrel;break;
     case SDL_MOUSEBUTTONDOWN:case SDL_MOUSEBUTTONUP:
-        if(focused_&&event.button.button<mouse_buttons_.size())mouse_buttons_[event.button.button]=event.type==SDL_MOUSEBUTTONDOWN;break;
+        if(focused_&&event.button.button<mouse_buttons_.size()){
+            if(event.type==SDL_MOUSEBUTTONDOWN&&!mouse_buttons_[event.button.button])
+                for(auto action:{Action::fire,Action::weapon1,Action::weapon2})if(bindings.mouse[index(action)]&&bindings.mouse[index(action)]==event.button.button)presses_[index(action)]=true;
+            mouse_buttons_[event.button.button]=event.type==SDL_MOUSEBUTTONDOWN;
+        }break;
     case SDL_CONTROLLERDEVICEADDED:open(event.cdevice.which);break;
     case SDL_CONTROLLERDEVICEREMOVED:{
         auto found=controllers_.find(event.cdevice.which);
-        if(found!=controllers_.end()){SDL_GameControllerClose(found->second.handle);controllers_.erase(found);}break;}
+        if(found!=controllers_.end()){SDL_GameControllerClose(found->second.handle);controllers_.erase(found);presses_.fill(false);}break;}
     case SDL_CONTROLLERAXISMOTION:{
         auto found=controllers_.find(event.caxis.which);
-        if(focused_&&found!=controllers_.end()&&event.caxis.axis<SDL_CONTROLLER_AXIS_MAX)found->second.axes[event.caxis.axis]=event.caxis.value;break;}
+        if(focused_&&found!=controllers_.end()&&event.caxis.axis<SDL_CONTROLLER_AXIS_MAX){
+            if(event.caxis.value>16384&&found->second.axes[event.caxis.axis]<=16384)
+                for(auto action:{Action::fire,Action::weapon1,Action::weapon2})if(bindings.triggers[index(action)]==event.caxis.axis)presses_[index(action)]=true;
+            found->second.axes[event.caxis.axis]=event.caxis.value;
+        }break;}
     case SDL_CONTROLLERBUTTONDOWN:case SDL_CONTROLLERBUTTONUP:{
         auto found=controllers_.find(event.cbutton.which);
-        if(focused_&&found!=controllers_.end()&&event.cbutton.button<SDL_CONTROLLER_BUTTON_MAX)
-            found->second.buttons[event.cbutton.button]=event.type==SDL_CONTROLLERBUTTONDOWN;break;}
+        if(focused_&&found!=controllers_.end()&&event.cbutton.button<SDL_CONTROLLER_BUTTON_MAX){
+            if(event.type==SDL_CONTROLLERBUTTONDOWN&&!found->second.buttons[event.cbutton.button])
+                for(auto action:{Action::fire,Action::weapon1,Action::weapon2})if(bindings.buttons[index(action)]==event.cbutton.button)presses_[index(action)]=true;
+            found->second.buttons[event.cbutton.button]=event.type==SDL_CONTROLLERBUTTONDOWN;
+        }break;}
     case SDL_WINDOWEVENT:
         if(event.window.event==SDL_WINDOWEVENT_FOCUS_LOST){
             focused_=false;clear();
@@ -137,11 +152,12 @@ InputActions SdlInput::sample(){
     result.turn=std::clamp(pad_turn*bindings.turn_sensitivity+int(down(Action::turn_right))-int(down(Action::turn_left)),-1.0f,1.0f);
     result.yaw_delta=mouse_x_*std::max(0.0f,bindings.mouse_degrees_per_count);mouse_x_=0;
     result.fire=down(Action::fire);result.use=down(Action::use);
+    result.fire_pressed=presses_[index(Action::fire)]||edge(Action::fire);
     result.map=edge(Action::map);result.pause=edge(Action::pause);result.run=down(Action::run);result.slow=down(Action::slow);
     result.next_weapon=edge(Action::next_weapon);result.previous_weapon=edge(Action::previous_weapon);
     result.quicksave=edge(Action::quicksave);result.quickload=edge(Action::quickload);
-    if(down(Action::weapon1))result.select_weapon=1;
-    if(down(Action::weapon2))result.select_weapon=2;
-    previous_=held;return result;
+    if(presses_[index(Action::weapon1)]||edge(Action::weapon1))result.select_weapon=1;
+    if(presses_[index(Action::weapon2)]||edge(Action::weapon2))result.select_weapon=2;
+    presses_.fill(false);previous_=held;return result;
 }
 } // namespace dok

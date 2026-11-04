@@ -1,0 +1,12 @@
+{
+  "schema": 1,
+  "scope": "Native original instructions; clock controlled; no complete DOS session or physical input",
+  "static_vectors": 32641,
+  "wrapper_vectors": 700,
+  "motion_vectors": 2058,
+  "mismatches": 0,
+  "levels": 7,
+  "originals_unchanged": true,
+  "full_report": "research/evidence/source-port/sp10-movement/report.json",
+  "report_sha256": "85cc064e72f8581cbc6596522aa8275ad96148ebbfbbaa4ce30fce286f08f7eb"
+}

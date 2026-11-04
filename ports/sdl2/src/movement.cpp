@@ -63,7 +63,7 @@ Pose resolve_movement(const World& world,Pose from,std::int32_t nx,std::int32_t 
     }
     from.x=rx;from.z=rz;return from;
 }
-void move_actor_to(World& world,OwnerId id,std::int32_t nx,std::int32_t nz){
+static void move_actor_to_impl(World& world,OwnerId id,std::int32_t nx,std::int32_t nz,bool current){
     require_profile(world);
     auto& actor=world.object_for_owner(id);
     if(!actor.pose)throw std::invalid_argument("Moving unplaced actor");
@@ -76,7 +76,34 @@ void move_actor_to(World& world,OwnerId id,std::int32_t nx,std::int32_t nz){
         if(d.objects[old_door.definition_index].class_id==7&&old_door.door_occupants)
             old_door.door_occupants=word(old_door.door_occupants-1);
         mmap[old_cell]=' ';
-        const auto candidate=resolve_movement(world,pose,nx,nz);
+        auto candidate=resolve_movement(world,pose,nx,nz);
+        const bool x_axis=nz==pose.z&&nx!=pose.x,z_axis=nx==pose.x&&nz!=pose.z;
+        if(current&&((x_axis&&candidate.z!=pose.z)||(z_axis&&candidate.x!=pose.x))){
+            // Native OG can move a pure current sideways to a cell midpoint.
+            // With a fixed416 tick this makes a real bank pocket unreachable.
+            // Sweep the requested axis to its FIRST solid edge instead. Each
+            // chunk is shorter than one tile: a blocked cell's interval on an
+            // axis is at least one tile, so clear chunk endpoints cannot skip it.
+            const auto delta=x_axis?std::int64_t(nx)-pose.x:std::int64_t(nz)-pose.z;
+            const auto direction=delta<0?-1:1;
+            const auto distance=std::abs(delta);
+            const auto point=[&](std::int64_t step){auto p=pose;
+                if(x_axis)p.x=static_cast<std::int32_t>(std::int64_t(p.x)+direction*step);
+                else p.z=static_cast<std::int32_t>(std::int64_t(p.z)+direction*step);
+                return p;};
+            const auto clear=[&](std::int64_t step){const auto p=point(step);const auto r=d.min_distance;
+                return p.x>=r&&p.z>=r&&p.x<std::int64_t(d.width)*d.cell_side-r&&
+                    p.z<std::int64_t(d.length)*d.cell_side-r&&footprint_clear(world,p.x,p.z);};
+            std::int64_t reached=0;
+            while(reached<distance){
+                const auto end=std::min(distance,reached+std::max(1,d.cell_side-1));
+                if(clear(end)){reached=end;continue;}
+                auto low=reached,high=end;
+                while(low+1<high){const auto middle=low+(high-low)/2;if(clear(middle))low=middle;else high=middle;}
+                reached=low;break;
+            }
+            candidate=point(reached);
+        }
         // Explicit host safety: native lookup clamps indices, but the port never
         // permits an actor's footprint to leave the map or settle in an obstacle.
         const auto r=d.min_distance;
@@ -85,6 +112,15 @@ void move_actor_to(World& world,OwnerId id,std::int32_t nx,std::int32_t nz){
         const auto new_cell=cell(world,pose.x,pose.z);auto& new_door=object(world,tmap[new_cell]);
         if(d.objects[new_door.definition_index].class_id==7)new_door.door_occupants=word(new_door.door_occupants+1);
         mmap[new_cell]=glyph;
+}
+void move_actor_to(World& world,OwnerId id,std::int32_t nx,std::int32_t nz){
+    move_actor_to_impl(world,id,nx,nz,false);
+}
+void move_actor_current(World& world,OwnerId id,std::int16_t distance,bool z_axis){
+    const auto& actor=world.object_for_owner(id);
+    if(!actor.pose)throw std::invalid_argument("Moving unplaced actor with current");
+    const auto p=*actor.pose;
+    move_actor_to_impl(world,id,z_axis?p.x:add32(p.x,distance),z_axis?add32(p.z,distance):p.z,true);
 }
 void move_actor(World& world,OwnerId id,std::int16_t distance,bool strafe){
     require_profile(world);
@@ -112,6 +148,8 @@ void update_actor_motion(World& world,OwnerId owner,const InputActions& input,st
     require_profile(world);
     auto& actor=world.object_for_owner(owner);auto& motion=*actor.motion;auto& pose=*actor.pose;
     const auto& definition=world.definition.objects[actor.definition_index];
+    const bool old_gold=world.definition.dataset==DatasetId::old_gold;
+    const auto old_x=pose.x,old_z=pose.z;
     motion.clock.stop(now);const auto elapsed=motion.clock.read(now);
     const bool moving=input.forward!=0||input.strafe!=0,turning=input.turn!=0;
     if(moving){motion.last_forward=input.forward;motion.last_strafe=input.strafe;}
@@ -123,10 +161,10 @@ void update_actor_motion(World& world,OwnerId owner,const InputActions& input,st
         if(inertia)motion.acceleration=motion.turn_acceleration=std::max(motion.acceleration,motion.turn_acceleration);
         scale>>=1;
     }
-    scale=std::clamp<std::uint32_t>(scale,256,768);
+    scale=std::clamp<std::uint32_t>(scale,256,old_gold?1536:768);
     if(input.run)scale<<=1;if(input.slow)scale>>=1;
     auto turn_step=word(sar32(divide32(multiply32(multiply32(definition.number(0x34),scale),motion.turn_acceleration),10000),8));
-    turn_step=std::min<std::int16_t>(turn_step,18);
+    if(!old_gold)turn_step=std::min<std::int16_t>(turn_step,18);
     if(!turning)motion.turn_acceleration=0;
     else{
         const int direction=input.turn>0?1:0;
@@ -143,5 +181,21 @@ void update_actor_motion(World& world,OwnerId owner,const InputActions& input,st
         if(strafe)move_actor(world,actor.owner,word(static_cast<int>(step*std::clamp(strafe,-1.0f,1.0f))),true);
     }
     motion.clock.start(now);
+    if(old_gold&&(pose.x!=old_x||pose.z!=old_z)){
+        // OG 1ae1:0908 only bobs after actual displacement; walls do not bob.
+        // World prepare 21b8:0d90 fixes player bounds at spawn Y +/-26.
+        const auto rate=definition.class_id==1?4:0;
+        const auto amplitude=definition.class_id==1?26:0;
+        const auto baseline=negate16(definition.height_parameter);
+        const auto upper=word(baseline+amplitude),lower=word(baseline-amplitude);
+        const auto delta=sar32(multiply32(rate,scale),8);
+        if(motion.bob_direction==0){
+            pose.y=sub32(pose.y,delta);
+            if(pose.y<lower){motion.bob_direction=1;pose.y=lower;}
+        }else{
+            pose.y=add32(pose.y,delta);
+            if(pose.y>upper){motion.bob_direction=0;pose.y=upper;}
+        }
+    }
 }
 } // namespace dok

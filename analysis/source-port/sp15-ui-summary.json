@@ -1,0 +1,38 @@
+{
+  "task": "SP15",
+  "date": "2026-11-04",
+  "scope": "Windows menu/HUD/map/help/resources; portable and physical controller acceptance remains separate",
+  "menu_readbacks": 248,
+  "resource_combinations": 7,
+  "native_software_scenes": 35,
+  "backend_rebuilds": 4,
+  "real_processes": 17,
+  "autodiscovery_processes": 2,
+  "unslop_post_renders": 3,
+  "features": [
+    "centred bounded menu and full FONT16",
+    "actual-content-centred modern HUD",
+    "map pause/exploration/legend/adaptive region",
+    "help and OG initial 0/0 explanation",
+    "RES browser/path input/source choice/persist",
+    "focus/controller latch reset"
+  ],
+  "originals_unchanged": true,
+  "reports": {
+    "research\\evidence\\source-port\\sp15-ui\\menus\\report.json": "bf3ebc850886f671972212f28d1108335a5452bbf33d18f9a08bbb7859a28c78",
+    "research\\evidence\\source-port\\sp15-ui\\process-report.json": "7612fe703e074ca5a9e52d9629a53f2cefd0889745bfa3779208e39b08ebd365",
+    "research\\evidence\\source-port\\sp15-ui\\autodiscovery-report.json": "0336f56afbd3c5fbc6cc3ee5b67354eb15582395a4793dcb4e2f744bc8dd88c4",
+    "research\\evidence\\source-port\\sp15-ui\\unslop\\report.json": "3019c34d33f9bce4c418be0850e19aa9d955cf3008fba1f793e0d5a07c244822"
+  },
+  "unslop": {
+    "author": "Damir Sokolovsky",
+    "profile": "https://x.com/heydamir",
+    "license": "CC-BY-4.0",
+    "scope": "Light polish of headers/copy; existing art, palette and bitmap font retained"
+  },
+  "remaining": [
+    "Physical controller/portable hardware acceptance",
+    "Save interface after SP17",
+    "Full level playthroughs SP16/SP18"
+  ]
+}

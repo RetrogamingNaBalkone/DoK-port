@@ -81,8 +81,12 @@ bool player_surface(World& world){
     // Kremlin divides it by measured FPS and slows movement on class12.
     // The port stabilizes that Kremlin divisor at the accepted 30 FPS profile.
     const bool old_gold=world.definition.dataset==DatasetId::old_gold;
-    change_player_stat(world,static_cast<std::int16_t>(surface.number(0x66)),
-        static_cast<std::int16_t>(old_gold?surface.number(0x68):surface.number(0x68)/30));
+    const auto category=static_cast<std::int16_t>(surface.number(0x66));
+    const auto value=static_cast<std::int16_t>(old_gold?surface.number(0x68):surface.number(0x68)/30);
+    if(old_gold&&category>=100&&category<=102){
+        const auto owner=world.objects.at(*world.player).owner;
+        move_actor_current(world,owner,value,category==102);
+    }else change_player_stat(world,category,value);
     return !old_gold; // Original class12 never removes its FCMap cell.
 }
 }

@@ -10,8 +10,8 @@
   },
   "real_process_locale_switches": 12,
   "originals_unchanged": true,
-  "evidence": "research/evidence/source-port/sp14-localization/report.json",
   "fonts_checked": 6,
   "glyphs_per_font": 126,
-  "story_readbacks": 12
+  "story_readbacks": 12,
+  "evidence": "research/evidence/source-port/sp14-localization/report.json"
 }

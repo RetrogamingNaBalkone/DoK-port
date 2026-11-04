@@ -1,0 +1,253 @@
+{
+  "task": "SP11 IDKFA follow-up",
+  "date": "2026-11-04",
+  "status": "OPEN: user symptom not reproduced; no gameplay fix claimed",
+  "core_scenarios": 21,
+  "processes": [
+    {
+      "name": "initial-gl",
+      "mode": "Raw SDL keys/mouse with ordinary elapsed clock",
+      "states": {
+        "granted": {
+          "hp": "100",
+          "charge": "300",
+          "phase": "0",
+          "weapon": "1",
+          "pending": "1",
+          "shots": "0",
+          "gun_state": "7",
+          "gun_frame": "0",
+          "gun_shift": "0",
+          "gun_events": "1"
+        },
+        "ctrl-held": {
+          "hp": "100",
+          "charge": "283",
+          "phase": "0",
+          "weapon": "1",
+          "pending": "1",
+          "shots": "10",
+          "gun_state": "2",
+          "gun_frame": "2",
+          "gun_shift": "0",
+          "gun_events": "1"
+        },
+        "mouse-held": {
+          "hp": "100",
+          "charge": "265",
+          "phase": "0",
+          "weapon": "1",
+          "pending": "1",
+          "shots": "9",
+          "gun_state": "3",
+          "gun_frame": "1",
+          "gun_shift": "0",
+          "gun_events": "1"
+        },
+        "second-held": {
+          "hp": "100",
+          "charge": "260",
+          "phase": "0",
+          "weapon": "2",
+          "pending": "2",
+          "shots": "2",
+          "gun_state": "2",
+          "gun_frame": "2",
+          "gun_shift": "0",
+          "gun_events": "1"
+        }
+      }
+    },
+    {
+      "name": "initial-software",
+      "mode": "Raw SDL keys/mouse with ordinary elapsed clock",
+      "states": {
+        "granted": {
+          "hp": "100",
+          "charge": "300",
+          "phase": "0",
+          "weapon": "1",
+          "pending": "1",
+          "shots": "0",
+          "gun_state": "7",
+          "gun_frame": "0",
+          "gun_shift": "0",
+          "gun_events": "1"
+        },
+        "ctrl-held": {
+          "hp": "100",
+          "charge": "274",
+          "phase": "0",
+          "weapon": "1",
+          "pending": "1",
+          "shots": "9",
+          "gun_state": "3",
+          "gun_frame": "1",
+          "gun_shift": "0",
+          "gun_events": "1"
+        },
+        "mouse-held": {
+          "hp": "100",
+          "charge": "244",
+          "phase": "0",
+          "weapon": "1",
+          "pending": "1",
+          "shots": "10",
+          "gun_state": "2",
+          "gun_frame": "0",
+          "gun_shift": "0",
+          "gun_events": "1"
+        },
+        "second-held": {
+          "hp": "100",
+          "charge": "237",
+          "phase": "0",
+          "weapon": "2",
+          "pending": "2",
+          "shots": "2",
+          "gun_state": "2",
+          "gun_frame": "2",
+          "gun_shift": "0",
+          "gun_events": "1"
+        }
+      }
+    },
+    {
+      "name": "natural-gl",
+      "mode": "Recorded ordinary route then raw SDL keys/mouse",
+      "states": {
+        "granted": {
+          "hp": "100",
+          "charge": "300",
+          "phase": "0",
+          "weapon": "1",
+          "pending": "1",
+          "shots": "4",
+          "gun_state": "7",
+          "gun_frame": "0",
+          "gun_shift": "0",
+          "gun_events": "1"
+        },
+        "ctrl-held": {
+          "hp": "100",
+          "charge": "270",
+          "phase": "0",
+          "weapon": "1",
+          "pending": "1",
+          "shots": "14",
+          "gun_state": "2",
+          "gun_frame": "1",
+          "gun_shift": "0",
+          "gun_events": "1"
+        },
+        "mouse-held": {
+          "hp": "72",
+          "charge": "239",
+          "phase": "0",
+          "weapon": "1",
+          "pending": "1",
+          "shots": "11",
+          "gun_state": "3",
+          "gun_frame": "1",
+          "gun_shift": "0",
+          "gun_events": "1"
+        },
+        "second-held": {
+          "hp": "55",
+          "charge": "232",
+          "phase": "0",
+          "weapon": "2",
+          "pending": "2",
+          "shots": "3",
+          "gun_state": "2",
+          "gun_frame": "2",
+          "gun_shift": "0",
+          "gun_events": "1"
+        }
+      }
+    },
+    {
+      "name": "natural-software",
+      "mode": "Recorded ordinary route then raw SDL keys/mouse",
+      "states": {
+        "granted": {
+          "hp": "100",
+          "charge": "300",
+          "phase": "0",
+          "weapon": "1",
+          "pending": "1",
+          "shots": "4",
+          "gun_state": "7",
+          "gun_frame": "0",
+          "gun_shift": "0",
+          "gun_events": "1"
+        },
+        "ctrl-held": {
+          "hp": "100",
+          "charge": "270",
+          "phase": "0",
+          "weapon": "1",
+          "pending": "1",
+          "shots": "14",
+          "gun_state": "2",
+          "gun_frame": "1",
+          "gun_shift": "0",
+          "gun_events": "1"
+        },
+        "mouse-held": {
+          "hp": "72",
+          "charge": "239",
+          "phase": "0",
+          "weapon": "1",
+          "pending": "1",
+          "shots": "11",
+          "gun_state": "3",
+          "gun_frame": "1",
+          "gun_shift": "0",
+          "gun_events": "1"
+        },
+        "second-held": {
+          "hp": "55",
+          "charge": "232",
+          "phase": "0",
+          "weapon": "2",
+          "pending": "2",
+          "shots": "3",
+          "gun_state": "2",
+          "gun_frame": "2",
+          "gun_shift": "0",
+          "gun_events": "1"
+        }
+      }
+    },
+    {
+      "name": "r1-readonly-artifact",
+      "mode": "Unmodified r1 artifact, ordinary clock/raw Ctrl. Dummy VIDEO prevents any desktop window; not a real GL/focus test.",
+      "states": {
+        "granted": {
+          "hp": "100",
+          "charge": "300"
+        },
+        "ctrl-held": {
+          "hp": "100",
+          "charge": "199"
+        }
+      }
+    }
+  ],
+  "source_settings_unchanged": true,
+  "originals_unchanged": true,
+  "copied_setting_change": "fullscreen=0 only, in private copies for hidden current-app checks",
+  "executable_sha256": "31c7e17d668a1450687fd3faf4bcf65563c38f4c4006277f7575b42fc2b87e80",
+  "full_report": {
+    "path": "research\\evidence\\source-port\\sp11-idkfa-r2\\report.json",
+    "sha256": "6af5dee4f4f551315d7388142758702bcc5e8706e7876faa225bb5f6b6dc8421"
+  },
+  "limitations": [
+    "Scripted SDL events, not physical keyboard/mouse or original desktop focus/fullscreen.",
+    "Unmodified r1 baseline uses dummy VIDEO and raw Ctrl only.",
+    "Current initial processes use ordinary elapsed clock; natural-pickup processes switch to raw input inside the fixed-clock replay harness.",
+    "Original user prefs read-only; fullscreen disabled only in private current-app copies.",
+    "Weapons grant/fire gameplay code was not changed."
+  ]
+}

@@ -43,6 +43,7 @@ private:
     std::map<SDL_JoystickID,Controller> controllers_;
     std::array<bool,SDL_NUM_SCANCODES> keys_{};
     std::array<bool,static_cast<unsigned>(Action::count)> previous_{};
+    std::array<bool,static_cast<unsigned>(Action::count)> presses_{};
     bool focused_=true,capture_=false;
     std::array<bool,6> mouse_buttons_{};
     float mouse_x_=0;

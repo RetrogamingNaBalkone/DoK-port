@@ -4,7 +4,7 @@
 #include <stdexcept>
 
 namespace dok {
-Display::Display(const VideoSettings& s){
+Display::Display(const VideoSettings& s,bool vsync){
     try{
         if(s.renderer==RendererKind::opengl){
             SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION,2);SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION,0);
@@ -13,8 +13,8 @@ Display::Display(const VideoSettings& s){
         window_=SDL_CreateWindow("DoK Source Port",SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED,s.width,s.height,
             SDL_WINDOW_RESIZABLE|SDL_WINDOW_ALLOW_HIGHDPI|SDL_WINDOW_HIDDEN|(s.renderer==RendererKind::opengl?SDL_WINDOW_OPENGL:0));
         if(!window_)throw std::runtime_error(SDL_GetError());
-        if(s.renderer==RendererKind::opengl)gl_=std::make_unique<GlRenderer>(window_);
-        else{renderer_=SDL_CreateRenderer(window_,-1,SDL_RENDERER_ACCELERATED|SDL_RENDERER_PRESENTVSYNC);
+        if(s.renderer==RendererKind::opengl){gl_=std::make_unique<GlRenderer>(window_);if(!vsync)SDL_GL_SetSwapInterval(0);}
+        else{renderer_=SDL_CreateRenderer(window_,-1,SDL_RENDERER_ACCELERATED|(vsync?SDL_RENDERER_PRESENTVSYNC:0));
             if(!renderer_)renderer_=SDL_CreateRenderer(window_,-1,SDL_RENDERER_SOFTWARE);if(!renderer_)throw std::runtime_error(SDL_GetError());}
         if(s.fullscreen&&SDL_SetWindowFullscreen(window_,SDL_WINDOW_FULLSCREEN_DESKTOP)!=0)throw std::runtime_error(SDL_GetError());
     }catch(...){gl_.reset();if(renderer_)SDL_DestroyRenderer(renderer_);if(window_)SDL_DestroyWindow(window_);throw;}

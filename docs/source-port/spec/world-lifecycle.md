@@ -102,7 +102,7 @@ SaveSnapshot, не реализация сохранений.
 | World guards | advancing_, audio std::function | T; advancing запрещён при snapshot, audio перепривязать |
 | WorldObject | definition_index, owner, optional pose(x/y/z/heading), placements, flags, door_occupants, presence каждого optional state | S (не восстанавливать flags только из LEVEL) |
 | PlayerState | attributes[11], extra_attributes[3], weapons[9] owner IDs, current/pending, lives, score, native_da предыдущего sensor owner | S |
-| MotionState | clock; acceleration/turn_acceleration, turn_direction, last_forward/strafe, mouse_remainder | S; float bits/версия формата явно |
+| MotionState | clock; acceleration/turn_acceleration, turn_direction, bob_direction(OG native+80), last_forward/strafe, mouse_remainder | S; float bits/версия формата явно; bob_direction не выводится из позы на границе |
 | DoorState | phase, extent, interval, state, ready, saved_flags(native+6a) | S; SP10: OG обновляет saved_flags на каждом OPEN, нельзя восстанавливать из definition.flags |
 | WeaponState | state, shift, frame, acquired | S |
 | MonsterState | health/state, next/display frame и display clip, course_counter/shot_count, burst_clock, corpse, passage_released | S; SP12: passage_released фиксирует однократное освобождение прохода/door occupancy до конца прозрачного хвоста смерти |

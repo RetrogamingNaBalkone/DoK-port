@@ -1,14 +1,51 @@
 #include "dok/sdl_input.hpp"
+#include "dok/clock.hpp"
 #include <iostream>
 #include <stdexcept>
 
 static void check(bool value){if(!value)throw std::runtime_error("Input scenario failed");}
 static void key(dok::SdlInput& input,SDL_Scancode code,bool down){SDL_Event event{};event.type=down?SDL_KEYDOWN:SDL_KEYUP;event.key.keysym.scancode=code;input.handle(event);}
 static void pump(dok::SdlInput& input){SDL_Event event;SDL_PumpEvents();while(SDL_PollEvent(&event))input.handle(event);}
+static void short_press_tests(){
+    dok::SdlInput input;
+    key(input,SDL_SCANCODE_LCTRL,true);key(input,SDL_SCANCODE_LCTRL,false);
+    auto actions=input.sample();check(!actions.fire&&actions.fire_pressed);
+    check(!input.sample().fire_pressed);
+    SDL_Event mouse{};mouse.type=SDL_MOUSEBUTTONDOWN;mouse.button.button=SDL_BUTTON_LEFT;input.handle(mouse);
+    mouse.type=SDL_MOUSEBUTTONUP;input.handle(mouse);actions=input.sample();check(!actions.fire&&actions.fire_pressed);
+    for(const auto code:{SDL_SCANCODE_1,SDL_SCANCODE_2}){
+        key(input,code,true);key(input,code,false);check(input.sample().select_weapon==(code==SDL_SCANCODE_1?1:2));check(input.sample().select_weapon==-1);
+    }
+    key(input,SDL_SCANCODE_2,true);check(input.sample().select_weapon==2);
+    check(input.sample().select_weapon==-1);key(input,SDL_SCANCODE_2,false);
+    // A click can be observed on a render frame with no player callback.
+    // Keep it until exactly the nearest native tick at every presentation FPS.
+    for(unsigned fps:{30,60,144}){
+        input.clear();dok::GameClock clock;dok::FirePressLatch latch;std::uint64_t next_tick=416;unsigned shots=0;
+        for(unsigned frame=0;frame<fps;++frame){
+            if(!frame){key(input,SDL_SCANCODE_LCTRL,true);key(input,SDL_SCANCODE_LCTRL,false);}
+            const auto sample=input.sample();latch.observe(sample);clock.advance_nanoseconds(1000000000ULL/fps);
+            while(clock.ticks()>=next_tick){shots+=latch.take(sample.fire);next_tick+=416;}
+        }
+        check(shots==1);
+    }
+    dok::FirePressLatch latch;actions={};actions.fire_pressed=true;latch.observe(actions);
+    // Consumption is one attempt even when a weapon is not ready. Readiness
+    // changes later must not replay an old click.
+    check(latch.take(false));check(!latch.take(false));
+    latch.observe(actions);latch.clear();check(!latch.take(false));
+    actions.fire=true;actions.fire_pressed=false;latch.observe(actions);
+    check(latch.take(actions.fire)&&latch.take(actions.fire)); // Held autorepeat.
+    key(input,SDL_SCANCODE_LCTRL,true);input.clear();check(!input.sample().fire_pressed);
+    key(input,SDL_SCANCODE_LCTRL,true);key(input,SDL_SCANCODE_LCTRL,false);
+    SDL_Event focus{};focus.type=SDL_WINDOWEVENT;focus.window.event=SDL_WINDOWEVENT_FOCUS_LOST;input.handle(focus);
+    focus.window.event=SDL_WINDOWEVENT_FOCUS_GAINED;input.handle(focus);check(!input.sample().fire_pressed);
+}
 int main(){
     SDL_SetMainReady();if(SDL_Init(SDL_INIT_GAMECONTROLLER|SDL_INIT_EVENTS)!=0)return 2;
     int result=0;
     try{
+        short_press_tests();
         dok::SdlInput input;
         key(input,SDL_SCANCODE_W,true);key(input,SDL_SCANCODE_D,true);key(input,SDL_SCANCODE_RIGHT,true);
         auto state=input.sample();check(state.forward==1&&state.strafe==1&&state.turn==1);
@@ -88,6 +125,8 @@ int main(){
         }
         input.clear();input.bindings.gamepad(dok::InputPreset::modern);
         SDL_Event trigger{};trigger.type=SDL_CONTROLLERAXISMOTION;trigger.caxis.which=SDL_JoystickInstanceID(joystick);trigger.caxis.axis=SDL_CONTROLLER_AXIS_TRIGGERRIGHT;trigger.caxis.value=24000;input.handle(trigger);
+        trigger.caxis.value=0;input.handle(trigger);state=input.sample();check(!state.fire&&state.fire_pressed);check(!input.sample().fire_pressed);
+        trigger.caxis.value=24000;input.handle(trigger);
         trigger.caxis.axis=SDL_CONTROLLER_AXIS_TRIGGERLEFT;input.handle(trigger);state=input.sample();check(state.fire&&state.run);
         check(SDL_JoystickDetachVirtual(device)==0);pump(input);SDL_JoystickClose(joystick);
         state=input.sample();check(input.controller_count()==baseline&&!state.forward&&!state.turn&&!state.fire&&!state.run&&!state.use);

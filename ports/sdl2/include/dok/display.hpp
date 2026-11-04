@@ -7,7 +7,7 @@ namespace dok {
 // Owns presentation resources only; replacing it never owns or resets the world.
 class Display {
 public:
-    explicit Display(const VideoSettings& settings);
+    explicit Display(const VideoSettings& settings,bool vsync=true);
     ~Display();
     Display(const Display&)=delete;
     Display& operator=(const Display&)=delete;

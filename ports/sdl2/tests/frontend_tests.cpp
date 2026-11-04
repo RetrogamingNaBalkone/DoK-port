@@ -58,6 +58,17 @@ int main(){
         menu.pause();down(menu,1);key(menu,SDLK_RETURN);down(menu,4);key(menu,SDLK_RETURN);auto locale=s.locale;key(menu,SDLK_RIGHT);check(s.locale!=locale,"Live menu locale");
         key(menu,SDLK_ESCAPE);key(menu,SDLK_ESCAPE);check(menu.screen()==dok::MenuScreen::pause,"Settings returns to pause");key(menu,SDLK_UP);key(menu,SDLK_RETURN);check(!menu.active()&&command(menu,dok::MenuCommand::resume),"Resume flow");
         menu.pause();menu.request_quit();key(menu,SDLK_RETURN);check(menu.screen()==dok::MenuScreen::pause,"Exit default is cancel");
+        for(auto size:{std::array<int,2>{1280,720},std::array<int,2>{960,720}}){
+            dok::Frontend pointer(s);pointer.render(size[0],size[1]);SDL_Event click{};click.type=SDL_MOUSEBUTTONDOWN;
+            click.button.button=SDL_BUTTON_LEFT;click.button.x=size[0]/2;click.button.y=210;pointer.handle(click,size[0],size[1]);
+            check(pointer.screen()==dok::MenuScreen::settings,"Centered menu mouse hit at both aspects");
+        }
+        dok::Frontend background(s);background.render(640,480);SDL_Event event{};event.type=SDL_WINDOWEVENT;event.window.event=SDL_WINDOWEVENT_FOCUS_LOST;background.handle(event,640,480);
+        event.type=SDL_CONTROLLERAXISMOTION;event.caxis.axis=SDL_CONTROLLER_AXIS_LEFTY;event.caxis.value=25000;background.handle(event,640,480);
+        check(background.focused_row()==0,"Background pad moved menu focus");
+        event.type=SDL_WINDOWEVENT;event.window.event=SDL_WINDOWEVENT_FOCUS_GAINED;background.handle(event,640,480);
+        event.type=SDL_CONTROLLERAXISMOTION;event.caxis.axis=SDL_CONTROLLER_AXIS_LEFTY;event.caxis.value=25000;background.handle(event,640,480);
+        check(background.focused_row()==1,"Foreground pad axis did not recover after focus reset");
         for(auto size:{std::array<int,2>{320,200},std::array<int,2>{640,480},std::array<int,2>{1280,720},std::array<int,2>{1920,1080}}){const auto& frame=menu.render(size[0],size[1]);check(frame.pixels.size()==std::size_t(frame.width)*frame.height,"Frame dimensions");}
         std::filesystem::remove(path,ec);std::filesystem::remove(blocked/"keep",ec);std::filesystem::remove(blocked,ec);std::filesystem::remove(dir,ec);
         std::cout<<"Settings roundtrip, OS locale, CLI isolation, write failure, menus, remap, pad cancel and video rollback passed\n";

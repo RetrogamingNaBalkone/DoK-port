@@ -124,7 +124,8 @@ build/sdl2/windows/dok_walk_probe.exe originals/pkr/ENG/PKE.RES
 
 Полные local отчёты: `research/evidence/source-port/sp10-interactions/`:
 `callback-report.json`, `cpp-matrix.csv`, `walk-report.json` и `walk-*.log`.
-Остаются полные маршруты семи уровней, native приёмка всего motion/resolver
-и DOS frame pacing/скорости Кремлёвского течения. Независимый callback oracle
-этого не доказывает. SP10 остаётся в работе в границе полной приёмки.
+Native motion/resolver позднее принят [отдельным этапом](movement-audit.md):
+35 399 сравнений и восстановление OG bob/cap/turn. Остаются полные маршруты
+семи уровней и DOS frame pacing/скорости Кремлёвского течения. Независимый
+callback oracle сам по себе этого не доказывает.
 Следующий владелец боя/предметов — SP11; AI — SP12; маршруты до финала — SP16/SP18.

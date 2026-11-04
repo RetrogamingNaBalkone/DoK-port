@@ -1,6 +1,6 @@
 """SP08 real Windows GL/software matrix and isolated persistent settings checks."""
 from pathlib import Path
-import configparser, hashlib, json, subprocess, struct, zlib
+import configparser, hashlib, json, os, subprocess, struct, zlib
 # Port PNG writer always emits RGB8, filter0 rows; reject any other format.
 class Frame:
  def __init__(self,w,h,data):self.size=(w,h);self.data=data
@@ -37,7 +37,7 @@ def main():
   (d/'settings.ini').write_text('[settings]\nversion=1\n[interface]\nfps=0\n'+settings)
   (d/'script.txt').write_text(script)
   command=[str(EXE),'--user-dir',str(d),'--ui-script',str(d/'script.txt'),'--frames',str(frames),'--screenshot',str(d/'frame.png'),*args]
-  result=subprocess.run(command,cwd=ROOT,capture_output=True,text=True,timeout=45)
+  result=subprocess.run(command,cwd=ROOT,capture_output=True,text=True,timeout=45,env=dict(os.environ,SDL_AUDIODRIVER='dummy'))
   (d/'stdout.log').write_text(result.stdout);(d/'stderr.log').write_text(result.stderr)
   assert result.returncode==0,(name,result.stderr)
   log=(d/'port.log').read_text();assert 'OpenGL fallback:' not in log,(name,log)
@@ -114,7 +114,7 @@ def main():
  d,_=run('settings-gl',frames=18,script='1 key Down\n2 key Return\n3 key Return\n4 key Down\n5 key Down\n6 key Down\n7 key Down\n8 key Down\n9 key Right\n10 key Down\n11 key Right\n13 state saved\n',settings='[video]\nrenderer=1\n')
  cfg=configparser.ConfigParser();cfg.read(d/'settings.ini');assert cfg['video']['fxaa']=='1' and cfg['video']['classic_hud']=='1'
  (d/'restart.txt').write_text('1 state restarted\n')
- restart=subprocess.run([str(EXE),'--user-dir',str(d),'--frames','3','--ui-script',str(d/'restart.txt')],cwd=ROOT,capture_output=True,text=True,timeout=30)
+ restart=subprocess.run([str(EXE),'--user-dir',str(d),'--frames','3','--ui-script',str(d/'restart.txt')],cwd=ROOT,capture_output=True,text=True,timeout=30,env=dict(os.environ,SDL_AUDIODRIVER='dummy'))
  assert restart.returncode==0
  assert 'fxaa=1 classic_hud=1' in (d/'port.log').read_text()
  d,_=run('settings-software',frames=18,script='1 key Down\n2 key Return\n3 key Return\n4 key Down\n5 key Down\n6 key Down\n7 key Down\n8 key Right\n9 key Right\n13 state saved\n',settings='[video]\nrenderer=0\n')

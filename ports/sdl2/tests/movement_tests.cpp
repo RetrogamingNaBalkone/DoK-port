@@ -22,8 +22,71 @@ static dok::LevelDefinition fixture(){
     for(int y=0;y<8;++y)for(int x=0;x<8;++x)if(!x||!y||x==7||y==7)level.maps["tmap"][y*8+x]='#';
     level.maps["mmap"][4*8+3]='P';return level;
 }
-int main(){
+static dok::World bank_fixture(bool transpose=false){
+    auto level=fixture();level.dataset=dok::DatasetId::old_gold;dok::World w(level);
+    for(auto& glyph:w.maps.at("mmap"))glyph=' ';
+    auto& pose=*w.objects.at(*w.player).pose;
+    pose.x=transpose?2108:1680;pose.z=transpose?1680:2108;
+    for(auto cell:{std::pair<int,int>{2,3},{4,3},{3,2}}){
+        const auto x=transpose?cell.second:cell.first,z=transpose?cell.first:cell.second;
+        w.maps.at("tmap")[z*8+x]='#';
+    }
+    w.maps.at("mmap")[(pose.z/480)*8+pose.x/480]='P';return w;
+}
+static void current_boundaries(){
+    for(bool z_axis:{false,true})for(int delta:{-100,100}){
+        auto w=bank_fixture(z_axis);auto& actor=w.objects.at(*w.player);const auto before=*actor.pose;
+        dok::move_actor_current(w,actor.owner,static_cast<std::int16_t>(delta),z_axis);
+        const auto clipped=delta>0?1681:1678;
+        check(actor.pose->x==(z_axis?before.x:clipped)&&actor.pose->z==(z_axis?clipped:before.z));
+        auto open=fixture();open.dataset=dok::DatasetId::old_gold;dok::World free(open);
+        auto& p=free.objects.at(*free.player);const auto origin=*p.pose;
+        dok::move_actor_current(free,p.owner,static_cast<std::int16_t>(delta),z_axis);
+        check(p.pose->x==origin.x+(z_axis?0:delta)&&p.pose->z==origin.z+(z_axis?delta:0));
+    }
+    // Ordinary category100 remains native, including its perpendicular snap;
+    // only the surface caller opts into the fixed-cadence current adaptation.
+    auto native=bank_fixture();const auto start=*native.objects.at(*native.player).pose;
+    dok::change_player_stat(native,100,100);check(native.objects.at(*native.player).pose->z!=start.z);
+    auto level=fixture();level.dataset=dok::DatasetId::old_gold;
+    dok::ObjectDefinition door;door.glyph='d';door.class_id=7;door.flags=0x10;
+    level.glyph_index['d']=int(level.objects.size());level.objects.push_back(door);
+    dok::World door_world(level);auto& actor=door_world.objects.at(*door_world.player);
+    auto& door_state=door_world.objects.back();door_state.door_occupants=1;
+    for(auto& glyph:door_world.maps.at("mmap"))glyph=' ';
+    actor.pose->x=1870;actor.pose->z=1680;
+    door_world.maps.at("mmap")[3*8+3]='P';door_world.maps.at("tmap")[3*8+3]='d';
+    dok::move_actor_current(door_world,actor.owner,100,false);check(door_state.door_occupants==0);
+    dok::move_actor_current(door_world,actor.owner,-100,false);check(door_state.door_occupants==1);
+    check(door_world.maps.at("mmap")[3*8+3]=='P');
+}
+static void original_current_bank(const char* path){
+    const auto a=dok::Archive::open(std::filesystem::u8path(path));
+    for(unsigned fps:{30,60,144}){
+        dok::World w(dok::load_level(a,"LEVEL4"));auto& actor=w.objects.at(*w.player);
+        const auto hero=w.definition.objects[actor.definition_index].glyph;
+        for(auto& glyph:w.maps.at("mmap"))if(glyph==hero)glyph=' ';
+        // Explicit local regression fixture, not a claimed spawn-to-exit route.
+        actor.pose->x=14616;actor.pose->z=19599;actor.pose->heading=0;
+        w.maps.at("mmap")[58*64+43]=hero;
+        dok::InputActions input;input.forward=-1;input.run=true;
+        unsigned ticks=0;std::uint64_t previous=0;
+        for(unsigned frame=1;frame<=fps&&ticks<3;++frame){
+            const auto now=std::uint64_t(frame)*1000000000ULL/fps;
+            w.advance_events(now-previous,[&](auto,auto){
+                if(ticks>=3)return;
+                dok::player_pickup(w);dok::player_surface(w);
+                dok::update_player_motion(w,input,static_cast<std::uint32_t>(w.simulation_ticks()),false);++ticks;
+            });previous=now;
+        }
+        check(ticks==3&&actor.player_state->score==1&&w.maps.at("tmap")[57*64+43]==' ');
+        std::cout<<"OG current bank coin43,57: fps="<<fps<<" ticks="<<ticks<<" pose="<<actor.pose->x<<','<<actor.pose->z<<" score="<<actor.player_state->score<<'\n';
+    }
+}
+int main(int argc,char** argv){
     try{
+        current_boundaries();
+        if(argc==2)original_current_bank(argv[1]);
         // OG applies class12 WORD values directly; Kremlin alone divides by
         // reference FPS and slows motion. In particular -1 must hurt in OG.
         for(auto profile:{dok::DatasetId::old_gold,dok::DatasetId::kremlin_pkr,dok::DatasetId::kremlin_pke})

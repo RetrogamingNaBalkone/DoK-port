@@ -1,0 +1,33 @@
+{
+  "task": "SP15",
+  "revision": "r2-ui-fixes",
+  "source_fonts": 6,
+  "cpu_frames": 410,
+  "focused_gl_software_readbacks": 144,
+  "regression_menu_readbacks": 248,
+  "hud_restore_base": "e42cc72",
+  "evidence": "research/evidence/source-port/sp15-ui/r2-focused/",
+  "originals_unchanged": true,
+  "tests": [
+    "frontend CTest PASS",
+    "localization CTest PASS",
+    "frontend_probe PASS",
+    "menu_font_probe PASS",
+    "hud_desktop_probe Old Gold PASS",
+    "check_frontend 6 processes PASS after final main rebuild",
+    "check_menu_ux 17 processes PASS after final main rebuild",
+    "check_localization 12 locale switch processes PASS after final main rebuild",
+    "320x200 outcome second-row and intro Start mouse hit PASS"
+  ],
+  "limitations": [],
+  "actual_processes": {
+    "frontend": 6,
+    "menu_ux": 17,
+    "locale_switches": 12
+  },
+  "evidence_reports": {
+    "research/evidence/source-port/sp15-ui/r2-focused/report.json": "ad43220322daed2113fc8ffa0a9c51348ae8960ff75e6cdb9349122c1da15110",
+    "research/evidence/source-port/sp15-ui/r2-readbacks/report.json": "bf3ebc850886f671972212f28d1108335a5452bbf33d18f9a08bbb7859a28c78",
+    "research/evidence/source-port/sp15-ui/r2-process/process-report.json": "1fcaa88dca9e88bd06b5c7c9c2feef61cccd1a76989d91fb2c8b05213e78d94f"
+  }
+}

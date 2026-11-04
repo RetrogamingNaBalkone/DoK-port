@@ -1,0 +1,29 @@
+{
+  "schema": 1,
+  "scope": "Native instruction policy/rates, full raw digital PCM, actual SDL pause/state, actual DOS title waveforms with documented mixer clock differences; not bit-exact analog hardware or every gameplay event",
+  "native_og_vectors": 48,
+  "native_og_mismatches": 0,
+  "native_rate_vectors": 42,
+  "native_rate_mismatches": 0,
+  "pcm_sequences": 56,
+  "pcm_mismatches": 0,
+  "app_music_processes": 3,
+  "local_waveform_confirmation": true,
+  "global_clock_equivalence": false,
+  "local_median_ncc": {
+    "ru": 0.9714265470771777,
+    "en": 0.9269636936652903,
+    "old-gold": 0.9911632808110465
+  },
+  "originals_unchanged": true,
+  "full_reports": {
+    "report.json": "research/evidence/source-port/sp13-audio/report.json",
+    "oracle-report.json": "research/evidence/source-port/sp13-audio/oracle-report.json",
+    "wave-comparison.json": "research/evidence/source-port/sp13-audio/wave-comparison.json"
+  },
+  "report_sha256": {
+    "report.json": "bdbba27b1331b9738371d1e1b8aa01f95e7d59863a67bc71e8b7bbc0296cf3be",
+    "oracle-report.json": "d382b67b421c216b716974378406f3eb6b19d27b2ca196a09e951ff26f659e4b",
+    "wave-comparison.json": "8ba8da6dbbcda7163ca307c6f696763a339770b9167ee9bd0438cb293d4c814a"
+  }
+}

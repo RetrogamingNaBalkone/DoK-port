@@ -6,8 +6,10 @@ new recordings. This command does not launch or alter an original DOS session.
 import array
 import hashlib
 import json
+import os
 from pathlib import Path
 import struct
+import re
 import subprocess
 import sys
 import wave
@@ -65,10 +67,40 @@ def main():
                 native_period=period, mismatches=mismatches, wav_sha256=sha(wav)))
             assert mismatches == 0, profile+' '+name.hex()
             count += 1
+    report['app_music'] = []
+    script = OUT/'music-ui.txt'
+    script.write_text('1 key Return\n3 key Return\n5 state music\n')
+    for profile, resource in RES:
+        directory = OUT/'app-music'/profile
+        command = [str(ROOT/'build/sdl2/windows/dok_port.exe'), '--res', str(ROOT/resource),
+                   '--renderer', 'software', '--locale', 'en', '--user-dir', str(directory),
+                   '--ui-script', str(script), '--frames', '8']
+        result = subprocess.run(command, capture_output=True, text=True,
+                                env=dict(os.environ, SDL_VIDEODRIVER='dummy', SDL_AUDIODRIVER='dummy'))
+        log = (directory/'port.log').read_text(encoding='utf-8')
+        music = re.findall(r'^MUSIC dataset=(\d+) loop=(\d+) active=(\d+)$', log, re.M)
+        expected = '1' if profile == 'old-gold' else '0'
+        assert result.returncode == 0 and music and all(loop == expected and active == '1' for dataset, loop, active in music), log
+        if profile == 'old-gold':
+            assert len(music)>=2, 'OG title and story both need loop verification'
+        report['app_music'].append(dict(profile=profile, command=command, exit_code=result.returncode, observed=music))
     report['original_sha256_after'] = {p: sha(ROOT/p) for p in before}
     assert before == report['original_sha256_after']
     report['boundary'] = 'Native instruction policy/rates, full raw digital PCM, actual SDL pause/state, actual DOS title waveforms with documented mixer clock differences; not bit-exact analog hardware or every gameplay event'
     (OUT/'report.json').write_text(json.dumps(report, indent=2)+'\n')
+    native = json.loads((OUT/'oracle-report.json').read_text())
+    waves = json.loads((OUT/'wave-comparison.json').read_text())
+    summary = dict(schema=1, scope=report['boundary'], native_og_vectors=native['count'],
+        native_og_mismatches=native['mismatches'], native_rate_vectors=native['rate_count'],
+        native_rate_mismatches=native['rate_mismatches'], pcm_sequences=len(report['pcm']),
+        pcm_mismatches=sum(p['mismatches'] for p in report['pcm']), app_music_processes=len(report['app_music']),
+        local_waveform_confirmation=waves['local_waveform_confirmation'],
+        global_clock_equivalence=waves['global_clock_equivalence'],
+        local_median_ncc={p:d['local']['median_correlation'] for p,d in waves['profiles'].items()},
+        originals_unchanged=before==report['original_sha256_after'],
+        full_reports={name:str((OUT/name).relative_to(ROOT)).replace('\\','/') for name in ['report.json','oracle-report.json','wave-comparison.json']},
+        report_sha256={name:sha(OUT/name) for name in ['report.json','oracle-report.json','wave-comparison.json']})
+    (ROOT/'analysis/source-port/sp13-audio-summary.json').write_text(json.dumps(summary, indent=2)+'\n')
     print('SP13:', len(report['pcm']), 'full PCM sequences; all original hashes unchanged', flush=True)
 
 

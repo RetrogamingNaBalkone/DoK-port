@@ -1,6 +1,7 @@
 """SP14 catalogue, single-RES rendering and real paused-language-switch checks."""
 import hashlib
 import json
+import os
 from pathlib import Path
 import re
 import subprocess
@@ -99,7 +100,8 @@ def main():
     ]
     results = []
     for index, command in enumerate(commands):
-        p = subprocess.run(command, cwd=ROOT, capture_output=True, text=True, encoding='utf-8', timeout=180)
+        p = subprocess.run(command, cwd=ROOT, capture_output=True, text=True, encoding='utf-8', timeout=180,
+                           env=dict(os.environ, SDL_AUDIODRIVER='dummy'))
         (OUT / f'check-{index}.log').write_text(p.stdout + p.stderr, encoding='utf-8')
         results.append(dict(command=command, exit_code=p.returncode, stdout=p.stdout, stderr=p.stderr))
         assert p.returncode == 0, results[-1]
@@ -120,10 +122,11 @@ def main():
                                   '7 key Down\n8 key Return\n9 key Down\n10 key Down\n11 key Down\n12 key Down\n'
                                   '13 key Return\n14 key Right\n15 state after\n16 key Escape\n17 key Escape\n18 key Escape\n'
                                   f'20 shot {screenshot}\n21 state resumed\n', encoding='utf-8')
-                command = [str(EXE), '--res', source['path'], '--level', level, '--skip-intro', '--renderer', backend,
+                command = [str(EXE), '--hidden', '--res', source['path'], '--level', level, '--skip-intro', '--renderer', backend,
                            '--locale', locale, '--hud', 'classic', '--size', '800x600', '--frames', '24',
                            '--user-dir', str(user), '--ui-script', str(script)]
-                p = subprocess.run(command, cwd=ROOT, capture_output=True, text=True, timeout=45)
+                p = subprocess.run(command, cwd=ROOT, capture_output=True, text=True, timeout=45,
+                                   env=dict(os.environ, SDL_AUDIODRIVER='dummy'))
                 assert p.returncode == 0, (name, p.stdout, p.stderr)
                 log = (user / 'port.log').read_text(encoding='utf-8')
                 states = {m[1]: dict(re.findall(r'(\w+)=([^\s]*)', m[2]))

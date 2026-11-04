@@ -7,11 +7,12 @@
 Актуальные команды из корня:
 `powershell -NoProfile -ExecutionPolicy Bypass -File ports/sdl2/tools/build.ps1 -Configuration Release`
 и `powershell -NoProfile -ExecutionPolicy Bypass -File ports/sdl2/tools/package.ps1`.
-Результат — `artifacts/sdl2/windows-playtest`. CTest13/13.
+Результат по умолчанию — `artifacts/sdl2/windows-playtest`. Текущий Release CTest17/17.
 `--renderer gl|software`, `--size 1280x720`; Old Gold запускается с
 `--res originals/Old_Gold_3D/OLD_GOLD.RES --level LEVEL4`.
-Актуальный пакет на 4 ноября: `artifacts/sdl2/windows-playtest-20261104-render-opt/`;
-команды и проверки — [отчёт оптимизаций](spec/render-optimization-20261104.md).
+Актуальный пакет на 4 ноября: `artifacts/sdl2/windows-playtest-20261104-sp08-sp16-r1/`
+и одноимённый ZIP. Команды и проверки — [контрольная сборка](spec/checkpoint-sp08-sp16.md).
+Для такого имени: `powershell -NoProfile -ExecutionPolicy Bypass -File ports/sdl2/tools/package.ps1 -PackageName windows-playtest-20261104-sp08-sp16-r1`.
 Ниже сохранены также исторические результаты отдельных этапов; номера
 CTest и описания возможностей относятся к дате соответствующей записи.
 
@@ -51,6 +52,12 @@ Toolchain общий, кеш компилятора находится в `build
 `--frames` и `--screenshot` предназначены для воспроизводимой smoke-проверки.
 
 ## Проверки и границы
+
+Автоматические SDL-запуски выполнять с `SDL_AUDIODRIVER=dummy`, включая
+скрытые окна и полные replay. Скрытое окно само по себе продолжает выводить
+звук. Это правило стенда не меняет настройки звука пользовательской игры.
+Акустические проверки SP13 записывают отдельный WAV; фоновый звук через
+устройство пользователя для них не требуется.
 
 - Чистая CMake-конфигурация, compiler ABI probe, сборка и CTest прошли.
 - Windows SDL2-окно реально открывалось; завершение после 3 кадров, все 3 RES.

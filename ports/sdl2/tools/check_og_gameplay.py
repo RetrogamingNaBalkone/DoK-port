@@ -7,6 +7,7 @@ spawn/money/first-wand/magic route is not a complete level playthrough.
 """
 import hashlib
 import json
+import os
 from pathlib import Path
 import re
 import subprocess
@@ -24,7 +25,8 @@ def sha(path):
 
 def run(command, name, timeout=180):
     start = time.monotonic()
-    result = subprocess.run([str(p) for p in command], capture_output=True, text=True, timeout=timeout)
+    result = subprocess.run([str(p) for p in command], capture_output=True, text=True, timeout=timeout,
+                            env=dict(os.environ, SDL_AUDIODRIVER='dummy'))
     (OUT / (name + '.stdout.log')).write_text(result.stdout + result.stderr)
     if result.returncode:
         raise RuntimeError(f'{name}: {result.returncode}\n{result.stdout}\n{result.stderr}')
@@ -55,7 +57,9 @@ def main():
             (user_dir/'settings.ini').write_text('[settings]\nversion=1\n[interface]\nfps=0\n')
             command = [BUILD/'dok_port.exe', '--res', RES, '--level', 'LEVEL4', '--skip-intro',
                        '--renderer', backend, '--hud', hud, '--size', '800x600', '--user-dir', user_dir,
-                       '--input-replay', recording, '--frames', '5000', '--screenshot', OUT/(name+'.png')]
+                       # Stop at the recording endpoint. An explicit --frames
+                       # now requests a neutral-input tail for session tests.
+                       '--input-replay', recording, '--screenshot', OUT/(name+'.png')]
             result = run(command, name)
             log = (user_dir/'port.log').read_text()
             match = re.search(r'^REPLAY (.*)$', log, re.M)
@@ -64,7 +68,9 @@ def main():
             assert state['current'] == '1' and state['weapons'] == '112,0'
             assert state['score'] == '2' and int(state['hp']) > 0
             if stage == 'route':
-                assert state['pose'] == '8904,-200,15960,90' and state['charge'] == '147' and state['shots'] == '0'
+                # SP10's native-verified OG bob ends this recording at the -26
+                # height clamp; the old -200 baseline omitted original bobbing.
+                assert state['pose'] == '8904,-226,15960,90' and state['charge'] == '147' and state['shots'] == '0'
                 assert log.count('Picked object 105\n') == 2 and 'Picked object 112\n' in log
                 assert 'Picked object 109\n' in log and 'Picked object 108\n' in log
             else:
