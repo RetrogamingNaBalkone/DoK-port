@@ -8,7 +8,7 @@
 namespace dok {
 struct FrontendDataset {const Archive* archive;std::string filename;};
 enum class MenuScreen {hidden,main,datasets,title,readme,levels,settings,graphics,sound,controls,keyboard,pad,
-    bindings,key_slots,gameplay,interface,credits,resources,pause,confirm,capture,conflict,video_confirm,notice,ending,outcome,help,map,files,path};
+    bindings,key_slots,gameplay,interface,credits,resources,pause,confirm,capture,conflict,video_confirm,notice,ending,outcome,help,map,files,path,video_unsaved};
 enum class MenuCommand {start,resume,main,quit,apply_video,keep_video,revert_video,music_title,music_stop,music_story,retry,add_resource,select_source};
 struct MenuFrame {int width=640,height=480;std::vector<std::uint32_t> pixels;};
 class Frontend {
@@ -91,6 +91,7 @@ private:
     void theme();
     void enter(MenuScreen screen,int focus=0);
     void back();
+    void apply_video();
     void choose(int delta=0);
     void begin_game();
     void browse(const std::filesystem::path& path);

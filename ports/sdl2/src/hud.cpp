@@ -51,23 +51,41 @@ IndexedSurface Hud::classic(const IndexedSurface& scene,const PlayerState& p,con
         if(font_[static_cast<unsigned char>(line[i])*8+y]&(0x80>>x)){
             top=std::min(top,y);bottom=std::max(bottom,y+1);
         }
-    const int field_top=old_gold_?172:163,field_height=old_gold_?8:11;
-    if(bottom>=top)text(out,4,
-        field_top+(field_height-(bottom-top+1))/2-top,line);
+    // The flat field starts below the top bevel, at source panel row 2/3.
+    const int field_top=old_gold_?173:164,field_height=old_gold_?8:11;
+    if(bottom>=top){
+        IndexedSurface field(320,field_height);
+        std::copy_n(out.pixels.begin()+field_top*320,field.pixels.size(),field.pixels.begin());
+        // Tall glyphs fit the field; only a shadow beyond its edge is clipped.
+        text(field,4,(field_height-std::min(field_height,bottom-top+1))/2-top,line);
+        std::copy(field.pixels.begin(),field.pixels.end(),out.pixels.begin()+field_top*320);
+    }
     if(old_gold_){
         const auto icons=[&](const Image& icon,int x,int value,int maximum){
             const int count=value>0&&maximum>0?std::clamp(value*5/maximum,1,5):0;
-            for(int i=0;i<count;++i)image(out,icon,x+i*(icon.width+2),180,icon.width,icon.height);
+            for(int i=0;i<count;++i)image(out,icon,x+i*(icon.width+2),183,icon.width,icon.height);
         };
         icons(health_,4,p.health(),p.max_health());icons(charge_,70,p.charge(),p.max_charge());
-        image(out,money_,136,180,16,15);text(out,155,184,std::to_string(p.score)+"/105");
-        for(int i=0;i<2;++i)if(p.weapons[i+1])image(out,weapons_[i],228+20*i,180,weapons_[i].width,weapons_[i].height);
-        for(int i=0;i<3;++i)if(p.keys()&(1<<i))image(out,keys_[i],288+11*i,180,keys_[i].width,keys_[i].height);
+        icons(money_,136,p.score,105);
+        for(int i=0;i<2;++i)if(p.weapons[i+1])image(out,weapons_[i],228+20*i,183,weapons_[i].width,weapons_[i].height);
+        for(int i=0;i<3;++i)if(p.keys()&(1<<i))image(out,keys_[i],288+11*i,183,keys_[i].width,keys_[i].height);
         return out;
     }
     bar(out,health_,177,p.health(),p.max_health());bar(out,charge_,188,p.charge(),p.max_charge());
     for(int i=0;i<3;++i)if(p.keys()&(1<<i))image(out,keys_[i],205+17*i,178,13,15);
     for(int i=0;i<2;++i)if(p.weapons[i+1])image(out,weapons_[i],i?263:150,177,41,18);
+    return out;
+}
+IndexedSurface Hud::classic_backdrop(int width)const{
+    IndexedSurface out(width,old_gold_?30:40);
+    for(int y=1;y<out.height();++y)for(int x=0;x<out.width();++x){
+        if(old_gold_){out.pixels[y*out.width()+x]=panel_.pixels[0];continue;}
+        // Native blue metal from the separator between the two inventory fields.
+        // Repeat its texels; never stretch the panel or repeat slots and icons.
+        const int sx=193+x%8;
+        const int sy=y<=2?y-1:(y==39?38:16+(y-3)%20);
+        out.pixels[y*out.width()+x]=panel_.pixels[sy*panel_.width+sx];
+    }
     return out;
 }
 IndexedSurface Hud::classic_mode(const IndexedSurface& scene,int frame_height,const PlayerState& p,const std::string& message)const{

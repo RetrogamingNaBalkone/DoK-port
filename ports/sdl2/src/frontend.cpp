@@ -103,7 +103,7 @@ void Frontend::video_failed(const std::string& why){
     s_.video=old_video_;draft_=old_video_;fallback_=true;notice_en_=why;enter(MenuScreen::confirm,1);
 }
 std::vector<MenuCommand> Frontend::commands(){auto result=std::move(commands_);commands_.clear();return result;}
-void Frontend::update(std::uint64_t ms){now_=ms;if(video_pending()&&ms>=video_deadline_){s_.video=old_video_;draft_=old_video_;enter(MenuScreen::graphics,4);commands_.push_back(MenuCommand::revert_video);}}
+void Frontend::update(std::uint64_t ms){now_=ms;if(video_pending()&&ms>=video_deadline_){s_.video=old_video_;draft_=old_video_;enter(MenuScreen::graphics,5);commands_.push_back(MenuCommand::revert_video);}}
 void Frontend::begin_game(){
     if(!archive()){enter(MenuScreen::resources,0);return;}
     s_.last_dataset=archive()->identify();level_=archive()->identify()==DatasetId::old_gold?4:1;
@@ -151,6 +151,9 @@ void Frontend::build_rows(){
         row(software?tr(MenuString::original_resolution):draft_.fullscreen?tr("Разрешение кадра","Frame resolution"):tr(MenuString::window_resolution),std::to_string(mode[0])+" x "+std::to_string(mode[1]),
             software?tr(MenuString::software_framebuffer_size_also_resizes_a_window_manual):
             tr("В fullscreen кадр вписывается с полями. FOV рассчитывается автоматически.","Fullscreen fits the frame with bars. FOV is automatic."));
+        const bool current_window=!draft_.fullscreen&&draft_.width==s_.video.width&&draft_.height==s_.video.height&&!s_.video.fullscreen;
+        const auto aspect_mode=(software||current_window)&&output_width_>0?std::array<int,2>{output_width_,output_height_}:mode;
+        row(tr(MenuString::video_aspect_ratio),software?"4:3":aspect_label(aspect_mode[0],aspect_mode[1]),software?tr("Программный рендерер использует кадр 4:3 с полями.","The software renderer uses a 4:3 frame with bars."):tr("Определяется разрешением. Обзор: Hor+ и Vert+.","Determined by resolution. View expands with Hor+ and Vert+."),false);
         row(tr(MenuString::video_texture_filter),s_.linear?"Linear":"Nearest",
             tr(MenuString::linear_scene_filtering_text_and_menus_remain_sharp),!software);
         row(tr(MenuString::apply_video_mode));
@@ -158,9 +161,6 @@ void Frontend::build_rows(){
             tr(MenuString::video_frame_scaling_help),software);
         row("FXAA",on(s_.fxaa),tr(MenuString::video_fxaa_help),!software);
         row(tr(MenuString::video_hud),s_.auto_hud?tr(MenuString::automatic):s_.classic_hud?tr(MenuString::classic):tr(MenuString::modern));
-        const bool current_window=!draft_.fullscreen&&draft_.width==s_.video.width&&draft_.height==s_.video.height&&!s_.video.fullscreen;
-        const auto aspect_mode=(software||current_window)&&output_width_>0?std::array<int,2>{output_width_,output_height_}:mode;
-        row(tr(MenuString::video_aspect_ratio),software?"4:3":aspect_label(aspect_mode[0],aspect_mode[1]),software?tr("Программный рендерер использует кадр 4:3 с полями.","The software renderer uses a 4:3 frame with bars."):tr("Определяется разрешением. Обзор: Hor+ и Vert+.","Determined by resolution. View expands with Hor+ and Vert+."),false);
         defaults();backrow();break;}
     case MenuScreen::sound:row(tr(MenuString::master_volume),std::to_string(s_.master_volume)+"%");row(tr(MenuString::effects),std::to_string(s_.effects_volume)+"%");row(tr(MenuString::title_music),std::to_string(s_.music_volume)+"%");defaults();backrow();break;
     case MenuScreen::controls:row(tr(MenuString::keyboard_and_mouse));row(tr(MenuString::gamepad));backrow();break;
@@ -180,6 +180,7 @@ void Frontend::build_rows(){
     case MenuScreen::pause:row(tr(MenuString::resume));row(tr(MenuString::settings));row(tr("Карта","Map"),{},{},world_!=nullptr);row(tr(MenuString::main_menu));row(tr(MenuString::quit));break;
     case MenuScreen::confirm:row(fallback_?tr(MenuString::use_software_renderer):tr(MenuString::yes));row(tr(MenuString::cancel));break;
     case MenuScreen::conflict:row(tr(MenuString::replace_binding));row(tr(MenuString::cancel));break;
+    case MenuScreen::video_unsaved:row(tr(MenuString::apply_video_mode));row(tr(MenuString::discard_video_changes));row(tr(MenuString::continue_video_setup));break;
     case MenuScreen::video_confirm:row(tr(MenuString::keep_video_mode));row(tr(MenuString::revert));break;
     case MenuScreen::resources:
         row(tr("Добавить файл RES…","Add a RES file…"),{},tr("Выберите папку и файл. Можно также перетащить RES в окно.","Browse folders and choose a file. You can also drop a RES onto this window."));
@@ -209,18 +210,26 @@ void Frontend::build_rows(){
     }
     if(!rows_.empty())focus_=std::clamp(focus_,0,int(rows_.size())-1);
 }
+void Frontend::apply_video(){
+    old_video_=s_.video;s_.video=draft_;video_deadline_=now_+15000;
+    enter(MenuScreen::video_confirm);commands_.push_back(MenuCommand::apply_video);
+}
 void Frontend::back(){
     switch(screen_){
     case MenuScreen::hidden:pause();break;
     case MenuScreen::main:commands_.push_back(MenuCommand::quit);break;
     case MenuScreen::pause:hide();commands_.push_back(MenuCommand::resume);break;
     case MenuScreen::settings:enter(in_session_?MenuScreen::pause:MenuScreen::main,1);break;
-    case MenuScreen::graphics:case MenuScreen::sound:case MenuScreen::controls:case MenuScreen::gameplay:case MenuScreen::interface:{const int index=screen_==MenuScreen::graphics?0:screen_==MenuScreen::sound?1:screen_==MenuScreen::controls?2:screen_==MenuScreen::gameplay?3:4;enter(MenuScreen::settings,index);break;}
+    case MenuScreen::graphics:
+        if(draft_!=s_.video){enter(MenuScreen::video_unsaved,2);break;}
+        enter(MenuScreen::settings,0);break;
+    case MenuScreen::video_unsaved:enter(MenuScreen::graphics,remembered_focus_[MenuScreen::graphics]);break;
+    case MenuScreen::sound:case MenuScreen::controls:case MenuScreen::gameplay:case MenuScreen::interface:{const int index=screen_==MenuScreen::graphics?0:screen_==MenuScreen::sound?1:screen_==MenuScreen::controls?2:screen_==MenuScreen::gameplay?3:4;enter(MenuScreen::settings,index);break;}
     case MenuScreen::keyboard:case MenuScreen::pad:enter(MenuScreen::controls,screen_==MenuScreen::pad?1:0);break;
     case MenuScreen::bindings:enter(binding_parent_,1);break;
     case MenuScreen::key_slots:enter(MenuScreen::bindings,action_);break;
     case MenuScreen::capture:case MenuScreen::conflict:enter(binding_parent_==MenuScreen::pad?MenuScreen::bindings:MenuScreen::key_slots,binding_parent_==MenuScreen::pad?action_:slot_);break;
-    case MenuScreen::confirm:if(fallback_){fallback_=false;enter(MenuScreen::graphics,4);}else enter(MenuScreen::pause,remembered_focus_[MenuScreen::pause]);break;
+    case MenuScreen::confirm:if(fallback_){fallback_=false;enter(MenuScreen::graphics,5);}else enter(MenuScreen::pause,remembered_focus_[MenuScreen::pause]);break;
     case MenuScreen::notice:enter(notice_return_,remembered_focus_[notice_return_]);break;
     case MenuScreen::help:enter(help_return_,remembered_focus_[help_return_]);break;
     case MenuScreen::map:if(map_return_==MenuScreen::hidden){hide();commands_.push_back(MenuCommand::resume);}else enter(map_return_,remembered_focus_[map_return_]);break;
@@ -231,7 +240,7 @@ void Frontend::back(){
     case MenuScreen::title:commands_.push_back(MenuCommand::music_stop);enter(sets_.size()>1?MenuScreen::datasets:MenuScreen::main,sets_.size()>1?int(dataset_):0);break;
     case MenuScreen::readme:commands_.push_back(MenuCommand::music_stop);enter(MenuScreen::title);break;
     case MenuScreen::levels:commands_.push_back(MenuCommand::music_stop);enter(sets_.size()>1?MenuScreen::datasets:MenuScreen::main,sets_.size()>1?int(dataset_):0);break;
-    case MenuScreen::video_confirm:s_.video=old_video_;draft_=old_video_;enter(MenuScreen::graphics,4);commands_.push_back(MenuCommand::revert_video);break;
+    case MenuScreen::video_confirm:s_.video=old_video_;draft_=old_video_;enter(MenuScreen::graphics,5);commands_.push_back(MenuCommand::revert_video);break;
     case MenuScreen::ending:case MenuScreen::outcome:commands_.push_back(MenuCommand::main);main_menu();break;
     default:commands_.push_back(MenuCommand::music_stop);enter(MenuScreen::main);break;
     }
@@ -269,14 +278,18 @@ void Frontend::choose(int delta){
                 int at=0;for(int i=0;i<int(unique.size());++i)if(unique[i]==std::array<int,2>{w,h})at=i;
                 at=(at+d+int(unique.size()))%int(unique.size());w=unique[at][0];h=unique[at][1];
             }
-        }else if(focus_==3)s_.linear=!s_.linear;
-        else if(focus_==4){old_video_=s_.video;s_.video=draft_;video_deadline_=now_+15000;enter(MenuScreen::video_confirm);commands_.push_back(MenuCommand::apply_video);}
-        else if(focus_==5)s_.frame_filter=(s_.frame_filter+d+3)%3;
-        else if(focus_==6)s_.fxaa=!s_.fxaa;
-        else if(focus_==7){
+        }else if(focus_==4)s_.linear=!s_.linear;
+        else if(focus_==5){apply_video();}
+        else if(focus_==6)s_.frame_filter=(s_.frame_filter+d+3)%3;
+        else if(focus_==7)s_.fxaa=!s_.fxaa;
+        else if(focus_==8){
             int layout=s_.auto_hud?0:s_.classic_hud?1:2;layout=(layout+d+3)%3;
             s_.auto_hud=layout==0;s_.classic_hud=layout==1;
         }else if(focus_==9){draft_=VideoSettings{};s_.linear=false;s_.frame_filter=0;s_.fxaa=false;s_.classic_hud=false;s_.auto_hud=true;}else back();break;
+    case MenuScreen::video_unsaved:
+        if(focus_==0)apply_video();
+        else if(focus_==1){draft_=s_.video;enter(MenuScreen::settings,0);}
+        else back();break;
     case MenuScreen::sound:if(focus_<3){auto& v=focus_==0?s_.master_volume:focus_==1?s_.effects_volume:s_.music_volume;v=std::clamp(v+d*5,0,100);}else if(focus_==3)s_.master_volume=s_.effects_volume=s_.music_volume=100;else back();break;
     case MenuScreen::controls:if(focus_<2)enter(focus_?MenuScreen::pad:MenuScreen::keyboard);else back();break;
     case MenuScreen::keyboard:case MenuScreen::pad:{
@@ -294,7 +307,7 @@ void Frontend::choose(int delta){
     case MenuScreen::pause:if(focus_==0){hide();commands_.push_back(MenuCommand::resume);}else if(focus_==1)enter(MenuScreen::settings);else if(focus_==2)show_map();else{confirm_quit_=focus_==4;fallback_=false;enter(MenuScreen::confirm,1);}break;
     case MenuScreen::confirm:if(focus_==1)back();else if(fallback_){fallback_=false;old_video_=s_.video;draft_=s_.video;draft_.renderer=RendererKind::software;s_.video=draft_;video_deadline_=now_+15000;enter(MenuScreen::video_confirm);commands_.push_back(MenuCommand::apply_video);}else{commands_.push_back(confirm_quit_?MenuCommand::quit:MenuCommand::main);if(!confirm_quit_)main_menu();}break;
     case MenuScreen::conflict:if(focus_==0)accept_binding();else back();break;
-    case MenuScreen::video_confirm:if(focus_==0){draft_=s_.video;enter(MenuScreen::graphics,4);commands_.push_back(MenuCommand::keep_video);}else back();break;
+    case MenuScreen::video_confirm:if(focus_==0){draft_=s_.video;enter(MenuScreen::graphics,5);commands_.push_back(MenuCommand::keep_video);}else back();break;
     case MenuScreen::credits:if(page_count_>1&&focus_==0)credit_page_=(credit_page_+d+page_count_)%page_count_;else back();break;
     case MenuScreen::ending:if(focus_==1)back();else{const auto name=archive()->identify()==DatasetId::old_gold?"INTRO4E":"EINTRO"+std::to_string(level_);
         if(++page_>=page_count_){commands_.push_back(MenuCommand::main);in_session_=false;enter(MenuScreen::levels);}}break;
@@ -360,8 +373,7 @@ void Frontend::handle(const SDL_Event& e,int ww,int wh){
             (e.type==SDL_CONTROLLERBUTTONDOWN&&(e.cbutton.button==SDL_CONTROLLER_BUTTON_A||e.cbutton.button==SDL_CONTROLLER_BUTTON_START))||
             (e.type==SDL_MOUSEBUTTONDOWN&&e.button.button==SDL_BUTTON_LEFT);
         const bool cancel=(e.type==SDL_KEYDOWN&&e.key.keysym.sym==SDLK_ESCAPE)||
-            (e.type==SDL_CONTROLLERBUTTONDOWN&&(e.cbutton.button==SDL_CONTROLLER_BUTTON_B||e.cbutton.button==SDL_CONTROLLER_BUTTON_BACK))||
-            (e.type==SDL_MOUSEBUTTONDOWN&&e.button.button==SDL_BUTTON_RIGHT);
+            (e.type==SDL_CONTROLLERBUTTONDOWN&&(e.cbutton.button==SDL_CONTROLLER_BUTTON_B||e.cbutton.button==SDL_CONTROLLER_BUTTON_BACK));
         if(cancel)back();else if(proceed){focus_=0;choose();}
         return;
     }
@@ -389,6 +401,7 @@ void Frontend::handle(const SDL_Event& e,int ww,int wh){
     if(e.type==SDL_KEYDOWN||e.type==SDL_MOUSEBUTTONDOWN||e.type==SDL_MOUSEMOTION)pad_=false;
     if(e.type==SDL_CONTROLLERBUTTONDOWN||e.type==SDL_CONTROLLERAXISMOTION)pad_=true;
     if(screen_==MenuScreen::capture){capture(e);return;}
+    if(e.type==SDL_MOUSEBUTTONDOWN&&e.button.button!=SDL_BUTTON_LEFT&&e.button.button!=SDL_BUTTON_RIGHT)return;
     build_rows();if(rows_.empty())return;
     int nav=0,adjust=0;bool accept=false,cancel=false;
     if(e.type==SDL_KEYDOWN){
@@ -405,8 +418,19 @@ void Frontend::handle(const SDL_Event& e,int ww,int wh){
         const int x=(e.type==SDL_MOUSEMOTION?e.motion.x:e.button.x)*frame_.width/std::max(1,ww);
         const int y=(e.type==SDL_MOUSEMOTION?e.motion.y:e.button.y)*frame_.height/std::max(1,wh);
         for(const auto& hit:hits_)if(inside(hit.rect,x,y)){
-            if(hit.row>=100){if(e.type==SDL_MOUSEBUTTONDOWN){level_=hit.row-100;page_=0;}return;}
-            focus_=hit.row;if(e.type==SDL_MOUSEBUTTONDOWN){accept=e.button.button==SDL_BUTTON_LEFT;cancel=e.button.button==SDL_BUTTON_RIGHT;}break;
+            if(hit.row>=100){if(e.type==SDL_MOUSEBUTTONDOWN&&e.button.button==SDL_BUTTON_LEFT){level_=hit.row-100;page_=0;}return;}
+            focus_=hit.row;if(e.type==SDL_MOUSEBUTTONDOWN){
+                accept=e.button.button==SDL_BUTTON_LEFT;
+                if(e.button.button==SDL_BUTTON_RIGHT){
+                    const bool adjustable=(screen_==MenuScreen::graphics&&(focus_<3||focus_==4||focus_==6||focus_==7||focus_==8))||
+                        (screen_==MenuScreen::sound&&focus_<3)||
+                        (screen_==MenuScreen::keyboard&&(focus_==0||focus_==2))||
+                        (screen_==MenuScreen::pad&&(focus_==0||focus_==2||focus_==3))||
+                        (screen_==MenuScreen::gameplay&&focus_==0)||
+                        (screen_==MenuScreen::interface&&focus_<2);
+                    if(adjustable)adjust=-1;
+                }
+            }break;
         }
     }
     if(cancel){back();return;}
@@ -466,8 +490,15 @@ const MenuFrame& Frontend::render(int width,int height){
     output_width_=width;output_height_=height;
     native_text_=false;
     if(screen_==MenuScreen::map&&world_&&archive()){
-        const auto indexed=native_automap(*world_);const auto palette=archive()->palette(world_->definition.palette);
+        auto indexed=native_automap(*world_);const auto palette=archive()->palette(world_->definition.palette);
         const bool og=world_->definition.dataset==DatasetId::old_gold;
+        // The DOS OG marker is one white pixel on a white map. Preserve the
+        // native map oracle; give that same point contrast in the full-screen UI.
+        if(og&&world_->player){
+            const auto& d=world_->definition;const auto p=*world_->objects.at(*world_->player).pose;
+            const int x=(d.width-p.x/d.cell_side)*2-1,y=p.z/d.cell_side*2+1;
+            if(x>=0&&x<320&&y>=0&&y<200)indexed.pixels[y*320+x]=0;
+        }
         // Keep native map pixels and discovery, but present OG's small DOS
         // overlay as a centered full-screen map, with square map cells.
         frame_.width=std::max(320,width);frame_.height=std::max(200,height);
@@ -541,10 +572,11 @@ const MenuFrame& Frontend::render(int width,int height){
     int footer_top=h-footer_height-8;
     int top=header_y+header_height+(compact||illustrated?6:12),bottom=footer_top-(compact?4:10);
     std::string dialog_message;
-    const bool dialog=screen_==MenuScreen::confirm||screen_==MenuScreen::conflict||screen_==MenuScreen::video_confirm||screen_==MenuScreen::notice||screen_==MenuScreen::outcome;
+    const bool dialog=screen_==MenuScreen::confirm||screen_==MenuScreen::conflict||screen_==MenuScreen::video_confirm||screen_==MenuScreen::video_unsaved||screen_==MenuScreen::notice||screen_==MenuScreen::outcome;
     if(screen_==MenuScreen::confirm)dialog_message=fallback_?tr(MenuString::opengl_could_not_be_enabled_nuse_the_software_renderer):tr(MenuString::current_progress_will_be_lost_ncontinue);
     else if(screen_==MenuScreen::conflict){dialog_message=tr(MenuString::control_already_assigned_n);for(const auto& c:conflicts_)dialog_message+=action_name(c.first)+"\n";}
     else if(screen_==MenuScreen::video_confirm)dialog_message=tr(MenuString::keep_the_new_display_settings_nreverting_in)+std::to_string((video_deadline_>now_?video_deadline_-now_:0)/1000+1)+tr(MenuString::s);
+    else if(screen_==MenuScreen::video_unsaved)dialog_message=tr(MenuString::unapplied_video_changes);
     else if(screen_==MenuScreen::notice)dialog_message=s_.locale==LocaleId::ru?notice_ru_:notice_en_;
     else if(screen_==MenuScreen::outcome)dialog_message=action_==int(SessionPhase::retry)?tr(MenuString::life_lost):tr(MenuString::game_over);
     // Measure short screens before drawing their panels. Large displays give
@@ -572,7 +604,7 @@ const MenuFrame& Frontend::render(int width,int height){
         for(int i=0;i<int(rows_.size());++i){const auto& row=rows_[i];const int chars=std::max(1,(measure_w-28)/8);
             int lines=std::max(1,(int(cp866(row.label).size())+chars-1)/chars);
             if(!row.value.empty()&&(screen_==MenuScreen::datasets||int(cp866(row.label).size()+cp866(row.value).size())*8>measure_w-44))++lines;
-            desired+=lines*(text_height_+4)+(compact?6:10)+(screen_==MenuScreen::graphics&&i==5?(compact?6:12):0);
+            desired+=lines*(text_height_+4)+(compact?6:10)+(screen_==MenuScreen::graphics&&i==6?(compact?6:12):0);
         }
         if(dialog){const auto bytes=cp866(dialog_message);const auto pages=paginate_story({reinterpret_cast<const std::uint8_t*>(bytes.data()),bytes.size()},std::max(1,measure_w/8),100);
             desired=int(rows_.size())*(text_height_+4+(compact?6:10))+8+(pages.empty()?1:int(pages[0].size()))*(text_height_+4)+pad*2+8;}
@@ -646,7 +678,7 @@ const MenuFrame& Frontend::render(int width,int height){
         fill({content_x,top+text_height_*3+pad,content_w,text_height_+12},path_selected_?0xff3d3322:0xff242424);text(visible+"_",content_x+4,top+text_height_*3+pad+6,accent_,true);
         top=bottom-stacked_actions_height;
     }else if(screen_==MenuScreen::capture){paragraph(tr(MenuString::press_a_new_control_nesc_cancel_ngamepad_hold_start_and),{content_x,top+pad,content_w,bottom-top-pad*2});}
-    else if(screen_==MenuScreen::confirm||screen_==MenuScreen::conflict||screen_==MenuScreen::video_confirm||screen_==MenuScreen::notice||screen_==MenuScreen::outcome){
+    else if(screen_==MenuScreen::confirm||screen_==MenuScreen::conflict||screen_==MenuScreen::video_confirm||screen_==MenuScreen::video_unsaved||screen_==MenuScreen::notice||screen_==MenuScreen::outcome){
         paragraph(dialog_message,{content_x,top+pad,content_w,std::max(20,bottom-top-stacked_actions_height-pad*2)});top=bottom-stacked_actions_height;
     }
     if(illustrated){
@@ -664,14 +696,14 @@ const MenuFrame& Frontend::render(int width,int height){
     auto row_height=[&](int i){const auto& row=rows_[i];const int chars=std::max(1,(content_w-28)/8);
         int lines=std::max(1,(int(cp866(row.label).size())+chars-1)/chars);
         if(!row.value.empty()&&(editions||int(cp866(row.label).size()+cp866(row.value).size())*8>content_w-44))++lines;
-        return lines*(text_height_+4)+(compact?6:10)+(screen_==MenuScreen::graphics&&i==5?(compact?6:12):0);
+        return lines*(text_height_+4)+(compact?6:10)+(screen_==MenuScreen::graphics&&i==6?(compact?6:12):0);
     };
     top+=4;bottom-=4;
     int first=0;
     for(int i=0,total=0;i<=focus_&&i<int(rows_.size());++i){total+=row_height(i);while(total>bottom-top&&first<i){total-=row_height(first++);}}
     int y=top,last=first;
     for(int i=first;i<int(rows_.size());++i){const auto& row=rows_[i];const int rh=row_height(i);if(y+rh>bottom&&i>first)break;
-        const int gap=screen_==MenuScreen::graphics&&i==5?(compact?6:12):0;
+        const int gap=screen_==MenuScreen::graphics&&i==6?(compact?6:12):0;
         if(gap)fill({content_x,y+3,content_w,1},0xff575047);
         SDL_Rect r{content_x-4,y+gap,content_w+8,std::min(rh-gap-4,bottom-y-gap)};
         if(i==focus_){fill(r,0xff302b20);fill({r.x,y,2,r.h},accent_);}

@@ -122,6 +122,9 @@ enum class MenuString {
     original,
     video_base_fov_help,
     video_aspect_ratio,
+    discard_video_changes,
+    continue_video_setup,
+    unapplied_video_changes,
     count
 };
 inline const char* menu_text(MenuString id,LocaleId locale){
@@ -245,6 +248,9 @@ inline const char* menu_text(MenuString id,LocaleId locale){
         {"Оригинал","Original"},
         {"Угол эталонной сцены. Широкий экран расширяет обзор по горизонтали.","Reference scene angle. Widescreen expands the horizontal view."},
         {"Пропорции","Aspect ratio"},
+        {"Сбросить и выйти","Discard and leave"},
+        {"Продолжить настройку","Continue editing"},
+        {"Изменения видеорежима не применены.\nПрименить их перед выходом?","Video mode changes have not been applied.\nApply them before leaving?"},
     };
     static_assert(sizeof(entries)/sizeof(entries[0])==static_cast<unsigned>(MenuString::count));
     return entries[static_cast<unsigned>(id)][locale==LocaleId::ru?0:1];

@@ -72,6 +72,8 @@ int main(int argc,char** argv){
                 menu.main_menu();save("main");
                 for(int i=0;i<3;++i)key(menu,SDLK_DOWN);key(menu,SDLK_RETURN);save("credits");
                 menu.main_menu();key(menu,SDLK_DOWN);key(menu,SDLK_RETURN);key(menu,SDLK_RETURN);save("graphics");
+                key(menu,SDLK_RIGHT);key(menu,SDLK_ESCAPE);save("video-unsaved");
+                key(menu,SDLK_RETURN);key(menu,SDLK_RIGHT);
                 menu.pause();save("pause");menu.outcome(dok::SessionPhase::retry);save("outcome");
                 if(size[0]==320){key(menu,SDLK_DOWN);const auto& f=menu.render(320,200);const auto selected=std::find(f.pixels.begin(),f.pixels.end(),0xff302b20);check(selected!=f.pixels.end(),"Second outcome row must be visible");const auto at=selected-f.pixels.begin();SDL_Event click{};click.type=SDL_MOUSEBUTTONDOWN;click.button.button=SDL_BUTTON_LEFT;click.button.x=int(at%f.width)+8;click.button.y=int(at/f.width)+4;menu.handle(click,320,200);check(menu.screen()==dok::MenuScreen::main,"Second outcome row must be clickable at 320x200");}
                 menu.main_menu();key(menu,SDLK_RETURN);save("title");key(menu,SDLK_RETURN);save("readme");
@@ -88,6 +90,8 @@ int main(int argc,char** argv){
                 menu.main_menu();for(int i=0;i<3;++i)key(menu,SDLK_DOWN);key(menu,SDLK_RETURN);save("credits");
                 menu.preview_level(1);save("intro");menu.outcome(dok::SessionPhase::retry);save("outcome");
                 menu.main_menu();key(menu,SDLK_DOWN);key(menu,SDLK_RETURN);key(menu,SDLK_DOWN);key(menu,SDLK_DOWN);key(menu,SDLK_RETURN);key(menu,SDLK_RETURN);key(menu,SDLK_DOWN);key(menu,SDLK_RETURN);save("bindings");
+                menu.main_menu();key(menu,SDLK_DOWN);key(menu,SDLK_RETURN);key(menu,SDLK_RETURN);save("graphics");
+                key(menu,SDLK_RIGHT);key(menu,SDLK_ESCAPE);save("video-unsaved");
             }
         }
         std::ofstream report(out/"report.json");report<<"{\"menu_frames\":"<<frames<<",\"readback_frames\":"<<readbacks<<",\"font_contact_sheets\":3,\"source_fonts\":6,\"no_res\":true,\"audio\":false}\n";

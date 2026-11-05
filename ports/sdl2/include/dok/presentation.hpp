@@ -28,14 +28,14 @@ inline PresentationLayout presentation_layout(int width,int height,bool classic,
     const auto frame=out.frame;
     const bool wide=std::int64_t(frame.w)*3>std::int64_t(frame.h)*4+3;
     out.classic=classic||(automatic&&!wide);
-    out.reserved_panel=out.classic&&!wide;
+    out.reserved_panel=out.classic;
     out.view_height=out.reserved_panel?(old_gold?170:160):200;
     out.view_width=std::max(1,int(std::lround(240.0*frame.w/frame.h)));
     out.scene=frame;
-    if(out.reserved_panel)out.scene.h=frame.h*out.view_height/200;
     const int panel_width=std::min(frame.w,int(std::lround(frame.h*4.0/3.0)));
     const int panel_height=frame.h*(old_gold?30:40)/200;
     out.panel={frame.x+(frame.w-panel_width)/2,frame.y+frame.h-panel_height,panel_width,panel_height};
+    if(out.reserved_panel)out.scene.h=out.panel.y-frame.y;
     // A central DOS-sized weapon layer shares the world's pixel scale.
     const int weapon_height=frame.h*out.view_height/200;
     out.weapon={frame.x+(frame.w-panel_width)/2,out.scene.y+out.scene.h-weapon_height,panel_width,weapon_height};

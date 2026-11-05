@@ -7,6 +7,7 @@ struct HudFrame {int width,height;std::vector<std::uint32_t> pixels;};
 class Hud {
 public:
     explicit Hud(const Archive& archive);
+    IndexedSurface classic_backdrop(int width) const;
     IndexedSurface classic(const IndexedSurface& scene,const PlayerState& player,const std::string& message={}) const;
     IndexedSurface classic_mode(const IndexedSurface& scene,int frame_height,const PlayerState& player,const std::string& message={}) const;
     std::vector<HudPanel> overlay(IndexedSurface& scene,const PlayerState& player,const std::string& message={}) const;

@@ -85,7 +85,15 @@ int main(){
         const auto floor=gpu.horizontal({-240,0,-240,0},480,96,96,false);
         check(floor&&floor->vertices.size()>=3);
         for(const auto& vertex:floor->vertices){const auto& v=*vertex.precise;
-            check(std::isfinite(v[0])&&std::isfinite(v[1])&&v[2]>=0&&v[3]>=0&&v[3]<=95&&v[4]>=0&&v[4]<=95);}
+            check(std::isfinite(v[0])&&std::isfinite(v[1])&&v[2]>=-199&&v[3]>=0&&v[3]<=95&&v[4]>=0&&v[4]<=95);}
+        // A nearby wall behind the actor origin is still in front of the
+        // projection eye. It must cover the viewport rather than leave a hole.
+        const auto close=gpu.vertical({-240,0,-100,0},{240,0,-100,0},640,96,128,1);
+        check(close&&close->vertices.size()==4);
+        check(close->vertices.front().precise->at(0)<0&&close->vertices[1].precise->at(0)>320);
+        check(!gpu.vertical({-240,0,-201,0},{240,0,-201,0},640,96,128,1));
+        check(gpu.vertical({-240,0,100,0},{240,0,100,0},640,96,128,1,0,0,false,true).has_value());
+        check(!gpu.vertical({240,0,-100,0},{-240,0,-100,0},640,96,128,1,0,0,false,true));
         std::cout<<"VGA viewport and four DOS door records matched; full renderer pending\n";
     }catch(const std::exception& error){std::cerr<<error.what()<<'\n';return 1;}
 }

@@ -9,6 +9,8 @@ CellBounds original_cell_bounds(Pose pose,int side,int map_width,int map_length)
 CellBounds view_cell_bounds(Pose pose,int side,int map_width,int map_length,int view_width);
 // Kremlin class12: original 18-phase cyclic image crop; fixed port cadence.
 Image flowing_surface_image(const Image& source,std::uint64_t ticks);
+// Visible fraction of an OG billboard before it enters an opaque wall tile.
+std::array<double,2> billboard_wall_span(const World& world,Pose origin,int width,double yaw);
 // Rendering never ticks or activates the world. Mutable playback is supplied
 // through a const image getter before geometry is built.
 class SoftwareScene {

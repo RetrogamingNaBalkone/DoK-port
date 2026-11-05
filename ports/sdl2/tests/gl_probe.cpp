@@ -1,5 +1,6 @@
 #include "dok/gl_renderer.hpp"
 #include "dok/display.hpp"
+#include "dok/gpu_geometry.hpp"
 #include <SDL_opengl.h>
 #include <algorithm>
 #include <array>
@@ -27,6 +28,18 @@ int main(){
         const dok::Bytes light{lut.data(),lut.size()};
         const dok::Image image{2,2,0,{1,1,1,1}};
         auto quad=[](int depth){return std::vector<dok::RasterVertex>{{20,20,depth,0,0},{300,20,depth,1,0},{300,140,depth,1,1},{20,140,depth,0,1}};};
+        for(int width:{320,426,568,800})for(bool deferred:{false,true}){
+            gl.begin();gl.scene_view({0,0,640,384},width,170);gl.world(palette,deferred);
+            const dok::GpuCamera camera({0,-300,0,0},width,0,{},170);
+            const auto wall=camera.vertical({-1000,0,-100,0},{1000,0,-100,0},640,2,2,1);
+            check(wall.has_value(),"Near wall discarded before projection eye");
+            gl.polygon(wall->vertices,image,light,dok::RasterAxis::vertical);gl.flush_world();
+            for(int x:{1,160,320,480,638}){
+                std::array<unsigned char,4> p{};read(x,190,1,1,GL_RGBA,GL_UNSIGNED_BYTE,p.data());
+                check(p[0]==16,"Near wall leaves a black Hor+ gap");
+            }
+        }
+        gl.begin();gl.scene_view({0,0,640,384},320,160);
         for(auto axis:{dok::RasterAxis::vertical,dok::RasterAxis::horizontal}){
             int previous=-1;
             for(int depth=1920;depth<=3720;depth+=12){

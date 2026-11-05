@@ -6,8 +6,9 @@ class GpuCamera {
 public:
     GpuCamera(Pose pose,int width,float yaw_remainder=0,std::array<double,4> offset={},int height=160,double focal=200.0);
     std::optional<RenderPolygon> vertical(Pose a,Pose b,int height,int tw,int th,
-        std::uint8_t flags,int v0=0,int v1=0,bool reflection=false) const;
-    std::optional<RenderPolygon> sprite(Pose origin,int width,int height,int tw,int th,std::uint8_t flags) const;
+        std::uint8_t flags,int v0=0,int v1=0,bool reflection=false,bool one_sided=false) const;
+    std::optional<RenderPolygon> sprite(Pose origin,int width,int height,int tw,int th,std::uint8_t flags,
+        std::array<double,2> span={0,1}) const;
     std::optional<RenderPolygon> horizontal(Pose origin,int side,int tw,int th,bool ceiling) const;
 private:
     struct Point {double x,y,z,u,v;};

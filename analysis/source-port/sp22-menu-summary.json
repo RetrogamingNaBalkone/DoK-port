@@ -1,0 +1,18 @@
+{
+  "date": "2026-11-05",
+  "task": "SP22 partial: mouse cycling, unsaved video dialog, aspect placement",
+  "base_revision": "3ac8479 plus existing working tree changes",
+  "ctest_passed": 18,
+  "ctest_total": 18,
+  "cpu_menu_frames": 572,
+  "backend_readbacks": 384,
+  "menu_ux_processes": 17,
+  "packaged_processes": 8,
+  "evidence": [
+    "research/evidence/source-port/sp22-menu-r1",
+    "research/evidence/source-port/sp22-menu-r1-process"
+  ],
+  "package": "artifacts/sdl2/windows-playtest",
+  "exe_sha256": "54AA41F066BB85D6F77E58F7830EC87A3D0A0D9BA2526962DBCB1088F8866D3C",
+  "limitations": ["Physical controller not tested", "Full SP22 audit and game descriptions remain open"]
+}

@@ -13,10 +13,13 @@ GpuCamera::Point GpuCamera::transform(double x,double y,double z,double u,double
 std::optional<RenderPolygon> GpuCamera::project(const std::array<Point,4>& points,std::uint8_t flags,RasterAxis axis)const{
     // Clip in camera space, interpolating texture coordinates before projection.
     std::array<Point,8> clipped;std::size_t count=0;
+    // Projection's eye is at z=-200. Clipping at z=0 removes visible nearby
+    // walls and floor, especially at the edges of a Hor+ viewport.
+    constexpr double near=-199.0;
     for(std::size_t i=0;i<points.size();++i){const auto& a=points[i];const auto& b=points[(i+1)%points.size()];
-        if(a.z>=0)clipped[count++]=a;
-        if((a.z<0)!=(b.z<0)){const double t=-a.z/(b.z-a.z);
-            clipped[count++]={a.x+(b.x-a.x)*t,a.y+(b.y-a.y)*t,0,a.u+(b.u-a.u)*t,a.v+(b.v-a.v)*t};}
+        if(a.z>=near)clipped[count++]=a;
+        if((a.z<near)!=(b.z<near)){const double t=(near-a.z)/(b.z-a.z);
+            clipped[count++]={a.x+(b.x-a.x)*t,a.y+(b.y-a.y)*t,near,a.u+(b.u-a.u)*t,a.v+(b.v-a.v)*t};}
     }
     if(count<3)return std::nullopt;
     RenderPolygon out;out.flags=flags|1;out.axis=axis;out.updates_image_winding=false;
@@ -31,17 +34,24 @@ std::optional<RenderPolygon> GpuCamera::project(const std::array<Point,4>& point
     return out;
 }
 std::optional<RenderPolygon> GpuCamera::vertical(Pose a,Pose b,int height,int tw,int th,
-    std::uint8_t flags,int v0,int v1,bool reflection)const{
+    std::uint8_t flags,int v0,int v1,bool reflection,bool one_sided)const{
+    if(one_sided){
+        const auto p=transform(a.x,a.y,a.z,0,0),q=transform(b.x,b.y,b.z,0,0);
+        if(p.x*(q.z+200.0)-q.x*(p.z+200.0)>=0)return std::nullopt;
+    }
     if(!v1)v1=th-1;
     const double u0=reflection?tw-1:0,u1=reflection?0:tw-1;
     return project({transform(a.x,a.y-height,a.z,u0,v0),transform(b.x,b.y-height,b.z,u1,v0),
         transform(b.x,b.y,b.z,u1,v1),transform(a.x,a.y,a.z,u0,v1)},flags,RasterAxis::vertical);
 }
-std::optional<RenderPolygon> GpuCamera::sprite(Pose origin,int width,int height,int tw,int th,std::uint8_t flags)const{
+std::optional<RenderPolygon> GpuCamera::sprite(Pose origin,int width,int height,int tw,int th,std::uint8_t flags,std::array<double,2> span)const{
     const auto p=transform(origin.x,origin.y,origin.z,0,0);
-    if(p.z<=0)return std::nullopt;
-    return project({{{p.x-width*0.5,p.y-height,p.z,0,0},{p.x+width*0.5,p.y-height,p.z,double(tw-1),0},
-        {p.x+width*0.5,p.y,p.z,double(tw-1),double(th-1)},{p.x-width*0.5,p.y,p.z,0,double(th-1)}}},flags,RasterAxis::vertical);
+    if(p.z<-199.0)return std::nullopt;
+    if(span[0]>=span[1])return std::nullopt;
+    const auto left=p.x+width*(span[0]-0.5),right=p.x+width*(span[1]-0.5);
+    const auto u0=(tw-1)*span[0],u1=(tw-1)*span[1];
+    return project({{{left,p.y-height,p.z,u0,0},{right,p.y-height,p.z,u1,0},
+        {right,p.y,p.z,u1,double(th-1)},{left,p.y,p.z,u0,double(th-1)}}},flags,RasterAxis::vertical);
 }
 std::optional<RenderPolygon> GpuCamera::horizontal(Pose origin,int side,int tw,int th,bool ceiling)const{
     const double x=origin.x,y=origin.y,z=origin.z;

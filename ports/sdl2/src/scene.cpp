@@ -55,6 +55,31 @@ CellBounds view_cell_bounds(Pose pose,int side,int width,int length,int view_wid
     b.min_x=std::max(0,b.min_x-margin);b.min_z=std::max(0,b.min_z-margin);
     b.max_x=std::min(width-1,b.max_x+margin);b.max_z=std::min(length-1,b.max_z+margin);return b;
 }
+std::array<double,2> billboard_wall_span(const World& world,Pose origin,int width,double yaw){
+    std::array<double,2> span{0,1};if(width<=0)return span;
+    const auto& d=world.definition;const double angle=yaw*3.14159265358979323846/180.0;
+    const double vx=width*std::cos(angle),vz=width*std::sin(angle);
+    const double x0=origin.x-vx/2,z0=origin.z-vz/2;
+    const int minx=std::max(0,int(std::floor(std::min(x0,x0+vx)/d.cell_side)));
+    const int maxx=std::min(d.width-1,int(std::floor(std::max(x0,x0+vx)/d.cell_side)));
+    const int minz=std::max(0,int(std::floor(std::min(z0,z0+vz)/d.cell_side)));
+    const int maxz=std::min(d.length-1,int(std::floor(std::max(z0,z0+vz)/d.cell_side)));
+    for(int z=minz;z<=maxz;++z)for(int x=minx;x<=maxx;++x){
+        const auto* object=d.object(world.maps.at("tmap")[z*d.width+x]);
+        if(!object||object->class_id!=2)continue;
+        double enter=0,leave=1;
+        const auto slab=[&](double start,double delta,double lo,double hi){
+            if(std::abs(delta)<1e-10)return start>=lo&&start<hi;
+            auto a=(lo-start)/delta,b=(hi-start)/delta;if(a>b)std::swap(a,b);
+            enter=std::max(enter,a);leave=std::min(leave,b);return enter<leave;
+        };
+        if(!slab(x0,vx,x*d.cell_side,(x+1)*d.cell_side)||!slab(z0,vz,z*d.cell_side,(z+1)*d.cell_side))continue;
+        if(leave<=0.5)span[0]=std::max(span[0],leave);
+        else if(enter>=0.5)span[1]=std::min(span[1],enter);
+        else return {0,0};
+    }
+    return span;
+}
 SoftwareScene::SoftwareScene(const Archive& archive,const LevelDefinition& level){
     if(level.dataset==DatasetId::unknown)
         throw std::invalid_argument("Scene camera currently verified for Kremlin only");
@@ -153,8 +178,8 @@ const IndexedSurface& SoftwareScene::render(const World& world,Pose pose,const s
     const auto& hero=world.objects.at(*world.player);
     const GpuCamera precise_camera(pose,view_width,hero.motion?hero.motion->mouse_remainder:0,camera_offset,gpu_height,focal);
     const auto vertical_plane=[&](const SoftwareCamera& c,Pose a,Pose b,std::int16_t h,int tw,int th,
-        std::uint8_t flags=1,std::int16_t bias=0,int v0=0,int v1=0,bool reflection=false){
-        auto result=gpu?precise_camera.vertical(a,b,h,tw,th,flags,v0,v1,reflection):
+        std::uint8_t flags=1,std::int16_t bias=0,int v0=0,int v1=0,bool reflection=false,bool one_sided=false){
+        auto result=gpu?precise_camera.vertical(a,b,h,tw,th,flags,v0,v1,reflection,one_sided):
             dok::vertical_plane(c,a,b,h,tw,th,flags,bias,v0,v1,reflection);
         if(gpu&&dataset_==DatasetId::old_gold&&result){const auto p=c.transform(a.x,a.y,a.z);result->old_gold_light=old_gold_light_row(p.lateral,p.depth,1008);}return result;
     };
@@ -189,14 +214,14 @@ const IndexedSurface& SoftwareScene::render(const World& world,Pose pose,const s
         if(polygon){polygon->material=material;polygon->map_cell=map_cell;polygons.push_back(std::move(*polygon));}
     };
     auto edge=[&](int x,int y,int z,int width,int height,int orientation,std::size_t material,
-                   std::uint8_t flags,int v0=0,int v1=0){
+                   std::uint8_t flags,int v0=0,int v1=0,bool one_sided=false){
         Pose a{x,y,z,0},b=a;
         if(orientation==0)b.x+=width;
         else if(orientation==90){a.z+=width;}
         else if(orientation==180){a.x+=width;a.z+=width;b.z+=width;}
         else {a.x+=width;b.x+=width;b.z+=width;}
         const auto& image=images_[material];
-        auto polygon=vertical_plane(camera,a,b,word(height),image.width,image.height,flags,0,v0,v1);
+        auto polygon=vertical_plane(camera,a,b,word(height),image.width,image.height,flags,0,v0,v1,false,one_sided);
         if(polygon)polygon->updates_image_winding=false; // Edge draw 10b0:0bf5 does not change image bit20.
         add(std::move(polygon),material);
     };
@@ -220,7 +245,7 @@ const IndexedSurface& SoftwareScene::render(const World& world,Pose pose,const s
             for(int i=0;i<4;++i)if(at("tmap",x+dx[i],z+dz[i]).class_id!=2){
                 const auto neighbour=at("fcmap",x+dx[i],z+dz[i]).number(0x54);
                 edge(px,base,pz,width,word(height-neighbour+1),orientation[i],material,
-                     static_cast<std::uint8_t>(object.flags),word(divide32(multiply32(image.height,neighbour),level.cell_height)));
+                     static_cast<std::uint8_t>(object.flags),word(divide32(multiply32(image.height,neighbour),level.cell_height)),0,true);
             }
         }else{
             auto floor_material=surface.class_id==12?picture(surface):resource(surface.resource(0x5a));
@@ -260,8 +285,15 @@ const IndexedSurface& SoftwareScene::render(const World& world,Pose pose,const s
     for(const auto& instance:dynamic){
         if(!instance.image)continue;
         const auto& image=*instance.image;
-        auto polygon=billboard(camera,instance.pose,word(image.width*instance.scale),word(image.height*instance.scale),
-            image.width,image.height,static_cast<std::uint8_t>(instance.flags));
+        const int sprite_width=word(image.width*instance.scale),sprite_height=word(image.height*instance.scale);
+        const bool og_monster=gpu&&dataset_==DatasetId::old_gold&&instance.replaces&&
+            instance.replaces<=world.objects.size()&&world.objects[instance.replaces-1].monster.has_value();
+        auto polygon=og_monster?precise_camera.sprite(instance.pose,sprite_width,sprite_height,image.width,image.height,
+            static_cast<std::uint8_t>(instance.flags),billboard_wall_span(world,instance.pose,sprite_width,
+                pose.heading-(hero.motion?hero.motion->mouse_remainder:0)+camera_offset[3])):
+            billboard(camera,instance.pose,sprite_width,sprite_height,image.width,image.height,static_cast<std::uint8_t>(instance.flags));
+        if(og_monster&&polygon){const auto v=camera.transform(instance.pose.x,instance.pose.y,instance.pose.z);
+            polygon->old_gold_light=old_gold_light_row(sub32(instance.pose.x,pose.x),v.depth,2184);}
         if(polygon){
             const int x=std::clamp(instance.pose.x/side,0,level.width-1),z=std::clamp(instance.pose.z/side,0,level.length-1);
             polygon->map_cell=z*level.width+x;

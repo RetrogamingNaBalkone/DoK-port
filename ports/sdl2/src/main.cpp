@@ -395,6 +395,10 @@ int main(int argc,char** argv){
                 for(std::size_t i=0;i<pixels.size();++i)if(weapon.pixels[i])pixels[i]=scene->palette()[weapon.pixels[i]];
                 display->overlay(pixels,weapon.width(),weapon.height(),rect(layout.weapon));
                 if(layout.classic){
+                    const auto backdrop=hud->classic_backdrop(view_width);
+                    pixels.resize(backdrop.pixels.size());
+                    std::transform(backdrop.pixels.begin(),backdrop.pixels.end(),pixels.begin(),[&](auto c){return scene->palette()[c];});
+                    display->overlay(pixels,backdrop.width(),backdrop.height(),{frame_rect.x,layout.panel.y,frame_rect.w,layout.panel.h});
                     const int native_height=world->definition.dataset==dok::DatasetId::old_gold?170:160;
                     const auto panel=hud->classic(dok::IndexedSurface(320,native_height),*world->objects.at(*world->player).player_state,world->visible_message(settings.locale));
                     pixels.resize(320*(200-native_height));

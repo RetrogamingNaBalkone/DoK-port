@@ -50,6 +50,7 @@ def main():
   for locale in ['ru','en']:
    for backend in ['gl','software']:
     for hud in ['classic','desktop']:
+     classic_refs={}
      for w,h in [(800,600),(960,600),(960,540),(1000,600),(1440,600)]:
       name=f'{dataset}-{locale}-{backend}-{hud}-{w}x{h}'
       img,_,_=run(name,common+['--locale',locale,'--renderer',backend,'--hud',hud,'--size',f'{w}x{h}'])
@@ -61,13 +62,23 @@ def main():
         assert img.crop((0,0,x,h)).getbbox() is None and img.crop((w-x,0,w,h)).getbbox() is None,(name,'Software did not reset to 4:3')
        else:
         assert img.crop((0,0,8,h//2)).getbbox() and img.crop((w-8,0,w,h//2)).getbbox(),(name,'Pillarboxed GL world')
+      if backend=='gl' and hud=='classic':
+       pw=round(h*4/3);ph=h*(30 if dataset=='og' else 40)//200;x=(w-pw)//2;top=h-ph
+       if w==pw:classic_refs[h]=img
+       else:
+        if h not in classic_refs:
+         classic_refs[h],_,_=run(f'{dataset}-{locale}-classic-reference-{h}',common+['--locale',locale,'--renderer','gl','--hud','classic','--size',f'{pw}x{h}'])
+        assert img.crop((x,top,x+pw,h)).data==classic_refs[h].crop((0,top,pw,h)).data,(name,'Classic panel differs from 4:3')
+        left=img.crop((0,top,x,h)).data;right=img.crop((x+pw,top,w,h)).data
+        colors=lambda data:set(zip(data[::3],data[1::3],data[2::3]))
+        assert len(colors(left))>=(2 if dataset=='og' else 4) and len(colors(right))>=(2 if dataset=='og' else 4),(name,'Missing native panel texture in side extensions')
      print(dataset,locale,backend,hud,'PASS',flush=True)
   for hud in ['classic','desktop']:
    a,_,_=run(f'{dataset}-{hud}-fxaa-off',common+['--renderer','gl','--hud',hud,'--size','960x540','--fxaa','off'])
    b,_,_=run(f'{dataset}-{hud}-fxaa-on',common+['--renderer','gl','--hud',hud,'--size','960x540','--fxaa','on'])
    if hud=='classic':
     top=459 if dataset=='og' else 432
-    assert a.crop((120,top,840,540)).data==b.crop((120,top,840,540)).data,'FXAA modified panel'
+    assert a.crop((0,top,960,540)).data==b.crop((0,top,960,540)).data,'FXAA modified panel or side extensions'
   # Borderless must preserve the selected internal 4:3 frame, irrespective of desktop aspect.
   img,log,d=run(f'{dataset}-fullscreen43',common+['--renderer','gl','--hud','classic'],
     '[video]\nfullscreen=1\nfullscreen_width=800\nfullscreen_height=600\n',script='0 state fullscreen\n')

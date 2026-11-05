@@ -101,7 +101,40 @@ int main(){
         down(fullscreen,2);key(fullscreen,SDLK_RETURN);
         check(fullscreen.video_pending()&&fs.video.fullscreen&&fs.video.width==800&&fs.video.height==600&&fs.video.fullscreen_width==1280&&fs.video.fullscreen_height==720,"Fullscreen preset must not change window size");
         key(fullscreen,SDLK_RETURN);check(!fullscreen.video_pending()&&command(fullscreen,dok::MenuCommand::keep_video),"Confirm fullscreen mode");
-        down(fullscreen,2);check(fullscreen.focused_row()==7,"HUD row navigation");down(fullscreen,1);check(fullscreen.focused_row()==9,"Read-only aspect must be skipped");
+        down(fullscreen,2);check(fullscreen.focused_row()==8,"HUD row navigation");down(fullscreen,1);check(fullscreen.focused_row()==9,"Defaults row navigation");
+        // Leave a staged mode through Escape, B and the Back row. A cancelled
+        // prompt must preserve the draft and focus; discard is always explicit.
+        for(int route=0;route<3;++route){
+            dok::AppSettings edits;dok::Frontend staged(edits);staged.render(640,480);
+            down(staged,1);key(staged,SDLK_RETURN);key(staged,SDLK_RETURN);
+            down(staged,2);key(staged,SDLK_RIGHT);const auto unchanged=edits.video;
+            down(staged,1);check(staged.focused_row()==4,"Aspect directly below resolution is read-only");key(staged,SDLK_UP);
+            if(route==0)key(staged,SDLK_ESCAPE);
+            else if(route==1)pad(staged,SDL_CONTROLLER_BUTTON_B);
+            else{key(staged,SDLK_UP);key(staged,SDLK_UP);key(staged,SDLK_UP);key(staged,SDLK_RETURN);}
+            check(staged.screen()==dok::MenuScreen::video_unsaved&&staged.focused_row()==2&&edits.video==unchanged,"Staged video leave prompt defaults to continue");
+            key(staged,SDLK_RETURN);check(staged.screen()==dok::MenuScreen::graphics,"Continue editing");
+            key(staged,SDLK_ESCAPE);key(staged,SDLK_ESCAPE);check(staged.screen()==dok::MenuScreen::graphics,"Escape preserves staged mode");
+            key(staged,SDLK_ESCAPE);key(staged,SDLK_UP);key(staged,SDLK_RETURN);
+            check(staged.screen()==dok::MenuScreen::settings&&edits.video==unchanged,"Explicit discard leaves without applying");
+            key(staged,SDLK_RETURN);key(staged,SDLK_ESCAPE);check(staged.screen()==dok::MenuScreen::settings,"Discard clears staged mode");
+            key(staged,SDLK_RETURN);down(staged,2);key(staged,SDLK_RIGHT);key(staged,SDLK_ESCAPE);
+            key(staged,SDLK_UP);key(staged,SDLK_UP);staged.update(20000);key(staged,SDLK_RETURN);
+            check(staged.video_pending()&&edits.video!=unchanged&&command(staged,dok::MenuCommand::apply_video),"Prompt applies preserved draft");
+            staged.update(35001);check(edits.video==unchanged&&command(staged,dok::MenuCommand::revert_video),"Prompt apply retains timed rollback");
+        }
+        // Right click decrements values but never activates a navigation/action row.
+        for(auto size:{std::array<int,2>{640,480},std::array<int,2>{1280,720}}){
+            dok::AppSettings edits;dok::Frontend mouse(edits);mouse.render(size[0],size[1]);
+            auto right=[&]{const auto& f=mouse.render(size[0],size[1]);const auto selected=std::find(f.pixels.begin(),f.pixels.end(),0xff302b20);
+                check(selected!=f.pixels.end(),"Mouse test focus visible");const auto at=selected-f.pixels.begin();SDL_Event click{};click.type=SDL_MOUSEBUTTONDOWN;click.button.button=SDL_BUTTON_RIGHT;
+                click.button.x=(int(at%f.width)+8)*size[0]/f.width;click.button.y=(int(at/f.width)+4)*size[1]/f.height;mouse.handle(click,size[0],size[1]);};
+            down(mouse,1);right();check(mouse.screen()==dok::MenuScreen::main,"Right click never opens settings");key(mouse,SDLK_RETURN);key(mouse,SDLK_RETURN);
+            down(mouse,2);right();key(mouse,SDLK_ESCAPE);key(mouse,SDLK_UP);key(mouse,SDLK_UP);key(mouse,SDLK_RETURN);
+            check(edits.video.width==1280&&edits.video.height==800,"Right click cycles resolution backwards");key(mouse,SDLK_RETURN);
+            right();check(mouse.screen()==dok::MenuScreen::graphics&&!mouse.video_pending(),"Right click cannot apply video");
+            key(mouse,SDLK_ESCAPE);down(mouse,1);key(mouse,SDLK_RETURN);right();check(edits.master_volume==95,"Right click decrements volume");
+        }
         dok::Frontend background(s);background.render(640,480);SDL_Event event{};event.type=SDL_WINDOWEVENT;event.window.event=SDL_WINDOWEVENT_FOCUS_LOST;background.handle(event,640,480);
         event.type=SDL_CONTROLLERAXISMOTION;event.caxis.axis=SDL_CONTROLLER_AXIS_LEFTY;event.caxis.value=25000;background.handle(event,640,480);
         check(background.focused_row()==0,"Background pad moved menu focus");

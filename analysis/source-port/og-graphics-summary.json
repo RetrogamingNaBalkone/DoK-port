@@ -1,0 +1,57 @@
+{
+  "exe_sha256": "e91ec3f83e5a0d174ead8318f6dbaf09ba03c6f2210f55efc55c61565d632c24",
+  "original_sha256_before": {
+    "originals\\Old_Gold_3D\\OLD_GOLD.RES": "e376855167b64a7190ec2da0ba9bd1da129ba178c4033aebadebca3f08b2be25",
+    "originals\\Old_Gold_3D\\OG.EXE": "7965e1d67128f196fbcf2bc449d97197f355c6b81cf043608fc9e01103ea043f"
+  },
+  "original_sha256_after": {
+    "originals\\Old_Gold_3D\\OLD_GOLD.RES": "e376855167b64a7190ec2da0ba9bd1da129ba178c4033aebadebca3f08b2be25",
+    "originals\\Old_Gold_3D\\OG.EXE": "7965e1d67128f196fbcf2bc449d97197f355c6b81cf043608fc9e01103ea043f"
+  },
+  "focused": "PASS 7 native HUD states; billboard wall clipping; 58 original monsters, 57 moved; 104400 wall occupancy checks over30s",
+  "gl": "Transitions 0,311,1\nSharp transitions 0,311,1; FXAA changed 1708 edge pixels; classic viewport 160/170 passed\nSmooth LIGHT anchors/ramp, wall occlusion, transparent depth, UI and nearest/linear passed\nInternal framebuffer resolution, bars, orientation, reuse and allocation rejection passed\nDisplay internal size and fullscreen mouse mapping passed",
+  "rotations": [
+    {
+      "hud": "classic",
+      "headings": [
+        83,
+        81,
+        73,
+        58,
+        36,
+        7,
+        337,
+        307,
+        277,
+        247,
+        217,
+        187,
+        157
+      ],
+      "frames": 13,
+      "map_black_pixels": 20
+    },
+    {
+      "hud": "desktop",
+      "headings": [
+        83,
+        81,
+        73,
+        58,
+        36,
+        7,
+        337,
+        307,
+        277,
+        247,
+        217,
+        187,
+        157
+      ],
+      "frames": 13,
+      "map_black_pixels": 20
+    }
+  ],
+  "limitations": "Hidden Windows GL; synthetic billboard wall span and original monster center occupancy. No claim of full DOS/AI parity or full map playthrough.",
+  "native_map_saved_oracle": "6/6 current frames byte-exact; fresh x86 run unavailable: Unicorn path read denied"
+}
