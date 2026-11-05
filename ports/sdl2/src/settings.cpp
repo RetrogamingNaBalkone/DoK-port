@@ -66,7 +66,7 @@ AppSettings load_settings(const std::filesystem::path& file,std::string& warning
         if(!std::filesystem::exists(file))return s;
         if(std::filesystem::file_size(file)>65536)throw std::runtime_error("Settings file too large");
         std::ifstream f(file,std::ios::binary);if(!f)throw std::runtime_error("Cannot read settings");
-        std::ostringstream text;text<<f.rdbuf();const auto m=values(text.str());
+        std::ostringstream text;text<<f.rdbuf();if(f.bad())throw std::runtime_error("Cannot read settings");const auto m=values(text.str());
         if(integer(m,"settings.version",0,1,1)!=1)throw std::runtime_error("Unsupported settings version");
         const int resource_count=integer(m,"resources.count",0,0,64);
         for(int i=0;i<resource_count;++i){const auto it=m.find("resources.path"+std::to_string(i));if(it==m.end())throw std::runtime_error("Missing resource path");s.resource_paths.push_back(path_unhex(it->second));}
@@ -105,7 +105,7 @@ AppSettings load_settings(const std::filesystem::path& file,std::string& warning
     }catch(const std::exception& e){warning=e.what();return AppSettings{};}return s;
 }
 bool save_settings(const std::filesystem::path& file,const AppSettings& s,std::string& error){
-    error.clear();const auto temp=std::filesystem::path(file.wstring()+L".tmp");
+    error.clear();auto temp=file;temp+=".tmp";
     try{
         if(!file.parent_path().empty())std::filesystem::create_directories(file.parent_path());
         {std::ofstream f(temp,std::ios::binary|std::ios::trunc);f<<encode_settings(s);f.flush();if(!f)throw std::runtime_error("Cannot write settings");}

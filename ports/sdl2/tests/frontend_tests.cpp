@@ -1,4 +1,5 @@
 #include "dok/frontend.hpp"
+#include "dok/launch.hpp"
 #include <algorithm>
 #include <fstream>
 #include <iostream>
@@ -17,6 +18,26 @@ int main(){
     try{
         const auto dir=std::filesystem::current_path()/"frontend-settings-test";std::filesystem::create_directories(dir);
         const auto path=dir/"settings.ini";std::error_code ec;std::filesystem::remove(path,ec);
+        {
+            dok::LaunchArguments launch;unsigned calls=0;
+            const auto platform=[&]{++calls;return dir/"platform";};
+            check(dok::select_profile(launch,dir,platform).second=="platform"&&calls==1,"Default platform profile");
+            std::filesystem::create_directory(dir/"portable");
+            check(!dok::portable_marker(dir),"Portable directory is not a marker");
+            std::filesystem::remove(dir/"portable");
+            for(const auto name:{"portable","PORTABLE.txt","portable.any.extension"}){
+                {std::ofstream marker(dir/name);}
+                check(dok::select_profile(launch,dir,platform).second=="portable"&&calls==1,"Marker bypasses platform path");
+                launch.user_directory=dir/"explicit";
+                check(dok::select_profile(launch,dir,platform).first==*launch.user_directory&&calls==1,"Explicit path wins without platform lookup");
+                launch.user_directory.reset();std::filesystem::remove(dir/name);
+            }
+            const auto absolute=std::filesystem::absolute(dir).lexically_normal();
+            check(dok::store_resource_path((absolute/"games/a.res").u8string(),absolute)=="games/a.res","Internal path is relative");
+            check(dok::resolve_resource_path("games/a.res",absolute)==absolute/"games/a.res","Relative path resolves from profile");
+            const auto external=absolute.parent_path()/"external.res";
+            check(dok::store_resource_path(external.u8string(),absolute)==external.u8string(),"External path stays absolute");
+        }
         SDL_SetHint(SDL_HINT_PREFERRED_LOCALES,"ru_RU");check(dok::AppSettings{}.locale==dok::LocaleId::ru,"Russian OS locale");
         SDL_SetHint(SDL_HINT_PREFERRED_LOCALES,"de_DE");check(dok::AppSettings{}.locale==dok::LocaleId::en,"Other OS locale");
         SDL_ResetHint(SDL_HINT_PREFERRED_LOCALES);

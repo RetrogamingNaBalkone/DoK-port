@@ -15,6 +15,7 @@
 #include "dok/frontend.hpp"
 #include "dok/view_motion.hpp"
 #include "dok/cheat.hpp"
+#include "dok/launch.hpp"
 #include "dok/input_replay.hpp"
 #include <chrono>
 #include <cmath>
@@ -25,6 +26,12 @@
 #include <memory>
 #include <sstream>
 #include <stdexcept>
+#ifdef _WIN32
+#define WIN32_LEAN_AND_MEAN
+#define NOMINMAX
+#include <windows.h>
+#include <shellapi.h>
+#endif
 
 namespace {
 struct SdlEnd {~SdlEnd(){SDL_Quit();}};
@@ -32,6 +39,20 @@ struct Loaded {std::filesystem::path path;dok::Archive archive;};
 struct ScriptEvent {unsigned frame;std::string action,value;};
 }
 int main(int argc,char** argv){
+#ifdef _WIN32
+    // The MinGW CRT supplies ANSI argv. Paths throughout the port use UTF-8.
+    std::vector<std::string> utf8_arguments;std::vector<char*> utf8_argv;
+    int wide_count=0;wchar_t** wide=CommandLineToArgvW(GetCommandLineW(),&wide_count);
+    if(!wide)return 1;
+    for(int i=0;i<wide_count;++i){
+        const int size=WideCharToMultiByte(CP_UTF8,0,wide[i],-1,nullptr,0,nullptr,nullptr);
+        if(size<=0){LocalFree(wide);return 1;}
+        std::string value(size,'\0');WideCharToMultiByte(CP_UTF8,0,wide[i],-1,value.data(),size,nullptr,nullptr);
+        value.pop_back();utf8_arguments.push_back(std::move(value));
+    }
+    LocalFree(wide);for(auto& value:utf8_arguments)utf8_argv.push_back(value.data());utf8_argv.push_back(nullptr);
+    argc=wide_count;argv=utf8_argv.data();
+#endif
     const bool diagnostic_hidden=std::any_of(argv+1,argv+argc,[](const char* arg){return std::string(arg)=="--hidden";});
     std::filesystem::path log_path;
     const auto fail=[&](const char* message){
@@ -50,14 +71,13 @@ int main(int argc,char** argv){
     SDL_SetHint(SDL_HINT_WINDOWS_DPI_SCALING,"0"); // Selected sizes are pixels.
     if(SDL_Init(SDL_INIT_VIDEO|SDL_INIT_GAMECONTROLLER|SDL_INIT_AUDIO)!=0)return fail(SDL_GetError());SdlEnd sdl;
     try{
-        char* pref=SDL_GetPrefPath("DoK-port","SourcePort");if(!pref)throw std::runtime_error(SDL_GetError());
-        std::filesystem::path user_path=std::filesystem::u8path(pref);SDL_free(pref);
-        for(int i=1;i+1<argc;++i)if(std::string(argv[i])=="--user-dir")user_path=std::filesystem::u8path(argv[++i]);
-        std::filesystem::create_directories(user_path);log_path=user_path/"port.log";std::ofstream log(log_path);
-        std::string warning;auto stored=dok::load_settings(user_path/"settings.ini",warning);auto settings=stored;
+        const auto arguments=dok::parse_launch_arguments(argc,argv);
+        dok::AppSettings settings;
         unsigned frame_limit=0;std::string screenshot,level_name,script_path,replay_path;std::optional<dok::InputReplay> replay;std::vector<std::string> paths,source_choices;bool skip_intro=false,replay_live_input=false,hidden=false;
-        for(int i=1;i<argc;++i){std::string arg=argv[i];
-            auto value=[&]()->std::string{if(i+1>=argc)throw std::runtime_error("Missing value for "+arg);return argv[++i];};
+        const auto apply_arguments=[&]{
+        paths.clear();source_choices.clear();
+        for(const auto& option:arguments.options){const auto& arg=option.first;
+            auto value=[&]()->std::string{return option.second;};
             if(arg=="--res")paths.push_back(value());else if(arg=="--frames")frame_limit=std::stoul(value());
             else if(arg=="--input-replay")replay_path=value();
             else if(arg=="--hidden")hidden=true;
@@ -80,6 +100,25 @@ int main(int argc,char** argv){
                     if(index<0)throw std::runtime_error("Unsupported original software mode");settings.video.software_mode=index;}
             }else throw std::runtime_error("Unknown option: "+arg);
         }
+        };
+        // Validate option values before touching a profile, then apply the same
+        // parsed overrides to the loaded settings without persisting them.
+        apply_arguments();
+        char* base=SDL_GetBasePath();if(!base)throw std::runtime_error(SDL_GetError());
+        const auto executable_path=std::filesystem::absolute(std::filesystem::u8path(base)).lexically_normal();SDL_free(base);
+        const auto profile=dok::select_profile(arguments,executable_path,[]{
+            char* pref=SDL_GetPrefPath("DoK-port","SourcePort");if(!pref)throw std::runtime_error(SDL_GetError());
+            const auto path=std::filesystem::u8path(pref);SDL_free(pref);return path;
+        });
+        const auto& user_path=profile.first;const auto& profile_mode=profile.second;
+        std::filesystem::create_directories(user_path);log_path=user_path/"port.log";std::ofstream log(log_path);
+        if(!log)throw std::runtime_error("Cannot write profile log: "+log_path.u8string());
+        log<<"Profile mode: "<<profile_mode<<"\nProfile directory: "<<user_path.u8string()<<'\n';
+        std::string warning;auto stored=dok::load_settings(user_path/"settings.ini",warning);
+        bool settings_backup_required=!warning.empty();
+        for(auto& path:stored.resource_paths)path=dok::resolve_resource_path(path,user_path).u8string();
+        for(auto& path:stored.resource_choices)if(!path.empty())path=dok::resolve_resource_path(path,user_path).u8string();
+        settings=stored;apply_arguments();
         if(replay_live_input&&replay_path.empty())throw std::runtime_error("--replay-live-input requires --input-replay");
         if(!replay_path.empty()){
             if(!skip_intro||level_name.empty())throw std::runtime_error("Input replay requires --level and --skip-intro");
@@ -123,17 +162,22 @@ int main(int argc,char** argv){
             log<<(sources.sources().size()==count?"Duplicate ignored ":"Loaded ")<<dok::dataset_name(dataset)<<": "<<path<<'\n';
             if(!sources.selected(dataset))log<<"Source selection required: "<<dok::dataset_name(dataset)<<'\n';
         }catch(const std::exception& e){resource_errors+=std::filesystem::u8path(path).filename().u8string()+": "+e.what()+"\n";log<<resource_errors;}refresh_sets();return admitted;};
-        if(paths.empty()){char* base=SDL_GetBasePath();if(base){const auto directory=std::filesystem::u8path(base);SDL_free(base);
-            for(const auto& folder:{directory,directory/"data"}){
+        const auto forget_missing_resources=[&]{
+            const auto missing=[](const std::string& path){std::error_code error;const bool exists=std::filesystem::exists(std::filesystem::u8path(path),error);return !error&&!exists;};
+            auto& paths=settings.resource_paths;paths.erase(std::remove_if(paths.begin(),paths.end(),missing),paths.end());
+            for(auto& path:settings.resource_choices)if(!path.empty()&&missing(path))path.clear();
+        };
+        if(!arguments.explicit_resources){
+            for(const auto& entry:std::filesystem::directory_iterator(executable_path)){
                 std::error_code error;
-                for(std::filesystem::directory_iterator i(folder,std::filesystem::directory_options::skip_permission_denied,error),end;i!=end&&!error;i.increment(error)){
-                    auto ext=i->path().extension().u8string();std::transform(ext.begin(),ext.end(),ext.begin(),[](unsigned char c){return char(std::tolower(c));});
-                    std::error_code type_error;if(i->is_regular_file(type_error)&&ext==".res")paths.push_back(i->path().u8string());
-                }
-            }std::sort(paths.begin(),paths.end());}}
-        for(const auto& path:stored.resource_paths)if(std::find(paths.begin(),paths.end(),path)==paths.end())paths.push_back(path);
+                if(dok::ascii_lower(entry.path().extension().u8string())==".res"&&entry.is_regular_file(error))paths.push_back(entry.path().u8string());
+            }
+            std::sort(paths.begin(),paths.end());
+            for(const auto& path:stored.resource_paths)if(std::find(paths.begin(),paths.end(),path)==paths.end())paths.push_back(path);
+        }
+        for(auto& path:paths)path=std::filesystem::absolute(std::filesystem::u8path(path)).lexically_normal().u8string();
         for(const auto& path:paths)load(path);
-        for(unsigned id=1;id<4;++id)if(!stored.resource_choices[id].empty()){
+        for(unsigned id=1;id<4;++id)if(!arguments.explicit_resources&&!stored.resource_choices[id].empty()){
             const auto chosen=sources.find_source(std::filesystem::u8path(stored.resource_choices[id]));
             bool known=true;for(const auto& candidate:sources.sources())if(candidate.archive.identify()==dok::DatasetId(id)&&std::find(stored.resource_paths.begin(),stored.resource_paths.end(),candidate.path.u8string())==stored.resource_paths.end())known=false;
             if(known&&chosen&&sources.sources()[*chosen].archive.identify()==dok::DatasetId(id))sources.select(dok::DatasetId(id),*chosen);
@@ -180,7 +224,20 @@ int main(int argc,char** argv){
         }
         if(!warning.empty()){log<<"Settings/display notice: "<<warning<<'\n';menu.notice("Настройки восстановлены или OpenGL недоступен. Подробности в port.log.","Settings restored or OpenGL unavailable. See port.log for details.");}
         std::string save_error;
-        auto persist=[&]{if(!dok::save_settings(user_path/"settings.ini",stored,save_error)){log<<"Settings save failed: "<<save_error<<'\n';menu.notice("Не удалось сохранить настройки. Проверьте доступ к папке пользователя.","Could not save settings. Check access to the user directory.");}};
+        auto persist=[&]{
+            try{
+                if(settings_backup_required){
+                    const auto file=user_path/"settings.ini";auto backup=user_path/"settings.ini.bak";
+                    for(unsigned n=1;std::filesystem::exists(backup);++n)backup=user_path/("settings.ini.bak."+std::to_string(n));
+                    std::filesystem::copy_file(file,backup);settings_backup_required=false;
+                    log<<"Original settings preserved: "<<backup.u8string()<<'\n';
+                }
+                auto encoded=stored;
+                for(auto& path:encoded.resource_paths)path=dok::store_resource_path(path,user_path);
+                for(auto& path:encoded.resource_choices)if(!path.empty())path=dok::store_resource_path(path,user_path);
+                if(!dok::save_settings(user_path/"settings.ini",encoded,save_error))throw std::runtime_error(save_error);
+            }catch(const std::exception& error){log<<"Settings save failed: "<<error.what()<<'\n';menu.notice("Не удалось сохранить настройки. Проверьте доступ к папке профиля.","Could not save settings. Check the profile directory.");}
+        };
         if(!std::filesystem::exists(user_path/"settings.ini"))persist();
         unsigned frames=0,fps_frames=0,fps_value=0;auto previous_time=SDL_GetPerformanceCounter(),fps_time=previous_time;
         unsigned drawn_fps=0;dok::DatasetId fps_dataset=dok::DatasetId::unknown;
@@ -221,7 +278,7 @@ int main(int argc,char** argv){
                 if(e.type==SDL_QUIT){if(world){menu.pause();menu.request_quit();}else running=false;}
                 if(!replay&&!hidden&&e.type==SDL_WINDOWEVENT&&e.window.event==SDL_WINDOWEVENT_FOCUS_LOST){input.clear();fire_press.clear();cheat.reset();if(world&&!menu_blocks())menu.pause();input.capture_mouse(false);}
                 if(e.type==SDL_DROPFILE){const std::string path=e.drop.file;SDL_free(e.drop.file);
-                    if(world){log<<"Resource load deferred: active world\n";menu.notice("Добавьте ресурсы из главного меню.","Add game resources from the main menu.");}else{music.reset();load(path);if(const auto found=sources.find_source(std::filesystem::u8path(path))){const auto id=sources.sources()[*found].archive.identify();if(!sources.selected(id))settings.resource_choices[static_cast<unsigned>(id)].clear();if(std::find(settings.resource_paths.begin(),settings.resource_paths.end(),path)==settings.resource_paths.end())settings.resource_paths.push_back(path);}}continue;}
+                    if(world){log<<"Resource load deferred: active world\n";menu.notice("Добавьте ресурсы из главного меню.","Add game resources from the main menu.");}else{music.reset();if(load(path)){forget_missing_resources();if(const auto found=sources.find_source(std::filesystem::u8path(path))){const auto id=sources.sources()[*found].archive.identify();if(!sources.selected(id))settings.resource_choices[static_cast<unsigned>(id)].clear();if(std::find(settings.resource_paths.begin(),settings.resource_paths.end(),path)==settings.resource_paths.end())settings.resource_paths.push_back(path);}}}continue;}
                 const bool was_menu=menu.active(),was_map=map_visible();
                 if(e.type==SDL_KEYDOWN&&!e.key.repeat&&!menu.capturing()){
                     if(e.key.keysym.sym==SDLK_F12)capture_requested=true;
@@ -254,6 +311,7 @@ int main(int argc,char** argv){
                 case dok::MenuCommand::add_resource:
                     if(!world){music.reset();const auto path=menu.pending_resource();
                         if(!load(path,menu.resource_target())){menu.notice(dok::menu_text(dok::MenuString::resource_load_failed,dok::LocaleId::ru),dok::menu_text(dok::MenuString::resource_load_failed,dok::LocaleId::en));break;}
+                        forget_missing_resources();
                         if(const auto found=sources.find_source(std::filesystem::u8path(path))){
                             const auto& source=sources.sources()[*found];const auto id=source.archive.identify();sources.select(id,*found);
                             settings.resource_choices[static_cast<unsigned>(id)]=source.path.u8string();
@@ -263,6 +321,7 @@ int main(int argc,char** argv){
                     }break;
                 case dok::MenuCommand::select_source:
                     if(!world){music.reset();const auto index=menu.pending_source();const auto& source=sources.sources().at(index);const auto id=source.archive.identify();
+                        forget_missing_resources();
                         sources.select(id,index);settings.resource_choices[static_cast<unsigned>(id)]=source.path.u8string();
                         for(const auto& candidate:sources.sources())if(std::find(settings.resource_paths.begin(),settings.resource_paths.end(),candidate.path.u8string())==settings.resource_paths.end())settings.resource_paths.push_back(candidate.path.u8string());
                         refresh_sets();

@@ -38,6 +38,12 @@ def main():
             assert (package / name).read_bytes() == (ROOT / source).read_bytes(), name
     readme = (package / 'README.md').read_text(encoding='utf-8')
     assert 'Старое золото' in readme and '????' not in readme and '\ufffd' not in readme
+    assert readme == (ROOT / 'ports/sdl2/PLAYTEST.md').read_text(encoding='utf-8')
+    assert '## Командная строка' in readme and '### Диагностические параметры' in readme
+    source = (ROOT / 'ports/sdl2/include/dok/launch.hpp').read_text(encoding='utf-8')
+    import re
+    options = set(re.findall(r'"(--[a-z-]+)"', source)) - {'--', '--aspect', '--fov'}
+    assert all(option in readme for option in options), options
     out = ROOT / 'research/evidence/source-port/sp08-sp16-checkpoint' / package.name
     out.mkdir(parents=True, exist_ok=True)
     env = dict(os.environ, SDL_AUDIODRIVER='dummy')

@@ -171,6 +171,7 @@ if(DOK_BUILD_APP)
   target_compile_definitions(dok_port PRIVATE SDL_MAIN_HANDLED)
   target_link_libraries(dok_port PRIVATE dok_core dok_sdl_input SDL2::SDL2)
   if(WIN32)
+    target_link_libraries(dok_port PRIVATE shell32)
     set_target_properties(dok_port PROPERTIES WIN32_EXECUTABLE TRUE)
     if(CMAKE_CXX_COMPILER_ID MATCHES "Clang|GNU")
       # Zig 0.13's driver does not propagate -mwindows with a handled main.
