@@ -36,6 +36,31 @@ struct Case {
         throw std::runtime_error("No placed weapon for pickup");
     }
 };
+void cycling_without_other(const dok::Archive& a){
+    const auto level=a.identify()==dok::DatasetId::old_gold?"LEVEL4":"LEVEL1";
+    Case c(a,level);c.code();c.wait(60,1000);
+    auto& p=c.player();const auto slot=p.current_weapon;const auto owner=p.weapons.at(slot);
+    p.weapons.fill(0);p.weapons.at(slot)=owner;
+    check(!c.weapons.cycle(1)&&!c.weapons.cycle(-1)&&p.current_weapon==slot,"Cycling one owned weapon must do nothing");
+    p.weapons.fill(0);
+    check(!c.weapons.cycle(1)&&!c.weapons.cycle(-1)&&p.current_weapon==slot,"Cycling without weapons must do nothing");
+}
+void repeat_switch_while_hidden(const dok::Archive& a){
+    const auto level=a.identify()==dok::DatasetId::old_gold?"LEVEL4":"LEVEL1";
+    Case c(a,level);c.code();c.wait(60,1000);
+    const auto first=c.player().current_weapon;check(c.weapons.cycle(1),"First cycle request");
+    bool hidden=false;
+    for(int i=0;i<1000&&c.player().current_weapon==first;++i){
+        c.frame(1000);
+        if(c.player().current_weapon==first&&c.gun()->state==4){hidden=true;break;}
+    }
+    check(hidden,"Need hidden current gun awaiting player switch callback");
+    check(c.weapons.cycle(1),"Repeated cycle during hidden handoff");
+    c.wait(60,1000);
+    check(c.player().current_weapon!=first&&c.gun()->state==7,"Repeated cycle froze weapon hide/show state machine");
+    const auto fired=c.fired;c.held=true;c.wait(60,1000);
+    check(c.fired>fired,"Fire blocked after repeated switch");
+}
 void scenario(const dok::Archive& a,const std::string& level,unsigned fps,int timing){
     Case c(a,level);
     if(timing==0)c.code();
@@ -62,7 +87,7 @@ void scenario(const dok::Archive& a,const std::string& level,unsigned fps,int ti
 }
 int main(int argc,char** argv){try{
     check(argc>=2,"Usage: dok_idkfa_tests RES...");unsigned count=0;
-    for(int arg=1;arg<argc;++arg){const auto archive=dok::Archive::open(std::filesystem::u8path(argv[arg]));
+    for(int arg=1;arg<argc;++arg){const auto archive=dok::Archive::open(std::filesystem::u8path(argv[arg]));cycling_without_other(archive);repeat_switch_while_hidden(archive);
         for(const std::string level:{"LEVEL1","LEVEL2","LEVEL3","LEVEL4"})if(archive.find(level))for(unsigned fps:{30,60,144})for(int timing=0;timing<7;++timing){scenario(archive,level,fps,timing);++count;}}
     std::cout<<count<<" IDKFA timing/pickup/switch/sustained real-projectile scenarios passed\n";return 0;
 }catch(const std::exception& e){std::cerr<<e.what()<<'\n';return 1;}}

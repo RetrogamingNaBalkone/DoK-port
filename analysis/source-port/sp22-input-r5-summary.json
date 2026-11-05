@@ -1,0 +1,34 @@
+{
+  "date": "2026-11-05",
+  "task": "SP22/SP09/SP11 ending, wheel/number toggles, Selected status and repeated hidden-handoff freeze fix",
+  "base_revision": "5eb0d22 plus existing working tree changes",
+  "ctest_passed": 18,
+  "ctest_total": 18,
+  "idkfa_timing_scenarios": 147,
+  "zero_one_weapon_checks": true,
+  "hidden_handoff_unit_failed_before": true,
+  "hidden_handoff_unit_passed_after": true,
+  "live_switch_processes": 6,
+  "paired_handoff_processes": 12,
+  "before_control_sha256": "fd12d4987cefbcea8d3d96bb05e4d95840e2142a4747fdb692ce2faa354508ac",
+  "cpu_menu_frames": 788,
+  "backend_readbacks": 576,
+  "frontend_frames": 336,
+  "menu_ux_processes": 18,
+  "packaged_processes": 8,
+  "package": "artifacts/sdl2/windows-playtest-sp22-r5",
+  "exe_sha256": "384ecfdc95337eb6c4d839683ec2c13ba14fdc15e324d64452fa2b5316fbfd75",
+  "evidence": [
+    "research/evidence/source-port/sp22-weapons-r5",
+    "research/evidence/source-port/sp22-weapon-handoff-r5",
+    "research/evidence/source-port/sp22-ending-r4",
+    "research/evidence/source-port/sp22-ending-r4-frontend",
+    "research/evidence/source-port/sp22-ending-r4-process",
+    "research/evidence/source-port/sp08-sp16-checkpoint/windows-playtest-sp22-r5"
+  ],
+  "limitations": [
+    "Physical mouse/gamepad timings not recorded",
+    "UI frame matrix preceded the final engine-only fix; CTest and paired handoff processes repeated on final executable",
+    "Full SP22 audit and hardware A08 remain open"
+  ]
+}

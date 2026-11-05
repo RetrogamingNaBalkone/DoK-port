@@ -77,9 +77,9 @@ def main():
     chosen.write_bytes(variant)
     added.write_bytes(RES[1].read_bytes())
     try:
-        # Primary Add row is first; keyboard navigation skips three read-only statuses.
+        # One actionable row per game; selecting a file explicitly resolves a source conflict.
         log, user = run('choose-source', ['--renderer', 'software', '--res', RES[1], '--res', chosen],
-                        '0 key Down\n1 key Down\n2 key Return\n3 key Down\n4 key Down\n5 key Return\n6 state selected\n')
+                        '0 key Down\n0 key Down\n1 key Return\n2 key Down\n3 key Return\n4 key Down\n4 key Down\n4 key Down\n5 key Return\n6 state selected\n', cwd=fixture)
         cfg = configparser.ConfigParser()
         cfg.read(user / 'settings.ini')
         assert bytes.fromhex(cfg['resources']['choice2']).decode() == str(chosen), cfg['resources']
@@ -90,8 +90,11 @@ def main():
         # Browse a real directory and admit a file without CLI --res.
         # Hide the second variant so this folder contains exactly one candidate.
         chosen.rename(fixture / 'variant.hidden')
+        log, _ = run('reject-wrong-edition', ['--renderer', 'software'],
+                     '0 key Return\n1 key Return\n2 key Down\n2 key Down\n3 key Return\n5 state rejected\n', cwd=fixture)
+        assert 'RES belongs to another game or edition' in log and 'Loaded Kremlin PKR' not in log, log
         log, user = run('browse-add', ['--renderer', 'software'],
-                        '0 key Return\n1 key Return\n2 key Down\n2 key Down\n3 key Return\n5 state admitted\n',
+                        '0 key Return\n1 key Down\n2 key Return\n3 key Down\n3 key Down\n4 key Return\n5 state admitted\n',
                         cwd=fixture)
         assert 'Loaded Kremlin PKR' in log, log
         cfg.read(user / 'settings.ini')

@@ -7,6 +7,7 @@
 
 namespace dok {
 struct FrontendDataset {const Archive* archive;std::string filename;};
+// Keep numeric values stable for replay/probe logs; interface is a retired screen.
 enum class MenuScreen {hidden,main,datasets,title,readme,levels,settings,graphics,sound,controls,keyboard,pad,
     bindings,key_slots,gameplay,interface,credits,resources,pause,confirm,capture,conflict,video_confirm,notice,ending,outcome,help,map,files,path,video_unsaved};
 enum class MenuCommand {start,resume,main,quit,apply_video,keep_video,revert_video,music_title,music_stop,music_story,retry,add_resource,select_source};
@@ -31,6 +32,7 @@ public:
     void session_world(const World* world){world_=world;}
     void show_map();
     const std::string& pending_resource()const{return pending_resource_;}
+    DatasetId resource_target()const{return resource_target_;}
     std::size_t pending_source()const{return pending_source_;}
     int focused_row()const{return focus_;}
     MenuScreen screen() const {return screen_;}
@@ -44,7 +46,9 @@ public:
     int level() const {return level_;}
     const VideoSettings& previous_video() const {return old_video_;}
 private:
-    struct Row {std::string label,value,help;bool enabled=true;};
+    enum class Item {none,graphics,sound,controls,gameplay,keyboard,pad,renderer,window_mode,resolution,aspect,apply_video,
+        filtering,fxaa,hud,language,fps,effects,music,device_enabled,preset,bindings,sensitivity,deadzone,defaults,back,resource_gold,resource_pkr,resource_pke};
+    struct Row {std::string label,value,help;bool enabled=true;Item id=Item::none;bool adjustable=false;};
     struct Hit {SDL_Rect rect;int row;};
     AppSettings& s_;
     std::vector<FrontendDataset> sets_;
@@ -55,8 +59,10 @@ private:
     std::vector<FileRow> file_rows_;
     std::filesystem::path browser_path_=std::filesystem::current_path();
     std::string browser_error_,pending_resource_,path_buffer_;
+    DatasetId resource_target_=DatasetId::unknown;
     std::size_t pending_source_=0;
     std::map<MenuScreen,int> remembered_focus_;
+    std::map<MenuScreen,Item> remembered_item_;
     MenuScreen help_return_=MenuScreen::main,map_return_=MenuScreen::hidden;
     bool focused_=true,path_selected_=false,map_trigger_released_=false;
     std::size_t dataset_=0;
@@ -90,11 +96,13 @@ private:
     const Archive* archive() const;
     void theme();
     void enter(MenuScreen screen,int focus=0);
+    void enter_item(MenuScreen screen,Item item);
     void back();
     void apply_video();
     void choose(int delta=0);
     void begin_game();
     void browse(const std::filesystem::path& path);
+    static Item resource_item(DatasetId id);
     void accept_binding();
     void capture(const SDL_Event& event);
     void build_rows();

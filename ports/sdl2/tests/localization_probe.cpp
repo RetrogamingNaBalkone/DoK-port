@@ -42,7 +42,7 @@ int main(int argc,char** argv){
             }
             for(int backend=0;backend<2;++backend)for(auto locale:{dok::LocaleId::ru,dok::LocaleId::en})for(auto size:{std::array<int,2>{320,200},std::array<int,2>{640,480},std::array<int,2>{1280,720}}){
                 dok::AppSettings s;s.locale=locale;s.video.renderer=backend?dok::RendererKind::opengl:dok::RendererKind::software;s.video.width=size[0];s.video.height=size[1];
-                dok::Display display(s.video);dok::Frontend menu(s);menu.datasets({{&a,"single.RES"}});menu.render(size[0],size[1]);
+                dok::Display display(s.video,false);dok::Frontend menu(s);menu.datasets({{&a,"single.RES"}});menu.render(size[0],size[1]);
                 key(menu,SDLK_RETURN,size[0],size[1]);check(menu.screen()==dok::MenuScreen::title,"Single RES should skip dataset selection");
                 key(menu,SDLK_RETURN,size[0],size[1]);check(menu.screen()==(dataset==dok::DatasetId::old_gold?dok::MenuScreen::levels:dok::MenuScreen::readme),"Story route");
                 display.begin();const auto& frame=menu.render(size[0],size[1]);display.pixels(frame.pixels,frame.width,frame.height,false);

@@ -27,6 +27,10 @@ void Weapons::show(OwnerId owner){
 void Weapons::hide_current(){
     auto& player=*world_.objects.at(*world_.player).player_state;
     auto& weapon=*world_.object_for_owner(player.weapons.at(player.current_weapon)).weapon;
+    // Hidden weapons have already cancelled their animation callback. A repeated
+    // request must leave the queued player handoff intact, not restart a hide
+    // animation that no longer has a callback to advance it.
+    if(weapon.state==4)return;
     weapon.state=0;weapon.shift=0;weapon.frame=0;
     if(!world_.events.schedule(world_.objects.at(*world_.player).owner,static_cast<CallbackId>(GameEvent::weapon_switch),416,
         static_cast<std::uint32_t>(world_.simulation_ticks())))throw std::runtime_error("Cannot schedule weapon switch");

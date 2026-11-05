@@ -1,0 +1,56 @@
+{
+  "date": "2026-11-05",
+  "task": "SP22 partial: simplified settings, gameplay device switches, RU/EN descriptions",
+  "base_revision": "5eb0d22 plus pre-existing working tree changes",
+  "ctest_passed": 18,
+  "ctest_total": 18,
+  "cpu_menu_frames": 788,
+  "backend_readbacks": 576,
+  "frontend": {
+    "resource_combinations": 7,
+    "rendered_menu_frames": 336,
+    "software_scenes": 35,
+    "backend_rebuilds": 4
+  },
+  "localization": {
+    "original_object_fields": 609,
+    "localized_story_variants": 38,
+    "pagination_pages_checked": 2529,
+    "single_res_backend_locale_size_cases": 36
+  },
+  "menu_ux_processes": 17,
+  "packaged_processes": 8,
+  "original_resources_unchanged": true,
+  "package": "artifacts\\sdl2\\windows-playtest",
+  "exe_sha256": "aea37cb71a9f64cf5674451524cdc4717b60821d1451feca52992289a9d66e50",
+  "evidence": [
+    "research/evidence/source-port/sp22-menu-r2",
+    "research/evidence/source-port/sp22-menu-r2-frontend",
+    "research/evidence/source-port/sp22-menu-r2-localization",
+    "research/evidence/source-port/sp22-menu-r2-process",
+    "research/evidence/source-port/sp08-sp16-checkpoint/windows-playtest"
+  ],
+  "limitations": [
+    "Physical controller not tested",
+    "Full SP22 UI/UX audit remains open"
+  ],
+  "followup": {
+    "changes": [
+      "FXAA user-facing help RU/EN",
+      "HUD renamed to agree with Russian values",
+      "Hide uncaptured disabled mouse cursor in gameplay; show in menus/on focus loss",
+      "Shared Kremlin description identifies the commercial Razbakov brothers game"
+    ],
+    "ctest_passed": 18,
+    "ctest_total": 18,
+    "packaged_processes": 8,
+    "localization_generator_check": true,
+    "cursor_state_assertions": true,
+    "evidence": [
+      "research/evidence/source-port/sp22-menu-r2-fxaa-copy.png",
+      "research/evidence/source-port/sp22-menu-r2-kremlin-copy-ru.png",
+      "research/evidence/source-port/sp22-menu-r2-kremlin-copy-en.png"
+    ],
+    "full_frame_matrix_rerun": false
+  }
+}

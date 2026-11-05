@@ -31,11 +31,14 @@ int main(int argc,char** argv){
             for(int page=0;menu.screen()==dok::MenuScreen::readme&&page<100;++page)key(menu,SDLK_RETURN);
             check(menu.screen()==dok::MenuScreen::levels,"Story terminates");key(menu,SDLK_RETURN);check(!menu.active(),"Start from preview");++combinations;
         }
-        for(int backend=0;backend<2;++backend)for(int lang=0;lang<2;++lang)for(auto size:{std::array<int,2>{640,480},std::array<int,2>{1280,720},std::array<int,2>{1920,1080}}){
+        for(int backend=0;backend<2;++backend)for(int lang=0;lang<2;++lang)for(auto size:{std::array<int,2>{320,200},{640,480},{1280,720},{1920,1080},{2560,1440}}){
             dok::AppSettings s;s.video.renderer=backend?dok::RendererKind::opengl:dok::RendererKind::software;s.video.width=size[0];s.video.height=size[1];s.locale=lang?dok::LocaleId::en:dok::LocaleId::ru;
-            dok::Display display(s.video);dok::Frontend menu(s);menu.datasets({{&sets[0],"PKR.RES"},{&sets[1],"PKE.RES"},{&sets[2],"OLD_GOLD.RES"}});
+            dok::Display display(s.video,false);dok::Frontend menu(s);menu.datasets({{&sets[0],"PKR.RES"},{&sets[1],"PKE.RES"},{&sets[2],"OLD_GOLD.RES"}});
             const auto prefix=(backend?"gl-":"sw-")+std::string(lang?"en-":"ru-")+std::to_string(size[0])+"-";
             shot(display,menu,out/(prefix+"main.png"));key(menu,SDLK_RETURN);shot(display,menu,out/(prefix+"datasets.png"));
+            key(menu,SDLK_DOWN);shot(display,menu,out/(prefix+"datasets-pke.png"));
+            key(menu,SDLK_DOWN);shot(display,menu,out/(prefix+"datasets-old-gold.png"));
+            key(menu,SDLK_UP);key(menu,SDLK_UP);frames+=2;
             key(menu,SDLK_RETURN);shot(display,menu,out/(prefix+"title.png"));key(menu,SDLK_RETURN);
             for(int page=0;menu.screen()==dok::MenuScreen::readme&&page<100;++page)key(menu,SDLK_RETURN);
             shot(display,menu,out/(prefix+"levels.png"));menu.main_menu();key(menu,SDLK_DOWN);key(menu,SDLK_RETURN);key(menu,SDLK_RETURN);shot(display,menu,out/(prefix+"graphics.png"));
@@ -44,19 +47,19 @@ int main(int argc,char** argv){
         // Readable layout and navigation checks use actual GL/software readback.
         for(int backend=0;backend<2;++backend)for(int lang=0;lang<2;++lang)for(auto size:{std::array<int,2>{1024,768},std::array<int,2>{1280,720}}){
             dok::AppSettings s;s.locale=lang?dok::LocaleId::en:dok::LocaleId::ru;s.video.renderer=backend?dok::RendererKind::opengl:dok::RendererKind::software;s.video.width=size[0];s.video.height=size[1];
-            dok::Display display(s.video);dok::Frontend menu(s);menu.datasets({{&sets[2],"OLD_GOLD.RES"},{&sets[0],"PKR.RES"},{&sets[1],"PKE.RES"}});
+            dok::Display display(s.video,false);dok::Frontend menu(s);menu.datasets({{&sets[2],"OLD_GOLD.RES"},{&sets[0],"PKR.RES"},{&sets[1],"PKE.RES"}});
             dok::ResourceSources sources;for(int i=0;i<3;++i)sources.add(root/(i==0?"originals/pkr/RUS/PKR.RES":i==1?"originals/pkr/ENG/PKE.RES":"originals/Old_Gold_3D/OLD_GOLD.RES"),sets[i]);menu.resources(sources);
             dok::World world(dok::load_level(sets[0],"LEVEL1"));world.map_revealed=true;menu.select_dataset(1);menu.session_world(&world);
             const auto prefix=(backend?"ux-gl-":"ux-sw-")+std::string(lang?"en-":"ru-")+std::to_string(size[0])+"-";
             auto save=[&](const char* name){shot(display,menu,out/(prefix+name+".png"));++frames;};
             auto down=[&](int n){for(int i=0;i<n;++i)key(menu,SDLK_DOWN);};
             auto setting=[&](int index){menu.main_menu();down(1);key(menu,SDLK_RETURN);if(index>=0){down(index);key(menu,SDLK_RETURN);}};
-            setting(-1);save("settings");setting(1);save("sound");setting(2);save("controls");key(menu,SDLK_RETURN);save("keyboard");down(1);key(menu,SDLK_RETURN);save("bindings");
+            setting(-1);save("settings");setting(1);save("sound");setting(2);save("controls");key(menu,SDLK_RETURN);save("keyboard");down(2);key(menu,SDLK_RETURN);save("bindings");
             key(menu,SDLK_RETURN);save("key-slots");key(menu,SDLK_RETURN);save("capture");
             SDL_Event focus{};focus.type=SDL_WINDOWEVENT;focus.window.event=SDL_WINDOWEVENT_FOCUS_LOST;menu.handle(focus,size[0],size[1]);check(!menu.capturing(),"Focus must cancel binding capture");focus.window.event=SDL_WINDOWEVENT_FOCUS_GAINED;menu.handle(focus,size[0],size[1]);
-            setting(2);down(1);key(menu,SDLK_RETURN);save("pad");setting(3);save("gameplay");setting(4);save("interface");key(menu,SDLK_ESCAPE);check(menu.focused_row()==4,"Back must restore parent section");
+            setting(2);down(1);key(menu,SDLK_RETURN);save("pad");setting(3);save("gameplay");setting(0);down(7);save("interface");key(menu,SDLK_ESCAPE);check(menu.focused_row()==0,"Back must restore parent section");
             menu.main_menu();down(3);key(menu,SDLK_RETURN);save("help");key(menu,SDLK_RETURN);save("help-page2");
-            menu.main_menu();down(2);key(menu,SDLK_RETURN);save("resources");key(menu,SDLK_RETURN);save("files");key(menu,SDLK_DOWN);key(menu,SDLK_RETURN);save("path");
+            menu.main_menu();down(2);key(menu,SDLK_RETURN);save("resources");down(1);key(menu,SDLK_RETURN);check(menu.resource_target()==dok::DatasetId::kremlin_pkr,"Browser targets selected edition");save("files");key(menu,SDLK_DOWN);key(menu,SDLK_RETURN);save("path");
             const auto entered=(root/"originals/pkr/RUS/PKR.RES").u8string();const auto quoted="\""+entered+"\"";
             for(std::size_t at=0;at<quoted.size();at+=31){SDL_Event text{};text.type=SDL_TEXTINPUT;const auto n=std::min<std::size_t>(31,quoted.size()-at);std::memcpy(text.text.text,quoted.data()+at,n);menu.handle(text,size[0],size[1]);}
             key(menu,SDLK_RETURN);check(menu.screen()==dok::MenuScreen::resources&&menu.pending_resource()==entered,"Quoted direct RES path input");
@@ -89,8 +92,8 @@ int main(int argc,char** argv){
         // The retained game objects and scheduler survive actual backend reconstruction.
         auto a=sets[0];dok::World world(dok::load_level(a,"LEVEL1"));dok::Weapons weapons(world,a);weapons.grant_all();
         const auto original_pose=*world.objects.at(*world.player).pose;const auto ticks=world.simulation_ticks();const auto maps=world.maps;const auto hp=world.objects.at(*world.player).player_state->health();
-        dok::VideoSettings video;std::unique_ptr<dok::Display> display=std::make_unique<dok::Display>(video);
-        for(int i=0;i<4;++i){video.renderer=i%2?dok::RendererKind::opengl:dok::RendererKind::software;video.width=640;video.height=480;auto next=std::make_unique<dok::Display>(video);display=std::move(next);display->begin();display->present();
+        dok::VideoSettings video;std::unique_ptr<dok::Display> display=std::make_unique<dok::Display>(video,false);
+        for(int i=0;i<4;++i){video.renderer=i%2?dok::RendererKind::opengl:dok::RendererKind::software;video.width=640;video.height=480;auto next=std::make_unique<dok::Display>(video,false);display=std::move(next);display->begin();display->present();
             check(world.simulation_ticks()==ticks&&world.maps==maps&&world.objects.at(*world.player).pose->x==original_pose.x&&world.objects.at(*world.player).player_state->health()==hp,"World modified by backend rebuild");}
         std::ofstream report(out/"report.json");report<<"{\"resource_combinations\":"<<combinations<<",\"rendered_menu_frames\":"<<frames<<",\"software_scenes\":"<<software<<",\"backend_rebuilds\":4}\n";
         std::cout<<combinations<<" combinations, "<<frames<<" menu frames, "<<software<<" native software scenes, 4 backend rebuilds passed\n";

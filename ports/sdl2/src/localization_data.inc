@@ -2,9 +2,9 @@
 static constexpr TextEntry text_entries[] = {
     {"cheat.idkfa","Ах ты хитрый думер!","You sneaky Doomer!"},
     {"dataset.kremlin.title","Подземелья Кремля","Dungeons of Kremlin"},
-    {"dataset.kremlin_en.description","Есть небольшие отличия в картах и балансе монстров","There are small differences in maps and monster balance"},
-    {"dataset.kremlin_ru.description","Русское издание. Язык всех текстов можно выбрать в настройках.","Russian edition. Choose the language of all texts in settings."},
-    {"dataset.old_gold.description","Отдельное приключение: один лабиринт, две волшебные палочки и 105 монет","A separate adventure: one maze, two magic wands and 105 coins"},
+    {"dataset.kremlin_en.description","Коммерческая игра братьев Разбаковых. Уровни и враги в русской и английской версиях незначительно отличаются.","A commercial game by the Razbakov brothers. Levels and enemies differ slightly between the Russian and English versions."},
+    {"dataset.kremlin_ru.description","Коммерческая игра братьев Разбаковых. Уровни и враги в русской и английской версиях незначительно отличаются.","A commercial game by the Razbakov brothers. Levels and enemies differ slightly between the Russian and English versions."},
+    {"dataset.old_gold.description","Технологическое демо движка братьев Разбаковых: лабиринт, две волшебные палочки и 105 монет.","A technology demo of the Razbakov brothers' engine: a maze, two magic wands and 105 coins."},
     {"dataset.old_gold.title","Старое золото","Old Gold"},
     {"death.bat.bloodsuckers","ВСЕМ ВАМ, КРОВОСОСАМ, КРЫШКА!","YOU'RE FINISHED, BLOODSUCKERS!"},
     {"death.bat.farewell","ПРОЩАЙ, ПТАШКА!","FAREWELL, BIRDIE!"},

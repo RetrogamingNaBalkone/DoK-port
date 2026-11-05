@@ -1,0 +1,30 @@
+{
+  "date": "2026-11-05",
+  "task": "SP21 r4 Windows DPI awareness",
+  "base_revision": "5eb0d22",
+  "before_processes": 8,
+  "before_awareness": 0,
+  "after_processes": 8,
+  "after_awareness": 2,
+  "packaged_dpi_processes": 8,
+  "ctest_passed": 18,
+  "ctest_total": 18,
+  "menu_ux_processes": 17,
+  "packaged_smoke_processes": 8,
+  "backends": ["OpenGL", "software"],
+  "sizes": ["1280x720", "1707x960", "1920x1080", "2560x1440"],
+  "native_png_dimensions_verified": true,
+  "evidence": [
+    "research/evidence/source-port/sp21-dpi-before/report.json",
+    "research/evidence/source-port/sp21-dpi/report.json",
+    "research/evidence/source-port/sp21-dpi-package/report.json",
+    "research/evidence/source-port/sp21-dpi-menu-ux"
+  ],
+  "package": "artifacts/sdl2/windows-playtest",
+  "exe_sha256": "9558AE8E1C775DF912E470CC0CDD5B4E1CBDAC36B62FEF8A571D6C75B1053C85",
+  "limitations": [
+    "Windows scale settings were not changed",
+    "Physical mixed-DPI transitions remain untested",
+    "Windows 8 fallback remains untested"
+  ]
+}

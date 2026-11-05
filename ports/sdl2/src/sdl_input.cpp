@@ -9,6 +9,11 @@ float axis(Sint16 value){return value<0?value/32768.0f:value/32767.0f;}
 float deadzone(float value,float zone){const auto magnitude=std::abs(value);return magnitude<=zone?0:std::copysign((magnitude-zone)/(1-zone),value);}
 void strongest(float& target,float value){if(std::abs(value)>std::abs(target))target=value;}
 }
+unsigned wheel_binding(const SDL_MouseWheelEvent& event){
+    float value=event.preciseY!=0?event.preciseY:float(event.y);
+    if(event.direction==SDL_MOUSEWHEEL_FLIPPED)value=-value;
+    return value>0?6:value<0?7:0;
+}
 InputBindings InputBindings::defaults(){
     InputBindings result;result.keyboard(InputPreset::modern);result.gamepad(InputPreset::modern);return result;
 }
@@ -25,6 +30,7 @@ void InputBindings::keyboard(InputPreset preset){
     bind(Action::quicksave,SDL_SCANCODE_F5);bind(Action::quickload,SDL_SCANCODE_F9);
     bind(Action::weapon1,SDL_SCANCODE_1);bind(Action::weapon2,SDL_SCANCODE_2);
     mouse[index(Action::fire)]=SDL_BUTTON_LEFT;
+    mouse[index(Action::next_weapon)]=6;mouse[index(Action::previous_weapon)]=7;
     if(preset==InputPreset::classic){
         bind(Action::forward,SDL_SCANCODE_UP);bind(Action::backward,SDL_SCANCODE_DOWN);
         bind(Action::strafe_left,SDL_SCANCODE_UNKNOWN);bind(Action::strafe_right,SDL_SCANCODE_UNKNOWN);
@@ -51,25 +57,35 @@ void InputBindings::gamepad(InputPreset preset){
 SdlInput::SdlInput(InputBindings settings):bindings(std::move(settings)){
     for(int i=0;i<SDL_NumJoysticks();++i)open(i);
 }
-SdlInput::~SdlInput(){for(auto& entry:controllers_)SDL_GameControllerClose(entry.second.handle);if(capture_)SDL_SetRelativeMouseMode(SDL_FALSE);}
+SdlInput::~SdlInput(){for(auto& entry:controllers_)SDL_GameControllerClose(entry.second.handle);if(capture_)SDL_SetRelativeMouseMode(SDL_FALSE);SDL_ShowCursor(SDL_ENABLE);}
 void SdlInput::open(int device_index){
     if(!SDL_IsGameController(device_index))return;
     auto* handle=SDL_GameControllerOpen(device_index);if(!handle)return;
     auto id=SDL_JoystickInstanceID(SDL_GameControllerGetJoystick(handle));
     if(controllers_.count(id)){SDL_GameControllerClose(handle);return;}
     Controller controller;controller.handle=handle;
-    if(focused_){
+    if(focused_&&bindings.gamepad_enabled){
         for(int i=0;i<SDL_CONTROLLER_AXIS_MAX;++i)controller.axes[i]=SDL_GameControllerGetAxis(handle,static_cast<SDL_GameControllerAxis>(i));
         for(int i=0;i<SDL_CONTROLLER_BUTTON_MAX;++i)controller.buttons[i]=SDL_GameControllerGetButton(handle,static_cast<SDL_GameControllerButton>(i))!=0;
     }
     controllers_.emplace(id,controller);
 }
+void SdlInput::configure(const InputBindings& settings){
+    const bool changed=bindings.mouse_enabled!=settings.mouse_enabled||bindings.gamepad_enabled!=settings.gamepad_enabled;
+    bindings=settings;
+    if(changed){clear();capture_mouse(gameplay_mouse_);}
+}
 bool SdlInput::capture_mouse(bool enabled){
-    if(SDL_SetRelativeMouseMode(enabled&&focused_?SDL_TRUE:SDL_FALSE)!=0)return false;
-    capture_=enabled;mouse_x_=0;return true;
+    // Gameplay hides the pointer even when mouse input/capture is disabled.
+    gameplay_mouse_=enabled;
+    const bool capture=enabled&&bindings.mouse_enabled;
+    const bool ok=SDL_SetRelativeMouseMode(capture&&focused_?SDL_TRUE:SDL_FALSE)==0;
+    SDL_ShowCursor(enabled&&focused_?SDL_DISABLE:SDL_ENABLE);
+    if(ok)capture_=capture;
+    mouse_x_=0;return ok;
 }
 void SdlInput::clear(){
-    keys_.fill(false);previous_.fill(false);presses_.fill(false);mouse_buttons_.fill(false);mouse_x_=0;
+    keys_.fill(false);previous_.fill(false);presses_.fill(false);wheel_presses_.fill(false);mouse_buttons_.fill(false);mouse_x_=0;
     for(auto& entry:controllers_){entry.second.axes.fill(0);entry.second.buttons.fill(false);}
 }
 void SdlInput::handle(const SDL_Event& event){
@@ -84,9 +100,13 @@ void SdlInput::handle(const SDL_Event& event){
             keys_[event.key.keysym.scancode]=event.type==SDL_KEYDOWN;
         }
         break;
-    case SDL_MOUSEMOTION:if(focused_&&capture_)mouse_x_+=event.motion.xrel;break;
+    case SDL_MOUSEMOTION:if(bindings.mouse_enabled&&focused_&&capture_)mouse_x_+=event.motion.xrel;break;
+    case SDL_MOUSEWHEEL:
+        if(bindings.mouse_enabled&&focused_){const auto button=wheel_binding(event.wheel);
+            if(button)for(unsigned i=0;i<wheel_presses_.size();++i)if(bindings.mouse[i]==button)wheel_presses_[i]=true;
+        }break;
     case SDL_MOUSEBUTTONDOWN:case SDL_MOUSEBUTTONUP:
-        if(focused_&&event.button.button<mouse_buttons_.size()){
+        if(bindings.mouse_enabled&&focused_&&event.button.button<mouse_buttons_.size()){
             if(event.type==SDL_MOUSEBUTTONUP&&mouse_buttons_[event.button.button]&&bindings.mouse[index(Action::map)]==event.button.button)
                 presses_[index(Action::map)]=true;
             if(event.type==SDL_MOUSEBUTTONDOWN&&!mouse_buttons_[event.button.button])
@@ -99,7 +119,7 @@ void SdlInput::handle(const SDL_Event& event){
         if(found!=controllers_.end()){SDL_GameControllerClose(found->second.handle);controllers_.erase(found);presses_.fill(false);}break;}
     case SDL_CONTROLLERAXISMOTION:{
         auto found=controllers_.find(event.caxis.which);
-        if(focused_&&found!=controllers_.end()&&event.caxis.axis<SDL_CONTROLLER_AXIS_MAX){
+        if(bindings.gamepad_enabled&&focused_&&found!=controllers_.end()&&event.caxis.axis<SDL_CONTROLLER_AXIS_MAX){
             if(event.caxis.value<=16384&&found->second.axes[event.caxis.axis]>16384&&bindings.triggers[index(Action::map)]==event.caxis.axis)
                 presses_[index(Action::map)]=true;
             if(event.caxis.value>16384&&found->second.axes[event.caxis.axis]<=16384)
@@ -108,7 +128,7 @@ void SdlInput::handle(const SDL_Event& event){
         }break;}
     case SDL_CONTROLLERBUTTONDOWN:case SDL_CONTROLLERBUTTONUP:{
         auto found=controllers_.find(event.cbutton.which);
-        if(focused_&&found!=controllers_.end()&&event.cbutton.button<SDL_CONTROLLER_BUTTON_MAX){
+        if(bindings.gamepad_enabled&&focused_&&found!=controllers_.end()&&event.cbutton.button<SDL_CONTROLLER_BUTTON_MAX){
             if(event.type==SDL_CONTROLLERBUTTONUP&&found->second.buttons[event.cbutton.button]&&bindings.buttons[index(Action::map)]==event.cbutton.button)
                 presses_[index(Action::map)]=true;
             if(event.type==SDL_CONTROLLERBUTTONDOWN&&!found->second.buttons[event.cbutton.button])
@@ -118,8 +138,8 @@ void SdlInput::handle(const SDL_Event& event){
     case SDL_WINDOWEVENT:
         if(event.window.event==SDL_WINDOWEVENT_FOCUS_LOST){
             focused_=false;clear();
-            if(capture_)SDL_SetRelativeMouseMode(SDL_FALSE);
-        }else if(event.window.event==SDL_WINDOWEVENT_FOCUS_GAINED){focused_=true;if(capture_)SDL_SetRelativeMouseMode(SDL_TRUE);}
+            capture_mouse(gameplay_mouse_);
+        }else if(event.window.event==SDL_WINDOWEVENT_FOCUS_GAINED){focused_=true;capture_mouse(gameplay_mouse_);}
         break;
     default:break;
     }
@@ -129,7 +149,7 @@ InputActions SdlInput::sample(){
     std::array<bool,index(Action::count)> held{};
     for(unsigned i=0;i<held.size();++i)for(auto key:bindings.keys[i])
         if(key>SDL_SCANCODE_UNKNOWN&&key<SDL_NUM_SCANCODES)held[i]=held[i]||keys_[key];
-    for(unsigned i=0;i<held.size();++i)if(bindings.mouse[i]&&bindings.mouse[i]<mouse_buttons_.size())held[i]=held[i]||mouse_buttons_[bindings.mouse[i]];
+    if(bindings.mouse_enabled)for(unsigned i=0;i<held.size();++i)if(bindings.mouse[i]&&bindings.mouse[i]<mouse_buttons_.size())held[i]=held[i]||mouse_buttons_[bindings.mouse[i]];
     // Alt modifies only keyboard turning; a second device keeps independent axes.
     if(held[index(Action::strafe_modifier)]){
         held[index(Action::strafe_left)] = held[index(Action::strafe_left)]||held[index(Action::turn_left)];
@@ -138,7 +158,7 @@ InputActions SdlInput::sample(){
     }
     float pad_forward=0,pad_strafe=0,pad_turn=0;
     const auto zone=std::clamp(bindings.stick_deadzone,0.0f,0.95f);
-    for(const auto& pair:controllers_){const auto& controller=pair.second;
+    if(bindings.gamepad_enabled)for(const auto& pair:controllers_){const auto& controller=pair.second;
         for(unsigned i=0;i<held.size();++i){auto button=bindings.buttons[i];
             if(button>=0&&button<SDL_CONTROLLER_BUTTON_MAX)held[i]=held[i]||controller.buttons[button];}
         for(unsigned i=0;i<held.size();++i){auto trigger=bindings.triggers[i];
@@ -153,21 +173,23 @@ InputActions SdlInput::sample(){
         strongest(pad_turn,deadzone(axis(controller.axes[SDL_CONTROLLER_AXIS_RIGHTX]),zone));
 
     }
+    const auto physical=held;
+    for(unsigned i=0;i<held.size();++i)held[i]=held[i]||wheel_presses_[i];
     auto down=[&](Action a){return held[index(a)];};
     auto edge=[&](Action a){return held[index(a)]&&!previous_[index(a)];};
     result.forward=std::clamp(pad_forward+int(down(Action::forward))-int(down(Action::backward)),-1.0f,1.0f);
     result.strafe=std::clamp(pad_strafe+int(down(Action::strafe_right))-int(down(Action::strafe_left)),-1.0f,1.0f);
     result.turn=std::clamp(pad_turn*bindings.turn_sensitivity+int(down(Action::turn_right))-int(down(Action::turn_left)),-1.0f,1.0f);
-    result.yaw_delta=mouse_x_*std::max(0.0f,bindings.mouse_degrees_per_count);mouse_x_=0;
+    result.yaw_delta=bindings.mouse_enabled?mouse_x_*std::max(0.0f,bindings.mouse_degrees_per_count):0;mouse_x_=0;
     result.fire=down(Action::fire);result.use=down(Action::use);
     result.fire_pressed=presses_[index(Action::fire)]||edge(Action::fire);
     // Originals toggle the map on release (keyboard state 2), not key repeat.
-    result.map=presses_[index(Action::map)]||(!down(Action::map)&&previous_[index(Action::map)]);
+    result.map=presses_[index(Action::map)]||wheel_presses_[index(Action::map)]||(!physical[index(Action::map)]&&previous_[index(Action::map)]);
     result.pause=edge(Action::pause);result.run=down(Action::run);result.slow=down(Action::slow);
     result.next_weapon=edge(Action::next_weapon);result.previous_weapon=edge(Action::previous_weapon);
     result.quicksave=edge(Action::quicksave);result.quickload=edge(Action::quickload);
     if(presses_[index(Action::weapon1)]||edge(Action::weapon1))result.select_weapon=1;
     if(presses_[index(Action::weapon2)]||edge(Action::weapon2))result.select_weapon=2;
-    presses_.fill(false);previous_=held;return result;
+    presses_.fill(false);wheel_presses_.fill(false);previous_=physical;return result;
 }
 } // namespace dok

@@ -62,7 +62,7 @@ int main(int argc,char** argv){
             for(auto size:{std::array<int,2>{320,240},{640,480},{1280,720},{1920,1080}}){
                 const auto prefix=std::to_string(dataset)+"-"+std::to_string(size[0]);
                 menu.main_menu();menu.notice(u8"Е Ё е ё   Вперёд   Поворот влево","");shot(menu,size[0],size[1],out/(prefix+"-comparison.png"));++frames;
-                menu.main_menu();key(menu,SDLK_DOWN);key(menu,SDLK_RETURN);key(menu,SDLK_DOWN);key(menu,SDLK_DOWN);key(menu,SDLK_RETURN);key(menu,SDLK_RETURN);key(menu,SDLK_DOWN);key(menu,SDLK_RETURN);
+                menu.main_menu();key(menu,SDLK_DOWN);key(menu,SDLK_RETURN);key(menu,SDLK_DOWN);key(menu,SDLK_DOWN);key(menu,SDLK_RETURN);key(menu,SDLK_RETURN);key(menu,SDLK_DOWN);key(menu,SDLK_DOWN);key(menu,SDLK_RETURN);
                 check(menu.screen()==dok::MenuScreen::bindings,"Bindings route");shot(menu,size[0],size[1],out/(prefix+"-bindings.png"));++frames;
             }
             if(dataset>=0)for(int lang=0;lang<2;++lang)for(auto size:{std::array<int,2>{320,200},{640,400},{640,480},{800,600},{1024,768},{1280,720},{1920,1080},{2560,1440},{1920,1440}}){
@@ -72,6 +72,12 @@ int main(int argc,char** argv){
                 menu.main_menu();save("main");
                 for(int i=0;i<3;++i)key(menu,SDLK_DOWN);key(menu,SDLK_RETURN);save("credits");
                 menu.main_menu();key(menu,SDLK_DOWN);key(menu,SDLK_RETURN);key(menu,SDLK_RETURN);save("graphics");
+                while(menu.focused_row()!=9)key(menu,SDLK_DOWN);save("graphics-interface");
+                while(menu.focused_row()!=0)key(menu,SDLK_DOWN);
+                key(menu,SDLK_ESCAPE);key(menu,SDLK_DOWN);key(menu,SDLK_RETURN);save("sound");
+                key(menu,SDLK_ESCAPE);key(menu,SDLK_DOWN);key(menu,SDLK_RETURN);key(menu,SDLK_RETURN);save("keyboard");
+                key(menu,SDLK_ESCAPE);key(menu,SDLK_DOWN);key(menu,SDLK_RETURN);save("pad");
+                menu.main_menu();key(menu,SDLK_DOWN);key(menu,SDLK_RETURN);key(menu,SDLK_RETURN);
                 key(menu,SDLK_RIGHT);key(menu,SDLK_ESCAPE);save("video-unsaved");
                 key(menu,SDLK_RETURN);key(menu,SDLK_RIGHT);
                 menu.pause();save("pause");menu.outcome(dok::SessionPhase::retry);save("outcome");
@@ -79,7 +85,9 @@ int main(int argc,char** argv){
                 menu.main_menu();key(menu,SDLK_RETURN);save("title");key(menu,SDLK_RETURN);save("readme");
                 menu.preview_level(1);save("intro");
                 if(size[0]==320){SDL_Event click{};click.type=SDL_MOUSEBUTTONDOWN;click.button.button=SDL_BUTTON_LEFT;click.button.x=30;click.button.y=158;menu.handle(click,320,200);check(!menu.active(),"Intro Start mouse hit at 320x200");}
-                menu.ending();save("ending");
+                menu.ending();save("ending");key(menu,SDLK_DOWN);
+                check(menu.focused_row()==0,"Ending has one menu button");key(menu,SDLK_RETURN);
+                check(menu.screen()==dok::MenuScreen::main,"Ending button returns to main menu");
             }
             if(argc==4&&dataset>=0)for(int backend=0;backend<2;++backend)for(int lang=0;lang<2;++lang)for(auto size:{std::array<int,2>{320,200},{640,400},{2560,1440},{1920,1440}}){
                 settings.locale=lang?dok::LocaleId::en:dok::LocaleId::ru;settings.video.renderer=backend?dok::RendererKind::opengl:dok::RendererKind::software;settings.video.width=size[0];settings.video.height=size[1];settings.video.fullscreen=false;
@@ -89,8 +97,14 @@ int main(int argc,char** argv){
                 menu.main_menu();key(menu,SDLK_RETURN);save("title");key(menu,SDLK_RETURN);save("readme");
                 menu.main_menu();for(int i=0;i<3;++i)key(menu,SDLK_DOWN);key(menu,SDLK_RETURN);save("credits");
                 menu.preview_level(1);save("intro");menu.outcome(dok::SessionPhase::retry);save("outcome");
-                menu.main_menu();key(menu,SDLK_DOWN);key(menu,SDLK_RETURN);key(menu,SDLK_DOWN);key(menu,SDLK_DOWN);key(menu,SDLK_RETURN);key(menu,SDLK_RETURN);key(menu,SDLK_DOWN);key(menu,SDLK_RETURN);save("bindings");
+                menu.main_menu();key(menu,SDLK_DOWN);key(menu,SDLK_RETURN);key(menu,SDLK_DOWN);key(menu,SDLK_DOWN);key(menu,SDLK_RETURN);key(menu,SDLK_RETURN);key(menu,SDLK_DOWN);key(menu,SDLK_DOWN);key(menu,SDLK_RETURN);save("bindings");
                 menu.main_menu();key(menu,SDLK_DOWN);key(menu,SDLK_RETURN);key(menu,SDLK_RETURN);save("graphics");
+                while(menu.focused_row()!=9)key(menu,SDLK_DOWN);save("graphics-interface");
+                while(menu.focused_row()!=0)key(menu,SDLK_DOWN);
+                key(menu,SDLK_ESCAPE);key(menu,SDLK_DOWN);key(menu,SDLK_RETURN);save("sound");
+                key(menu,SDLK_ESCAPE);key(menu,SDLK_DOWN);key(menu,SDLK_RETURN);key(menu,SDLK_RETURN);save("keyboard");
+                key(menu,SDLK_ESCAPE);key(menu,SDLK_DOWN);key(menu,SDLK_RETURN);save("pad");
+                menu.main_menu();key(menu,SDLK_DOWN);key(menu,SDLK_RETURN);key(menu,SDLK_RETURN);
                 key(menu,SDLK_RIGHT);key(menu,SDLK_ESCAPE);save("video-unsaved");
             }
         }

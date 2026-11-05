@@ -6,6 +6,68 @@
 static void check(bool value){if(!value)throw std::runtime_error("Input scenario failed");}
 static void key(dok::SdlInput& input,SDL_Scancode code,bool down){SDL_Event event{};event.type=down?SDL_KEYDOWN:SDL_KEYUP;event.key.keysym.scancode=code;input.handle(event);}
 static void pump(dok::SdlInput& input){SDL_Event event;SDL_PumpEvents();while(SDL_PollEvent(&event))input.handle(event);}
+static void wheel_tests(){
+    dok::SdlInput input;
+    auto wheel=[&](int y,bool flipped=false){SDL_Event e{};e.type=SDL_MOUSEWHEEL;e.wheel.y=y;e.wheel.direction=flipped?SDL_MOUSEWHEEL_FLIPPED:SDL_MOUSEWHEEL_NORMAL;input.handle(e);};
+    wheel(1);auto state=input.sample();check(state.next_weapon&&!state.previous_weapon);check(!input.sample().next_weapon);
+    wheel(-1);state=input.sample();check(!state.next_weapon&&state.previous_weapon);check(!input.sample().previous_weapon);
+    wheel(1,true);check(input.sample().previous_weapon);
+    wheel(0);check(!input.sample().next_weapon);
+    wheel(1);input.clear();check(!input.sample().next_weapon);
+    auto bindings=input.bindings;bindings.mouse_enabled=false;input.configure(bindings);
+    wheel(1);check(!input.sample().next_weapon);
+    bindings.mouse_enabled=true;input.configure(bindings);check(!input.sample().next_weapon);
+    SDL_Event focus{};focus.type=SDL_WINDOWEVENT;focus.window.event=SDL_WINDOWEVENT_FOCUS_LOST;input.handle(focus);
+    wheel(-1);focus.window.event=SDL_WINDOWEVENT_FOCUS_GAINED;input.handle(focus);check(!input.sample().previous_weapon);
+    // A wheel binding is a one-sample pulse, including release-triggered map.
+    bindings.mouse[static_cast<unsigned>(dok::Action::next_weapon)]=0;bindings.mouse[static_cast<unsigned>(dok::Action::map)]=6;input.configure(bindings);
+    wheel(1);check(input.sample().map);check(!input.sample().map);
+}
+static void disabled_device_tests(){
+    dok::SdlInput input;
+    auto settings=input.bindings;settings.mouse_enabled=false;settings.gamepad_enabled=false;
+    // Disabling also drops presses accumulated before the next player sample.
+    SDL_Event e{};e.type=SDL_MOUSEBUTTONDOWN;e.button.button=SDL_BUTTON_LEFT;input.handle(e);
+    input.configure(settings);check(input.capture_mouse(true));check(SDL_GetRelativeMouseMode()==SDL_FALSE);
+    check(SDL_ShowCursor(SDL_QUERY)==SDL_DISABLE);
+    SDL_Event cursor_focus{};cursor_focus.type=SDL_WINDOWEVENT;cursor_focus.window.event=SDL_WINDOWEVENT_FOCUS_LOST;input.handle(cursor_focus);
+    check(SDL_ShowCursor(SDL_QUERY)==SDL_ENABLE);
+    cursor_focus.window.event=SDL_WINDOWEVENT_FOCUS_GAINED;input.handle(cursor_focus);
+    check(SDL_ShowCursor(SDL_QUERY)==SDL_DISABLE&&SDL_GetRelativeMouseMode()==SDL_FALSE);
+    check(input.capture_mouse(false));check(SDL_ShowCursor(SDL_QUERY)==SDL_ENABLE);
+    e.type=SDL_MOUSEMOTION;e.motion.xrel=100;input.handle(e);
+    e.type=SDL_MOUSEBUTTONDOWN;e.button.button=SDL_BUTTON_LEFT;input.handle(e);
+    e.type=SDL_MOUSEBUTTONUP;input.handle(e);
+    auto state=input.sample();check(!state.fire&&!state.fire_pressed&&!state.yaw_delta);
+    // Keyboard remains usable, including pause and release-triggered map.
+    key(input,SDL_SCANCODE_W,true);key(input,SDL_SCANCODE_ESCAPE,true);
+    key(input,SDL_SCANCODE_TAB,true);key(input,SDL_SCANCODE_TAB,false);
+    state=input.sample();check(state.forward==1&&state.pause&&state.map);
+    input.clear();
+    const auto baseline=input.controller_count();
+    const int device=SDL_JoystickAttachVirtual(SDL_JOYSTICK_TYPE_GAMECONTROLLER,SDL_CONTROLLER_AXIS_MAX,SDL_CONTROLLER_BUTTON_MAX,0);
+    check(device>=0);auto* joystick=SDL_JoystickOpen(device);check(joystick!=nullptr);
+    SDL_JoystickSetVirtualAxis(joystick,SDL_CONTROLLER_AXIS_LEFTY,-32768);
+    SDL_JoystickSetVirtualAxis(joystick,SDL_CONTROLLER_AXIS_RIGHTX,32767);
+    SDL_JoystickSetVirtualAxis(joystick,SDL_CONTROLLER_AXIS_TRIGGERRIGHT,32767);
+    SDL_JoystickSetVirtualButton(joystick,SDL_CONTROLLER_BUTTON_START,1);
+    pump(input);check(input.controller_count()==baseline+1);
+    e={};e.type=SDL_CONTROLLERBUTTONDOWN;e.cbutton.which=SDL_JoystickInstanceID(joystick);e.cbutton.button=SDL_CONTROLLER_BUTTON_BACK;input.handle(e);
+    e.type=SDL_CONTROLLERBUTTONUP;input.handle(e);
+    state=input.sample();check(!state.forward&&!state.turn&&!state.fire&&!state.fire_pressed&&!state.pause&&!state.map);
+    settings.mouse_enabled=settings.gamepad_enabled=true;input.configure(settings);
+    state=input.sample();check(!state.forward&&!state.turn&&!state.fire&&!state.fire_pressed&&!state.pause&&!state.map);
+    e={};e.type=SDL_MOUSEBUTTONDOWN;e.button.button=SDL_BUTTON_LEFT;input.handle(e);
+    e.type=SDL_MOUSEBUTTONUP;input.handle(e);check(input.sample().fire_pressed);
+    e={};e.type=SDL_CONTROLLERAXISMOTION;e.caxis.which=SDL_JoystickInstanceID(joystick);e.caxis.axis=SDL_CONTROLLER_AXIS_TRIGGERRIGHT;e.caxis.value=24000;input.handle(e);
+    settings.gamepad_enabled=false;input.configure(settings);check(!input.sample().fire_pressed);
+    settings.gamepad(dok::InputPreset::classic);settings.keyboard(dok::InputPreset::classic);
+    check(!settings.gamepad_enabled);input.configure(settings);
+    SDL_Event focus{};focus.type=SDL_WINDOWEVENT;focus.window.event=SDL_WINDOWEVENT_FOCUS_LOST;input.handle(focus);
+    focus.window.event=SDL_WINDOWEVENT_FOCUS_GAINED;input.handle(focus);
+    check(!input.sample().fire);
+    check(SDL_JoystickDetachVirtual(device)==0);pump(input);SDL_JoystickClose(joystick);check(input.controller_count()==baseline);
+}
 static void short_press_tests(){
     dok::SdlInput input;
     key(input,SDL_SCANCODE_LCTRL,true);key(input,SDL_SCANCODE_LCTRL,false);
@@ -42,10 +104,12 @@ static void short_press_tests(){
     focus.window.event=SDL_WINDOWEVENT_FOCUS_GAINED;input.handle(focus);check(!input.sample().fire_pressed);
 }
 int main(){
-    SDL_SetMainReady();if(SDL_Init(SDL_INIT_GAMECONTROLLER|SDL_INIT_EVENTS)!=0)return 2;
+    SDL_SetMainReady();if(SDL_Init(SDL_INIT_VIDEO|SDL_INIT_GAMECONTROLLER|SDL_INIT_EVENTS)!=0)return 2;
     int result=0;
     try{
         short_press_tests();
+        wheel_tests();
+        disabled_device_tests();
         dok::SdlInput input;
         key(input,SDL_SCANCODE_W,true);key(input,SDL_SCANCODE_D,true);key(input,SDL_SCANCODE_RIGHT,true);
         auto state=input.sample();check(state.forward==1&&state.strafe==1&&state.turn==1);

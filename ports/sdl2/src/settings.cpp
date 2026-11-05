@@ -47,8 +47,9 @@ std::string encode_settings(const AppSettings& s){
       <<"\nsoftware_mode="<<s.video.software_mode<<"\nfullscreen="<<s.video.fullscreen<<"\nlinear="<<s.linear
       <<"\nframe_filter="<<s.frame_filter<<"\nfxaa="<<s.fxaa<<"\nclassic_hud="<<s.classic_hud<<"\nauto_hud="<<s.auto_hud<<"\nfullscreen_width="<<s.video.fullscreen_width<<"\nfullscreen_height="<<s.video.fullscreen_height
       <<"\n[interface]\nlocale="<<int(s.locale)<<"\nfps="<<s.show_fps<<"\nlast_dataset="<<int(s.last_dataset)
-      <<"\n[gameplay]\ninertia="<<s.inertia<<"\n[audio]\nmaster="<<s.master_volume<<"\neffects="<<s.effects_volume<<"\nmusic="<<s.music_volume
+      <<"\n[gameplay]\ninertia="<<s.inertia<<"\n[audio]\nmaster=100\neffects="<<s.effects_volume<<"\nmusic="<<s.music_volume
       <<"\n[input]\nkeyboard_preset="<<int(s.input.keyboard_preset)<<"\npad_preset="<<int(s.input.pad_preset)<<"\nclassic_pad="<<s.input.classic_pad
+      <<"\nmouse_enabled="<<s.input.mouse_enabled<<"\ngamepad_enabled="<<s.input.gamepad_enabled
       <<"\nmouse_sensitivity="<<s.input.mouse_degrees_per_count<<"\nstick_sensitivity="<<s.input.turn_sensitivity<<"\ndeadzone="<<s.input.stick_deadzone<<'\n';
     for(unsigned i=0;i<static_cast<unsigned>(Action::count);++i){
         o<<"key"<<i<<"a="<<int(s.input.keys[i][0])<<"\nkey"<<i<<"b="<<int(s.input.keys[i][1])
@@ -79,9 +80,12 @@ AppSettings load_settings(const std::filesystem::path& file,std::string& warning
         s.frame_filter=integer(m,"video.frame_filter",0,0,2);s.fxaa=integer(m,"video.fxaa",0,0,1);s.classic_hud=integer(m,"video.classic_hud",0,0,1);
         s.linear=integer(m,"video.linear",0,0,1);s.locale=LocaleId(integer(m,"interface.locale",int(s.locale),0,1));
         s.show_fps=integer(m,"interface.fps",1,0,1);s.last_dataset=DatasetId(integer(m,"interface.last_dataset",0,0,3));
-        s.inertia=integer(m,"gameplay.inertia",1,0,1);s.master_volume=integer(m,"audio.master",100,0,100);
+        s.inertia=integer(m,"gameplay.inertia",1,0,1);const int master=integer(m,"audio.master",100,0,100);
         s.effects_volume=integer(m,"audio.effects",100,0,100);s.music_volume=integer(m,"audio.music",100,0,100);
+        // Legacy v1 used nested gains. Flatten once; encode writes master=100.
+        s.effects_volume=master*s.effects_volume/100;s.music_volume=master*s.music_volume/100;
         s.input.keyboard_preset=InputPreset(integer(m,"input.keyboard_preset",0,0,2));s.input.pad_preset=InputPreset(integer(m,"input.pad_preset",0,0,2));
+        s.input.mouse_enabled=integer(m,"input.mouse_enabled",1,0,1);s.input.gamepad_enabled=integer(m,"input.gamepad_enabled",1,0,1);
         s.input.classic_pad=integer(m,"input.classic_pad",0,0,1);
         s.input.mouse_degrees_per_count=number(m,"input.mouse_sensitivity",0.15f,0.01f,2);
         s.input.turn_sensitivity=number(m,"input.stick_sensitivity",1,0.1f,3);s.input.stick_deadzone=number(m,"input.deadzone",0.18f,0,0.8f);
@@ -89,12 +93,15 @@ AppSettings load_settings(const std::filesystem::path& file,std::string& warning
             const auto n=std::to_string(i);
             s.input.keys[i][0]=SDL_Scancode(integer(m,"input.key"+n+"a",s.input.keys[i][0],0,SDL_NUM_SCANCODES-1));
             s.input.keys[i][1]=SDL_Scancode(integer(m,"input.key"+n+"b",s.input.keys[i][1],0,SDL_NUM_SCANCODES-1));
-            s.input.mouse[i]=integer(m,"input.mouse"+n,s.input.mouse[i],0,5);
+            s.input.mouse[i]=integer(m,"input.mouse"+n,s.input.mouse[i],0,7);
             s.input.buttons[i]=SDL_GameControllerButton(integer(m,"input.button"+n,s.input.buttons[i],-1,SDL_CONTROLLER_BUTTON_MAX-1));
             const int trigger=integer(m,"input.trigger"+n,s.input.triggers[i],-1,SDL_CONTROLLER_AXIS_TRIGGERRIGHT);
             if(trigger!=-1&&trigger!=SDL_CONTROLLER_AXIS_TRIGGERLEFT&&trigger!=SDL_CONTROLLER_AXIS_TRIGGERRIGHT)throw std::runtime_error("Invalid trigger");
             s.input.triggers[i]=SDL_GameControllerAxis(trigger);
         }
+        // Adopt the added wheel defaults in untouched stock keyboard profiles.
+        const auto next=static_cast<unsigned>(Action::next_weapon),previous=static_cast<unsigned>(Action::previous_weapon);
+        if(s.input.keyboard_preset!=InputPreset::custom&&!s.input.mouse[next]&&!s.input.mouse[previous]){s.input.mouse[next]=6;s.input.mouse[previous]=7;}
     }catch(const std::exception& e){warning=e.what();return AppSettings{};}return s;
 }
 bool save_settings(const std::filesystem::path& file,const AppSettings& s,std::string& error){
@@ -118,7 +125,8 @@ bool merge_settings_edits(AppSettings& stored,const AppSettings& a,const AppSett
 #undef EDIT_VIDEO
     }
 #define EDIT(f) if(a.f!=b.f&&stored.f!=b.f){stored.f=b.f;changed=true;}
-    EDIT(resource_paths) EDIT(resource_choices) EDIT(auto_hud) EDIT(frame_filter) EDIT(fxaa) EDIT(classic_hud) EDIT(locale) EDIT(linear) EDIT(show_fps) EDIT(inertia) EDIT(master_volume) EDIT(effects_volume) EDIT(music_volume) EDIT(last_dataset)
+    EDIT(resource_paths) EDIT(resource_choices) EDIT(auto_hud) EDIT(frame_filter) EDIT(fxaa) EDIT(classic_hud) EDIT(locale) EDIT(linear) EDIT(show_fps) EDIT(inertia) EDIT(effects_volume) EDIT(music_volume) EDIT(last_dataset)
+    EDIT(input.mouse_enabled) EDIT(input.gamepad_enabled)
     EDIT(input.keys) EDIT(input.buttons) EDIT(input.triggers) EDIT(input.mouse) EDIT(input.classic_pad)
     EDIT(input.keyboard_preset) EDIT(input.pad_preset) EDIT(input.mouse_degrees_per_count) EDIT(input.turn_sensitivity) EDIT(input.stick_deadzone)
 #undef EDIT

@@ -42,7 +42,13 @@ int main(int argc,char** argv){
 #endif
         return 1;
     };
-    SDL_SetMainReady();if(SDL_Init(SDL_INIT_VIDEO|SDL_INIT_GAMECONTROLLER|SDL_INIT_AUDIO)!=0)return fail(SDL_GetError());SdlEnd sdl;
+    SDL_SetMainReady();
+    // ALLOW_HIGHDPI alone does not declare Windows DPI awareness. Request it
+    // before video initialization so Windows never bitmap-scales our glyphs.
+    // SDL falls back to the available awareness level on older Windows.
+    SDL_SetHint(SDL_HINT_WINDOWS_DPI_AWARENESS,"permonitorv2");
+    SDL_SetHint(SDL_HINT_WINDOWS_DPI_SCALING,"0"); // Selected sizes are pixels.
+    if(SDL_Init(SDL_INIT_VIDEO|SDL_INIT_GAMECONTROLLER|SDL_INIT_AUDIO)!=0)return fail(SDL_GetError());SdlEnd sdl;
     try{
         char* pref=SDL_GetPrefPath("DoK-port","SourcePort");if(!pref)throw std::runtime_error(SDL_GetError());
         std::filesystem::path user_path=std::filesystem::u8path(pref);SDL_free(pref);
@@ -107,15 +113,16 @@ int main(int argc,char** argv){
             }
             std::vector<dok::FrontendDataset> items;for(auto& set:sets)items.push_back({&set.archive,set.path.filename().u8string()});menu.datasets(std::move(items),errors);menu.resources(sources);
         };
-        auto load=[&](const std::string& path){try{
+        auto load=[&](const std::string& path,dok::DatasetId expected=dok::DatasetId::unknown){bool admitted=false;try{
             auto a=dok::Archive::open(std::filesystem::u8path(path));if(a.identify()==dok::DatasetId::unknown)throw std::runtime_error("Unknown RES catalog");
+            if(expected!=dok::DatasetId::unknown&&a.identify()!=expected)throw std::runtime_error("RES belongs to another game or edition");
             // Validate all level references before admitting a candidate. One bad
             // file must not invalidate a previously usable source or other games.
             for(const auto& entry:a.entries())if(entry.name.rfind("LEVEL",0)==0)dok::load_level(a,entry.name);
-            const auto dataset=a.identify();const auto count=sources.sources().size();sources.add(std::filesystem::u8path(path),std::move(a));
+            const auto dataset=a.identify();const auto count=sources.sources().size();sources.add(std::filesystem::u8path(path),std::move(a));admitted=true;
             log<<(sources.sources().size()==count?"Duplicate ignored ":"Loaded ")<<dok::dataset_name(dataset)<<": "<<path<<'\n';
             if(!sources.selected(dataset))log<<"Source selection required: "<<dok::dataset_name(dataset)<<'\n';
-        }catch(const std::exception& e){resource_errors+=std::filesystem::u8path(path).filename().u8string()+": "+e.what()+"\n";log<<resource_errors;}refresh_sets();};
+        }catch(const std::exception& e){resource_errors+=std::filesystem::u8path(path).filename().u8string()+": "+e.what()+"\n";log<<resource_errors;}refresh_sets();return admitted;};
         if(paths.empty()){char* base=SDL_GetBasePath();if(base){const auto directory=std::filesystem::u8path(base);SDL_free(base);
             for(const auto& folder:{directory,directory/"data"}){
                 std::error_code error;
@@ -199,6 +206,7 @@ int main(int argc,char** argv){
                 else if(event.action=="shot")captures.push_back(event.value);
                 else if(event.action=="keydown"||event.action=="keyup"){SDL_Event e{};e.type=event.action=="keydown"?SDL_KEYDOWN:SDL_KEYUP;e.key.keysym.scancode=SDL_GetScancodeFromName(event.value.c_str());e.key.keysym.sym=SDL_GetKeyFromScancode(e.key.keysym.scancode);SDL_PushEvent(&e);}
                 else if(event.action=="mouse_down"||event.action=="mouse_up"){SDL_Event e{};e.type=event.action=="mouse_down"?SDL_MOUSEBUTTONDOWN:SDL_MOUSEBUTTONUP;e.button.button=static_cast<Uint8>(std::stoul(event.value));SDL_PushEvent(&e);}
+                else if(event.action=="wheel"){SDL_Event e{};e.type=SDL_MOUSEWHEEL;e.wheel.y=std::stoi(event.value);SDL_PushEvent(&e);}
                 else if(event.action=="key"){SDL_Event e{};e.type=SDL_KEYDOWN;e.key.keysym.scancode=SDL_GetScancodeFromName(event.value.c_str());e.key.keysym.sym=SDL_GetKeyFromScancode(e.key.keysym.scancode);SDL_PushEvent(&e);e.type=SDL_KEYUP;SDL_PushEvent(&e);}
                 else if(event.action=="pad"){SDL_Event e{};e.type=SDL_CONTROLLERBUTTONDOWN;e.cbutton.button=std::stoi(event.value);SDL_PushEvent(&e);e.type=SDL_CONTROLLERBUTTONUP;SDL_PushEvent(&e);}
                 else if(event.action=="drop"){SDL_Event e{};e.type=SDL_DROPFILE;e.drop.file=SDL_strdup(event.value.c_str());if(SDL_PushEvent(&e)!=1)SDL_free(e.drop.file);}
@@ -237,17 +245,21 @@ int main(int argc,char** argv){
                     }
                 }
             }
+            if(input.bindings.mouse_enabled!=settings.input.mouse_enabled||input.bindings.gamepad_enabled!=settings.input.gamepad_enabled){fire_press.clear();use_pending=use_previous=false;}
+            input.configure(settings.input);
             for(const auto command:menu.commands()){
                 flow_changed|=!(map_closed&&command==dok::MenuCommand::resume);
                 switch(command){
                 case dok::MenuCommand::start:try{start(menu.level()==4?"LEVEL4":"LEVEL"+std::to_string(menu.level()));}catch(const std::exception& e){clear_world();menu.main_menu();menu.notice("Не удалось загрузить уровень. Подробности в port.log.","Could not load level. See port.log.");log<<e.what()<<'\n';}break;
                 case dok::MenuCommand::add_resource:
-                    if(!world){music.reset();const auto path=menu.pending_resource();load(path);
+                    if(!world){music.reset();const auto path=menu.pending_resource();
+                        if(!load(path,menu.resource_target())){menu.notice(dok::menu_text(dok::MenuString::resource_load_failed,dok::LocaleId::ru),dok::menu_text(dok::MenuString::resource_load_failed,dok::LocaleId::en));break;}
                         if(const auto found=sources.find_source(std::filesystem::u8path(path))){
-                            const auto id=sources.sources()[*found].archive.identify();if(!sources.selected(id))settings.resource_choices[static_cast<unsigned>(id)].clear();
-                            if(std::find(settings.resource_paths.begin(),settings.resource_paths.end(),path)==settings.resource_paths.end())settings.resource_paths.push_back(path);
+                            const auto& source=sources.sources()[*found];const auto id=source.archive.identify();sources.select(id,*found);
+                            settings.resource_choices[static_cast<unsigned>(id)]=source.path.u8string();
+                            for(const auto& candidate:sources.sources())if(std::find(settings.resource_paths.begin(),settings.resource_paths.end(),candidate.path.u8string())==settings.resource_paths.end())settings.resource_paths.push_back(candidate.path.u8string());
+                            refresh_sets();
                         }
-                        else menu.notice("Не удалось добавить RES. "+resource_errors,"Could not add RES. "+resource_errors);
                     }break;
                 case dok::MenuCommand::select_source:
                     if(!world){music.reset();const auto index=menu.pending_source();const auto& source=sources.sources().at(index);const auto id=source.archive.identify();
@@ -264,7 +276,7 @@ int main(int argc,char** argv){
                     break;
                 case dok::MenuCommand::music_stop:music.reset();break;
                 case dok::MenuCommand::music_title:case dok::MenuCommand::music_story:
-                    music.reset();if(!sets.empty())try{music=std::make_unique<dok::SdlAudio>(sets[menu.dataset_index()].archive);music->volume(settings.master_volume*settings.music_volume/100);music->command({sets[menu.dataset_index()].archive.identify()==dok::DatasetId::old_gold?dok::AudioAction::loop:dok::AudioAction::once,1,dok::cp866("ЗАСТАВКА_ЗВУК")});const auto music_state=music->snapshot();log<<"MUSIC dataset="<<int(sets[menu.dataset_index()].archive.identify())<<" loop="<<music_state.voice.loop<<" active="<<music_state.voice.id<<'\n';}catch(const std::exception& e){log<<"Music unavailable: "<<e.what()<<'\n';}break;
+                    music.reset();if(!sets.empty())try{music=std::make_unique<dok::SdlAudio>(sets[menu.dataset_index()].archive);music->volume(settings.music_volume);music->command({sets[menu.dataset_index()].archive.identify()==dok::DatasetId::old_gold?dok::AudioAction::loop:dok::AudioAction::once,1,dok::cp866("ЗАСТАВКА_ЗВУК")});const auto music_state=music->snapshot();log<<"MUSIC dataset="<<int(sets[menu.dataset_index()].archive.identify())<<" loop="<<music_state.voice.loop<<" active="<<music_state.voice.id<<'\n';}catch(const std::exception& e){log<<"Music unavailable: "<<e.what()<<'\n';}break;
                 case dok::MenuCommand::apply_video:
                     try{auto next=std::make_unique<dok::Display>(settings.video,!replay&&!hidden);input.capture_mouse(false);display=std::move(next);if(!replay&&!hidden)SDL_ShowWindow(display->window());video_changed=true;}
                     catch(const std::exception& e){log<<"Video rejected: "<<e.what()<<'\n';menu.video_failed(e.what());}break;
@@ -276,9 +288,8 @@ int main(int argc,char** argv){
             }
             settings_dirty|=dok::merge_settings_edits(stored,before,settings,false);
             if(settings_dirty)persist();
-            input.bindings=settings.input;
-            if(audio){audio->volume(settings.master_volume*settings.effects_volume/100);audio->pause(menu_blocks());}
-            if(music)music->volume(settings.master_volume*settings.music_volume/100);
+            if(audio){audio->volume(settings.effects_volume);audio->pause(menu_blocks());}
+            if(music)music->volume(settings.music_volume);
             const auto now=SDL_GetPerformanceCounter();const auto elapsed_ns=replay?16666667ULL:static_cast<std::uint64_t>(double(now-previous_time)*1e9/SDL_GetPerformanceFrequency());previous_time=now;
             const auto actions=input.sample();
             if(world&&!menu.active()&&actions.map&&!map_closed)menu.show_map();
@@ -289,7 +300,8 @@ int main(int argc,char** argv){
             else fire_press.clear();
             if(world&&!menu_blocks()&&!flow_changed&&flow->phase()==dok::SessionPhase::playing){
                 if(!replay||replay_live_input){
-                    if(actions.select_weapon>=0)weapons->select(actions.select_weapon);if(actions.next_weapon)weapons->cycle(1);if(actions.previous_weapon)weapons->cycle(-1);
+                    // Live 1/2 and either wheel direction all request the other owned weapon.
+                    if(actions.select_weapon>=0||actions.next_weapon||actions.previous_weapon)weapons->cycle(actions.previous_weapon?-1:1);
                     dok::apply_mouse_yaw(*world,actions.yaw_delta);
                 }
                 world->advance_events(elapsed_ns,[&](dok::OwnerId owner,dok::CallbackId callback){

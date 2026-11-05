@@ -1,0 +1,39 @@
+{
+  "date": "2026-11-05",
+  "task": "SP22 partial: three game resource rows, per-game file buttons, blank credits line",
+  "ctest_passed": 18,
+  "ctest_total": 18,
+  "frontend": {
+    "resource_combinations": 7,
+    "rendered_menu_frames": 336,
+    "software_scenes": 35,
+    "backend_rebuilds": 4
+  },
+  "menu_ux_processes": 18,
+  "packaged_processes": 8,
+  "originals_sha256": {
+    "originals\\Old_Gold_3D\\OLD_GOLD.RES": "e376855167b64a7190ec2da0ba9bd1da129ba178c4033aebadebca3f08b2be25",
+    "originals\\pkr\\RUS\\PKR.RES": "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816",
+    "originals\\pkr\\ENG\\PKE.RES": "865da340621fa6f90548a84e9ae9bf0a85071befb32a40ca1d359e488f74d458"
+  },
+  "package": "artifacts/sdl2/windows-playtest-sp22-r3",
+  "exe_sha256": "5b48e9ceba539ed13db897bc87c47b91742a7d85558e611ed68403d6d752b6bf",
+  "evidence": [
+    "research/evidence/source-port/sp22-resources-r3-frontend",
+    "research/evidence/source-port/sp22-resources-r3-process",
+    "research/evidence/source-port/sp08-sp16-checkpoint/windows-playtest-sp22-r3"
+  ],
+  "checks": [
+    "Three game rows plus Back",
+    "Keyboard, synthetic pad, pointer file button",
+    "Picker cancel restores game focus",
+    "Explicit variant selection persists across restart",
+    "Wrong edition rejected before admission",
+    "Resources and credits RU/EN reviewed at compact and desktop sizes"
+  ],
+  "limitations": [
+    "Physical controller not tested",
+    "Existing windows-playtest executable was locked by the user game; delivered in a separate folder",
+    "Full SP22 audit remains open"
+  ]
+}

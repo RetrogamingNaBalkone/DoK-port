@@ -20,7 +20,7 @@ struct AppSettings {
     // Independent presentation options; never enter simulation state.
     int frame_filter=0; // nearest, linear, sharp bilinear
     bool fxaa=false,classic_hud=false,auto_hud=true;
-    int master_volume=100,effects_volume=100,music_volume=100;
+    int effects_volume=100,music_volume=100;
     DatasetId last_dataset=DatasetId::unknown;
     InputBindings input=InputBindings::defaults();
     std::vector<std::string> resource_paths;

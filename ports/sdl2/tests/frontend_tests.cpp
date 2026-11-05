@@ -23,7 +23,7 @@ int main(){
         std::string warning;auto s=dok::load_settings(path,warning);check(warning.empty()&&s.locale==dok::system_locale(),"First-run locale");
         s.locale=s.locale==dok::LocaleId::ru?dok::LocaleId::en:dok::LocaleId::ru;
         s.video={dok::RendererKind::software,800,600,3,true};s.input.keyboard(dok::InputPreset::classic);s.input.gamepad(dok::InputPreset::classic);
-        s.inertia=false;s.master_volume=45;s.music_volume=15;s.input.keys[0][0]=SDL_SCANCODE_I;s.input.keyboard_preset=dok::InputPreset::custom;
+        s.inertia=false;s.effects_volume=45;s.input.mouse_enabled=false;s.input.gamepad_enabled=false;s.music_volume=15;s.input.keys[0][0]=SDL_SCANCODE_I;s.input.keyboard_preset=dok::InputPreset::custom;
         s.frame_filter=2;s.fxaa=true;s.classic_hud=true;s.auto_hud=false;
         s.resource_paths={"C:/Games/Старое золото/OLD_GOLD.RES","C:/Games/edition=two.RES"};
         s.resource_choices[1]=s.resource_paths[0];
@@ -36,35 +36,105 @@ int main(){
         check(dok::save_settings(path,s,warning),"Save independent fullscreen size");
         loaded=dok::load_settings(path,warning);
         check(loaded.video.width==800&&loaded.video.fullscreen_width==1280&&loaded.video.fullscreen_height==800,"Independent window/fullscreen size roundtrip");
-        auto stored=s,before=s;before.video.renderer=dok::RendererKind::opengl;before.video.width=1920;before.locale=dok::LocaleId::en;auto after=before;after.master_volume=60;
-        check(dok::merge_settings_edits(stored,before,after),"Changed persistent setting must be dirty");check(stored.video==s.video&&stored.locale==s.locale&&stored.master_volume==60,"CLI overrides leaked to disk");
+        auto stored=s,before=s;before.video.renderer=dok::RendererKind::opengl;before.video.width=1920;before.locale=dok::LocaleId::en;auto after=before;after.effects_volume=60;
+        check(dok::merge_settings_edits(stored,before,after),"Changed persistent setting must be dirty");check(stored.video==s.video&&stored.locale==s.locale&&stored.effects_volume==60,"CLI overrides leaked to disk");
         check(!dok::merge_settings_edits(stored,before,after),"Already stored edit must not write again");
         check(!dok::merge_settings_edits(stored,after,after),"Idle frame must not serialize/save settings");
         auto video_after=after;video_after.video.width=1024;
         check(!dok::merge_settings_edits(stored,after,video_after,false),"Unconfirmed video must not persist");
         check(dok::merge_settings_edits(stored,after,video_after,true),"Confirmed video must persist");
+        for(auto volumes:{std::array<int,3>{45,80,15},{0,100,100},{100,0,65}}){
+            {std::ofstream out(path);out<<"[settings]\nversion=1\n[audio]\nmaster="<<volumes[0]<<"\neffects="<<volumes[1]<<"\nmusic="<<volumes[2]<<"\n";}
+            loaded=dok::load_settings(path,warning);
+            check(warning.empty()&&loaded.effects_volume==volumes[0]*volumes[1]/100&&loaded.music_volume==volumes[0]*volumes[2]/100,"Legacy audio effective levels");
+            check(loaded.input.mouse_enabled&&loaded.input.gamepad_enabled,"Legacy devices default enabled");
+            const auto migrated=dok::encode_settings(loaded);
+            check(migrated.find("master=100")!=std::string::npos&&dok::save_settings(path,loaded,warning),"Save normalized master");
+            loaded=dok::load_settings(path,warning);check(warning.empty()&&dok::encode_settings(loaded)==migrated,"Migration is idempotent");
+        }
+        for(int preset:{0,2}){
+            {std::ofstream out(path);out<<"[settings]\nversion=1\n[input]\nkeyboard_preset="<<preset<<"\nmouse12=0\nmouse13=0\n";}
+            loaded=dok::load_settings(path,warning);
+            check(warning.empty()&&loaded.input.mouse[12]==(preset==0?6:0)&&loaded.input.mouse[13]==(preset==0?7:0),"Wheel defaults migrate stock profiles and preserve custom unbindings");
+        }
         {std::ofstream out(path);out<<"[settings]\nversion=999\n";}loaded=dok::load_settings(path,warning);check(!warning.empty()&&loaded.inertia,"Bad version fallback");
         {std::ofstream out(path);out<<"[settings]\nversion=1\n[input]\ndeadzone=nan\n";}loaded=dok::load_settings(path,warning);check(!warning.empty(),"Reject NaN");
         // Failed replacement must preserve the old destination, not unlink it first.
         const auto blocked=dir/"directory.ini";std::filesystem::create_directories(blocked);{std::ofstream out(blocked/"keep");out<<"keep";}
         check(!dok::save_settings(blocked,s,warning)&&std::filesystem::exists(blocked/"keep"),"Transactional write failure");
         s=dok::AppSettings{};dok::Frontend menu(s);menu.render(640,480);
+        {
+            dok::AppSettings bindings;dok::Frontend remap(bindings);remap.render(640,480);
+            down(remap,1);key(remap,SDLK_RETURN);down(remap,2);key(remap,SDLK_RETURN);key(remap,SDLK_RETURN);
+            down(remap,2);key(remap,SDLK_RETURN);key(remap,SDLK_RETURN);down(remap,2);key(remap,SDLK_RETURN);
+            check(remap.capturing(),"Wheel binding capture entry");
+            SDL_Event wheel{};wheel.type=SDL_MOUSEWHEEL;wheel.wheel.y=1;remap.handle(wheel,640,480);remap.render(640,480);
+            check(remap.screen()==dok::MenuScreen::conflict,"Wheel binding detects existing weapon action");
+            key(remap,SDLK_UP);key(remap,SDLK_RETURN);
+            check(bindings.input.mouse[0]==6&&bindings.input.mouse[static_cast<unsigned>(dok::Action::next_weapon)]==0&&bindings.input.keyboard_preset==dok::InputPreset::custom,"Wheel replacement preserves remap semantics");
+        }
         key(menu,SDLK_RETURN);check(menu.screen()==dok::MenuScreen::resources,"Missing RES flow");key(menu,SDLK_ESCAPE);
+        {
+            dok::AppSettings config;dok::Frontend resources(config);resources.render(640,480);
+            down(resources,2);key(resources,SDLK_RETURN);down(resources,3);
+            check(resources.focused_row()==3,"Exactly three resource rows plus Back");
+            key(resources,SDLK_UP);key(resources,SDLK_RETURN);
+            check(resources.screen()==dok::MenuScreen::files&&resources.resource_target()==dok::DatasetId::kremlin_pke,"English edition targets file picker");
+            key(resources,SDLK_ESCAPE);check(resources.focused_row()==2,"File picker cancel restores game row");
+            pad(resources,SDL_CONTROLLER_BUTTON_DPAD_UP);pad(resources,SDL_CONTROLLER_BUTTON_A);
+            check(resources.screen()==dok::MenuScreen::files&&resources.resource_target()==dok::DatasetId::kremlin_pkr,"Pad targets Russian file picker");
+            pad(resources,SDL_CONTROLLER_BUTTON_B);check(resources.focused_row()==1,"Pad cancel restores game row");
+            const auto& resource_frame=resources.render(640,480);
+            const auto selected=std::find(resource_frame.pixels.begin(),resource_frame.pixels.end(),0xff302b20);
+            check(selected!=resource_frame.pixels.end(),"Resource row is visibly selected");
+            SDL_Event click{};click.type=SDL_MOUSEBUTTONDOWN;click.button.button=SDL_BUTTON_LEFT;
+            click.button.x=580;click.button.y=int(selected-resource_frame.pixels.begin())/resource_frame.width+10;
+            resources.handle(click,640,480);
+            check(resources.screen()==dok::MenuScreen::files&&resources.resource_target()==dok::DatasetId::kremlin_pkr,"File button mouse hit targets its game");
+            key(resources,SDLK_ESCAPE);
+            for(auto size:{std::array<int,2>{320,200},{480,360},{1280,720},{2560,1440}})resources.render(size[0],size[1]);
+        }
         down(menu,1);key(menu,SDLK_RETURN);check(menu.screen()==dok::MenuScreen::settings,"Settings route");
         key(menu,SDLK_RETURN);const auto old=s.video;key(menu,SDLK_RIGHT);down(menu,2);key(menu,SDLK_RIGHT);
         down(menu,1);menu.update(1000);key(menu,SDLK_RETURN);check(menu.video_pending()&&s.video!=old,"Apply staged video");
         check(command(menu,dok::MenuCommand::apply_video),"Video command");menu.update(16001);check(s.video==old&&!menu.video_pending()&&command(menu,dok::MenuCommand::revert_video),"15-second rollback");
         key(menu,SDLK_ESCAPE);down(menu,2);key(menu,SDLK_RETURN);key(menu,SDLK_RETURN);
-        check(menu.screen()==dok::MenuScreen::keyboard,"Keyboard settings");key(menu,SDLK_RIGHT);check(s.input.keyboard_preset==dok::InputPreset::classic&&s.input.pad_preset==dok::InputPreset::modern,"Independent presets");
+        check(menu.screen()==dok::MenuScreen::keyboard,"Keyboard settings");down(menu,1);key(menu,SDLK_RIGHT);check(s.input.keyboard_preset==dok::InputPreset::classic&&s.input.pad_preset==dok::InputPreset::modern,"Independent presets");
         down(menu,1);key(menu,SDLK_RETURN);key(menu,SDLK_RETURN);key(menu,SDLK_RETURN);check(menu.capturing(),"Capture entry");
         key(menu,SDLK_LCTRL);check(menu.screen()==dok::MenuScreen::conflict,"Binding conflict");key(menu,SDLK_ESCAPE);check(s.input.keys[0][0]==SDL_SCANCODE_UP,"Conflict cancel");
         key(menu,SDLK_RETURN);key(menu,SDLK_LCTRL);key(menu,SDLK_UP);key(menu,SDLK_RETURN);
         check(s.input.keys[0][0]==SDL_SCANCODE_LCTRL&&s.input.keys[int(dok::Action::fire)][0]==SDL_SCANCODE_UNKNOWN,"Conflict replace");
-        key(menu,SDLK_ESCAPE);key(menu,SDLK_ESCAPE);key(menu,SDLK_ESCAPE);down(menu,1);key(menu,SDLK_RETURN);down(menu,1);key(menu,SDLK_RETURN);key(menu,SDLK_RETURN);
+        key(menu,SDLK_ESCAPE);key(menu,SDLK_ESCAPE);key(menu,SDLK_ESCAPE);down(menu,1);key(menu,SDLK_RETURN);down(menu,2);key(menu,SDLK_RETURN);key(menu,SDLK_RETURN);
         check(menu.capturing(),"Gamepad capture");pad(menu,SDL_CONTROLLER_BUTTON_START);pad(menu,SDL_CONTROLLER_BUTTON_BACK);check(!menu.capturing(),"Gamepad-only cancel capture");
-        menu.pause();down(menu,1);key(menu,SDLK_RETURN);down(menu,4);key(menu,SDLK_RETURN);auto locale=s.locale;key(menu,SDLK_RIGHT);check(s.locale!=locale,"Live menu locale");
+        menu.pause();down(menu,1);key(menu,SDLK_RETURN);key(menu,SDLK_RETURN);down(menu,7);auto locale=s.locale;key(menu,SDLK_RIGHT);check(s.locale!=locale,"Live menu locale");
         key(menu,SDLK_ESCAPE);key(menu,SDLK_ESCAPE);check(menu.screen()==dok::MenuScreen::pause,"Settings returns to pause");key(menu,SDLK_UP);key(menu,SDLK_RETURN);check(!menu.active()&&command(menu,dok::MenuCommand::resume),"Resume flow");
         menu.pause();menu.request_quit();key(menu,SDLK_RETURN);check(menu.screen()==dok::MenuScreen::pause,"Exit default is cancel");
+        {
+            dok::AppSettings edits;dok::Frontend revised(edits);revised.render(640,480);
+            auto focus=[&](int row){for(int n=0;n<20&&revised.focused_row()!=row;++n)key(revised,SDLK_DOWN);check(revised.focused_row()==row,"Revised row reachable");};
+            down(revised,1);key(revised,SDLK_RETURN);down(revised,4);check(revised.focused_row()==4,"Four settings categories and Back");
+            key(revised,SDLK_UP);key(revised,SDLK_UP);key(revised,SDLK_UP);key(revised,SDLK_UP);key(revised,SDLK_RETURN);
+            focus(5);key(revised,SDLK_RIGHT);check(edits.linear&&edits.frame_filter==0,"GL filtering independent");
+            focus(0);key(revised,SDLK_RIGHT);focus(5);key(revised,SDLK_LEFT);
+            check(edits.linear&&edits.frame_filter==2,"Software Sharp Bilinear independent");
+            key(revised,SDLK_DOWN);check(revised.focused_row()==7,"Software skips disabled FXAA");
+            focus(0);key(revised,SDLK_RIGHT);focus(5);check(edits.frame_filter==2&&edits.linear,"Filter values survive renderer roundtrip");
+            const auto locale=edits.locale;focus(8);key(revised,SDLK_RIGHT);check(edits.locale!=locale&&revised.focused_row()==8,"Language preserves semantic focus");
+            focus(9);key(revised,SDLK_RIGHT);check(!edits.show_fps,"FPS applies immediately");
+            focus(10);key(revised,SDLK_RETURN);check(edits.locale==dok::system_locale()&&edits.show_fps&&!edits.linear&&edits.frame_filter==0,"Combined defaults");
+            key(revised,SDLK_ESCAPE);down(revised,2);key(revised,SDLK_RETURN);key(revised,SDLK_RETURN);
+            key(revised,SDLK_RETURN);check(!edits.input.mouse_enabled,"Disable mouse gameplay");
+            pad(revised,SDL_CONTROLLER_BUTTON_DPAD_DOWN);key(revised,SDLK_RETURN);
+            check(!edits.input.mouse_enabled&&edits.input.keyboard_preset==dok::InputPreset::classic,"Preset preserves mouse switch and pad menu navigation");
+            focus(4);key(revised,SDLK_RETURN);check(edits.input.mouse_enabled,"Mouse defaults enable input");
+            key(revised,SDLK_ESCAPE);down(revised,1);key(revised,SDLK_RETURN);
+            key(revised,SDLK_RETURN);check(!edits.input.gamepad_enabled,"Disable gamepad gameplay");
+            pad(revised,SDL_CONTROLLER_BUTTON_DPAD_DOWN);pad(revised,SDL_CONTROLLER_BUTTON_A);
+            check(!edits.input.gamepad_enabled&&edits.input.pad_preset==dok::InputPreset::classic,"Disabled pad still navigates menus");
+            focus(5);pad(revised,SDL_CONTROLLER_BUTTON_A);check(edits.input.gamepad_enabled,"Pad defaults enable input");
+            auto saved=edits,old=edits;edits.input.mouse_enabled=false;edits.input.gamepad_enabled=false;
+            check(dok::merge_settings_edits(saved,old,edits)&&!saved.input.mouse_enabled&&!saved.input.gamepad_enabled,"Device toggles persist through merge");
+        }
         // Resizing followed by focus/hover used to change the help reservation
         // and recenter the entire panel on rows without a description.
         for(auto size:{std::array<int,2>{800,600},std::array<int,2>{1280,720},std::array<int,2>{1920,1080}}){
@@ -98,10 +168,10 @@ int main(){
         dok::Frontend fullscreen(fs);fullscreen.render(640,480);down(fullscreen,1);key(fullscreen,SDLK_RETURN);key(fullscreen,SDLK_RETURN);
         down(fullscreen,1);key(fullscreen,SDLK_RIGHT);down(fullscreen,1);key(fullscreen,SDLK_RIGHT);
         check(!fs.video.fullscreen&&fs.video.fullscreen_height==800,"Fullscreen selection must remain staged");
-        down(fullscreen,2);key(fullscreen,SDLK_RETURN);
+        down(fullscreen,1);key(fullscreen,SDLK_RETURN);
         check(fullscreen.video_pending()&&fs.video.fullscreen&&fs.video.width==800&&fs.video.height==600&&fs.video.fullscreen_width==1280&&fs.video.fullscreen_height==720,"Fullscreen preset must not change window size");
         key(fullscreen,SDLK_RETURN);check(!fullscreen.video_pending()&&command(fullscreen,dok::MenuCommand::keep_video),"Confirm fullscreen mode");
-        down(fullscreen,2);check(fullscreen.focused_row()==8,"HUD row navigation");down(fullscreen,1);check(fullscreen.focused_row()==9,"Defaults row navigation");
+        down(fullscreen,2);check(fullscreen.focused_row()==6,"FXAA row navigation");down(fullscreen,4);check(fullscreen.focused_row()==10,"Defaults row navigation");
         // Leave a staged mode through Escape, B and the Back row. A cancelled
         // prompt must preserve the draft and focus; discard is always explicit.
         for(int route=0;route<3;++route){
@@ -133,7 +203,7 @@ int main(){
             down(mouse,2);right();key(mouse,SDLK_ESCAPE);key(mouse,SDLK_UP);key(mouse,SDLK_UP);key(mouse,SDLK_RETURN);
             check(edits.video.width==1280&&edits.video.height==800,"Right click cycles resolution backwards");key(mouse,SDLK_RETURN);
             right();check(mouse.screen()==dok::MenuScreen::graphics&&!mouse.video_pending(),"Right click cannot apply video");
-            key(mouse,SDLK_ESCAPE);down(mouse,1);key(mouse,SDLK_RETURN);right();check(edits.master_volume==95,"Right click decrements volume");
+            key(mouse,SDLK_ESCAPE);down(mouse,1);key(mouse,SDLK_RETURN);right();check(edits.effects_volume==95,"Right click decrements volume");
         }
         dok::Frontend background(s);background.render(640,480);SDL_Event event{};event.type=SDL_WINDOWEVENT;event.window.event=SDL_WINDOWEVENT_FOCUS_LOST;background.handle(event,640,480);
         event.type=SDL_CONTROLLERAXISMOTION;event.caxis.axis=SDL_CONTROLLER_AXIS_LEFTY;event.caxis.value=25000;background.handle(event,640,480);

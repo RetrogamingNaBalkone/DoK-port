@@ -31,6 +31,12 @@ int main(){try{
     check(world.visible_message(LocaleId::en)=="TOOK 1 RUBLE","Money message translates");
     world.advance_events(4001000000ULL,[](auto,auto){});check(world.visible_message(LocaleId::ru).empty()&&world.visible_message(LocaleId::en).empty(),"Same expiry in both languages");
     check(dok::game_dataset_title(dok::DatasetId::old_gold,LocaleId::ru)=="Старое золото","Localized Old Gold name");
+    for(auto locale:{LocaleId::ru,LocaleId::en}){
+        const auto ru=dok::game_dataset_description(dok::DatasetId::kremlin_pkr,locale);
+        check(!ru.empty()&&ru==dok::game_dataset_description(dok::DatasetId::kremlin_pke,locale),"Both Kremlin editions share their description");
+        const auto gold=dok::game_dataset_description(dok::DatasetId::old_gold,locale);
+        check(gold.find(locale==LocaleId::ru?"Разбаковых":"Razbakov")!=std::string::npos,"Old Gold credits the engine authors");
+    }
     check(dok::game_level_name(dok::DatasetId::kremlin_pkr,1,LocaleId::en)=="PALACE OF EVIL","Names follow locale independently of profile");
     std::cout<<"Semantic aliases, single-profile stories, active-message locale switch, cheat translation and expiry passed\n";
 }catch(const std::exception& e){std::cerr<<e.what()<<'\n';return 1;}}

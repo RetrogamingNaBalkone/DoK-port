@@ -316,16 +316,16 @@
       "en": "Dungeons of Kremlin"
     },
     "dataset.old_gold.description": {
-      "ru": "Отдельное приключение: один лабиринт, две волшебные палочки и 105 монет",
-      "en": "A separate adventure: one maze, two magic wands and 105 coins"
+      "ru": "Технологическое демо движка братьев Разбаковых: лабиринт, две волшебные палочки и 105 монет.",
+      "en": "A technology demo of the Razbakov brothers' engine: a maze, two magic wands and 105 coins."
     },
     "dataset.kremlin_ru.description": {
-      "ru": "Русское издание. Язык всех текстов можно выбрать в настройках.",
-      "en": "Russian edition. Choose the language of all texts in settings."
+      "ru": "Коммерческая игра братьев Разбаковых. Уровни и враги в русской и английской версиях незначительно отличаются.",
+      "en": "A commercial game by the Razbakov brothers. Levels and enemies differ slightly between the Russian and English versions."
     },
     "dataset.kremlin_en.description": {
-      "ru": "Есть небольшие отличия в картах и балансе монстров",
-      "en": "There are small differences in maps and monster balance"
+      "ru": "Коммерческая игра братьев Разбаковых. Уровни и враги в русской и английской версиях незначительно отличаются.",
+      "en": "A commercial game by the Razbakov brothers. Levels and enemies differ slightly between the Russian and English versions."
     }
   },
   "aliases": {
