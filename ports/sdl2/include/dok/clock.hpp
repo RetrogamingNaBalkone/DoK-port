@@ -1,11 +1,15 @@
 #pragma once
 #include <cstdint>
+#include <stdexcept>
 
 namespace dok {
 // Logical time uses the DOS PIT/119 scale. Host elapsed time is monotonic;
 // pausing is implemented by not submitting elapsed time, never by changing FPS.
 class GameClock {
 public:
+    struct State {std::uint64_t ticks=0,remainder=0;};
+    State snapshot() const noexcept {return {ticks_,remainder_};}
+    void restore(State value) {if(value.remainder>=denominator)throw std::runtime_error("Invalid clock remainder");ticks_=value.ticks;remainder_=value.remainder;}
     static constexpr std::uint64_t pit_hz = 1193182;
     static constexpr std::uint64_t denominator = 119000000000ULL;
     void advance_nanoseconds(std::uint64_t elapsed) noexcept {
@@ -36,6 +40,9 @@ inline std::uint32_t original_pit_ticks(std::uint32_t interrupts,
 
 class Stopwatch {
 public:
+    struct State {std::uint32_t started=0,elapsed=0;bool running=false;};
+    State snapshot() const noexcept {return {started_,elapsed_,running_};}
+    void restore(State value) noexcept {started_=value.started;elapsed_=value.elapsed;running_=value.running;}
     void start(std::uint32_t now) noexcept {
         if (!running_) { started_ = now; running_ = true; }
     }

@@ -6,9 +6,9 @@ their library/link commands in dependency order. No code generation is involved.
 """
 import argparse
 from concurrent.futures import ThreadPoolExecutor
-import os
 from pathlib import Path
 import subprocess
+from compiler_cache import compiler_cache
 
 
 def main():
@@ -17,9 +17,6 @@ def main():
     parser.add_argument('--ninja', type=Path, required=True)
     parser.add_argument('targets', nargs='*', default=['all'])
     args = parser.parse_args()
-    root = Path(__file__).resolve().parents[3]
-    os.environ['ZIG_GLOBAL_CACHE_DIR'] = str(root / 'build/sdl2/zig-cache')
-    os.environ['ZIG_LOCAL_CACHE_DIR'] = str(root / 'build/sdl2/zig-local-cache')
     commands = subprocess.check_output(
         [str(args.ninja), '-t', 'commands', *args.targets],
         cwd=args.build_dir, text=True).splitlines()
@@ -39,4 +36,5 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    with compiler_cache():
+        main()

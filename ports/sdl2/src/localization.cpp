@@ -18,6 +18,8 @@ std::string normalize(const std::string& value){
 }
 }
 std::string game_text(const std::string& key,LocaleId locale){
+    if(key=="port.saved")return locale==LocaleId::ru?"ИГРА СОХРАНЕНА":"GAME SAVED";
+    if(key=="port.loaded")return locale==LocaleId::ru?"ИГРА ЗАГРУЖЕНА":"GAME LOADED";
     for(const auto& entry:text_entries)if(key==entry.key)
         return locale==LocaleId::ru?entry.ru:entry.en;
     return {};

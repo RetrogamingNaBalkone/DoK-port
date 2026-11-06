@@ -29,7 +29,11 @@ void SdlAudio::command(const AudioCommand& c){
     SDL_LockAudioDevice(device_);
     if(c.action==AudioAction::stop_all)voice_.stop();
     else if(c.action==AudioAction::stop)voice_.stop(c.id);
-    else if(sound!=sounds_.end())voice_.play(c.id,sound->second,c.action==AudioAction::loop,old_gold_);
+    else if(sound!=sounds_.end()){
+        if(c.action==AudioAction::priority_once&&voice_.active()!=c.id)voice_.stop();
+        if(c.action!=AudioAction::priority_once||voice_.active()!=c.id)
+            voice_.play(c.id,sound->second,c.action==AudioAction::loop,old_gold_);
+    }
     SDL_UnlockAudioDevice(device_);
 }
 SdlAudioSnapshot SdlAudio::snapshot(){
@@ -44,16 +48,21 @@ SdlAudioSnapshot SdlAudio::snapshot(){
     }
     SDL_UnlockAudioDevice(device_);return state;
 }
-bool SdlAudio::restore(const SdlAudioSnapshot& state){
+bool SdlAudio::prepare_restore(const SdlAudioSnapshot& state,VoiceSnapshot& voice)const{
     if(state.volume<0||state.volume>100||(state.voice.id&&state.voice.old_gold!=old_gold_))return false;
-    const auto found=sounds_.find(state.resource);
-    if(state.voice.id&&(found==sounds_.end()||(state.voice.output_rate&&state.voice.output_rate!=rate_)))return false;
-    if(!state.voice.id&&!state.resource.empty())return false;
+    const auto found=sounds_.find(state.resource);if(state.voice.id&&found==sounds_.end())return false;
+    if(!state.voice.id&&!state.resource.empty())return false;voice=state.voice;
+    if(voice.output_rate&&voice.output_rate!=rate_){const auto old=voice.output_rate;const auto whole=voice.phase/old;if(whole>UINT64_MAX/rate_)return false;const auto base=whole*rate_;const auto fraction=(voice.phase%old)*rate_/old;if(fraction>UINT64_MAX-base)return false;voice.phase=base+fraction;voice.output_rate=rate_;}
+    MonoVoice candidate;return candidate.restore(voice,found==sounds_.end()?nullptr:&found->second);
+}
+bool SdlAudio::can_restore(const SdlAudioSnapshot& state)const{VoiceSnapshot voice;return prepare_restore(state,voice);}
+bool SdlAudio::restore(const SdlAudioSnapshot& state){
+    VoiceSnapshot adjusted;if(!prepare_restore(state,adjusted))return false;const auto found=sounds_.find(state.resource);
     // Freeze before replacing the playhead so a callback cannot advance the
     // restored position between unlock and applying the saved pause state.
     SDL_PauseAudioDevice(device_,1);
     SDL_LockAudioDevice(device_);
-    const bool result=voice_.restore(state.voice,found==sounds_.end()?nullptr:&found->second);
+    const bool result=voice_.restore(adjusted,found==sounds_.end()?nullptr:&found->second);
     if(result){volume_=requested_volume_=state.volume;}
     SDL_UnlockAudioDevice(device_);
     if(result)paused_=state.paused;

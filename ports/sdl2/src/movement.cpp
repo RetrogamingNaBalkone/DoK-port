@@ -76,6 +76,7 @@ static void move_actor_to_impl(World& world,OwnerId id,std::int32_t nx,std::int3
         if(d.objects[old_door.definition_index].class_id==7&&old_door.door_occupants)
             old_door.door_occupants=word(old_door.door_occupants-1);
         mmap[old_cell]=' ';
+        const bool origin_clear=footprint_clear(world,pose.x,pose.z);
         auto candidate=resolve_movement(world,pose,nx,nz);
         const bool x_axis=nz==pose.z&&nx!=pose.x,z_axis=nx==pose.x&&nz!=pose.z;
         if(current&&((x_axis&&candidate.z!=pose.z)||(z_axis&&candidate.x!=pose.x))){
@@ -104,11 +105,13 @@ static void move_actor_to_impl(World& world,OwnerId id,std::int32_t nx,std::int3
             }
             candidate=point(reached);
         }
-        // Explicit host safety: native lookup clamps indices, but the port never
-        // permits an actor's footprint to leave the map or settle in an obstacle.
+        // Keep valid actors out of obstacles and every actor inside the map.
+        // Original maps can place an actor on solid terrain (PKR LEVEL1 glyph158).
+        // An already blocked origin must retain the native resolver's alignment;
+        // refusing it changes later course trials and can prevent native escape.
         const auto r=d.min_distance;
         if(candidate.x>=r&&candidate.z>=r&&candidate.x<std::int64_t(d.width)*d.cell_side-r&&
-           candidate.z<std::int64_t(d.length)*d.cell_side-r&&footprint_clear(world,candidate.x,candidate.z))pose=candidate;
+           candidate.z<std::int64_t(d.length)*d.cell_side-r&&(!origin_clear||footprint_clear(world,candidate.x,candidate.z)))pose=candidate;
         const auto new_cell=cell(world,pose.x,pose.z);auto& new_door=object(world,tmap[new_cell]);
         if(d.objects[new_door.definition_index].class_id==7)new_door.door_occupants=word(new_door.door_occupants+1);
         mmap[new_cell]=glyph;

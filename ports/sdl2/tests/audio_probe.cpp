@@ -72,8 +72,31 @@ int main(int argc,char** argv){try{
         SDL_Delay(25);check(audio.snapshot().voice.phase==state.voice.phase,"Paused audio advanced");
         audio.volume(33);state=audio.snapshot();check(state.volume==33,"SDL gain not applied");
         audio.command({dok::AudioAction::once,2,title});check(audio.snapshot().voice.id==1,"Busy identity admission changed voice");
+        audio.command({dok::AudioAction::priority_once,1,title});
+        check(audio.snapshot().voice.phase==state.voice.phase,"Same-identity priority restarted voice");
+        audio.command({dok::AudioAction::priority_once,2,title});
+        check(audio.snapshot().voice.id==2&&!audio.snapshot().voice.phase&&!audio.snapshot().voice.loop,"Priority did not preempt foreign voice");
+        check(audio.restore(state),"Priority test could not restore baseline");
         auto bad=state;bad.resource="missing";check(!audio.restore(bad),"Unknown snapshot resource admitted");
         check(audio.snapshot().voice.phase==state.voice.phase,"Failed restore mutated playhead");
+        // SP17: replay position follows a rational conversion to the current
+        // negotiated device rate, without mutating on invalid/overflow phases.
+        for(unsigned rate:{22050u,44100u,96000u}){
+            auto changed=state;const auto target=state.voice.output_rate;
+            changed.voice.phase=(state.voice.phase/target)*rate+(state.voice.phase%target)*rate/target;
+            changed.voice.output_rate=rate;
+            check(audio.can_restore(changed)&&audio.restore(changed),"Cross-rate snapshot rejected");
+            const auto expected=(changed.voice.phase/rate)*target+(changed.voice.phase%rate)*target/rate;
+            check(audio.snapshot().voice.output_rate==target&&audio.snapshot().voice.phase==expected,"Cross-rate phase conversion differs");
+        }
+        auto overflow=state;const auto target=state.voice.output_rate;
+        if(target>1&&UINT64_MAX%target<target-1){
+            overflow.voice.output_rate=target-1;
+            overflow.voice.phase=(UINT64_MAX/target)*(target-1)+(target-2);
+            const auto before=audio.snapshot();
+            check(!audio.can_restore(overflow)&&!audio.restore(overflow),"Cross-rate addition overflow admitted");
+            check(audio.snapshot().voice.phase==before.voice.phase,"Overflow restore mutated playhead");
+        }
         audio.command({dok::AudioAction::stop_all,0,{}});check(!audio.snapshot().voice.id,"Stop all failed");
         check(audio.restore(state),"Valid snapshot rejected");check(audio.snapshot().voice.phase==state.voice.phase,"Restored phase differs");
         audio.pause(false);SDL_Delay(35);audio.pause(true);check(audio.snapshot().voice.phase>state.voice.phase,"Restored voice did not resume");

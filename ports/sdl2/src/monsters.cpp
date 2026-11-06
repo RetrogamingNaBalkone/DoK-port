@@ -68,7 +68,7 @@ bool Monsters::sight(WorldObject& actor)const{
 void Monsters::wake(OwnerId owner){
     auto& o=world_.object_for_owner(owner);auto& m=*o.monster;
     if(m.corpse||!o.pose)return;
-    world_.sound(owner,AudioAction::once);
+    world_.sound(owner,world_.definition.dataset==DatasetId::old_gold?AudioAction::priority_once:AudioAction::once);
     m.state=1;m.next_frame=-1;m.shot_count=0;
     m.course_counter=word(world_.definition.objects[o.definition_index].number(0xae));
     m.burst_clock.start(static_cast<std::uint32_t>(world_.simulation_ticks()));
@@ -138,10 +138,10 @@ void Monsters::event(OwnerId owner){
     auto front_pose=*o.pose;auto front=lookup(front_pose,-world_.definition.cell_side,false);
     if(front.cls==0)front=lookup(front_pose,-world_.definition.cell_side,true);
     if(front.cls==1){
-        world_.sound(owner,AudioAction::once,0xf0);
+        world_.sound(owner,world_.definition.dataset==DatasetId::old_gold?AudioAction::priority_once:AudioAction::once,0xf0);
         if(m.state==1){m.next_frame=-1;m.state=2;}
         if(++m.next_frame>=static_cast<int>(clips[1].size())){
-            if(world_.object_for_owner(front.owner).player_state->health()!=0)change_player_stat(world_,0,-5);
+            damage_player(world_,-5);
             m.next_frame=0;
         }
         display(o,1,m.next_frame);
@@ -161,7 +161,7 @@ void Monsters::event(OwnerId owner){
         if(m.shot_count<d.number(0xa6)&&front.cls!=8&&front.cls!=9&&sight(o)){
             m.shot_count=word(m.shot_count+1);m.course_counter=word(d.number(0xae));
             projectiles_.spawn(owner,static_cast<std::uint8_t>(d.number(0xe7)));
-            world_.sound(owner,AudioAction::once,0xf0);
+            world_.sound(owner,world_.definition.dataset==DatasetId::old_gold?AudioAction::priority_once:AudioAction::once,0xf0);
         }else{m.burst_clock.stop(now);m.burst_clock.start(now);m.shot_count=0;}
     }
     if(m.course_counter==d.number(0xae)){

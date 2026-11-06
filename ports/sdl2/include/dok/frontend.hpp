@@ -2,6 +2,7 @@
 #include "settings.hpp"
 #include "menu_strings.hpp"
 #include "flow.hpp"
+#include "saves.hpp"
 #include "text.hpp"
 #include <functional>
 
@@ -9,8 +10,8 @@ namespace dok {
 struct FrontendDataset {const Archive* archive;std::string filename;};
 // Keep numeric values stable for replay/probe logs; interface is a retired screen.
 enum class MenuScreen {hidden,main,datasets,title,readme,levels,settings,graphics,sound,controls,keyboard,pad,
-    bindings,key_slots,gameplay,interface,credits,resources,pause,confirm,capture,conflict,video_confirm,notice,ending,outcome,help,map,files,path,video_unsaved};
-enum class MenuCommand {start,resume,main,quit,apply_video,keep_video,revert_video,music_title,music_stop,music_story,retry,add_resource,select_source};
+    bindings,key_slots,gameplay,interface,credits,resources,pause,confirm,capture,conflict,video_confirm,notice,ending,outcome,help,map,files,path,video_unsaved,dataset_menu,save_slots,load_slots,save_name,save_confirm,save_entry};
+enum class MenuCommand {start,resume,main,quit,apply_video,keep_video,revert_video,music_title,music_stop,music_story,retry,add_resource,select_source,save_game,load_game,delete_game,quicksave,quickload};
 struct MenuFrame {int width=640,height=480;std::vector<std::uint32_t> pixels;};
 class Frontend {
 public:
@@ -31,6 +32,16 @@ public:
     void resources(const ResourceSources& sources);
     void session_world(const World* world){world_=world;}
     void show_map();
+    std::function<std::vector<SaveEntry>()> save_catalog;
+    int pending_save_slot()const {return save_slot_;}
+    const std::string& pending_save_name()const {return save_name_;}
+    bool pending_save_backup()const {return save_slot_>=0&&save_slot_<int(saves_.size())&&saves_[save_slot_].backup;}
+    void refresh_saves();
+    void quickload_request();
+    void recover_quicksave(){save_return_=screen_;refresh_saves();save_slot_=0;confirm_save_action(1);}
+
+    bool save_allowed()const;
+
     const std::string& pending_resource()const{return pending_resource_;}
     DatasetId resource_target()const{return resource_target_;}
     std::size_t pending_source()const{return pending_source_;}
@@ -55,6 +66,15 @@ private:
     const World* world_=nullptr;
     struct SourceRow {std::size_t index;DatasetId dataset;std::string path;bool selected;};
     std::vector<SourceRow> source_rows_;
+    std::vector<SaveEntry> saves_;
+    int save_slot_=0,save_operation_=0;
+    std::string save_name_;
+    MenuScreen save_return_=MenuScreen::pause;
+    bool about_game_=false;
+    void open_saves(bool saving);
+    void confirm_save_action(int operation);
+    const MenuFrame& render_saves();
+
     struct FileRow {std::filesystem::path path;bool directory;};
     std::vector<FileRow> file_rows_;
     std::filesystem::path browser_path_=std::filesystem::current_path();

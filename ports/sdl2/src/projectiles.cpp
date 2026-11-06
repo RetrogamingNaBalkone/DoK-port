@@ -32,7 +32,10 @@ std::size_t Projectiles::cell(Pose p)const{
 }
 const AnimationFrame& Projectiles::frame(const ProjectileState& p)const{
     const auto& c=clips_.at(p.definition_index);
-    return (p.effect_frame?(p.actor_impact?c.hit:c.miss):c.flight).at(p.frame);
+    // OG +50 is also the impact cursor: contact sets it to 1 while the
+    // renderer retains flight image0 until the next animation callback.
+    const auto frame_index=world_.definition.dataset==DatasetId::old_gold&&p.impact&&!p.effect_frame?0:p.frame;
+    return (p.effect_frame?(p.actor_impact?c.hit:c.miss):c.flight).at(frame_index);
 }
 std::int16_t Projectiles::spawn(OwnerId source,std::uint8_t glyph){
     const auto index=world_.definition.glyph_index[glyph];
@@ -72,7 +75,7 @@ bool Projectiles::hit(WorldObject& target,const ProjectileState& projectile){
     const auto cls=world_.definition.objects[target.definition_index].class_id;
     const auto& source=world_.object_for_owner(projectile.source);
     if(cls==world_.definition.objects[source.definition_index].class_id)return false;
-    if(cls==1){if(target.player_state->health()!=0)change_player_stat(world_,0,negate16(projectile.damage));return true;}
+    if(cls==1){damage_player(world_,negate16(projectile.damage));return true;}
     if(cls==9){
         if(monster_hit)return monster_hit(target.owner,projectile.damage);
         auto& m=*target.monster;if(!m.health)return false;
@@ -80,7 +83,8 @@ bool Projectiles::hit(WorldObject& target,const ProjectileState& projectile){
         else{m.health=std::max<std::int16_t>(0,word(m.health-projectile.damage));m.state=3;}
         return true;
     }
-    if(cls==7)return !(target.flags&8);
+    if(cls==7)return world_.definition.dataset==DatasetId::old_gold?
+        target.door->state==2:!(target.flags&8);
     return !(target.flags&0x18);
 }
 void Projectiles::event(OwnerId owner){
@@ -126,7 +130,9 @@ void Projectiles::event(OwnerId owner){
                 const auto scale_word=world_.definition.objects[p.definition_index].width_parameter;
                 p.pose.y=-(target_height-sar32(word(image_height*scale_word),1));
             }
-            p.frame=og?0:1;break;
+            // Original OG +50 becomes 1 at contact; get-next preincrements it,
+            // so its first effect image is frame2, not frame1.
+            p.frame=1;break;
         }
     }
     // Native get-next loops past end to frame0, even on the contact tick.

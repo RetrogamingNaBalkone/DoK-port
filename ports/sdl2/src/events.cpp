@@ -142,4 +142,23 @@ std::vector<Event> Events::events(OwnerId id) const {
     const auto& owner = found->second;
     return {owner.slots.begin(), owner.slots.begin() + owner.count};
 }
+Events::Snapshot Events::snapshot() const {
+    if(dispatching_)throw std::logic_error("Snapshot during event dispatch");
+    Snapshot s;s.cursor=cursor_;
+    for(const auto& pair:owners_){const auto& o=pair.second;s.owners.push_back({pair.first,static_cast<std::uint16_t>(o.slots.size()+1),{o.slots.begin(),o.slots.begin()+o.count}});}
+    auto id=cursor_;for(std::size_t i=0;i<active_;++i){s.ring.push_back(id);id=owners_.at(id).next;}
+    return s;
+}
+void Events::restore(const Snapshot& s){
+    if(dispatching_)throw std::logic_error("Restore during event dispatch");
+    Events next;
+    for(const auto& o:s.owners){if(!next.create(o.id,o.capacity)||o.slots.size()>=o.capacity)throw std::runtime_error("Invalid event owner/capacity");
+        auto& target=next.owners_.at(o.id);target.count=o.slots.size();
+        for(std::size_t i=0;i<o.slots.size();++i){if(!o.slots[i].callback)throw std::runtime_error("Invalid callback");target.slots[i]=o.slots[i];}}
+    if(s.ring.empty()!=(!s.cursor)||(!s.ring.empty()&&s.ring.front()!=s.cursor))throw std::runtime_error("Invalid event cursor");
+    for(std::size_t i=0;i<s.ring.size();++i){auto found=next.owners_.find(s.ring[i]);if(found==next.owners_.end()||found->second.linked||!found->second.count)throw std::runtime_error("Invalid event ring");
+        auto& o=found->second;o.linked=true;o.previous=s.ring[(i+s.ring.size()-1)%s.ring.size()];o.next=s.ring[(i+1)%s.ring.size()];}
+    for(const auto& pair:next.owners_)if(bool(pair.second.count)!=pair.second.linked)throw std::runtime_error("Unlinked events");
+    next.cursor_=s.cursor;next.active_=s.ring.size();*this=std::move(next);
+}
 } // namespace dok

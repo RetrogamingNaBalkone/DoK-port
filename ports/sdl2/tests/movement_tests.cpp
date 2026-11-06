@@ -83,8 +83,31 @@ static void original_current_bank(const char* path){
         std::cout<<"OG current bank coin43,57: fps="<<fps<<" ticks="<<ticks<<" pose="<<actor.pose->x<<','<<actor.pose->z<<" score="<<actor.player_state->score<<'\n';
     }
 }
+static void movement_host_guards(){
+    unsigned cases=0;
+    for(auto profile:{dok::DatasetId::old_gold,dok::DatasetId::kremlin_pkr,dok::DatasetId::kremlin_pke}){
+        // Open border makes bounds protection independent of wall resolution.
+        for(bool invalid_origin:{false,true})for(auto target:{std::pair<int,int>{-1000,1680},{5000,1680},{1680,-1000},{1680,5000},{2100,1680},{1680,2100},{2400,2400},{1680,1680}}){
+            auto level=fixture();level.dataset=profile;level.maps["tmap"].assign(64,' ');
+            if(invalid_origin)level.maps["tmap"][3*8+3]='#';
+            else level.maps["tmap"][3*8+4]='#';
+            dok::World w(level);auto& actor=w.objects.at(*w.player);
+            dok::move_actor_to(w,actor.owner,target.first,target.second);
+            const auto p=*actor.pose;check(p.x>=238&&p.z>=238&&p.x<3840-238&&p.z<3840-238);
+            const auto at=(p.z/480)*8+p.x/480;check(w.maps.at("mmap")[at]=='P');
+            w.maps.at("mmap")[at]=' ';
+            if(!invalid_origin)check(dok::footprint_clear(w,p.x,p.z));
+            ++cases;
+        }
+        auto level=fixture();level.dataset=profile;dok::World w(level);auto& actor=w.objects.at(*w.player);
+        const auto p=*actor.pose;const auto at=(p.z/480)*8+p.x/480;w.maps.at("mmap")[at]='#';
+        dok::move_actor_to(w,actor.owner,p.x+60,p.z);check(actor.pose->x==p.x&&actor.pose->z==p.z&&w.maps.at("mmap")[at]=='#');++cases;
+    }
+    std::cout<<cases<<" host bounds/valid-origin footprint/foreign-occupancy guard cases passed\n";
+}
 int main(int argc,char** argv){
     try{
+        movement_host_guards();
         current_boundaries();
         if(argc==2)original_current_bank(argv[1]);
         // OG applies class12 WORD values directly; Kremlin alone divides by

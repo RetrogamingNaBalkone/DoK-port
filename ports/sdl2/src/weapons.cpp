@@ -115,8 +115,9 @@ bool Weapons::fire(const std::function<std::int16_t(std::uint8_t)>& spawn){
     if(weapon.state!=7&&weapon.state!=3)return false;
     weapon.state=2;
     const auto cost=spawn(static_cast<std::uint8_t>('0'+world_.definition.objects[world_.object_for_owner(owner).definition_index].number(0x81)));
+    const bool old_gold=world_.definition.dataset==DatasetId::old_gold;
+    world_.sound(old_gold?world_.objects.at(*world_.player).owner:owner,AudioAction::once,old_gold?0xa2:0x4c);
     change_player_stat(world_,1,original::negate16(cost));
-    if(cost)world_.sound(owner,AudioAction::once);
     return cost!=0;
 }
 void Weapons::overlay(IndexedSurface& target,int frame_height)const{

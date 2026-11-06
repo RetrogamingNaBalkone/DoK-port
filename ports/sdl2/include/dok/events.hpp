@@ -17,6 +17,10 @@ struct Event {
 // the clock and route callback IDs to recovered game operations.
 class Events {
 public:
+    struct OwnerState {OwnerId id=0;std::uint16_t capacity=0;std::vector<Event> slots;};
+    struct Snapshot {std::vector<OwnerState> owners;std::vector<OwnerId> ring;OwnerId cursor=0;};
+    Snapshot snapshot() const;
+    void restore(const Snapshot& state);
     using Clock = std::function<std::uint32_t()>;
     using Invoke = std::function<void(OwnerId, CallbackId)>;
     bool create(OwnerId id, std::uint16_t capacity = 4);

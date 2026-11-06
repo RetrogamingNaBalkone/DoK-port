@@ -226,6 +226,9 @@ int main(){
             right();check(mouse.screen()==dok::MenuScreen::graphics&&!mouse.video_pending(),"Right click cannot apply video");
             key(mouse,SDLK_ESCAPE);down(mouse,1);key(mouse,SDLK_RETURN);right();check(edits.effects_volume==95,"Right click decrements volume");
         }
+        {dok::AppSettings errors;dok::Frontend returning(errors);returning.hide();returning.notice("error","error");returning.render(640,480);key(returning,SDLK_ESCAPE);
+            check(returning.screen()==dok::MenuScreen::hidden&&command(returning,dok::MenuCommand::resume),"Notice dismissed to live game must resume input");
+            returning.pause();returning.notice("error","error");returning.render(640,480);key(returning,SDLK_ESCAPE);check(returning.screen()==dok::MenuScreen::pause&&!command(returning,dok::MenuCommand::resume),"Notice dismissed to pause must keep input paused");}
         dok::Frontend background(s);background.render(640,480);SDL_Event event{};event.type=SDL_WINDOWEVENT;event.window.event=SDL_WINDOWEVENT_FOCUS_LOST;background.handle(event,640,480);
         event.type=SDL_CONTROLLERAXISMOTION;event.caxis.axis=SDL_CONTROLLER_AXIS_LEFTY;event.caxis.value=25000;background.handle(event,640,480);
         check(background.focused_row()==0,"Background pad moved menu focus");

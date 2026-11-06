@@ -1,6 +1,6 @@
 """SP21 real Windows GL/software matrix: automatic projection and fullscreen canvas."""
 from pathlib import Path
-import configparser, hashlib, json, os, subprocess, struct, zlib
+import argparse, configparser, hashlib, json, os, subprocess, struct, zlib
 # Port PNG writer always emits RGB8, filter0 rows; reject any other format.
 class Frame:
  def __init__(self,w,h,data):self.size=(w,h);self.data=data
@@ -29,7 +29,8 @@ EXE=ROOT/'build/sdl2/windows/dok_port.exe'
 
 def main():
  global OUT
- OUT=ROOT/'research/evidence/source-port/sp21-video'
+ parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--out',type=Path);args=parser.parse_args()
+ OUT=args.out.resolve() if args.out else ROOT/'research/evidence/source-port/sp21-video'
  OUT.mkdir(parents=True,exist_ok=True)
  profiles=[('pkr','originals/pkr/RUS/PKR.RES','LEVEL1'),('pke','originals/pkr/ENG/PKE.RES','LEVEL1'),('og','originals/Old_Gold_3D/OLD_GOLD.RES','LEVEL4')]
  results=[]
@@ -105,10 +106,11 @@ def main():
  for option in ['--fov','--aspect']:
   d=OUT/('obsolete-'+option[2:]);d.mkdir(exist_ok=True)
   r=subprocess.run([str(EXE),'--hidden','--user-dir',str(d),option,'90'],cwd=ROOT,capture_output=True,text=True,timeout=10)
-  assert r.returncode!=0 and 'automatic' in (d/'port.log').read_text(),option
+  log=(d/'port.log').read_text() if (d/'port.log').exists() else ''
+  assert r.returncode!=0 and 'automatic' in (log+r.stderr),(option,r.stderr,log)
  report={'schema':1,'contract':'SP21 automatic DOS projection and internal fullscreen canvas','exe_sha256':hashlib.sha256(EXE.read_bytes()).hexdigest(),'frames':results,'frame_count':len(results),'limitations':['Physical mixed-DPI and controller checks not performed']}
  (OUT/'report.json').write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
  compact={'schema':1,'exe_sha256':report['exe_sha256'],'frame_count':len(results),'datasets':['old_gold','kremlin_pkr','kremlin_pke'],'locales':['ru','en'],'renderers':['software','opengl'],'aspects':['4:3','16:10','16:9','5:3','12:5'],'software_aspect':'4:3 with bars, including live fullscreen GL-to-software transition PASS','fullscreen':'internal canvas, bars, menu, F11 world preservation PASS','cli':'legacy FOV/aspect rejected','report':str((OUT/'report.json').relative_to(ROOT)),'limitations':report['limitations']}
- (ROOT/'analysis/source-port/sp21-video-summary.json').write_text(json.dumps(compact,indent=2)+'\n',encoding='utf-8')
+ (OUT/'summary.json' if args.out else ROOT/'analysis/source-port/sp21-video-summary.json').write_text(json.dumps(compact,indent=2)+'\n',encoding='utf-8')
  print(len(results),'video frames PASS',flush=True)
 if __name__=='__main__':main()

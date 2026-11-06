@@ -1,0 +1,36 @@
+{
+  "date": "2026-11-05",
+  "remaining_bytes": 4110873224,
+  "remaining_by_root": {
+    "-": 2896,
+    ".gitignore": 2407,
+    "AGENTS.md": 9016,
+    "CMakeLists.txt": 216,
+    "LICENSE": 1098,
+    "README.md": 4837,
+    ".git": 15165859,
+    ".vscode": 2268,
+    "analysis": 67880521,
+    "artifacts": 105330937,
+    "build": 2632061625,
+    "decompiled": 17373335,
+    "docs": 5600165,
+    "originals": 7832143,
+    "ports": 8421072,
+    "research": 1250734871,
+    "scripts": 102233,
+    "tools": 347725
+  },
+  "test_output_selection_bytes": 57890087299,
+  "test_output_files": 41181,
+  "test_outputs_remaining": 0,
+  "compiler_cache_removed_bytes": 770543340,
+  "old_compiler_outputs_removed_bytes": 313547265,
+  "retained": "Original DOS observations, Ghidra projects, decompilations, source, current build inputs and deliverables",
+  "policy": "Obsolete test pictures and benchmark histories deleted by explicit user instruction; original-related archive entries retained with original SHA-256",
+  "checks": {
+    "png_independent_zlib": "PASS: four pixel/CRC cases",
+    "compiler_cache": "PASS: three ownership/failure tests",
+    "disposal_policy": "PASS: two selection tests"
+  }
+}

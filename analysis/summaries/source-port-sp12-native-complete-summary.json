@@ -1,0 +1,533 @@
+{
+  "schema": 1,
+  "date": "2026-11-06",
+  "task": "SP12",
+  "evidence": "research/evidence/source-port/sp12-native-complete",
+  "matrices": {
+    "report.json": {
+      "count": 36040,
+      "strict": 36040,
+      "adaptations": 0,
+      "unexpected": 0,
+      "profiles": [
+        {
+          "profile": "ru",
+          "level": "LEVEL1",
+          "count": 4352,
+          "strict_matches": 4352,
+          "adaptations": 0,
+          "mismatches": 0,
+          "instructions": 2040,
+          "native_entry_visits": {
+            "ai_callback": 1280,
+            "native_direction": 1313,
+            "animation_next": 1344,
+            "actor_motion": 1024,
+            "three_substeps": 1024,
+            "world_resolve": 4009,
+            "footprint": 9530,
+            "line_of_sight": 3204,
+            "animation_clamped": 128
+          }
+        },
+        {
+          "profile": "ru",
+          "level": "LEVEL2",
+          "count": 4352,
+          "strict_matches": 4352,
+          "adaptations": 0,
+          "mismatches": 0,
+          "instructions": 2040,
+          "native_entry_visits": {
+            "ai_callback": 1280,
+            "native_direction": 1309,
+            "animation_next": 1344,
+            "actor_motion": 1024,
+            "three_substeps": 1024,
+            "world_resolve": 4257,
+            "footprint": 10390,
+            "animation_clamped": 128,
+            "line_of_sight": 3188
+          }
+        },
+        {
+          "profile": "ru",
+          "level": "LEVEL3",
+          "count": 7140,
+          "strict_matches": 7140,
+          "adaptations": 0,
+          "mismatches": 0,
+          "instructions": 2024,
+          "native_entry_visits": {
+            "ai_callback": 2100,
+            "native_direction": 2156,
+            "animation_next": 2205,
+            "actor_motion": 1680,
+            "three_substeps": 1680,
+            "world_resolve": 6677,
+            "footprint": 15976,
+            "line_of_sight": 5264,
+            "animation_clamped": 210
+          }
+        },
+        {
+          "profile": "en",
+          "level": "LEVEL1",
+          "count": 4352,
+          "strict_matches": 4352,
+          "adaptations": 0,
+          "mismatches": 0,
+          "instructions": 2040,
+          "native_entry_visits": {
+            "ai_callback": 1280,
+            "native_direction": 1313,
+            "animation_next": 1344,
+            "actor_motion": 1024,
+            "three_substeps": 1024,
+            "world_resolve": 4009,
+            "footprint": 9530,
+            "line_of_sight": 3204,
+            "animation_clamped": 128
+          }
+        },
+        {
+          "profile": "en",
+          "level": "LEVEL2",
+          "count": 4352,
+          "strict_matches": 4352,
+          "adaptations": 0,
+          "mismatches": 0,
+          "instructions": 2040,
+          "native_entry_visits": {
+            "ai_callback": 1280,
+            "native_direction": 1309,
+            "animation_next": 1344,
+            "actor_motion": 1024,
+            "three_substeps": 1024,
+            "world_resolve": 4257,
+            "footprint": 10390,
+            "animation_clamped": 128,
+            "line_of_sight": 3188
+          }
+        },
+        {
+          "profile": "en",
+          "level": "LEVEL3",
+          "count": 7140,
+          "strict_matches": 7140,
+          "adaptations": 0,
+          "mismatches": 0,
+          "instructions": 2024,
+          "native_entry_visits": {
+            "ai_callback": 2100,
+            "native_direction": 2156,
+            "animation_next": 2205,
+            "actor_motion": 1680,
+            "three_substeps": 1680,
+            "world_resolve": 6677,
+            "footprint": 15976,
+            "line_of_sight": 5264,
+            "animation_clamped": 210
+          }
+        },
+        {
+          "profile": "old-gold",
+          "level": "LEVEL4",
+          "count": 4352,
+          "strict_matches": 4352,
+          "adaptations": 0,
+          "mismatches": 0,
+          "instructions": 1844,
+          "native_entry_visits": {
+            "ai_callback": 1280,
+            "native_direction": 1313,
+            "animation_next": 1344,
+            "actor_motion": 1024,
+            "three_substeps": 1024,
+            "world_resolve": 4126,
+            "footprint": 9933,
+            "line_of_sight": 3204
+          }
+        }
+      ],
+      "report_sha256": "757bd752640ba74d213f4561383e8a44a3594310e5147a3d3df7325a9f38378b"
+    },
+    "activation-summary.json": {
+      "count": 5830,
+      "strict": 5830,
+      "adaptations": 0,
+      "unexpected": 0,
+      "profiles": [
+        {
+          "profile": "ru",
+          "level": "LEVEL1",
+          "count": 704,
+          "strict_matches": 704,
+          "adaptations": 0,
+          "mismatches": 0,
+          "instructions": 127,
+          "native_entry_visits": {}
+        },
+        {
+          "profile": "ru",
+          "level": "LEVEL2",
+          "count": 704,
+          "strict_matches": 704,
+          "adaptations": 0,
+          "mismatches": 0,
+          "instructions": 127,
+          "native_entry_visits": {}
+        },
+        {
+          "profile": "ru",
+          "level": "LEVEL3",
+          "count": 1155,
+          "strict_matches": 1155,
+          "adaptations": 0,
+          "mismatches": 0,
+          "instructions": 127,
+          "native_entry_visits": {}
+        },
+        {
+          "profile": "en",
+          "level": "LEVEL1",
+          "count": 704,
+          "strict_matches": 704,
+          "adaptations": 0,
+          "mismatches": 0,
+          "instructions": 127,
+          "native_entry_visits": {}
+        },
+        {
+          "profile": "en",
+          "level": "LEVEL2",
+          "count": 704,
+          "strict_matches": 704,
+          "adaptations": 0,
+          "mismatches": 0,
+          "instructions": 127,
+          "native_entry_visits": {}
+        },
+        {
+          "profile": "en",
+          "level": "LEVEL3",
+          "count": 1155,
+          "strict_matches": 1155,
+          "adaptations": 0,
+          "mismatches": 0,
+          "instructions": 127,
+          "native_entry_visits": {}
+        },
+        {
+          "profile": "old-gold",
+          "level": "LEVEL4",
+          "count": 704,
+          "strict_matches": 704,
+          "adaptations": 0,
+          "mismatches": 0,
+          "instructions": 135,
+          "native_entry_visits": {}
+        }
+      ],
+      "report_sha256": "4f2faedb48e722e6456511a1f63ba6e95577f31e2316ead21e7725c9082b4f6d"
+    },
+    "angles-summary.json": {
+      "count": 1575,
+      "strict": 1575,
+      "adaptations": 0,
+      "unexpected": 0,
+      "profiles": [
+        {
+          "profile": "ru",
+          "level": "LEVEL1",
+          "count": 225,
+          "strict_matches": 225,
+          "adaptations": 0,
+          "mismatches": 0,
+          "instructions": 177,
+          "native_entry_visits": {
+            "native_direction": 225
+          }
+        },
+        {
+          "profile": "ru",
+          "level": "LEVEL2",
+          "count": 225,
+          "strict_matches": 225,
+          "adaptations": 0,
+          "mismatches": 0,
+          "instructions": 177,
+          "native_entry_visits": {
+            "native_direction": 225
+          }
+        },
+        {
+          "profile": "ru",
+          "level": "LEVEL3",
+          "count": 225,
+          "strict_matches": 225,
+          "adaptations": 0,
+          "mismatches": 0,
+          "instructions": 177,
+          "native_entry_visits": {
+            "native_direction": 225
+          }
+        },
+        {
+          "profile": "en",
+          "level": "LEVEL1",
+          "count": 225,
+          "strict_matches": 225,
+          "adaptations": 0,
+          "mismatches": 0,
+          "instructions": 177,
+          "native_entry_visits": {
+            "native_direction": 225
+          }
+        },
+        {
+          "profile": "en",
+          "level": "LEVEL2",
+          "count": 225,
+          "strict_matches": 225,
+          "adaptations": 0,
+          "mismatches": 0,
+          "instructions": 177,
+          "native_entry_visits": {
+            "native_direction": 225
+          }
+        },
+        {
+          "profile": "en",
+          "level": "LEVEL3",
+          "count": 225,
+          "strict_matches": 225,
+          "adaptations": 0,
+          "mismatches": 0,
+          "instructions": 177,
+          "native_entry_visits": {
+            "native_direction": 225
+          }
+        },
+        {
+          "profile": "old-gold",
+          "level": "LEVEL4",
+          "count": 225,
+          "strict_matches": 225,
+          "adaptations": 0,
+          "mismatches": 0,
+          "instructions": 110,
+          "native_entry_visits": {
+            "native_direction": 225
+          }
+        }
+      ],
+      "report_sha256": "767b5067f2920a79508ddec77cfad339b649b00e6f973036bb8180cd9e14d613"
+    },
+    "death-summary.json": {
+      "count": 2120,
+      "strict": 1798,
+      "adaptations": 322,
+      "unexpected": 0,
+      "profiles": [
+        {
+          "profile": "ru",
+          "level": "LEVEL1",
+          "count": 256,
+          "strict_matches": 193,
+          "adaptations": 63,
+          "mismatches": 0,
+          "instructions": 295,
+          "native_entry_visits": {
+            "ai_callback": 256,
+            "animation_clamped": 192
+          }
+        },
+        {
+          "profile": "ru",
+          "level": "LEVEL2",
+          "count": 256,
+          "strict_matches": 221,
+          "adaptations": 35,
+          "mismatches": 0,
+          "instructions": 295,
+          "native_entry_visits": {
+            "ai_callback": 256,
+            "animation_clamped": 192
+          }
+        },
+        {
+          "profile": "ru",
+          "level": "LEVEL3",
+          "count": 420,
+          "strict_matches": 357,
+          "adaptations": 63,
+          "mismatches": 0,
+          "instructions": 295,
+          "native_entry_visits": {
+            "ai_callback": 420,
+            "animation_clamped": 315
+          }
+        },
+        {
+          "profile": "en",
+          "level": "LEVEL1",
+          "count": 256,
+          "strict_matches": 193,
+          "adaptations": 63,
+          "mismatches": 0,
+          "instructions": 295,
+          "native_entry_visits": {
+            "ai_callback": 256,
+            "animation_clamped": 192
+          }
+        },
+        {
+          "profile": "en",
+          "level": "LEVEL2",
+          "count": 256,
+          "strict_matches": 221,
+          "adaptations": 35,
+          "mismatches": 0,
+          "instructions": 295,
+          "native_entry_visits": {
+            "ai_callback": 256,
+            "animation_clamped": 192
+          }
+        },
+        {
+          "profile": "en",
+          "level": "LEVEL3",
+          "count": 420,
+          "strict_matches": 357,
+          "adaptations": 63,
+          "mismatches": 0,
+          "instructions": 295,
+          "native_entry_visits": {
+            "ai_callback": 420,
+            "animation_clamped": 315
+          }
+        },
+        {
+          "profile": "old-gold",
+          "level": "LEVEL4",
+          "count": 256,
+          "strict_matches": 256,
+          "adaptations": 0,
+          "mismatches": 0,
+          "instructions": 281,
+          "native_entry_visits": {
+            "ai_callback": 256,
+            "animation_clamped": 192
+          }
+        }
+      ],
+      "report_sha256": "875ae98230e075b0724c5ab3fb07d276bb7c5b68cf31724b1069a8837a37b967"
+    },
+    "exhaust-summary.json": {
+      "count": 3,
+      "strict": 3,
+      "adaptations": 0,
+      "unexpected": 0,
+      "profiles": [
+        {
+          "profile": "ru",
+          "level": "LEVEL1",
+          "count": 1,
+          "strict_matches": 1,
+          "adaptations": 0,
+          "mismatches": 0,
+          "instructions": 186,
+          "native_entry_visits": {
+            "line_of_sight": 1
+          }
+        },
+        {
+          "profile": "en",
+          "level": "LEVEL1",
+          "count": 1,
+          "strict_matches": 1,
+          "adaptations": 0,
+          "mismatches": 0,
+          "instructions": 186,
+          "native_entry_visits": {
+            "line_of_sight": 1
+          }
+        },
+        {
+          "profile": "old-gold",
+          "level": "LEVEL4",
+          "count": 1,
+          "strict_matches": 1,
+          "adaptations": 0,
+          "mismatches": 0,
+          "instructions": 223,
+          "native_entry_visits": {
+            "line_of_sight": 1
+          }
+        }
+      ],
+      "report_sha256": "3362aeed30bdf9044a1c2ba286f3dd56cd444c6878acec9714a3f75c38042dd0"
+    }
+  },
+  "trajectories_before": {
+    "cases": 50,
+    "callbacks": 600,
+    "source_placed": 10,
+    "strict_trajectories": 0,
+    "non_position_difference_cases": 6,
+    "report_sha256": "256a8c503cafe756a0a99607ac998505fd5611f20930fcfc643086814dc040c5"
+  },
+  "trajectories_after": {
+    "cases": 50,
+    "callbacks": 600,
+    "source_placed": 10,
+    "strict_trajectories": 50,
+    "non_position_difference_cases": 0,
+    "report_sha256": "4ee61e4589916951cbe0a56c6c6d2b3dfab1de8d6e200b2dd29999de87c039c6"
+  },
+  "angle_ram": [
+    {
+      "profile": "ru",
+      "status": "PASS",
+      "address": 1881336,
+      "data_base": 1878448
+    },
+    {
+      "profile": "en",
+      "status": "PASS",
+      "address": 1895592,
+      "data_base": 1892704
+    },
+    {
+      "profile": "old-gold",
+      "status": "PASS",
+      "address": 197538,
+      "data_base": 148640
+    }
+  ],
+  "sources_sha256": {
+    "ports/sdl2/tests/monster_ai_probe.cpp": "237d2fdee2c7e5fa6af0aa653bcfc0cd5a7deb2913eb1f464c115489df891f37",
+    "ports/sdl2/tools/check_monster_ai_oracle.py": "610408f8a9ec7b5f79c0d399a86054859e9b832812286f7547cca2b72c04fa05",
+    "ports/sdl2/tools/check_monster_ai_trajectories.py": "24813f6fd59e4de96cc80fed7928f59eb7b7ed79c179571b46065f60e553792f",
+    "ports/sdl2/tools/check_monster_ai_angles.py": "6398889d10acb85c7ad2d62c5866557300cd9b03bc1527c2a11a3980df2173e3",
+    "ports/sdl2/tools/export_monster_ai_audit.py": "d0b2944f79591fd1a9bd110f19e445b8553601b18fd83c7045a5df1d0d2272ee"
+  },
+  "boundaries": [
+    "controlled clocks",
+    "external scheduler/HUD",
+    "audio device returns (SP13 separately)",
+    "projectile allocation entry (SP11 separately)"
+  ],
+  "movement_regression": {
+    "report": "research/evidence/source-port/sp10-post-ai-regression/report.json",
+    "native": 35399,
+    "boundary_valid_origin_foreign_occupancy": 51,
+    "current_bank": 990,
+    "pickup_fps": [
+      30,
+      60,
+      144
+    ]
+  }
+}

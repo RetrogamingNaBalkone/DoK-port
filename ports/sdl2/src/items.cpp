@@ -22,7 +22,6 @@ bool change_player_stat(World& world,std::int16_t category,std::int16_t value){
         if(value>0&&current==maximum)return false;
         current=add(current,value);
         if(current<0)current=0;else if(current>maximum)current=maximum;
-        if(category==0&&value<0)world.sound(world.objects.at(*world.player).owner,AudioAction::once,0xa6);
     }else if(category==2||category==3){
         auto& maximum=p.attributes[category];maximum=add(maximum,value);p.attributes[category-2]=maximum;
     }else if(category==10){
@@ -44,6 +43,19 @@ bool change_player_stat(World& world,std::int16_t category,std::int16_t value){
     }else throw std::invalid_argument("Unsupported player stat category");
     return true;
 }
+void damage_player(World& world,std::int16_t value){
+    auto& actor=world.objects.at(*world.player);
+    const auto health=actor.player_state->health();
+    if(!health)return;
+    const bool old_gold=world.definition.dataset==DatasetId::old_gold;
+    // OG 1ae1:182b bypasses its same-identity gate at every fifth HP.
+    // Both profiles request audio before applying the signed stat delta.
+    if(old_gold&&health%5==0){
+        world.sound(actor.owner,AudioAction::stop_all);
+        world.sound(actor.owner,AudioAction::once,0xa6);
+    }else world.sound(actor.owner,old_gold?AudioAction::priority_once:AudioAction::once,0xa6);
+    change_player_stat(world,0,value);
+}
 OwnerId player_pickup(World& world){
     profile(world);
     auto& actor=world.objects.at(*world.player);const auto& pose=*actor.pose;
@@ -56,7 +68,8 @@ OwnerId player_pickup(World& world){
     const bool accepted=change_player_stat(world,category,static_cast<std::int16_t>(definition.number(0x56)));
     if(definition.class_id==3&&!accepted)return 0;
     world.notify(definition,0x58);
-    world.sound(object.owner,AudioAction::stop_all);world.sound(object.owner,AudioAction::once);
+    if(world.definition.dataset==DatasetId::old_gold)world.sound(object.owner,AudioAction::priority_once);
+    else {world.sound(object.owner,AudioAction::stop_all);world.sound(object.owner,AudioAction::once);}
     if(category!=1000)glyph=' ';
     if(definition.class_id==10){
         auto& p=*actor.player_state;const auto slot=definition.number(0x81);

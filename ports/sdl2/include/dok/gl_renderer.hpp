@@ -24,6 +24,7 @@ public:
     void polygon(const std::vector<RasterVertex>& vertices,const Image& image,Bytes light,RasterAxis axis);
     void image(const std::vector<std::uint32_t>& pixels,int width,int height,SDL_Rect logical_rect,bool screen_pixels=false,int filter=0);
     void present();
+    std::vector<std::uint32_t> read_pixels();
     void screenshot(const std::string& path);
 private:
     struct Impl;std::unique_ptr<Impl> impl_;

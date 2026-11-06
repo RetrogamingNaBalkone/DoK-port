@@ -5,17 +5,20 @@ import os
 from pathlib import Path
 import re
 import subprocess
-import time
+from compiler_cache import ROOT
+from experiment_cleanup import temporary_workspace
 
-ROOT = Path(__file__).resolve().parents[3]
 EXE = ROOT / 'build/sdl2/windows/dok_port.exe'
 OUT = ROOT / 'build/sdl2/checks/frontend-process'
 
 
 def main():
     OUT.mkdir(parents=True, exist_ok=True)
-    run_dir = OUT / ('run-' + str(time.time_ns()))
-    run_dir.mkdir()
+    with temporary_workspace(OUT, 'run-') as run_dir:
+        check(run_dir)
+
+
+def check(run_dir):
 
     def run(name, script, args=(), profile=None, env=None, frames=30):
         profile = profile or run_dir / name
@@ -86,7 +89,7 @@ def main():
     assert 'OpenGL fallback:' in fallback and 'renderer=0' in fallback
     report = {'paused_world_preserved': True, 'window_resized': '640x400',
               'settings_restart': True, 'video_cancel': True, 'no_resources': True,
-              'invalid_resources': True, 'gl_failure_fallback': True, 'logs': str(run_dir)}
+              'invalid_resources': True, 'gl_failure_fallback': True, 'temporary_profiles': 'removed on exit'}
     (OUT / 'report.json').write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8')
     print(json.dumps(report))
 

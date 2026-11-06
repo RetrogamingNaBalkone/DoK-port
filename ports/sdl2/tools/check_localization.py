@@ -1,4 +1,5 @@
 """SP14 catalogue, single-RES rendering and real paused-language-switch checks."""
+import argparse
 import hashlib
 import json
 import os
@@ -50,6 +51,12 @@ def readback_colors(path):
 
 
 def main():
+    global OUT
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--out', type=Path)
+    args = parser.parse_args()
+    if args.out:
+        OUT = args.out.resolve()
     OUT.mkdir(parents=True, exist_ok=True)
     data = json.loads((ROOT / 'ports/sdl2/data/localization.json').read_text(encoding='utf-8'))
     originals = {p['path']: hashlib.sha256((ROOT / p['path']).read_bytes()).hexdigest()
@@ -119,9 +126,10 @@ def main():
                 script = user / 'script.txt'
                 screenshot = user / 'translated.png'
                 script.write_text('0 key I\n1 key D\n2 key K\n3 key F\n4 key A\n5 key Escape\n6 state before\n'
-                                  '7 key Down\n8 key Return\n9 key Down\n10 key Down\n11 key Down\n12 key Down\n'
-                                  '13 key Return\n14 key Right\n15 state after\n16 key Escape\n17 key Escape\n18 key Escape\n'
-                                  f'20 shot {screenshot}\n21 state resumed\n', encoding='utf-8')
+                                  '7 key Down\n8 key Return\n9 key Return\n'
+                                  + '10 key Down\n' * (7 if backend == 'gl' else 6)
+                                  + '11 key Right\n12 state after\n13 key Escape\n14 key Escape\n15 key Escape\n'
+                                  + f'17 shot {screenshot}\n18 state resumed\n', encoding='utf-8')
                 command = [str(EXE), '--hidden', '--res', source['path'], '--level', level, '--skip-intro', '--renderer', backend,
                            '--locale', locale, '--hud', 'classic', '--size', '800x600', '--frames', '24',
                            '--user-dir', str(user), '--ui-script', str(script)]
@@ -152,8 +160,8 @@ def main():
     summary = {key: report[key] for key in ('task', 'semantic_keys', 'source_aliases', 'original_object_fields', 'fields_per_profile')}
     summary.update(real_process_locale_switches=len(processes), originals_unchanged=True,
                    fonts_checked=len(font_checks), glyphs_per_font=len(characters), story_readbacks=len(readbacks),
-                   evidence='research/evidence/source-port/sp14-localization/report.json')
-    (ROOT / 'analysis/source-port/sp14-localization-summary.json').write_text(json.dumps(summary, indent=2) + '\n')
+                   evidence=str((OUT / 'report.json').relative_to(ROOT)))
+    (OUT / 'summary.json' if args.out else ROOT / 'analysis/source-port/sp14-localization-summary.json').write_text(json.dumps(summary, indent=2) + '\n')
     print(json.dumps(summary))
 
 

@@ -14,8 +14,10 @@ public:
     void pause(bool paused);
     void volume(int percent);
     SdlAudioSnapshot snapshot();
+    bool can_restore(const SdlAudioSnapshot& state) const;
     bool restore(const SdlAudioSnapshot& state);
 private:
+    bool prepare_restore(const SdlAudioSnapshot&,VoiceSnapshot&) const;
     static void callback(void* self,Uint8* stream,int bytes);
     SDL_AudioDeviceID device_=0;
     unsigned rate_=48000;

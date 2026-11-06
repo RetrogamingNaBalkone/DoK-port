@@ -83,6 +83,8 @@ public:
     explicit World(LevelDefinition definition);
     // The caller must supply recovered gameplay callbacks. No silent no-op
     // handler: loading a world alone is not a running simulation.
+    GameClock::State clock_snapshot() const {if(advancing_)throw std::logic_error("World snapshot during advance");return clock_.snapshot();}
+    void restore_time(GameClock::State state,std::uint64_t ticks) {if(advancing_||ticks!=state.ticks)throw std::runtime_error("Invalid world time");clock_.restore(state);simulated_ticks_=ticks;}
     void advance_events(std::uint64_t nanoseconds, const Events::Invoke& handler);
     std::uint64_t simulation_ticks() const noexcept { return simulated_ticks_; }
     double presentation_ticks() const noexcept { return double(simulated_ticks_)+double(clock_.remainder())/GameClock::denominator; }

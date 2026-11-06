@@ -1,5 +1,14 @@
 param([switch]$Headless, [switch]$Fresh, [switch]$DirectCommands, [string]$Configuration = 'Debug')
 $ErrorActionPreference = 'Stop'
+if (!$env:DOK_SDL2_BUILD_CACHE) {
+    $taskArguments = @('-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', $PSCommandPath, '-Configuration', $Configuration)
+    if ($Headless) { $taskArguments += '-Headless' }
+    if ($Fresh) { $taskArguments += '-Fresh' }
+    if ($DirectCommands) { $taskArguments += '-DirectCommands' }
+    & py -3.14 -B "$PSScriptRoot/compiler_cache.py" powershell @taskArguments
+    if ($LASTEXITCODE -ne 0) { throw 'SDL2 build failed' }
+    return
+}
 $taskRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../../..'))
 $taskZig = Join-Path $env:LOCALAPPDATA 'Programs/Zig/0.13.0/zig.exe'
 $taskSdk = Join-Path $env:LOCALAPPDATA 'Programs/SDL2/SDL2-2.32.10/x86_64-w64-mingw32'
@@ -7,7 +16,6 @@ $taskCmake = (& py -3.14 -c 'import cmake; print(cmake.CMAKE_BIN_DIR)').Trim()
 $taskNinja = (& py -3.14 -c 'import ninja; print(ninja.BIN_DIR)').Trim()
 if (!(Test-Path -LiteralPath $taskZig)) { throw 'Shared Zig 0.13.0 installation missing' }
 $taskBuild = Join-Path $taskRoot 'build/sdl2/windows'
-$env:ZIG_GLOBAL_CACHE_DIR = Join-Path $taskRoot 'build/sdl2/zig-cache'
 New-Item -ItemType Directory -Force -Path $taskBuild | Out-Null
 $taskToolchain = Join-Path $taskBuild 'zig-toolchain.cmake'
 $taskZig = $taskZig.Replace('\','/')

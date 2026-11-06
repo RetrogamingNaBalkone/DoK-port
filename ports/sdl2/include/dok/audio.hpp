@@ -2,7 +2,7 @@
 #include "resources.hpp"
 namespace dok {
 using SoundId=std::uint64_t;
-enum class AudioAction { once, loop, stop, stop_all };
+enum class AudioAction { once, loop, stop, stop_all, priority_once };
 struct AudioCommand {AudioAction action;SoundId id;std::string resource;};
 inline SoundId sound_id(std::uint32_t owner,unsigned binding=0x4c){return (SoundId(owner)<<16)|binding;}
 void apply_audio_gain(std::int16_t* samples,std::size_t count,int percent);

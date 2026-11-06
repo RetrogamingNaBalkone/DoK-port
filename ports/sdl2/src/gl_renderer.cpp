@@ -366,6 +366,9 @@ void GlRenderer::image(const std::vector<std::uint32_t>& pixels,int width,int he
     g.draw({l,t,0,1,0,0,0,rr,t,0,1,1,0,0,rr,b,0,1,1,1,0,l,b,0,1,0,1,0},2);
 }
 void GlRenderer::present(){finish_frame();flush_world();SDL_GL_SwapWindow(impl_->window);}
+std::vector<std::uint32_t> GlRenderer::read_pixels(){finish_frame();flush_world();auto& g=*impl_;std::vector<std::uint8_t> bytes(std::size_t(g.width)*g.height*4);g.ReadPixels(0,0,g.width,g.height,GL_RGBA,GL_UNSIGNED_BYTE,bytes.data());std::vector<std::uint32_t> pixels(std::size_t(g.width)*g.height);
+    for(int y=0;y<g.height;++y)for(int x=0;x<g.width;++x){const auto* p=&bytes[(std::size_t(g.height-1-y)*g.width+x)*4];pixels[std::size_t(y)*g.width+x]=0xff000000u|(p[0]<<16)|(p[1]<<8)|p[2];}return pixels;
+}
 void GlRenderer::screenshot(const std::string& path){finish_frame();flush_world();auto& g=*impl_;std::vector<std::uint8_t> bytes(std::size_t(g.width)*g.height*4);
     g.ReadPixels(0,0,g.width,g.height,GL_RGBA,GL_UNSIGNED_BYTE,bytes.data());
     if(std::filesystem::u8path(path).extension()==".png"){

@@ -17,6 +17,7 @@ public:
     void pixels(const std::vector<std::uint32_t>& pixels,int width,int height,bool game,int filter=0,const SDL_Rect* target=nullptr);
     void overlay(const std::vector<std::uint32_t>& pixels,int width,int height,SDL_Rect target);
     void present();
+    std::vector<std::uint32_t> read_pixels();
     void screenshot(const std::string& path);
     std::array<int,2> size()const;
     bool menu_event(SDL_Event& event)const;

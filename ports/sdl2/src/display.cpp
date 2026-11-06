@@ -80,6 +80,7 @@ void Display::overlay(const std::vector<std::uint32_t>& pixels,int w,int h,SDL_R
     }
     if(SDL_UpdateTexture(texture,nullptr,pixels.data(),w*4)!=0||SDL_RenderCopy(renderer_,texture,nullptr,&r)!=0)throw std::runtime_error(SDL_GetError());
 }
+std::vector<std::uint32_t> Display::read_pixels(){if(gl_)return gl_->read_pixels();const auto output=size();std::vector<std::uint32_t> data(std::size_t(output[0])*output[1]);if(SDL_RenderReadPixels(renderer_,nullptr,SDL_PIXELFORMAT_ARGB8888,data.data(),output[0]*4)!=0)throw std::runtime_error(SDL_GetError());return data;}
 void Display::screenshot(const std::string& path){
     if(gl_){gl_->screenshot(path);return;}const auto output=size();std::vector<std::uint32_t> data(std::size_t(output[0])*output[1]);
     if(SDL_RenderReadPixels(renderer_,nullptr,SDL_PIXELFORMAT_ARGB8888,data.data(),output[0]*4)!=0)throw std::runtime_error(SDL_GetError());

@@ -7,6 +7,9 @@ enum class SessionPhase { playing, retry, game_over, completed };
 class GameFlow {
 public:
     explicit GameFlow(World& world);
+    struct Snapshot {Pose spawn;SessionPhase phase=SessionPhase::playing;};
+    Snapshot snapshot()const {return {spawn_,phase_};}
+    void restore(Snapshot s) {if(s.phase!=SessionPhase::playing)throw std::runtime_error("Only live sessions can be restored");spawn_=s.spawn;phase_=s.phase;}
     SessionPhase observe();
     bool retry();
     SessionPhase phase() const noexcept { return phase_; }

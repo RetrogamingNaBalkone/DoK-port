@@ -69,12 +69,12 @@ def main():
             count += 1
     report['app_music'] = []
     script = OUT/'music-ui.txt'
-    script.write_text('1 key Return\n3 key Return\n5 state music\n')
+    script.write_text('1 key Return\n3 key Return\n5 key Return\n7 state music\n')
     for profile, resource in RES:
         directory = OUT/'app-music'/profile
         command = [str(ROOT/'build/sdl2/windows/dok_port.exe'), '--res', str(ROOT/resource),
                    '--renderer', 'software', '--locale', 'en', '--user-dir', str(directory),
-                   '--ui-script', str(script), '--frames', '8']
+                   '--ui-script', str(script), '--frames', '10']
         result = subprocess.run(command, capture_output=True, text=True,
                                 env=dict(os.environ, SDL_VIDEODRIVER='dummy', SDL_AUDIODRIVER='dummy'))
         log = (directory/'port.log').read_text(encoding='utf-8')

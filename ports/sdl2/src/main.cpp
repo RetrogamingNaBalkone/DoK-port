@@ -13,6 +13,8 @@
 #include "dok/display.hpp"
 #include "dok/presentation.hpp"
 #include "dok/frontend.hpp"
+#include "dok/saves.hpp"
+#include "dok/localization.hpp"
 #include "dok/view_motion.hpp"
 #include "dok/cheat.hpp"
 #include "dok/launch.hpp"
@@ -223,6 +225,43 @@ int main(int argc,char** argv){
             menu.preview_level(level_name[5]-'0');if(skip_intro)start(level_name);
         }
         if(!warning.empty()){log<<"Settings/display notice: "<<warning<<'\n';menu.notice("Настройки восстановлены или OpenGL недоступен. Подробности в port.log.","Settings restored or OpenGL unavailable. See port.log for details.");}
+        struct PendingSave {int slot;std::string name;};
+        std::optional<PendingSave> pending_save;
+        bool reset_frame_clock=false;
+        dok::SaveMetadata cached_preview;std::uint64_t preview_ticks=~std::uint64_t(0);
+        menu.save_catalog=[&]{if(sets.empty())return std::vector<dok::SaveEntry>{};return dok::list_saves(user_path,sets.at(menu.dataset_index()).archive);};
+        auto request_save=[&](int slot,const std::string& name){if(!menu.save_allowed()){menu.notice("Сохранение доступно только при живом герое в незавершённом уровне.","Saving requires a living player in an unfinished level.");return;}pending_save=PendingSave{slot,name};};
+        auto load_game=[&](int slot,bool backup){
+            try{
+                const auto next_index=world?current:menu.dataset_index();const auto& a=sets.at(next_index).archive;auto path=dok::save_path(user_path,a.identify(),slot);if(backup)path+=".bak";
+                auto saved=dok::decode_save(dok::read_save_file(path),a);auto next_world=std::move(saved.world);
+                auto next_weapons=std::make_unique<dok::Weapons>(*next_world,a);
+                auto next_shots=std::make_unique<dok::Projectiles>(*next_world,a);
+                auto next_monsters=std::make_unique<dok::Monsters>(*next_world,a,*next_shots);
+                auto next_animations=std::make_unique<dok::Animations>(*next_world,a);
+                auto next_flow=std::make_unique<dok::GameFlow>(*next_world);next_flow->restore(saved.flow);
+                auto next_hud=std::make_unique<dok::Hud>(a);auto next_scene=std::make_unique<dok::SoftwareScene>(a,next_world->definition);
+                std::unique_ptr<dok::SdlAudio> created_audio;auto* candidate_audio=audio?audio.get():music.get();
+                if(!candidate_audio)try{created_audio=std::make_unique<dok::SdlAudio>(a);candidate_audio=created_audio.get();}catch(const std::exception& error){log<<"Audio unavailable: "<<error.what()<<'\n';}
+                dok::SdlAudioSnapshot audio_state;audio_state.voice=saved.audio.voice;audio_state.resource=saved.audio.resource;audio_state.volume=settings.effects_volume;audio_state.paused=true;
+                if(candidate_audio&&!candidate_audio->can_restore(audio_state))throw std::runtime_error("Cannot restore sound state");
+                const auto next_level=saved.metadata.level;
+                // Reuse the device: some drivers allow only one open output. All
+                // fallible validation is finished before detaching the live device.
+                auto next_audio=audio?std::move(audio):music?std::move(music):std::move(created_audio);
+                if(next_audio)next_audio->restore(audio_state);
+                clear_world();music.reset();current=next_index;level_name=next_level;
+                world=std::move(next_world);weapons=std::move(next_weapons);projectiles=std::move(next_shots);monsters=std::move(next_monsters);animations=std::move(next_animations);flow=std::move(next_flow);hud=std::move(next_hud);scene=std::move(next_scene);audio=std::move(next_audio);
+                if(audio){world->audio=[target=audio.get()](const dok::AudioCommand& c){target->command(c);};audio->volume(settings.effects_volume);audio->pause(false);}
+                menu.select_dataset(current);menu.preview_level(level_name.back()-'0');menu.session_world(world.get());menu.hide();input.clear();fire_press.clear();use_pending=use_previous=false;view_motion.reset();cheat.reset();input.capture_mouse(!replay&&!hidden);preview_ticks=~std::uint64_t(0);cached_preview={};reset_frame_clock=true;world->notify(dok::cp866(dok::game_text("port.loaded",settings.locale)));world->message_key="port.loaded";
+                log<<"SAVE loaded slot="<<slot<<" backup="<<backup<<" dataset="<<int(a.identify())<<" level="<<level_name<<" ticks="<<world->simulation_ticks()<<'\n';return true;
+            }catch(const std::exception& error){log<<"SAVE load failed: "<<error.what()<<'\n';menu.notice("Не удалось загрузить сохранение. Текущая игра сохранена. Подробности в port.log.","Could not load save. The current session is preserved. See port.log.");return false;}
+        };
+        auto quickload=[&]{
+            if(sets.empty())return false;const auto index=world?current:menu.dataset_index();const auto entries=dok::list_saves(user_path,sets[index].archive);const auto& entry=entries.front();
+            if(!entry.exists){menu.notice("Быстрого сохранения пока нет.","No quicksave yet.");return false;}
+            if(entry.backup){menu.recover_quicksave();return false;}return load_game(0,false);
+        };
         std::string save_error;
         auto persist=[&]{
             try{
@@ -260,6 +299,7 @@ int main(int argc,char** argv){
                     }log<<'\n';
                 }
                 else if(event.action=="live_input"&&replay)replay_live_input=event.value=="on";
+                else if(event.action=="text"){std::size_t at=0;while(at<event.value.size()){auto count=std::min<std::size_t>(31,event.value.size()-at);while(count&&at+count<event.value.size()&&(static_cast<unsigned char>(event.value[at+count])&0xc0)==0x80)--count;if(!count)break;SDL_Event e{};e.type=SDL_TEXTINPUT;std::copy_n(event.value.data()+at,count,e.text.text);e.text.text[count]=0;SDL_PushEvent(&e);at+=count;}}
                 else if(event.action=="shot")captures.push_back(event.value);
                 else if(event.action=="keydown"||event.action=="keyup"){SDL_Event e{};e.type=event.action=="keydown"?SDL_KEYDOWN:SDL_KEYUP;e.key.keysym.scancode=SDL_GetScancodeFromName(event.value.c_str());e.key.keysym.sym=SDL_GetKeyFromScancode(e.key.keysym.scancode);SDL_PushEvent(&e);}
                 else if(event.action=="mouse_down"||event.action=="mouse_up"){SDL_Event e{};e.type=event.action=="mouse_down"?SDL_MOUSEBUTTONDOWN:SDL_MOUSEBUTTONUP;e.button.button=static_cast<Uint8>(std::stoul(event.value));SDL_PushEvent(&e);}
@@ -292,6 +332,11 @@ int main(int argc,char** argv){
                         catch(const std::exception& error){log<<"Fullscreen switch rejected: "<<error.what()<<'\n';}
                     }
                 }
+                if(was_menu&&!was_map&&(menu.screen()==dok::MenuScreen::pause||menu.screen()==dok::MenuScreen::outcome)){
+                    const auto menu_actions=input.sample();
+                    if(menu_actions.quickload){quickload();flow_changed=true;input.clear();continue;}
+                    if(menu_actions.quicksave&&menu.screen()==dok::MenuScreen::pause){request_save(0,settings.locale==dok::LocaleId::ru?"Быстрое сохранение":"Quicksave");flow_changed=true;input.clear();continue;}
+                }
                 if(was_menu&&!was_map){auto mapped=e;const auto size=display->size();if(display->menu_event(mapped))menu.handle(mapped,size[0],size[1]);input.clear();fire_press.clear();use_pending=false;cheat.reset();flow_changed=true;}
                 else {
                     if(was_map){auto mapped=e;const auto size=display->size();if(display->menu_event(mapped))menu.handle(mapped,size[0],size[1]);map_closed|=!map_visible();}
@@ -307,6 +352,11 @@ int main(int argc,char** argv){
             for(const auto command:menu.commands()){
                 flow_changed|=!(map_closed&&command==dok::MenuCommand::resume);
                 switch(command){
+                case dok::MenuCommand::save_game:request_save(menu.pending_save_slot(),menu.pending_save_name());break;
+                case dok::MenuCommand::load_game:load_game(menu.pending_save_slot(),menu.pending_save_backup());break;
+                case dok::MenuCommand::delete_game:try{dok::delete_save(dok::save_path(user_path,sets.at(menu.dataset_index()).archive.identify(),menu.pending_save_slot()));menu.refresh_saves();}catch(const std::exception& error){log<<"SAVE delete failed: "<<error.what()<<'\n';menu.notice("Не удалось удалить сохранение.","Could not delete save.");}break;
+                case dok::MenuCommand::quicksave:request_save(0,settings.locale==dok::LocaleId::ru?"Быстрое сохранение":"Quicksave");break;
+                case dok::MenuCommand::quickload:quickload();break;
                 case dok::MenuCommand::start:try{start(menu.level()==4?"LEVEL4":"LEVEL"+std::to_string(menu.level()));}catch(const std::exception& e){clear_world();menu.main_menu();menu.notice("Не удалось загрузить уровень. Подробности в port.log.","Could not load level. See port.log.");log<<e.what()<<'\n';}break;
                 case dok::MenuCommand::add_resource:
                     if(!world){music.reset();const auto path=menu.pending_resource();
@@ -351,6 +401,10 @@ int main(int argc,char** argv){
             if(music)music->volume(settings.music_volume);
             const auto now=SDL_GetPerformanceCounter();const auto elapsed_ns=replay?16666667ULL:static_cast<std::uint64_t>(double(now-previous_time)*1e9/SDL_GetPerformanceFrequency());previous_time=now;
             const auto actions=input.sample();
+            if(world&&!menu_blocks()&&actions.quickload){quickload();flow_changed=true;}
+            else if(world&&!menu_blocks()&&actions.quicksave){request_save(0,settings.locale==dok::LocaleId::ru?"Быстрое сохранение":"Quicksave");flow_changed=true;}
+
+            if(reset_frame_clock){previous_time=SDL_GetPerformanceCounter();reset_frame_clock=false;}
             if(world&&!menu.active()&&actions.map&&!map_closed)menu.show_map();
             if(world&&!menu_blocks()&&actions.pause&&!map_closed){menu.pause();input.clear();fire_press.clear();input.capture_mouse(false);flow_changed=true;}
             if((!replay||replay_live_input)&&actions.use&&!use_previous)use_pending=true;use_previous=actions.use;
@@ -429,10 +483,11 @@ int main(int argc,char** argv){
                     world->visited.at(z*world->definition.width+x)=1;
                 }
             }
+            const bool capture_preview=world&&(pending_save.has_value()||(menu_blocks()&&preview_ticks!=world->simulation_ticks()));
             display->begin();auto* gl=display->gl();const auto output=display->size();
             SDL_Rect gameplay_rect{0,0,output[0],output[1]};
             const bool full_map=map_visible();
-            if(menu_blocks()||full_map){
+            if((menu_blocks()||full_map)&&!capture_preview){
                 const auto& frame=menu.render(output[0],output[1]);
                 display->pixels(frame.pixels,frame.width,frame.height,false);
             }else if(world){
@@ -448,7 +503,7 @@ int main(int argc,char** argv){
                     gl->set_linear_filter(settings.linear);
                     gl->scene_view(scene_rect,view_width,scene_height);
                     gl->world(scene->palette(),true,true);
-                    scene->render(*world,pose,dynamic,[&](const auto& vertices,const auto& image,dok::Bytes light,dok::RasterAxis axis){gl->polygon(vertices,image,light,axis);},view_width,view_motion.offset(world->presentation_ticks()),[&](auto owner){return animations->image(owner);},scene_height);
+                    scene->render(*world,pose,dynamic,[&](const auto& vertices,const auto& image,dok::Bytes light,dok::RasterAxis axis){gl->polygon(vertices,image,light,axis);},view_width,capture_preview?std::array<double,4>{}:view_motion.offset(world->presentation_ticks()),[&](auto owner){return animations->image(owner);},scene_height);
                     gl->finish_scene(settings.fxaa);
                 }else{
                     const auto mode=dok::software_modes[settings.video.software_mode];
@@ -481,6 +536,21 @@ int main(int argc,char** argv){
                     display->overlay(frame.pixels,frame.width,frame.height,{frame_rect.x,frame_rect.y+frame_rect.h-frame.height*hud_scale,frame.width*hud_scale,frame.height*hud_scale});
                 }
             }
+            if(capture_preview){
+                try{const auto pixels=display->read_pixels();const auto size=display->size();cached_preview.preview_width=320;cached_preview.preview_height=200;cached_preview.preview.assign(320*200,0xff000000);
+                    const double scale=std::min(320.0/size[0],200.0/size[1]);const int pw=std::max(1,int(size[0]*scale)),ph=std::max(1,int(size[1]*scale));const int ox=(320-pw)/2,oy=(200-ph)/2;
+                    for(int y=0;y<ph;++y)for(int x=0;x<pw;++x)cached_preview.preview[(oy+y)*320+ox+x]=pixels[std::size_t(y)*size[1]/ph*size[0]+std::size_t(x)*size[0]/pw];preview_ticks=world->simulation_ticks();
+                }catch(const std::exception& error){log<<"SAVE preview failed: "<<error.what()<<'\n';pending_save.reset();menu.notice("Не удалось получить превью сохранения.","Could not capture the save preview.");}
+            }
+            if(pending_save){
+                const auto request=*pending_save;pending_save.reset();try{auto metadata=cached_preview;metadata.name=request.name;metadata.timestamp=std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count();metadata.fingerprint=dok::save_fingerprint(sets[current].archive,level_name);
+                    dok::SaveAudio sound;if(audio){const auto state=audio->snapshot();sound.voice=state.voice;sound.resource=state.resource;}
+                    auto bytes=dok::encode_save(*world,flow->snapshot(),sound,std::move(metadata));
+                    dok::write_save_file(dok::save_path(user_path,world->definition.dataset,request.slot),bytes,sets[current].archive);menu.refresh_saves();log<<"SAVE written slot="<<request.slot<<" level="<<level_name<<" ticks="<<world->simulation_ticks()<<'\n';world->notify(dok::cp866(dok::game_text("port.saved",settings.locale)));world->message_key="port.saved";
+                }catch(const std::exception& error){log<<"SAVE write failed: "<<error.what()<<'\n';menu.notice("Не удалось сохранить игру. Предыдущая запись сохранена. Проверьте доступ к папке профиля; подробности в port.log.","Could not save game. The previous save is preserved. Check the profile directory; see port.log.");}
+            }
+            if(capture_preview)previous_time=SDL_GetPerformanceCounter();
+            if(capture_preview&&(menu_blocks()||full_map)){const auto& frame=menu.render(output[0],output[1]);display->pixels(frame.pixels,frame.width,frame.height,false);}
             ++frames;++fps_frames;const auto fps_now=SDL_GetPerformanceCounter();const auto seconds=double(fps_now-fps_time)/SDL_GetPerformanceFrequency();
             if(seconds>=0.5){fps_value=unsigned(fps_frames/seconds+0.5);fps_frames=0;fps_time=fps_now;}
             if(settings.show_fps&&world&&!menu.active()){

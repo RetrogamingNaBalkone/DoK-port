@@ -91,11 +91,12 @@ void SdlInput::clear(){
 void SdlInput::handle(const SDL_Event& event){
     switch(event.type){
     case SDL_KEYDOWN:case SDL_KEYUP:
+        if(event.type==SDL_KEYDOWN&&event.key.repeat)break;
         if(focused_&&event.key.keysym.scancode>SDL_SCANCODE_UNKNOWN&&event.key.keysym.scancode<SDL_NUM_SCANCODES){
             if(event.type==SDL_KEYUP&&keys_[event.key.keysym.scancode])
                 for(auto key:bindings.keys[index(Action::map)])if(key==event.key.keysym.scancode)presses_[index(Action::map)]=true;
             if(event.type==SDL_KEYDOWN&&!keys_[event.key.keysym.scancode])
-                for(auto action:{Action::fire,Action::weapon1,Action::weapon2})for(auto key:bindings.keys[index(action)])
+                for(auto action:{Action::fire,Action::weapon1,Action::weapon2,Action::quicksave,Action::quickload})for(auto key:bindings.keys[index(action)])
                     if(key==event.key.keysym.scancode)presses_[index(action)]=true;
             keys_[event.key.keysym.scancode]=event.type==SDL_KEYDOWN;
         }
@@ -110,7 +111,7 @@ void SdlInput::handle(const SDL_Event& event){
             if(event.type==SDL_MOUSEBUTTONUP&&mouse_buttons_[event.button.button]&&bindings.mouse[index(Action::map)]==event.button.button)
                 presses_[index(Action::map)]=true;
             if(event.type==SDL_MOUSEBUTTONDOWN&&!mouse_buttons_[event.button.button])
-                for(auto action:{Action::fire,Action::weapon1,Action::weapon2})if(bindings.mouse[index(action)]&&bindings.mouse[index(action)]==event.button.button)presses_[index(action)]=true;
+                for(auto action:{Action::fire,Action::weapon1,Action::weapon2,Action::quicksave,Action::quickload})if(bindings.mouse[index(action)]&&bindings.mouse[index(action)]==event.button.button)presses_[index(action)]=true;
             mouse_buttons_[event.button.button]=event.type==SDL_MOUSEBUTTONDOWN;
         }break;
     case SDL_CONTROLLERDEVICEADDED:open(event.cdevice.which);break;
@@ -123,7 +124,7 @@ void SdlInput::handle(const SDL_Event& event){
             if(event.caxis.value<=16384&&found->second.axes[event.caxis.axis]>16384&&bindings.triggers[index(Action::map)]==event.caxis.axis)
                 presses_[index(Action::map)]=true;
             if(event.caxis.value>16384&&found->second.axes[event.caxis.axis]<=16384)
-                for(auto action:{Action::fire,Action::weapon1,Action::weapon2})if(bindings.triggers[index(action)]==event.caxis.axis)presses_[index(action)]=true;
+                for(auto action:{Action::fire,Action::weapon1,Action::weapon2,Action::quicksave,Action::quickload})if(bindings.triggers[index(action)]==event.caxis.axis)presses_[index(action)]=true;
             found->second.axes[event.caxis.axis]=event.caxis.value;
         }break;}
     case SDL_CONTROLLERBUTTONDOWN:case SDL_CONTROLLERBUTTONUP:{
@@ -132,7 +133,7 @@ void SdlInput::handle(const SDL_Event& event){
             if(event.type==SDL_CONTROLLERBUTTONUP&&found->second.buttons[event.cbutton.button]&&bindings.buttons[index(Action::map)]==event.cbutton.button)
                 presses_[index(Action::map)]=true;
             if(event.type==SDL_CONTROLLERBUTTONDOWN&&!found->second.buttons[event.cbutton.button])
-                for(auto action:{Action::fire,Action::weapon1,Action::weapon2})if(bindings.buttons[index(action)]==event.cbutton.button)presses_[index(action)]=true;
+                for(auto action:{Action::fire,Action::weapon1,Action::weapon2,Action::quicksave,Action::quickload})if(bindings.buttons[index(action)]==event.cbutton.button)presses_[index(action)]=true;
             found->second.buttons[event.cbutton.button]=event.type==SDL_CONTROLLERBUTTONDOWN;
         }break;}
     case SDL_WINDOWEVENT:
@@ -187,7 +188,7 @@ InputActions SdlInput::sample(){
     result.map=presses_[index(Action::map)]||wheel_presses_[index(Action::map)]||(!physical[index(Action::map)]&&previous_[index(Action::map)]);
     result.pause=edge(Action::pause);result.run=down(Action::run);result.slow=down(Action::slow);
     result.next_weapon=edge(Action::next_weapon);result.previous_weapon=edge(Action::previous_weapon);
-    result.quicksave=edge(Action::quicksave);result.quickload=edge(Action::quickload);
+    result.quicksave=presses_[index(Action::quicksave)]||edge(Action::quicksave);result.quickload=presses_[index(Action::quickload)]||edge(Action::quickload);
     if(presses_[index(Action::weapon1)]||edge(Action::weapon1))result.select_weapon=1;
     if(presses_[index(Action::weapon2)]||edge(Action::weapon2))result.select_weapon=2;
     presses_.fill(false);wheel_presses_.fill(false);previous_=physical;return result;
