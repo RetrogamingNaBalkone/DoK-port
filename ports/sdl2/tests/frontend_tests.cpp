@@ -42,10 +42,11 @@ int main(){
         SDL_SetHint(SDL_HINT_PREFERRED_LOCALES,"de_DE");check(dok::AppSettings{}.locale==dok::LocaleId::en,"Other OS locale");
         SDL_ResetHint(SDL_HINT_PREFERRED_LOCALES);
         std::string warning;auto s=dok::load_settings(path,warning);check(warning.empty()&&s.locale==dok::system_locale(),"First-run locale");
+        check(!s.show_fps&&!s.fxaa&&s.texture_filter()==0&&s.frame_filter==0,"First-run presentation defaults");
         s.locale=s.locale==dok::LocaleId::ru?dok::LocaleId::en:dok::LocaleId::ru;
         s.video={dok::RendererKind::software,800,600,3,true};s.input.keyboard(dok::InputPreset::classic);s.input.gamepad(dok::InputPreset::classic);
         s.inertia=false;s.effects_volume=45;s.input.mouse_enabled=false;s.input.gamepad_enabled=false;s.music_volume=15;s.input.keys[0][0]=SDL_SCANCODE_I;s.input.keyboard_preset=dok::InputPreset::custom;
-        s.frame_filter=3;s.mip_filter=5;s.saves_enabled=false;s.camera_bobbing=false;s.fxaa=true;s.classic_hud=true;s.auto_hud=false;
+        s.frame_filter=3;s.mip_filter=5;s.saves_enabled=false;s.camera_bobbing=false;s.show_fps=true;s.fxaa=true;s.classic_hud=true;s.auto_hud=false;
         s.resource_paths={"C:/Games/Старое золото/OLD_GOLD.RES","C:/Games/edition=two.RES"};
         s.resource_choices[1]=s.resource_paths[0];
         check(dok::save_settings(path,s,warning),"Save settings");auto loaded=dok::load_settings(path,warning);
@@ -87,6 +88,29 @@ int main(){
             loaded=dok::load_settings(path,warning);
             check(warning.empty()&&loaded.input.mouse[12]==(preset==0?6:0)&&loaded.input.mouse[13]==(preset==0?7:0),"Wheel defaults migrate stock profiles and preserve custom unbindings");
         }
+        // Old stock classic layouts adopt the new face positions; remaps remain intact.
+        for(int variant=0;variant<4;++variant){
+            dok::AppSettings old;old.input.gamepad(dok::InputPreset::classic);
+            auto& buttons=old.input.buttons;
+            const auto fire=static_cast<unsigned>(dok::Action::fire),run=static_cast<unsigned>(dok::Action::run);
+            const auto use=static_cast<unsigned>(dok::Action::use),next=static_cast<unsigned>(dok::Action::next_weapon);
+            buttons[fire]=SDL_CONTROLLER_BUTTON_A;buttons[run]=SDL_CONTROLLER_BUTTON_B;
+            buttons[use]=SDL_CONTROLLER_BUTTON_X;buttons[next]=SDL_CONTROLLER_BUTTON_Y;
+            if(variant==1)old.input.pad_preset=dok::InputPreset::custom;
+            if(variant==2)buttons[static_cast<unsigned>(dok::Action::map)]=SDL_CONTROLLER_BUTTON_RIGHTSTICK;
+            if(variant==3)old.input.gamepad(dok::InputPreset::modern);
+            old.input.gamepad_enabled=false;old.input.stick_deadzone=0.3f;old.show_fps=true;old.fxaa=true;old.texture_filter(6);old.frame_filter=3;
+            check(dok::save_settings(path,old,warning),"Save previous pad profile");
+            loaded=dok::load_settings(path,warning);check(warning.empty(),"Load previous pad profile");
+            auto expected=old;if(variant==0)expected.input.gamepad(dok::InputPreset::classic);
+            check(dok::encode_settings(loaded)==dok::encode_settings(expected),"Migrate stock classic only, preserving other preferences");
+            check(dok::save_settings(path,loaded,warning),"Save migrated classic profile");
+            const auto again=dok::load_settings(path,warning);
+            check(warning.empty()&&dok::encode_settings(again)==dok::encode_settings(loaded),"Pad migration is idempotent");
+        }
+        {std::ofstream out(path);out<<"[settings]\nversion=1\n";}
+        loaded=dok::load_settings(path,warning);
+        check(warning.empty()&&!loaded.show_fps&&!loaded.fxaa&&loaded.texture_filter()==0&&loaded.frame_filter==0,"Missing INI presentation fields use defaults");
         {std::ofstream out(path);out<<"[settings]\nversion=999\n";}loaded=dok::load_settings(path,warning);check(!warning.empty()&&loaded.inertia,"Bad version fallback");
         {std::ofstream out(path);out<<"[settings]\nversion=1\n[input]\ndeadzone=nan\n";}loaded=dok::load_settings(path,warning);check(!warning.empty(),"Reject NaN");
         // Failed replacement must preserve the old destination, not unlink it first.
@@ -151,8 +175,8 @@ int main(){
             key(revised,SDLK_DOWN);check(revised.focused_row()==7,"Software skips disabled FXAA");
             focus(0);key(revised,SDLK_RIGHT);focus(5);check(edits.frame_filter==2&&edits.linear,"Filter values survive renderer roundtrip");
             const auto locale=edits.locale;focus(8);key(revised,SDLK_RIGHT);check(edits.locale!=locale&&revised.focused_row()==8,"Language preserves semantic focus");
-            focus(9);key(revised,SDLK_RIGHT);check(!edits.show_fps,"FPS applies immediately");
-            focus(10);key(revised,SDLK_RETURN);check(edits.locale==dok::system_locale()&&edits.show_fps&&!edits.linear&&edits.frame_filter==0,"Combined defaults");
+            focus(9);key(revised,SDLK_RIGHT);check(edits.show_fps,"FPS applies immediately");
+            focus(10);key(revised,SDLK_RETURN);check(edits.locale==dok::system_locale()&&!edits.show_fps&&!edits.fxaa&&edits.texture_filter()==0&&edits.frame_filter==0,"Combined defaults");
             key(revised,SDLK_ESCAPE);down(revised,2);key(revised,SDLK_RETURN);key(revised,SDLK_RETURN);
             key(revised,SDLK_RETURN);check(!edits.input.mouse_enabled,"Disable mouse gameplay");
             pad(revised,SDL_CONTROLLER_BUTTON_DPAD_DOWN);key(revised,SDLK_RETURN);

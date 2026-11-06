@@ -168,12 +168,12 @@ int main(){
         check(SDL_JoystickSetVirtualButton(joystick,SDL_CONTROLLER_BUTTON_DPAD_UP,1)==0);
         check(SDL_JoystickSetVirtualButton(joystick,SDL_CONTROLLER_BUTTON_DPAD_RIGHT,1)==0);
         check(SDL_JoystickSetVirtualButton(joystick,SDL_CONTROLLER_BUTTON_LEFTSHOULDER,1)==0);
+        check(SDL_JoystickSetVirtualButton(joystick,SDL_CONTROLLER_BUTTON_X,1)==0);
         check(SDL_JoystickSetVirtualButton(joystick,SDL_CONTROLLER_BUTTON_A,1)==0);
-        check(SDL_JoystickSetVirtualButton(joystick,SDL_CONTROLLER_BUTTON_B,1)==0);
-        pump(input);state=input.sample();check(state.forward==1&&state.turn==1&&state.strafe==-1&&state.fire&&state.run&&!state.use);
+        pump(input);state=input.sample();check(state.forward==1&&state.turn==1&&state.strafe==-1&&state.fire&&state.run&&!state.use&&!state.next_weapon);
         // A pad without a right stick can use every implemented gameplay action.
         const std::array<std::pair<SDL_GameControllerButton,dok::Action>,5> classic_actions{{
-            {SDL_CONTROLLER_BUTTON_X,dok::Action::use},{SDL_CONTROLLER_BUTTON_Y,dok::Action::next_weapon},
+            {SDL_CONTROLLER_BUTTON_Y,dok::Action::use},{SDL_CONTROLLER_BUTTON_B,dok::Action::next_weapon},
             {SDL_CONTROLLER_BUTTON_BACK,dok::Action::map},{SDL_CONTROLLER_BUTTON_START,dok::Action::pause},
             {SDL_CONTROLLER_BUTTON_RIGHTSHOULDER,dok::Action::strafe_right}}};
         for(const auto& entry:classic_actions){
@@ -181,14 +181,19 @@ int main(){
             button.cbutton.which=SDL_JoystickInstanceID(joystick);button.cbutton.button=entry.first;input.handle(button);
             state=input.sample();
             switch(entry.second){
-            case dok::Action::use:check(state.use);break;
-            case dok::Action::next_weapon:check(state.next_weapon&&!input.sample().next_weapon);break;
+            case dok::Action::use:check(state.use&&!state.fire&&!state.run&&!state.next_weapon);break;
+            case dok::Action::next_weapon:check(state.next_weapon&&!state.use&&!state.fire&&!state.run&&!input.sample().next_weapon);break;
             case dok::Action::map:check(!state.map);button.type=SDL_CONTROLLERBUTTONUP;input.handle(button);check(input.sample().map&&!input.sample().map);break;
             case dok::Action::pause:check(state.pause&&!input.sample().pause);break;
             case dok::Action::strafe_right:check(state.strafe==1);break;
             default:check(false);
             }
         }
+        input.clear();SDL_Event shot{};shot.type=SDL_CONTROLLERBUTTONDOWN;
+        shot.cbutton.which=SDL_JoystickInstanceID(joystick);shot.cbutton.button=SDL_CONTROLLER_BUTTON_X;input.handle(shot);
+        shot.type=SDL_CONTROLLERBUTTONUP;input.handle(shot);
+        state=input.sample();check(!state.fire&&state.fire_pressed&&!state.run&&!state.use&&!state.next_weapon);
+        check(!input.sample().fire_pressed);
         input.clear();input.bindings.gamepad(dok::InputPreset::modern);
         SDL_Event trigger{};trigger.type=SDL_CONTROLLERAXISMOTION;trigger.caxis.which=SDL_JoystickInstanceID(joystick);trigger.caxis.axis=SDL_CONTROLLER_AXIS_TRIGGERRIGHT;trigger.caxis.value=24000;input.handle(trigger);
         trigger.caxis.value=0;input.handle(trigger);state=input.sample();check(!state.fire&&state.fire_pressed);check(!input.sample().fire_pressed);

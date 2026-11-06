@@ -348,7 +348,7 @@ void Frontend::choose(int delta){
             s_.auto_hud=layout==0;s_.classic_hud=layout==1;
         }else if(rows_[focus_].id==Item::language)s_.locale=s_.locale==LocaleId::ru?LocaleId::en:LocaleId::ru;
         else if(rows_[focus_].id==Item::fps)s_.show_fps=!s_.show_fps;
-        else if(rows_[focus_].id==Item::defaults){draft_=VideoSettings{};s_.linear=false;s_.mip_filter=0;s_.frame_filter=0;s_.fxaa=false;s_.classic_hud=false;s_.auto_hud=true;s_.locale=system_locale();s_.show_fps=true;}else back();break;
+        else if(rows_[focus_].id==Item::defaults){draft_=VideoSettings{};s_.linear=false;s_.mip_filter=0;s_.frame_filter=0;s_.fxaa=false;s_.classic_hud=false;s_.auto_hud=true;s_.locale=system_locale();s_.show_fps=false;}else back();break;
     case MenuScreen::video_unsaved:
         if(focus_==0)apply_video();
         else if(focus_==1){draft_=s_.video;enter_item(MenuScreen::settings,Item::graphics);}

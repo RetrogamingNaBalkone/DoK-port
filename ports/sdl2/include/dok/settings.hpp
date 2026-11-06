@@ -16,7 +16,7 @@ inline bool operator!=(const VideoSettings& a,const VideoSettings& b){return !(a
 struct AppSettings {
     VideoSettings video;
     LocaleId locale=system_locale();
-    bool linear=false,show_fps=true,inertia=true;
+    bool linear=false,show_fps=false,inertia=true;
     bool saves_enabled=true;
     bool camera_bobbing=true;
     int mip_filter=0; // Legacy INI values 1..5 now select the single Smooth preset.

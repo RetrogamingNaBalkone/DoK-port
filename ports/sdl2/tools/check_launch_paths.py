@@ -76,6 +76,16 @@ def main():
         for name in ('portable', 'portable.txt'):
             marker.unlink(); marker = binary / name; marker.touch()
             run('marker-' + name, required=('Profile mode: portable',))
+        # F12 follows the selected profile, never the process working directory.
+        capture_script = work / 'capture.txt'; capture_script.write_text('0 key F12\n', encoding='utf-8')
+        for name, profile in [('portable', None), ('explicit', Path('Screenshot profile')), ('unicode', Path('Снимки with spaces'))]:
+            run('screenshot-' + name, ['--ui-script', capture_script], profile=profile, required=('Screenshot saved:',))
+            target = binary if profile is None else cwd / profile
+            captures = list((target / 'screenshots').glob('*.png'))
+            assert len(captures) == 1 and captures[0].read_bytes().startswith(b'\x89PNG\r\n\x1a\n'), name
+            assert not (cwd / 'screenshots').exists(), 'F12 wrote into cwd'
+        run('screenshot-cli', ['--screenshot', 'explicit.png'], required=('Screenshot saved:',))
+        assert (cwd / 'explicit.png').read_bytes().startswith(b'\x89PNG\r\n\x1a\n')
         # Each nonempty combination, renamed files, any order and invalid CLI.
         for n in range(1, 4):
             for combo in itertools.combinations(PROFILES, n):

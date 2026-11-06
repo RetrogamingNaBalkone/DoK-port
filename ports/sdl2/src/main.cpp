@@ -565,7 +565,7 @@ int main(int argc,char** argv){
                 display->overlay(fps_pixels,fps_width,12,{output[0]-fps_width*2-4,4,fps_width*2,24});
             }
             if(!screenshot.empty()&&((frame_limit&&frames==frame_limit)||(!frame_limit&&replay&&replay->finished())))captures.push_back(screenshot);
-            if(capture_requested){try{auto dir=std::filesystem::current_path()/"screenshots";std::filesystem::create_directories(dir);
+            if(capture_requested){try{auto dir=user_path/"screenshots";std::filesystem::create_directories(dir);
                 const auto stamp=std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();captures.push_back((dir/("screenshot-"+std::to_string(stamp)+"-"+std::to_string(frames)+".png")).u8string());}catch(const std::exception& e){log<<"Screenshot failed: "<<e.what()<<'\n';}}
             for(const auto& capture:captures)try{display->screenshot(capture);log<<"Screenshot saved: "<<capture<<'\n';}catch(const std::exception& e){log<<"Screenshot failed: "<<e.what()<<'\n';}
             display->present();if((frame_limit&&frames>=frame_limit)||(!frame_limit&&replay&&replay->finished()))running=false;SDL_Delay(1);

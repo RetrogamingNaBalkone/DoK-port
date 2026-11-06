@@ -46,8 +46,9 @@ void InputBindings::gamepad(InputPreset preset){
         buttons[index(Action::forward)]=SDL_CONTROLLER_BUTTON_DPAD_UP;buttons[index(Action::backward)]=SDL_CONTROLLER_BUTTON_DPAD_DOWN;
         buttons[index(Action::turn_left)]=SDL_CONTROLLER_BUTTON_DPAD_LEFT;buttons[index(Action::turn_right)]=SDL_CONTROLLER_BUTTON_DPAD_RIGHT;
         buttons[index(Action::strafe_left)]=SDL_CONTROLLER_BUTTON_LEFTSHOULDER;buttons[index(Action::strafe_right)]=SDL_CONTROLLER_BUTTON_RIGHTSHOULDER;
-        buttons[index(Action::fire)]=SDL_CONTROLLER_BUTTON_A;buttons[index(Action::run)]=SDL_CONTROLLER_BUTTON_B;
-        buttons[index(Action::use)]=SDL_CONTROLLER_BUTTON_X;buttons[index(Action::next_weapon)]=SDL_CONTROLLER_BUTTON_Y;
+        // Face-button positions: west fires, south runs, north uses, east cycles.
+        buttons[index(Action::fire)]=SDL_CONTROLLER_BUTTON_X;buttons[index(Action::run)]=SDL_CONTROLLER_BUTTON_A;
+        buttons[index(Action::use)]=SDL_CONTROLLER_BUTTON_Y;buttons[index(Action::next_weapon)]=SDL_CONTROLLER_BUTTON_B;
     }else{
         buttons[index(Action::use)]=SDL_CONTROLLER_BUTTON_A;
         buttons[index(Action::next_weapon)]=SDL_CONTROLLER_BUTTON_RIGHTSHOULDER;buttons[index(Action::previous_weapon)]=SDL_CONTROLLER_BUTTON_LEFTSHOULDER;

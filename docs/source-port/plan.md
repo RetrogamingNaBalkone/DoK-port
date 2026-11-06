@@ -1,5 +1,12 @@
 # OGDoK — общий SDL2-порт Old Gold, PKR и PKE
 
+6 ноября выполнена [SP-CLASSIC-PAD](tasks/SP-CLASSIC-PAD.md): классический ромб
+снизу/слева/сверху/справа — бег/огонь/дверь/оружие. Прежний stock classic
+мигрирует, custom сохраняется. FPS и FXAA по умолчанию выключены, GL/software
+используют Nearest. F12 пишет в screenshots выбранного профиля. Release/CTest
+20/20, 36 сценариев запуска и 8 packaged запусков PASS; Windows-пакет обновлён.
+Следующий ID — SP18, аппаратная приёмка остаётся открытой.
+
 6 ноября выполнена [SP-IDKFA-REFILL](tasks/SP-IDKFA-REFILL.md): каждый IDKFA
 пополняет патроны до максимума без повторного роста вместимости. Release/CTest
 20/20, 147 сценариев и 6 процессов готового EXE PASS. Поставляемый README.txt

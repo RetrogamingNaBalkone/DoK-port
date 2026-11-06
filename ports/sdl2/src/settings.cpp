@@ -80,7 +80,7 @@ AppSettings load_settings(const std::filesystem::path& file,std::string& warning
         s.frame_filter=integer(m,"video.frame_filter",0,0,3);s.fxaa=integer(m,"video.fxaa",0,0,1);s.classic_hud=integer(m,"video.classic_hud",0,0,1);
         s.mip_filter=integer(m,"video.mip_filter",0,0,5);s.linear=integer(m,"video.linear",0,0,1);s.locale=LocaleId(integer(m,"interface.locale",int(s.locale),0,1));
         s.texture_filter(s.texture_filter()); // Normalize legacy smoothing choices.
-        s.show_fps=integer(m,"interface.fps",1,0,1);s.last_dataset=DatasetId(integer(m,"interface.last_dataset",0,0,3));
+        s.show_fps=integer(m,"interface.fps",0,0,1);s.last_dataset=DatasetId(integer(m,"interface.last_dataset",0,0,3));
         s.saves_enabled=integer(m,"gameplay.saves_enabled",1,0,1);s.inertia=integer(m,"gameplay.inertia",1,0,1);const int master=integer(m,"audio.master",100,0,100);
         s.camera_bobbing=integer(m,"gameplay.camera_bobbing",1,0,1);
         s.effects_volume=integer(m,"audio.effects",100,0,100);s.music_volume=integer(m,"audio.music",100,0,100);
@@ -100,6 +100,18 @@ AppSettings load_settings(const std::filesystem::path& file,std::string& warning
             const int trigger=integer(m,"input.trigger"+n,s.input.triggers[i],-1,SDL_CONTROLLER_AXIS_TRIGGERRIGHT);
             if(trigger!=-1&&trigger!=SDL_CONTROLLER_AXIS_TRIGGERLEFT&&trigger!=SDL_CONTROLLER_AXIS_TRIGGERRIGHT)throw std::runtime_error("Invalid trigger");
             s.input.triggers[i]=SDL_GameControllerAxis(trigger);
+        }
+        // Migrate only the complete, untouched previous classic pad layout.
+        if(s.input.pad_preset==InputPreset::classic&&s.input.classic_pad){
+            auto current=InputBindings::defaults();current.gamepad(InputPreset::classic);
+            auto legacy=current;
+            legacy.buttons[static_cast<unsigned>(Action::fire)]=SDL_CONTROLLER_BUTTON_A;
+            legacy.buttons[static_cast<unsigned>(Action::run)]=SDL_CONTROLLER_BUTTON_B;
+            legacy.buttons[static_cast<unsigned>(Action::use)]=SDL_CONTROLLER_BUTTON_X;
+            legacy.buttons[static_cast<unsigned>(Action::next_weapon)]=SDL_CONTROLLER_BUTTON_Y;
+            if(s.input.buttons==legacy.buttons&&s.input.triggers==legacy.triggers){
+                s.input.buttons=current.buttons;s.input.triggers=current.triggers;
+            }
         }
         // Adopt the added wheel defaults in untouched stock keyboard profiles.
         const auto next=static_cast<unsigned>(Action::next_weapon),previous=static_cast<unsigned>(Action::previous_weapon);
