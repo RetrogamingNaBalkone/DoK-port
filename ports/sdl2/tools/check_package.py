@@ -18,7 +18,7 @@ def main():
     args = parser.parse_args()
     package = args.package.resolve()
     exe = package / 'OGDoK.exe'
-    required = {'OGDoK.exe', 'SDL2.dll', 'README.md', 'LICENSES.txt'}
+    required = {'OGDoK.exe', 'SDL2.dll', 'README.txt', 'LICENSES.txt'}
     assert required <= {p.name for p in package.iterdir()}
     assert not list(package.glob('*.cmd')) and not list(package.glob('*.bat'))
     assert not (package / 'NOTICES.txt').exists() and not (package / 'SDL2-LICENSE.txt').exists()
@@ -36,10 +36,13 @@ def main():
     if bundled:
         for name, source in resources.items():
             assert (package / name).read_bytes() == (ROOT / source).read_bytes(), name
-    readme = (package / 'README.md').read_text(encoding='utf-8')
+    readme = (package / 'README.txt').read_text(encoding='utf-8')
     assert 'Старое золото' in readme and '????' not in readme and '\ufffd' not in readme
-    assert readme == (ROOT / 'ports/sdl2/PLAYTEST.md').read_text(encoding='utf-8')
-    assert '## Командная строка' in readme and '### Диагностические параметры' in readme
+    assert not (package / 'README.md').exists()
+    assert not any(line.startswith(('|', '#', '```')) for line in readme.splitlines())
+    assert 'Границы плейтеста' not in readme and 'паспорт' not in readme
+    assert readme == (ROOT / 'ports/sdl2/README.txt').read_text(encoding='utf-8')
+    assert 'Командная строка' in readme and 'Диагностические параметры' in readme
     source = (ROOT / 'ports/sdl2/include/dok/launch.hpp').read_text(encoding='utf-8')
     import re
     options = set(re.findall(r'"(--[a-z-]+)"', source)) - {'--', '--aspect', '--fov'}

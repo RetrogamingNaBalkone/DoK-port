@@ -66,6 +66,8 @@ void Weapons::grant_all(){
                            static_cast<std::int16_t>(definition.number(0x56)));
         player.weapons[slot]=object.owner;object.weapon->acquired=true;
     }
+    // Every cheat use refills the shared ammo pool after granting missing weapons.
+    player.attributes[1]=player.max_charge();
     if(!player.weapons.at(player.current_weapon)){
         for(int slot=1;slot<static_cast<int>(player.weapons.size());++slot)if(player.weapons[slot]){
             player.current_weapon=player.pending_weapon=static_cast<std::int16_t>(slot);

@@ -29,8 +29,9 @@ int main(int argc,char** argv){
         weapons.grant_all();
         check(player.keys()==7&&player.weapons[1]&&player.weapons[2],"IDKFA did not grant complete inventory");
         check(player.health()==original_health&&world.maps==original_map,"IDKFA changed health/map");
-        const auto charge=player.charge(),maximum=player.max_charge();
-        weapons.grant_all();check(player.charge()==charge&&player.max_charge()==maximum,"Repeat cheat inflated capacity");
+        const auto maximum=player.max_charge();
+        player.attributes[1]=0;
+        weapons.grant_all();check(player.charge()==maximum&&player.max_charge()==maximum,"Repeat cheat must refill without increasing capacity");
         check(world.visible_message()=="\x80\xe5 \xe2\xeb \xe5\xa8\xe2\xe0\xeb\xa9 \xa4\xe3\xac\xa5\xe0!","Wrong CP866 cheat message");
         auto advance=[&](std::uint64_t ns){world.advance_events(ns,[&](dok::OwnerId owner,dok::CallbackId callback){
             auto e=static_cast<dok::GameEvent>(callback);

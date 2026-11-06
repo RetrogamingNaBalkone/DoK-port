@@ -61,6 +61,17 @@ void repeat_switch_while_hidden(const dok::Archive& a){
     const auto fired=c.fired;c.held=true;c.wait(60,1000);
     check(c.fired>fired,"Fire blocked after repeated switch");
 }
+void refill(const dok::Archive& a,const std::string& level){
+    Case c(a,level);c.code();
+    const auto maximum=c.player().max_charge(),health=c.player().health();
+    const auto selected=c.player().current_weapon;
+    check(maximum>0&&c.player().charge()==maximum,"First IDKFA must fill charge");
+    for(const auto remaining:{std::int16_t(0),std::int16_t(maximum/2),maximum}){
+        c.player().attributes[1]=remaining;c.code();
+        check(c.player().charge()==maximum&&c.player().max_charge()==maximum,"IDKFA refill/capacity regression");
+        check(c.player().health()==health&&c.player().current_weapon==selected,"IDKFA refill changed health/equipped weapon");
+    }
+}
 void scenario(const dok::Archive& a,const std::string& level,unsigned fps,int timing){
     Case c(a,level);
     if(timing==0)c.code();
@@ -79,8 +90,8 @@ void scenario(const dok::Archive& a,const std::string& level,unsigned fps,int ti
     }
     check(c.fired>2&&c.player().charge()>0,"IDKFA fire pipeline stopped or exhausted unexpectedly");
     const auto fired=c.fired;c.wait(fps,2000);check(c.fired>fired,"Held fire stopped after IDKFA/switch");
-    const auto maximum=c.player().max_charge(),charge=c.player().charge();c.code();
-    check(c.player().max_charge()==maximum&&c.player().charge()==charge,"Repeated IDKFA changed charge/capacity");
+    const auto maximum=c.player().max_charge();c.code();
+    check(c.player().max_charge()==maximum&&c.player().charge()==maximum,"Repeated IDKFA must refill without increasing capacity");
     c.wait(fps,1500);check(c.fired>fired+1,"Repeated IDKFA stopped sustained fire");
     std::cout<<"IDKFA "<<level<<" fps="<<fps<<" timing="<<timing<<" fired="<<c.fired<<" charge="<<c.player().charge()<<" state="<<c.gun()->state<<" events="<<c.world.events.events(c.player().weapons.at(c.player().current_weapon)).size()<<'\n';
 }
@@ -88,6 +99,6 @@ void scenario(const dok::Archive& a,const std::string& level,unsigned fps,int ti
 int main(int argc,char** argv){try{
     check(argc>=2,"Usage: dok_idkfa_tests RES...");unsigned count=0;
     for(int arg=1;arg<argc;++arg){const auto archive=dok::Archive::open(std::filesystem::u8path(argv[arg]));cycling_without_other(archive);repeat_switch_while_hidden(archive);
-        for(const std::string level:{"LEVEL1","LEVEL2","LEVEL3","LEVEL4"})if(archive.find(level))for(unsigned fps:{30,60,144})for(int timing=0;timing<7;++timing){scenario(archive,level,fps,timing);++count;}}
+        for(const std::string level:{"LEVEL1","LEVEL2","LEVEL3","LEVEL4"})if(archive.find(level)){refill(archive,level);for(unsigned fps:{30,60,144})for(int timing=0;timing<7;++timing){scenario(archive,level,fps,timing);++count;}}}
     std::cout<<count<<" IDKFA timing/pickup/switch/sustained real-projectile scenarios passed\n";return 0;
 }catch(const std::exception& e){std::cerr<<e.what()<<'\n';return 1;}}
