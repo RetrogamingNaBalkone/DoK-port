@@ -8,17 +8,23 @@
 namespace dok {
 Display::Display(const VideoSettings& s,bool vsync){
     try{
-        if(s.renderer==RendererKind::opengl){
+        world_gl_=s.renderer==RendererKind::opengl;
+        const bool try_gl=world_gl_||!SDL_GetHintBoolean("DOK_SOFTWARE_SDL_PRESENTATION",SDL_FALSE);
+        if(try_gl){
             SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION,2);SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION,0);
-            SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER,1);SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE,24);
+            SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER,1);SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE,world_gl_?24:0);
         }
-        window_=SDL_CreateWindow("OGDoK",SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED,s.width,s.height,
-            SDL_WINDOW_RESIZABLE|SDL_WINDOW_ALLOW_HIGHDPI|SDL_WINDOW_HIDDEN|(s.renderer==RendererKind::opengl?SDL_WINDOW_OPENGL:0));
-        if(!window_)throw std::runtime_error(SDL_GetError());
-        if(s.renderer==RendererKind::opengl){gl_=std::make_unique<GlRenderer>(window_);if(!vsync)SDL_GL_SetSwapInterval(0);
-            if(s.fullscreen){gl_->frame_size(s.fullscreen_width,s.fullscreen_height);frame_width_=s.fullscreen_width;frame_height_=s.fullscreen_height;}}
-        else{renderer_=SDL_CreateRenderer(window_,-1,SDL_RENDERER_ACCELERATED|(vsync?SDL_RENDERER_PRESENTVSYNC:0));
+        const auto create_window=[&](bool opengl){return SDL_CreateWindow("OGDoK",SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED,s.width,s.height,
+            SDL_WINDOW_RESIZABLE|SDL_WINDOW_ALLOW_HIGHDPI|SDL_WINDOW_HIDDEN|(opengl?SDL_WINDOW_OPENGL:0));};
+        if(try_gl){
+            window_=create_window(true);
+            if(window_)try{gl_=std::make_unique<GlRenderer>(window_);if(!vsync)SDL_GL_SetSwapInterval(0);}catch(...){if(world_gl_)throw;}
+            if(!gl_){if(world_gl_)throw std::runtime_error(SDL_GetError());if(window_)SDL_DestroyWindow(window_);window_=nullptr;}
+        }
+        if(!gl_){window_=create_window(false);if(!window_)throw std::runtime_error(SDL_GetError());
+            renderer_=SDL_CreateRenderer(window_,-1,SDL_RENDERER_ACCELERATED|(vsync?SDL_RENDERER_PRESENTVSYNC:0));
             if(!renderer_)renderer_=SDL_CreateRenderer(window_,-1,SDL_RENDERER_SOFTWARE);if(!renderer_)throw std::runtime_error(SDL_GetError());}
+        if(world_gl_&&s.fullscreen){gl_->frame_size(s.fullscreen_width,s.fullscreen_height);frame_width_=s.fullscreen_width;frame_height_=s.fullscreen_height;}
         if(s.fullscreen&&SDL_SetWindowFullscreen(window_,SDL_WINDOW_FULLSCREEN_DESKTOP)!=0)throw std::runtime_error(SDL_GetError());
     }catch(...){gl_.reset();if(renderer_)SDL_DestroyRenderer(renderer_);if(window_)SDL_DestroyWindow(window_);throw;}
 }
@@ -40,8 +46,8 @@ void Display::begin(){if(gl_)gl_->begin();else{SDL_SetRenderDrawColor(renderer_,
 void Display::pixels(const std::vector<std::uint32_t>& data,int width,int height,bool game,int filter,const SDL_Rect* target){
     const auto output=size();SDL_Rect r=target?*target:SDL_Rect{0,0,output[0],output[1]};
     if(game){r.w=std::min(output[0],output[1]*4/3);r.h=r.w*3/4;r.x=(output[0]-r.w)/2;r.y=(output[1]-r.h)/2;}
-    if(filter==3){if(r.w>width||r.h>height){const auto scaled=xbr3(data,width,height);pixels(scaled,width*3,height*3,false,0,&r);return;}filter=0;}
     if(gl_){gl_->image(data,width,height,r,true,filter);return;}
+    if(filter==3){if(r.w>width||r.h>height){const auto scaled=xbr3(data,width,height);pixels(scaled,width*3,height*3,false,0,&r);return;}filter=0;}
     if(!texture_||texture_width_!=width||texture_height_!=height){if(texture_)SDL_DestroyTexture(texture_);
         texture_=SDL_CreateTexture(renderer_,SDL_PIXELFORMAT_ARGB8888,SDL_TEXTUREACCESS_STREAMING,width,height);texture_width_=width;texture_height_=height;
         if(!texture_)throw std::runtime_error(SDL_GetError());}

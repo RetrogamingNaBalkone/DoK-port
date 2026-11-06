@@ -44,8 +44,8 @@ float number(const Values& m,const std::string& key,float fallback,float lo,floa
 std::string encode_settings(const AppSettings& s){
     if(s.resource_paths.size()>64)throw std::invalid_argument("Too many saved resource paths");
     std::ostringstream o;o<<"[settings]\nversion=1\n[video]\nrenderer="<<int(s.video.renderer)<<"\nwidth="<<s.video.width<<"\nheight="<<s.video.height
-      <<"\nsoftware_mode="<<s.video.software_mode<<"\nfullscreen="<<s.video.fullscreen<<"\nlinear="<<s.linear
-      <<"\nmip_filter="<<s.mip_filter<<"\nframe_filter="<<s.frame_filter<<"\nfxaa="<<s.fxaa<<"\nclassic_hud="<<s.classic_hud<<"\nauto_hud="<<s.auto_hud<<"\nfullscreen_width="<<s.video.fullscreen_width<<"\nfullscreen_height="<<s.video.fullscreen_height
+      <<"\nsoftware_mode="<<s.video.software_mode<<"\nfullscreen="<<s.video.fullscreen<<"\nlinear="<<(s.texture_filter()!=0)
+      <<"\nmip_filter="<<(s.texture_filter()?5:0)<<"\nframe_filter="<<s.frame_filter<<"\nfxaa="<<s.fxaa<<"\nclassic_hud="<<s.classic_hud<<"\nauto_hud="<<s.auto_hud<<"\nfullscreen_width="<<s.video.fullscreen_width<<"\nfullscreen_height="<<s.video.fullscreen_height
       <<"\n[interface]\nlocale="<<int(s.locale)<<"\nfps="<<s.show_fps<<"\nlast_dataset="<<int(s.last_dataset)
       <<"\n[gameplay]\ninertia="<<s.inertia<<"\nsaves_enabled="<<s.saves_enabled<<"\n[audio]\nmaster=100\neffects="<<s.effects_volume<<"\nmusic="<<s.music_volume
       <<"\n[input]\nkeyboard_preset="<<int(s.input.keyboard_preset)<<"\npad_preset="<<int(s.input.pad_preset)<<"\nclassic_pad="<<s.input.classic_pad
@@ -79,6 +79,7 @@ AppSettings load_settings(const std::filesystem::path& file,std::string& warning
         s.auto_hud=integer(m,"video.auto_hud",1,0,1);
         s.frame_filter=integer(m,"video.frame_filter",0,0,3);s.fxaa=integer(m,"video.fxaa",0,0,1);s.classic_hud=integer(m,"video.classic_hud",0,0,1);
         s.mip_filter=integer(m,"video.mip_filter",0,0,5);s.linear=integer(m,"video.linear",0,0,1);s.locale=LocaleId(integer(m,"interface.locale",int(s.locale),0,1));
+        s.texture_filter(s.texture_filter()); // Normalize legacy smoothing choices.
         s.show_fps=integer(m,"interface.fps",1,0,1);s.last_dataset=DatasetId(integer(m,"interface.last_dataset",0,0,3));
         s.saves_enabled=integer(m,"gameplay.saves_enabled",1,0,1);s.inertia=integer(m,"gameplay.inertia",1,0,1);const int master=integer(m,"audio.master",100,0,100);
         s.effects_volume=integer(m,"audio.effects",100,0,100);s.music_volume=integer(m,"audio.music",100,0,100);

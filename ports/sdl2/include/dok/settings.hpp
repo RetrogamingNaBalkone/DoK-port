@@ -18,9 +18,9 @@ struct AppSettings {
     LocaleId locale=system_locale();
     bool linear=false,show_fps=true,inertia=true;
     bool saves_enabled=true;
-    int mip_filter=0; // 0: legacy nearest/linear; 1: mipmaps; 2: trilinear; 3..5: anisotropic 2/4/8
-    int texture_filter()const{return mip_filter?mip_filter+1:linear?1:0;}
-    void texture_filter(int mode){mip_filter=mode>1?mode-1:0;linear=mode!=0;}
+    int mip_filter=0; // Legacy INI values 1..5 now select the single Smooth preset.
+    int texture_filter()const{return mip_filter||linear?6:0;}
+    void texture_filter(int mode){linear=mode!=0;mip_filter=linear?5:0;}
     // Independent presentation options; never enter simulation state.
     int frame_filter=0; // nearest, linear, sharp bilinear, experimental xBR
     bool fxaa=false,classic_hud=false,auto_hud=true;

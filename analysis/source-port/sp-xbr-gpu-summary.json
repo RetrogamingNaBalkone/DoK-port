@@ -1,0 +1,74 @@
+{
+  "task": "SP-XBR-GPU",
+  "date": "2026-11-06",
+  "status": "Windows automated acceptance PASS",
+  "app_sha256": "074beed8f0cc735d2756a2f14a83d8b7e969bd08528efb37d5cf244ebec0be96",
+  "ctest": "20/20",
+  "xbr_probe": "PASS; CPU/GPU max channel delta 1; CPU tiled fallback exact",
+  "packaged_gpu_processes": 25,
+  "other_checks": {
+    "choice_processes": 60,
+    "filter_processes": 82,
+    "save_processes": 68,
+    "package_launches": 8
+  },
+  "old_cpu_baseline": [
+    {
+      "width": 320,
+      "height": 160,
+      "cpu_transform_p50_ms": 18.7596,
+      "cpu_total_p50_ms": 19.5193,
+      "gpu_total_p50_ms": 0.1927
+    },
+    {
+      "width": 640,
+      "height": 384,
+      "cpu_transform_p50_ms": 84.1064,
+      "cpu_total_p50_ms": 87.4149,
+      "gpu_total_p50_ms": 0.4486
+    },
+    {
+      "width": 1024,
+      "height": 614,
+      "cpu_transform_p50_ms": 203.219,
+      "cpu_total_p50_ms": 210.532,
+      "gpu_total_p50_ms": 1.1891
+    }
+  ],
+  "final": [
+    {
+      "width": 320,
+      "height": 160,
+      "cpu_transform_p50_ms": 14.0816,
+      "cpu_total_p50_ms": 15.0419,
+      "gpu_total_p50_ms": 0.1457
+    },
+    {
+      "width": 640,
+      "height": 384,
+      "cpu_transform_p50_ms": 65.6707,
+      "cpu_total_p50_ms": 69.0865,
+      "gpu_total_p50_ms": 0.4778
+    },
+    {
+      "width": 1024,
+      "height": 614,
+      "cpu_transform_p50_ms": 164.931,
+      "cpu_total_p50_ms": 173.443,
+      "gpu_total_p50_ms": 1.2266
+    }
+  ],
+  "timing_scope": "Filter plus upload with glFinish; no vsync/present, not full runtime FPS",
+  "requirements": "GL2/GLES2/Windows8x64 unchanged; optional GPU xBR and CPU/SDL fallback",
+  "originals_sha256": {
+    "originals/Old_Gold_3D/OLD_GOLD.RES": "e376855167b64a7190ec2da0ba9bd1da129ba178c4033aebadebca3f08b2be25",
+    "originals/pkr/RUS/PKR.RES": "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816",
+    "originals/pkr/ENG/PKE.RES": "865da340621fa6f90548a84e9ae9bf0a85071befb32a40ca1d359e488f74d458"
+  },
+  "limits": [
+    "GLES/RK3326 hardware pending SP20",
+    "Physical Windows 8 not run here",
+    "Common GL/software scaling menu not implemented"
+  ],
+  "evidence": "research/evidence/source-port/sp-xbr-gpu"
+}

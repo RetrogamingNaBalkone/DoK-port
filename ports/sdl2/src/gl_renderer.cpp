@@ -5,10 +5,12 @@
 #include "dok/presentation.hpp"
 #include "dok/filters.hpp"
 #include <algorithm>
+#include <cmath>
 #include <cstring>
 #include <stdexcept>
 #include <unordered_map>
 namespace dok {
+#include "xbr_shader.inc"
 #define GL_FUNCTIONS(X) \
  X(GetIntegerv) X(CreateShader) X(ShaderSource) X(CompileShader) X(GetShaderiv) X(GetShaderInfoLog) X(DeleteShader) \
  X(CreateProgram) X(AttachShader) X(BindAttribLocation) X(LinkProgram) X(GetProgramiv) X(GetProgramInfoLog) X(DeleteProgram) \
@@ -24,6 +26,9 @@ struct GlRenderer::Impl {
     int frame_width=0,frame_height=0;GLuint framebuffer=0,frame_texture=0,frame_depth=0;bool frame_finished=false;
     SDL_Rect scene_rect{};GLuint post_texture=0;int post_width=0,post_height=0;
     GLuint program=0,vbo=0,light=0;
+    GLuint xbr_program=0,xbr_framebuffer=0,xbr_texture=0;
+    int xbr_width=0,xbr_height=0;bool xbr_failed=false;
+    GLint xbr_size=-1;
     struct UiTexture {GLuint id=0;std::vector<std::uint32_t> pixels;};
     std::unordered_map<std::uint64_t,UiTexture> ui_textures;
     std::array<std::uint32_t,256> palette_values{};
@@ -93,9 +98,42 @@ struct GlRenderer::Impl {
         UseProgram(program);Uniform1i(mode_location,mode);Uniform1i(batch_location,0);upload(vertices);
         DrawArrays(GL_TRIANGLE_FAN,0,static_cast<GLsizei>(vertices.size()/7));
     }
+    bool xbr(GLuint source,int w,int h){
+        if(xbr_failed||SDL_GetHintBoolean("DOK_DISABLE_GPU_XBR",SDL_FALSE)||!GenFramebuffers||!BindFramebuffer||!FramebufferTexture2D||!CheckFramebufferStatus||!DeleteFramebuffers)return false;
+        GLint limit=0;GetIntegerv(GL_MAX_TEXTURE_SIZE,&limit);if(w>limit/3||h>limit/3)return false;
+        if(!xbr_program){
+            GLuint vertex=0,fragment=0;
+            try{
+                vertex=shader(GL_VERTEX_SHADER,"attribute vec4 position;attribute vec2 uv;\n#ifdef GL_ES\nvarying highp vec2 texcoord;\n#else\nvarying vec2 texcoord;\n#endif\nvoid main(){gl_Position=position;texcoord=uv;}");
+                fragment=shader(GL_FRAGMENT_SHADER,xbr_fragment);
+                xbr_program=CreateProgram();AttachShader(xbr_program,vertex);AttachShader(xbr_program,fragment);
+                BindAttribLocation(xbr_program,0,"position");BindAttribLocation(xbr_program,1,"uv");LinkProgram(xbr_program);
+                GLint okay=0;GetProgramiv(xbr_program,GL_LINK_STATUS,&okay);if(!okay)throw std::runtime_error("xBR shader link failed");
+                UseProgram(xbr_program);Uniform1i(GetUniformLocation(xbr_program,"picture"),0);xbr_size=GetUniformLocation(xbr_program,"pictureSize");
+            }catch(...){if(vertex)DeleteShader(vertex);if(fragment)DeleteShader(fragment);if(xbr_program)DeleteProgram(xbr_program);xbr_program=0;xbr_failed=true;return false;}
+            DeleteShader(vertex);DeleteShader(fragment);
+        }
+        GLint previous=0;GetIntegerv(GL_FRAMEBUFFER_BINDING,&previous);
+        if(!xbr_framebuffer)GenFramebuffers(1,&xbr_framebuffer);
+        BindFramebuffer(GL_FRAMEBUFFER,xbr_framebuffer);
+        if(xbr_width!=w||xbr_height!=h){
+            if(!xbr_texture)GenTextures(1,&xbr_texture);texture(xbr_texture,0,w*3,h*3,GL_RGBA,nullptr);
+            FramebufferTexture2D(GL_FRAMEBUFFER,GL_COLOR_ATTACHMENT0,GL_TEXTURE_2D,xbr_texture,0);
+            if(CheckFramebufferStatus(GL_FRAMEBUFFER)!=GL_FRAMEBUFFER_COMPLETE){BindFramebuffer(GL_FRAMEBUFFER,previous);xbr_failed=true;return false;}
+            xbr_width=w;xbr_height=h;
+        }
+        Viewport(0,0,w*3,h*3);Disable(GL_DEPTH_TEST);Disable(GL_BLEND);
+        UseProgram(xbr_program);Uniform2f(xbr_size,float(w),float(h));ActiveTexture(GL_TEXTURE0);BindTexture(GL_TEXTURE_2D,source);
+        TexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);TexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
+        upload({-1,-1,0,1,0,0,0,1,-1,0,1,1,0,0,1,1,0,1,1,1,0,-1,1,0,1,0,1,0});DrawArrays(GL_TRIANGLE_FAN,0,4);
+        BindFramebuffer(GL_FRAMEBUFFER,previous);return true;
+    }
     ~Impl(){if(context){SDL_GL_MakeCurrent(window,context);
         if(DeleteTextures){for(auto t:mip_textures)DeleteTextures(1,&t.second.id);for(auto t:textures)DeleteTextures(1,&t.second);for(const auto& t:ui_textures)DeleteTextures(1,&t.second.id);DeleteTextures(1,&light);if(post_texture)DeleteTextures(1,&post_texture);}
         if(DeleteFramebuffers&&framebuffer)DeleteFramebuffers(1,&framebuffer);
+        if(DeleteFramebuffers&&xbr_framebuffer)DeleteFramebuffers(1,&xbr_framebuffer);
+        if(DeleteTextures&&xbr_texture)DeleteTextures(1,&xbr_texture);
+        if(DeleteProgram&&xbr_program)DeleteProgram(xbr_program);
         if(DeleteRenderbuffers&&frame_depth)DeleteRenderbuffers(1,&frame_depth);
         if(DeleteTextures&&frame_texture)DeleteTextures(1,&frame_texture);
         if(DeleteBuffers&&vbo)DeleteBuffers(1,&vbo);if(DeleteProgram&&program)DeleteProgram(program);SDL_GL_DeleteContext(context);}}
@@ -421,7 +459,7 @@ void GlRenderer::polygon(const std::vector<RasterVertex>& vertices,const Image& 
     }
 }
 void GlRenderer::image(const std::vector<std::uint32_t>& pixels,int width,int height,SDL_Rect r,bool screen_pixels,int filter){
-    if(filter==3){if(r.w>width||r.h>height){const auto scaled=xbr3(pixels,width,height);image(scaled,width*3,height*3,r,screen_pixels,0);return;}filter=0;}
+    if(filter==3&&r.w<=width&&r.h<=height)filter=0;
     flush_world();
     auto& g=*impl_;
     const auto key=(std::uint64_t(width)<<32)|unsigned(height);
@@ -430,6 +468,28 @@ void GlRenderer::image(const std::vector<std::uint32_t>& pixels,int width,int he
     else if(std::memcmp(texture.pixels.data(),pixels.data(),count*sizeof(std::uint32_t))!=0){
         g.rgba(texture.id,0,width,height,pixels.data(),true);std::copy_n(pixels.data(),count,texture.pixels.data());
     }else{g.ActiveTexture(GL_TEXTURE0);g.BindTexture(GL_TEXTURE_2D,texture.id);}
+    if(filter==3){
+        if(g.xbr(texture.id,width,height)){g.ActiveTexture(GL_TEXTURE0);g.BindTexture(GL_TEXTURE_2D,g.xbr_texture);width*=3;height*=3;filter=0;}
+        else{
+            const auto scaled=xbr3(pixels,width,height);const int sw=width*3,sh=height*3;
+            GLint limit=0;g.GetIntegerv(GL_MAX_TEXTURE_SIZE,&limit);
+            if(SDL_GetHintBoolean("DOK_XBR_CPU_TILES",SDL_FALSE))limit=std::min(limit,32);
+            if(sw<=limit&&sh<=limit){image(scaled,sw,sh,r,screen_pixels,0);return;}
+            // CPU fallback must also work when the 3x texture exceeds an old
+            // GL2 device limit. Sample visible output pixels into bounded tiles.
+            const double sx=screen_pixels?1.0:double(g.width)/320,sy=screen_pixels?1.0:double(g.height)/240;
+            const double left=r.x*sx,top=r.y*sy,rw=r.w*sx,rh=r.h*sy;
+            const int x0=std::clamp(int(std::ceil(left-.5)),0,g.width),x1=std::clamp(int(std::ceil(left+rw-.5)),0,g.width);
+            const int y0=std::clamp(int(std::ceil(top-.5)),0,g.height),y1=std::clamp(int(std::ceil(top+rh-.5)),0,g.height);
+            const int step=std::max(1,std::min(int(limit),512));
+            for(int y=y0;y<y1;y+=step)for(int x=x0;x<x1;x+=step){
+                const int tw=std::min(step,x1-x),th=std::min(step,y1-y);std::vector<std::uint32_t> tile(std::size_t(tw)*th);
+                for(int ty=0;ty<th;++ty){const int iy=std::clamp(int((y+ty+.5-top)*sh/rh),0,sh-1);
+                    for(int tx=0;tx<tw;++tx){const int ix=std::clamp(int((x+tx+.5-left)*sw/rw),0,sw-1);tile[std::size_t(ty)*tw+tx]=scaled[std::size_t(iy)*sw+ix];}}
+                image(tile,tw,th,{x,y,tw,th},true,0);
+            }return;
+        }
+    }
     g.Viewport(0,0,g.width,g.height);
     g.UseProgram(g.program);g.Uniform1i(g.filter_location,filter);
     g.Uniform2f(g.size_location,float(width),float(height));
@@ -441,6 +501,7 @@ void GlRenderer::image(const std::vector<std::uint32_t>& pixels,int width,int he
     const float l=2.f*r.x/rw-1,rr=2.f*(r.x+r.w)/rw-1,t=1-2.f*r.y/rh,b=1-2.f*(r.y+r.h)/rh;
     g.draw({l,t,0,1,0,0,0,rr,t,0,1,1,0,0,rr,b,0,1,1,1,0,l,b,0,1,0,1,0},2);
 }
+bool GlRenderer::xbr_gpu_ready()const{return impl_->xbr_program&&impl_->xbr_framebuffer&&!impl_->xbr_failed&&!SDL_GetHintBoolean("DOK_DISABLE_GPU_XBR",SDL_FALSE);}
 void GlRenderer::present(){finish_frame();flush_world();SDL_GL_SwapWindow(impl_->window);}
 std::vector<std::uint32_t> GlRenderer::read_pixels(){finish_frame();flush_world();auto& g=*impl_;std::vector<std::uint8_t> bytes(std::size_t(g.width)*g.height*4);g.ReadPixels(0,0,g.width,g.height,GL_RGBA,GL_UNSIGNED_BYTE,bytes.data());std::vector<std::uint32_t> pixels(std::size_t(g.width)*g.height);
     for(int y=0;y<g.height;++y)for(int x=0;x<g.width;++x){const auto* p=&bytes[(std::size_t(g.height-1-y)*g.width+x)*4];pixels[std::size_t(y)*g.width+x]=0xff000000u|(p[0]<<16)|(p[1]<<8)|p[2];}return pixels;

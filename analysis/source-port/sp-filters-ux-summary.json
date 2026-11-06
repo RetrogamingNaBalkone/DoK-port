@@ -1,0 +1,41 @@
+{
+  "task": "SP-FILTERS-UX",
+  "date": "2026-11-06",
+  "status": "PASS",
+  "app_sha256": "5bca516b0d58f5a33c68ab9b88ce4b5f34449886b3bf38cd058706b412333be1",
+  "gl_choices": [
+    "nearest",
+    "smooth"
+  ],
+  "software_choices": [
+    "nearest",
+    "linear",
+    "sharp",
+    "xbr"
+  ],
+  "legacy": "All old smoothing choices normalize to Smooth; unrelated settings preserved",
+  "ctest": "20/20",
+  "comparison_processes": 60,
+  "matrix_processes": 82,
+  "packaged_launches": 8,
+  "old_frozen_gl_scenes": 9,
+  "old_gl_mean_channel_delta": {
+    "nearest/linear": 2.6340874095021944,
+    "linear/trilinear": 0.5176965219003182,
+    "linear/aniso8": 0.25114511560510705,
+    "mipmaps/trilinear": 0.20952931156864874,
+    "trilinear/aniso8": 0.3896800382637683,
+    "aniso2/aniso4": 0.0577326645085841,
+    "aniso4/aniso8": 0.012959939462167246
+  },
+  "originals_sha256": {
+    "originals/Old_Gold_3D/OLD_GOLD.RES": "e376855167b64a7190ec2da0ba9bd1da129ba178c4033aebadebca3f08b2be25",
+    "originals/pkr/RUS/PKR.RES": "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816",
+    "originals/pkr/ENG/PKE.RES": "865da340621fa6f90548a84e9ae9bf0a85071befb32a40ca1d359e488f74d458"
+  },
+  "limits": [
+    "GLES/RK3326 hardware acceptance remains SP20",
+    "Software scaling differences require enlargement"
+  ],
+  "evidence": "research/evidence/source-port/sp-filters-ux"
+}

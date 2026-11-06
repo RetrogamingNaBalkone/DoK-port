@@ -14,6 +14,7 @@ public:
     void set_linear_filter(bool enabled);
     void set_texture_filter(int mode); // nearest, linear, mipmaps, trilinear, anisotropic 2/4/8
     bool mip_filters_supported()const;
+    bool xbr_gpu_ready()const;
     // Scene rectangle in drawable pixels; UI always uses the full drawable.
     void scene_view(SDL_Rect rect,int width,int height=160);
     void finish_scene(bool fxaa);

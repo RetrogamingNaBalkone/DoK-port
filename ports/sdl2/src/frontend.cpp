@@ -171,8 +171,8 @@ void Frontend::build_rows(){
         item(Item::aspect,tr(MenuString::video_aspect_ratio),software?"4:3":aspect_label(aspect_mode[0],aspect_mode[1]),software?tr("Программный рендерер использует кадр 4:3 с полями.","The software renderer uses a 4:3 frame with bars."):tr("Определяется разрешением. Обзор: Hor+ и Vert+.","Determined by resolution. View expands with Hor+ and Vert+."),false);
         item(Item::apply_video,tr(MenuString::apply_video_mode));
         setting(Item::filtering,tr(software?MenuString::video_frame_scaling:MenuString::video_texture_filter),
-            software?(s_.frame_filter==3?"xBR":s_.frame_filter==2?"Sharp Bilinear":s_.frame_filter==1?"Linear":"Nearest"):std::array<const char*,7>{"Nearest","Linear","Mipmaps","Trilinear","Anisotropic 2x","Anisotropic 4x","Anisotropic 8x"}[s_.texture_filter()],
-            software?tr("Увеличение кадра сцены. xBR — экспериментальное сглаживание пиксельных контуров.","Scene scaling. xBR is experimental pixel contour smoothing."):tr("Mipmaps уменьшают рябь вдали; анизотропия сохраняет детали пола, потолка и стен вдоль взгляда.","Mipmaps reduce distant shimmer; anisotropy preserves detail on receding floors, ceilings and walls."));
+            software?(s_.frame_filter==3?"xBR":s_.frame_filter==2?"Sharp Bilinear":s_.frame_filter==1?"Linear":"Nearest"):(s_.texture_filter()?"Smooth":"Nearest"),
+            software?tr("Увеличение кадра сцены. xBR — экспериментальное сглаживание пиксельных контуров.","Scene scaling. xBR is experimental pixel contour smoothing."):s_.texture_filter()?tr("Смягчает пиксели текстур и уменьшает рябь вдали. Интерфейс остаётся чётким.","Softens texture pixels and reduces distant shimmer. The interface stays crisp."):tr("Сохраняет резкие границы исходных пикселей текстур.","Keeps the sharp edges of the original texture pixels."));
         setting(Item::fxaa,"FXAA",on(s_.fxaa),tr(MenuString::video_fxaa_help),!software);
         setting(Item::hud,tr(MenuString::video_hud),s_.auto_hud?tr(MenuString::automatic):s_.classic_hud?tr(MenuString::classic):tr(MenuString::modern));
         setting(Item::language,"Язык / Language",s_.locale==LocaleId::ru?"Русский":"English",tr(MenuString::all_game_texts_follow_selected_language));
@@ -336,7 +336,7 @@ void Frontend::choose(int delta){
                 int at=0;for(int i=0;i<int(unique.size());++i)if(unique[i]==std::array<int,2>{w,h})at=i;
                 at=(at+d+int(unique.size()))%int(unique.size());w=unique[at][0];h=unique[at][1];
             }
-        }else if(rows_[focus_].id==Item::filtering){if(draft_.renderer==RendererKind::software)s_.frame_filter=(s_.frame_filter+d+4)%4;else s_.texture_filter((s_.texture_filter()+d+7)%7);}
+        }else if(rows_[focus_].id==Item::filtering){if(draft_.renderer==RendererKind::software)s_.frame_filter=(s_.frame_filter+d+4)%4;else s_.texture_filter(s_.texture_filter()?0:6);}
         else if(rows_[focus_].id==Item::apply_video){apply_video();}
         else if(rows_[focus_].id==Item::fxaa)s_.fxaa=!s_.fxaa;
         else if(rows_[focus_].id==Item::hud){

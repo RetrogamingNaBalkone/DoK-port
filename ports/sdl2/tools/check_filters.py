@@ -13,7 +13,7 @@ from experiment_cleanup import temporary_workspace
 SAMPLES = [('old_gold', 'originals/Old_Gold_3D/OLD_GOLD.RES', [4]),
            ('pkr', 'originals/pkr/RUS/PKR.RES', [1, 2, 3]),
            ('pke', 'originals/pkr/ENG/PKE.RES', [1, 2, 3])]
-FILTERS = ['nearest', 'linear', 'mipmaps', 'trilinear', 'aniso2', 'aniso4', 'aniso8']
+FILTERS = ['nearest', 'smooth']
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
@@ -56,10 +56,10 @@ def main():
                         panel = frame.crop((0, 510 if dataset=='old_gold' else 480, 800, 600)).data
                         if reference is None: reference = panel
                         assert panel == reference, (name, 'Filter modified HUD/weapon panel')
-                        if level==levels[0] and filter in ('trilinear', 'aniso8', 'xbr'):
+                        if level==levels[0] and filter in ('smooth', 'xbr'):
                             (args.out/(name+'.png')).write_bytes(shot.read_bytes())
                 # Fractional resize and FXAA combinations, plus actual turning.
-                for filter in ('trilinear', 'aniso8'):
+                for filter in ('smooth',):
                     run(f'{dataset}-{level}-{filter}-fxaa', work/'images', res, level, filter=filter,
                         size='853x641', fxaa='on', frames=24, script='1 keydown Right\n20 keyup Right\n')
             for backend in ('gl', 'software'):

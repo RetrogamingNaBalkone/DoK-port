@@ -53,6 +53,14 @@ int main(){
         {std::ofstream out(path);out<<"[settings]\nversion=1\n[video]\nwidth=800\nheight=600\nbase_fov=obsolete\nforce_4_3=obsolete\n[interface]\nfps=0\n";}
         loaded=dok::load_settings(path,warning);
         check(warning.empty()&&!loaded.show_fps&&loaded.video.fullscreen_width==800&&loaded.video.fullscreen_height==600,"Ignore legacy projection keys without resetting settings");
+        for(int mip=0;mip<=5;++mip)for(int linear=0;linear<=1;++linear){
+            {std::ofstream out(path);out<<"[settings]\nversion=1\n[video]\nlinear="<<linear<<"\nmip_filter="<<mip<<"\nframe_filter=2\n[interface]\nfps=0\n[gameplay]\nsaves_enabled=0\n";}
+            const auto legacy=dok::load_settings(path,warning);const bool smooth=mip||linear;
+            check(warning.empty()&&legacy.texture_filter()==(smooth?6:0)&&legacy.mip_filter==(smooth?5:0),"Old GL choices migrate to nearest or Smooth");
+            check(legacy.frame_filter==2&&!legacy.saves_enabled&&!legacy.show_fps,"Filter migration preserves unrelated settings");
+            check(dok::save_settings(path,legacy,warning),"Save normalized filtering");
+            const auto again=dok::load_settings(path,warning);check(warning.empty()&&dok::encode_settings(legacy)==dok::encode_settings(again),"Filter migration is stable across restarts");
+        }
         s.video.fullscreen_width=1280;s.video.fullscreen_height=800;
         check(dok::save_settings(path,s,warning),"Save independent fullscreen size");
         loaded=dok::load_settings(path,warning);
@@ -136,7 +144,7 @@ int main(){
             down(revised,1);key(revised,SDLK_RETURN);down(revised,4);check(revised.focused_row()==4,"Four settings categories and Back");
             key(revised,SDLK_UP);key(revised,SDLK_UP);key(revised,SDLK_UP);key(revised,SDLK_UP);key(revised,SDLK_RETURN);
             focus(5);key(revised,SDLK_RIGHT);check(edits.linear&&edits.frame_filter==0,"GL filtering independent");
-            focus(5);for(int filter=2;filter<=6;++filter){key(revised,SDLK_RIGHT);check(edits.texture_filter()==filter,"All GL filters reachable");}key(revised,SDLK_RIGHT);check(edits.texture_filter()==0,"GL filter wrap");key(revised,SDLK_RIGHT);
+            check(edits.texture_filter()==6,"Smooth selects complete filtering preset");key(revised,SDLK_RIGHT);check(edits.texture_filter()==0,"Two GL choices wrap to nearest");key(revised,SDLK_LEFT);check(edits.texture_filter()==6,"Reverse toggle selects Smooth");
             focus(0);key(revised,SDLK_RIGHT);focus(5);key(revised,SDLK_LEFT);check(edits.frame_filter==3,"Experimental xBR reachable");key(revised,SDLK_LEFT);
             check(edits.linear&&edits.frame_filter==2,"Software Sharp Bilinear independent");
             key(revised,SDLK_DOWN);check(revised.focused_row()==7,"Software skips disabled FXAA");

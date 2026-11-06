@@ -88,7 +88,7 @@ int main(int argc,char** argv){
             else if(arg=="--screenshot")screenshot=value();else if(arg=="--level")level_name=value();else if(arg=="--skip-intro")skip_intro=true;
             else if(arg=="--user-dir")value();else if(arg=="--ui-script")script_path=value();
             else if(arg=="--renderer"){const auto mode=value();if(mode!="gl"&&mode!="software")throw std::runtime_error("Renderer: gl|software");settings.video.renderer=mode=="gl"?dok::RendererKind::opengl:dok::RendererKind::software;}
-            else if(arg=="--filter"){const auto mode=value();const std::array<std::string,7> modes{"nearest","linear","mipmaps","trilinear","aniso2","aniso4","aniso8"};auto it=std::find(modes.begin(),modes.end(),mode);if(it==modes.end())throw std::runtime_error("Filter: nearest|linear|mipmaps|trilinear|aniso2|aniso4|aniso8");settings.texture_filter(int(it-modes.begin()));}
+            else if(arg=="--filter"){const auto mode=value();const std::array<std::string,8> modes{"nearest","smooth","linear","mipmaps","trilinear","aniso2","aniso4","aniso8"};auto it=std::find(modes.begin(),modes.end(),mode);if(it==modes.end())throw std::runtime_error("Filter: nearest|smooth");settings.texture_filter(mode=="nearest"?0:6);}
             else if(arg=="--frame-filter"){const auto mode=value();if(mode!="nearest"&&mode!="linear"&&mode!="sharp"&&mode!="xbr")throw std::runtime_error("Frame filter: nearest|linear|sharp|xbr");settings.frame_filter=mode=="xbr"?3:mode=="sharp"?2:mode=="linear"?1:0;}
             else if(arg=="--fxaa"){const auto mode=value();if(mode!="on"&&mode!="off")throw std::runtime_error("FXAA: on|off");settings.fxaa=mode=="on";}
             else if(arg=="--hud"){const auto mode=value();if(mode!="classic"&&mode!="desktop"&&mode!="auto")throw std::runtime_error("HUD: auto|classic|desktop");settings.auto_hud=mode=="auto";settings.classic_hud=mode=="classic";}
@@ -286,7 +286,7 @@ int main(int argc,char** argv){
             bool video_changed=false;std::vector<std::string> captures;menu.update(SDL_GetTicks64());
             for(const auto& event:script)if(event.frame==frames){
                 if(event.action=="state"){
-                    const auto size=display->size();log<<"STATE "<<event.value<<" renderer="<<int(settings.video.renderer)<<" size="<<size[0]<<'x'<<size[1]<<" menu="<<int(menu.screen())<<" frame_filter="<<settings.frame_filter<<" fxaa="<<settings.fxaa<<" classic_hud="<<settings.classic_hud<<" auto_hud="<<settings.auto_hud<<" automatic_projection="<<true;
+                    const auto size=display->size();log<<"STATE "<<event.value<<" renderer="<<int(settings.video.renderer)<<" size="<<size[0]<<'x'<<size[1]<<" menu="<<int(menu.screen())<<" frame_filter="<<settings.frame_filter<<" fxaa="<<settings.fxaa<<" classic_hud="<<settings.classic_hud<<" auto_hud="<<settings.auto_hud<<" automatic_projection="<<true<<" gpu_presentation="<<display->gpu_presentation()<<" gpu_xbr="<<display->gpu_xbr_ready();
                     if(world){const auto& p=*world->objects.at(*world->player).pose;const auto& player=*world->objects.at(*world->player).player_state;
                         std::uint64_t hash=14695981039346656037ULL;for(const auto& map:world->maps)for(auto byte:map.second){hash^=static_cast<unsigned char>(byte);hash*=1099511628211ULL;}
                         log<<" world="<<world.get()<<" ticks="<<world->simulation_ticks()<<" pose="<<p.x<<','<<p.y<<','<<p.z<<','<<p.heading<<" hp="<<player.health()<<" charge="<<player.charge()<<" maps="<<hash;
@@ -323,7 +323,7 @@ int main(int argc,char** argv){
                 if(e.type==SDL_KEYDOWN&&!e.key.repeat&&!menu.capturing()){
                     if(e.key.keysym.sym==SDLK_F12)capture_requested=true;
                     if(e.key.keysym.sym==SDLK_F3)settings.show_fps=!settings.show_fps;
-                    if(e.key.keysym.sym==SDLK_F4){if(settings.video.renderer==dok::RendererKind::opengl)settings.texture_filter((settings.texture_filter()+1)%7);else settings.frame_filter=(settings.frame_filter+1)%4;}
+                    if(e.key.keysym.sym==SDLK_F4){if(settings.video.renderer==dok::RendererKind::opengl)settings.texture_filter(settings.texture_filter()?0:6);else settings.frame_filter=(settings.frame_filter+1)%4;}
                     if(e.key.keysym.sym==SDLK_F11&&!menu.video_pending()){
                         const bool next=!settings.video.fullscreen;
                         auto video=settings.video;video.fullscreen=next;

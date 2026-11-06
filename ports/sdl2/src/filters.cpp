@@ -38,9 +38,20 @@ MipAtlas make_mip_atlas(const Image& image,const std::array<std::uint32_t,256>& 
 std::vector<std::uint32_t> xbr3(const std::vector<std::uint32_t>& pixels,int w,int h){
     if(w<=0||h<=0||pixels.size()!=std::size_t(w)*h)throw std::invalid_argument("Invalid xBR source");
     std::vector<std::uint32_t> out(std::size_t(w)*h*9);
-    auto df=[](float a,float b){return std::abs(a-b);};auto eq=[&](float a,float b){return df(a,b)<=15;};
-    auto luma=[](const Color& c){return (14.352f*c[0]+28.176f*c[1]+5.472f*c[2])/255;};
-    auto ramp=[](float value,float center,float delta){return std::clamp((value+delta-center)/(2*delta),0.f,1.f);};
+    // Integer-ratio form of the same luma weights (scaled by 15937.5).
+    // Opaque 8-bit colors and edge sums stay exactly representable in float,
+    // avoiding CPU/GPU FMA differences at contour decision boundaries.
+    auto df=[](float a,float b){return std::abs(a-b);};auto eq=[&](float a,float b){return df(a,b)<=239062.5f;};
+    auto luma=[](const Color& c){return 897*c[0]+1761*c[1]+342*c[2];};
+    struct Blend {float inner,edge,left,up;};
+    static const auto weights=[](){
+        std::array<std::array<Blend,4>,9> table{};
+        auto ramp=[](float value,float center,float delta){const auto f=std::clamp((value+delta-center)/(2*delta),0.f,1.f);return std::round(f*8)/8;};
+        for(int sy=0;sy<3;++sy)for(int sx=0;sx<3;++sx)for(int r=0;r<4;++r){
+            float fx=(sx+.5f)/3,fy=(sy+.5f)/3;for(int k=0;k<r;++k){const float old=fx;fx=1-fy;fy=old;}
+            table[sy*3+sx][r]={ramp(fx+fy,1.75f,1.f/3),ramp(fx+fy,1.5f,1.f/3),ramp(fy+.5f*fx,1,1.f/6),ramp(fy+2*fx,2,1.f/3)};
+        }return table;
+    }();
     for(int y=0;y<h;++y)for(int x=0;x<w;++x){
         const auto E=unpack(pixels[std::size_t(y)*w+x]);const float e=luma(E);
         struct Edge{Color target;bool inner=false,edge=false,left=false,up=false;};std::array<Edge,4> edges;
@@ -51,14 +62,14 @@ std::vector<std::uint32_t> xbr3(const std::vector<std::uint32_t>& pixels,int w,i
             const bool corner=(!eq(f,b)&&!eq(f,c))||(!eq(hh,d)&&!eq(hh,g))||(eq(e,i)&&((!eq(f,f4)&&!eq(f,i4))||(!eq(hh,h5)&&!eq(hh,i5))))||eq(e,g)||eq(e,c);
             const float wd1=df(e,c)+df(e,g)+df(i,h5)+df(i,f4)+4*df(hh,f);
             const float wd2=df(hh,d)+df(hh,i5)+df(f,i4)+df(f,b)+4*df(e,i);
-            auto& edge=edges[r];edge.target=df(e,f)<=df(e,hh)?F:H;edge.inner=initial&&wd1<=wd2;edge.edge=initial&&corner&&wd1+.1f<=wd2;
+            auto& edge=edges[r];edge.target=df(e,f)<=df(e,hh)?F:H;edge.inner=initial&&wd1<=wd2;edge.edge=initial&&corner&&wd1+1593.75f<=wd2;
             edge.left=edge.edge&&2*df(f,g)<=df(hh,c)&&e!=g&&d!=g;
             edge.up=edge.edge&&2*df(hh,c)<=df(f,g)&&e!=c&&b!=c;
         }
         for(int sy=0;sy<3;++sy)for(int sx=0;sx<3;++sx){
             std::array<float,4> blend{};
-            for(int r=0;r<4;++r){float fx=(sx+.5f)/3,fy=(sy+.5f)/3;for(int k=0;k<r;++k){const float old=fx;fx=1-fy;fy=old;}const auto& a=edges[r];
-                blend[r]=std::max({a.inner?ramp(fx+fy,1.75f,1.f/3):0,a.edge?ramp(fx+fy,1.5f,1.f/3):0,a.left?ramp(fy+.5f*fx,1,1.f/6):0,a.up?ramp(fy+2*fx,2,1.f/3):0});
+            for(int r=0;r<4;++r){const auto& a=edges[r];const auto& weight=weights[sy*3+sx][r];
+                blend[r]=std::max({a.inner?weight.inner:0,a.edge?weight.edge:0,a.left?weight.left:0,a.up?weight.up:0});
             }
             const auto a=mix(mix(E,edges[0].target,blend[0]),edges[2].target,blend[2]);
             const auto b=mix(mix(E,edges[1].target,blend[1]),edges[3].target,blend[3]);
