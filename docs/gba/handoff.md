@@ -7,6 +7,12 @@
 [storage-maintenance](../storage-maintenance.md).
 Релиз 1.0 принят, следующего игрового ID нет.
 
+Доводка той же очистки: default-базы select-menu-fix/level1-fixes всё же
+удалены; prototype_gba_bsp.py/research_gba_fps.py требуют явный --base.
+Frontend собирает базу сам. G18 оставлен как ROM/map/build-report без ELF.
+Уникальные снимки исходников, компактные итоги и DOS-данные перенесены
+из build в research; manifest и проверки — [CLEANUP](tasks/CLEANUP.md).
+
 ## GBA 1.0: выпуск принят пользователем, 3 ноября 2026
 
 Выпущен обычный latest-релиз **[«Подземелья Кремля 1.0»](https://github.com/RetrogamingNaBalkone/DoK-port/releases/tag/gba-1.0)**,

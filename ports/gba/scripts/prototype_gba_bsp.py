@@ -832,7 +832,7 @@ def build(base,out,variants,unreflected_control=False,assets_bin=None):
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--assets-bin',type=Path,default=ROOT/'build/gba/assets/assets.bin')
-    p.add_argument('--base',type=Path,default=Path('build/gba/select-menu-fix'))
+    p.add_argument('--base',type=Path,required=True,help='Explicit prepared baseline; build it before running this experiment')
     p.add_argument('--out',type=Path,default=Path('research/experiments/g20a-prototypes'))
     p.add_argument('--variants',nargs='+',choices=VARIANTS,default=list(VARIANTS))
     p.add_argument('--keep-objects',action='store_true',help='Retain experiment objects and generated banks for manual relinking')

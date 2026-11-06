@@ -17,8 +17,6 @@ from prune_obsolete_test_outputs import original_evidence
 
 KEEP = (
     'build/gba/assets/', 'build/gba/g18/', 'build/gba/ui04-title/',
-    # Defaults consumed by the two standalone historical prototype builders.
-    'build/gba/select-menu-fix/', 'build/gba/level1-fixes/',
     'build/nds/assets/', 'build/nds/system/', 'build/nds/n18/arm7/',
     'build/nds/n23/discovery32-ru/',
     'research/evidence/nds/n23/candidates/discovery32-ru/',

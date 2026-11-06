@@ -2,6 +2,27 @@
 
 ## Повторная очистка 6 ноября 2026 года
 
+### Доводка build/gba по повторному замечанию пользователя
+
+Защита select-menu-fix/level1-fixes была избыточной: это старые базы
+экспериментов, текущий build_gba_frontend.py создаёт свою базу заново.
+Исторические базы и прочие старые build-деревья удалены. В build/gba
+остаются assets, материалы UI04 и G18 ROM/map/build-report как oracle.
+G18 ELF для runtime-сравнений не требуется и удалён.
+
+Уникальные исходники опытов перенесены без сжатия в
+research/experiments/gba-source-snapshots/, компактные отчёты и исходные
+DOS-наблюдения — в research/evidence/gba-retired/. Точные дубликаты
+заменены ссылкой на канонический файл в manifest; новые копии не созданы.
+Полный manifest: research/evidence/maintenance/cleanup-20261106/gba-retired.json.
+Команда: `py -3.14 -B scripts/prune_gba_workspace.py --report research/evidence/maintenance/cleanup-20261106/gba-retired.json --apply`.
+
+prototype_gba_bsp.py и research_gba_fps.py теперь требуют явный --base;
+перед новым опытом базу нужно собрать из исходников. Frontend уже передаёт
+--base явно. Старые report-скрипты с путями удалённых опытов остаются
+историческими и не являются обязательной проверкой текущего релиза.
+Новые проверки и точные объёмы записаны в общей сводке очистки.
+
 По новому запросу удалены старые сборочные выходы G20/G22/PERF и прочих
 заменённых опытов, generated banks, linker outputs, кэши и тестовые captures.
 Большие старые JSON заменены компактными scalar summaries с пометкой

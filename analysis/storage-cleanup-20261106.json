@@ -32,5 +32,19 @@
     "artifacts/nds/dok.nds": "6828fe9bda4550621755aa609d854bd616a0ae74108f05fba751a2d1f6e86f76"
   },
   "recreated_by_concurrent_build": 66,
-  "artifact_note": "Cleanup does not select artifacts paths. GBA/NDS current ROM hashes verified. Documented RC1 zip path absent during final check; concurrent external package changes are outside this cleanup."
+  "artifact_note": "Cleanup does not select artifacts paths. GBA/NDS current ROM hashes verified. Documented RC1 zip path absent during final check; concurrent external package changes are outside this cleanup.",
+  "gba_followup": {
+    "build_before_bytes": 427858504,
+    "build_after_bytes": 37982376,
+    "freed_bytes": 350328123,
+    "moved_unique_bytes": 39548005,
+    "protected_files_verified": 530,
+    "actions": {
+      "move": 343,
+      "duplicate": 378,
+      "delete": 823
+    },
+    "manifest": "research/evidence/maintenance/cleanup-20261106/gba-retired.json",
+    "verification": "All removals absent; all moved/canonical contents match SHA-256; 530 protected files unchanged; Python syntax and both experiment --help commands checked. Game not rebuilt."
+  }
 }

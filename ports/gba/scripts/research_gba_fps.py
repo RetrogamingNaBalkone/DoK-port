@@ -233,7 +233,7 @@ def live_measure(build,core,disable_ai=False,follow_camera=False,samples=24,butt
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--base',type=Path,default=Path('build/gba/level1-fixes'))
+    parser.add_argument('--base',type=Path,required=True,help='Explicit prepared baseline; build it before running this experiment')
     parser.add_argument('--out',type=Path,default=Path('research/experiments/g20a-audit'))
     parser.add_argument('--report',type=Path,default=Path('analysis/gba/g20a-fps-audit.json'))
     parser.add_argument('--skip-build',action='store_true')
