@@ -75,7 +75,7 @@ int main(int argc,char** argv){
     try{
         const auto arguments=dok::parse_launch_arguments(argc,argv);
         dok::AppSettings settings;
-        unsigned frame_limit=0;std::string screenshot,level_name,script_path,replay_path;std::optional<dok::InputReplay> replay;std::vector<std::string> paths,source_choices;bool skip_intro=false,replay_live_input=false,hidden=false;
+        unsigned frame_limit=0;std::string screenshot,level_name,script_path,replay_path;std::optional<dok::InputReplay> replay;std::vector<std::string> paths,source_choices;bool skip_intro=false,replay_live_input=false,hidden=false,verbose_logging=false;
         const auto apply_arguments=[&]{
         paths.clear();source_choices.clear();
         for(const auto& option:arguments.options){const auto& arg=option.first;
@@ -83,12 +83,13 @@ int main(int argc,char** argv){
             if(arg=="--res")paths.push_back(value());else if(arg=="--frames")frame_limit=std::stoul(value());
             else if(arg=="--input-replay")replay_path=value();
             else if(arg=="--hidden")hidden=true;
+            else if(arg=="--verbose")verbose_logging=true;
             else if(arg=="--replay-live-input")replay_live_input=true;
             else if(arg=="--res-source")source_choices.push_back(value());
             else if(arg=="--screenshot")screenshot=value();else if(arg=="--level")level_name=value();else if(arg=="--skip-intro")skip_intro=true;
             else if(arg=="--user-dir")value();else if(arg=="--ui-script")script_path=value();
             else if(arg=="--renderer"){const auto mode=value();if(mode!="gl"&&mode!="software")throw std::runtime_error("Renderer: gl|software");settings.video.renderer=mode=="gl"?dok::RendererKind::opengl:dok::RendererKind::software;}
-            else if(arg=="--filter"){const auto mode=value();const std::array<std::string,8> modes{"nearest","smooth","linear","mipmaps","trilinear","aniso2","aniso4","aniso8"};auto it=std::find(modes.begin(),modes.end(),mode);if(it==modes.end())throw std::runtime_error("Filter: nearest|smooth");settings.texture_filter(mode=="nearest"?0:6);}
+            else if(arg=="--filter"){const auto mode=value();if(mode!="nearest"&&mode!="smooth")throw std::runtime_error("Filter: nearest|smooth");settings.texture_filter(mode=="nearest"?0:6);}
             else if(arg=="--frame-filter"){const auto mode=value();if(mode!="nearest"&&mode!="linear"&&mode!="sharp"&&mode!="xbr")throw std::runtime_error("Frame filter: nearest|linear|sharp|xbr");settings.frame_filter=mode=="xbr"?3:mode=="sharp"?2:mode=="linear"?1:0;}
             else if(arg=="--fxaa"){const auto mode=value();if(mode!="on"&&mode!="off")throw std::runtime_error("FXAA: on|off");settings.fxaa=mode=="on";}
             else if(arg=="--hud"){const auto mode=value();if(mode!="classic"&&mode!="desktop"&&mode!="auto")throw std::runtime_error("HUD: auto|classic|desktop");settings.auto_hud=mode=="auto";settings.classic_hud=mode=="classic";}
@@ -115,7 +116,8 @@ int main(int argc,char** argv){
         const auto& user_path=profile.first;const auto& profile_mode=profile.second;
         std::filesystem::create_directories(user_path);log_path=user_path/"port.log";std::ofstream log(log_path);
         if(!log)throw std::runtime_error("Cannot write profile log: "+log_path.u8string());
-        log<<"Profile mode: "<<profile_mode<<"\nProfile directory: "<<user_path.u8string()<<'\n';
+        std::ostream verbose(verbose_logging?log.rdbuf():nullptr);
+        verbose<<"Profile mode: "<<profile_mode<<"\nProfile directory: "<<user_path.u8string()<<'\n';
         std::string warning;auto stored=dok::load_settings(user_path/"settings.ini",warning);
         bool settings_backup_required=!warning.empty();
         for(auto& path:stored.resource_paths)path=dok::resolve_resource_path(path,user_path).u8string();
@@ -136,9 +138,9 @@ int main(int argc,char** argv){
             display=std::make_unique<dok::Display>(settings.video,!replay&&!hidden);warning="OpenGL unavailable; software renderer selected.";
         }
         if(!replay&&!hidden)SDL_ShowWindow(display->window());dok::SdlInput input(settings.input);dok::Frontend menu(settings);
-        if(hidden)log<<"Diagnostic hidden presentation: no shown window, VSync or mouse capture; natural input/world timing retained\n";
-        if(replay)log<<"Replay presentation: hidden window, VSync off; ordinary world callbacks and every rendered frame retained\n";
-        log<<"Audio driver: "<<(SDL_GetCurrentAudioDriver()?SDL_GetCurrentAudioDriver():"unavailable")<<'\n';
+        if(hidden)verbose<<"Diagnostic hidden presentation: no shown window, VSync or mouse capture; natural input/world timing retained\n";
+        if(replay)verbose<<"Replay presentation: hidden window, VSync off; ordinary world callbacks and every rendered frame retained\n";
+        verbose<<"Audio driver: "<<(SDL_GetCurrentAudioDriver()?SDL_GetCurrentAudioDriver():"unavailable")<<'\n';
         std::vector<Loaded> sets;dok::ResourceSources sources;std::string resource_errors;
         auto refresh_sets=[&]{
             sets.clear();std::string errors=resource_errors;
@@ -161,8 +163,8 @@ int main(int argc,char** argv){
             // file must not invalidate a previously usable source or other games.
             for(const auto& entry:a.entries())if(entry.name.rfind("LEVEL",0)==0)dok::load_level(a,entry.name);
             const auto dataset=a.identify();const auto count=sources.sources().size();sources.add(std::filesystem::u8path(path),std::move(a));admitted=true;
-            log<<(sources.sources().size()==count?"Duplicate ignored ":"Loaded ")<<dok::dataset_name(dataset)<<": "<<path<<'\n';
-            if(!sources.selected(dataset))log<<"Source selection required: "<<dok::dataset_name(dataset)<<'\n';
+            verbose<<(sources.sources().size()==count?"Duplicate ignored ":"Loaded ")<<dok::dataset_name(dataset)<<": "<<path<<'\n';
+            if(!sources.selected(dataset))verbose<<"Source selection required: "<<dok::dataset_name(dataset)<<'\n';
         }catch(const std::exception& e){resource_errors+=std::filesystem::u8path(path).filename().u8string()+": "+e.what()+"\n";log<<resource_errors;}refresh_sets();return admitted;};
         const auto forget_missing_resources=[&]{
             const auto missing=[](const std::string& path){std::error_code error;const bool exists=std::filesystem::exists(std::filesystem::u8path(path),error);return !error&&!exists;};
@@ -187,7 +189,7 @@ int main(int argc,char** argv){
         for(const auto& path:source_choices){
             const auto chosen=sources.find_source(std::filesystem::u8path(path));
             if(!chosen)throw std::runtime_error("--res-source must name an admitted --res source: "+path);
-            const auto& source=sources.sources()[*chosen];sources.select(source.archive.identify(),*chosen);log<<"Selected source: "<<source.path.u8string()<<'\n';
+            const auto& source=sources.sources()[*chosen];sources.select(source.archive.identify(),*chosen);verbose<<"Selected source: "<<source.path.u8string()<<'\n';
         }
         refresh_sets();
         std::size_t current=menu.dataset_index();
@@ -211,7 +213,7 @@ int main(int argc,char** argv){
             animations=std::make_unique<dok::Animations>(*world,a);
             flow=std::make_unique<dok::GameFlow>(*world);hud=std::make_unique<dok::Hud>(a);scene=std::make_unique<dok::SoftwareScene>(a,world->definition);
             try{audio=std::make_unique<dok::SdlAudio>(a);world->audio=[&](const dok::AudioCommand& c){audio->command(c);};}catch(const std::exception& e){log<<"Audio unavailable: "<<e.what()<<'\n';}
-            menu.session_world(world.get());menu.hide();input.clear();fire_press.clear();input.capture_mouse(!replay&&!hidden);use_pending=use_previous=false;log<<"Started "<<dok::dataset_name(a.identify())<<' '<<level<<'\n';
+            menu.session_world(world.get());menu.hide();input.clear();fire_press.clear();input.capture_mouse(!replay&&!hidden);use_pending=use_previous=false;verbose<<"Started "<<dok::dataset_name(a.identify())<<' '<<level<<'\n';
         };
         if(replay){
             bool found=false;for(std::size_t i=0;i<sets.size();++i){const auto id=sets[i].archive.identify();
@@ -254,7 +256,7 @@ int main(int argc,char** argv){
                 world=std::move(next_world);weapons=std::move(next_weapons);projectiles=std::move(next_shots);monsters=std::move(next_monsters);animations=std::move(next_animations);flow=std::move(next_flow);hud=std::move(next_hud);scene=std::move(next_scene);audio=std::move(next_audio);
                 if(audio){world->audio=[target=audio.get()](const dok::AudioCommand& c){target->command(c);};audio->volume(settings.effects_volume);audio->pause(false);}
                 menu.select_dataset(current);menu.preview_level(level_name.back()-'0');menu.session_world(world.get());menu.hide();input.clear();fire_press.clear();use_pending=use_previous=false;view_motion.reset();cheat.reset();input.capture_mouse(!replay&&!hidden);preview_ticks=~std::uint64_t(0);cached_preview={};reset_frame_clock=true;world->notify(dok::cp866(dok::game_text("port.loaded",settings.locale)));world->message_key="port.loaded";
-                log<<"SAVE loaded slot="<<slot<<" backup="<<backup<<" dataset="<<int(a.identify())<<" level="<<level_name<<" ticks="<<world->simulation_ticks()<<'\n';return true;
+                verbose<<"SAVE loaded slot="<<slot<<" backup="<<backup<<" dataset="<<int(a.identify())<<" level="<<level_name<<" ticks="<<world->simulation_ticks()<<'\n';return true;
             }catch(const std::exception& error){log<<"SAVE load failed: "<<error.what()<<'\n';menu.notice("Не удалось загрузить сохранение. Текущая игра сохранена. Подробности в port.log.","Could not load save. The current session is preserved. See port.log.");return false;}
         };
         auto quickload=[&]{
@@ -269,7 +271,7 @@ int main(int argc,char** argv){
                     const auto file=user_path/"settings.ini";auto backup=user_path/"settings.ini.bak";
                     for(unsigned n=1;std::filesystem::exists(backup);++n)backup=user_path/("settings.ini.bak."+std::to_string(n));
                     std::filesystem::copy_file(file,backup);settings_backup_required=false;
-                    log<<"Original settings preserved: "<<backup.u8string()<<'\n';
+                    verbose<<"Original settings preserved: "<<backup.u8string()<<'\n';
                 }
                 auto encoded=stored;
                 for(auto& path:encoded.resource_paths)path=dok::store_resource_path(path,user_path);
@@ -286,17 +288,17 @@ int main(int argc,char** argv){
             bool video_changed=false;std::vector<std::string> captures;menu.update(SDL_GetTicks64());
             for(const auto& event:script)if(event.frame==frames){
                 if(event.action=="state"){
-                    const auto size=display->size();log<<"STATE "<<event.value<<" renderer="<<int(settings.video.renderer)<<" size="<<size[0]<<'x'<<size[1]<<" menu="<<int(menu.screen())<<" frame_filter="<<settings.frame_filter<<" fxaa="<<settings.fxaa<<" classic_hud="<<settings.classic_hud<<" auto_hud="<<settings.auto_hud<<" automatic_projection="<<true<<" gpu_presentation="<<display->gpu_presentation()<<" gpu_xbr="<<display->gpu_xbr_ready();
+                    const auto size=display->size();verbose<<"STATE "<<event.value<<" renderer="<<int(settings.video.renderer)<<" size="<<size[0]<<'x'<<size[1]<<" menu="<<int(menu.screen())<<" frame_filter="<<settings.frame_filter<<" fxaa="<<settings.fxaa<<" classic_hud="<<settings.classic_hud<<" auto_hud="<<settings.auto_hud<<" automatic_projection="<<true<<" gpu_presentation="<<display->gpu_presentation()<<" gpu_xbr="<<display->gpu_xbr_ready();
                     if(world){const auto& p=*world->objects.at(*world->player).pose;const auto& player=*world->objects.at(*world->player).player_state;
                         std::uint64_t hash=14695981039346656037ULL;for(const auto& map:world->maps)for(auto byte:map.second){hash^=static_cast<unsigned char>(byte);hash*=1099511628211ULL;}
-                        log<<" world="<<world.get()<<" ticks="<<world->simulation_ticks()<<" pose="<<p.x<<','<<p.y<<','<<p.z<<','<<p.heading<<" hp="<<player.health()<<" charge="<<player.charge()<<" maps="<<hash;
-                        log<<" lives="<<player.lives<<" keys="<<player.keys()<<" score="<<player.score<<" phase="<<int(flow->phase());
-                        log<<" weapon="<<player.current_weapon<<" pending="<<player.pending_weapon<<" shots="<<projectiles->active();
+                        verbose<<" world="<<world.get()<<" ticks="<<world->simulation_ticks()<<" pose="<<p.x<<','<<p.y<<','<<p.z<<','<<p.heading<<" hp="<<player.health()<<" charge="<<player.charge()<<" maps="<<hash;
+                        verbose<<" lives="<<player.lives<<" keys="<<player.keys()<<" score="<<player.score<<" phase="<<int(flow->phase());
+                        verbose<<" weapon="<<player.current_weapon<<" pending="<<player.pending_weapon<<" shots="<<projectiles->active();
                         if(const auto owner=player.weapons.at(player.current_weapon)){const auto& gun=*world->object_for_owner(owner).weapon;
-                            log<<" gun_state="<<gun.state<<" gun_frame="<<gun.frame<<" gun_shift="<<gun.shift<<" gun_events="<<world->events.events(owner).size();}
-                        log<<" locale="<<int(settings.locale)<<" message_key="<<world->message_key<<" message_hex=";
-                        for(unsigned char c:world->visible_message(settings.locale)){const char* digits="0123456789abcdef";log<<digits[c>>4]<<digits[c&15];}
-                    }log<<'\n';
+                            verbose<<" gun_state="<<gun.state<<" gun_frame="<<gun.frame<<" gun_shift="<<gun.shift<<" gun_events="<<world->events.events(owner).size();}
+                        verbose<<" locale="<<int(settings.locale)<<" message_key="<<world->message_key<<" message_hex=";
+                        for(unsigned char c:world->visible_message(settings.locale)){const char* digits="0123456789abcdef";verbose<<digits[c>>4]<<digits[c&15];}
+                    }verbose<<'\n';
                 }
                 else if(event.action=="live_input"&&replay)replay_live_input=event.value=="on";
                 else if(event.action=="text"){std::size_t at=0;while(at<event.value.size()){auto count=std::min<std::size_t>(31,event.value.size()-at);while(count&&at+count<event.value.size()&&(static_cast<unsigned char>(event.value[at+count])&0xc0)==0x80)--count;if(!count)break;SDL_Event e{};e.type=SDL_TEXTINPUT;std::copy_n(event.value.data()+at,count,e.text.text);e.text.text[count]=0;SDL_PushEvent(&e);at+=count;}}
@@ -318,7 +320,7 @@ int main(int argc,char** argv){
                 if(e.type==SDL_QUIT){if(world){menu.pause();menu.request_quit();}else running=false;}
                 if(!replay&&!hidden&&e.type==SDL_WINDOWEVENT&&e.window.event==SDL_WINDOWEVENT_FOCUS_LOST){input.clear();fire_press.clear();cheat.reset();if(world&&!menu_blocks())menu.pause();input.capture_mouse(false);}
                 if(e.type==SDL_DROPFILE){const std::string path=e.drop.file;SDL_free(e.drop.file);
-                    if(world){log<<"Resource load deferred: active world\n";menu.notice("Добавьте ресурсы из главного меню.","Add game resources from the main menu.");}else{music.reset();if(load(path)){forget_missing_resources();if(const auto found=sources.find_source(std::filesystem::u8path(path))){const auto id=sources.sources()[*found].archive.identify();if(!sources.selected(id))settings.resource_choices[static_cast<unsigned>(id)].clear();if(std::find(settings.resource_paths.begin(),settings.resource_paths.end(),path)==settings.resource_paths.end())settings.resource_paths.push_back(path);}}}continue;}
+                    if(world){verbose<<"Resource load deferred: active world\n";menu.notice("Добавьте ресурсы из главного меню.","Add game resources from the main menu.");}else{music.reset();if(load(path)){forget_missing_resources();if(const auto found=sources.find_source(std::filesystem::u8path(path))){const auto id=sources.sources()[*found].archive.identify();if(!sources.selected(id))settings.resource_choices[static_cast<unsigned>(id)].clear();if(std::find(settings.resource_paths.begin(),settings.resource_paths.end(),path)==settings.resource_paths.end())settings.resource_paths.push_back(path);}}}continue;}
                 const bool was_menu=menu.active(),was_map=map_visible();
                 if(e.type==SDL_KEYDOWN&&!e.key.repeat&&!menu.capturing()){
                     if(e.key.keysym.sym==SDLK_F12)capture_requested=true;
@@ -343,7 +345,7 @@ int main(int argc,char** argv){
                     if(!map_closed&&e.type==SDL_KEYDOWN&&!e.key.repeat){
                     if(e.key.keysym.sym==SDLK_ESCAPE){menu.pause();input.clear();fire_press.clear();input.capture_mouse(false);flow_changed=true;}
                     else if(world&&!(e.key.keysym.mod&(KMOD_CTRL|KMOD_ALT|KMOD_GUI))){const auto key=e.key.keysym.scancode;
-                        if(key>=SDL_SCANCODE_A&&key<=SDL_SCANCODE_Z&&cheat.push(char('A'+key-SDL_SCANCODE_A))){weapons->grant_all();log<<"IDKFA\n";}}
+                        if(key>=SDL_SCANCODE_A&&key<=SDL_SCANCODE_Z&&cheat.push(char('A'+key-SDL_SCANCODE_A))){weapons->grant_all();verbose<<"IDKFA\n";}}
                     }
                 }
             }
@@ -385,7 +387,7 @@ int main(int argc,char** argv){
                     break;
                 case dok::MenuCommand::music_stop:music.reset();break;
                 case dok::MenuCommand::music_title:case dok::MenuCommand::music_story:
-                    music.reset();if(!sets.empty())try{music=std::make_unique<dok::SdlAudio>(sets[menu.dataset_index()].archive);music->volume(settings.music_volume);music->command({sets[menu.dataset_index()].archive.identify()==dok::DatasetId::old_gold?dok::AudioAction::loop:dok::AudioAction::once,1,dok::cp866("ЗАСТАВКА_ЗВУК")});const auto music_state=music->snapshot();log<<"MUSIC dataset="<<int(sets[menu.dataset_index()].archive.identify())<<" loop="<<music_state.voice.loop<<" active="<<music_state.voice.id<<'\n';}catch(const std::exception& e){log<<"Music unavailable: "<<e.what()<<'\n';}break;
+                    music.reset();if(!sets.empty())try{music=std::make_unique<dok::SdlAudio>(sets[menu.dataset_index()].archive);music->volume(settings.music_volume);music->command({sets[menu.dataset_index()].archive.identify()==dok::DatasetId::old_gold?dok::AudioAction::loop:dok::AudioAction::once,1,dok::cp866("ЗАСТАВКА_ЗВУК")});const auto music_state=music->snapshot();verbose<<"MUSIC dataset="<<int(sets[menu.dataset_index()].archive.identify())<<" loop="<<music_state.voice.loop<<" active="<<music_state.voice.id<<'\n';}catch(const std::exception& e){log<<"Music unavailable: "<<e.what()<<'\n';}break;
                 case dok::MenuCommand::apply_video:
                     try{auto next=std::make_unique<dok::Display>(settings.video,!replay&&!hidden);input.capture_mouse(false);display=std::move(next);if(!replay&&!hidden)SDL_ShowWindow(display->window());video_changed=true;}
                     catch(const std::exception& e){log<<"Video rejected: "<<e.what()<<'\n';menu.video_failed(e.what());}break;
@@ -445,11 +447,11 @@ int main(int argc,char** argv){
                         if(fire)weapons->fire([&](std::uint8_t glyph){return projectiles->spawn(owner,glyph);});
                         if(use_pending){
                             const auto result=dok::player_use(*world);use_pending=false;
-                            if(result==dok::UseResult::locked)log<<"Door locked: required key missing\n";
+                            if(result==dok::UseResult::locked)verbose<<"Door locked: required key missing\n";
                             if(result==dok::UseResult::queue_full)log<<"Door event queue full\n";
                         }
                         if(const auto item=dok::player_pickup(*world)){
-                            log<<"Picked object "<<item<<'\n';
+                            verbose<<"Picked object "<<item<<'\n';
                             if(world->object_for_owner(item).weapon)weapons->picked_up(item);
                         }
                         dok::player_sensors(*world);
@@ -548,7 +550,7 @@ int main(int argc,char** argv){
                 const auto request=*pending_save;pending_save.reset();try{auto metadata=cached_preview;metadata.name=request.name;metadata.timestamp=std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count();metadata.fingerprint=dok::save_fingerprint(sets[current].archive,level_name);
                     dok::SaveAudio sound;if(audio){const auto state=audio->snapshot();sound.voice=state.voice;sound.resource=state.resource;}
                     auto bytes=dok::encode_save(*world,flow->snapshot(),sound,std::move(metadata));
-                    dok::write_save_file(dok::save_path(user_path,world->definition.dataset,request.slot),bytes,sets[current].archive);menu.refresh_saves();log<<"SAVE written slot="<<request.slot<<" level="<<level_name<<" ticks="<<world->simulation_ticks()<<'\n';world->notify(dok::cp866(dok::game_text("port.saved",settings.locale)));world->message_key="port.saved";
+                    dok::write_save_file(dok::save_path(user_path,world->definition.dataset,request.slot),bytes,sets[current].archive);menu.refresh_saves();verbose<<"SAVE written slot="<<request.slot<<" level="<<level_name<<" ticks="<<world->simulation_ticks()<<'\n';world->notify(dok::cp866(dok::game_text("port.saved",settings.locale)));world->message_key="port.saved";
                 }catch(const std::exception& error){log<<"SAVE write failed: "<<error.what()<<'\n';menu.notice("Не удалось сохранить игру. Предыдущая запись сохранена. Проверьте доступ к папке профиля; подробности в port.log.","Could not save game. The previous save is preserved. Check the profile directory; see port.log.");}
             }
             if(capture_preview)previous_time=SDL_GetPerformanceCounter();
@@ -567,16 +569,16 @@ int main(int argc,char** argv){
             if(!screenshot.empty()&&((frame_limit&&frames==frame_limit)||(!frame_limit&&replay&&replay->finished())))captures.push_back(screenshot);
             if(capture_requested){try{auto dir=user_path/"screenshots";std::filesystem::create_directories(dir);
                 const auto stamp=std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();captures.push_back((dir/("screenshot-"+std::to_string(stamp)+"-"+std::to_string(frames)+".png")).u8string());}catch(const std::exception& e){log<<"Screenshot failed: "<<e.what()<<'\n';}}
-            for(const auto& capture:captures)try{display->screenshot(capture);log<<"Screenshot saved: "<<capture<<'\n';}catch(const std::exception& e){log<<"Screenshot failed: "<<e.what()<<'\n';}
+            for(const auto& capture:captures)try{display->screenshot(capture);verbose<<"Screenshot saved: "<<capture<<'\n';}catch(const std::exception& e){log<<"Screenshot failed: "<<e.what()<<'\n';}
             display->present();if((frame_limit&&frames>=frame_limit)||(!frame_limit&&replay&&replay->finished()))running=false;SDL_Delay(1);
         }
         if(replay&&world){const auto& actor=world->objects.at(*world->player);const auto& p=*actor.pose;const auto& player=*actor.player_state;
-            log<<"REPLAY ticks="<<world->simulation_ticks()<<" pose="<<p.x<<','<<p.y<<','<<p.z<<','<<p.heading
+            verbose<<"REPLAY ticks="<<world->simulation_ticks()<<" pose="<<p.x<<','<<p.y<<','<<p.z<<','<<p.heading
                <<" hp="<<player.health()<<" charge="<<player.charge()<<" score="<<player.score<<" current="<<player.current_weapon<<" weapons=";
-            log<<player.weapons[1]<<','<<player.weapons[2]<<" shots="<<projectiles->active()<<'\n';
+            verbose<<player.weapons[1]<<','<<player.weapons[2]<<" shots="<<projectiles->active()<<'\n';
         }
-        log<<"Clean shutdown; frames="<<frames<<" datasets="<<sets.size()<<" menu="<<int(menu.screen())<<'\n';
-        if(world){const auto& pose=*world->objects.at(*world->player).pose;log<<"Player x="<<pose.x<<" z="<<pose.z<<" heading="<<pose.heading<<" ticks="<<world->simulation_ticks()<<'\n';}
+        verbose<<"Clean shutdown; frames="<<frames<<" datasets="<<sets.size()<<" menu="<<int(menu.screen())<<'\n';
+        if(world){const auto& pose=*world->objects.at(*world->player).pose;verbose<<"Player x="<<pose.x<<" z="<<pose.z<<" heading="<<pose.heading<<" ticks="<<world->simulation_ticks()<<'\n';}
         std::cout<<"SDL completed: "<<frames<<" frames, "<<sets.size()<<" datasets\n";return 0;
     }catch(const std::exception& e){return fail(e.what());}
 }

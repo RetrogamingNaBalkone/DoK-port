@@ -75,7 +75,7 @@ def main():
             script_path = OUT/(name+'.script')
             script_path.write_text(script)
             command = [args.exe, '--res', RES, '--level', 'LEVEL4', '--skip-intro',
-                       '--renderer', backend, '--hidden', '--user-dir', user, '--ui-script', script_path,
+                       '--renderer', backend, '--hidden', '--verbose', '--user-dir', user, '--ui-script', script_path,
                        '--frames', str((base+620)*frame_scale), '--screenshot', OUT/(name+'.png')]
             if natural:
                 command += ['--input-replay', prefix]
@@ -104,7 +104,7 @@ def main():
         script_path = OUT/'r1-raw.script'
         script_path.write_text(code(0)+'50 state granted\n100 keydown Left Ctrl\n2700 state ctrl-held\n2800 keyup Left Ctrl\n')
         command = [exe, '--res', RES, '--level', 'LEVEL4', '--skip-intro', '--renderer', 'software',
-                   '--user-dir', user, '--ui-script', script_path, '--frames', '3000']
+                   '--verbose', '--user-dir', user, '--ui-script', script_path, '--frames', '3000']
         result = subprocess.run([str(x) for x in command], capture_output=True, text=True,
                                 env=dict(os.environ, SDL_AUDIODRIVER='dummy', SDL_VIDEODRIVER='dummy', SDL_RENDER_DRIVER='software'), timeout=120)
         log = (user/'port.log').read_text()

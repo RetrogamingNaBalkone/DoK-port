@@ -50,7 +50,7 @@ def main():
         user.mkdir(exist_ok=True)
         (user/'settings.ini').write_bytes(copied)
         command = [exe, '--res', RES, '--level', 'LEVEL4', '--skip-intro', '--renderer', backend,
-                   '--hidden', '--user-dir', user, '--ui-script', events, '--frames', str(frames),
+                   '--hidden', '--verbose', '--user-dir', user, '--ui-script', events, '--frames', str(frames),
                    '--screenshot', OUT/(name+'.png')]
         if replay:
             command += ['--input-replay', replay, '--replay-live-input']

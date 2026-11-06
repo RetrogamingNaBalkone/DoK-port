@@ -1,4 +1,4 @@
-"""Frozen real-process comparison, legacy filter aliases, and the two-choice F4 cycle."""
+"""Frozen real-process comparison and the two-choice F4 cycle."""
 import argparse
 import configparser
 import hashlib
@@ -40,8 +40,6 @@ def main():
                 return frame,profile,shot
             nearest,_,_=run('gl','nearest');smooth,_,_=run('gl','smooth')
             assert nearest.data!=smooth.data,'Visible nearest/Smooth choices became identical'
-            for alias in ('linear','mipmaps','trilinear','aniso2','aniso4','aniso8'):
-                frame,_,_=run('gl',alias);assert frame.data==smooth.data,(dataset,alias,'Legacy alias differs from Smooth')
             _,profile,_=run('gl','nearest','1 key F4\n',frames=4)
             config=configparser.ConfigParser();config.read(profile/'settings.ini');assert config['video']['mip_filter']=='5'
             _,profile,_=run('gl','nearest','1 key F4\n2 key F4\n',frames=4)
@@ -57,7 +55,7 @@ def main():
             for backend,filters in [('gl',('nearest','smooth')),('software',('nearest','linear','sharp','xbr'))]:
                 for filter in filters:run(backend,filter,frames=24,turn=True)
             rows.append(dict(dataset=dataset,software_mean_channel_deltas=pairs))
-            print(dataset,'aliases/F4 and distinct software output PASS',pairs,flush=True)
+            print(dataset,'F4 and distinct software output PASS',pairs,flush=True)
         assert originals=={res:hashlib.sha256((ROOT/res).read_bytes()).hexdigest() for _,res,_ in samples}
     (args.out/'choices.json').write_text(json.dumps(dict(status='PASS',app_sha256=hashlib.sha256(args.app.read_bytes()).hexdigest(),checks=rows,originals_sha256=originals),indent=2)+'\n',encoding='utf-8')
 

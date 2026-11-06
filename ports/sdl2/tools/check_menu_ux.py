@@ -30,7 +30,7 @@ def main():
             (profile / 'settings.ini').write_text('[settings]\nversion=1\n[interface]\nfps=0\n[audio]\nmaster=0\n')
         path = directory / 'script.txt'
         path.write_text(script, encoding='utf-8')
-        command = [str(EXE), '--hidden', '--user-dir', str(profile), '--ui-script', str(path),
+        command = [str(EXE), '--hidden', '--verbose', '--user-dir', str(profile), '--ui-script', str(path),
                    '--frames', str(frames), '--screenshot', str(directory / 'frame.png'), *map(str, args)]
         result = subprocess.run(command, cwd=cwd, capture_output=True, text=True, timeout=60, env=dict(os.environ, SDL_AUDIODRIVER='dummy'))
         log = (profile / 'port.log').read_text(encoding='utf-8')

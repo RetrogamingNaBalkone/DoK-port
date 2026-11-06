@@ -40,7 +40,7 @@ def main():
                 (user/'settings.ini').write_text('[settings]\nversion=1\n[audio]\nmaster=0\n[interface]\nfps=0\n')
                 (user/'port.log').unlink(missing_ok=True)
                 command = [str(exe), '--hidden', '--renderer', backend, '--size', '640x480', '--res', str(ROOT/path),
-                           '--level', level, '--skip-intro', '--user-dir', str(user), '--input-replay', str(replay),
+                           '--level', level, '--skip-intro', '--verbose', '--user-dir', str(user), '--input-replay', str(replay),
                            '--replay-live-input', '--ui-script', str(script), '--frames', '1220']
                 result = subprocess.run(command, cwd=ROOT, capture_output=True, text=True,
                                         env=dict(os.environ, SDL_AUDIODRIVER='dummy'), timeout=90)

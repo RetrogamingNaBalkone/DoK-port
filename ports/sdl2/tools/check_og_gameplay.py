@@ -56,7 +56,7 @@ def main():
             # Stable test settings; all persistence stays in the evidence folder.
             (user_dir/'settings.ini').write_text('[settings]\nversion=1\n[interface]\nfps=0\n')
             command = [BUILD/'OGDoK.exe', '--res', RES, '--level', 'LEVEL4', '--skip-intro',
-                       '--renderer', backend, '--hud', hud, '--size', '800x600', '--user-dir', user_dir,
+                       '--renderer', backend, '--hud', hud, '--size', '800x600', '--verbose', '--user-dir', user_dir,
                        # Stop at the recording endpoint. An explicit --frames
                        # now requests a neutral-input tail for session tests.
                        '--input-replay', recording, '--screenshot', OUT/(name+'.png')]

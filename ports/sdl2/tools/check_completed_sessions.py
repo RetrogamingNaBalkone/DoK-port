@@ -43,7 +43,7 @@ def main():
                 script.write_text('\n'.join(rows)+'\n',encoding='ascii')
                 command=[args.exe,'--res',route['resource'],'--level',level,'--skip-intro',
                          '--input-replay',str(replay),'--frames',str(frames+12),'--ui-script',str(script),
-                         '--user-dir',str(folder),'--size','800x450','--renderer',renderer,'--locale',locale]
+                         '--verbose', '--user-dir',str(folder),'--size','800x450','--renderer',renderer,'--locale',locale]
                 before=sha(route['resource'])
                 run=subprocess.run(command,env=environment,capture_output=True,text=True,timeout=180)
                 log=(folder/'port.log').read_text(encoding='utf-8')

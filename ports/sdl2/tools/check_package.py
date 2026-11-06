@@ -61,7 +61,7 @@ def main():
             name = dataset + '-' + backend
             profile = out / name
             picture = out / (name + '.png')
-            command = [str(exe), '--user-dir', str(profile), '--renderer', backend,
+            command = [str(exe), '--verbose', '--user-dir', str(profile), '--renderer', backend,
                        '--size', '1024x768' if backend == 'software' else '1280x720',
                        '--locale', 'en' if backend == 'software' else 'ru',
                        '--frames', '5', '--screenshot', str(picture)]

@@ -31,7 +31,7 @@ def main():
                 ini.write_text('[settings]\nversion=1\n[interface]\nfps=0\n', encoding='utf-8')
             events = work/(name+'.txt'); events.write_text(script, encoding='utf-8')
             shot = work/(name+'.png')
-            command = [str(args.app.resolve()), '--hidden', '--user-dir', str(profile), '--res', str(ROOT/res),
+            command = [str(args.app.resolve()), '--hidden', '--verbose', '--user-dir', str(profile), '--res', str(ROOT/res),
                        '--renderer', backend, '--level', 'LEVEL'+str(level), '--skip-intro', '--size', size,
                        '--software-mode', '320x200', '--locale', locale, '--frames', str(frames),
                        '--fxaa', fxaa, '--hud', 'classic', '--ui-script', str(events), '--screenshot', str(shot)]

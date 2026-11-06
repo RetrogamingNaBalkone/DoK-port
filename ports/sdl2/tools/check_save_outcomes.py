@@ -64,7 +64,7 @@ def main():
                 command = [str(args.app.resolve()), '--hidden', '--res', str(ROOT / resource),
                            '--level', 'LEVEL' + str(level), '--skip-intro', '--input-replay', str(replay),
                            '--frames', str(death_frame+12), '--ui-script', str(path),
-                           '--user-dir', str(folder/'profile'), '--renderer', backend, '--size', '640x480',
+                           '--verbose', '--user-dir', str(folder/'profile'), '--renderer', backend, '--size', '640x480',
                            '--screenshot', str(folder/'loaded.png')]
                 before = hashlib.sha256((ROOT/resource).read_bytes()).hexdigest()
                 if args.saves_disabled:

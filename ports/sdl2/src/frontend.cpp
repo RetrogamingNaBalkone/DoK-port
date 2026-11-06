@@ -169,7 +169,7 @@ void Frontend::build_rows(){
         const bool current_window=!draft_.fullscreen&&draft_.width==s_.video.width&&draft_.height==s_.video.height&&!s_.video.fullscreen;
         const auto aspect_mode=(software||current_window)&&output_width_>0?std::array<int,2>{output_width_,output_height_}:mode;
         item(Item::aspect,tr(MenuString::video_aspect_ratio),software?"4:3":aspect_label(aspect_mode[0],aspect_mode[1]),software?tr("Программный рендерер использует кадр 4:3 с полями.","The software renderer uses a 4:3 frame with bars."):tr("Определяется разрешением. Обзор: Hor+ и Vert+.","Determined by resolution. View expands with Hor+ and Vert+."),false);
-        item(Item::apply_video,tr(MenuString::apply_video_mode));
+        item(Item::apply_video,tr(MenuString::apply_video_mode),{},{},draft_!=s_.video);
         setting(Item::filtering,tr(software?MenuString::video_frame_scaling:MenuString::video_texture_filter),
             software?(s_.frame_filter==3?"xBR":s_.frame_filter==2?"Sharp Bilinear":s_.frame_filter==1?"Linear":"Nearest"):(s_.texture_filter()?"Smooth":"Nearest"),
             software?tr("Увеличение кадра сцены. xBR — экспериментальное сглаживание пиксельных контуров.","Scene scaling. xBR is experimental pixel contour smoothing."):s_.texture_filter()?tr("Смягчает пиксели текстур и уменьшает рябь вдали. Интерфейс остаётся чётким.","Softens texture pixels and reduces distant shimmer. The interface stays crisp."):tr("Сохраняет резкие границы исходных пикселей текстур.","Keeps the sharp edges of the original texture pixels."));
@@ -243,6 +243,7 @@ void Frontend::build_rows(){
     }
 }
 void Frontend::apply_video(){
+    if(draft_==s_.video)return;
     old_video_=s_.video;s_.video=draft_;video_deadline_=now_+15000;
     enter(MenuScreen::video_confirm);commands_.push_back(MenuCommand::apply_video);
 }

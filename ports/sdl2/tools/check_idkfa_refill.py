@@ -35,7 +35,7 @@ def main():
             user.mkdir(exist_ok=True)
             (user/'settings.ini').write_text('[settings]\nversion=1\n[audio]\nmaster=0\n')
             command = [str(EXE), '--hidden', '--renderer', backend, '--size', '640x480',
-                       '--res', str(ROOT/path), '--level', level, '--skip-intro', '--user-dir', str(user),
+                       '--res', str(ROOT/path), '--level', level, '--skip-intro', '--verbose', '--user-dir', str(user),
                        '--input-replay', str(replay), '--replay-live-input', '--ui-script', str(script), '--frames', '280']
             result = subprocess.run(command, cwd=ROOT, capture_output=True, text=True,
                                     env=dict(os.environ, SDL_AUDIODRIVER='dummy'), timeout=45)

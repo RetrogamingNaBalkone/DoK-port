@@ -34,7 +34,7 @@ for renderer in ('gl','software'):
         command=['build/sdl2/windows/OGDoK.exe','--res','originals/pkr/RUS/PKR.RES',
                  '--res','originals/Old_Gold_3D/OLD_GOLD.RES','--res','originals/pkr/ENG/PKE.RES',
                  '--level','LEVEL1','--skip-intro','--input-replay',str(replay),'--frames','64',
-                 '--ui-script',str(script),'--user-dir',str(folder),'--size','800x450',
+                 '--ui-script',str(script),'--verbose', '--user-dir',str(folder),'--size','800x450',
                  '--renderer',renderer,'--locale',locale]
         run=subprocess.run(command,env=dict(os.environ,SDL_AUDIODRIVER='dummy'),capture_output=True,text=True,timeout=60)
         log=(folder/'port.log').read_text(encoding='utf-8')

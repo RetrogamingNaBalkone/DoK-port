@@ -160,7 +160,7 @@ int main(){
         check(s.input.keys[0][0]==SDL_SCANCODE_LCTRL&&s.input.keys[int(dok::Action::fire)][0]==SDL_SCANCODE_UNKNOWN,"Conflict replace");
         key(menu,SDLK_ESCAPE);key(menu,SDLK_ESCAPE);key(menu,SDLK_ESCAPE);down(menu,1);key(menu,SDLK_RETURN);down(menu,2);key(menu,SDLK_RETURN);key(menu,SDLK_RETURN);
         check(menu.capturing(),"Gamepad capture");pad(menu,SDL_CONTROLLER_BUTTON_START);pad(menu,SDL_CONTROLLER_BUTTON_BACK);check(!menu.capturing(),"Gamepad-only cancel capture");
-        menu.pause();down(menu,1);key(menu,SDLK_RETURN);key(menu,SDLK_RETURN);down(menu,7);auto locale=s.locale;key(menu,SDLK_RIGHT);check(s.locale!=locale,"Live menu locale");
+        menu.pause();down(menu,1);key(menu,SDLK_RETURN);key(menu,SDLK_RETURN);for(int n=0;n<12&&menu.focused_row()!=8;++n)key(menu,SDLK_DOWN);auto locale=s.locale;key(menu,SDLK_RIGHT);check(s.locale!=locale,"Live menu locale");
         key(menu,SDLK_ESCAPE);key(menu,SDLK_ESCAPE);check(menu.screen()==dok::MenuScreen::pause,"Settings returns to pause");key(menu,SDLK_UP);key(menu,SDLK_RETURN);check(!menu.active()&&command(menu,dok::MenuCommand::resume),"Resume flow");
         menu.pause();menu.request_quit();key(menu,SDLK_RETURN);check(menu.screen()==dok::MenuScreen::pause,"Exit default is cancel");
         {
@@ -251,7 +251,22 @@ int main(){
         down(fullscreen,1);key(fullscreen,SDLK_RETURN);
         check(fullscreen.video_pending()&&fs.video.fullscreen&&fs.video.width==800&&fs.video.height==600&&fs.video.fullscreen_width==1280&&fs.video.fullscreen_height==720,"Fullscreen preset must not change window size");
         key(fullscreen,SDLK_RETURN);check(!fullscreen.video_pending()&&command(fullscreen,dok::MenuCommand::keep_video),"Confirm fullscreen mode");
-        down(fullscreen,2);check(fullscreen.focused_row()==6,"FXAA row navigation");down(fullscreen,4);check(fullscreen.focused_row()==10,"Defaults row navigation");
+        for(int n=0;n<12&&fullscreen.focused_row()!=6;++n)key(fullscreen,SDLK_DOWN);check(fullscreen.focused_row()==6,"FXAA row navigation");down(fullscreen,4);check(fullscreen.focused_row()==10,"Defaults row navigation");
+        {
+            dok::AppSettings edits;dok::Frontend staged(edits);staged.render(640,480);
+            down(staged,1);key(staged,SDLK_RETURN);key(staged,SDLK_RETURN);
+            down(staged,3);check(staged.focused_row()==5,"Unchanged video skips disabled Apply");
+            key(staged,SDLK_RIGHT);key(staged,SDLK_UP);key(staged,SDLK_DOWN);
+            check(staged.focused_row()==5&&!command(staged,dok::MenuCommand::apply_video),"Instant filtering does not enable Apply");
+            key(staged,SDLK_UP);key(staged,SDLK_UP);key(staged,SDLK_RIGHT);
+            down(staged,2);check(staged.focused_row()==4,"Changed window mode enables Apply");
+            key(staged,SDLK_UP);key(staged,SDLK_UP);key(staged,SDLK_LEFT);
+            down(staged,2);check(staged.focused_row()==5,"Restoring window mode disables Apply");
+            key(staged,SDLK_UP);key(staged,SDLK_UP);key(staged,SDLK_RIGHT);down(staged,2);
+            key(staged,SDLK_RETURN);check(staged.video_pending()&&command(staged,dok::MenuCommand::apply_video),"Changed mode applies");
+            key(staged,SDLK_RETURN);check(!staged.video_pending()&&command(staged,dok::MenuCommand::keep_video),"Confirmed mode returns to graphics");
+            down(staged,3);check(staged.focused_row()==5,"Confirmed mode disables Apply");
+        }
         // Leave a staged mode through Escape, B and the Back row. A cancelled
         // prompt must preserve the draft and focus; discard is always explicit.
         for(int route=0;route<3;++route){
@@ -282,7 +297,8 @@ int main(){
             down(mouse,1);right();check(mouse.screen()==dok::MenuScreen::main,"Right click never opens settings");key(mouse,SDLK_RETURN);key(mouse,SDLK_RETURN);
             down(mouse,2);right();key(mouse,SDLK_ESCAPE);key(mouse,SDLK_UP);key(mouse,SDLK_UP);key(mouse,SDLK_RETURN);
             check(edits.video.width==1280&&edits.video.height==800,"Right click cycles resolution backwards");key(mouse,SDLK_RETURN);
-            right();check(mouse.screen()==dok::MenuScreen::graphics&&!mouse.video_pending(),"Right click cannot apply video");
+            for(int n=0;n<12&&mouse.focused_row()!=11;++n)key(mouse,SDLK_DOWN);
+            right();check(mouse.screen()==dok::MenuScreen::graphics&&!mouse.video_pending(),"Right click cannot activate action rows");
             key(mouse,SDLK_ESCAPE);down(mouse,1);key(mouse,SDLK_RETURN);right();check(edits.effects_volume==95,"Right click decrements volume");
         }
         {dok::AppSettings errors;dok::Frontend returning(errors);returning.hide();returning.notice("error","error");returning.render(640,480);key(returning,SDLK_ESCAPE);

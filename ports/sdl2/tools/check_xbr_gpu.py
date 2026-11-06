@@ -22,7 +22,7 @@ def main():
             def run(name,mode,size,env_extra=None,events='3 state applied\n'):
                 profile=work/name;profile.mkdir();(profile/'settings.ini').write_text('[settings]\nversion=1\n[interface]\nfps=0\n',encoding='utf-8')
                 script=work/(name+'.txt');script.write_text(events,encoding='utf-8');shot=work/(name+'.png')
-                command=[str(args.app.resolve()),'--hidden','--user-dir',str(profile),'--res',str(ROOT/res),'--level','LEVEL'+str(level),'--skip-intro',
+                command=[str(args.app.resolve()),'--hidden','--verbose', '--user-dir',str(profile),'--res',str(ROOT/res),'--level','LEVEL'+str(level),'--skip-intro',
                          '--renderer','software','--software-mode',mode,'--size',size,'--frame-filter','xbr','--hud','classic','--input-replay',str(replay),
                          '--ui-script',str(script),'--screenshot',str(shot),'--frames','4']
                 env=dict(os.environ,SDL_AUDIODRIVER='dummy');env.update(env_extra or {})

@@ -25,7 +25,7 @@ def check(run_dir):
         path = run_dir / (name + '.txt')
         path.write_text(script, encoding='utf-8')
         run_env = {**os.environ, **(env or {}), 'SDL_AUDIODRIVER': 'dummy'}
-        subprocess.run([str(EXE), '--hidden', '--user-dir', str(profile), '--ui-script', str(path),
+        subprocess.run([str(EXE), '--hidden', '--verbose', '--user-dir', str(profile), '--ui-script', str(path),
                         '--frames', str(frames), *args], cwd=ROOT, env=run_env, check=True, timeout=45)
         log = (profile / 'port.log').read_text(encoding='utf-8')
         (run_dir / (name + '.log')).write_text(log, encoding='utf-8')

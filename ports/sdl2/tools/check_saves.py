@@ -31,7 +31,7 @@ def check(args, out):
     def run(name, profile, res, level=None, script='', backend='software', size='640x480', locale='en', frames=24):
         path = out / (name + '.txt')
         path.write_text(script, encoding='utf-8')
-        command = [str(args.app.resolve()), '--hidden', '--user-dir', str(profile), '--res', str(ROOT / res),
+        command = [str(args.app.resolve()), '--hidden', '--verbose', '--user-dir', str(profile), '--res', str(ROOT / res),
                    '--renderer', backend, '--locale', locale, '--size', size, '--frames', str(frames),
                    '--ui-script', str(path), '--screenshot', str(out / (name + '.png'))]
         if level:

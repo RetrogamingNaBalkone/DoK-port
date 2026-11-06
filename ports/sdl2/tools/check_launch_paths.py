@@ -45,9 +45,11 @@ def main():
         cwd = work / 'other cwd'; cwd.mkdir()
         env = dict(os.environ, SDL_AUDIODRIVER='dummy')
 
-        def run(name, options=(), profile=None, code=0, required=(), absent=(), executable=None):
+        def run(name, options=(), profile=None, code=0, required=(), absent=(), executable=None, verbose=True):
             exe = executable or binary / 'OGDoK.exe'
             command = [str(exe), '--hidden', '--renderer', 'software', '--size', '320x200', '--frames', '3']
+            if verbose:
+                command += ['--verbose']
             if profile is not None:
                 command += ['--user-dir', str(profile)]
             command += list(map(str, options))
@@ -68,6 +70,17 @@ def main():
 
         # Explicit profiles bypass both the marker and the platform directory.
         marker = binary / 'PORTABLE.any.extension'; marker.write_text('ignored')
+        quiet = work / 'quiet'
+        assert run('errors-only-clean', profile=quiet, verbose=False) == ''
+        run('verbose-opt-in', profile=quiet, required=('Profile mode:', 'Clean shutdown;'))
+        assert run('verbose-does-not-persist', profile=quiet, verbose=False) == ''
+        assert run('errors-only-gameplay', ['--res', PROFILES[0], '--level', 'LEVEL4', '--skip-intro'],
+                   profile=quiet, verbose=False) == ''
+        run('errors-only-resource', ['--res', work / 'missing.res'], profile=quiet,
+            verbose=False, required=('missing.res',), absent=('Profile mode:', 'Clean shutdown;'))
+        run('errors-only-fatal', ['--input-replay', work / 'missing.replay'], profile=quiet,
+            verbose=False, code=1, required=('Fatal error:',), absent=('Profile mode:',))
+        assert run('errors-only-truncate', profile=quiet, verbose=False) == ''
         run('portable', required=('Profile mode: portable', 'datasets=0'))
         run('explicit-wins', profile=Path('relative profile'), required=('Profile mode: explicit', 'datasets=0'))
         assert (cwd / 'relative profile/settings.ini').is_file()

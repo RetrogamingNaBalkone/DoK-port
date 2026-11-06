@@ -36,7 +36,7 @@ def main():
             events = profile/'events.txt'
             events.write_text(script, encoding='utf-8')
             shot = profile/'frame.png'
-            cmd = [str(args.app.resolve()), '--hidden', '--user-dir', str(profile), '--res', str(ROOT/res),
+            cmd = [str(args.app.resolve()), '--hidden', '--verbose', '--user-dir', str(profile), '--res', str(ROOT/res),
                    '--renderer', backend, '--level', f'LEVEL{level}', '--skip-intro', '--size', size,
                    '--software-mode', '320x200', '--locale', locale, '--ui-script', str(events),
                    '--screenshot', str(shot)]

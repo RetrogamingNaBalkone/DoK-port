@@ -41,7 +41,7 @@ def main():
     def run(name, args, code=0, required=(), absent=()):
         user = OUT / name
         result = subprocess.run([str(APP), '--hidden', '--renderer', 'software', '--size', '320x200',
-                                 '--frames', '2', '--user-dir', str(user), *map(str, args)],
+                                 '--frames', '2', '--verbose', '--user-dir', str(user), *map(str, args)],
                                 capture_output=True, text=True, timeout=45)
         log = (user / 'port.log').read_text(encoding='utf-8')
         assert result.returncode == code, (name, result.returncode, result.stderr, log)

@@ -73,7 +73,7 @@ def main():
     for profile, resource in RES:
         directory = OUT/'app-music'/profile
         command = [str(ROOT/'build/sdl2/windows/OGDoK.exe'), '--res', str(ROOT/resource),
-                   '--renderer', 'software', '--locale', 'en', '--user-dir', str(directory),
+                   '--renderer', 'software', '--locale', 'en', '--verbose', '--user-dir', str(directory),
                    '--ui-script', str(script), '--frames', '10']
         result = subprocess.run(command, capture_output=True, text=True,
                                 env=dict(os.environ, SDL_VIDEODRIVER='dummy', SDL_AUDIODRIVER='dummy'))

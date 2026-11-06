@@ -14,7 +14,7 @@ def main():
                 script=out/'script.txt';script.write_text('0 keydown Tab\n1 state held\n1 keyup Tab\n2 state open\n'
                     f'2 shot {out/"map-start.png"}\n3 keydown W\n13 keyup W\n14 state forward\n15 keydown D\n25 keyup D\n26 state right\n'
                     f'26 shot {out/"map-live.png"}\n27 key Tab\n28 state closed\n29 shot {out/"closed.png"}\n')
-                command=[str(ROOT/'build/sdl2/windows/OGDoK.exe'),'--hidden','--res',str(ROOT/res),'--level',level,'--skip-intro','--renderer',backend,'--hud','desktop','--size',size,'--user-dir',str(out/'user'),'--ui-script',str(script),'--frames','30','--input-replay',str(replay),'--replay-live-input']
+                command=[str(ROOT/'build/sdl2/windows/OGDoK.exe'),'--hidden','--res',str(ROOT/res),'--level',level,'--skip-intro','--renderer',backend,'--hud','desktop','--size',size,'--verbose', '--user-dir',str(out/'user'),'--ui-script',str(script),'--frames','30','--input-replay',str(replay),'--replay-live-input']
                 result=subprocess.run(command,cwd=ROOT,env=dict(os.environ,SDL_AUDIODRIVER='dummy'),capture_output=True,text=True,timeout=60);log=(out/'user/port.log').read_text(encoding='utf-8');assert result.returncode==0,(command,result.stdout,result.stderr,log)
                 states={m[1]:dict(re.findall(r'(\w+)=([^\s]*)',m[2])) for m in re.finditer(r'^STATE (\w+) (.*)$',log,re.M)}
                 assert states['held']['menu']=='0',states

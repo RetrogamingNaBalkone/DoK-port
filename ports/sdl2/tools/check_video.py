@@ -38,7 +38,7 @@ def main():
   d=OUT/name;d.mkdir(exist_ok=True)
   (d/'settings.ini').write_text('[settings]\nversion=1\n[interface]\nfps=0\n'+settings,encoding='utf-8')
   (d/'script.txt').write_text(script,encoding='utf-8')
-  command=[str(EXE),'--hidden','--user-dir',str(d),'--ui-script',str(d/'script.txt'),'--frames',str(frames),'--screenshot',str(d/'frame.png'),*args]
+  command=[str(EXE),'--hidden','--verbose', '--user-dir',str(d),'--ui-script',str(d/'script.txt'),'--frames',str(frames),'--screenshot',str(d/'frame.png'),*args]
   r=subprocess.run(command,cwd=ROOT,capture_output=True,text=True,timeout=40,env=dict(os.environ,SDL_AUDIODRIVER='dummy'))
   log=(d/'port.log').read_text(encoding='utf-8')
   assert r.returncode==0 and 'OpenGL fallback:' not in log and 'Clean shutdown;' in log,(name,r.stderr,log)
@@ -105,7 +105,7 @@ def main():
  run('fullscreen-menu',['--renderer','gl'],'[video]\nfullscreen=1\nfullscreen_width=800\nfullscreen_height=600\n',script='0 key Down\n1 key Return\n2 key Return\n',frames=4)
  for option in ['--fov','--aspect']:
   d=OUT/('obsolete-'+option[2:]);d.mkdir(exist_ok=True)
-  r=subprocess.run([str(EXE),'--hidden','--user-dir',str(d),option,'90'],cwd=ROOT,capture_output=True,text=True,timeout=10)
+  r=subprocess.run([str(EXE),'--hidden','--verbose', '--user-dir',str(d),option,'90'],cwd=ROOT,capture_output=True,text=True,timeout=10)
   log=(d/'port.log').read_text() if (d/'port.log').exists() else ''
   assert r.returncode!=0 and 'automatic' in (log+r.stderr),(option,r.stderr,log)
  report={'schema':1,'contract':'SP21 automatic DOS projection and internal fullscreen canvas','exe_sha256':hashlib.sha256(EXE.read_bytes()).hexdigest(),'frames':results,'frame_count':len(results),'limitations':['Physical mixed-DPI and controller checks not performed']}

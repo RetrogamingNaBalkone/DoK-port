@@ -20,7 +20,7 @@ inline std::string ascii_lower(std::string value){
 }
 inline LaunchArguments parse_launch_arguments(int argc,char** argv){
     LaunchArguments result;unsigned resources=0;
-    const std::vector<std::string> flags={"--hidden","--replay-live-input","--skip-intro"};
+    const std::vector<std::string> flags={"--verbose","--hidden","--replay-live-input","--skip-intro"};
     const std::vector<std::string> values={"--res","--frames","--input-replay","--res-source","--screenshot","--level","--user-dir","--ui-script","--renderer","--filter","--frame-filter","--fxaa","--hud","--locale","--size","--software-mode"};
     for(int i=1;i<argc;++i){
         const std::string option=argv[i];std::string value;

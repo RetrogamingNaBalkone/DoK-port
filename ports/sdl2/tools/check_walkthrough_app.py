@@ -41,7 +41,7 @@ def main():
                 folder.mkdir(parents=True, exist_ok=True)
                 command = [str(executable),'--res',str(resource),'--level','LEVEL4' if route=='og' else f'LEVEL{route[-1]}','--skip-intro',
                            '--input-replay',str(replay),'--renderer',renderer,'--locale',locale,'--hud','desktop',
-                           '--size','800x450','--user-dir',str(folder),'--screenshot',str(folder/'final.png')]
+                           '--size','800x450','--verbose', '--user-dir',str(folder),'--screenshot',str(folder/'final.png')]
                 before = sha(resource)
                 start = time.monotonic()
                 run = subprocess.run(command, capture_output=True, text=True, timeout=180,env=environment)

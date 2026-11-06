@@ -28,7 +28,7 @@ def main():
         for f in range(0,181,15):lines.extend([f'{f} state angle{f}',f'{f} shot {out/f"turn-{f}.png"}'])
         lines.extend(['181 keyup Right','182 key Tab',f'183 shot {out/"map.png"}'])
         script=out/'script.txt';script.write_text('\n'.join(lines)+'\n')
-        command=[str(EXE),'--res',str(RES),'--level','LEVEL4','--skip-intro','--hidden','--renderer','gl','--hud',hud,'--size','960x540','--user-dir',str(out/'user'),'--ui-script',str(script),'--input-replay',str(replay),'--replay-live-input','--frames','185']
+        command=[str(EXE),'--res',str(RES),'--level','LEVEL4','--skip-intro','--hidden','--renderer','gl','--hud',hud,'--size','960x540','--verbose', '--user-dir',str(out/'user'),'--ui-script',str(script),'--input-replay',str(replay),'--replay-live-input','--frames','185']
         subprocess.run(command,cwd=ROOT,env=env,capture_output=True,text=True,check=True,timeout=60)
         log=(out/'user/port.log').read_text(encoding='utf-8')
         headings=[int(m[1]) for m in re.finditer(r'^STATE angle\d+ .*?pose=[^,]+,[^,]+,[^,]+,(\d+)',log,re.M)]

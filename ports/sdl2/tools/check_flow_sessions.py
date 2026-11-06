@@ -34,7 +34,7 @@ def main():
                         lines.append(f'{frame} shot {folder}/{value}.png')
                 script=folder/'events.script'
                 script.write_text('\n'.join(lines)+'\n',encoding='ascii')
-                command=['build/sdl2/windows/OGDoK.exe','--res',resource,'--level',level,'--skip-intro','--input-replay',str(replay),'--frames',str(frames),'--ui-script',str(script),'--renderer',renderer,'--locale',locale,'--size','800x450','--user-dir',str(folder)]
+                command=['build/sdl2/windows/OGDoK.exe','--res',resource,'--level',level,'--skip-intro','--input-replay',str(replay),'--frames',str(frames),'--ui-script',str(script),'--renderer',renderer,'--locale',locale,'--size','800x450','--verbose', '--user-dir',str(folder)]
                 before=sha(resource)
                 run=subprocess.run(command,capture_output=True,text=True,env=environment,timeout=180)
                 log=(folder/'port.log').read_text(encoding='utf-8')

@@ -132,7 +132,7 @@ def main():
                                   + f'17 shot {screenshot}\n18 state resumed\n', encoding='utf-8')
                 command = [str(EXE), '--hidden', '--res', source['path'], '--level', level, '--skip-intro', '--renderer', backend,
                            '--locale', locale, '--hud', 'classic', '--size', '800x600', '--frames', '24',
-                           '--user-dir', str(user), '--ui-script', str(script)]
+                           '--verbose', '--user-dir', str(user), '--ui-script', str(script)]
                 p = subprocess.run(command, cwd=ROOT, capture_output=True, text=True, timeout=45,
                                    env=dict(os.environ, SDL_AUDIODRIVER='dummy'))
                 assert p.returncode == 0, (name, p.stdout, p.stderr)

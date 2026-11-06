@@ -39,7 +39,7 @@ def main():
             profile = out / name
             profile.mkdir(exist_ok=True)
             picture = profile / 'menu.png'
-            command = [str(exe), '--hidden', '--user-dir', str(profile),
+            command = [str(exe), '--hidden', '--verbose', '--user-dir', str(profile),
                        '--renderer', backend, '--size', size, '--locale', 'ru',
                        '--res', str(ROOT / 'originals/pkr/RUS/PKR.RES'),
                        '--frames', '12', '--screenshot', str(picture)]
