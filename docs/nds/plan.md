@@ -1,10 +1,19 @@
 # План независимого NDS-порта «Подземелий Кремля»
 
-6 ??????: [????? ?????? DraStic](spec/drastic-architecture-audit-20261106.md). ?????????? ???????????? fatal paths
-??? audio service ? ???? texture/map DMA; ??????? ????????????????? mid-level
-?????? ?? ???????????. ??????? discovery32 SHA ????????, ROM ?? ???????.
-????????? ??? N23 ? ?????? fatal site/status ?? ?????????????????? ROM,
-????? ?????????? ?????????????? ??????????? ????. N23 ?? ???????, N24 ?? ??????.
+6 ноября: [экранная диагностика diag33](spec/drastic-diagnostics33-20261106.md).
+Поставка `artifacts/nds/dok.nds`, SHA
+`e310a0a53534381ae763dd68c66980606172854e094c6d42f7f524103f1f83e6`.
+Первый файл/строка/status и параметры, восемь событий RAM на нижнем экране;
+fatal path не ждёт ARM7 и не выполняет cleanup. GPU/audio/настоящий plan
+ARGUMENT fault-injection, оба LCD, boot/input и audio transition PASS в melonDS.
+Это не воспроизведение DraStic. Следующий шаг N23 — холодный пользовательский
+повтор diag33 и фотографии обоих экранов. N23 не принята, N24 не начата.
+
+6 ноября: [аудит отказа DraStic](spec/drastic-architecture-audit-20261106.md). Статически подтверждены fatal paths
+для audio service и окон texture/map DMA; причина пользовательского mid-level
+отказа не установлена. Текущий discovery32 SHA проверен, ROM не менялся.
+Следующий шаг N23 — первый fatal site/status на идентифицированном ROM,
+затем безопасное восстановление конкретного пути. N23 не принята, N24 не начата.
 
 6 ноября: [N-STORAGE](tasks/N-STORAGE.md) завершена. Старые выходы удалены,
 discovery32-ru и общие входы сохранены. Полные старые отчёты не доступны;
@@ -487,7 +496,7 @@ N15 и остальных реализаций не создают отдель�
 | [N21](tasks/N21.md) | Оригинальная заставка, меню и настройки | N04, N06, N18, N19 | готово (эмулятор) |
 | [N21P](tasks/N21P.md) | Два экрана, карта/HUD, звук и стоимость переходов | N17P, N18, N19, N20, N21 | готово (эмулятор), 30 октября; goal60 false |
 | [N22](tasks/N22.md) | Полный игровой цикл трёх уровней | N17, N18, N19, N20, N21, N21P | готово (эмулятор), 30 октября |
-| [N23](tasks/N23.md) | Оптимизация и аппаратная приёмка FPS | N22 | Не принята. discovery32: static disclosure projection reuse, host18432/all3/LCD/100-cell PASS. Близкая stationary-позиция48,06→59,83FPS; пользовательский повтор, stable60 и физическая DS открыты. См. spec/stationary-cpu-20261103.md. |
+| [N23](tasks/N23.md) | Оптимизация и аппаратная приёмка FPS | N22 | Не принята. diag33 на базе discovery32: первый status/site, восемь событий, два экрана; GPU/audio/plan injections, boot/input/audio transition PASS в melonDS. Нужен повтор DraStic и оба экрана. Stable60 и физическая DS открыты. См. spec/drastic-diagnostics33-20261106.md. |
 | [N24](tasks/N24.md) | Полная регрессия, повторная сборка и выпуск | N23 | не начата |
 
 N07 — ранний контроль жизнеспособности renderer, N23 — бюджет полной игры.

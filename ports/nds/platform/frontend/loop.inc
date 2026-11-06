@@ -118,7 +118,7 @@ static int frontend_loop(void)
     if(!frontend_actions(dok_frontend_step(&frontend->state,0,0,1)))return GAMEPLAY_FAILURE();
     obs.status=NDS_RENDER_RUNNING;
     for(;;){
-        if(!nds_audio_runtime_service())return GAMEPLAY_FAILURE();
+        if(!DIAG_CHECK(DIAG_AUDIO,nds_audio_runtime_service(),1,g_nds_audio_probe[22],g_nds_audio_probe[8]))return GAMEPLAY_FAILURE();
         scanKeys();uint32_t keys=keysHeld()&4095u,touching=(keysHeld()&KEY_TOUCH)!=0;
         uint32_t edge_keys=keys|nds_frontend_take_edges();
         touchPosition pen={0};if(touching)touchRead(&pen);
@@ -183,7 +183,7 @@ static int frontend_loop(void)
                 ++g->deaths;
                 const dok_world_object_seed *h=&world->initial.objects[world->initial.hero.object_id-1u];
                 nds_audio_runtime_hero_death(world->initial.hero,world->effective.objects[h->definition_index].glyph);
-                if(!nds_audio_runtime_service())return GAMEPLAY_FAILURE();
+                if(!DIAG_CHECK(DIAG_AUDIO,nds_audio_runtime_service(),1,g_nds_audio_probe[22],g_nds_audio_probe[8]))return GAMEPLAY_FAILURE();
                 ui->lives=g->lives;ui->message_kind=0;ui->dirty=1;
             }
             if(flow_result==DOK_FLOW_RETRY){

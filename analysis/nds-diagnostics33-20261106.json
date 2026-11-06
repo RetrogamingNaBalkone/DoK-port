@@ -1,0 +1,73 @@
+{
+  "task": "N23",
+  "build": "diag33-ru",
+  "scope": "On-screen diagnostic upgrade; no DraStic reproduction",
+  "rom": {
+    "path": "artifacts/nds/dok.nds",
+    "bytes": 10174976,
+    "sha256": "e310a0a53534381ae763dd68c66980606172854e094c6d42f7f524103f1f83e6"
+  },
+  "manifest": {
+    "path": "build/nds/n23/diag33-ru/build-manifest.json",
+    "bytes": 113729,
+    "sha256": "3935ee18996d42f16c8af218e008d9f46c422aabdbcf9ff87a54dcbd90770dc3"
+  },
+  "test_driver": {
+    "path": "research/evidence/nds/n23/diag33/check_crash_diagnostic.py",
+    "bytes": 4842,
+    "sha256": "f0616b97a20fc3fefef9e5b0fbc1510a93e79b57006ba124a2315f3500a26778"
+  },
+  "checks": {
+    "crash-diagnostic-gpu": {
+      "passed": true,
+      "report": {
+        "path": "research/evidence/nds/n23/diag33/crash-diagnostic-gpu/result.json",
+        "bytes": 4282,
+        "sha256": "ab371817dad2ae1be770bcb5b73cd564d0fa973fb0a27ee136cf7b6f272b8660"
+      }
+    },
+    "crash-diagnostic-audio": {
+      "passed": true,
+      "report": {
+        "path": "research/evidence/nds/n23/diag33/crash-diagnostic-audio/result.json",
+        "bytes": 4293,
+        "sha256": "88261ca86bbe3fdce0515277665d68e400d156d1dfc269e06a543bbe87ab410a"
+      }
+    },
+    "crash-diagnostic-plan": {
+      "passed": true,
+      "report": {
+        "path": "research/evidence/nds/n23/diag33/crash-diagnostic-plan/result.json",
+        "bytes": 4299,
+        "sha256": "1b93c06e8566aab6563a08aab15da497b38d9126c3d9f1e83dcd2f1156544ebc"
+      }
+    },
+    "boot-input": {
+      "passed": true,
+      "report": {
+        "path": "research/evidence/nds/n23/diag33/boot-input/result.json",
+        "bytes": 342,
+        "sha256": "edc87fbb9f35df2820e4b0bd7c3b68eddb105d3c4e2f0b2d52b7792b90e260b9"
+      }
+    },
+    "audio-transition": {
+      "passed": true,
+      "report": {
+        "path": "research/evidence/nds/n23/diag33/audio-transition/result.json",
+        "bytes": 679,
+        "sha256": "318b8e6928795d26f2a46049a61b0ab61a78dd6b2d89c53870b365d986af376b"
+      }
+    }
+  },
+  "screen_review": [
+    "gpu",
+    "audio",
+    "plan"
+  ],
+  "limitations": [
+    "No hardware or DraStic run",
+    "Fatal returns only; no new exception handler or watchdog",
+    "No routes or firing validation"
+  ],
+  "next_id": "N23"
+}

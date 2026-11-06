@@ -100,6 +100,7 @@ _Alignas(32) volatile NdsRenderProbe g_nds_render_probe;
 _Alignas(32) volatile NdsRenderHistoryRecord g_nds_render_history[NDS_RENDER_HISTORY_CAPACITY];
 _Alignas(32) volatile NdsRenderPositionRecord g_nds_render_positions[NDS_RENDER_POSITION_CAPACITY];
 static NdsRenderProbe obs;
+#include "crash_diagnostic.inc"
 static volatile uint32_t vblank_counter;
 static unsigned char *managed, *assets;
 typedef struct SpriteWorld {
@@ -559,8 +560,10 @@ static void observe(dok_nds_render_stats *stats)
 
 static dok_status texture_require(const dok_asset_entry *entry)
 {
-    return GAMEPLAY_FRAME_STORE?dok_frame_store_require(&storage->frames,&storage->cache,entry):
+    dok_status status=GAMEPLAY_FRAME_STORE?dok_frame_store_require(&storage->frames,&storage->cache,entry):
         dok_texture_cache_require(&storage->cache,&session,entry);
+    (void)DIAG_CHECK(DIAG_TEXTURE,status,DOK_STATUS_OK,entry->id,entry->bytes);
+    return status;
 }
 
 #if GAMEPLAY_FRONTEND && NDS_EMBEDDED_RESOURCES
@@ -568,17 +571,10 @@ static dok_status texture_require(const dok_asset_entry *entry)
 #endif
 static unsigned loading_stage;
 /* First fatal caller wins: outer render/frontend wrappers must not erase it. */
-static const char *failure_function;
-static uint32_t failure_line;
-static int gameplay_failure(const char *function,uint32_t line)
-{
-    if(!failure_line){failure_function=function;failure_line=line;}
-    return 0;
-}
-#define GAMEPLAY_FAILURE() gameplay_failure(__func__,__LINE__)
 static void loading_screen(unsigned stage)
 {
     loading_stage=stage;
+    diagnostic_event(DIAG_BOOT,stage,0);
 #if GAMEPLAY_FRONTEND && GAMEPLAY_UI
     static const unsigned char letters[7][5]={
         {127,64,64,64,64},{62,65,65,65,62},{126,9,9,9,126},
@@ -858,7 +854,7 @@ static int sprites_prepare(const dok_render_case *c,const dok_nds_render_camera 
 #if GAMEPLAY_AUDIO && GAMEPLAY_MAP
     /* Native shadow records are a bounded but substantial CPU phase. A title
      * part must receive its512-byte slices independently of presentation FPS. */
-    if(!nds_audio_runtime_service())return GAMEPLAY_FAILURE();
+    if(!DIAG_CHECK(DIAG_AUDIO,nds_audio_runtime_service(),1,g_nds_audio_probe[22],g_nds_audio_probe[8]))return GAMEPLAY_FAILURE();
 #endif
     sprite_obs.frame_fixture=0;
     if(c->source_kind==13u || c->source_kind==17u) {
@@ -968,8 +964,8 @@ static int sprites_prepare(const dok_render_case *c,const dok_nds_render_camera 
         sprite_slots[i]=(uint16_t)j;
     }
 #if N23_FRAME_BATCH && GAMEPLAY_FRAME_STORE
-    if(dok_frame_store_require_many(&storage->frames,&storage->cache,frame_requests,frame_request_count,
-        (dok_frame_batch_workspace *)(void *)scratch)!=DOK_STATUS_OK){g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return GAMEPLAY_FAILURE();}
+    if(!DIAG_CHECK(DIAG_TEXTURE,dok_frame_store_require_many(&storage->frames,&storage->cache,frame_requests,frame_request_count,
+        (dok_frame_batch_workspace *)(void *)scratch),DOK_STATUS_OK,storage->cache.capacity,storage->cache.used)){g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return GAMEPLAY_FAILURE();}
 #endif
     for(i=base_demands;i<demand_count;++i) {
         demand[i].texture.pixels=dok_texture_cache_pixels(&storage->cache,demand[i].texture.asset_id);
@@ -1019,7 +1015,7 @@ static int render_one(const dok_render_case *c,uint32_t ordinal)
     uint32_t p21[48]={0},p21_phase=start;
 #endif
 #if GAMEPLAY_AUDIO
-    if(!nds_audio_runtime_service())return GAMEPLAY_FAILURE();
+    if(!DIAG_CHECK(DIAG_AUDIO,nds_audio_runtime_service(),1,g_nds_audio_probe[22],g_nds_audio_probe[8]))return GAMEPLAY_FAILURE();
 #endif
     #if N21P_PROFILE
     p21[16]=cpuGetTiming()-p21_phase;p21_phase=cpuGetTiming();
@@ -1035,6 +1031,7 @@ static int render_one(const dok_render_case *c,uint32_t ordinal)
     row.vblank_start=previous_present_ticks?previous_present_vblank:vblank_counter;
     row.case_id=c->id;row.level=c->level;
     row.frame_id=++obs.frame_id;row.flags=(c->flags&DOK_RENDER_CASE_MOVING)?NDS_RENDER_FRAME_MOVING:0;
+    diagnostic_event(DIAG_FRAME,c->level,ordinal);
     if(c->flags&DOK_RENDER_CASE_WARMUP) row.flags|=NDS_RENDER_FRAME_WARMUP;
     if(scene->leased && dok_render_scene_release(scene,scene->generation)!=DOK_RENDER_SCENE_OK)
         do{if(!g_nds_effect_probe[31])g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);{g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return GAMEPLAY_FAILURE();}}while(0);
@@ -1055,16 +1052,17 @@ static int render_one(const dok_render_case *c,uint32_t ordinal)
 #endif
 #endif
     if(held!=storage->game.input_held)storage->game.input_tick=cpuGetTiming();
-    if(nds_gameplay_input(&storage->game,held)!=DOK_STATUS_OK){g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return GAMEPLAY_FAILURE();}
+    if(!DIAG_CHECK(DIAG_INPUT,nds_gameplay_input(&storage->game,held),DOK_STATUS_OK,held,0)){g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return GAMEPLAY_FAILURE();}
     #if N21P_PROFILE
     p21[17]=cpuGetTiming()-p21_phase;p21_phase=cpuGetTiming();
     #endif
+    diagnostic_event(DIAG_SIMULATION,held,storage->game.hero_callbacks);
     uint32_t simulation_start=cpuGetTiming();
     if((!GAMEPLAY_MAP
 #if GAMEPLAY_MAP
        ||!map_ui->paused
 #endif
-       )&&nds_effects_begin(&storage->effects)!=DOK_STATUS_OK)do{if(!g_nds_effect_probe[31])g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);{g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return GAMEPLAY_FAILURE();}}while(0);
+       )&&!DIAG_CHECK(DIAG_SIMULATION,nds_effects_begin(&storage->effects),DOK_STATUS_OK,storage->game.hero_callbacks,storage->game.fault))do{if(!g_nds_effect_probe[31])g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);{g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return GAMEPLAY_FAILURE();}}while(0);
     uint32_t simulation_ticks=cpuGetTiming()-simulation_start;
     #if N21P_PROFILE
     p21[18]=simulation_ticks;p21_phase=cpuGetTiming();
@@ -1086,6 +1084,7 @@ static int render_one(const dok_render_case *c,uint32_t ordinal)
     #if N21P_PROFILE
     p21[19]=cpuGetTiming()-p21_phase;p21_phase=cpuGetTiming();
     #endif
+    diagnostic_event(DIAG_SPRITES,storage->list.count,0);
     if(!sprites_prepare(c,&camera,(uint32_t)heading,ordinal))do{if(!g_nds_effect_probe[31])g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);{g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return GAMEPLAY_FAILURE();}}while(0);
     #if N21P_PROFILE
     p21[20]=cpuGetTiming()-p21_phase;p21[21]=map_ui->profile[8];p21_phase=cpuGetTiming();
@@ -1170,6 +1169,7 @@ static int render_one(const dok_render_case *c,uint32_t ordinal)
         DC_FlushRange((const void *)&g_nds_sprite_trace[sprite_obs.trace_count],sizeof(trace));
         ++sprite_obs.trace_count;
     }
+    diagnostic_event(DIAG_EFFECTS,demand_count,storage->effects.cache.used);
     if(!effects_prepare(c,ordinal))do{if(!g_nds_effect_probe[31])g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);{g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return GAMEPLAY_FAILURE();}}while(0);
 #if GAMEPLAY_FRONTEND
     frontend->visual_asset=frontend->visual_pixels=frontend->visual_bytes=0;
@@ -1219,23 +1219,24 @@ static int render_one(const dok_render_case *c,uint32_t ordinal)
 #endif
 #endif
 #if GAMEPLAY_AUDIO && GAMEPLAY_MAP
-    if(!nds_audio_runtime_service())return GAMEPLAY_FAILURE();
+    if(!DIAG_CHECK(DIAG_AUDIO,nds_audio_runtime_service(),1,g_nds_audio_probe[22],g_nds_audio_probe[8]))return GAMEPLAY_FAILURE();
 #endif
     uint32_t cold=!stream_ready||dok_nds_stream_loading(),stream_prepare_ticks=0;
     /* All payload mutations and map/UI scratch work have completed. Preserve
      * this source lease through submit, boundary wait and prepared commit. */
     if(!cold){
         uint32_t clean_start=cpuGetTiming();
-        if(dok_nds_stream_prepare_uploads()!=DOK_NDS_RENDER_OK)return GAMEPLAY_FAILURE();
+        if(!DIAG_CHECK(DIAG_UPLOAD,dok_nds_stream_prepare_uploads(),DOK_NDS_RENDER_OK,stream_stats.upload_bytes,REG_VCOUNT))return GAMEPLAY_FAILURE();
         stream_prepare_ticks=cpuGetTiming()-clean_start;
     }
     phase=cpuGetTiming();
     if(cold) {
         row.flags|=NDS_RENDER_FRAME_LOADING;
-        if(dok_nds_stream_commit(&stream_stats)!=DOK_NDS_RENDER_OK)do{if(!g_nds_effect_probe[31])g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);{g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return GAMEPLAY_FAILURE();}}while(0);
+        if(!DIAG_CHECK(DIAG_UPLOAD,dok_nds_stream_commit(&stream_stats),DOK_NDS_RENDER_OK,stream_stats.upload_bytes,REG_VCOUNT))do{if(!g_nds_effect_probe[31])g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);{g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return GAMEPLAY_FAILURE();}}while(0);
         row.io_upload_ticks=cpuGetTiming()-phase;phase=cpuGetTiming();stream_ready=1;
     }
-    if(dok_nds_render_submit(frame,&stats)!=DOK_NDS_RENDER_OK) do{if(!g_nds_effect_probe[31])g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);{g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return GAMEPLAY_FAILURE();}}while(0);
+    diagnostic_event(DIAG_SUBMIT,frame->cell_count,demand_count);
+    if(!DIAG_CHECK(DIAG_SUBMIT,dok_nds_render_submit(frame,&stats),DOK_NDS_RENDER_OK,frame->cell_count,REG_VCOUNT)) do{if(!g_nds_effect_probe[31])g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);{g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return GAMEPLAY_FAILURE();}}while(0);
     row.geometry_wait_ticks=stats.geometry_wait_ticks;
     row.submit_ticks=cpuGetTiming()-phase-row.geometry_wait_ticks;
     #if N21P_PROFILE
@@ -1252,6 +1253,7 @@ static int render_one(const dok_render_case *c,uint32_t ordinal)
     #if N21P_PROFILE
     p21_phase=cpuGetTiming();
     #endif
+    diagnostic_event(DIAG_WAIT,stream_stats.upload_bytes,REG_VCOUNT);
     present_ticks=wait_presentation_boundary();
     present_vblank=vblank_counter;
     #if N21P_PROFILE
@@ -1262,11 +1264,12 @@ static int render_one(const dok_render_case *c,uint32_t ordinal)
     if(!cold) {
         dok_nds_render_result result=dok_nds_stream_commit_prepared(&stream_stats);
         sprite_obs.commit_start_line=stream_stats.commit_start_line;sprite_obs.commit_end_line=stream_stats.commit_end_line;
-        if(result!=DOK_NDS_RENDER_OK)do{if(!g_nds_effect_probe[31])g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);{g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return GAMEPLAY_FAILURE();}}while(0);
+        if(!DIAG_CHECK(DIAG_UPLOAD,result,DOK_NDS_RENDER_OK,stream_stats.upload_bytes,stream_stats.commit_start_line|(stream_stats.commit_end_line<<16)))do{if(!g_nds_effect_probe[31])g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);{g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return GAMEPLAY_FAILURE();}}while(0);
         /* Preserve the accepted uploader window in the SAME sampled epoch:
          * line192 through line213: the 3D rasterizer starts at line214.
          * Modulo VCOUNT alone could hide a whole missed texture deadline. */
         if(stream_stats.upload_bytes&&cpuGetTiming()-present_ticks>=22u*2130u){
+            (void)DIAG_CHECK(DIAG_DEADLINE,(int32_t)(cpuGetTiming()-present_ticks),0,stream_stats.upload_bytes,22u*2130u);
             g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return GAMEPLAY_FAILURE();
         }
     }
@@ -1281,6 +1284,7 @@ static int render_one(const dok_render_case *c,uint32_t ordinal)
      * A fallback wait advances the joint presentation boundary honestly. */
     if(map_ui->pending_reason&&(REG_VCOUNT<192u||REG_VCOUNT>224u)){
         uint32_t extra_start=cpuGetTiming();
+        diagnostic_event(DIAG_WAIT,stream_stats.upload_bytes,REG_VCOUNT);
         present_ticks=wait_presentation_boundary();
         present_vblank=vblank_counter;
         #if N21P_PROFILE
@@ -1292,6 +1296,7 @@ static int render_one(const dok_render_case *c,uint32_t ordinal)
     }
     phase=cpuGetTiming();
     nds_map_transfer(map_ui,map_pixels,bgGetGfxPtr(map_bg));
+    diagnostic_event(DIAG_MAP,map_ui->profile[10],map_ui->profile[11]);
     if(map_ui->pending_reason&&(map_ui->profile[10]<192u||map_ui->profile[11]>262u||
        map_ui->profile[10]>map_ui->profile[11]||map_ui->profile[4]>=560190u)){
         map_ui->fault=5u;return GAMEPLAY_FAILURE();
@@ -1328,7 +1333,7 @@ static int render_one(const dok_render_case *c,uint32_t ordinal)
     p21[28]=map_prepare_ticks+map_transfer_ticks+cpuGetTiming()-p21_phase;p21_phase=cpuGetTiming();
     #endif
 #if GAMEPLAY_AUDIO
-    if(!nds_audio_runtime_service())return GAMEPLAY_FAILURE();
+    if(!DIAG_CHECK(DIAG_AUDIO,nds_audio_runtime_service(),1,g_nds_audio_probe[22],g_nds_audio_probe[8]))return GAMEPLAY_FAILURE();
 #endif
 #endif
     #if N21P_PROFILE
@@ -1414,7 +1419,7 @@ static int render_one(const dok_render_case *c,uint32_t ordinal)
     DC_FlushRange(g_nds_n23_profile,sizeof(g_nds_n23_profile));
 #endif
     last_render_stats=stats;
-    if(obs.disp3d_sticky || obs.gxstat_sticky)return GAMEPLAY_FAILURE();
+    if(!DIAG_CHECK(DIAG_GPU,obs.disp3d_sticky|obs.gxstat_sticky,0,obs.disp3d_sticky,obs.gxstat_sticky))return GAMEPLAY_FAILURE();
     return 1;
 }
 
@@ -1579,7 +1584,7 @@ int main(void)
         obs.status=NDS_RENDER_READY;publish();
         do {swiWaitForVBlank();scanKeys();publish();
 #if GAMEPLAY_AUDIO
-            if(!nds_audio_runtime_service()){obs.error_bits=16384;goto done;}
+            if(!DIAG_CHECK(DIAG_AUDIO,nds_audio_runtime_service(),1,g_nds_audio_probe[22],g_nds_audio_probe[8])){obs.error_bits=16384;goto done;}
 #endif
         } while(!(keysDown()&KEY_A));
         do {swiWaitForVBlank();scanKeys();} while(keysHeld()&KEY_A);
@@ -1589,15 +1594,21 @@ done:
     /* Show failures before cleanup: a failed IPC peer must not hide the
      * reason behind the last loading image or a second IPC wait. */
     if(obs.error_bits) {
+        obs.status=NDS_RENDER_FAILED;publish();
         static PrintConsole failure_console;
         videoSetMode(MODE_0_2D);
         vramSetBankE(VRAM_E_MAIN_BG);
         consoleInit(&failure_console,0,BgType_Text4bpp,BgSize_T_256x256,31,0,true,true);
         consoleSelect(&failure_console);
-        printf("DoK crashdiag 22 (audio21)\n\nStage: %u\nCode: %08lX\n",loading_stage,(unsigned long)obs.error_bits);
+        crash_diagnostic.frozen=1;
+        printf("DoK %s\nStage %u Code %08lX\n",DOK_DIAGNOSTIC_BUILD,loading_stage,(unsigned long)obs.error_bits);
         if(obs.error_bits==65536u){
-            printf("At %s:%lu\n",failure_function?failure_function:"unknown",(unsigned long)failure_line);
-            printf("Frame %lu Effect line %lu\n",(unsigned long)obs.frame_id,(unsigned long)g_nds_effect_probe[31]);
+            printf("%s:%lu\nAt %s\n",diagnostic_basename(failure_file),(unsigned long)failure_line,failure_function?failure_function:"unknown");
+            printf("Op %s Status ",diagnostic_name(crash_diagnostic.operation));
+            if(crash_diagnostic.status_valid)printf("%ld\n",(long)crash_diagnostic.status);
+            else printf("unknown\n");
+            printf("A %08lX B %08lX\n",(unsigned long)crash_diagnostic.a,(unsigned long)crash_diagnostic.b);
+            printf("Frame %lu Level %lu\n",(unsigned long)obs.frame_id,(unsigned long)obs.level);
             printf("Game %lu AI %lu Combat %lu\nEffects %lu\n",
                 (unsigned long)storage->game.fault,(unsigned long)storage->game.ai.fault,
                 (unsigned long)storage->game.combat.fault,(unsigned long)storage->effects.fault);
@@ -1612,9 +1623,11 @@ done:
             printf("Audio fault %lu U %lu S %lu\n",(unsigned long)g_nds_audio_probe[22],
                 (unsigned long)g_nds_audio_probe[8],(unsigned long)g_nds_audio_probe[9]);
             printf("Voice %08lX On %lu\n",(unsigned long)g_nds_audio_probe[5],(unsigned long)g_nds_audio_probe[4]);
-            uint32_t d[8];nds_audio_debug(d);
-            printf("ACK %08lX / %08lX\n",(unsigned long)d[1],(unsigned long)d[0]);
+            printf("ACK %08lX\n",(unsigned long)g_nds_audio_probe[10]);
 #endif
+            printf("CPU cache %lu/%lu\n",(unsigned long)storage->cache.used,(unsigned long)storage->cache.capacity);
+            printf("Texture DMA %lu %lu-%lu\n",(unsigned long)stream_stats.upload_bytes,
+                (unsigned long)stream_stats.commit_start_line,(unsigned long)stream_stats.commit_end_line);
         }
         if(obs.error_bits==16384u){
             uint32_t d[8];nds_audio_debug(d);
@@ -1634,6 +1647,13 @@ done:
                 (unsigned long)b[16],(unsigned long)b[18],(unsigned long)b[17]);
             printf("Input %lu seq %lu\n",(unsigned long)b[25],(unsigned long)b[24]);
         }
+        DC_FlushRange(&crash_diagnostic,sizeof(crash_diagnostic));
+        DC_FlushRange(&failure_line,sizeof(failure_line));
+        DC_FlushRange(&failure_function,sizeof(failure_function));
+        diagnostic_history_screen();
+        /* Never wait for a faulty peer, run cleanup or mutate the captured
+         * game/probes after displaying a failure. No SD writes on this path. */
+        for(;;)__asm__ volatile("nop");
     }
 #if GAMEPLAY_AUDIO
     nds_audio_runtime_clear();

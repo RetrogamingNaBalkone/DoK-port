@@ -12,6 +12,8 @@ def build(label,features=None):
     if (target/'build-manifest.json').exists():
         raise ValueError('Candidate target is immutable; choose a new label')
     (target/'generated').mkdir(exist_ok=True)
+    (target/'generated/diagnostic_build.inc').write_text(
+        f'#define DOK_DIAGNOSTIC_BUILD "{label}"\n','ascii')
     sys.path.insert(0,str(ROOT/'ports/nds/tools/ui'))
     from prepare_playtest_ui import prepare
     revised_ui=prepare()
@@ -78,7 +80,7 @@ def build(label,features=None):
     sources=[artifact(p) for p in (ROOT/'ports/nds').rglob('*') if p.is_file() and (p.suffix in ('.c','.h','.inc','.py','.S','.ld','.lds') or p.name.startswith('Makefile'))]
     generated=[OUT/n for n in ('scene.dat','ui.dat','frontend.dat')]
     generated += [target/'generated/ui_native.inc',revised_ui/'sources.json',ROOT/'build/nds/n21/generated/frontend_hash.inc',target/'generated/render_trig.inc']
-    generated += [target/'generated/audio_boot.inc']
+    generated += [target/'generated/audio_boot.inc',target/'generated/diagnostic_build.inc']
     if embedded:
         generated += [target/'nitrofs/dok'/n for n in ('assets.ndp','ui.dat','frontend.dat','frames.dat','sounds.dat')]
         generated += [target/'generated/frames_hash.inc',target/'generated/sounds_hash.inc']

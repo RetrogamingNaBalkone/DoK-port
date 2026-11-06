@@ -96,10 +96,10 @@ static int effects_prepare(const dok_render_case *c,uint32_t ordinal)
                 dok_nds_render_texture *e=&demand[j].texture;
                 e->storage_width=axis?128:256;e->storage_height=axis?256:128;
                 e->logical_width=axis?96:192;e->logical_height=axis?192:96;e->bytes=32768;
-                if(dok_effect_cache_require(&r->cache,key,extended,e->logical_width,e->logical_height,e->storage_width,e->storage_height,0,0,row,0)!=DOK_STATUS_OK)return GAMEPLAY_FAILURE();
+                if(!DIAG_CHECK(DIAG_EFFECTS,dok_effect_cache_require(&r->cache,key,extended,e->logical_width,e->logical_height,e->storage_width,e->storage_height,0,0,row,0),DOK_STATUS_OK,r->cache.capacity,r->cache.used))return GAMEPLAY_FAILURE();
             } else if(code || mask) {
-                if(dok_effect_cache_require(&r->cache,key,t->pixels,t->logical_width,t->logical_height,
-                    t->storage_width,t->storage_height,(uint16_t)(code?flags:0),(uint16_t)phase,row,mask!=0)!=DOK_STATUS_OK)do{if(!g_nds_effect_probe[31])g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return GAMEPLAY_FAILURE();}while(0);
+                if(!DIAG_CHECK(DIAG_EFFECTS,dok_effect_cache_require(&r->cache,key,t->pixels,t->logical_width,t->logical_height,
+                    t->storage_width,t->storage_height,(uint16_t)(code?flags:0),(uint16_t)phase,row,mask!=0),DOK_STATUS_OK,r->cache.capacity,r->cache.used))do{if(!g_nds_effect_probe[31])g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return GAMEPLAY_FAILURE();}while(0);
             }
         }
         q->texture_slot=(uint16_t)j;
@@ -108,7 +108,7 @@ static int effects_prepare(const dok_render_case *c,uint32_t ordinal)
         demand[i].texture.pixels=dok_effect_cache_pixels(&r->cache,demand[i].key);
         if(!demand[i].texture.pixels)do{if(!g_nds_effect_probe[31])g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return GAMEPLAY_FAILURE();}while(0);
     }
-    if(dok_nds_stream_plan(demand,demand_count,&stream_stats)!=DOK_NDS_RENDER_OK)do{if(!g_nds_effect_probe[31])g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return GAMEPLAY_FAILURE();}while(0);
+    if(!DIAG_CHECK(DIAG_PLAN,dok_nds_stream_plan(demand,demand_count,&stream_stats),DOK_NDS_RENDER_OK,demand_count,storage->cache.used))do{if(!g_nds_effect_probe[31])g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return GAMEPLAY_FAILURE();}while(0);
     sprite_obs.demand_count=demand_count;obs.texture_count=demand_count;obs.texture_bytes=stream_stats.resident_bytes;
     uint32_t data[32]={0x13504b44u,1,32u*4u,0,address(r->light),address(r->rgb6),address(r->palette),
         (uint32_t)(int32_t)near_depth,r->percentage,light_counts.source_quads,light_counts.published_quads,
