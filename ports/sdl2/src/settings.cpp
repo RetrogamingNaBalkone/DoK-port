@@ -45,9 +45,9 @@ std::string encode_settings(const AppSettings& s){
     if(s.resource_paths.size()>64)throw std::invalid_argument("Too many saved resource paths");
     std::ostringstream o;o<<"[settings]\nversion=1\n[video]\nrenderer="<<int(s.video.renderer)<<"\nwidth="<<s.video.width<<"\nheight="<<s.video.height
       <<"\nsoftware_mode="<<s.video.software_mode<<"\nfullscreen="<<s.video.fullscreen<<"\nlinear="<<s.linear
-      <<"\nframe_filter="<<s.frame_filter<<"\nfxaa="<<s.fxaa<<"\nclassic_hud="<<s.classic_hud<<"\nauto_hud="<<s.auto_hud<<"\nfullscreen_width="<<s.video.fullscreen_width<<"\nfullscreen_height="<<s.video.fullscreen_height
+      <<"\nmip_filter="<<s.mip_filter<<"\nframe_filter="<<s.frame_filter<<"\nfxaa="<<s.fxaa<<"\nclassic_hud="<<s.classic_hud<<"\nauto_hud="<<s.auto_hud<<"\nfullscreen_width="<<s.video.fullscreen_width<<"\nfullscreen_height="<<s.video.fullscreen_height
       <<"\n[interface]\nlocale="<<int(s.locale)<<"\nfps="<<s.show_fps<<"\nlast_dataset="<<int(s.last_dataset)
-      <<"\n[gameplay]\ninertia="<<s.inertia<<"\n[audio]\nmaster=100\neffects="<<s.effects_volume<<"\nmusic="<<s.music_volume
+      <<"\n[gameplay]\ninertia="<<s.inertia<<"\nsaves_enabled="<<s.saves_enabled<<"\n[audio]\nmaster=100\neffects="<<s.effects_volume<<"\nmusic="<<s.music_volume
       <<"\n[input]\nkeyboard_preset="<<int(s.input.keyboard_preset)<<"\npad_preset="<<int(s.input.pad_preset)<<"\nclassic_pad="<<s.input.classic_pad
       <<"\nmouse_enabled="<<s.input.mouse_enabled<<"\ngamepad_enabled="<<s.input.gamepad_enabled
       <<"\nmouse_sensitivity="<<s.input.mouse_degrees_per_count<<"\nstick_sensitivity="<<s.input.turn_sensitivity<<"\ndeadzone="<<s.input.stick_deadzone<<'\n';
@@ -77,10 +77,10 @@ AppSettings load_settings(const std::filesystem::path& file,std::string& warning
         s.video.fullscreen_width=integer(m,"video.fullscreen_width",s.video.width,320,7680);
         s.video.fullscreen_height=integer(m,"video.fullscreen_height",s.video.height,200,4320);
         s.auto_hud=integer(m,"video.auto_hud",1,0,1);
-        s.frame_filter=integer(m,"video.frame_filter",0,0,2);s.fxaa=integer(m,"video.fxaa",0,0,1);s.classic_hud=integer(m,"video.classic_hud",0,0,1);
-        s.linear=integer(m,"video.linear",0,0,1);s.locale=LocaleId(integer(m,"interface.locale",int(s.locale),0,1));
+        s.frame_filter=integer(m,"video.frame_filter",0,0,3);s.fxaa=integer(m,"video.fxaa",0,0,1);s.classic_hud=integer(m,"video.classic_hud",0,0,1);
+        s.mip_filter=integer(m,"video.mip_filter",0,0,5);s.linear=integer(m,"video.linear",0,0,1);s.locale=LocaleId(integer(m,"interface.locale",int(s.locale),0,1));
         s.show_fps=integer(m,"interface.fps",1,0,1);s.last_dataset=DatasetId(integer(m,"interface.last_dataset",0,0,3));
-        s.inertia=integer(m,"gameplay.inertia",1,0,1);const int master=integer(m,"audio.master",100,0,100);
+        s.saves_enabled=integer(m,"gameplay.saves_enabled",1,0,1);s.inertia=integer(m,"gameplay.inertia",1,0,1);const int master=integer(m,"audio.master",100,0,100);
         s.effects_volume=integer(m,"audio.effects",100,0,100);s.music_volume=integer(m,"audio.music",100,0,100);
         // Legacy v1 used nested gains. Flatten once; encode writes master=100.
         s.effects_volume=master*s.effects_volume/100;s.music_volume=master*s.music_volume/100;
@@ -125,7 +125,7 @@ bool merge_settings_edits(AppSettings& stored,const AppSettings& a,const AppSett
 #undef EDIT_VIDEO
     }
 #define EDIT(f) if(a.f!=b.f&&stored.f!=b.f){stored.f=b.f;changed=true;}
-    EDIT(resource_paths) EDIT(resource_choices) EDIT(auto_hud) EDIT(frame_filter) EDIT(fxaa) EDIT(classic_hud) EDIT(locale) EDIT(linear) EDIT(show_fps) EDIT(inertia) EDIT(effects_volume) EDIT(music_volume) EDIT(last_dataset)
+    EDIT(saves_enabled) EDIT(mip_filter) EDIT(resource_paths) EDIT(resource_choices) EDIT(auto_hud) EDIT(frame_filter) EDIT(fxaa) EDIT(classic_hud) EDIT(locale) EDIT(linear) EDIT(show_fps) EDIT(inertia) EDIT(effects_volume) EDIT(music_volume) EDIT(last_dataset)
     EDIT(input.mouse_enabled) EDIT(input.gamepad_enabled)
     EDIT(input.keys) EDIT(input.buttons) EDIT(input.triggers) EDIT(input.mouse) EDIT(input.classic_pad)
     EDIT(input.keyboard_preset) EDIT(input.pad_preset) EDIT(input.mouse_degrees_per_count) EDIT(input.turn_sensitivity) EDIT(input.stick_deadzone)

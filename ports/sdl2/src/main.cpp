@@ -88,8 +88,8 @@ int main(int argc,char** argv){
             else if(arg=="--screenshot")screenshot=value();else if(arg=="--level")level_name=value();else if(arg=="--skip-intro")skip_intro=true;
             else if(arg=="--user-dir")value();else if(arg=="--ui-script")script_path=value();
             else if(arg=="--renderer"){const auto mode=value();if(mode!="gl"&&mode!="software")throw std::runtime_error("Renderer: gl|software");settings.video.renderer=mode=="gl"?dok::RendererKind::opengl:dok::RendererKind::software;}
-            else if(arg=="--filter"){const auto mode=value();if(mode!="nearest"&&mode!="linear")throw std::runtime_error("Filter: nearest|linear");settings.linear=mode=="linear";}
-            else if(arg=="--frame-filter"){const auto mode=value();if(mode!="nearest"&&mode!="linear"&&mode!="sharp")throw std::runtime_error("Frame filter: nearest|linear|sharp");settings.frame_filter=mode=="sharp"?2:mode=="linear"?1:0;}
+            else if(arg=="--filter"){const auto mode=value();const std::array<std::string,7> modes{"nearest","linear","mipmaps","trilinear","aniso2","aniso4","aniso8"};auto it=std::find(modes.begin(),modes.end(),mode);if(it==modes.end())throw std::runtime_error("Filter: nearest|linear|mipmaps|trilinear|aniso2|aniso4|aniso8");settings.texture_filter(int(it-modes.begin()));}
+            else if(arg=="--frame-filter"){const auto mode=value();if(mode!="nearest"&&mode!="linear"&&mode!="sharp"&&mode!="xbr")throw std::runtime_error("Frame filter: nearest|linear|sharp|xbr");settings.frame_filter=mode=="xbr"?3:mode=="sharp"?2:mode=="linear"?1:0;}
             else if(arg=="--fxaa"){const auto mode=value();if(mode!="on"&&mode!="off")throw std::runtime_error("FXAA: on|off");settings.fxaa=mode=="on";}
             else if(arg=="--hud"){const auto mode=value();if(mode!="classic"&&mode!="desktop"&&mode!="auto")throw std::runtime_error("HUD: auto|classic|desktop");settings.auto_hud=mode=="auto";settings.classic_hud=mode=="classic";}
             else if(arg=="--aspect"||arg=="--fov")throw std::runtime_error("FOV and aspect are automatic; select a resolution with --size instead");
@@ -230,8 +230,8 @@ int main(int argc,char** argv){
         bool reset_frame_clock=false;
         dok::SaveMetadata cached_preview;std::uint64_t preview_ticks=~std::uint64_t(0);
         menu.save_catalog=[&]{if(sets.empty())return std::vector<dok::SaveEntry>{};return dok::list_saves(user_path,sets.at(menu.dataset_index()).archive);};
-        auto request_save=[&](int slot,const std::string& name){if(!menu.save_allowed()){menu.notice("Сохранение доступно только при живом герое в незавершённом уровне.","Saving requires a living player in an unfinished level.");return;}pending_save=PendingSave{slot,name};};
-        auto load_game=[&](int slot,bool backup){
+        auto request_save=[&](int slot,const std::string& name){if(!settings.saves_enabled)return;if(!menu.save_allowed()){menu.notice("Сохранение доступно только при живом герое в незавершённом уровне.","Saving requires a living player in an unfinished level.");return;}pending_save=PendingSave{slot,name};};
+        auto load_game=[&](int slot,bool backup){if(!settings.saves_enabled)return false;
             try{
                 const auto next_index=world?current:menu.dataset_index();const auto& a=sets.at(next_index).archive;auto path=dok::save_path(user_path,a.identify(),slot);if(backup)path+=".bak";
                 auto saved=dok::decode_save(dok::read_save_file(path),a);auto next_world=std::move(saved.world);
@@ -258,7 +258,7 @@ int main(int argc,char** argv){
             }catch(const std::exception& error){log<<"SAVE load failed: "<<error.what()<<'\n';menu.notice("Не удалось загрузить сохранение. Текущая игра сохранена. Подробности в port.log.","Could not load save. The current session is preserved. See port.log.");return false;}
         };
         auto quickload=[&]{
-            if(sets.empty())return false;const auto index=world?current:menu.dataset_index();const auto entries=dok::list_saves(user_path,sets[index].archive);const auto& entry=entries.front();
+            if(!settings.saves_enabled||sets.empty())return false;const auto index=world?current:menu.dataset_index();const auto entries=dok::list_saves(user_path,sets[index].archive);const auto& entry=entries.front();
             if(!entry.exists){menu.notice("Быстрого сохранения пока нет.","No quicksave yet.");return false;}
             if(entry.backup){menu.recover_quicksave();return false;}return load_game(0,false);
         };
@@ -323,7 +323,7 @@ int main(int argc,char** argv){
                 if(e.type==SDL_KEYDOWN&&!e.key.repeat&&!menu.capturing()){
                     if(e.key.keysym.sym==SDLK_F12)capture_requested=true;
                     if(e.key.keysym.sym==SDLK_F3)settings.show_fps=!settings.show_fps;
-                    if(e.key.keysym.sym==SDLK_F4){if(settings.video.renderer==dok::RendererKind::opengl)settings.linear=!settings.linear;else settings.frame_filter=(settings.frame_filter+1)%3;}
+                    if(e.key.keysym.sym==SDLK_F4){if(settings.video.renderer==dok::RendererKind::opengl)settings.texture_filter((settings.texture_filter()+1)%7);else settings.frame_filter=(settings.frame_filter+1)%4;}
                     if(e.key.keysym.sym==SDLK_F11&&!menu.video_pending()){
                         const bool next=!settings.video.fullscreen;
                         auto video=settings.video;video.fullscreen=next;
@@ -500,7 +500,7 @@ int main(int argc,char** argv){
                 const auto bounds=dok::view_cell_bounds(pose,world->definition.cell_side,world->definition.width,world->definition.length,view_width);
                 auto dynamic=monsters->images(bounds);const auto shots=projectiles->images();dynamic.insert(dynamic.end(),shots.begin(),shots.end());
                 if(gl){
-                    gl->set_linear_filter(settings.linear);
+                    gl->set_texture_filter(settings.texture_filter());
                     gl->scene_view(scene_rect,view_width,scene_height);
                     gl->world(scene->palette(),true,true);
                     scene->render(*world,pose,dynamic,[&](const auto& vertices,const auto& image,dok::Bytes light,dok::RasterAxis axis){gl->polygon(vertices,image,light,axis);},view_width,capture_preview?std::array<double,4>{}:view_motion.offset(world->presentation_ticks()),[&](auto owner){return animations->image(owner);},scene_height);
@@ -542,6 +542,7 @@ int main(int argc,char** argv){
                     for(int y=0;y<ph;++y)for(int x=0;x<pw;++x)cached_preview.preview[(oy+y)*320+ox+x]=pixels[std::size_t(y)*size[1]/ph*size[0]+std::size_t(x)*size[0]/pw];preview_ticks=world->simulation_ticks();
                 }catch(const std::exception& error){log<<"SAVE preview failed: "<<error.what()<<'\n';pending_save.reset();menu.notice("Не удалось получить превью сохранения.","Could not capture the save preview.");}
             }
+            if(!settings.saves_enabled)pending_save.reset();
             if(pending_save){
                 const auto request=*pending_save;pending_save.reset();try{auto metadata=cached_preview;metadata.name=request.name;metadata.timestamp=std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count();metadata.fingerprint=dok::save_fingerprint(sets[current].archive,level_name);
                     dok::SaveAudio sound;if(audio){const auto state=audio->snapshot();sound.voice=state.voice;sound.resource=state.resource;}

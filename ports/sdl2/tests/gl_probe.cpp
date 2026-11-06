@@ -144,6 +144,35 @@ int main(){
         // FXAA changes diagonal scene edges, leaves flat regions exact, and UI
         // submitted afterwards remains byte-exact. No temporal history involved.
         const dok::Image white{1,1,0,{255}};
+        {
+            auto colors=palette;colors[35]=0xff232323;colors[220]=0xffdcdcdc;
+            auto table=lut;for(int r=0;r<16;++r){table[r*256+1]=35;table[r*256+2]=220;}
+            const dok::Bytes lighting{table.data(),table.size()};
+            dok::Image pattern{64,64,0,std::vector<std::uint8_t>(4096)};
+            for(int y=0;y<64;++y)for(int x=0;x<64;++x)pattern.pixels[y*64+x]=1+((x+y)%2);
+            const std::vector<dok::RasterVertex> small{{156,76,100,0,0},{164,76,100,63,0},{164,84,100,63,63},{156,84,100,0,63}};
+            for(int filter=2;filter<=6;++filter){
+                gl.set_texture_filter(filter);
+                std::vector<unsigned char> direct;
+                for(bool deferred:{false,true}){gl.begin();gl.world(colors,deferred);gl.polygon(small,pattern,lighting,dok::RasterAxis::horizontal);gl.flush_world();const int value=sample(160,80);check(value>=126&&value<=129,"Mip filter must average minified RGB checker");if(deferred)check(rgba()==direct,"Mip batching changed output");else direct=rgba();}
+                colors[35]=colors[220]=0xffffffff;
+                gl.begin();gl.world(colors);gl.polygon(small,pattern,lighting,dok::RasterAxis::horizontal);check(sample(160,80)==255,"Mip palette invalidation");
+                colors[35]=0xff232323;colors[220]=0xffdcdcdc;
+                auto transparent=pattern;transparent.flags=8;std::fill(transparent.pixels.begin(),transparent.pixels.end(),0);
+                gl.begin();gl.world(colors);gl.polygon(quad(100),transparent,lighting,dok::RasterAxis::vertical);gl.polygon(quad(2100),image,lighting,dok::RasterAxis::vertical);check(sample(160,80)==35,"Transparent mip writes depth");
+            }
+            gl.set_texture_filter(3);colors[35]=0xffffffff;pattern.flags=8;for(auto& index:pattern.pixels)if(index==2)index=0;
+            gl.begin();gl.world(colors);gl.polygon(small,pattern,lighting,dok::RasterAxis::vertical);check(sample(160,80)>=126&&sample(160,80)<=129,"Premultiplied mip edge darkened twice");
+            pattern.flags=0;colors[35]=0xff232323;
+            for(int y=0;y<64;++y)for(int x=0;x<64;++x)pattern.pixels[y*64+x]=1+(y%2);
+            auto strip=small;strip[0].y=strip[1].y=20;strip[2].y=strip[3].y=140;
+            auto stripes=[&](int filter){gl.set_texture_filter(filter);gl.begin();gl.world(colors);gl.polygon(strip,pattern,lighting,dok::RasterAxis::horizontal);return rgba();};
+            const auto tri=stripes(3),aniso=stripes(5);int detail=0;
+            for(int y=60;y<300;++y)detail=std::max(detail,std::abs(int(tri[(y*640+321)*4])-int(aniso[(y*640+321)*4])));
+            check(detail>60,"Anisotropy must preserve detail along the minor footprint axis");
+            gl.set_texture_filter(0);
+            std::cout<<"Mipmaps/trilinear/aniso 2/4/8: RGB minification, batching, palette invalidation and alpha passed\n";
+        }
         for(int row=0;row<16;++row)lut[row*256+255]=255;
         gl.set_linear_filter(false);
         auto diagonal=[&](bool enabled){

@@ -1,0 +1,43 @@
+{
+  "task": "SP-FILTERS",
+  "date": "2026-11-06",
+  "status": "Windows implementation and automated checks PASS",
+  "app_sha256": "b115095350944dfb87cf3b903cf46b6a8a4eea4d766c31908eae4a2ec13dd503",
+  "ctest": "20/20",
+  "gl_pixel_probe": "PASS",
+  "filter_processes": 124,
+  "save_processes": 68,
+  "disabled_pkr_death_game_over": 2,
+  "packaged_launches": 8,
+  "originals_sha256": {
+    "originals/Old_Gold_3D/OLD_GOLD.RES": "e376855167b64a7190ec2da0ba9bd1da129ba178c4033aebadebca3f08b2be25",
+    "originals/pkr/RUS/PKR.RES": "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816",
+    "originals/pkr/ENG/PKE.RES": "865da340621fa6f90548a84e9ae9bf0a85071befb32a40ca1d359e488f74d458"
+  },
+  "benchmark": {
+    "gpu": "NVIDIA GeForce RTX 5070",
+    "size": [
+      1024,
+      768
+    ],
+    "cases": 63,
+    "warmup": 2,
+    "samples": 5,
+    "worst_p50_total_ms": {
+      "aniso2": 0.4112,
+      "aniso4": 0.445,
+      "aniso8": 0.4492,
+      "linear": 0.3953,
+      "mipmaps": 0.445,
+      "nearest": 0.3022,
+      "trilinear": 0.4431
+    }
+  },
+  "limits": [
+    "GLES/RK3326 untested; SP20",
+    "xBR-lv2 experimental",
+    "Natural disabled-save outcomes checked only PKR software",
+    "Benchmark excludes FXAA/present and initial atlas generation"
+  ],
+  "evidence": "research/evidence/source-port/sp-filters/report.json"
+}

@@ -1,6 +1,7 @@
 #include "dok/display.hpp"
 #include "dok/png.hpp"
 #include "dok/presentation.hpp"
+#include "dok/filters.hpp"
 #include <algorithm>
 #include <stdexcept>
 
@@ -39,6 +40,7 @@ void Display::begin(){if(gl_)gl_->begin();else{SDL_SetRenderDrawColor(renderer_,
 void Display::pixels(const std::vector<std::uint32_t>& data,int width,int height,bool game,int filter,const SDL_Rect* target){
     const auto output=size();SDL_Rect r=target?*target:SDL_Rect{0,0,output[0],output[1]};
     if(game){r.w=std::min(output[0],output[1]*4/3);r.h=r.w*3/4;r.x=(output[0]-r.w)/2;r.y=(output[1]-r.h)/2;}
+    if(filter==3){if(r.w>width||r.h>height){const auto scaled=xbr3(data,width,height);pixels(scaled,width*3,height*3,false,0,&r);return;}filter=0;}
     if(gl_){gl_->image(data,width,height,r,true,filter);return;}
     if(!texture_||texture_width_!=width||texture_height_!=height){if(texture_)SDL_DestroyTexture(texture_);
         texture_=SDL_CreateTexture(renderer_,SDL_PIXELFORMAT_ARGB8888,SDL_TEXTUREACCESS_STREAMING,width,height);texture_width_=width;texture_height_=height;

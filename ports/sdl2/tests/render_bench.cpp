@@ -122,7 +122,9 @@ int main(int argc,char** argv){try{
     const auto archive=dok::Archive::open(std::filesystem::u8path(argv[1]));
     const auto root=std::filesystem::u8path(argv[2]);const std::string level_arg=argv[3],backend=argv[4],filter=argv[7],suite=argv[8];
     const int width=std::stoi(argv[5]),height=std::stoi(argv[6]),warmup=std::stoi(argv[9]),iterations=std::stoi(argv[10]);
-    require((backend=="gl"||backend=="software")&&(filter=="nearest"||filter=="linear")&&(suite=="quick"||suite=="full"||suite=="stress"),"Invalid configuration");
+    const std::array<std::string,7> filters{"nearest","linear","mipmaps","trilinear","aniso2","aniso4","aniso8"};
+    const auto selected=std::find(filters.begin(),filters.end(),filter);
+    require((backend=="gl"||backend=="software")&&selected!=filters.end()&&(backend=="gl"||selected-filters.begin()<2)&&(suite=="quick"||suite=="full"||suite=="stress"),"Invalid configuration");
     require(!(suite=="stress"&&archive.identify()==dok::DatasetId::old_gold),"Stress rooms are Kremlin-specific; use quick/full for Old Gold");
     require(width>=1&&width<=4096&&height>=1&&height<=4096&&warmup>=1&&iterations>=1&&iterations<=100000,"Invalid dimensions/counts");
     require(!std::filesystem::exists(root),"Output exists; use a new directory");std::filesystem::create_directories(root);
@@ -134,7 +136,7 @@ int main(int argc,char** argv){try{
         SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE,24);SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER,1);
         window.p=SDL_CreateWindow("DoK render benchmark",0,0,width,height,SDL_WINDOW_OPENGL|SDL_WINDOW_HIDDEN);
         require(window.p,SDL_GetError());gl=std::make_unique<dok::GlRenderer>(window.p);
-        SDL_GL_SetSwapInterval(0);swap_interval=SDL_GL_GetSwapInterval();gl->set_linear_filter(filter=="linear");
+        SDL_GL_SetSwapInterval(0);swap_interval=SDL_GL_GetSwapInterval();gl->set_texture_filter(int(selected-filters.begin()));
         finish=reinterpret_cast<Finish>(SDL_GL_GetProcAddress("glFinish"));read=reinterpret_cast<Read>(SDL_GL_GetProcAddress("glReadPixels"));
         auto get=reinterpret_cast<Get>(SDL_GL_GetProcAddress("glGetString"));error=reinterpret_cast<Error>(SDL_GL_GetProcAddress("glGetError"));
         require(finish&&read&&get&&error,"Missing GL benchmark functions");

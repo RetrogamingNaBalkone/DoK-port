@@ -31,6 +31,7 @@ foreach ($taskName in $taskResources.Keys) {
 Copy-Item -LiteralPath (Join-Path $taskRoot 'ports/sdl2/PLAYTEST.md') -Destination (Join-Path $taskOut 'README.md') -Force
 $taskSdlLicense = [IO.File]::ReadAllText((Join-Path $env:LOCALAPPDATA 'Programs/SDL2/SDL2-2.32.10/LICENSE.txt'))
 $taskAttribution = [IO.File]::ReadAllText((Join-Path $taskRoot 'ports/sdl2/NOTICES.txt'))
+$taskAttribution += "`r`nxBR`r`n===`r`n" + [IO.File]::ReadAllText((Join-Path $taskRoot 'ports/sdl2/third_party/xbr-LICENSE.txt'))
 $taskLicenses = "SDL2`r`n====`r`n" + $taskSdlLicense + "`r`nUI methodology`r`n==============`r`n" + $taskAttribution
 [IO.File]::WriteAllText((Join-Path $taskOut 'LICENSES.txt'), $taskLicenses, [Text.UTF8Encoding]::new($false))
 foreach ($name in @('dok_port.exe','Play.cmd','Play-OpenGL.cmd','Play-Software.cmd','NOTICES.txt','SDL2-LICENSE.txt')) {

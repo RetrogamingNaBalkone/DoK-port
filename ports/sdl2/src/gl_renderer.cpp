@@ -3,6 +3,7 @@
 #include "dok/gl_renderer.hpp"
 #include "dok/png.hpp"
 #include "dok/presentation.hpp"
+#include "dok/filters.hpp"
 #include <algorithm>
 #include <cstring>
 #include <stdexcept>
@@ -30,7 +31,10 @@ struct GlRenderer::Impl {
     std::vector<std::uint8_t> light_rgba;
     bool palette_valid=false;
     bool light_uploaded=false;
-    bool linear_filter=false;
+    int texture_filter=0;bool derivatives=true;
+    struct MipTexture {GLuint id;std::uint64_t epoch;std::size_t bytes;};
+    std::unordered_map<std::uint64_t,MipTexture> mip_textures;
+    std::size_t mip_bytes=0;
     std::unordered_map<std::uint64_t,GLuint> textures;
     // Validate bytes, not pointer identity: callers may mutate or recycle Image.
     struct ImageHash {unsigned width=0,height=0;std::vector<std::uint8_t> pixels;std::uint64_t hash=0,epoch=0;};
@@ -40,11 +44,11 @@ struct GlRenderer::Impl {
     GLint mode_location=-1,filter_location=-1,size_location=-1,batch_location=-1,output_scale_location=-1;
     std::vector<std::uint8_t> rgba_bytes;
     std::vector<float> polygon_data;
-    struct Command {GLuint texture;GLint first;GLsizei count;unsigned width,height;int mode;bool linear,blend;};
+    struct Command {GLuint texture;GLint first;GLsizei count;unsigned width,height;int mode;int filter;bool blend;};
     bool deferred=false;
     std::vector<float> world_vertices;
     std::vector<Command> commands;
-    struct Batch {GLint first=0;GLsizei count=0;std::array<GLuint,7> textures{};unsigned used=0;bool linear=false,blend=false;};
+    struct Batch {GLint first=0;GLsizei count=0;std::array<GLuint,7> textures{};unsigned used=0;int filter=0;bool blend=false;};
     std::vector<Batch> batches;
     std::vector<float> triangle_vertices;
 #define DECLARE(name) decltype(&gl##name) name=nullptr;
@@ -56,7 +60,10 @@ struct GlRenderer::Impl {
         const char* prefix=profile==SDL_GL_CONTEXT_PROFILE_ES?
             (kind==GL_VERTEX_SHADER?"#version 100\nprecision highp float;\n#define VARYING varying mediump\n":"#version 100\nprecision mediump float;\n#define VARYING varying mediump\n"):
             "#version 110\n#define VARYING varying\n";GLuint id=CreateShader(kind);
-        const char* sources[]={prefix,body};ShaderSource(id,2,sources,nullptr);CompileShader(id);
+        const char* extension=profile==SDL_GL_CONTEXT_PROFILE_ES&&kind==GL_FRAGMENT_SHADER?(derivatives?"#extension GL_OES_standard_derivatives : enable\n":"#define NO_MIP_DERIVATIVES\n"):"";
+        // Extensions must precede precision declarations in GLES.
+        std::string header=prefix;if(profile==SDL_GL_CONTEXT_PROFILE_ES&&kind==GL_FRAGMENT_SHADER)header=std::string("#version 100\n")+extension+"#ifdef GL_FRAGMENT_PRECISION_HIGH\nprecision highp float;\n#else\nprecision mediump float;\n#endif\n#define VARYING varying mediump\n";
+        const char* sources[]={header.c_str(),body};ShaderSource(id,2,sources,nullptr);CompileShader(id);
         GLint okay=0;GetShaderiv(id,GL_COMPILE_STATUS,&okay);
         if(!okay){char message[2048]{};GetShaderInfoLog(id,sizeof(message),nullptr,message);DeleteShader(id);throw std::runtime_error(message);}return id;
     }
@@ -87,7 +94,7 @@ struct GlRenderer::Impl {
         DrawArrays(GL_TRIANGLE_FAN,0,static_cast<GLsizei>(vertices.size()/7));
     }
     ~Impl(){if(context){SDL_GL_MakeCurrent(window,context);
-        if(DeleteTextures){for(auto t:textures)DeleteTextures(1,&t.second);for(const auto& t:ui_textures)DeleteTextures(1,&t.second.id);DeleteTextures(1,&light);if(post_texture)DeleteTextures(1,&post_texture);}
+        if(DeleteTextures){for(auto t:mip_textures)DeleteTextures(1,&t.second.id);for(auto t:textures)DeleteTextures(1,&t.second);for(const auto& t:ui_textures)DeleteTextures(1,&t.second.id);DeleteTextures(1,&light);if(post_texture)DeleteTextures(1,&post_texture);}
         if(DeleteFramebuffers&&framebuffer)DeleteFramebuffers(1,&framebuffer);
         if(DeleteRenderbuffers&&frame_depth)DeleteRenderbuffers(1,&frame_depth);
         if(DeleteTextures&&frame_texture)DeleteTextures(1,&frame_texture);
@@ -101,6 +108,7 @@ GlRenderer::GlRenderer(SDL_Window* window):impl_(std::make_unique<Impl>()){
 #define LOAD_FRAME(name) g.name=reinterpret_cast<decltype(g.name)>(SDL_GL_GetProcAddress("gl" #name));if(!g.name)g.name=reinterpret_cast<decltype(g.name)>(SDL_GL_GetProcAddress("gl" #name "EXT"));
     FRAME_FUNCTIONS(LOAD_FRAME)
 #undef LOAD_FRAME
+    int profile=0;SDL_GL_GetAttribute(SDL_GL_CONTEXT_PROFILE_MASK,&profile);g.derivatives=profile!=SDL_GL_CONTEXT_PROFILE_ES||SDL_GL_ExtensionSupported("GL_OES_standard_derivatives");
     const auto vertex=g.shader(GL_VERTEX_SHADER,R"(
 attribute vec4 position; attribute vec2 uv; attribute float depth; attribute vec4 material;
 VARYING vec2 texcoord; VARYING float shade; VARYING vec4 mat;
@@ -131,9 +139,52 @@ vec4 texelColor(vec2 uv,float row){
  float lower=floor(row);
  return mix(litColor(index,lower),litColor(index,min(lower+1.0,15.0)),fract(row));
 }
+// RGBA atlas contains independently reduced, premultiplied LIGHT colors.
+vec4 mipRow(vec2 uv,vec2 size,float level,float row){
+ vec2 dim=size;float offset=0.0,tile=0.0;
+ for(int k=0;k<16;++k){
+  if(float(k)<level){offset+=dim.x;}
+  tile+=dim.x;
+  if(dim.x<=1.0&&dim.y<=1.0)break;
+  dim=max(floor(dim*0.5),vec2(1.0));
+ }
+ dim=max(floor(size/exp2(level)),vec2(1.0));
+ vec2 p=clamp(uv*dim,vec2(0.5),dim-0.5);
+ vec2 origin=vec2(mod(row,4.0)*tile+offset,floor(row/4.0)*size.y);
+ return samplePicture((origin+p)/vec2(tile*4.0,size.y*4.0));
+}
+vec4 mipLight(vec2 uv,vec2 size,float level,float row){
+ float lower=floor(row);
+ return mix(mipRow(uv,size,level,lower),mipRow(uv,size,level,min(lower+1.0,15.0)),fract(row));
+}
+vec4 mipColor(vec2 uv,vec2 size,float row,vec2 dx,vec2 dy){
+ // Principal axes of J*transpose(J), in source texels per screen pixel.
+ float a=dx.x*dx.x+dy.x*dy.x,b=dx.x*dx.y+dy.x*dy.y,c=dx.y*dx.y+dy.y*dy.y;
+ float major2=max(0.0,0.5*(a+c+sqrt(max(0.0,(a-c)*(a-c)+4.0*b*b))));
+ float major=sqrt(major2),minor=major>0.0001?abs(dx.x*dy.y-dx.y*dy.x)/major:0.0;
+ vec2 direction=abs(b)>0.00001?normalize(vec2(b,major2-a)):(a>=c?vec2(1.0,0.0):vec2(0.0,1.0));
+ float taps=1.0;
+ if(filtering>=4)taps=clamp(ceil(major/max(minor,1.0)),1.0,exp2(float(filtering-3)));
+ float last=0.0;vec2 dim=size;
+ for(int k=0;k<16;++k){if(dim.x<=1.0&&dim.y<=1.0)break;dim=max(floor(dim*0.5),vec2(1.0));last+=1.0;}
+ float lod=clamp(log2(max(1.0,filtering>=4?max(minor,major/taps):major)),0.0,last);
+ if(filtering==2)lod=floor(lod+0.5);
+ float lower=floor(lod),upper=min(lower+1.0,last);vec4 color=vec4(0.0);
+ for(int k=0;k<8;++k){if(float(k)>=taps)break;
+  vec2 point=uv+direction*(major*((float(k)+0.5)/taps-0.5))/size;
+  color+=mix(mipLight(point,size,lower,row),mipLight(point,size,upper,row),fract(lod));
+ }
+ color/=taps;if(color.a>0.0)color.rgb/=color.a;return color;
+}
 float luma(vec3 rgb){return dot(rgb,vec3(0.299,0.587,0.114));}
 vec4 frameColor(vec2 uv){return texture2D(picture,uv);}
 void main(){
+ vec2 sourceSize=batched==1?floor(mat.xy+0.5):pictureSize;
+ vec2 dx=vec2(0.0),dy=vec2(0.0);
+#ifndef NO_MIP_DERIVATIVES
+ // Evaluate derivatives before any divergent branch/discard.
+ dx=dFdx(texcoord*sourceSize);dy=dFdy(texcoord*sourceSize);
+#endif
  if(mode==3){
   // Contrast-adaptive directional FXAA, two/four taps along a local edge.
   vec2 step=1.0/pictureSize;
@@ -162,7 +213,8 @@ void main(){
  // Interpolate actual palette colors, never palette indices. Keep native
  // LIGHT colors at each anchor, while removing discrete distance bands.
  vec4 color;
- if(filtering==0)color=texelColor(texcoord,row);
+ if(filtering>=2)color=mipColor(texcoord,sourceSize,row,dx,dy);
+ else if(filtering==0)color=texelColor(texcoord,row);
  else{
   vec2 size=batched==1?floor(mat.xy+0.5):pictureSize;
   vec2 p=texcoord*size-0.5,base=(floor(p)+0.5)/size,f=fract(p),step=1.0/size;
@@ -231,7 +283,9 @@ void GlRenderer::begin(){auto& g=*impl_;SDL_GL_MakeCurrent(g.window,g.context);S
     g.virtual_width=std::clamp(int(192.0*g.width/g.height+0.5),160,1200);g.virtual_height=160;g.scene_rect={0,0,g.width,g.height};
     g.Viewport(0,0,g.width,g.height);g.Disable(GL_DEPTH_TEST);g.Disable(GL_CULL_FACE);g.Disable(GL_BLEND);g.ClearColor(0,0,0,1);g.Clear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);}
 int GlRenderer::view_width()const{return impl_->virtual_width;}
-void GlRenderer::set_linear_filter(bool enabled){impl_->linear_filter=enabled;}
+void GlRenderer::set_linear_filter(bool enabled){set_texture_filter(enabled?1:0);}
+bool GlRenderer::mip_filters_supported()const{return impl_->derivatives;}
+void GlRenderer::set_texture_filter(int mode){if(mode<0||mode>6)throw std::invalid_argument("Invalid GL filter");flush_world();impl_->texture_filter=mode>=2&&!impl_->derivatives?1:mode;}
 void GlRenderer::scene_view(SDL_Rect r,int width,int height){
     flush_world();auto& g=*impl_;
     if(r.w<=0||r.h<=0||width<=0||height<=0)throw std::invalid_argument("Invalid GL scene viewport");
@@ -253,6 +307,11 @@ void GlRenderer::finish_scene(bool fxaa){
 }
 void GlRenderer::world(const std::array<std::uint32_t,256>& palette,bool defer,bool immutable_images){
     flush_world();auto& g=*impl_;
+    // Retire cold level/animation materials under pressure, retaining the last
+    // frame's working set so a large visible scene cannot trigger cache thrash.
+    if(g.mip_bytes>64*1024*1024)for(auto it=g.mip_textures.begin();it!=g.mip_textures.end();){
+        if(it->second.epoch<g.image_epoch){g.DeleteTextures(1,&it->second.id);g.mip_bytes-=it->second.bytes;it=g.mip_textures.erase(it);}else ++it;
+    }
     if(++g.image_epoch==0){g.image_hashes.clear();++g.image_epoch;}
     g.immutable_images=immutable_images;
     if(!g.palette_valid||g.palette_values!=palette){g.palette_values=palette;g.palette_valid=true;g.light_values.clear();}
@@ -265,8 +324,8 @@ void GlRenderer::flush_world(){
         auto* batch=g.batches.empty()?nullptr:&g.batches.back();
         unsigned slot=0;
         if(batch)while(slot<batch->used&&batch->textures[slot]!=c.texture)++slot;
-        if(!batch||batch->linear!=c.linear||batch->blend!=c.blend||slot==7){
-            g.batches.push_back({static_cast<GLint>(g.triangle_vertices.size()/11),0,{},0,c.linear,c.blend});
+        if(!batch||batch->filter!=c.filter||batch->blend!=c.blend||slot==7){
+            g.batches.push_back({static_cast<GLint>(g.triangle_vertices.size()/11),0,{},0,c.filter,c.blend});
             batch=&g.batches.back();slot=0;
         }
         if(slot==batch->used)batch->textures[batch->used++]=c.texture;
@@ -281,7 +340,7 @@ void GlRenderer::flush_world(){
     g.UseProgram(g.program);g.Uniform1i(g.mode_location,0);g.Uniform1i(g.batch_location,1);g.upload(g.triangle_vertices,true);
     for(const auto& b:g.batches){
         for(unsigned slot=0;slot<b.used;++slot){g.ActiveTexture(GL_TEXTURE0+slot);g.BindTexture(GL_TEXTURE_2D,b.textures[slot]);}
-        g.Uniform1i(g.filter_location,b.linear?1:0);
+        g.Uniform1i(g.filter_location,b.filter);
         if(b.blend){g.Enable(GL_BLEND);g.BlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);}else g.Disable(GL_BLEND);
         g.DrawArrays(GL_TRIANGLES,b.first,b.count);
     }
@@ -304,6 +363,7 @@ void GlRenderer::polygon(const std::vector<RasterVertex>& vertices,const Image& 
         if(g.light_values.size()!=light.size||!std::equal(g.light_values.begin(),g.light_values.end(),light.data)){
             // Exact composition of the two nearest 8-bit lookup tables. Keep
             // interpolation/alpha in the shader in precisely the same order.
+            for(const auto& t:g.mip_textures)g.DeleteTextures(1,&t.second.id);g.mip_textures.clear();g.mip_bytes=0;
             g.light_rgba.resize(light.size*4);
             for(std::size_t i=0;i<light.size;++i){
                 const auto c=g.palette_values[light.data[i]];
@@ -327,7 +387,22 @@ void GlRenderer::polygon(const std::vector<RasterVertex>& vertices,const Image& 
     auto found=g.textures.find(hash);GLuint id;
     if(found==g.textures.end()){g.GenTextures(1,&id);g.texture(id,0,image.width,image.height,GL_LUMINANCE,image.pixels.data());g.textures.emplace(hash,id);}
     else{id=found->second;if(!g.deferred){g.ActiveTexture(GL_TEXTURE0);g.BindTexture(GL_TEXTURE_2D,id);}}
-    const bool blend=g.linear_filter&&(image.flags&8)&&axis==RasterAxis::vertical;
+    if(g.texture_filter>=2){
+        const bool transparent=(image.flags&8)&&axis==RasterAxis::vertical;
+        // Separate opaque and transparent uses of the same index bytes.
+        const auto key=hash^(transparent?0x9e3779b97f4a7c15ULL:0ULL);
+        const auto mip=g.mip_textures.find(key);
+        if(mip==g.mip_textures.end()){
+            const auto atlas=make_mip_atlas(image,g.palette_values,light,transparent);
+            GLint limit=0;g.GetIntegerv(GL_MAX_TEXTURE_SIZE,&limit);
+            if(atlas.width>limit||atlas.height>limit)throw std::runtime_error("Lit mip atlas exceeds GL texture limit");
+            g.GenTextures(1,&id);g.rgba(id,0,atlas.width,atlas.height,atlas.pixels.data());
+            g.TexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);g.TexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+            const auto bytes=atlas.pixels.size()*sizeof(std::uint32_t);g.mip_bytes+=bytes;
+            g.mip_textures.emplace(key,Impl::MipTexture{id,g.image_epoch,bytes});
+        }else{id=mip->second.id;mip->second.epoch=g.image_epoch;if(!g.deferred){g.ActiveTexture(GL_TEXTURE0);g.BindTexture(GL_TEXTURE_2D,id);}}
+    }
+    const bool blend=g.texture_filter!=0&&(image.flags&8)&&axis==RasterAxis::vertical;
     auto& data=g.polygon_data;data.clear();data.reserve(vertices.size()*7);
     for(const auto& p:vertices){
         const auto v=p.precise.value_or(std::array<float,5>{float(p.x),float(p.y),float(p.depth),float(p.u),float(p.v)});
@@ -336,16 +411,17 @@ void GlRenderer::polygon(const std::vector<RasterVertex>& vertices,const Image& 
             (v[3]+0.5f)/image.width,(v[4]+0.5f)/image.height,p.shade_depth.value_or(std::max(0.0f,v[2]))});}
     const int mode=(axis==RasterAxis::vertical&&(image.flags&8))?1:0;
     if(g.deferred){
-        g.commands.push_back({id,static_cast<GLint>(g.world_vertices.size()/7),static_cast<GLsizei>(data.size()/7),image.width,image.height,mode,g.linear_filter,blend});
+        g.commands.push_back({id,static_cast<GLint>(g.world_vertices.size()/7),static_cast<GLsizei>(data.size()/7),image.width,image.height,mode,g.texture_filter,blend});
         g.world_vertices.insert(g.world_vertices.end(),data.begin(),data.end());
     }else{
-        g.Uniform1i(g.filter_location,g.linear_filter?1:0);
+        g.Uniform1i(g.filter_location,g.texture_filter);
         g.Uniform2f(g.size_location,float(image.width),float(image.height));
         if(blend){g.Enable(GL_BLEND);g.BlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);}else g.Disable(GL_BLEND);
         g.draw(data,mode);
     }
 }
 void GlRenderer::image(const std::vector<std::uint32_t>& pixels,int width,int height,SDL_Rect r,bool screen_pixels,int filter){
+    if(filter==3){if(r.w>width||r.h>height){const auto scaled=xbr3(pixels,width,height);image(scaled,width*3,height*3,r,screen_pixels,0);return;}filter=0;}
     flush_world();
     auto& g=*impl_;
     const auto key=(std::uint64_t(width)<<32)|unsigned(height);

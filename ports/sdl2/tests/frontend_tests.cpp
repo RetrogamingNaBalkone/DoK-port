@@ -45,7 +45,7 @@ int main(){
         s.locale=s.locale==dok::LocaleId::ru?dok::LocaleId::en:dok::LocaleId::ru;
         s.video={dok::RendererKind::software,800,600,3,true};s.input.keyboard(dok::InputPreset::classic);s.input.gamepad(dok::InputPreset::classic);
         s.inertia=false;s.effects_volume=45;s.input.mouse_enabled=false;s.input.gamepad_enabled=false;s.music_volume=15;s.input.keys[0][0]=SDL_SCANCODE_I;s.input.keyboard_preset=dok::InputPreset::custom;
-        s.frame_filter=2;s.fxaa=true;s.classic_hud=true;s.auto_hud=false;
+        s.frame_filter=3;s.mip_filter=5;s.saves_enabled=false;s.fxaa=true;s.classic_hud=true;s.auto_hud=false;
         s.resource_paths={"C:/Games/Старое золото/OLD_GOLD.RES","C:/Games/edition=two.RES"};
         s.resource_choices[1]=s.resource_paths[0];
         check(dok::save_settings(path,s,warning),"Save settings");auto loaded=dok::load_settings(path,warning);
@@ -136,7 +136,8 @@ int main(){
             down(revised,1);key(revised,SDLK_RETURN);down(revised,4);check(revised.focused_row()==4,"Four settings categories and Back");
             key(revised,SDLK_UP);key(revised,SDLK_UP);key(revised,SDLK_UP);key(revised,SDLK_UP);key(revised,SDLK_RETURN);
             focus(5);key(revised,SDLK_RIGHT);check(edits.linear&&edits.frame_filter==0,"GL filtering independent");
-            focus(0);key(revised,SDLK_RIGHT);focus(5);key(revised,SDLK_LEFT);
+            focus(5);for(int filter=2;filter<=6;++filter){key(revised,SDLK_RIGHT);check(edits.texture_filter()==filter,"All GL filters reachable");}key(revised,SDLK_RIGHT);check(edits.texture_filter()==0,"GL filter wrap");key(revised,SDLK_RIGHT);
+            focus(0);key(revised,SDLK_RIGHT);focus(5);key(revised,SDLK_LEFT);check(edits.frame_filter==3,"Experimental xBR reachable");key(revised,SDLK_LEFT);
             check(edits.linear&&edits.frame_filter==2,"Software Sharp Bilinear independent");
             key(revised,SDLK_DOWN);check(revised.focused_row()==7,"Software skips disabled FXAA");
             focus(0);key(revised,SDLK_RIGHT);focus(5);check(edits.frame_filter==2&&edits.linear,"Filter values survive renderer roundtrip");
@@ -155,6 +156,17 @@ int main(){
             focus(5);pad(revised,SDL_CONTROLLER_BUTTON_A);check(edits.input.gamepad_enabled,"Pad defaults enable input");
             auto saved=edits,old=edits;edits.input.mouse_enabled=false;edits.input.gamepad_enabled=false;
             check(dok::merge_settings_edits(saved,old,edits)&&!saved.input.mouse_enabled&&!saved.input.gamepad_enabled,"Device toggles persist through merge");
+        }
+        {
+            dok::AppSettings auth;dok::Frontend m(auth);m.render(640,480);
+            key(m,SDLK_DOWN);key(m,SDLK_RETURN);down(m,3);key(m,SDLK_RETURN);
+            check(m.screen()==dok::MenuScreen::gameplay,"Gameplay screen");key(m,SDLK_DOWN);key(m,SDLK_LEFT);
+            check(!auth.saves_enabled&&m.focused_row()==1,"Saving is an adjustable authenticity switch");
+            m.quickload_request();check(!command(m,dok::MenuCommand::quickload),"Disabled quickload command");
+            check(dok::save_settings(path,auth,warning),"Persist saving switch");auto round=dok::load_settings(path,warning);check(warning.empty()&&!round.saves_enabled,"Saving switch survives restart");
+            m.outcome(dok::SessionPhase::retry);m.render(640,480);down(m,2);check(m.focused_row()<2,"Death screen skips disabled loads");
+            m.pause();m.render(640,480);down(m,2);check(m.focused_row()==7,"Pause skips all unavailable save/load commands");
+            auth.saves_enabled=true;m.quickload_request();check(command(m,dok::MenuCommand::quickload),"Reenable quickload");
         }
         // Resizing followed by focus/hover used to change the help reservation
         // and recenter the entire panel on rows without a description.

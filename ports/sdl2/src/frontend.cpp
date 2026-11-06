@@ -171,8 +171,8 @@ void Frontend::build_rows(){
         item(Item::aspect,tr(MenuString::video_aspect_ratio),software?"4:3":aspect_label(aspect_mode[0],aspect_mode[1]),software?tr("Программный рендерер использует кадр 4:3 с полями.","The software renderer uses a 4:3 frame with bars."):tr("Определяется разрешением. Обзор: Hor+ и Vert+.","Determined by resolution. View expands with Hor+ and Vert+."),false);
         item(Item::apply_video,tr(MenuString::apply_video_mode));
         setting(Item::filtering,tr(software?MenuString::video_frame_scaling:MenuString::video_texture_filter),
-            software?(s_.frame_filter==2?"Sharp Bilinear":s_.frame_filter==1?"Linear":"Nearest"):(s_.linear?"Linear":"Nearest"),
-            tr(software?MenuString::video_frame_scaling_help:MenuString::linear_scene_filtering_text_and_menus_remain_sharp));
+            software?(s_.frame_filter==3?"xBR":s_.frame_filter==2?"Sharp Bilinear":s_.frame_filter==1?"Linear":"Nearest"):std::array<const char*,7>{"Nearest","Linear","Mipmaps","Trilinear","Anisotropic 2x","Anisotropic 4x","Anisotropic 8x"}[s_.texture_filter()],
+            software?tr("Увеличение кадра сцены. xBR — экспериментальное сглаживание пиксельных контуров.","Scene scaling. xBR is experimental pixel contour smoothing."):tr("Mipmaps уменьшают рябь вдали; анизотропия сохраняет детали пола, потолка и стен вдоль взгляда.","Mipmaps reduce distant shimmer; anisotropy preserves detail on receding floors, ceilings and walls."));
         setting(Item::fxaa,"FXAA",on(s_.fxaa),tr(MenuString::video_fxaa_help),!software);
         setting(Item::hud,tr(MenuString::video_hud),s_.auto_hud?tr(MenuString::automatic):s_.classic_hud?tr(MenuString::classic):tr(MenuString::modern));
         setting(Item::language,"Язык / Language",s_.locale==LocaleId::ru?"Русский":"English",tr(MenuString::all_game_texts_follow_selected_language));
@@ -192,9 +192,9 @@ void Frontend::build_rows(){
     case MenuScreen::bindings:
         for(int i=0;i<actions;++i)row(action_name(i),binding_name(i,binding_parent_==MenuScreen::pad),tr(MenuString::select_an_action_to_change_its_binding));backrow();break;
     case MenuScreen::key_slots:row(tr(MenuString::primary_key),binding_name(action_,false,0));row(tr(MenuString::secondary_key),binding_name(action_,false,1));row(tr(MenuString::mouse_button),binding_name(action_,false,2));row(tr(MenuString::clear_bindings));backrow();break;
-    case MenuScreen::gameplay:row(tr(MenuString::movement_inertia),on(s_.inertia),tr(MenuString::off_instant_start_and_stop_water_currents_still_move_th));row(tr(MenuString::saving),"F5 / F9",tr("10 слотов и быстрое сохранение на игру.","10 slots and a quicksave per game."),false);defaults();backrow();break;
-    case MenuScreen::pause:row(tr(MenuString::resume));row(tr(MenuString::settings));row(tr("Карта","Map"),{},{},world_!=nullptr);row(tr("Сохранить игру","Save game"),{},{},save_allowed());row(tr("Загрузить игру","Load game"));row(tr("Быстро сохранить","Quicksave"),"F5",{},save_allowed());row(tr("Быстро загрузить","Quickload"),"F9");row(tr(MenuString::main_menu));row(tr(MenuString::quit));break;
-    case MenuScreen::dataset_menu:row(tr("Новая игра","New game"));row(tr("Загрузить игру","Load game"));row(tr("Об игре","About this game"));backrow();break;
+    case MenuScreen::gameplay:setting(Item::inertia,tr(MenuString::movement_inertia),on(s_.inertia),tr(MenuString::off_instant_start_and_stop_water_currents_still_move_th));setting(Item::saving,tr(MenuString::saving),on(s_.saves_enabled),tr("В оригинале сохранений не было. Выкл.: сохранение и загрузка игры недоступны, включая F5/F9. Файлы остаются.","The originals had no saves. Off disables saving and loading, including F5/F9. Existing files are kept."));finish();break;
+    case MenuScreen::pause:row(tr(MenuString::resume));row(tr(MenuString::settings));row(tr("Карта","Map"),{},{},world_!=nullptr);row(tr("Сохранить игру","Save game"),{},{},save_allowed());row(tr("Загрузить игру","Load game"),{},{},s_.saves_enabled);row(tr("Быстро сохранить","Quicksave"),"F5",{},save_allowed());row(tr("Быстро загрузить","Quickload"),"F9",{},s_.saves_enabled);row(tr(MenuString::main_menu));row(tr(MenuString::quit));break;
+    case MenuScreen::dataset_menu:row(tr("Новая игра","New game"));row(tr("Загрузить игру","Load game"),{},{},s_.saves_enabled);row(tr("Об игре","About this game"));backrow();break;
     case MenuScreen::save_slots:case MenuScreen::load_slots:
         for(int i=screen_==MenuScreen::save_slots?1:0;i<=10;++i){const auto& e=saves_.at(i);row((i?std::to_string(i)+". ":tr("Быстрое: ","Quick: "))+(e.exists?(e.valid?e.metadata.name:tr("Повреждено / несовместимо","Damaged / incompatible")):tr("Пусто","Empty")),{},e.error);}
         backrow();break;
@@ -229,7 +229,7 @@ void Frontend::build_rows(){
     case MenuScreen::readme:row(tr(MenuString::continue_action));backrow();break;
     case MenuScreen::ending:row(tr(MenuString::to_menu));break;
     case MenuScreen::title:row(tr(MenuString::continue_2));backrow();break;
-    case MenuScreen::outcome:row(action_==int(SessionPhase::retry)?tr(MenuString::retry):tr(MenuString::level_selection));row(tr(MenuString::main_menu));row(tr("Загрузить игру","Load game"));row(tr("Быстро загрузить","Quickload"),"F9");break;
+    case MenuScreen::outcome:row(action_==int(SessionPhase::retry)?tr(MenuString::retry):tr(MenuString::level_selection));row(tr(MenuString::main_menu));row(tr("Загрузить игру","Load game"),{},{},s_.saves_enabled);row(tr("Быстро загрузить","Quickload"),"F9",{},s_.saves_enabled);break;
     default:break;
     }
     if(!rows_.empty()){
@@ -336,7 +336,7 @@ void Frontend::choose(int delta){
                 int at=0;for(int i=0;i<int(unique.size());++i)if(unique[i]==std::array<int,2>{w,h})at=i;
                 at=(at+d+int(unique.size()))%int(unique.size());w=unique[at][0];h=unique[at][1];
             }
-        }else if(rows_[focus_].id==Item::filtering){if(draft_.renderer==RendererKind::software)s_.frame_filter=(s_.frame_filter+d+3)%3;else s_.linear=!s_.linear;}
+        }else if(rows_[focus_].id==Item::filtering){if(draft_.renderer==RendererKind::software)s_.frame_filter=(s_.frame_filter+d+4)%4;else s_.texture_filter((s_.texture_filter()+d+7)%7);}
         else if(rows_[focus_].id==Item::apply_video){apply_video();}
         else if(rows_[focus_].id==Item::fxaa)s_.fxaa=!s_.fxaa;
         else if(rows_[focus_].id==Item::hud){
@@ -344,7 +344,7 @@ void Frontend::choose(int delta){
             s_.auto_hud=layout==0;s_.classic_hud=layout==1;
         }else if(rows_[focus_].id==Item::language)s_.locale=s_.locale==LocaleId::ru?LocaleId::en:LocaleId::ru;
         else if(rows_[focus_].id==Item::fps)s_.show_fps=!s_.show_fps;
-        else if(rows_[focus_].id==Item::defaults){draft_=VideoSettings{};s_.linear=false;s_.frame_filter=0;s_.fxaa=false;s_.classic_hud=false;s_.auto_hud=true;s_.locale=system_locale();s_.show_fps=true;}else back();break;
+        else if(rows_[focus_].id==Item::defaults){draft_=VideoSettings{};s_.linear=false;s_.mip_filter=0;s_.frame_filter=0;s_.fxaa=false;s_.classic_hud=false;s_.auto_hud=true;s_.locale=system_locale();s_.show_fps=true;}else back();break;
     case MenuScreen::video_unsaved:
         if(focus_==0)apply_video();
         else if(focus_==1){draft_=s_.video;enter_item(MenuScreen::settings,Item::graphics);}
@@ -368,7 +368,7 @@ void Frontend::choose(int delta){
         }break;}
     case MenuScreen::bindings:if(focus_==actions)back();else{action_=focus_;enter(binding_parent_==MenuScreen::pad?MenuScreen::capture:MenuScreen::key_slots);}break;
     case MenuScreen::key_slots:if(focus_<3){slot_=focus_;enter(MenuScreen::capture);}else if(focus_==3){s_.input.keys[action_]={};s_.input.mouse[action_]=0;s_.input.keyboard_preset=InputPreset::custom;}else back();break;
-    case MenuScreen::gameplay:if(focus_==0)s_.inertia=!s_.inertia;else if(focus_==2)s_.inertia=true;else if(focus_==3)back();break;
+    case MenuScreen::gameplay:if(rows_[focus_].id==Item::inertia)s_.inertia=!s_.inertia;else if(rows_[focus_].id==Item::saving)s_.saves_enabled=!s_.saves_enabled;else if(rows_[focus_].id==Item::defaults){s_.inertia=true;s_.saves_enabled=true;}else back();break;
     case MenuScreen::pause:if(focus_==0){hide();commands_.push_back(MenuCommand::resume);}else if(focus_==1)enter(MenuScreen::settings);else if(focus_==2)show_map();else if(focus_==3)open_saves(true);else if(focus_==4)open_saves(false);else if(focus_==5)commands_.push_back(MenuCommand::quicksave);else if(focus_==6)commands_.push_back(MenuCommand::quickload);else{confirm_quit_=focus_==8;fallback_=false;enter(MenuScreen::confirm,1);}break;
     case MenuScreen::confirm:if(focus_==1)back();else if(fallback_){fallback_=false;old_video_=s_.video;draft_=s_.video;draft_.renderer=RendererKind::software;s_.video=draft_;video_deadline_=now_+15000;enter(MenuScreen::video_confirm);commands_.push_back(MenuCommand::apply_video);}else{commands_.push_back(confirm_quit_?MenuCommand::quit:MenuCommand::main);if(!confirm_quit_)main_menu();}break;
     case MenuScreen::conflict:if(focus_==0)accept_binding();else back();break;
@@ -511,11 +511,11 @@ void Frontend::handle(const SDL_Event& e,int ww,int wh){
     }
     if(accept)choose();
 }
-bool Frontend::save_allowed()const{return world_&&world_->player&&!world_->level_complete&&world_->objects.at(*world_->player).player_state->health()>0;}
+bool Frontend::save_allowed()const{return s_.saves_enabled&&world_&&world_->player&&!world_->level_complete&&world_->objects.at(*world_->player).player_state->health()>0;}
 void Frontend::refresh_saves(){saves_=save_catalog?save_catalog():std::vector<SaveEntry>{};if(saves_.size()!=11){saves_.resize(11);for(int i=0;i<11;++i)saves_[i].slot=i;}}
-void Frontend::open_saves(bool saving){save_return_=screen_;refresh_saves();enter(saving?MenuScreen::save_slots:MenuScreen::load_slots);}
+void Frontend::open_saves(bool saving){if(!s_.saves_enabled)return;save_return_=screen_;refresh_saves();enter(saving?MenuScreen::save_slots:MenuScreen::load_slots);}
 void Frontend::confirm_save_action(int op){save_operation_=op;enter(MenuScreen::save_confirm,1);}
-void Frontend::quickload_request(){commands_.push_back(MenuCommand::quickload);}
+void Frontend::quickload_request(){if(!s_.saves_enabled)return;commands_.push_back(MenuCommand::quickload);}
 const MenuFrame& Frontend::render_saves(){
     const int w=frame_.width,h=frame_.height,t=text_height_;
     const bool compact=h<300,list=screen_==MenuScreen::save_slots||screen_==MenuScreen::load_slots;
