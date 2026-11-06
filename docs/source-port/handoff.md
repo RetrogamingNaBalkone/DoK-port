@@ -1,5 +1,29 @@
 # Передача контекста OGDoK (Source Port)
 
+## OGDoK-Win-1.0-RC1 — опубликован 6 ноября 2026 года
+
+Пользователь объявил playtest завершённым и поручил GitHub-пререлиз без RES.
+Собран последний коммит main `3a3b29aaeb24755a3d98a9460f9c13002681d011`,
+локальный и удалённый HEAD совпали, дерево перед задачей было чистым.
+Код не менялся; тег RC1 указывает на этот коммит. Документация задачи
+обновлена отдельно от исходной ревизии сборки.
+
+[Пререлиз](https://github.com/RetrogamingNaBalkone/DoK-port/releases/tag/OGDoK-Win-1.0-RC1)
+публично опубликован, не draft и не latest. Загружены ZIP и SHA256.txt.
+В ZIP только OGDoK.exe, SDL2.dll, README.txt, LICENSES.txt; RES нет.
+Локальный архив `artifacts/sdl2/OGDoK-Win-1.0-RC1.zip`, папка пакета
+`artifacts/sdl2/OGDoK-Win-1_0-RC1/`. SHA-256 ZIP:
+`563c2d66ef0e1b4cc56b657f9c521de5194ef4fbe283233adc2b87dd5d18da01`;
+GitHub digest совпал. Release/CTest 20/20 и packaged 8/8 PASS.
+Точные команды, отчёты и ограничения — [SP19](tasks/SP19.md),
+пользовательское описание — [текст релиза](releases/OGDoK-Win-1.0-RC1.md).
+
+SP18 Windows-playtest принят пользователем; прежние требования продолжать
+его ниже исторические. Отдельные аппаратные измерения не объявлены пройденными.
+Следующий ID — SP19: замечания RC1, стабильная 1.0 и CI по отдельному запросу.
+Windows 8 не проверена; Linux/ARM/GLES и обмен профилями принадлежат SP20.
+GBA/NDS и оригиналы не затронуты.
+
 ## SP-LOG-ERRORS / SP-VIDEO-APPLY — завершено 6 ноября 2026
 
 Исходная база ec7795d56a485ccad04cdf771a176b4298e00c9e, дерево было чистым.
