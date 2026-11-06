@@ -15,7 +15,7 @@ def main():
     for path in RES:
         for level in (['LEVEL4'] if 'Old_Gold' in path else ['LEVEL1', 'LEVEL2', 'LEVEL3']):
             user = ROOT / 'build/sdl2/checks/sp06' / (Path(path).stem + '-' + level)
-            commands.append(['build/sdl2/windows/dok_port.exe', '--renderer', 'software', '--size', '320x200',
+            commands.append(['build/sdl2/windows/OGDoK.exe', '--renderer', 'software', '--size', '320x200',
                              '--res', path, '--level', level, '--skip-intro', '--frames', '30', '--user-dir', str(user)])
     results = []
     for index, command in enumerate(commands):

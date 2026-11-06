@@ -5,7 +5,7 @@ from check_video import Image
 ROOT=Path(__file__).resolve().parents[3]
 OUT=ROOT/'research/evidence/source-port/og-graphics'
 RES=ROOT/'originals/Old_Gold_3D/OLD_GOLD.RES'
-EXE=ROOT/'build/sdl2/windows/dok_port.exe'
+EXE=ROOT/'build/sdl2/windows/OGDoK.exe'
 sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
 
 def main():

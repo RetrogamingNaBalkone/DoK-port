@@ -17,8 +17,8 @@ def main():
     parser.add_argument('--hidden', action='store_true', help='Use diagnostic hidden windows (r2 or later).')
     args = parser.parse_args()
     package = args.package.resolve()
-    exe = package / 'dok_port.exe'
-    required = {'dok_port.exe', 'SDL2.dll', 'README.md', 'LICENSES.txt'}
+    exe = package / 'OGDoK.exe'
+    required = {'OGDoK.exe', 'SDL2.dll', 'README.md', 'LICENSES.txt'}
     assert required <= {p.name for p in package.iterdir()}
     assert not list(package.glob('*.cmd')) and not list(package.glob('*.bat'))
     assert not (package / 'NOTICES.txt').exists() and not (package / 'SDL2-LICENSE.txt').exists()

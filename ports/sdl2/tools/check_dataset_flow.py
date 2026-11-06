@@ -31,7 +31,7 @@ for renderer in ('gl','software'):
             if action=='state':lines.append(f'{frame} shot {folder}/{label}.png')
         script=folder/'events.script'
         script.write_text('\n'.join(lines)+'\n',encoding='ascii')
-        command=['build/sdl2/windows/dok_port.exe','--res','originals/pkr/RUS/PKR.RES',
+        command=['build/sdl2/windows/OGDoK.exe','--res','originals/pkr/RUS/PKR.RES',
                  '--res','originals/Old_Gold_3D/OLD_GOLD.RES','--res','originals/pkr/ENG/PKE.RES',
                  '--level','LEVEL1','--skip-intro','--input-replay',str(replay),'--frames','64',
                  '--ui-script',str(script),'--user-dir',str(folder),'--size','800x450',

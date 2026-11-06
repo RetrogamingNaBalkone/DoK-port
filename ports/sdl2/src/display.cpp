@@ -11,7 +11,7 @@ Display::Display(const VideoSettings& s,bool vsync){
             SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION,2);SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION,0);
             SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER,1);SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE,24);
         }
-        window_=SDL_CreateWindow("DoK Source Port",SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED,s.width,s.height,
+        window_=SDL_CreateWindow("OGDoK",SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED,s.width,s.height,
             SDL_WINDOW_RESIZABLE|SDL_WINDOW_ALLOW_HIGHDPI|SDL_WINDOW_HIDDEN|(s.renderer==RendererKind::opengl?SDL_WINDOW_OPENGL:0));
         if(!window_)throw std::runtime_error(SDL_GetError());
         if(s.renderer==RendererKind::opengl){gl_=std::make_unique<GlRenderer>(window_);if(!vsync)SDL_GL_SetSwapInterval(0);

@@ -31,7 +31,7 @@ def workspace():
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--app', type=Path, default=ROOT / 'build/sdl2/windows/dok_port.exe')
+    parser.add_argument('--app', type=Path, default=ROOT / 'build/sdl2/windows/OGDoK.exe')
     args = parser.parse_args()
     OUT.mkdir(parents=True, exist_ok=True)
     hashes = lambda: {str(p.relative_to(ROOT)): hashlib.sha256(p.read_bytes()).hexdigest() for p in PROFILES}
@@ -40,13 +40,13 @@ def main():
     with workspace() as temporary:
         work = Path(temporary)
         binary = work / 'portable folder'; binary.mkdir()
-        shutil.copy2(args.app, binary / 'dok_port.exe')
+        shutil.copy2(args.app, binary / 'OGDoK.exe')
         shutil.copy2(args.app.parent / 'SDL2.dll', binary / 'SDL2.dll')
         cwd = work / 'other cwd'; cwd.mkdir()
         env = dict(os.environ, SDL_AUDIODRIVER='dummy')
 
         def run(name, options=(), profile=None, code=0, required=(), absent=(), executable=None):
-            exe = executable or binary / 'dok_port.exe'
+            exe = executable or binary / 'OGDoK.exe'
             command = [str(exe), '--hidden', '--renderer', 'software', '--size', '320x200', '--frames', '3']
             if profile is not None:
                 command += ['--user-dir', str(profile)]
@@ -87,7 +87,7 @@ def main():
         for name, options in [('four-res', ['--res', renamed] * 4), ('missing-res', ['--res']),
                               ('empty-res', ['--res', '']), ('missing-user', ['--user-dir']),
                               ('unknown', ['--unknown'])]:
-            result = subprocess.run([str(binary / 'dok_port.exe'), '--hidden', *map(str, options)],
+            result = subprocess.run([str(binary / 'OGDoK.exe'), '--hidden', *map(str, options)],
                                     cwd=cwd, env=env, capture_output=True, encoding='utf-8', timeout=30)
             assert result.returncode == 1 and result.stderr, (name, result)
             report['cases'].append({'name': name, 'exit': result.returncode, 'stderr': result.stderr})
@@ -127,7 +127,7 @@ def main():
         assert (manual / 'settings.ini').read_bytes() == ini.read_bytes()
         (binary / 'game.ReS').unlink()
         relocated = work / '\u041f\u0435\u0440\u0435\u043d\u0435\u0441\u0435\u043d\u043e folder'; binary.rename(relocated)
-        run('relocated', executable=relocated / 'dok_port.exe', required=('Loaded Old Gold', 'datasets=1'))
+        run('relocated', executable=relocated / 'OGDoK.exe', required=('Loaded Old Gold', 'datasets=1'))
         binary = relocated
         # A bad file remains intact on idle, and is backed up before an explicit edit.
         bad = work / 'bad-profile'; bad.mkdir(); corrupt = b'[settings]\nversion=999\n'

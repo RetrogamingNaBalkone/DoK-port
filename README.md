@@ -6,7 +6,7 @@
 |---|---|---|---|
 | GBA: «Подземелья Кремля» | [ports/gba](ports/gba/) | [План](docs/gba/plan.md) | [Handoff](docs/gba/handoff.md) |
 | Nintendo DS/DS Lite: «Подземелья Кремля» | [ports/nds](ports/nds/) | [План](docs/nds/plan.md) | [Handoff](docs/nds/handoff.md) |
-| SDL2: Old Gold/PKR/PKE; Windows/Linux/PortMaster | [ports/sdl2](ports/sdl2/) | [План](docs/source-port/plan.md) | [Handoff](docs/source-port/handoff.md) |
+| OGDoK (SDL2): Old Gold/PKR/PKE; Windows/Linux/PortMaster | [ports/sdl2](ports/sdl2/) | [План](docs/source-port/plan.md) | [Handoff](docs/source-port/handoff.md) |
 
 GBA содержит реализацию и host-тесты. NDS прошёл этапы N01–N11: готовы платформа,
 данные мира, ранний 3D renderer, часы, события, ввод/движение и столкновения;
@@ -17,8 +17,9 @@ GBA содержит реализацию и host-тесты. NDS прошёл �
 старты renderer — около 59,83 FPS, диагностический N11 — 58,23 FPS в эмуляторе.
 В NDS-план добавлены три промежуточные оптимизации: после объектов со светом/водой,
 полного боя и двух экранов. Физический FPS пока не проверен.
-Для SDL2 подготовлен план; реализация ещё не начата. Завершение одного направления
-не требуется для работы над другим. Игровые статусы и следующий ID определяются
+OGDoK — общий SDL2-порт Old Gold/PKR/PKE; текущие возможности и сборки описаны
+в [плане](docs/source-port/plan.md) и [инструкции](ports/sdl2/PLAYTEST.md).
+Завершение одного направления не требуется для работы над другим. Игровые статусы и следующий ID определяются
 планом соответствующего порта.
 
 ## Структура

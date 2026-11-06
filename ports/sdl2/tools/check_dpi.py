@@ -19,7 +19,7 @@ ROOT = Path(__file__).resolve().parents[3]
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--exe', type=Path, default=ROOT / 'build/sdl2/windows/dok_port.exe')
+    parser.add_argument('--exe', type=Path, default=ROOT / 'build/sdl2/windows/OGDoK.exe')
     parser.add_argument('--out', type=Path, default=ROOT / 'research/evidence/source-port/sp21-dpi')
     args = parser.parse_args()
     exe, out = args.exe.resolve(), args.out.resolve()

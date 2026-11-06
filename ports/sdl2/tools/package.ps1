@@ -17,7 +17,7 @@ if (!$WithoutResources) {
     }
 }
 New-Item -ItemType Directory -Force -Path $taskOut | Out-Null
-foreach ($name in @('dok_port.exe','SDL2.dll')) {
+foreach ($name in @('OGDoK.exe','SDL2.dll')) {
     Copy-Item -LiteralPath (Join-Path $taskBuild $name) -Destination (Join-Path $taskOut $name) -Force
 }
 foreach ($taskName in $taskResources.Keys) {
@@ -33,7 +33,7 @@ $taskSdlLicense = [IO.File]::ReadAllText((Join-Path $env:LOCALAPPDATA 'Programs/
 $taskAttribution = [IO.File]::ReadAllText((Join-Path $taskRoot 'ports/sdl2/NOTICES.txt'))
 $taskLicenses = "SDL2`r`n====`r`n" + $taskSdlLicense + "`r`nUI methodology`r`n==============`r`n" + $taskAttribution
 [IO.File]::WriteAllText((Join-Path $taskOut 'LICENSES.txt'), $taskLicenses, [Text.UTF8Encoding]::new($false))
-foreach ($name in @('Play.cmd','Play-OpenGL.cmd','Play-Software.cmd','NOTICES.txt','SDL2-LICENSE.txt')) {
+foreach ($name in @('dok_port.exe','Play.cmd','Play-OpenGL.cmd','Play-Software.cmd','NOTICES.txt','SDL2-LICENSE.txt')) {
     # Remove only our known obsolete files when refreshing an existing package.
     Remove-Item -LiteralPath (Join-Path $taskOut $name) -Force -ErrorAction SilentlyContinue
 }

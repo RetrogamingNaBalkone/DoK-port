@@ -10,7 +10,7 @@ import struct
 import subprocess
 
 ROOT = Path(__file__).resolve().parents[3]
-EXE = ROOT / 'build/sdl2/windows/dok_port.exe'
+EXE = ROOT / 'build/sdl2/windows/OGDoK.exe'
 OUT = Path(sys.argv[1]).resolve() if len(sys.argv)>1 else ROOT / 'research/evidence/source-port/sp15-ui'
 RES = [ROOT / path for path in ('originals/Old_Gold_3D/OLD_GOLD.RES',
                                'originals/pkr/RUS/PKR.RES', 'originals/pkr/ENG/PKE.RES')]

@@ -9,7 +9,7 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[3]
 OUT = Path(sys.argv[1]).resolve() if len(sys.argv) > 1 else ROOT / 'research/evidence/source-port/sp22-weapons-r4'
-EXE = ROOT / 'build/sdl2/windows/dok_port.exe'
+EXE = ROOT / 'build/sdl2/windows/OGDoK.exe'
 PROFILES = [('old_gold', 'originals/Old_Gold_3D/OLD_GOLD.RES', 'LEVEL4'),
             ('kremlin_pkr', 'originals/pkr/RUS/PKR.RES', 'LEVEL1'),
             ('kremlin_pke', 'originals/pkr/ENG/PKE.RES', 'LEVEL1')]

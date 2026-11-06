@@ -59,7 +59,7 @@ CLI сам не сохраняет пути; действия через мен�
 Выбор выполняется до создания мира. Пример:
 
 ```text
-dok_port.exe --res first.res --res second.res --res-source second.res
+OGDoK.exe --res first.res --res second.res --res-source second.res
 ```
 
 Экранный выбор реализован SP15 и упрощён SP22: три строки игр со статусом

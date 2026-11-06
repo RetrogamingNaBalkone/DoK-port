@@ -8,7 +8,7 @@ import subprocess
 from compiler_cache import ROOT
 from experiment_cleanup import temporary_workspace
 
-EXE = ROOT / 'build/sdl2/windows/dok_port.exe'
+EXE = ROOT / 'build/sdl2/windows/OGDoK.exe'
 OUT = ROOT / 'build/sdl2/checks/frontend-process'
 
 

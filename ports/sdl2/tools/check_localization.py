@@ -15,7 +15,7 @@ from level_reference import parse
 
 ROOT = Path(__file__).resolve().parents[3]
 OUT = ROOT / 'research/evidence/source-port/sp14-localization'
-EXE = ROOT / 'build/sdl2/windows/dok_port.exe'
+EXE = ROOT / 'build/sdl2/windows/OGDoK.exe'
 
 
 def normalize(value):

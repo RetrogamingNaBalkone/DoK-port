@@ -19,7 +19,7 @@ def read_note(path):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--app', type=Path, default=ROOT / 'artifacts/sdl2/windows-playtest-sp17-r2/dok_port.exe')
+    parser.add_argument('--app', type=Path, default=ROOT / 'build/sdl2/windows/OGDoK.exe')
     parser.add_argument('--dataset', choices=['ru', 'en', 'og'])
     parser.add_argument('--backend', choices=['gl', 'software'])
     parser.add_argument('--outcome', choices=['death', 'session'])

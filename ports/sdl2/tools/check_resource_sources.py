@@ -8,7 +8,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
 OUT = ROOT / 'build/sdl2/checks/resource-sources'
-APP = ROOT / 'build/sdl2/windows/dok_port.exe'
+APP = ROOT / 'build/sdl2/windows/OGDoK.exe'
 CORE = ROOT / 'build/sdl2/windows/dok_core_tests.exe'
 PROFILES = [ROOT / p for p in ('originals/Old_Gold_3D/OLD_GOLD.RES',
             'originals/pkr/RUS/PKR.RES', 'originals/pkr/ENG/PKE.RES')]

@@ -1,4 +1,9 @@
-# Сборка SDL2-порта
+# Сборка OGDoK (SDL2)
+
+С 6 ноября 2026 года CMake-проект и цель приложения называются `OGDoK`.
+Сборка создаёт `build/sdl2/windows/OGDoK.exe`; Linux-цель имеет имя `OGDoK`.
+Каталоги портов и профилей не переименованы. Старые имена `dok_port` в
+датированных отчётах относятся к прежним сборкам; новые команды используют OGDoK.
 
 2 ноября 2026: C++17, CMake 4.4.4, Ninja 1.13.2, общий Zig 0.13.0.
 Новая реализация независима от кода GBA/NDS. Подготовлена предварительная
@@ -7,7 +12,9 @@
 Актуальные команды из корня:
 `powershell -NoProfile -ExecutionPolicy Bypass -File ports/sdl2/tools/build.ps1 -Configuration Release`
 и `powershell -NoProfile -ExecutionPolicy Bypass -File ports/sdl2/tools/package.ps1`.
-Результат по умолчанию — `artifacts/sdl2/windows-playtest`. Текущий Release CTest17/17.
+Результат по умолчанию — `artifacts/sdl2/windows-playtest`.
+Проверенная сборка OGDoK от 6 ноября: `artifacts/sdl2/windows-playtest-ogdok/`,
+Release/CTest 19/19, packaged 8/8, launch-paths 32/32; команды — [SP-NAME](tasks/SP-NAME.md).
 `--renderer gl|software`, `--size 1280x720`; Old Gold запускается с
 `--res originals/Old_Gold_3D/OLD_GOLD.RES --level LEVEL4`.
 Актуальный пакет на 4 ноября: `artifacts/sdl2/windows-playtest-20261104-sp08-sp16-r1/`
@@ -43,7 +50,7 @@ CMake/Ninja установлены через `py -3.14 -m pip install --user cm
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File ports/sdl2/tools/build.ps1 -Fresh
 py -3.14 -X utf8 ports/sdl2/tools/check_assets.py
-build/sdl2/windows/dok_port.exe --res originals/Old_Gold_3D/OLD_GOLD.RES --res originals/pkr/RUS/PKR.RES --res originals/pkr/ENG/PKE.RES --frames 3 --screenshot build/sdl2/windows/bootstrap.bmp
+build/sdl2/windows/OGDoK.exe --res originals/Old_Gold_3D/OLD_GOLD.RES --res originals/pkr/RUS/PKR.RES --res originals/pkr/ENG/PKE.RES --frames 3 --screenshot build/sdl2/windows/bootstrap.bmp
 ```
 
 `-Fresh` пересоздаёт CMake cache, не удаляет исходники или оригиналы.
@@ -92,7 +99,7 @@ SDL_GetPrefPath("DoK-port", "SourcePort").
 Начальная статичная сцена Кремля доступна через `--level`:
 
 ```powershell
-build/sdl2/windows/dok_port.exe --res originals/pkr/RUS/PKR.RES --level LEVEL1
+build/sdl2/windows/OGDoK.exe --res originals/pkr/RUS/PKR.RES --level LEVEL1
 py -3.14 -X utf8 ports/sdl2/tools/check_scene.py
 ```
 

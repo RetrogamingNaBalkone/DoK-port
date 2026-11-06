@@ -22,7 +22,7 @@ def main():
     output = base / 'app'
     results = json.loads((output/'matrix-report.json').read_text(encoding='utf-8')) if args.resume and (output/'matrix-report.json').exists() else []
     environment = dict(os.environ,SDL_AUDIODRIVER='dummy')
-    executable = Path('build/sdl2/windows/dok_port.exe').resolve()
+    executable = Path('build/sdl2/windows/OGDoK.exe').resolve()
     for route in args.routes:
         resource = Path('originals/Old_Gold_3D/OLD_GOLD.RES' if route=='og' else 'originals/pkr/RUS/PKR.RES' if route.startswith('ru') else 'originals/pkr/ENG/PKE.RES')
         replay = base / 'routes' / f'{route}.replay'

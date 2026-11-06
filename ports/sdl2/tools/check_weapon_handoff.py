@@ -9,7 +9,7 @@ import subprocess
 ROOT = Path(__file__).resolve().parents[3]
 OUT = ROOT / 'research/evidence/source-port/sp22-weapon-handoff-r5'
 BEFORE = ROOT / 'research/experiments/sp22-weapon-handoff-r5/before.exe'
-AFTER = ROOT / 'build/sdl2/windows/dok_port.exe'
+AFTER = ROOT / 'build/sdl2/windows/OGDoK.exe'
 PROFILES = [('old_gold', 'originals/Old_Gold_3D/OLD_GOLD.RES', 'LEVEL4'),
             ('kremlin_pkr', 'originals/pkr/RUS/PKR.RES', 'LEVEL1'),
             ('kremlin_pke', 'originals/pkr/ENG/PKE.RES', 'LEVEL1')]

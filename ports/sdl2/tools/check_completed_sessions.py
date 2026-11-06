@@ -15,7 +15,7 @@ def sha(path):
 def main():
     parser=argparse.ArgumentParser()
     parser.add_argument('--profiles',nargs='+',default=['ru1','en1','og'])
-    parser.add_argument('--exe',default='build/sdl2/windows/dok_port.exe')
+    parser.add_argument('--exe',default='build/sdl2/windows/OGDoK.exe')
     parser.add_argument('--renderers',nargs='+',choices=['gl','software'],default=['gl','software'])
     parser.add_argument('--report-name',default='completed-session-report.json')
     args=parser.parse_args()

@@ -29,7 +29,7 @@ def snapshots(log):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--before', type=Path, default=ROOT/'artifacts/sdl2/windows-playtest-20261104-sp08-sp16-r2/dok_port.exe')
-    parser.add_argument('--after', type=Path, default=ROOT/'build/sdl2/windows/dok_port.exe')
+    parser.add_argument('--after', type=Path, default=ROOT/'build/sdl2/windows/OGDoK.exe')
     args = parser.parse_args()
     OUT.mkdir(parents=True, exist_ok=True)
     prefs = Path(os.environ['APPDATA'])/'DoK-port/SourcePort/settings.ini'

@@ -39,7 +39,7 @@ for name in ('ru1','ru2','ru3','en1','en2','en3','og'):
     resource = next(folder.glob('*.RES'))
     executable = folder/('OG.EXE' if name=='og' else 'PKR.EXE' if name.startswith('ru') else 'PKE.EXE')
     probe = Path('build/sdl2/windows/dok_walkthrough_probe.exe')
-    app = Path('build/sdl2/windows/dok_port.exe')
+    app = Path('build/sdl2/windows/OGDoK.exe')
     rows.append(dict(name=name,status='PASS',normal_inputs=True,ai_enabled=True,full_original_map=True,
                      command=[str(probe),str(resource),'LEVEL4' if name=='og' else f'LEVEL{name[-1]}',str(replay)],
                      endpoint=completed[1],resource=str(resource),resource_sha256=sha(resource),

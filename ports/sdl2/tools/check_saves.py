@@ -17,7 +17,7 @@ SAMPLES = [('old_gold', 'originals/Old_Gold_3D/OLD_GOLD.RES', [4]),
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--app', type=Path, default=ROOT / 'build/sdl2/windows/dok_port.exe')
+    parser.add_argument('--app', type=Path, default=ROOT / 'build/sdl2/windows/OGDoK.exe')
     parser.add_argument('--out', type=Path, default=ROOT / 'research/evidence/source-port/sp17')
     args = parser.parse_args()
     with temporary_workspace(args.out.resolve(), 'run-') as out:

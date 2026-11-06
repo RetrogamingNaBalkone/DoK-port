@@ -35,7 +35,7 @@ def states(log):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--include-r1', action='store_true')
-    parser.add_argument('--exe', type=Path, default=ROOT/'build/sdl2/windows/dok_port.exe')
+    parser.add_argument('--exe', type=Path, default=ROOT/'build/sdl2/windows/OGDoK.exe')
     args = parser.parse_args()
     OUT.mkdir(parents=True, exist_ok=True)
     prefs = Path(os.environ['APPDATA'])/'DoK-port/SourcePort/settings.ini'

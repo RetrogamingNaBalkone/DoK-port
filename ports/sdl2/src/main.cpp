@@ -61,7 +61,7 @@ int main(int argc,char** argv){
         std::cerr<<message<<'\n';
         if(!log_path.empty()){std::ofstream log(log_path,std::ios::app);log<<"Fatal error: "<<message<<'\n';}
 #ifdef _WIN32
-        if(!diagnostic_hidden)SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR,"DoK Source Port",message,nullptr);
+        if(!diagnostic_hidden)SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR,"OGDoK",message,nullptr);
 #endif
         return 1;
     };

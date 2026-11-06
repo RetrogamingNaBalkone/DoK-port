@@ -25,7 +25,7 @@ class ImageChops:
   return Frame(*a.size,bytes(x^y for x,y in zip(a.data,b.data)))
 ROOT=Path(__file__).resolve().parents[3]
 OUT=ROOT/'research/evidence/source-port/sp08-video/checks'
-EXE=ROOT/'build/sdl2/windows/dok_port.exe'
+EXE=ROOT/'build/sdl2/windows/OGDoK.exe'
 
 def main():
  global OUT

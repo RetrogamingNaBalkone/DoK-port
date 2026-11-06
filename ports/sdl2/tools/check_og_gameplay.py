@@ -55,7 +55,7 @@ def main():
             user_dir.mkdir(exist_ok=True)
             # Stable test settings; all persistence stays in the evidence folder.
             (user_dir/'settings.ini').write_text('[settings]\nversion=1\n[interface]\nfps=0\n')
-            command = [BUILD/'dok_port.exe', '--res', RES, '--level', 'LEVEL4', '--skip-intro',
+            command = [BUILD/'OGDoK.exe', '--res', RES, '--level', 'LEVEL4', '--skip-intro',
                        '--renderer', backend, '--hud', hud, '--size', '800x600', '--user-dir', user_dir,
                        # Stop at the recording endpoint. An explicit --frames
                        # now requests a neutral-input tail for session tests.
@@ -87,7 +87,7 @@ def main():
     after = {str(p.relative_to(ROOT)): sha(p) for p in paths}
     assert before == after
     report = dict(tests=tests, processes=results, sha256_before=before, sha256_after=after,
-                  executable_sha256=sha(BUILD/'dok_port.exe'), replay_sha256=sha(route),
+                  executable_sha256=sha(BUILD/'OGDoK.exe'), replay_sha256=sha(route),
                   boundary=__doc__, input='Scripted logical axes/use/fire and mouse headings; fixed 16,666,667 ns per rendered frame; not physical device testing.')
     (OUT/'gameplay-report.json').write_text(json.dumps(report, indent=2) + '\n')
     print('OG natural route, 1547 placed items, four real SDL processes PASS; original hashes unchanged')
