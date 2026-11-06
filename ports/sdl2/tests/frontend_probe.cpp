@@ -12,6 +12,7 @@
 
 namespace {
 void check(bool value,const char* message){if(!value)throw std::runtime_error(message);}
+std::vector<dok::SaveEntry> loadable_saves(){std::vector<dok::SaveEntry> entries(11);entries[0].exists=entries[0].valid=true;return entries;}
 void key(dok::Frontend& menu,SDL_Keycode code){SDL_Event e{};e.type=SDL_KEYDOWN;e.key.keysym.sym=code;e.key.keysym.scancode=SDL_GetScancodeFromKey(code);menu.handle(e,640,480);menu.render(640,480);}
 void shot(dok::Display& display,dok::Frontend& menu,const std::filesystem::path& path){display.begin();auto size=display.size();const auto& frame=menu.render(size[0],size[1]);display.pixels(frame.pixels,frame.width,frame.height,false);display.screenshot(path.u8string());display.present();}
 std::uint64_t digest(const std::vector<std::uint8_t>& pixels){std::uint64_t h=1469598103934665603ULL;for(auto p:pixels){h^=p;h*=1099511628211ULL;}return h;}
@@ -22,24 +23,55 @@ int main(int argc,char** argv){
         const std::filesystem::path root=std::filesystem::u8path(argv[1]),out=std::filesystem::u8path(argv[2]);std::filesystem::create_directories(out);
         std::vector<dok::Archive> sets;for(const auto* path:{"originals/pkr/RUS/PKR.RES","originals/pkr/ENG/PKE.RES","originals/Old_Gold_3D/OLD_GOLD.RES"})sets.push_back(dok::Archive::open(root/path));
         unsigned combinations=0,frames=0,software=0;
+        for(int dataset=0;dataset<3;++dataset)for(int count:{1,3})for(int mode=0;mode<5;++mode){
+            dok::AppSettings s;s.saves_enabled=mode!=2;dok::Frontend menu(s);
+            if(count==1)menu.datasets({{&sets[dataset],"single.RES"}});
+            else menu.datasets({{&sets[0],"PKR.RES"},{&sets[1],"PKE.RES"},{&sets[2],"OLD_GOLD.RES"}});
+            menu.save_catalog=[&]{auto entries=loadable_saves();entries[0].exists=mode!=0;entries[0].valid=mode!=1;entries[0].backup=mode==4;return entries;};
+            menu.render(640,480);key(menu,SDLK_RETURN);
+            if(count==3){for(int i=0;i<dataset;++i)key(menu,SDLK_DOWN);key(menu,SDLK_RETURN);}
+            menu.commands();key(menu,SDLK_RETURN);
+            const bool loadable=mode>=3;
+            check(menu.screen()==(loadable?dok::MenuScreen::dataset_menu:dataset==2?dok::MenuScreen::levels:dok::MenuScreen::readme),"Only loadable saves show game menu");
+            check(menu.commands().empty(),"Skipping game menu preserves music");
+            key(menu,SDLK_ESCAPE);
+            check(menu.screen()==(count==1?dok::MenuScreen::main:dok::MenuScreen::datasets),"Back skips unavailable game menu");
+            check(menu.commands()==std::vector<dok::MenuCommand>{dok::MenuCommand::music_stop},"Leaving selected game stops music");
+            if(count==3)check(menu.focused_row()==dataset,"Back restores selected dataset focus");
+        }
         for(int mask=1;mask<8;++mask){dok::AppSettings s;dok::Frontend menu(s);std::vector<dok::FrontendDataset> values;
+            menu.save_catalog=loadable_saves;
             for(int i=0;i<3;++i)if(mask&(1<<i))values.push_back({&sets[i],std::to_string(i)});const auto count=values.size();menu.datasets(values);menu.render(640,480);
             key(menu,SDLK_RETURN);check(menu.screen()==(count==1?dok::MenuScreen::title:dok::MenuScreen::datasets),"Dataset cardinality route");
             if(count>1)key(menu,SDLK_RETURN);check(menu.screen()==dok::MenuScreen::title,"Dataset title route");
+            check(menu.commands()==std::vector<dok::MenuCommand>{dok::MenuCommand::music_title},"One music start on title");
+            key(menu,SDLK_RETURN);check(menu.screen()==dok::MenuScreen::dataset_menu,"Title opens game menu");
+            key(menu,SDLK_DOWN);key(menu,SDLK_DOWN);check(menu.focused_row()==2,"Back follows Load without About");
+            key(menu,SDLK_RETURN);check(menu.screen()==(count>1?dok::MenuScreen::datasets:dok::MenuScreen::main),"Game menu Back returns to game selection");
+            check(menu.commands()==std::vector<dok::MenuCommand>{dok::MenuCommand::music_stop},"Back stops selected game music");
+            key(menu,SDLK_RETURN);key(menu,SDLK_RETURN);
+            check(menu.screen()==dok::MenuScreen::dataset_menu,"Re-enter game menu");menu.commands();
             key(menu,SDLK_RETURN);const bool og=values[0].archive->identify()==dok::DatasetId::old_gold;
             check(menu.screen()==(og?dok::MenuScreen::levels:dok::MenuScreen::readme),"Original story sequence");
             for(int page=0;menu.screen()==dok::MenuScreen::readme&&page<100;++page)key(menu,SDLK_RETURN);
-            check(menu.screen()==dok::MenuScreen::levels,"Story terminates");key(menu,SDLK_RETURN);check(!menu.active(),"Start from preview");++combinations;
+            check(menu.screen()==dok::MenuScreen::levels,"Story terminates");
+            check(menu.commands().empty(),"Game menu and story preserve music");
+            key(menu,SDLK_ESCAPE);check(menu.screen()==dok::MenuScreen::dataset_menu,"Level Back returns to game menu");
+            check(menu.commands().empty(),"Level Back preserves music");key(menu,SDLK_RETURN);
+            for(int page=0;menu.screen()==dok::MenuScreen::readme&&page<100;++page)key(menu,SDLK_RETURN);
+            key(menu,SDLK_RETURN);check(!menu.active(),"Start from preview");++combinations;
         }
         for(int backend=0;backend<2;++backend)for(int lang=0;lang<2;++lang)for(auto size:{std::array<int,2>{320,200},{640,480},{1280,720},{1920,1080},{2560,1440}}){
             dok::AppSettings s;s.video.renderer=backend?dok::RendererKind::opengl:dok::RendererKind::software;s.video.width=size[0];s.video.height=size[1];s.locale=lang?dok::LocaleId::en:dok::LocaleId::ru;
             dok::Display display(s.video,false);dok::Frontend menu(s);menu.datasets({{&sets[0],"PKR.RES"},{&sets[1],"PKE.RES"},{&sets[2],"OLD_GOLD.RES"}});
+            menu.save_catalog=loadable_saves;
             const auto prefix=(backend?"gl-":"sw-")+std::string(lang?"en-":"ru-")+std::to_string(size[0])+"-";
             shot(display,menu,out/(prefix+"main.png"));key(menu,SDLK_RETURN);shot(display,menu,out/(prefix+"datasets.png"));
             key(menu,SDLK_DOWN);shot(display,menu,out/(prefix+"datasets-pke.png"));
             key(menu,SDLK_DOWN);shot(display,menu,out/(prefix+"datasets-old-gold.png"));
             key(menu,SDLK_UP);key(menu,SDLK_UP);frames+=2;
             key(menu,SDLK_RETURN);shot(display,menu,out/(prefix+"title.png"));key(menu,SDLK_RETURN);
+            shot(display,menu,out/(prefix+"game-menu.png"));key(menu,SDLK_RETURN);
             for(int page=0;menu.screen()==dok::MenuScreen::readme&&page<100;++page)key(menu,SDLK_RETURN);
             shot(display,menu,out/(prefix+"levels.png"));menu.main_menu();key(menu,SDLK_DOWN);key(menu,SDLK_RETURN);key(menu,SDLK_RETURN);shot(display,menu,out/(prefix+"graphics.png"));
             key(menu,SDLK_ESCAPE);key(menu,SDLK_ESCAPE);for(int i=0;i<2;++i)key(menu,SDLK_DOWN);key(menu,SDLK_RETURN);check(menu.screen()==dok::MenuScreen::credits,"Credits route");shot(display,menu,out/(prefix+"credits.png"));frames+=6;

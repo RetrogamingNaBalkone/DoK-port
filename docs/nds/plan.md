@@ -1,5 +1,10 @@
 # План независимого NDS-порта «Подземелий Кремля»
 
+6 ноября: [N-STORAGE](tasks/N-STORAGE.md) завершена. Старые выходы удалены,
+discovery32-ru и общие входы сохранены. Полные старые отчёты не доступны;
+правила — [storage-maintenance](../storage-maintenance.md).
+N23 остаётся в работе, следующий игровой ID N23.
+
 Продолжение 3–4 ноября 2026: [stationary CPU](spec/stationary-cpu-20261103.md), текущий ROM `discovery32-ru`.
 В пользовательском melonDS1.1 прочитаны probes: неподвижный ракурс X23133/Z23900/
 heading233, CPU16,315–22,950мс; simulation0,738–4,935мс, discovery3,327мс.

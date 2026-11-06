@@ -69,7 +69,7 @@ def main():
             count += 1
     report['app_music'] = []
     script = OUT/'music-ui.txt'
-    script.write_text('1 key Return\n3 key Return\n5 key Return\n7 state music\n')
+    script.write_text('1 key Return\n3 key Return\n7 state music\n')
     for profile, resource in RES:
         directory = OUT/'app-music'/profile
         command = [str(ROOT/'build/sdl2/windows/OGDoK.exe'), '--res', str(ROOT/resource),
@@ -79,10 +79,9 @@ def main():
                                 env=dict(os.environ, SDL_VIDEODRIVER='dummy', SDL_AUDIODRIVER='dummy'))
         log = (directory/'port.log').read_text(encoding='utf-8')
         music = re.findall(r'^MUSIC dataset=(\d+) loop=(\d+) active=(\d+)$', log, re.M)
-        expected = '1' if profile == 'old-gold' else '0'
+        expected = '1'
         assert result.returncode == 0 and music and all(loop == expected and active == '1' for dataset, loop, active in music), log
-        if profile == 'old-gold':
-            assert len(music)>=2, 'OG title and story both need loop verification'
+        assert len(music) == 1, 'Menu transitions must preserve the running title music'
         report['app_music'].append(dict(profile=profile, command=command, exit_code=result.returncode, observed=music))
     report['original_sha256_after'] = {p: sha(ROOT/p) for p in before}
     assert before == report['original_sha256_after']

@@ -44,8 +44,7 @@ int main(int argc,char** argv){
                 dok::AppSettings s;s.locale=locale;s.video.renderer=backend?dok::RendererKind::opengl:dok::RendererKind::software;s.video.width=size[0];s.video.height=size[1];
                 dok::Display display(s.video,false);dok::Frontend menu(s);menu.datasets({{&a,"single.RES"}});menu.render(size[0],size[1]);
                 key(menu,SDLK_RETURN,size[0],size[1]);check(menu.screen()==dok::MenuScreen::title,"Single RES should skip dataset selection");
-                key(menu,SDLK_RETURN,size[0],size[1]);check(menu.screen()==dok::MenuScreen::dataset_menu,"Dataset menu route");
-                key(menu,SDLK_RETURN,size[0],size[1]);check(menu.screen()==(dataset==dok::DatasetId::old_gold?dok::MenuScreen::levels:dok::MenuScreen::readme),"Story route");
+                key(menu,SDLK_RETURN,size[0],size[1]);check(menu.screen()==(dataset==dok::DatasetId::old_gold?dok::MenuScreen::levels:dok::MenuScreen::readme),"No saves: direct story route");
                 display.begin();const auto& frame=menu.render(size[0],size[1]);display.pixels(frame.pixels,frame.width,frame.height,false);
                 if(size[0]==640){const std::string prefix=std::to_string(int(dataset))+"-"+(locale==dok::LocaleId::ru?"ru":"en")+"-"+(backend?"gl":"sw");display.screenshot((out/(prefix+"-story.png")).u8string());}
                 display.present();

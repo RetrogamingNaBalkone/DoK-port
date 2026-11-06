@@ -11,7 +11,7 @@ struct FrontendDataset {const Archive* archive;std::string filename;};
 // Keep numeric values stable for replay/probe logs; interface is a retired screen.
 enum class MenuScreen {hidden,main,datasets,title,readme,levels,settings,graphics,sound,controls,keyboard,pad,
     bindings,key_slots,gameplay,interface,credits,resources,pause,confirm,capture,conflict,video_confirm,notice,ending,outcome,help,map,files,path,video_unsaved,dataset_menu,save_slots,load_slots,save_name,save_confirm,save_entry};
-enum class MenuCommand {start,resume,main,quit,apply_video,keep_video,revert_video,music_title,music_stop,music_story,retry,add_resource,select_source,save_game,load_game,delete_game,quicksave,quickload};
+enum class MenuCommand {start,resume,main,quit,apply_video,keep_video,revert_video,music_title,music_stop,retry,add_resource,select_source,save_game,load_game,delete_game,quicksave,quickload};
 struct MenuFrame {int width=640,height=480;std::vector<std::uint32_t> pixels;};
 class Frontend {
 public:
@@ -70,8 +70,9 @@ private:
     int save_slot_=0,save_operation_=0;
     std::string save_name_;
     MenuScreen save_return_=MenuScreen::pause;
-    bool about_game_=false;
     void open_saves(bool saving);
+    bool has_loadable_saves();
+    void leave_game_menu();
     void confirm_save_action(int operation);
     const MenuFrame& render_saves();
 

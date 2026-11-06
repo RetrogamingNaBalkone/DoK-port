@@ -289,6 +289,8 @@ int main(int argc,char** argv){
             for(const auto& event:script)if(event.frame==frames){
                 if(event.action=="state"){
                     const auto size=display->size();verbose<<"STATE "<<event.value<<" renderer="<<int(settings.video.renderer)<<" size="<<size[0]<<'x'<<size[1]<<" menu="<<int(menu.screen())<<" frame_filter="<<settings.frame_filter<<" fxaa="<<settings.fxaa<<" classic_hud="<<settings.classic_hud<<" auto_hud="<<settings.auto_hud<<" automatic_projection="<<true<<" gpu_presentation="<<display->gpu_presentation()<<" gpu_xbr="<<display->gpu_xbr_ready();
+                    const auto music_state=music?music->snapshot():dok::SdlAudioSnapshot{};
+                    verbose<<" music="<<bool(music)<<" music_active="<<music_state.voice.id<<" music_loop="<<music_state.voice.loop<<" music_phase="<<music_state.voice.phase;
                     if(world){const auto& p=*world->objects.at(*world->player).pose;const auto& player=*world->objects.at(*world->player).player_state;
                         std::uint64_t hash=14695981039346656037ULL;for(const auto& map:world->maps)for(auto byte:map.second){hash^=static_cast<unsigned char>(byte);hash*=1099511628211ULL;}
                         verbose<<" world="<<world.get()<<" ticks="<<world->simulation_ticks()<<" pose="<<p.x<<','<<p.y<<','<<p.z<<','<<p.heading<<" hp="<<player.health()<<" charge="<<player.charge()<<" maps="<<hash;
@@ -386,8 +388,8 @@ int main(int argc,char** argv){
                     else if(flow){menu.outcome(flow->phase());input.clear();fire_press.clear();input.capture_mouse(false);}
                     break;
                 case dok::MenuCommand::music_stop:music.reset();break;
-                case dok::MenuCommand::music_title:case dok::MenuCommand::music_story:
-                    music.reset();if(!sets.empty())try{music=std::make_unique<dok::SdlAudio>(sets[menu.dataset_index()].archive);music->volume(settings.music_volume);music->command({sets[menu.dataset_index()].archive.identify()==dok::DatasetId::old_gold?dok::AudioAction::loop:dok::AudioAction::once,1,dok::cp866("ЗАСТАВКА_ЗВУК")});const auto music_state=music->snapshot();verbose<<"MUSIC dataset="<<int(sets[menu.dataset_index()].archive.identify())<<" loop="<<music_state.voice.loop<<" active="<<music_state.voice.id<<'\n';}catch(const std::exception& e){log<<"Music unavailable: "<<e.what()<<'\n';}break;
+                case dok::MenuCommand::music_title:
+                    music.reset();if(!sets.empty())try{music=std::make_unique<dok::SdlAudio>(sets[menu.dataset_index()].archive);music->volume(settings.music_volume);music->command({dok::AudioAction::loop,1,dok::cp866("ЗАСТАВКА_ЗВУК")});const auto music_state=music->snapshot();verbose<<"MUSIC dataset="<<int(sets[menu.dataset_index()].archive.identify())<<" loop="<<music_state.voice.loop<<" active="<<music_state.voice.id<<'\n';}catch(const std::exception& e){log<<"Music unavailable: "<<e.what()<<'\n';}break;
                 case dok::MenuCommand::apply_video:
                     try{auto next=std::make_unique<dok::Display>(settings.video,!replay&&!hidden);input.capture_mouse(false);display=std::move(next);if(!replay&&!hidden)SDL_ShowWindow(display->window());video_changed=true;}
                     catch(const std::exception& e){log<<"Video rejected: "<<e.what()<<'\n';menu.video_failed(e.what());}break;

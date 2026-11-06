@@ -1,0 +1,36 @@
+{
+  "date": "2026-11-06",
+  "deleted_files": 6057,
+  "deleted_bytes": 3069258420,
+  "remaining_bytes": 1855518192,
+  "remaining_by_root": {
+    "(root)": 21273,
+    ".git": 17954223,
+    ".vscode": 2268,
+    "analysis": 67901904,
+    "artifacts": 109113112,
+    "build": 731255770,
+    "decompiled": 17373335,
+    "docs": 5781024,
+    "originals": 7832143,
+    "ports": 8908327,
+    "research": 888907342,
+    "scripts": 116929,
+    "tools": 350542
+  },
+  "archives_created": 0,
+  "protected_files_verified": 10131,
+  "protected_changes_second_pass": [],
+  "concurrent_work": "External SDL2 source edits/build appeared during cleanup and were left untouched. Counts are a point-in-time observation.",
+  "full_manifests": [
+    "research/evidence/maintenance/cleanup-20261106/outputs.json",
+    "research/evidence/maintenance/cleanup-20261106/details.json"
+  ],
+  "limitations": "Historical detailed reports, port captures and superseded binaries deleted permanently. Scalar report summaries cannot replace full machine inputs. No game rebuild or gameplay acceptance performed.",
+  "current_rom_sha256_verified": {
+    "artifacts/gba/DoK-port_UI04.gba": "de2387429e623b8fb6e47edede5f10164a8581a04fa3aa062f4a17ff42f43550",
+    "artifacts/nds/dok.nds": "6828fe9bda4550621755aa609d854bd616a0ae74108f05fba751a2d1f6e86f76"
+  },
+  "recreated_by_concurrent_build": 66,
+  "artifact_note": "Cleanup does not select artifacts paths. GBA/NDS current ROM hashes verified. Documented RC1 zip path absent during final check; concurrent external package changes are outside this cleanup."
+}

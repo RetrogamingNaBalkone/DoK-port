@@ -198,7 +198,7 @@ void Frontend::build_rows(){
         setting(Item::camera_bobbing,tr("Покачивание в «Старом Золоте»","Bobbing in Old Gold"),on(s_.camera_bobbing),tr("Покачивание камеры при движении в «Старом Золоте». Не влияет на «Подземелья Кремля».","Camera bobbing while moving in Old Gold. Does not affect Kremlin Dungeon."));
         finish();break;
     case MenuScreen::pause:row(tr(MenuString::resume));row(tr(MenuString::settings));row(tr("Карта","Map"),{},{},world_!=nullptr);row(tr("Сохранить игру","Save game"),{},{},save_allowed());row(tr("Загрузить игру","Load game"),{},{},s_.saves_enabled);row(tr("Быстро сохранить","Quicksave"),"F5",{},save_allowed());row(tr("Быстро загрузить","Quickload"),"F9",{},s_.saves_enabled);row(tr(MenuString::main_menu));row(tr(MenuString::quit));break;
-    case MenuScreen::dataset_menu:row(tr("Новая игра","New game"));row(tr("Загрузить игру","Load game"),{},{},s_.saves_enabled);row(tr("Об игре","About this game"));backrow();break;
+    case MenuScreen::dataset_menu:row(tr("Новая игра","New game"));row(tr("Загрузить игру","Load game"),{},{},s_.saves_enabled);backrow();break;
     case MenuScreen::save_slots:case MenuScreen::load_slots:
         for(int i=screen_==MenuScreen::save_slots?1:0;i<=10;++i){const auto& e=saves_.at(i);row((i?std::to_string(i)+". ":tr("Быстрое: ","Quick: "))+(e.exists?(e.valid?e.metadata.name:tr("Повреждено / несовместимо","Damaged / incompatible")):tr("Пусто","Empty")),{},e.error);}
         backrow();break;
@@ -275,11 +275,11 @@ void Frontend::back(){
     case MenuScreen::path:enter(MenuScreen::files,1);break;
     case MenuScreen::resources:enter(MenuScreen::main,remembered_focus_[MenuScreen::main]);break;
     case MenuScreen::credits:enter(MenuScreen::main,4);break;
-    case MenuScreen::title:commands_.push_back(MenuCommand::music_stop);enter(sets_.size()>1?MenuScreen::datasets:MenuScreen::main,sets_.size()>1?int(dataset_):0);break;
-    case MenuScreen::readme:commands_.push_back(MenuCommand::music_stop);enter(MenuScreen::dataset_menu);break;
-    case MenuScreen::levels:commands_.push_back(MenuCommand::music_stop);enter(MenuScreen::dataset_menu);break;
-    case MenuScreen::dataset_menu:enter(MenuScreen::title);break;
-    case MenuScreen::save_slots:case MenuScreen::load_slots:enter(save_return_,remembered_focus_[save_return_]);break;
+    case MenuScreen::title:case MenuScreen::dataset_menu:leave_game_menu();break;
+    case MenuScreen::readme:case MenuScreen::levels:if(has_loadable_saves())enter(MenuScreen::dataset_menu);else leave_game_menu();break;
+    case MenuScreen::save_slots:case MenuScreen::load_slots:
+        if(save_return_==MenuScreen::dataset_menu&&!has_loadable_saves())leave_game_menu();
+        else enter(save_return_,remembered_focus_[save_return_]);break;
     case MenuScreen::save_entry:enter(MenuScreen::load_slots,save_slot_);break;
     case MenuScreen::save_name:enter(MenuScreen::save_slots,save_slot_-1);break;
     case MenuScreen::save_confirm:enter(save_operation_==0?MenuScreen::save_name:MenuScreen::save_entry,save_operation_==0?0:1);if(save_operation_==0)SDL_StartTextInput();break;
@@ -294,10 +294,10 @@ void Frontend::choose(int delta){
     switch(screen_){
     case MenuScreen::main:if(focus_==0){if(sets_.size()>1)enter(MenuScreen::datasets);else begin_game();}else if(focus_==1)enter(MenuScreen::settings);else if(focus_==2)enter(MenuScreen::resources,0);else if(focus_==3){credit_page_=0;enter(MenuScreen::credits);}else commands_.push_back(MenuCommand::quit);break;
     case MenuScreen::datasets:if(focus_==int(sets_.size()))back();else{select_dataset(focus_);begin_game();}break;
-    case MenuScreen::title:if(focus_==1){back();break;}commands_.push_back(MenuCommand::music_stop);enter(MenuScreen::dataset_menu);break;
+    case MenuScreen::title:if(focus_==1){back();break;}enter(has_loadable_saves()?MenuScreen::dataset_menu:archive()->identify()==DatasetId::old_gold?MenuScreen::levels:MenuScreen::readme);break;
     case MenuScreen::dataset_menu:
-        if(focus_==0){about_game_=false;if(archive()->identify()==DatasetId::old_gold){enter(MenuScreen::levels);commands_.push_back(MenuCommand::music_story);}else{enter(MenuScreen::readme);commands_.push_back(MenuCommand::music_title);}}
-        else if(focus_==1)open_saves(false);else if(focus_==2){about_game_=true;enter(MenuScreen::readme);}else back();break;
+        if(focus_==0)enter(archive()->identify()==DatasetId::old_gold?MenuScreen::levels:MenuScreen::readme);
+        else if(focus_==1)open_saves(false);else back();break;
     case MenuScreen::save_slots:case MenuScreen::load_slots:{const bool saving=screen_==MenuScreen::save_slots;const int slot=focus_+(saving?1:0);if(slot>10){back();break;}save_slot_=slot;
         if(saving){save_name_=saves_[slot].exists&&saves_[slot].valid?saves_[slot].metadata.name:game_level_name(archive()->identify(),level_,s_.locale);path_buffer_=save_name_;path_selected_=true;enter(MenuScreen::save_name);SDL_StartTextInput();}
         else if(saves_[slot].exists)enter(MenuScreen::save_entry);break;}
@@ -313,10 +313,9 @@ void Frontend::choose(int delta){
         if(save_operation_==0)enter(MenuScreen::pause);else if(save_operation_==2)enter(MenuScreen::load_slots,save_slot_);break;
     case MenuScreen::readme:
         if(focus_==1){back();break;}
-        if(about_game_){back();break;}
-        if(++page_>=page_count_){enter(MenuScreen::levels);commands_.push_back(MenuCommand::music_stop);}break;
+        if(++page_>=page_count_)enter(MenuScreen::levels);break;
     case MenuScreen::levels:{
-        if(focus_==0){commands_.push_back(MenuCommand::music_stop);commands_.push_back(MenuCommand::start);hide();}
+        if(focus_==0){commands_.push_back(MenuCommand::start);hide();}
         else if(page_count_>1&&focus_==1)page_=(page_+d+page_count_)%page_count_;else back();break;}
     case MenuScreen::settings:{
         switch(rows_[focus_].id){
@@ -518,6 +517,14 @@ void Frontend::handle(const SDL_Event& e,int ww,int wh){
 }
 bool Frontend::save_allowed()const{return s_.saves_enabled&&world_&&world_->player&&!world_->level_complete&&world_->objects.at(*world_->player).player_state->health()>0;}
 void Frontend::refresh_saves(){saves_=save_catalog?save_catalog():std::vector<SaveEntry>{};if(saves_.size()!=11){saves_.resize(11);for(int i=0;i<11;++i)saves_[i].slot=i;}}
+bool Frontend::has_loadable_saves(){
+    if(!s_.saves_enabled)return false;
+    refresh_saves();return std::any_of(saves_.begin(),saves_.end(),[](const SaveEntry& entry){return entry.exists&&entry.valid;});
+}
+void Frontend::leave_game_menu(){
+    commands_.push_back(MenuCommand::music_stop);
+    enter(sets_.size()>1?MenuScreen::datasets:MenuScreen::main,sets_.size()>1?int(dataset_):0);
+}
 void Frontend::open_saves(bool saving){if(!s_.saves_enabled)return;save_return_=screen_;refresh_saves();enter(saving?MenuScreen::save_slots:MenuScreen::load_slots);}
 void Frontend::confirm_save_action(int op){save_operation_=op;enter(MenuScreen::save_confirm,1);}
 void Frontend::quickload_request(){if(!s_.saves_enabled)return;commands_.push_back(MenuCommand::quickload);}
@@ -595,7 +602,6 @@ void Frontend::picture(const std::string& name,const std::string& palette,SDL_Re
     for(int y=0;y<h;++y)for(int x=0;x<w;++x)fill({ox+x,oy+y,1,1},colors[image.pixels[std::size_t(y)*image.height/h*image.width+std::size_t(x)*image.width/w]]);
 }
 std::vector<TextPage> Frontend::story(const std::string& name,int columns,int rows)const{
-    if(about_game_&&name=="README"&&archive()){const auto encoded=cp866(game_dataset_description(archive()->identify(),s_.locale));return paginate_story({reinterpret_cast<const std::uint8_t*>(encoded.data()),encoded.size()},columns,rows);}
     if(!archive()||!archive()->find(name))return {{}};
     const auto translated=game_text(game_story_key(archive()->identify(),name),s_.locale);
     const auto encoded=cp866(translated);
