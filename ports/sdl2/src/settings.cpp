@@ -47,7 +47,7 @@ std::string encode_settings(const AppSettings& s){
       <<"\nsoftware_mode="<<s.video.software_mode<<"\nfullscreen="<<s.video.fullscreen<<"\nlinear="<<(s.texture_filter()!=0)
       <<"\nmip_filter="<<(s.texture_filter()?5:0)<<"\nframe_filter="<<s.frame_filter<<"\nfxaa="<<s.fxaa<<"\nclassic_hud="<<s.classic_hud<<"\nauto_hud="<<s.auto_hud<<"\nfullscreen_width="<<s.video.fullscreen_width<<"\nfullscreen_height="<<s.video.fullscreen_height
       <<"\n[interface]\nlocale="<<int(s.locale)<<"\nfps="<<s.show_fps<<"\nlast_dataset="<<int(s.last_dataset)
-      <<"\n[gameplay]\ninertia="<<s.inertia<<"\nsaves_enabled="<<s.saves_enabled<<"\n[audio]\nmaster=100\neffects="<<s.effects_volume<<"\nmusic="<<s.music_volume
+      <<"\n[gameplay]\ninertia="<<s.inertia<<"\nsaves_enabled="<<s.saves_enabled<<"\ncamera_bobbing="<<s.camera_bobbing<<"\n[audio]\nmaster=100\neffects="<<s.effects_volume<<"\nmusic="<<s.music_volume
       <<"\n[input]\nkeyboard_preset="<<int(s.input.keyboard_preset)<<"\npad_preset="<<int(s.input.pad_preset)<<"\nclassic_pad="<<s.input.classic_pad
       <<"\nmouse_enabled="<<s.input.mouse_enabled<<"\ngamepad_enabled="<<s.input.gamepad_enabled
       <<"\nmouse_sensitivity="<<s.input.mouse_degrees_per_count<<"\nstick_sensitivity="<<s.input.turn_sensitivity<<"\ndeadzone="<<s.input.stick_deadzone<<'\n';
@@ -82,6 +82,7 @@ AppSettings load_settings(const std::filesystem::path& file,std::string& warning
         s.texture_filter(s.texture_filter()); // Normalize legacy smoothing choices.
         s.show_fps=integer(m,"interface.fps",1,0,1);s.last_dataset=DatasetId(integer(m,"interface.last_dataset",0,0,3));
         s.saves_enabled=integer(m,"gameplay.saves_enabled",1,0,1);s.inertia=integer(m,"gameplay.inertia",1,0,1);const int master=integer(m,"audio.master",100,0,100);
+        s.camera_bobbing=integer(m,"gameplay.camera_bobbing",1,0,1);
         s.effects_volume=integer(m,"audio.effects",100,0,100);s.music_volume=integer(m,"audio.music",100,0,100);
         // Legacy v1 used nested gains. Flatten once; encode writes master=100.
         s.effects_volume=master*s.effects_volume/100;s.music_volume=master*s.music_volume/100;
@@ -126,7 +127,7 @@ bool merge_settings_edits(AppSettings& stored,const AppSettings& a,const AppSett
 #undef EDIT_VIDEO
     }
 #define EDIT(f) if(a.f!=b.f&&stored.f!=b.f){stored.f=b.f;changed=true;}
-    EDIT(saves_enabled) EDIT(mip_filter) EDIT(resource_paths) EDIT(resource_choices) EDIT(auto_hud) EDIT(frame_filter) EDIT(fxaa) EDIT(classic_hud) EDIT(locale) EDIT(linear) EDIT(show_fps) EDIT(inertia) EDIT(effects_volume) EDIT(music_volume) EDIT(last_dataset)
+    EDIT(saves_enabled) EDIT(camera_bobbing) EDIT(mip_filter) EDIT(resource_paths) EDIT(resource_choices) EDIT(auto_hud) EDIT(frame_filter) EDIT(fxaa) EDIT(classic_hud) EDIT(locale) EDIT(linear) EDIT(show_fps) EDIT(inertia) EDIT(effects_volume) EDIT(music_volume) EDIT(last_dataset)
     EDIT(input.mouse_enabled) EDIT(input.gamepad_enabled)
     EDIT(input.keys) EDIT(input.buttons) EDIT(input.triggers) EDIT(input.mouse) EDIT(input.classic_pad)
     EDIT(input.keyboard_preset) EDIT(input.pad_preset) EDIT(input.mouse_degrees_per_count) EDIT(input.turn_sensitivity) EDIT(input.stick_deadzone)

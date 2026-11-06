@@ -491,7 +491,8 @@ int main(int argc,char** argv){
                 const auto& frame=menu.render(output[0],output[1]);
                 display->pixels(frame.pixels,frame.width,frame.height,false);
             }else if(world){
-                const auto pose=*world->objects.at(*world->player).pose;
+                const auto view=dok::player_view(*world,settings.camera_bobbing,capture_preview?std::array<double,4>{}:view_motion.offset(world->presentation_ticks()));
+                const auto pose=view.pose;
                 const auto layout=dok::presentation_layout(output[0],output[1],settings.classic_hud,settings.auto_hud,world->definition.dataset==dok::DatasetId::old_gold,!gl);
                 const auto rect=[](dok::PresentationRect r){return SDL_Rect{r.x,r.y,r.w,r.h};};
                 const auto frame_rect=rect(layout.frame),scene_rect=rect(layout.scene);
@@ -503,7 +504,7 @@ int main(int argc,char** argv){
                     gl->set_texture_filter(settings.texture_filter());
                     gl->scene_view(scene_rect,view_width,scene_height);
                     gl->world(scene->palette(),true,true);
-                    scene->render(*world,pose,dynamic,[&](const auto& vertices,const auto& image,dok::Bytes light,dok::RasterAxis axis){gl->polygon(vertices,image,light,axis);},view_width,capture_preview?std::array<double,4>{}:view_motion.offset(world->presentation_ticks()),[&](auto owner){return animations->image(owner);},scene_height);
+                    scene->render(*world,pose,dynamic,[&](const auto& vertices,const auto& image,dok::Bytes light,dok::RasterAxis axis){gl->polygon(vertices,image,light,axis);},view_width,view.offset,[&](auto owner){return animations->image(owner);},scene_height);
                     gl->finish_scene(settings.fxaa);
                 }else{
                     const auto mode=dok::software_modes[settings.video.software_mode];

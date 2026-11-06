@@ -45,13 +45,14 @@ int main(){
         s.locale=s.locale==dok::LocaleId::ru?dok::LocaleId::en:dok::LocaleId::ru;
         s.video={dok::RendererKind::software,800,600,3,true};s.input.keyboard(dok::InputPreset::classic);s.input.gamepad(dok::InputPreset::classic);
         s.inertia=false;s.effects_volume=45;s.input.mouse_enabled=false;s.input.gamepad_enabled=false;s.music_volume=15;s.input.keys[0][0]=SDL_SCANCODE_I;s.input.keyboard_preset=dok::InputPreset::custom;
-        s.frame_filter=3;s.mip_filter=5;s.saves_enabled=false;s.fxaa=true;s.classic_hud=true;s.auto_hud=false;
+        s.frame_filter=3;s.mip_filter=5;s.saves_enabled=false;s.camera_bobbing=false;s.fxaa=true;s.classic_hud=true;s.auto_hud=false;
         s.resource_paths={"C:/Games/Старое золото/OLD_GOLD.RES","C:/Games/edition=two.RES"};
         s.resource_choices[1]=s.resource_paths[0];
         check(dok::save_settings(path,s,warning),"Save settings");auto loaded=dok::load_settings(path,warning);
         check(warning.empty()&&dok::encode_settings(s)==dok::encode_settings(loaded),"Full roundtrip and locale persistence");
         {std::ofstream out(path);out<<"[settings]\nversion=1\n[video]\nwidth=800\nheight=600\nbase_fov=obsolete\nforce_4_3=obsolete\n[interface]\nfps=0\n";}
         loaded=dok::load_settings(path,warning);
+        check(loaded.camera_bobbing,"Old profiles keep native camera bobbing");
         check(warning.empty()&&!loaded.show_fps&&loaded.video.fullscreen_width==800&&loaded.video.fullscreen_height==600,"Ignore legacy projection keys without resetting settings");
         for(int mip=0;mip<=5;++mip)for(int linear=0;linear<=1;++linear){
             {std::ofstream out(path);out<<"[settings]\nversion=1\n[video]\nlinear="<<linear<<"\nmip_filter="<<mip<<"\nframe_filter=2\n[interface]\nfps=0\n[gameplay]\nsaves_enabled=0\n";}
@@ -175,6 +176,20 @@ int main(){
             m.outcome(dok::SessionPhase::retry);m.render(640,480);down(m,2);check(m.focused_row()<2,"Death screen skips disabled loads");
             m.pause();m.render(640,480);down(m,2);check(m.focused_row()==7,"Pause skips all unavailable save/load commands");
             auth.saves_enabled=true;m.quickload_request();check(command(m,dok::MenuCommand::quickload),"Reenable quickload");
+        }
+        {
+            dok::AppSettings auth;dok::Frontend m(auth);m.render(640,480);
+            key(m,SDLK_DOWN);key(m,SDLK_RETURN);down(m,3);key(m,SDLK_RETURN);down(m,2);
+            const auto before=auth;
+            key(m,SDLK_LEFT);check(!auth.camera_bobbing&&m.focused_row()==2,"Bobbing switch adjusts with arrows");
+            auto stored=before;
+            check(dok::merge_settings_edits(stored,before,auth)&&!stored.camera_bobbing,"Bobbing edits persist through merge");
+            check(dok::save_settings(path,stored,warning),"Save bobbing switch");
+            check(!dok::load_settings(path,warning).camera_bobbing&&warning.empty(),"Disabled bobbing survives restart");
+            pad(m,SDL_CONTROLLER_BUTTON_A);check(auth.camera_bobbing,"Pad toggles bobbing on");
+            key(m,SDLK_RETURN);check(!auth.camera_bobbing,"Enter toggles bobbing off");
+            key(m,SDLK_DOWN);key(m,SDLK_RETURN);check(auth.camera_bobbing,"Gameplay defaults restore native bobbing");
+            check(dok::save_settings(path,auth,warning)&&dok::load_settings(path,warning).camera_bobbing&&warning.empty(),"Enabled bobbing survives restart");
         }
         // Resizing followed by focus/hover used to change the help reservation
         // and recenter the entire panel on rows without a description.

@@ -109,6 +109,26 @@ int main(int argc,char** argv){
     try{
         movement_host_guards();
         current_boundaries();
+        // Presentation-only bobbing toggle also cancels GL's residual Y offset.
+        for(auto profile:{dok::DatasetId::old_gold,dok::DatasetId::kremlin_pkr,dok::DatasetId::kremlin_pke}){
+            auto level=fixture();level.dataset=profile;dok::World world(level);
+            auto& actor=world.objects.at(*world.player);
+            for(int y:{-326,-300,-274}){
+                actor.pose->y=y;const auto before=*actor.pose;
+                for(double fraction:{0.0,0.5,1.0}){
+                    const std::array<double,4> offset{{12*fraction,4*fraction,-8*fraction,2*fraction}};
+                    const auto native=dok::player_view(world,true,offset),stable=dok::player_view(world,false,offset);
+                    check(native.pose.y==y&&native.offset==offset);
+                    check(stable.pose.y==(profile==dok::DatasetId::old_gold?-300:y));
+                    check(stable.offset[1]==(profile==dok::DatasetId::old_gold?0:offset[1]));
+                    check(stable.pose.x==before.x&&stable.pose.z==before.z&&stable.pose.heading==before.heading);
+                    for(int i:{0,2,3})check(stable.offset[i]==offset[i]);
+                    check(actor.pose->y==before.y);
+                    const auto preview=dok::player_view(world,false);
+                    check(preview.pose.y==stable.pose.y&&preview.offset==std::array<double,4>{});
+                }
+            }
+        }
         if(argc==2)original_current_bank(argv[1]);
         // OG applies class12 WORD values directly; Kremlin alone divides by
         // reference FPS and slows motion. In particular -1 must hurt in OG.
