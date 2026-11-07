@@ -1,0 +1,31 @@
+{
+  "summary_schema": 1,
+  "full_report": {
+    "path": "research/evidence/source-port/sp11-native-complete/report.json",
+    "sha256": "883cfa5e38286b0656bbe3742587750c5570fbbb3094825a06a0f44b9ecd73a3",
+    "bytes": 6871
+  },
+  "scope": "Summary of a recorded run; not a new verification. Full report is local and ignored by Git.",
+  "result": {
+    "checks": {
+      "detail_pointer": "/checks",
+      "items": 7
+    },
+    "sha256_before": {
+      "originals/pkr/RUS/PKR.RES": "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816",
+      "originals/pkr/ENG/PKE.RES": "865da340621fa6f90548a84e9ae9bf0a85071befb32a40ca1d359e488f74d458",
+      "originals/Old_Gold_3D/OLD_GOLD.RES": "e376855167b64a7190ec2da0ba9bd1da129ba178c4033aebadebca3f08b2be25",
+      "originals/Old_Gold_3D/OG.EXE": "7965e1d67128f196fbcf2bc449d97197f355c6b81cf043608fc9e01103ea043f",
+      "originals/pkr/RUS/PKR.EXE": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+      "originals/pkr/ENG/PKE.EXE": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b"
+    },
+    "sha256_after": {
+      "originals/pkr/RUS/PKR.RES": "af7135fbcfc765c1e963682a29b108ffe90d652d96fa130cf9db6b217277b816",
+      "originals/pkr/ENG/PKE.RES": "865da340621fa6f90548a84e9ae9bf0a85071befb32a40ca1d359e488f74d458",
+      "originals/Old_Gold_3D/OLD_GOLD.RES": "e376855167b64a7190ec2da0ba9bd1da129ba178c4033aebadebca3f08b2be25",
+      "originals/Old_Gold_3D/OG.EXE": "7965e1d67128f196fbcf2bc449d97197f355c6b81cf043608fc9e01103ea043f",
+      "originals/pkr/RUS/PKR.EXE": "12f78afc0eba05f76b5dc0bb99da38d7daa20585024c0ba958fe828aa3864d28",
+      "originals/pkr/ENG/PKE.EXE": "cce7bc5993d0734ad87e93db37a70b8b52faedfff14ac48d6e317e5ac996a37b"
+    }
+  }
+}

@@ -3,6 +3,7 @@
 #include "dok/camera.hpp"
 #include "dok/items.hpp"
 #include <algorithm>
+#include <cmath>
 #include <stdexcept>
 
 namespace dok {
@@ -83,9 +84,78 @@ bool Projectiles::hit(WorldObject& target,const ProjectileState& projectile){
         else{m.health=std::max<std::int16_t>(0,word(m.health-projectile.damage));m.state=3;}
         return true;
     }
+    return blocks_terrain(target);
+}
+bool Projectiles::blocks_terrain(const WorldObject& target)const{
+    const auto cls=world_.definition.objects[target.definition_index].class_id;
     if(cls==7)return world_.definition.dataset==DatasetId::old_gold?
         target.door->state==2:!(target.flags&8);
     return !(target.flags&0x18);
+}
+bool Projectiles::clear_to_monster(Pose from,Pose to)const{
+    const auto& d=world_.definition;const int side=d.cell_side;
+    const auto clear=[&](int x,int z){
+        if(x<0||z<0||x>=d.width||z>=d.length)return false;
+        for(const auto* map:{"mmap","tmap"}){
+            const auto glyph=world_.maps.at(map)[z*d.width+x];
+            const auto& o=world_.objects.at(d.glyph_index[glyph]);
+            const auto cls=d.objects[o.definition_index].class_id;
+            if(cls!=1&&cls!=9&&cls!=8&&blocks_terrain(o))return false;
+        }
+        return true;
+    };
+    int x=from.x/side,z=from.z/side;const int end_x=to.x/side,end_z=to.z/side;
+    const std::int64_t dx=std::int64_t(to.x)-from.x,dz=std::int64_t(to.z)-from.z;
+    const int sx=dx>0?1:-1,sz=dz>0?1:-1;
+    const auto ax=std::abs(dx),az=std::abs(dz);
+    std::int64_t nx=dx>0?(x+1)*side-from.x:from.x-x*side;
+    std::int64_t nz=dz>0?(z+1)*side-from.z:from.z-z*side;
+    // Supercover traversal: touching a solid corner must not expose its far side.
+    for(;;){
+        if(!clear(x,z))return false;
+        if(x==end_x&&z==end_z)return true;
+        if(x==end_x){z+=sz;nz+=side;}
+        else if(z==end_z){x+=sx;nx+=side;}
+        else if(nx*az<nz*ax){x+=sx;nx+=side;}
+        else if(nx*az>nz*ax){z+=sz;nz+=side;}
+        else{
+            if(!clear(x+sx,z)||!clear(x,z+sz))return false;
+            x+=sx;z+=sz;nx+=side;nz+=side;
+        }
+    }
+}
+WorldObject* Projectiles::nearby_hit(const ProjectileState& p,Pose from){
+    const auto& d=world_.definition;const int radius=d.min_distance;
+    if(radius<=0)return nullptr;
+    const double dx=double(p.pose.x)-from.x,dz=double(p.pose.z)-from.z,length=dx*dx+dz*dz;
+    const int x0=std::max(0,(std::min(from.x,p.pose.x)-radius)/d.cell_side);
+    const int x1=std::min(d.width-1,(std::max(from.x,p.pose.x)+radius)/d.cell_side);
+    const int z0=std::max(0,(std::min(from.z,p.pose.z)-radius)/d.cell_side);
+    const int z1=std::min(d.length-1,(std::max(from.z,p.pose.z)+radius)/d.cell_side);
+    std::array<bool,256> seen{};
+    std::vector<std::pair<double,WorldObject*>> candidates;
+    for(int z=z0;z<=z1;++z)for(int x=x0;x<=x1;++x){
+        const auto glyph=world_.maps.at("mmap")[z*d.width+x];if(seen[glyph])continue;seen[glyph]=true;
+        auto& o=world_.objects.at(d.glyph_index[glyph]);
+        if(!o.monster||!o.pose||o.monster->health<=0)continue;
+        const double mx=double(o.pose->x)-from.x,mz=double(o.pose->z)-from.z;
+        const double projection=length?(mx*dx+mz*dz)/length:0;
+        const double closest=std::clamp(projection,0.0,1.0);
+        const double ex=mx-closest*dx,ez=mz-closest*dz;
+        if(ex*ex+ez*ez>double(radius)*radius)continue;
+        const double perpendicular=std::max(0.0,mx*mx+mz*mz-projection*projection*length);
+        const double entry=length?std::clamp(projection-std::sqrt(std::max(0.0,double(radius)*radius-perpendicular)/length),0.0,1.0):0;
+        candidates.push_back({entry,&o});
+    }
+    std::sort(candidates.begin(),candidates.end(),[](const auto& a,const auto& b){
+        return a.first!=b.first?a.first<b.first:a.second->owner<b.second->owner;
+    });
+    for(const auto& candidate:candidates){
+        // Use integer sample endpoints for occlusion, independent of floating
+        // point rounding at a circle entry. A native terrain impact has priority.
+        if(clear_to_monster(from,p.pose)&&clear_to_monster(p.pose,*candidate.second->pose)&&hit(*candidate.second,p))return candidate.second;
+    }
+    return nullptr;
 }
 void Projectiles::event(OwnerId owner){
     if(owner<owner_base||owner>=owner_base+256||!world_.projectiles[owner-owner_base])
@@ -112,6 +182,7 @@ void Projectiles::event(OwnerId owner){
     if(og){count=1;while(distance<quarter){distance=sar32(distance,1);++count;}}
     bool contact=false;
     for(int part=0;part<count;++part){
+        const auto previous=p.pose;
         step(p.pose,og?distance:(part?quarter:distance%quarter));
         const auto at=cell(p.pose);
         auto* target=&world_.objects.at(world_.definition.glyph_index[world_.maps.at("mmap")[at]]);
@@ -119,7 +190,9 @@ void Projectiles::event(OwnerId owner){
         if(cls==0||cls==8)target=&world_.objects.at(world_.definition.glyph_index[world_.maps.at("tmap")[at]]);
         const bool outside=p.pose.x<0||p.pose.z<0||p.pose.x>=world_.definition.width*world_.definition.cell_side||
             p.pose.z>=world_.definition.length*world_.definition.cell_side;
-        if(outside||hit(*target,p)){
+        bool struck=outside||hit(*target,p);
+        if(!struck&&boundary_hits)if(auto* monster=nearby_hit(p,previous)){target=monster;struck=true;}
+        if(struck){
             contact=true;const auto target_class=world_.definition.objects[target->definition_index].class_id;
             p.actor_impact=!outside&&(target_class==1||target_class==9);
             world_.events.set_first_interval(signed16(clips.flight.at(p.frame).interval));

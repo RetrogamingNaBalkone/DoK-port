@@ -6,6 +6,7 @@ struct PositionedImage {Pose pose;const Image* image=nullptr;std::int16_t scale=
 class Projectiles {
 public:
     std::function<bool(OwnerId,std::int16_t)> monster_hit;
+    bool boundary_hits=false; // Optional adaptation; native contact remains the default.
     Projectiles(World& world,const Archive& archive);
     std::int16_t spawn(OwnerId source,std::uint8_t template_glyph);
     void event(OwnerId owner);
@@ -18,6 +19,9 @@ private:
     void unoccupy(unsigned slot);
     void occupy(unsigned slot);
     bool hit(WorldObject& target,const ProjectileState& projectile);
+    bool blocks_terrain(const WorldObject& target) const;
+    bool clear_to_monster(Pose from,Pose to) const;
+    WorldObject* nearby_hit(const ProjectileState& projectile,Pose from);
     const AnimationFrame& frame(const ProjectileState& projectile) const;
     World& world_;
     std::map<std::size_t,Clips> clips_;

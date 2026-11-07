@@ -210,6 +210,7 @@ int main(int argc,char** argv){
                 if(replay->dataset!=dataset||replay->level!=level)throw std::runtime_error("Input replay dataset/level mismatch");}
             world=std::make_unique<dok::World>(dok::load_level(a,level));weapons=std::make_unique<dok::Weapons>(*world,a);
             projectiles=std::make_unique<dok::Projectiles>(*world,a);monsters=std::make_unique<dok::Monsters>(*world,a,*projectiles);
+            projectiles->boundary_hits=settings.boundary_hits;
             animations=std::make_unique<dok::Animations>(*world,a);
             flow=std::make_unique<dok::GameFlow>(*world);hud=std::make_unique<dok::Hud>(a);scene=std::make_unique<dok::SoftwareScene>(a,world->definition);
             try{audio=std::make_unique<dok::SdlAudio>(a);world->audio=[&](const dok::AudioCommand& c){audio->command(c);};}catch(const std::exception& e){log<<"Audio unavailable: "<<e.what()<<'\n';}
@@ -239,6 +240,7 @@ int main(int argc,char** argv){
                 auto saved=dok::decode_save(dok::read_save_file(path),a);auto next_world=std::move(saved.world);
                 auto next_weapons=std::make_unique<dok::Weapons>(*next_world,a);
                 auto next_shots=std::make_unique<dok::Projectiles>(*next_world,a);
+                next_shots->boundary_hits=settings.boundary_hits;
                 auto next_monsters=std::make_unique<dok::Monsters>(*next_world,a,*next_shots);
                 auto next_animations=std::make_unique<dok::Animations>(*next_world,a);
                 auto next_flow=std::make_unique<dok::GameFlow>(*next_world);next_flow->restore(saved.flow);
@@ -295,7 +297,7 @@ int main(int argc,char** argv){
                         std::uint64_t hash=14695981039346656037ULL;for(const auto& map:world->maps)for(auto byte:map.second){hash^=static_cast<unsigned char>(byte);hash*=1099511628211ULL;}
                         verbose<<" world="<<world.get()<<" ticks="<<world->simulation_ticks()<<" pose="<<p.x<<','<<p.y<<','<<p.z<<','<<p.heading<<" hp="<<player.health()<<" charge="<<player.charge()<<" maps="<<hash;
                         verbose<<" lives="<<player.lives<<" keys="<<player.keys()<<" score="<<player.score<<" phase="<<int(flow->phase());
-                        verbose<<" weapon="<<player.current_weapon<<" pending="<<player.pending_weapon<<" shots="<<projectiles->active();
+                        verbose<<" weapon="<<player.current_weapon<<" pending="<<player.pending_weapon<<" shots="<<projectiles->active()<<" boundary_hits="<<projectiles->boundary_hits;
                         if(const auto owner=player.weapons.at(player.current_weapon)){const auto& gun=*world->object_for_owner(owner).weapon;
                             verbose<<" gun_state="<<gun.state<<" gun_frame="<<gun.frame<<" gun_shift="<<gun.shift<<" gun_events="<<world->events.events(owner).size();}
                         verbose<<" locale="<<int(settings.locale)<<" message_key="<<world->message_key<<" message_hex=";
@@ -401,6 +403,7 @@ int main(int argc,char** argv){
             }
             settings_dirty|=dok::merge_settings_edits(stored,before,settings,false);
             if(settings_dirty)persist();
+            if(projectiles)projectiles->boundary_hits=settings.boundary_hits;
             if(audio){audio->volume(settings.effects_volume);audio->pause(menu_blocks());}
             if(music)music->volume(settings.music_volume);
             const auto now=SDL_GetPerformanceCounter();const auto elapsed_ns=replay?16666667ULL:static_cast<std::uint64_t>(double(now-previous_time)*1e9/SDL_GetPerformanceFrequency());previous_time=now;

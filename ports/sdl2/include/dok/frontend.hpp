@@ -58,7 +58,7 @@ public:
     const VideoSettings& previous_video() const {return old_video_;}
 private:
     enum class Item {none,graphics,sound,controls,gameplay,keyboard,pad,renderer,window_mode,resolution,aspect,apply_video,
-        inertia,saving,camera_bobbing,filtering,fxaa,hud,language,fps,effects,music,device_enabled,preset,bindings,sensitivity,deadzone,defaults,back,resource_gold,resource_pkr,resource_pke};
+        inertia,saving,camera_bobbing,boundary_hits,filtering,fxaa,hud,language,fps,effects,music,device_enabled,preset,bindings,sensitivity,deadzone,defaults,back,resource_gold,resource_pkr,resource_pke};
     struct Row {std::string label,value,help;bool enabled=true;Item id=Item::none;bool adjustable=false;};
     struct Hit {SDL_Rect rect;int row;};
     AppSettings& s_;

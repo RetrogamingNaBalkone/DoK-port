@@ -23,6 +23,33 @@ int main(int argc,char** argv){
         const std::filesystem::path root=std::filesystem::u8path(argv[1]),out=std::filesystem::u8path(argv[2]);std::filesystem::create_directories(out);
         std::vector<dok::Archive> sets;for(const auto* path:{"originals/pkr/RUS/PKR.RES","originals/pkr/ENG/PKE.RES","originals/Old_Gold_3D/OLD_GOLD.RES"})sets.push_back(dok::Archive::open(root/path));
         unsigned combinations=0,frames=0,software=0;
+        // A second, differing source can make the selected edition ambiguous.
+        // main.cpp refreshes the available dataset list after every RES drop.
+        // Do not retain Kremlin's README (GAMEP1) with Old Gold as fallback.
+        for(int dataset:{0,1})for(bool empty:{false,true})for(int screen=0;screen<10;++screen){
+            dok::AppSettings s;s.saves_enabled=false;dok::Frontend menu(s);
+            menu.datasets({{&sets[dataset],"kremlin.RES"},{&sets[2],"OLD_GOLD.RES"}});
+            menu.render(640,480);key(menu,SDLK_RETURN);key(menu,SDLK_RETURN);key(menu,SDLK_RETURN);
+            check(menu.screen()==dok::MenuScreen::readme,"Resource-refresh baseline must be README");
+            if(screen==1)menu.preview_level(3);
+            if(screen==2)menu.ending();
+            if(screen==3)menu.outcome(dok::SessionPhase::game_over);
+            if(screen==4)menu.notice("Error","Error");
+            if(screen>=5){
+                key(menu,SDLK_ESCAPE);key(menu,SDLK_RETURN);
+                check(menu.screen()==dok::MenuScreen::title,"Refresh title baseline");
+                if(screen>=6){
+                    s.saves_enabled=true;menu.save_catalog=[] {auto entries=loadable_saves();entries[0].backup=true;return entries;};
+                    key(menu,SDLK_RETURN);check(menu.screen()==dok::MenuScreen::dataset_menu,"Refresh game menu baseline");
+                    if(screen>=7){key(menu,SDLK_DOWN);key(menu,SDLK_RETURN);check(menu.screen()==dok::MenuScreen::load_slots,"Refresh load baseline");}
+                    if(screen>=8){key(menu,SDLK_RETURN);check(menu.screen()==dok::MenuScreen::save_entry,"Refresh entry baseline");}
+                    if(screen>=9){key(menu,SDLK_RETURN);check(menu.screen()==dok::MenuScreen::save_confirm,"Refresh confirmation baseline");}
+                }
+            }
+            menu.datasets(empty?std::vector<dok::FrontendDataset>{}:std::vector<dok::FrontendDataset>{{&sets[2],"OLD_GOLD.RES"}});
+            menu.render(640,480);
+            check(menu.screen()==dok::MenuScreen::main,"Missing selected edition must leave its story");
+        }
         for(int dataset=0;dataset<3;++dataset)for(int count:{1,3})for(int mode=0;mode<5;++mode){
             dok::AppSettings s;s.saves_enabled=mode!=2;dok::Frontend menu(s);
             if(count==1)menu.datasets({{&sets[dataset],"single.RES"}});

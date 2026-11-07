@@ -19,6 +19,7 @@ struct AppSettings {
     bool linear=false,show_fps=false,inertia=true;
     bool saves_enabled=true;
     bool camera_bobbing=true;
+    bool boundary_hits=false;
     int mip_filter=0; // Legacy INI values 1..5 now select the single Smooth preset.
     int texture_filter()const{return mip_filter||linear?6:0;}
     void texture_filter(int mode){linear=mode!=0;mip_filter=linear?5:0;}

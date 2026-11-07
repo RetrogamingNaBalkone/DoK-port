@@ -73,6 +73,20 @@ void Frontend::datasets(std::vector<FrontendDataset> sets,const std::string& err
     sets_=std::move(sets);errors_=errors;dataset_=0;
     for(std::size_t i=0;i<sets_.size();++i)if(sets_[i].archive->identify()==s_.last_dataset)dataset_=i;
     themed_=nullptr;art_.clear();
+    // RES admission can remove the selected edition when two sources conflict.
+    // The previous archive pointers are already invalid after main's refresh;
+    // use the saved identity, never dereference the old list. Game-specific
+    // screens cannot be rendered with a fallback edition (e.g. OG has no GAMEP1).
+    const bool selected_available=std::any_of(sets_.begin(),sets_.end(),[&](const auto& set){return set.archive->identify()==s_.last_dataset;});
+    const auto needs_selected_game=[](MenuScreen screen){switch(screen){
+    case MenuScreen::title:case MenuScreen::readme:case MenuScreen::levels:case MenuScreen::dataset_menu:
+    case MenuScreen::save_slots:case MenuScreen::load_slots:case MenuScreen::save_entry:
+    case MenuScreen::save_name:case MenuScreen::save_confirm:case MenuScreen::ending:case MenuScreen::outcome:
+        return true;
+    default:return false;
+    }};
+    if(!selected_available&&(needs_selected_game(screen_)||
+       (screen_==MenuScreen::notice&&needs_selected_game(notice_return_))))main_menu();
 }
 void Frontend::select_dataset(std::size_t index){if(index<sets_.size()){dataset_=index;s_.last_dataset=archive()->identify();themed_=nullptr;art_.clear();}}
 void Frontend::preview_level(int level){level_=level;in_session_=false;enter(MenuScreen::levels);}
@@ -196,6 +210,7 @@ void Frontend::build_rows(){
         setting(Item::inertia,tr(MenuString::movement_inertia),on(s_.inertia),tr(MenuString::off_instant_start_and_stop_water_currents_still_move_th));
         setting(Item::saving,tr(MenuString::saving),on(s_.saves_enabled),tr("В оригинале сохранений не было. Выкл.: сохранение и загрузка игры недоступны, включая F5/F9. Файлы остаются.","The originals had no saves. Off disables saving and loading, including F5/F9. Existing files are kept."));
         setting(Item::camera_bobbing,tr("Покачивание в «Старом Золоте»","Bobbing in Old Gold"),on(s_.camera_bobbing),tr("Покачивание камеры при движении в «Старом Золоте». Не влияет на «Подземелья Кремля».","Camera bobbing while moving in Old Gold. Does not affect Kremlin Dungeon."));
+        setting(Item::boundary_hits,tr("Исправление попаданий","Hit detection fix"),on(s_.boundary_hits),tr("Исправляет промахи рядом с монстром на границе клеток. Выкл.: поведение оригинала. Правила простреливания стен и дверей сохраняются.","Fixes near misses at monster cell boundaries. Off: original behavior. Preserves wall and door penetration rules."));
         finish();break;
     case MenuScreen::pause:row(tr(MenuString::resume));row(tr(MenuString::settings));row(tr("Карта","Map"),{},{},world_!=nullptr);row(tr("Сохранить игру","Save game"),{},{},save_allowed());row(tr("Загрузить игру","Load game"),{},{},s_.saves_enabled);row(tr("Быстро сохранить","Quicksave"),"F5",{},save_allowed());row(tr("Быстро загрузить","Quickload"),"F9",{},s_.saves_enabled);row(tr(MenuString::main_menu));row(tr(MenuString::quit));break;
     case MenuScreen::dataset_menu:row(tr("Новая игра","New game"));row(tr("Загрузить игру","Load game"),{},{},s_.saves_enabled);backrow();break;
@@ -372,7 +387,7 @@ void Frontend::choose(int delta){
         }break;}
     case MenuScreen::bindings:if(focus_==actions)back();else{action_=focus_;enter(binding_parent_==MenuScreen::pad?MenuScreen::capture:MenuScreen::key_slots);}break;
     case MenuScreen::key_slots:if(focus_<3){slot_=focus_;enter(MenuScreen::capture);}else if(focus_==3){s_.input.keys[action_]={};s_.input.mouse[action_]=0;s_.input.keyboard_preset=InputPreset::custom;}else back();break;
-    case MenuScreen::gameplay:if(rows_[focus_].id==Item::inertia)s_.inertia=!s_.inertia;else if(rows_[focus_].id==Item::saving)s_.saves_enabled=!s_.saves_enabled;else if(rows_[focus_].id==Item::camera_bobbing)s_.camera_bobbing=!s_.camera_bobbing;else if(rows_[focus_].id==Item::defaults){s_.inertia=true;s_.saves_enabled=true;s_.camera_bobbing=true;}else back();break;
+    case MenuScreen::gameplay:if(rows_[focus_].id==Item::inertia)s_.inertia=!s_.inertia;else if(rows_[focus_].id==Item::saving)s_.saves_enabled=!s_.saves_enabled;else if(rows_[focus_].id==Item::camera_bobbing)s_.camera_bobbing=!s_.camera_bobbing;else if(rows_[focus_].id==Item::boundary_hits)s_.boundary_hits=!s_.boundary_hits;else if(rows_[focus_].id==Item::defaults){s_.inertia=true;s_.saves_enabled=true;s_.camera_bobbing=true;s_.boundary_hits=false;}else back();break;
     case MenuScreen::pause:if(focus_==0){hide();commands_.push_back(MenuCommand::resume);}else if(focus_==1)enter(MenuScreen::settings);else if(focus_==2)show_map();else if(focus_==3)open_saves(true);else if(focus_==4)open_saves(false);else if(focus_==5)commands_.push_back(MenuCommand::quicksave);else if(focus_==6)commands_.push_back(MenuCommand::quickload);else{confirm_quit_=focus_==8;fallback_=false;enter(MenuScreen::confirm,1);}break;
     case MenuScreen::confirm:if(focus_==1)back();else if(fallback_){fallback_=false;old_video_=s_.video;draft_=s_.video;draft_.renderer=RendererKind::software;s_.video=draft_;video_deadline_=now_+15000;enter(MenuScreen::video_confirm);commands_.push_back(MenuCommand::apply_video);}else{commands_.push_back(confirm_quit_?MenuCommand::quit:MenuCommand::main);if(!confirm_quit_)main_menu();}break;
     case MenuScreen::conflict:if(focus_==0)accept_binding();else back();break;

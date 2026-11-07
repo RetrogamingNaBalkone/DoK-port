@@ -1,5 +1,20 @@
 # Сборка OGDoK (SDL2)
 
+Windows RC2 от 7 ноября 2026: исходная ревизия, проверки и контрольные суммы —
+[SP19](tasks/SP19.md). Пакет без ресурсов оригиналов:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File ports/sdl2/tools/build.ps1 -Configuration Release -DirectCommands
+powershell -NoProfile -ExecutionPolicy Bypass -File ports/sdl2/tools/package.ps1 -PackageName OGDoK-Win-1_0-RC2 -WithoutResources
+py -3.14 -B ports/sdl2/tools/check_package.py artifacts/sdl2/OGDoK-Win-1_0-RC2 --hidden
+```
+
+Папка поставки — `artifacts/sdl2/OGDoK-Win-1_0-RC2/`, ZIP —
+`artifacts/sdl2/OGDoK-Win-1.0-RC2.zip`. Инструкция README.txt поставляется
+из `ports/sdl2/README.txt`; включает «Геймплей → Исправление попаданий»
+(по умолчанию Выкл., действует сразу и сохраняется в профиле).
+Датированные сборки ниже исторические.
+
 С 6 ноября 2026 года CMake-проект и цель приложения называются `OGDoK`.
 Сборка создаёт `build/sdl2/windows/OGDoK.exe`; Linux-цель имеет имя `OGDoK`.
 Каталоги портов и профилей не переименованы. Старые имена `dok_port` в
