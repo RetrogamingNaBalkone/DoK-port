@@ -4,7 +4,8 @@
 и проверки см. в [handoff](handoff.md). Каталоги `sdl2` сохраняются;
 [правила переименования](tasks/SP-NAME.md).
 
-Windows RC2: [изменения относительно RC1](releases/OGDoK-Win-1.0-RC2.md),
+Windows RC2: [GitHub-пререлиз](https://github.com/RetrogamingNaBalkone/DoK-port/releases/tag/OGDoK-Win-1.0-RC2),
+[изменения относительно RC1](releases/OGDoK-Win-1.0-RC2.md),
 [пользовательская инструкция](../../ports/sdl2/README.txt).
 «Геймплей → Исправление попаданий» — опциональное исправление промахов
 у границ клеток, по умолчанию выключенное; [контракт и проверки](tasks/SP-OPTIONAL-HITS.md).
