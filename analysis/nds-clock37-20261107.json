@@ -1,0 +1,129 @@
+{
+  "task": "N23",
+  "candidate": "clock37-ru",
+  "candidate_checks_passed": true,
+  "drastic_fix_confirmed": false,
+  "user_observation": {
+    "emulator": "DraStic",
+    "level": 1,
+    "cold_boot": true,
+    "long_idle_before_combat": true,
+    "immediate_failure": "platform clock moved backwards; scheduler read_ticks failed",
+    "root_cause": "Unproven timer/IRQ visibility hypothesis"
+  },
+  "change": "At most eight extra SDK reads on backwards sample; persistent rollback remains fatal; Retry diagnostic",
+  "host_checks": 37,
+  "sdk_mmio_fixtures": 5,
+  "animation_checks": 4453,
+  "core_regression_checks": 101,
+  "ui_passed": true,
+  "clock_fault_passed": true,
+  "events_fault_passed": true,
+  "idle": {
+    "passed": true,
+    "completed_frames": 84000,
+    "requested_frames": 84000,
+    "wall_seconds": 564.3881468999898,
+    "no_input": true
+  },
+  "memory": {
+    "static_bytes": 348900,
+    "heap_start_gap": 32,
+    "static_startup_bytes": 520192,
+    "managed_bytes": 2293760,
+    "sdk_heap_available": 200704,
+    "reserve_bytes": 655360,
+    "closure_bytes": 3670016,
+    "partition": {
+      "ceilings": {
+        "world": 393216,
+        "events": 36864,
+        "scratch": 131072,
+        "scene": 262144,
+        "assets": 1077248,
+        "audio": 262144,
+        "io": 131072
+      },
+      "provenance": "ELF-bound compiled memory_budget.h; approved N03 or N22 partition",
+      "header": {
+        "path": "research/evidence/nds/n23/candidates/clock37-ru/sources/ports/nds/include/dok/memory_budget.h",
+        "bytes": 1774,
+        "sha256": "9712601e813afffe4563822602a8ea104087f69bb6d64276332b68abf9c3c4ff"
+      },
+      "elf": {
+        "path": "build/nds/n23/clock37-ru/dok_nds_gameplay.elf",
+        "bytes": 2452168,
+        "sha256": "ded8b5156588adfb0c4e82acc379d369de3af71ba5d0d45443d9515a3a1d796d"
+      }
+    }
+  },
+  "rom": {
+    "path": "artifacts/nds/dok.nds",
+    "bytes": 10179072,
+    "sha256": "9167b17d84bb109cbdd3745b08d119f9d52d4e8574aa68b214f09b1866102bc4"
+  },
+  "build_manifest": {
+    "path": "build/nds/n23/clock37-ru/build-manifest.json",
+    "bytes": 115573,
+    "sha256": "9f969812043acb6e4044679337e21ff9d292b9d4249d4ea410885ec2e87c89f1"
+  },
+  "evidence": [
+    {
+      "path": "research/evidence/nds/n23/clock37/animation.json",
+      "bytes": 1496,
+      "sha256": "3b5a45a770a3bf8cd9433f43e3254353ce3557403b4560770fab0fc48ee35246"
+    },
+    {
+      "path": "research/evidence/nds/n23/clock37/clock-top.png",
+      "bytes": 3624,
+      "sha256": "22a5fb0b4704c77b8a6172513ea7852c776a61d8a5866be400aec2b4b0101539"
+    },
+    {
+      "path": "research/evidence/nds/n23/clock37/clock_fault.json",
+      "bytes": 4303,
+      "sha256": "a30d0352b1ea4dc769a09e7b9836ca277ce0d3cd11b927309fe3ca7076082f37"
+    },
+    {
+      "path": "research/evidence/nds/n23/clock37/events-top.png",
+      "bytes": 3649,
+      "sha256": "e32baf1a703d465791693fa19dfafc8292d30aa554a1b67d55eec9a21ef677e2"
+    },
+    {
+      "path": "research/evidence/nds/n23/clock37/events_fault.json",
+      "bytes": 4295,
+      "sha256": "3c0accd3c4a1a2f995f6d6d3d44f453abc20fec8333dbe4e095cbe5837d125d5"
+    },
+    {
+      "path": "research/evidence/nds/n23/clock37/host.json",
+      "bytes": 508,
+      "sha256": "29cacda30dbc35cf4725feb10010884d53db804b5b90247a513898ce44464f3a"
+    },
+    {
+      "path": "research/evidence/nds/n23/clock37/idle.json",
+      "bytes": 3425,
+      "sha256": "3bae3e79451876b3718817664b7723236e6333a4cf9fe3439e64829817bdc4e4"
+    },
+    {
+      "path": "research/evidence/nds/n23/clock37/sdk_baseline.json",
+      "bytes": 2628,
+      "sha256": "91d951b59381e6bafbb5386f4a3e88bae5fe310ec1811a119e7f3ee6c6011a68"
+    },
+    {
+      "path": "research/evidence/nds/n23/clock37/sdk_candidate.json",
+      "bytes": 2628,
+      "sha256": "733e4768d716e6a30e4f7f9ba929f53fe3445f08a4b3b1a6adf0604c7329d2c4"
+    },
+    {
+      "path": "research/evidence/nds/n23/clock37/ui.json",
+      "bytes": 43928,
+      "sha256": "5caa963e24572b9bf30fcbb968681eb0acb1eb335cdfe125ba45d3ac758d9481"
+    }
+  ],
+  "limitations": [
+    "Synthetic MMIO is not a DraStic reproduction",
+    "No Drastic test of clock37",
+    "No combat after long idle in emulator; soak is stationary with no input",
+    "No full campaign or physical DS acceptance"
+  ],
+  "next_task": "N23: cold boot clock37 in DraStic, idle then active play; on failure capture both screens and Retry"
+}

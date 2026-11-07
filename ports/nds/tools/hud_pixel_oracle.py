@@ -117,7 +117,8 @@ def render_hud(art: OriginalHudArt, state: dict, message=b"", page=0):
             sw,sh,_,_,_=audit_assets.decode_image(art.resources[language][name])
             factor=min(20/sw,10/sh);w,h=max(1,round(sw*factor)),max(1,round(sh*factor))
             art.icon(canvas,language,name,x+(20-w)//2,25+(10-h)//2,w,h)
-    pages=message_pages(message,30)
+    message=message.split(b'\0',1)[0].split(b'$',1)[0].strip(b' ')
+    pages=message_pages(message,32)
     assert len(pages)<=2, "Original gameplay message must fit the message area"
     font=art.resources[language]["FONT8"]
     top=7 if len(pages)==1 else 3
@@ -126,7 +127,7 @@ def render_hud(art: OriginalHudArt, state: dict, message=b"", page=0):
             for y in range(8):
                 for x in range(8):
                     if font[code*8+y] & (128 >> x):
-                        canvas[(top+row*8+y)*256+8+col*8+x]=2
+                        canvas[(top+row*8+y)*256+col*8+x]=2
     adjacency={}
     for key,icons in (("health",icon_hp),("charge",icon_charge)):
         ink=text_bounds[key]

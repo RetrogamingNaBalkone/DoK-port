@@ -1,0 +1,20 @@
+{
+  "passed": true,
+  "columns": 32,
+  "rows": 2,
+  "guarded_rasters": 1643,
+  "languages": {
+    "1": {
+      "entries": 273,
+      "over32": 3,
+      "unique": [
+        "ГОРШОК ДОБРОЙ КАШИ ДАЛ 15 ЛЕТ ЖИЗНИ"
+      ]
+    },
+    "2": {
+      "entries": 273,
+      "over32": 0,
+      "unique": []
+    }
+  }
+}

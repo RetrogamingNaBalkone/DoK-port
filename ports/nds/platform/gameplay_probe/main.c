@@ -1641,6 +1641,7 @@ done:
                     (unsigned long)storage->effects.failure_status,(unsigned long)storage->effects.scheduler._fault);
                 printf("Clock %08lX%08lX\n",(unsigned long)(raw>>32),(unsigned long)(uint32_t)raw);
                 printf("Last  %08lX%08lX\n",(unsigned long)(last>>32),(unsigned long)(uint32_t)last);
+                printf("Retry %lu\n",(unsigned long)dok_nds_clock_retry_count());
             }
         }
         if(obs.error_bits==16384u){

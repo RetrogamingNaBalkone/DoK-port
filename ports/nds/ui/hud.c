@@ -46,7 +46,7 @@ static void message_glyph(void *p,uint32_t offset,uint32_t col,uint32_t row)
 {Message *m=p;
  for(uint32_t y=0;y<8u;++y)for(uint32_t x=0;x<8u;++x)
     if(m->bank[m->data[offset]*8u+y]&(128u>>x))
-        m->out[(m->y+row*8u+y)*256u+8u+col*8u+x]=2;
+        m->out[(m->y+row*8u+y)*256u+col*8u+x]=2;
 }
 void dok_ui_hud(unsigned char out[DOK_UI_HUD_BYTES],const unsigned char bank[DOK_UI_BANK_BYTES],
     uint32_t language,const dok_ui_values *v,const unsigned char *message,uint32_t bytes,uint32_t page)
@@ -64,7 +64,12 @@ void dok_ui_hud(unsigned char out[DOK_UI_HUD_BYTES],const unsigned char bank[DOK
     /* weapon is the owned-slot mask, not the currently selected slot. */
     /* Each weapon fits its original aspect ratio in a 20x10 transparent tile. */
     for(uint32_t i=0;i<2u;++i)if(v->weapon&(1u<<(i+1u)))icon(out,bank+7778u+i*200u,150u+i*28u,25,20,10);
+    /* Trim presentation padding before wrapping; keep source bytes unchanged. */
+    uint32_t stop=0;
+    if(message)while(stop<bytes&&message[stop]&&message[stop]!=36u)++stop;
+    while(stop&&message[stop-1u]==32u)--stop;
+    while(stop&&message[0]==32u){++message;--stop;}
     Message m={out,bank,message,7u};
-    (void)dok_ui_paginate(message,bytes,30,2,0,message_bounds,&m);
-    (void)dok_ui_paginate(message,bytes,30,2,0,message_glyph,&m);
+    (void)dok_ui_paginate(message,stop,32,2,0,message_bounds,&m);
+    (void)dok_ui_paginate(message,stop,32,2,0,message_glyph,&m);
 }

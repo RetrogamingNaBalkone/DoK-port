@@ -18,7 +18,7 @@ def main():
     base=dict(language=1,level=1,health=100,charge=150,max_health=100,max_charge=200,lives=3,score=0,keys=7,weapon=6)
     for entry in catalog['messages']:
         message=bytes.fromhex(entry['cp866_hex'])
-        assert len(message_pages(message,30))<=2
+        assert len(message_pages(message.split(b'\0',1)[0].split(b'$',1)[0].strip(b' '),32))<=2
         state=dict(base,language=entry['language'])
         assert driver.hud(state,message)==render_hud(art,state,message)[0]
     for language in (1,2):
@@ -44,7 +44,7 @@ def main():
         rgb=bytes(((palette[index]>>shift)&31)*255//31 for index in pixels for shift in (0,5,10))
         png(ROOT/f'research/evidence/nds/n23/playtest-hud-{language}.png',256,38,rgb)
     report=dict(passed=True,guarded_rasters=driver.draws,original_messages=len(catalog['messages']),
-                max_message_bytes=max(e['bytes'] for e in catalog['messages']),message_columns=30,message_rows=2)
+                max_message_bytes=max(e['bytes'] for e in catalog['messages']),message_columns=32,message_rows=2)
     out=ROOT/'research/evidence/nds/n23/playtest-ui-check.json'
     out.write_text(json.dumps(report,indent=2)+'\n','utf8')
     print(json.dumps(report))

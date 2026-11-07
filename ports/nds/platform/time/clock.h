@@ -10,5 +10,7 @@
 dok_status dok_nds_clock_initialize(dok_platform_services *out_services);
 /* Read-only diagnostic; never resamples hardware after a failure. */
 uint64_t dok_nds_clock_last_sample(void);
+/* Number of additional SDK reads after backwards samples, since cold boot. */
+uint32_t dok_nds_clock_retry_count(void);
 
 #endif
