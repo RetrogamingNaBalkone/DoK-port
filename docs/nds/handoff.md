@@ -1,5 +1,22 @@
 # Передача контекста NDS между чатами
 
+8 ноября, [profiling38](spec/profiling38-20261108.md): новый отказ clock37 после простоя/прохождения/
+перезапуска локализован в map DMA elapsed guard, main.c:1308, Map5/192–192.
+Raw длительность неизвестна; точная причина DraStic не доказана. Реальные SDK
+инструкции на явном IRQ/MMIO fixture дают ложный elapsed; N23 ARM9 теперь
+защищает cpuGetTiming от IRQ, сохраняя IME, единицы, wrap и все DMA ограничения.
+Добавлены raw DMA From/To/ticks, известный status и Retry для любого fatal.
+Host57, два режима map regression/uint32 wrap, ARM wrapper и fault injection,
+melonDS UI/input/FAT/restart PASS.6 загрузок уровней1/1/2/3/1/1 —3378 кадров,23,64с.
+По просьбе пользователя основной цикл — быстрые детерминированные проверки;
+новая долгая выдержка не запускалась, её оставить отдельной итоговой проверкой.
+Поставка `artifacts/nds/dok.nds`, profiling38-ru, SHA-256
+`0dbf32573e8eb119112a2faed7d5ed38fea7e7b5d87a8db171388dc686dc76fe`.
+Исправление DraStic не подтверждено. N23 открыта, N24 не начата. Следующий ID N23:
+короткий плейтест DraStic; при отказе оба экрана с DMA ticks/From/To/Retry.
+Команды, ограничения и факты — в спецификации и `analysis/nds-profiling38-20261108.json`.
+GBA/SDL2 не менялись.
+
 7 ноября, [clock37](spec/clock37-20261107.md): холодный запуск DraStic после длительного простоя
 завершился отказом при перестрелке. Фото локализует обратный скачок platform clock
 и ошибку scheduler read_ticks; точная причина на уровне регистров остаётся гипотезой.

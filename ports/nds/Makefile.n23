@@ -1,6 +1,13 @@
 # Full N22 game with independently selectable diagnostic timing.
 OUTDIR ?= ../../build/nds/n23/candidate-ru
 include Makefile.n22
+# Protect the SDK's multi-register profiler snapshot from IRQ preemption.
+# Scope is N23 ARM9; historical probes and the ARM7 build keep their contracts.
+OBJECTS += $(OBJDIR)/profiling.o
+$(ELF): $(OBJDIR)/profiling.o
+LDFLAGS += -Wl,--wrap=cpuGetTiming
+$(OBJDIR)/profiling.o: platform/time/profiling.c Makefile.n23 | $(OBJDIR)
+	"$(CC)" $(ARCH) -specs=$(SPECS) $(PLATFORM_CPPFLAGS) -std=gnu11 $(CFLAGS) -MMD -MP -c "$<" -o "$@"
 N23_CAPTURE_HOLD ?= 0
 CPPFLAGS += -DN23_CAPTURE_HOLD=$(N23_CAPTURE_HOLD)
 PLATFORM_CPPFLAGS += -DN23_CAPTURE_HOLD=$(N23_CAPTURE_HOLD)

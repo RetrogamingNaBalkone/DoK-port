@@ -1,0 +1,210 @@
+{
+  "task": "N23",
+  "candidate": "profiling38-ru",
+  "checks_passed": true,
+  "drastic_fix_confirmed": false,
+  "user_observation": {
+    "build": "clock37-ru",
+    "level": 1,
+    "frame": 97587,
+    "reported_minutes": "20-25",
+    "sequence": "idle, LEVEL1 completed, restarted, idle",
+    "source_line": "main.c:1308",
+    "map_fault": 5,
+    "dma_lines": [
+      192,
+      192
+    ],
+    "deduced_failure": "map elapsed >=560190",
+    "raw_elapsed_unknown": true
+  },
+  "mechanism": {
+    "verified": "SDK sampler can produce future time under explicit IRQ/MMIO fixture",
+    "user_cause": "Not proven; actual late DMA remains possible",
+    "false_elapsed": "0xffff2001"
+  },
+  "change": "Mask IRQ dispatch only during SDK cpuGetTiming; preserve IME, units and wrap; keep DMA guard; add known status and raw timestamps, Retry on all fatal operations",
+  "host_checks": 57,
+  "map_host": {
+    "passed": true,
+    "reports": [
+      "N21P dirty map checks=16972176 draws=44 skips=164 deferred=111 PASS\nmap38 uint32-wrap PASS\n",
+      "N21P dirty map checks=16972176 draws=44 skips=164 deferred=111 PASS\nmap38 uint32-wrap PASS\n"
+    ]
+  },
+  "map_host_commands": [
+    [
+      "C:\\Users\\dspev\\AppData\\Local\\Programs\\Zig\\0.13.0\\zig.exe",
+      "cc",
+      "-std=c11",
+      "-O2",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-DN21P_HOST_TEST=1",
+      "-DN21P_AUDIT=0",
+      "-Iports/nds/tests/map_runtime_stub",
+      "-Iports/nds/include",
+      "ports/nds/platform/map/runtime.c",
+      "ports/nds/ui/map_control.c",
+      "ports/nds/ui/map_raster.c",
+      "ports/nds/tests/test_map_duration38.c",
+      "-o",
+      "build\\nds\\n23\\profiling38-host\\map-0.exe"
+    ],
+    [
+      "build\\nds\\n23\\profiling38-host\\map-0.exe"
+    ],
+    [
+      "C:\\Users\\dspev\\AppData\\Local\\Programs\\Zig\\0.13.0\\zig.exe",
+      "cc",
+      "-std=c11",
+      "-O2",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-DN21P_HOST_TEST=1",
+      "-DN21P_AUDIT=1",
+      "-Iports/nds/tests/map_runtime_stub",
+      "-Iports/nds/include",
+      "ports/nds/platform/map/runtime.c",
+      "ports/nds/ui/map_control.c",
+      "ports/nds/ui/map_raster.c",
+      "ports/nds/tests/test_map_duration38.c",
+      "-o",
+      "build\\nds\\n23\\profiling38-host\\map-1.exe"
+    ],
+    [
+      "build\\nds\\n23\\profiling38-host\\map-1.exe"
+    ]
+  ],
+  "call_sites": {
+    "passed": true,
+    "wrapped_call_counts": {
+      "nds_map_transfer.part.0": 3,
+      "render_one": 11
+    }
+  },
+  "fault_status": 8,
+  "reloads": {
+    "passed": true,
+    "frames": 3378,
+    "wall_seconds": 23.6382221999811,
+    "clock_retries": 0
+  },
+  "reload_levels": [
+    1,
+    1,
+    2,
+    3,
+    1,
+    1
+  ],
+  "ui_passed": true,
+  "memory": {
+    "static_bytes": 348996,
+    "heap_start_gap": 32,
+    "static_startup_bytes": 520192,
+    "managed_bytes": 2293760,
+    "sdk_heap_available": 200704,
+    "reserve_bytes": 655360,
+    "closure_bytes": 3670016,
+    "partition": {
+      "ceilings": {
+        "world": 393216,
+        "events": 36864,
+        "scratch": 131072,
+        "scene": 262144,
+        "assets": 1077248,
+        "audio": 262144,
+        "io": 131072
+      },
+      "provenance": "ELF-bound compiled memory_budget.h; approved N03 or N22 partition",
+      "header": {
+        "path": "research/evidence/nds/n23/candidates/profiling38-ru/sources/ports/nds/include/dok/memory_budget.h",
+        "bytes": 1774,
+        "sha256": "9712601e813afffe4563822602a8ea104087f69bb6d64276332b68abf9c3c4ff"
+      },
+      "elf": {
+        "path": "build/nds/n23/profiling38-ru/dok_nds_gameplay.elf",
+        "bytes": 2456352,
+        "sha256": "acdb2c88b50de46584ef201198368e3a6722cf3f8280c9046fc27fe146429e2f"
+      }
+    }
+  },
+  "long_soak_run": false,
+  "validation_policy": "Default to targeted deterministic boundary/preemption fixtures and short reload smoke; reserve long soak for separate final stability test",
+  "rom": {
+    "path": "artifacts/nds/dok.nds",
+    "bytes": 10179072,
+    "sha256": "0dbf32573e8eb119112a2faed7d5ed38fea7e7b5d87a8db171388dc686dc76fe"
+  },
+  "manifest": {
+    "path": "build/nds/n23/profiling38-ru/build-manifest.json",
+    "bytes": 116176,
+    "sha256": "a9d1538ab602fb6ff7abea2df641ba9336741d9180c3df6d5de285e4e36dc31d"
+  },
+  "evidence": [
+    {
+      "path": "research/evidence/nds/n23/profiling38/calls.json",
+      "bytes": 115,
+      "sha256": "3e44b2004b3991cf10c576a505ef0b859cca72e864c4a91bfc6d9cdccbd647fd"
+    },
+    {
+      "path": "research/evidence/nds/n23/profiling38/check_map38_fault.py",
+      "bytes": 3016,
+      "sha256": "c02a54a75dc27a0f19691f48793e777388fe920c803dece206b56c44e6b70a39"
+    },
+    {
+      "path": "research/evidence/nds/n23/profiling38/check_map38_restarts.py",
+      "bytes": 2225,
+      "sha256": "39dc4f61f1f2b849e5d44b64c82deaf1d27ffe1b13fc15de63af30fe4c6aa4fe"
+    },
+    {
+      "path": "research/evidence/nds/n23/profiling38/check_profiling_irq.py",
+      "bytes": 4737,
+      "sha256": "a0c0511b1ca2bba510729b37f4486395c9be0be4a6b9c1a1912dd4f33d7f9c61"
+    },
+    {
+      "path": "research/evidence/nds/n23/profiling38/map-duration-top.png",
+      "bytes": 3529,
+      "sha256": "ae7e3c03ddfc28ca0c67f43cbf18f8841a423bda46642bb3e6896b2f0950a99a"
+    },
+    {
+      "path": "research/evidence/nds/n23/profiling38/map_fault.json",
+      "bytes": 1154,
+      "sha256": "174ab8effa15a87c1913824d79beac21757e7fe77f89fda8bcb1dda4e9bdf5e8"
+    },
+    {
+      "path": "research/evidence/nds/n23/profiling38/map_host.json",
+      "bytes": 249,
+      "sha256": "61c852cb1c057f64aae1add7e5d2b50f41ad97aa55316c54ee2e29e8a490c21f"
+    },
+    {
+      "path": "research/evidence/nds/n23/profiling38/reloads.json",
+      "bytes": 4714,
+      "sha256": "236b22fd6bf9670043a0a2dc5ff465c1eff270039deb446c01f845e565e6fd80"
+    },
+    {
+      "path": "research/evidence/nds/n23/profiling38/sdk_baseline.json",
+      "bytes": 1764,
+      "sha256": "bc3b7df01c79d4240bce19ff1eed1aa1bb01ba137d60247f01271b70598d9dcf"
+    },
+    {
+      "path": "research/evidence/nds/n23/profiling38/sdk_candidate.json",
+      "bytes": 3137,
+      "sha256": "1c308504c9e672e985d8d0c9e115926ed8ca88f51fcc5ff785b40af22746cd86"
+    },
+    {
+      "path": "research/evidence/nds/n23/profiling38/ui.json",
+      "bytes": 44332,
+      "sha256": "87f05ad5e48262ff1c356d92266fa26a1d52ec432d1dcf917eb7de2f8510860c"
+    }
+  ],
+  "limitations": [
+    "No DraStic execution of candidate",
+    "Synthetic IRQ/MMIO and synthetic completed-transfer result are not the user execution",
+    "No new long soak, full campaign, or physical DS/FPS acceptance"
+  ],
+  "next_task": "N23: short ordinary DraStic playtest; on next failure capture DMA ticks/From/To/Retry; long soak separately"
+}

@@ -1303,8 +1303,11 @@ static int render_one(const dok_render_case *c,uint32_t ordinal)
     phase=cpuGetTiming();
     nds_map_transfer(map_ui,map_pixels,bgGetGfxPtr(map_bg));
     diagnostic_event(DIAG_MAP,map_ui->profile[10],map_ui->profile[11]);
-    if(map_ui->pending_reason&&(map_ui->profile[10]<192u||map_ui->profile[11]>262u||
-       map_ui->profile[10]>map_ui->profile[11]||map_ui->profile[4]>=560190u)){
+    uint32_t map_deadline_fault=(map_ui->profile[10]<192u?1u:0u)|
+        (map_ui->profile[11]>262u?2u:0u)|(map_ui->profile[10]>map_ui->profile[11]?4u:0u)|
+        (map_ui->profile[4]>=560190u?8u:0u);
+    if(map_ui->pending_reason&&!DIAG_CHECK(DIAG_MAP,(int32_t)map_deadline_fault,0,
+       map_ui->profile[4],map_ui->profile[10]|(map_ui->profile[11]<<16))){
         map_ui->fault=5u;return GAMEPLAY_FAILURE();
     }
     #if N21P_PROFILE
@@ -1624,6 +1627,10 @@ done:
 #if GAMEPLAY_MAP
             printf("Map %lu DMA %lu-%lu\n",(unsigned long)map_ui->fault,
                 (unsigned long)map_ui->profile[10],(unsigned long)map_ui->profile[11]);
+            if(crash_diagnostic.operation==DIAG_MAP){
+                printf("DMA ticks %08lX\n",(unsigned long)map_ui->profile[4]);
+                printf("From %08lX To %08lX\n",(unsigned long)map_ui->profile[12],(unsigned long)map_ui->profile[13]);
+            }
 #endif
 #if GAMEPLAY_AUDIO
             /* Published by the failing service; inspect before cleanup changes it. */
@@ -1641,8 +1648,8 @@ done:
                     (unsigned long)storage->effects.failure_status,(unsigned long)storage->effects.scheduler._fault);
                 printf("Clock %08lX%08lX\n",(unsigned long)(raw>>32),(unsigned long)(uint32_t)raw);
                 printf("Last  %08lX%08lX\n",(unsigned long)(last>>32),(unsigned long)(uint32_t)last);
-                printf("Retry %lu\n",(unsigned long)dok_nds_clock_retry_count());
             }
+            printf("Retry %lu\n",(unsigned long)dok_nds_clock_retry_count());
         }
         if(obs.error_bits==16384u){
             uint32_t d[8];nds_audio_debug(d);

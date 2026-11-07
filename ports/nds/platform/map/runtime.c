@@ -230,6 +230,7 @@ void nds_map_prepare(NdsMapRuntime *m,dok_render_world *w,NdsGameplay *g,
     m->profile[0]=cpuGetTiming()-phase;
     for(uint32_t i=1;i<8u;++i)m->profile[i]=0;
     m->profile[10]=UINT32_MAX;m->profile[11]=UINT32_MAX;
+    m->profile[12]=0;m->profile[13]=0;
     if(reason){
         nds_map_begin();
         phase=cpuGetTiming();
@@ -318,10 +319,12 @@ void nds_map_transfer(NdsMapRuntime *m,unsigned char *pixels,void *vram)
     if(m->prepared!=1u)return;
     uint32_t start=cpuGetTiming(),phase=start;
     if(m->pending_reason){
+        m->profile[12]=phase;
         m->profile[10]=REG_VCOUNT;
         dmaCopy(pixels,vram,m->pending_upload_bytes);
         m->profile[11]=REG_VCOUNT;
-        m->profile[4]=cpuGetTiming()-phase;
+        m->profile[13]=cpuGetTiming();
+        m->profile[4]=m->profile[13]-phase;
     }
     m->prepared=2u;m->profile[7]+=cpuGetTiming()-start;
 }

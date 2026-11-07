@@ -4,4 +4,6 @@
 #define BUS_CLOCK 33513982u
 uint64_t systemCounterGetTicks(void);
 void systemCounterSetup(void);
+int enterCriticalSection(void);
+void leaveCriticalSection(int);
 #endif
