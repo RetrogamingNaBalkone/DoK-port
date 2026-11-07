@@ -100,14 +100,18 @@ dok_status nds_effects_load(NdsEffectsRuntime *r,dok_render_world *world,dok_spr
 dok_status nds_effects_begin(NdsEffectsRuntime *r)
 {
     dok_event_dispatch_report report;
+    dok_status status;
     if(!r)return DOK_STATUS_INVALID_ARGUMENT;
     if(!EFFECT_REAL_CLOCK)r->fixture_ticks+=166u; /* Explicit deterministic source-time fixture, never a claim about render FPS. */
-    if(dok_events_dispatch(&r->scheduler,&report)!=DOK_STATUS_OK || r->fault)return DOK_STATUS_INVALID_STATE;
+    status=dok_events_dispatch(&r->scheduler,&report);
+    if(status!=DOK_STATUS_OK){r->failure_stage=1;r->failure_status=(uint32_t)status;return status;}
+    if(r->fault){r->failure_stage=2;r->failure_status=r->fault;return DOK_STATUS_INVALID_STATE;}
 #if GAMEPLAY_FRONTEND
     /* Continuous18-phase water,60 phases/s. Getter/cancellation boundaries
      * must not insert extra held frames at the end of every cycle. */
     uint32_t now;
-    if(read_ticks(r,&now)!=DOK_STATUS_OK)return DOK_STATUS_INVALID_STATE;
+    status=read_ticks(r,&now);
+    if(status!=DOK_STATUS_OK){r->failure_stage=3;r->failure_status=(uint32_t)status;return status;}
     r->water_phase=(r->water_phase+nds_animation_steps(now-r->water_ticks,60u,&r->water_fraction))%18u;
     r->water_ticks=now;
     for(uint32_t m=0;m<DOK_RENDER_MATERIALS;++m)

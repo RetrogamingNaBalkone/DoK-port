@@ -1,3 +1,6 @@
+/* Production keeps one second of frame history to preserve SDK heap headroom
+ * with writable FAT settings. Fatal diagnostics retain their separate ring. */
+#define NDS_RENDER_HISTORY_CAPACITY 64u
 /* N13 combined LIGHT/water/palette and N12 object diagnostic. */
 #include <nds.h>
 #include <fat.h>
@@ -1051,6 +1054,9 @@ static int render_one(const dok_render_case *c,uint32_t ordinal)
     held=nds_map_input(map_ui,&storage->effects.clock,held,touching,(int16_t)pen.px,(int16_t)pen.py,&storage->game);
 #endif
 #endif
+#if GAMEPLAY_FRONTEND
+    held=dok_frontend_game_buttons(held,frontend->state.control_scheme);
+#endif
     if(held!=storage->game.input_held)storage->game.input_tick=cpuGetTiming();
     if(!DIAG_CHECK(DIAG_INPUT,nds_gameplay_input(&storage->game,held),DOK_STATUS_OK,held,0)){g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return GAMEPLAY_FAILURE();}
     #if N21P_PROFILE
@@ -1344,7 +1350,8 @@ static int render_one(const dok_render_case *c,uint32_t ordinal)
      * updating C2. Door extent and conveyors borrow this same estimate. */
     {
         uint32_t source_end;
-        if(storage->effects.scheduler._config.read_ticks(storage->effects.scheduler._config.clock_context,&source_end)!=DOK_STATUS_OK)return GAMEPLAY_FAILURE();
+        if(!DIAG_CHECK(DIAG_CLOCK,storage->effects.scheduler._config.read_ticks(storage->effects.scheduler._config.clock_context,&source_end),
+            DOK_STATUS_OK,(uint32_t)dok_nds_clock_last_sample(),(uint32_t)storage->effects.clock._last_counter))return GAMEPLAY_FAILURE();
         if(scene_clock_epoch==world->initial.epoch&&source_end!=previous_scene_ticks&&
            dok_interactions_cadence(storage->game.c2,source_end-previous_scene_ticks,&storage->game.c2)!=DOK_STATUS_OK)return GAMEPLAY_FAILURE();
         previous_scene_ticks=source_end;scene_clock_epoch=world->initial.epoch;
@@ -1628,6 +1635,13 @@ done:
             printf("CPU cache %lu/%lu\n",(unsigned long)storage->cache.used,(unsigned long)storage->cache.capacity);
             printf("Texture DMA %lu %lu-%lu\n",(unsigned long)stream_stats.upload_bytes,
                 (unsigned long)stream_stats.commit_start_line,(unsigned long)stream_stats.commit_end_line);
+            if(crash_diagnostic.operation==DIAG_SIMULATION||crash_diagnostic.operation==DIAG_CLOCK){
+                uint64_t raw=dok_nds_clock_last_sample(),last=storage->effects.clock._last_counter;
+                printf("Sim %lu rc%lu evt%lu\n",(unsigned long)storage->effects.failure_stage,
+                    (unsigned long)storage->effects.failure_status,(unsigned long)storage->effects.scheduler._fault);
+                printf("Clock %08lX%08lX\n",(unsigned long)(raw>>32),(unsigned long)(uint32_t)raw);
+                printf("Last  %08lX%08lX\n",(unsigned long)(last>>32),(unsigned long)(uint32_t)last);
+            }
         }
         if(obs.error_bits==16384u){
             uint32_t d[8];nds_audio_debug(d);

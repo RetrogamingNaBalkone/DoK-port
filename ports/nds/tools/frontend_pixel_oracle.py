@@ -6,6 +6,7 @@ NDS 4:3 adaptation, rather than an assertion of DOS framebuffer equality.
 from __future__ import annotations
 
 import hashlib
+import json
 import struct
 from pathlib import Path
 
@@ -167,8 +168,12 @@ def render_frontend(art, labels, controls, state, language, selection, level, pa
             menu_line(labels[row][13], row)
     elif state == 5:
         label(copy[4])
-        for row, value in enumerate(controls[lang]):
-            label(value, 8, 24 + 12 * row, 2)
+        copy_all=json.loads((ROOT/'ports/nds/platform/frontend/labels.json').read_text('utf8'))
+        for i,value in enumerate(copy_all['schemes'][lang]):
+            label(value,136 if i else 8,24,2)
+        label('>',128 if selection else 0,24,2)
+        for row,value in enumerate(copy_all['classic'][lang] if selection else controls[lang]):
+            label(value,8,40+12*row,2)
         if fixtures:
             label("Fixture: Sel+Start/X/Y", 8, 160, 2)
     elif state == 12:
@@ -180,14 +185,20 @@ def render_frontend(art, labels, controls, state, language, selection, level, pa
         message = art.resources[language][name]
         pages = text_pages(message, 30, 9)
         assert 0 <= page < len(pages)
-        label(copy[5 if state == 6 else 17 if state == 7 else 18 if state == 10 else 19])
-        label(str(page + 1), 208, 8)
-        label("/", 224, 8)
-        label(str(len(pages)), 232, 8)
+        if state in (6,11):label(copy[5 if state==6 else 19])
+        if len(pages)>1:
+            label(str(page+1),208,184)
+            label('/',224,184)
+            label(str(len(pages)),232,184)
         for row, line in enumerate(pages[page]):
-            label(line, 8, 28 + 16 * row, 2, 8)
+            label(line, 8, (8 if state in (7,10) else 28) + 16 * row, 2, 8)
     if state not in (1, 12):
-        label(copy[15 if text_index is not None else 14], 8, 176, 2)
+        if text_index is not None:
+            hint=15 if page else 20
+            if len(pages)==1:hint=21
+            if state==6:hint=15
+            label(copy[hint],8,172,2)
+        else:label(copy[14],8,176,2)
     if text_index is None and state != 1:
         top = bytearray(top)
         for y in range(192):

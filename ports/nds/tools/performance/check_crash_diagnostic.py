@@ -13,7 +13,7 @@ import run_frontend_emulator as front
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('target', type=Path)
-    parser.add_argument('--fault', choices=('gpu', 'audio', 'plan'), default='gpu')
+    parser.add_argument('--fault', choices=('gpu', 'audio', 'plan', 'clock', 'events'), default='gpu')
     args = parser.parse_args()
     target = args.target.resolve()
     directory = target / ('crash-diagnostic-' + args.fault)
@@ -36,7 +36,22 @@ def main():
         obs, _ = front.transport.elf_symbol(elf, 'obs')
         pointer = f.core.retro_get_memory_data(2)
         size = f.core.retro_get_memory_size(2)
-        if args.fault == 'gpu':
+        if args.fault in ('clock','events'):
+            ram=front.render.ram(f,0x02000000,size)
+            candidates=[];at=0
+            while True:
+                at=ram.find(struct.pack('<I',0x4e303843),at)
+                if at<0:break
+                base=at-56
+                if base>=0 and struct.unpack_from('<QQ',ram,base+24)==(38181824,1994081929):candidates.append(base)
+                at+=4
+            assert len(candidates)==1,candidates
+            if args.fault=='clock':offset=candidates[0]+16;injected=1<<63
+            else:
+                scheduler=candidates[0]+64
+                assert struct.unpack_from('<I',ram,scheduler+24)[0]==0x4e303845
+                offset=scheduler+40;injected=1
+        elif args.fault == 'gpu':
             offset = obs - 0x02000000 + 4 * f.render_fields.index('disp3d_sticky')
             injected = 1
         elif args.fault == 'audio':
@@ -50,7 +65,8 @@ def main():
         assert 0 <= offset <= size - 4
         # Explicit fault injection into the private CPU observation copy.
         # Bypass FrontendObserver.tick, which correctly rejects failed frames.
-        C.memmove(pointer + offset, struct.pack('<I', injected), 4)
+        payload=struct.pack('<Q' if args.fault=='clock' else '<I',injected)
+        C.memmove(pointer+offset,payload,len(payload))
         for _ in range(60):
             f.core.retro_run()
         assert not f.callback_error and not f.shutdown
@@ -71,8 +87,15 @@ def main():
         assert diagnostic_bytes == 188
         frozen = front.render.ram(f, diagnostic_at, diagnostic_bytes)
         count, stopped, valid, operation, status, a, b = struct.unpack_from('<7I', frozen)
-        assert count >= 8 and stopped == valid == 1
-        if args.fault == 'plan':
+        assert count >= 8 and stopped == valid == 1,(count,stopped,valid,operation,status,a,b,line,function)
+        if args.fault == 'clock':
+            assert operation in (4,15) and status==3
+            assert function=='render_one'
+            raw,_=front.transport.elf_symbol(elf,'last_sample')
+            assert struct.unpack('<Q',front.render.ram(f,raw,8))[0] < injected
+        elif args.fault == 'events':
+            assert (operation,status,b)==(4,3,0)
+        elif args.fault == 'plan':
             assert (operation, status) == (8, 1) and a > 0
         else:
             assert (operation, status, a) == ((13, 1, 1) if args.fault == 'gpu' else (2, 0, 51))

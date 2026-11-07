@@ -1,5 +1,28 @@
 # Передача контекста NDS между чатами
 
+7 ноября, текущая поставка — [text35-ru](spec/text35-20261107.md), `artifacts/nds/dok.nds`.
+SHA `6f6a72f64a25143b132aaca05583183819f251d9ac668934724ea2c170076be2`.
+Текст заставок поднят на20 пикселей, постоянный отступ перед кнопками28 пикселей.
+22 страницы RU/EN и полный UI/input/FAT/restart smoke PASS; сводка
+`analysis/nds-text35-20261107.json`. Следующий ID N23: повтор простоя в DraStic
+и получение Sim/Clock/Last. Причина отказа остаётся открытой; N24 не начата.
+
+7 ноября: [плейтест34, команды и доказательства](spec/playtest34-20261107.md).
+LEVEL1 пройден пользователем в DraStic, около60 FPS, без вылетов в прохождении.
+Отдельный простой5–7 минут вызвал diag33/main.c:1065, simulation/status3;
+Game/AI/Combat/Effects0, GPU/audio0. Причина не установлена. Исходный diag33
+выдержал42000 кадров без ввода в melonDS; это не опровержение отказа DraStic.
+Поставка `artifacts/nds/dok.nds` — playtest34-final-ru, SHA
+`c83b7f39be315a0e61e124195de43abe4b28e86232e138f522182120d0289a66`.
+Исправлены заголовки/пагинация заставок и player hits относительно текущей
+позиции монстра; добавлены две схемы с сохранением настройки. Host и melonDS
+UI/input/FAT/restart, GPU/audio/plan/clock/events injections PASS. Новые Sim/Clock/Last
+не скрывают отказ и не сбрасывают часы. Gameplay history64 освобождает8704 B,
+прежние память/SDK/reserve лимиты сохранены. N23 открыта, N24 не начата.
+Следующий ID **N23**: холодный запуск новой ROM в DraStic, повтор простоя и
+получение Sim/Clock/Last; затем локализовать первичный отказ. Игровых saves нет.
+GBA/SDL2 в рамках этой работы не менялись; независимые правки SDL2 в worktree сохранены.
+
 6 ноября: [экранная диагностика diag33](spec/drastic-diagnostics33-20261106.md).
 Поставка `artifacts/nds/dok.nds`, SHA
 `e310a0a53534381ae763dd68c66980606172854e094c6d42f7f524103f1f83e6`.

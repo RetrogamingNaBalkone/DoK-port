@@ -20,7 +20,9 @@
       "Выключите Nintendo DS",
       "Начало уровня",
       "Уровень завершён",
-      "Конец игры"
+      "Конец игры",
+      "A: Далее",
+      "A: Продолжить"
     ],
     [
       "Kremlin Dungeons",
@@ -42,7 +44,9 @@
       "Turn off Nintendo DS",
       "Level introduction",
       "Level completed",
-      "The end"
+      "The end",
+      "A: Next",
+      "A: Continue"
     ]
   ],
   "controls": [
@@ -66,6 +70,44 @@
       "R: fire",
       "Hold L: run",
       "X / B: door / use",
+      "Select: next weapon",
+      "Start: pause / continue",
+      "Map: drag with stylus",
+      "- / +: map zoom",
+      "Center: follow hero"
+    ]
+  ],
+  "schemes": [
+    [
+      "Современная",
+      "Классическая"
+    ],
+    [
+      "Modern",
+      "Classic"
+    ]
+  ],
+  "classic": [
+    [
+      "Вверх/вниз: вперёд/назад",
+      "Влево/вправо: поворот",
+      "L / R: стрейф",
+      "Y: стрелять",
+      "B: бег (удерживать)",
+      "X: двери, действие",
+      "Select: следующее оружие",
+      "Start: пауза / продолжить",
+      "Карта: перетащите стилусом",
+      "- / +: масштаб карты",
+      "Центр: следить за героем"
+    ],
+    [
+      "Up/down: move forward/back",
+      "Left/right: turn",
+      "L / R: strafe",
+      "Y: fire",
+      "Hold B: run",
+      "X: door / use",
       "Select: next weapon",
       "Start: pause / continue",
       "Map: drag with stylus",

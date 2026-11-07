@@ -244,9 +244,9 @@ def verify_memory(frontend, probe: dict, elf: Path) -> dict:
 
 def history_record(frontend, probe: dict, ordinal: int,
                    fields: list[str]) -> dict | None:
-    if probe["history_capacity"] != 128 or probe["history_record_bytes"] != len(fields) * 4:
+    if probe["history_capacity"] not in (64,128) or probe["history_record_bytes"] != len(fields) * 4:
         raise ValueError("N07 history ABI changed")
-    address = probe["history_address"] + ((ordinal - 1) % 128) * len(fields) * 4
+    address = probe["history_address"] + ((ordinal - 1) % probe["history_capacity"]) * len(fields) * 4
     value = observe(frontend, address, fields, 0x37484B44)
     if value is None:
         return None
@@ -728,7 +728,7 @@ def run_renderer(frontend, address: int, probe_fields: list[str], cases: list[di
         if probe["status"]==3 or probe["error_bits"]:
             raise AssertionError("ARM9 renderer published failure")
         total=probe["history_total"]
-        if total<ordinal or total-ordinal>128:
+        if total<ordinal or total-ordinal>probe["history_capacity"]:
             raise AssertionError("N07 frame history lost observations")
         for number in range(ordinal+1,total+1):
             row=history_record(frontend,probe,number,history_fields)

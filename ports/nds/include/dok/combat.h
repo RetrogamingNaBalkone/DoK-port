@@ -33,7 +33,9 @@ typedef struct dok_projectile {
     uint8_t template_glyph,phase,occupied,effect_hit;
 } dok_projectile;
 typedef struct dok_weapon_runtime { int16_t state,shift,cursor;uint16_t active; } dok_weapon_runtime;
+struct dok_ai;
 typedef struct dok_combat {
+    const struct dok_ai *actors; /* borrowed dynamic hit targets; attached by N16 */
     dok_items *items;
     dok_event_scheduler *scheduler;
     const dok_level_presentation *presentation;

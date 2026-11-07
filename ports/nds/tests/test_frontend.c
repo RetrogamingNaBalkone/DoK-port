@@ -1,4 +1,5 @@
 #include "dok/frontend.h"
+#include "dok/input.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -167,35 +168,56 @@ static void menus_and_text(void)
     choose(&s,3);CHECK(press(&s,DOK_FRONTEND_KEY_A)==DOK_FRONTEND_STOP_GAME);
     CHECK(s.state==DOK_FRONTEND_MAIN);
     play(&s,1,2);CHECK(dok_frontend_show_outro(&s,0)==DOK_FRONTEND_PAUSE_GAME);
-    CHECK(s.level==1);CHECK(press(&s,DOK_FRONTEND_KEY_B)==DOK_FRONTEND_STOP_GAME);
+    CHECK(s.level==1);CHECK(press(&s,DOK_FRONTEND_KEY_B)==0&&s.state==DOK_FRONTEND_OUTRO);
     CHECK(dok_frontend_show_ending(&s)==0);
-    CHECK(press(&s,DOK_FRONTEND_KEY_B)==DOK_FRONTEND_STOP_GAME);
+    CHECK(press(&s,DOK_FRONTEND_KEY_B)==0&&s.state==DOK_FRONTEND_ENDING);
     main_menu(&s,1);CHECK(press(&s,DOK_FRONTEND_KEY_A)==0);
     CHECK(press(&s,DOK_FRONTEND_KEY_DOWN)==0);
     CHECK(press(&s,DOK_FRONTEND_KEY_A)==0&&s.level==2);
-    CHECK(press(&s,DOK_FRONTEND_KEY_B)==0&&s.state==DOK_FRONTEND_LEVELS&&s.selection==1);
+    CHECK(press(&s,DOK_FRONTEND_KEY_B)==0&&s.state==DOK_FRONTEND_INTRO&&s.page==0);
     dok_frontend_init(&s,1,0);CHECK(press(&s,DOK_FRONTEND_KEY_A)==DOK_FRONTEND_STOP_TITLE);
     choose(&s,3);CHECK(press(&s,DOK_FRONTEND_KEY_A)==0&&s.page_count==1);
 }
+static void scheme_cases(void)
+{
+    const uint32_t physical[]={DOK_BUTTON_UP,DOK_BUTTON_DOWN,DOK_BUTTON_LEFT,DOK_BUTTON_RIGHT,
+        DOK_BUTTON_L,DOK_BUTTON_R,DOK_BUTTON_Y,DOK_BUTTON_B,DOK_BUTTON_X,DOK_BUTTON_SELECT,DOK_BUTTON_START};
+    const uint32_t modern[]={DOK_BUTTON_UP,DOK_BUTTON_DOWN,DOK_BUTTON_Y,DOK_BUTTON_A,
+        DOK_BUTTON_LEFT,DOK_BUTTON_RIGHT,DOK_BUTTON_R,DOK_BUTTON_L,DOK_BUTTON_X,DOK_BUTTON_SELECT,DOK_BUTTON_START};
+    for(unsigned keys=0;keys<4096u;++keys){
+        uint32_t expected=0;
+        for(unsigned i=0;i<11u;++i)if(keys&physical[i])expected|=modern[i];
+        CHECK(dok_frontend_game_buttons(keys,0)==keys);
+        CHECK(dok_frontend_game_buttons(keys,1)==expected);
+    }
+    dok_frontend s;main_menu(&s,1);choose(&s,2);
+    CHECK(press(&s,DOK_FRONTEND_KEY_A)==0&&s.selection==0);
+    CHECK(press(&s,DOK_FRONTEND_KEY_DOWN)==0&&s.selection==1);
+    CHECK(press(&s,DOK_FRONTEND_KEY_A)==DOK_FRONTEND_CONTROLS_CHANGED&&s.control_scheme==1);
+    CHECK(press(&s,DOK_FRONTEND_KEY_A)==0&&s.selection==1);
+    CHECK(press(&s,DOK_FRONTEND_KEY_A)==0&&s.control_scheme==1);
+    CHECK(press(&s,DOK_FRONTEND_KEY_A)==0);
+    CHECK(press(&s,DOK_FRONTEND_KEY_UP)==0&&s.selection==0);
+    CHECK(press(&s,DOK_FRONTEND_KEY_B)==0&&s.control_scheme==1);
+}
 static void settings_cases(void)
 {
-    /* Independent golden record: DOKS, LE version/size, EN, three reserved,
-     * FNV-1a of the first twelve bytes = 0x009701e9. */
-    const uint8_t golden[16]={'D','O','K','S',1,0,16,0,2,0,0,0,0xe9,0x01,0x97,0x00};
-    uint8_t out[17],language=99;
-    dok_settings_encode(out,2);CHECK(!memcmp(out,golden,16));
-    CHECK(dok_settings_decode(golden,16,&language)&&language==2);
+    /* Version 2: language and control scheme covered by FNV-1a. */
+    const uint8_t golden[16]={'D','O','K','S',2,0,16,0,2,0,0,0,0xca,0xe0,0x23,0x29};
+    uint8_t out[17],language=99,scheme=99;
+    dok_settings_encode(out,2,0);CHECK(!memcmp(out,golden,16));
+    CHECK(dok_settings_decode(golden,16,&language,&scheme)&&language==2);
     for(unsigned lang=0;lang<=255;++lang){
-        dok_settings_encode(out,(uint8_t)lang);
-        CHECK(dok_settings_decode(out,16,&language));CHECK(language==(lang==2?2u:1u));
+        dok_settings_encode(out,(uint8_t)lang,0);
+        CHECK(dok_settings_decode(out,16,&language,&scheme));CHECK(language==(lang==2?2u:1u));
         for(unsigned i=0;i<16;++i)for(unsigned bit=0;bit<8;++bit){
             out[i]^=(uint8_t)(1u<<bit);language=99;
-            CHECK(!dok_settings_decode(out,16,&language)&&language==1);
+            CHECK(!dok_settings_decode(out,16,&language,&scheme)&&language==1);
             out[i]^=(uint8_t)(1u<<bit);
         }
     }
     for(unsigned bytes=0;bytes<=17;++bytes)if(bytes!=16){
-        language=99;CHECK(!dok_settings_decode(out,bytes,&language)&&language==1);
+        language=99;CHECK(!dok_settings_decode(out,bytes,&language,&scheme)&&language==1);
     }
     /* Recompute checksums after semantic corruption: a valid hash must not
      * permit a future version, extra flags, invalid language or other magic. */
@@ -204,15 +226,19 @@ static void settings_cases(void)
         uint32_t hash=2166136261u;
         for(unsigned i=0;i<12;++i)hash=(hash^out[i])*16777619u;
         for(unsigned i=0;i<4;++i)out[12u+i]=(uint8_t)(hash>>(8u*i));
-        int valid=value==golden[offset]||(offset==8u&&value==1u);
-        CHECK(dok_settings_decode(out,16,&language)==valid);
+        int valid=value==golden[offset]||(offset==8u&&value==1u)||(offset==9u&&value==1u);
+        CHECK(dok_settings_decode(out,16,&language,&scheme)==valid);
         CHECK(language==(valid?out[8]:1u));
     }
-    CHECK(!dok_settings_decode(0,16,&language)&&language==1);
+    CHECK(!dok_settings_decode(0,16,&language,&scheme)&&language==1&&scheme==0);
+    for(unsigned control=0;control<2u;++control)for(unsigned lang=1;lang<=2u;++lang){
+        dok_settings_encode(out,(uint8_t)lang,(uint8_t)control);
+        CHECK(dok_settings_decode(out,16,&language,&scheme)&&language==lang&&scheme==control);
+    }
 }
 int main(void)
 {
-    title_cases();input_cases();menus_and_text();settings_cases();
+    title_cases();input_cases();menus_and_text();scheme_cases();settings_cases();
     printf("frontend checks=%u state_bytes=%u\n",checks,(unsigned)sizeof(dok_frontend));
     return 0;
 }

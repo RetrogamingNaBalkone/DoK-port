@@ -1,4 +1,5 @@
 #include "dok/combat.h"
+#include "dok/ai.h"
 #include <limits.h>
 #include <stddef.h>
 #include <string.h>
@@ -209,6 +210,7 @@ static dok_status contact(dok_combat *s,dok_projectile *p,uint32_t index,uint32_
     else *accepted=(s->items->collision->flags[glyph]&0x18u)==0u;
     return DOK_STATUS_OK;
 }
+#include "combat_hits.inc"
 static dok_status move_projectile(dok_combat *s,dok_projectile *p,int16_t distance)
 {
     int32_t sn,cs;if(!s->services.trig(s->services.context,(uint16_t)p->heading,&sn,&cs))return DOK_STATUS_INVALID_STATE;
@@ -235,9 +237,14 @@ static dok_status projectile_callback(dok_combat *s,uint32_t slot,uint32_t gener
         if((r=dok_projectile_distance(p->speed,t-p->last_ticks,s->items->world->definition->settings[3],&distance,&quarter))!=DOK_STATUS_OK)return r;
         n=(uint32_t)(distance/quarter);if(distance>0||n>65535u)return DOK_STATUS_LIMIT_REACHED;
         for(step=0;step<=n;++step){
+            int32_t old_x=p->x,old_z=p->z;
             r=move_projectile(s,p,step?quarter:word(distance%quarter));if(r!=DOK_STATUS_OK)return r;
             uint32_t index=cell(s,p->x,p->z);
-            r=contact(s,p,index,&hit,&cl,&h,&target);if(r!=DOK_STATUS_OK)return r;
+            const dok_world_object_seed *source=seed(s,p->owner);
+            if(s->actors&&source&&source->class_id==1u)
+                r=player_contact(s,p,old_x,old_z,&hit,&cl,&h,&target);
+            else r=contact(s,p,index,&hit,&cl,&h,&target);
+            if(r!=DOK_STATUS_OK)return r;
             if(hit){
                 const dok_level_object *o=object(s,p->template_glyph);dok_sprite_frame current;
                 a=animation(s,p->template_glyph,DOK_PRESENT_ANIMATION);if(!a||dok_sprite_animation_get(a,p->cursor,&current)!=DOK_STATUS_OK)return DOK_STATUS_INVALID_STATE;

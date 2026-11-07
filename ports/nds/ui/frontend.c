@@ -1,4 +1,5 @@
 #include "dok/frontend.h"
+#include "dok/input.h"
 #include <string.h>
 
 _Static_assert(sizeof(dok_frontend)<512,"frontend bounded state");
@@ -26,7 +27,8 @@ static void enter(dok_frontend *s,uint8_t state,uint8_t selection)
 static void child(dok_frontend *s,uint8_t state)
 {
     s->return_state=s->state;s->return_selection=s->selection;
-    enter(s,state,state==DOK_FRONTEND_LANGUAGE?s->language-1u:0u);
+    enter(s,state,state==DOK_FRONTEND_LANGUAGE?s->language-1u:
+          state==DOK_FRONTEND_CONTROLS?s->control_scheme:0u);
 }
 static void back(dok_frontend *s)
 {
@@ -80,11 +82,7 @@ uint32_t dok_frontend_step(dok_frontend *s,uint32_t keys,
     if(text>=0){
         if(pressed&DOK_FRONTEND_KEY_B){
             if(s->page){--s->page;++s->revision;}
-            else if(s->state==DOK_FRONTEND_OUTRO||s->state==DOK_FRONTEND_ENDING){
-                uint8_t outro=s->state==DOK_FRONTEND_OUTRO;
-                enter(s,outro?DOK_FRONTEND_LEVELS:DOK_FRONTEND_MAIN,
-                      outro?s->level-1u:0u);return DOK_FRONTEND_STOP_GAME;
-            }else back(s);
+            else if(s->state==DOK_FRONTEND_STORY)back(s);
         }else if(pressed&DOK_FRONTEND_KEY_A){
             if(s->page+1u<s->page_count){++s->page;++s->revision;}
             else if(s->state==DOK_FRONTEND_INTRO){
@@ -98,7 +96,12 @@ uint32_t dok_frontend_step(dok_frontend *s,uint32_t keys,
         return 0;
     }
     if(s->state==DOK_FRONTEND_CONTROLS){
-        if(pressed&(DOK_FRONTEND_KEY_A|DOK_FRONTEND_KEY_B))back(s);
+        move(s,pressed,2);
+        if(pressed&DOK_FRONTEND_KEY_B)back(s);
+        else if(pressed&DOK_FRONTEND_KEY_A){
+            uint8_t old=s->control_scheme;s->control_scheme=s->selection;
+            back(s);return old==s->control_scheme?0u:DOK_FRONTEND_CONTROLS_CHANGED;
+        }
         return 0;
     }
     if(s->state==DOK_FRONTEND_MAIN){
@@ -162,21 +165,37 @@ static uint32_t checksum(const uint8_t *p)
     for(unsigned i=0;i<12u;++i)hash=(hash^p[i])*16777619u;
     return hash;
 }
-void dok_settings_encode(uint8_t out[DOK_SETTINGS_BYTES],uint8_t language)
+void dok_settings_encode(uint8_t out[DOK_SETTINGS_BYTES],uint8_t language,uint8_t scheme)
 {
     memset(out,0,DOK_SETTINGS_BYTES);memcpy(out,"DOKS",4);
-    out[4]=1;out[6]=DOK_SETTINGS_BYTES;out[8]=safe_language(language);
+    out[4]=2;out[6]=DOK_SETTINGS_BYTES;out[8]=safe_language(language);out[9]=scheme==1u;
     uint32_t sum=checksum(out);
     for(unsigned i=0;i<4u;++i)out[12u+i]=(uint8_t)(sum>>(8u*i));
 }
-int dok_settings_decode(const void *input,size_t bytes,uint8_t *language)
+int dok_settings_decode(const void *input,size_t bytes,uint8_t *language,uint8_t *scheme)
 {
-    const uint8_t *p=input;*language=1;
+    const uint8_t *p=input;*language=1;*scheme=0;
     if(!p||bytes!=DOK_SETTINGS_BYTES)return 0;
-    if(memcmp(p,"DOKS",4)||p[4]!=1||p[5]||p[6]!=DOK_SETTINGS_BYTES||p[7]||
-       (p[8]!=1u&&p[8]!=2u)||p[9]||p[10]||p[11])return 0;
+    if(memcmp(p,"DOKS",4)||p[4]!=2||p[5]||p[6]!=DOK_SETTINGS_BYTES||p[7]||
+       (p[8]!=1u&&p[8]!=2u)||p[9]>1u||p[10]||p[11])return 0;
     uint32_t sum=0;
     for(unsigned i=0;i<4u;++i)sum|=(uint32_t)p[12u+i]<<(8u*i);
     if(sum!=checksum(p))return 0;
-    *language=p[8];return 1;
+    *language=p[8];*scheme=p[9];return 1;
+}
+
+/* Convert physical classic buttons to the existing modern command contract.
+ * Menu keys and release gating operate on physical buttons before this call. */
+uint32_t dok_frontend_game_buttons(uint32_t buttons,uint8_t scheme)
+{
+    if(scheme!=1u)return buttons;
+    uint32_t mapped=buttons&(DOK_BUTTON_UP|DOK_BUTTON_DOWN|DOK_BUTTON_X|
+                             DOK_BUTTON_SELECT|DOK_BUTTON_START);
+    if(buttons&DOK_BUTTON_LEFT)mapped|=DOK_BUTTON_Y;
+    if(buttons&DOK_BUTTON_RIGHT)mapped|=DOK_BUTTON_A;
+    if(buttons&DOK_BUTTON_L)mapped|=DOK_BUTTON_LEFT;
+    if(buttons&DOK_BUTTON_R)mapped|=DOK_BUTTON_RIGHT;
+    if(buttons&DOK_BUTTON_Y)mapped|=DOK_BUTTON_R;
+    if(buttons&DOK_BUTTON_B)mapped|=DOK_BUTTON_L;
+    return mapped;
 }

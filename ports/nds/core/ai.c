@@ -94,7 +94,7 @@ dok_status dok_ai_bind(dok_ai *s,dok_initial_world *w,dok_collision_state *colli
         e->health=word(field(o,0xa4));e->displayed_cursor=0;
         if(dok_motion_init(&e->motion,seed->x,seed->y,seed->z,seed->heading,word(field(o,0x34)),field(o,0x38))!=DOK_STATUS_OK)return DOK_STATUS_INVALID_STATE;
     }
-    return DOK_STATUS_OK;
+    combat->actors=s;return DOK_STATUS_OK;
 }
 dok_status dok_ai_register(dok_ai *s)
 {
@@ -313,5 +313,6 @@ dok_status dok_ai_clear(dok_ai *s)
 {
     dok_status r=valid(s);if(r!=DOK_STATUS_OK)return r;if(s->scheduler->_dispatching)return DOK_STATUS_INVALID_STATE;
     if(s->registered)for(uint32_t i=0;i<s->count;++i)if((r=dok_events_destroy(s->scheduler,service(s,&s->enemies[i])))!=DOK_STATUS_OK)return r;
+    if(s->combat->actors==s)s->combat->actors=NULL;
     s->registered=s->active=s->tag=0;return DOK_STATUS_OK;
 }

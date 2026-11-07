@@ -264,7 +264,7 @@ def main():
                 if probe['render_frame_address']:
                     render.write_json(directory/'failed-frame.json',read_flat_frame_unchecked(frontend,probe))
                 raise AssertionError('ARM9 renderer failed; see last observations')
-            assert 0<=probe['history_total']-ordinal<=128
+            assert 0<=probe['history_total']-ordinal<=probe['history_capacity']
             for number in range(ordinal+1,probe['history_total']+1):
                 row=render.history_record(frontend,probe,number,hf)
                 if row is None:break

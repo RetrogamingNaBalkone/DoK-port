@@ -1,0 +1,50 @@
+{
+  "task": "N23",
+  "date": "2026-11-07",
+  "passed": true,
+  "change": "Intermission text top28 -> top8; fixed footer gap28 pixels",
+  "checked_page_captures": 22,
+  "blank_region": [
+    0,
+    144,
+    256,
+    172
+  ],
+  "index8_checks": 6979584,
+  "rgb_checks": 6979584,
+  "memory": {
+    "static_bytes": 348708,
+    "heap_start_gap": 32,
+    "static_startup_bytes": 520192,
+    "managed_bytes": 2293760,
+    "sdk_heap_available": 200704,
+    "reserve_bytes": 655360,
+    "closure_bytes": 3670016,
+    "partition": {
+      "ceilings": {
+        "world": 393216,
+        "events": 36864,
+        "scratch": 131072,
+        "scene": 262144,
+        "assets": 1077248,
+        "audio": 262144,
+        "io": 131072
+      },
+      "provenance": "ELF-bound compiled memory_budget.h; approved N03 or N22 partition",
+      "header": {
+        "path": "research/evidence/nds/n23/candidates/text35-ru/sources/ports/nds/include/dok/memory_budget.h",
+        "bytes": 1774,
+        "sha256": "9712601e813afffe4563822602a8ea104087f69bb6d64276332b68abf9c3c4ff"
+      },
+      "elf": {
+        "path": "build/nds/n23/text35-ru/dok_nds_gameplay.elf",
+        "bytes": 2451056,
+        "sha256": "c102174cdd043efefb53864ec28e8e516fca38ea2b1466ac6cd321f6396e1a63"
+      }
+    }
+  },
+  "rom_sha256": "6f6a72f64a25143b132aaca05583183819f251d9ac668934724ea2c170076be2",
+  "full_report": "research/evidence/nds/n23/text35/emulator-ui.json",
+  "drastic_idle_crash_fixed": false,
+  "next_task": "N23"
+}

@@ -1,0 +1,535 @@
+{
+  "task": "N23",
+  "date": "2026-11-07",
+  "local_checks_passed": true,
+  "drastic_idle_crash_fixed": false,
+  "n23_accepted": false,
+  "next_task": "N23",
+  "published": {
+    "path": "artifacts/nds/dok.nds",
+    "bytes": 10178048,
+    "sha256": "c83b7f39be315a0e61e124195de43abe4b28e86232e138f522182120d0289a66"
+  },
+  "build_manifest": {
+    "path": "build/nds/n23/playtest34-final-ru/build-manifest.json",
+    "bytes": 114794,
+    "sha256": "dab06642b4fd90c8a41d08c8f8d1c04eeb3aac2a3ef774bcfede72d835812294"
+  },
+  "host": {
+    "frontend_checks": 151150,
+    "test_combat": {
+      "checks": 313608,
+      "failures": 0,
+      "line": 0,
+      "scenarios": 34,
+      "callbacks": 108,
+      "trace_hash": 1888275799,
+      "workspace_bytes": 1668976,
+      "combat_bytes": 12992
+    },
+    "test_ai_combat": {
+      "checks": 11503,
+      "failures": 0,
+      "line": 0,
+      "scenarios": 268,
+      "callbacks": 2060,
+      "trace_hash": 3001418237,
+      "groups": 52,
+      "placed_definitions": 868,
+      "deaths": 104,
+      "melee": 104,
+      "ranged": 140,
+      "trace_count": 2060,
+      "negative_intervals": 56
+    },
+    "test_playtest34_hits": {
+      "checks": 256720,
+      "centered_shots": 31248
+    }
+  },
+  "emulator": {
+    "text_screens": 14,
+    "index8_checks": 6979584,
+    "rgb_checks": 6979584,
+    "settings_writes": 3,
+    "cold_restart_classic": true,
+    "memory": {
+      "static_bytes": 348676,
+      "heap_start_gap": 32,
+      "static_startup_bytes": 520192,
+      "managed_bytes": 2293760,
+      "sdk_heap_available": 200704,
+      "reserve_bytes": 655360,
+      "closure_bytes": 3670016,
+      "partition": {
+        "ceilings": {
+          "world": 393216,
+          "events": 36864,
+          "scratch": 131072,
+          "scene": 262144,
+          "assets": 1077248,
+          "audio": 262144,
+          "io": 131072
+        },
+        "provenance": "ELF-bound compiled memory_budget.h; approved N03 or N22 partition",
+        "header": {
+          "path": "research/evidence/nds/n23/candidates/playtest34-final-ru/sources/ports/nds/include/dok/memory_budget.h",
+          "bytes": 1774,
+          "sha256": "9712601e813afffe4563822602a8ea104087f69bb6d64276332b68abf9c3c4ff"
+        },
+        "elf": {
+          "path": "build/nds/n23/playtest34-final-ru/dok_nds_gameplay.elf",
+          "bytes": 2450916,
+          "sha256": "341a588b966da27f3f23576352e4b2c1af9d6e7f63fc0e727b259bfa1cb42605"
+        }
+      }
+    },
+    "fault_injections": {
+      "gpu": {
+        "count": 273,
+        "operation": 13,
+        "status": 1,
+        "a": 1,
+        "b": 0,
+        "history": [
+          [
+            36,
+            290828617,
+            1,
+            1,
+            35
+          ],
+          [
+            36,
+            290829759,
+            4,
+            0,
+            13
+          ],
+          [
+            36,
+            290943265,
+            5,
+            10,
+            0
+          ],
+          [
+            36,
+            291031852,
+            7,
+            10,
+            0
+          ],
+          [
+            36,
+            291089820,
+            9,
+            73,
+            10
+          ],
+          [
+            36,
+            291164419,
+            10,
+            0,
+            93
+          ],
+          [
+            36,
+            291377737,
+            12,
+            4294967295,
+            4294967295
+          ],
+          [
+            36,
+            291383537,
+            13,
+            1,
+            0
+          ]
+        ]
+      },
+      "audio": {
+        "count": 269,
+        "operation": 2,
+        "status": 0,
+        "a": 51,
+        "b": 0,
+        "history": [
+          [
+            35,
+            290494408,
+            7,
+            10,
+            0
+          ],
+          [
+            35,
+            290552376,
+            9,
+            73,
+            10
+          ],
+          [
+            35,
+            290626975,
+            10,
+            0,
+            103
+          ],
+          [
+            35,
+            290817547,
+            12,
+            4294967295,
+            4294967295
+          ],
+          [
+            36,
+            290828617,
+            1,
+            1,
+            35
+          ],
+          [
+            36,
+            290829759,
+            4,
+            0,
+            13
+          ],
+          [
+            36,
+            290943265,
+            5,
+            10,
+            0
+          ],
+          [
+            36,
+            290999576,
+            2,
+            51,
+            0
+          ]
+        ]
+      },
+      "plan": {
+        "count": 270,
+        "operation": 8,
+        "status": 1,
+        "a": 10,
+        "b": 118784,
+        "history": [
+          [
+            35,
+            290552376,
+            9,
+            73,
+            10
+          ],
+          [
+            35,
+            290626975,
+            10,
+            0,
+            103
+          ],
+          [
+            35,
+            290817547,
+            12,
+            4294967295,
+            4294967295
+          ],
+          [
+            36,
+            290828617,
+            1,
+            1,
+            35
+          ],
+          [
+            36,
+            290829759,
+            4,
+            0,
+            13
+          ],
+          [
+            36,
+            290943265,
+            5,
+            10,
+            0
+          ],
+          [
+            36,
+            291031852,
+            7,
+            10,
+            0
+          ],
+          [
+            36,
+            291046077,
+            8,
+            10,
+            118784
+          ]
+        ]
+      },
+      "clock": {
+        "count": 273,
+        "operation": 15,
+        "status": 3,
+        "a": 4552831,
+        "b": 0,
+        "history": [
+          [
+            36,
+            290828617,
+            1,
+            1,
+            35
+          ],
+          [
+            36,
+            290829759,
+            4,
+            0,
+            13
+          ],
+          [
+            36,
+            290943265,
+            5,
+            10,
+            0
+          ],
+          [
+            36,
+            291031852,
+            7,
+            10,
+            0
+          ],
+          [
+            36,
+            291089820,
+            9,
+            73,
+            10
+          ],
+          [
+            36,
+            291164419,
+            10,
+            0,
+            93
+          ],
+          [
+            36,
+            291377737,
+            12,
+            4294967295,
+            4294967295
+          ],
+          [
+            36,
+            291381451,
+            15,
+            4552831,
+            0
+          ]
+        ]
+      },
+      "events": {
+        "count": 275,
+        "operation": 4,
+        "status": 3,
+        "a": 13,
+        "b": 0,
+        "history": [
+          [
+            36,
+            290943265,
+            5,
+            10,
+            0
+          ],
+          [
+            36,
+            291031852,
+            7,
+            10,
+            0
+          ],
+          [
+            36,
+            291089820,
+            9,
+            73,
+            10
+          ],
+          [
+            36,
+            291164419,
+            10,
+            0,
+            93
+          ],
+          [
+            36,
+            291377737,
+            12,
+            4294967295,
+            4294967295
+          ],
+          [
+            37,
+            291388805,
+            1,
+            1,
+            36
+          ],
+          [
+            37,
+            291389947,
+            4,
+            0,
+            13
+          ],
+          [
+            37,
+            291390113,
+            4,
+            13,
+            0
+          ]
+        ]
+      }
+    }
+  },
+  "baseline_idle": {
+    "rom_sha256": "e310a0a53534381ae763dd68c66980606172854e094c6d42f7f524103f1f83e6",
+    "no_input": true,
+    "completed_frames": 42000,
+    "wall_seconds": 307.22093479998875
+  },
+  "current_idle": {
+    "rom_sha256": "c83b7f39be315a0e61e124195de43abe4b28e86232e138f522182120d0289a66",
+    "no_input": true,
+    "completed_frames": 6000,
+    "wall_seconds": 45.880370200029574
+  },
+  "limitations": [
+    "DraStic simulation status3 root cause unconfirmed",
+    "UI outro/ending and error diagnostics use explicit RAM fixtures",
+    "Host collision shots are controlled tests, not a campaign",
+    "Physical DS and full campaign not tested"
+  ],
+  "evidence": [
+    {
+      "path": "research/evidence/nds/n23/playtest34/baseline-idle.json",
+      "bytes": 3425,
+      "sha256": "61ed8f5649d1b57ce4eaa422a9fc6c4321e458629a46a23186287c98839767eb"
+    },
+    {
+      "path": "research/evidence/nds/n23/playtest34/classic-controls.png",
+      "bytes": 10810,
+      "sha256": "a682c79f1ddb8028c857eeac1c13f270269c0eafc9a07e3aa40fdafdf0e6ff1c"
+    },
+    {
+      "path": "research/evidence/nds/n23/playtest34/current-idle.json",
+      "bytes": 3409,
+      "sha256": "b50cedf890b98589f0285862686d10c57fd00f44774bbdb8dffb249a41d5655d"
+    },
+    {
+      "path": "research/evidence/nds/n23/playtest34/emulator-ui.json",
+      "bytes": 44837,
+      "sha256": "87d35403887d01b2be024c055c8587c4ce020873034270e070a2014ce652d163"
+    },
+    {
+      "path": "research/evidence/nds/n23/playtest34/fault-audio.json",
+      "bytes": 4323,
+      "sha256": "fc5c410629e6df7d8b12e07ea54030cccf8c8d01b2e4ccf16bff0bd236ed5f56"
+    },
+    {
+      "path": "research/evidence/nds/n23/playtest34/fault-audio.png",
+      "bytes": 6936,
+      "sha256": "57bba5b0285721ed3c348f280283ea881784bc04a161cb833f8ed3ccb6725614"
+    },
+    {
+      "path": "research/evidence/nds/n23/playtest34/fault-clock.json",
+      "bytes": 4330,
+      "sha256": "55523f81d9b5a49711123f831f8abda7deb3d08d53c9a70bdf8f698ca13d05e6"
+    },
+    {
+      "path": "research/evidence/nds/n23/playtest34/fault-clock.png",
+      "bytes": 7432,
+      "sha256": "5a42461a963333aced1c8eac5f26c9ead71c0aabb9eb1c2201c75141ca69e431"
+    },
+    {
+      "path": "research/evidence/nds/n23/playtest34/fault-events.json",
+      "bytes": 4322,
+      "sha256": "c73f630c8ed3b4c307c0c1a48bf6b1f318b44fc465081b865205456aec2951b8"
+    },
+    {
+      "path": "research/evidence/nds/n23/playtest34/fault-events.png",
+      "bytes": 7486,
+      "sha256": "bc6c3b0b2b697cbc357b49f73f073ee712c8f89e3bd714e57ce360b338993dec"
+    },
+    {
+      "path": "research/evidence/nds/n23/playtest34/fault-gpu.json",
+      "bytes": 4310,
+      "sha256": "b94f427ededbb39cf408af4b2f1182fe49a3768fc201cc8cfc849d311c916116"
+    },
+    {
+      "path": "research/evidence/nds/n23/playtest34/fault-gpu.png",
+      "bytes": 6916,
+      "sha256": "fb32227c9d6fda52d83c7ddcb56ad346e7b9bf81f2858894a925e1f338a40566"
+    },
+    {
+      "path": "research/evidence/nds/n23/playtest34/fault-plan.json",
+      "bytes": 4329,
+      "sha256": "2c6d670f19bfe8906e451b6d057c4a6d6b91798022550730960c1bfe7cfd1f59"
+    },
+    {
+      "path": "research/evidence/nds/n23/playtest34/fault-plan.png",
+      "bytes": 7058,
+      "sha256": "4a3456c5e2732d4b462b4a089d22bef3401e51adaef6842f9a60823e5286f4c1"
+    },
+    {
+      "path": "research/evidence/nds/n23/playtest34/frontend-10-1-1-0.png",
+      "bytes": 25800,
+      "sha256": "598fa56dc8ecd455d2a1ded902f0b35a1cefafd7ef952ceec9bf206a350b4db6"
+    },
+    {
+      "path": "research/evidence/nds/n23/playtest34/frontend-7-1-1-0.png",
+      "bytes": 23199,
+      "sha256": "f20595c81d6c6b949386089a39c608a3a77bfeefc7135df9ae389660c86018d3"
+    },
+    {
+      "path": "research/evidence/nds/n23/playtest34/frontend-7-1-1-1.png",
+      "bytes": 22713,
+      "sha256": "113cd131b6424c78ddd2eb11284efeb8b1055205fc7a45058d10eb12c6c3b13c"
+    },
+    {
+      "path": "research/evidence/nds/n23/playtest34/frontend-host.json",
+      "bytes": 1560,
+      "sha256": "14fd3745917040777a71285d5919aac0aec1e33c7272c769640bd16c5e069012"
+    },
+    {
+      "path": "research/evidence/nds/n23/playtest34/host.json",
+      "bytes": 644,
+      "sha256": "d3eca27d203daea24ac37a216178144c86fed939c48420b1f9058d2b7b925745"
+    },
+    {
+      "path": "research/evidence/nds/n23/playtest34/modern-controls.png",
+      "bytes": 11046,
+      "sha256": "20ec53851c5147f3ed9ce61774abd346ec28507525d2358f3c5f9eb264d49dc4"
+    }
+  ]
+}

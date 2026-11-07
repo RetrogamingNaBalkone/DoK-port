@@ -32,7 +32,7 @@ static int read_entry(NdsFrontend *f,uint32_t kind,uint32_t id,void *out,uint32_
 }
 int nds_frontend_initialize(NdsFrontend *f,const dok_asset_session *assets,void *scratch,const unsigned char *font)
 {
-    unsigned char h[32],raw[608],settings[17];uint16_t pages[2][8];uint8_t language=1;
+    unsigned char h[32],raw[608],settings[17];uint16_t pages[2][8];uint8_t language=1,scheme=0;
     memset(f,0,sizeof(*f));f->assets=assets;f->font=font;f->top=scratch;f->bottom=f->top+49152;f->text=f->top+98304;
     f->file=fopen(NDS_RESOURCE_ROOT "frontend.dat","rb");
     if(!f->file||fread(h,1,32,f->file)!=32||memcmp(h,"N21UI01\0",8)||le32(h+8)!=1||le32(h+12)!=38||le32(h+16)!=32||le32(h+24)||le32(h+28)||fread(raw,1,sizeof(raw),f->file)!=sizeof(raw))return 0;
@@ -48,8 +48,9 @@ int nds_frontend_initialize(NdsFrontend *f,const dok_asset_session *assets,void 
         pages[lang-1][id]=(uint16_t)dok_ui_paginate(f->text,bytes,30,9,0,NULL,NULL);}
     FILE *settings_file=fopen("fat:/dok/settings.dat","rb");
     if(settings_file){size_t n=fread(settings,1,sizeof(settings),settings_file);int io=ferror(settings_file);fclose(settings_file);
-        f->settings_status=!io&&dok_settings_decode(settings,n,&language)?1u:2u;}
+        f->settings_status=!io&&dok_settings_decode(settings,n,&language,&scheme)?1u:2u;}
     dok_frontend_init(&f->state,language,(const uint16_t (*)[8])pages);
+    f->state.control_scheme=scheme;
     if(dok_frontend_visual_init(&f->visual,assets)!=DOK_STATUS_OK)return 0;
     f->early_keys=early_keys;early_active=0;
     if(f->early_keys)(void)dok_frontend_step(&f->state,f->early_keys,0,0);
@@ -58,7 +59,7 @@ int nds_frontend_initialize(NdsFrontend *f,const dok_asset_session *assets,void 
 }
 int nds_frontend_settings_write(NdsFrontend *f)
 {
-    unsigned char bytes[16];dok_settings_encode(bytes,f->state.language);
+    unsigned char bytes[16];dok_settings_encode(bytes,f->state.language,f->state.control_scheme);
     /* No data directory is shipped with a standalone ROM. Create it only
      * when settings are changed; a read-only/missing drive is non-fatal. */
     if(mkdir("fat:/dok",0777)!=0&&errno!=EEXIST){++f->settings_failures;return 0;}
@@ -81,9 +82,11 @@ static void line(NdsFrontend *f,const unsigned char *s,unsigned row)
 }
 typedef struct PageDraw {NdsFrontend *f;const unsigned char *data;} PageDraw;
 static void page_glyph(void *p,uint32_t offset,uint32_t col,uint32_t row)
-{PageDraw *d=p;NdsFrontend *f=d->f;unsigned x=8u+8u*col,y=24u+16u*row;
+{PageDraw *d=p;NdsFrontend *f=d->f;
+ unsigned top=(f->state.state==DOK_FRONTEND_INTRO||f->state.state==DOK_FRONTEND_OUTRO)?8u:28u;
+ unsigned x=8u+8u*col,y=top+16u*row;
  for(unsigned r=0;r<8u;++r)for(unsigned b=0;b<8u;++b)
-    if(f->font[d->data[offset]*8u+r]&(128u>>b))f->bottom[(y+4u+r)*256u+x+b]=2;}
+    if(f->font[d->data[offset]*8u+r]&(128u>>b))f->bottom[(y+r)*256u+x+b]=2;}
 static int background(NdsFrontend *f,unsigned id)
 {
     unsigned char links[8];uint32_t bytes;dok_asset_view view;
@@ -115,18 +118,33 @@ int nds_frontend_draw(NdsFrontend *f,void *top,void *bottom)
     else if(state==DOK_FRONTEND_PAUSE){label(f,labels[lang][7],8,8,2);for(unsigned i=0;i<4u;++i)line(f,labels[lang][8+i],i);}
     else if(state==DOK_FRONTEND_LEVELS){label(f,labels[lang][12],8,8,2);for(unsigned i=0;i<3u;++i){if(!read_entry(f,2,f->state.language*16u+i+1u,f->text,32767,&bytes))return 0;f->text[bytes]=0;line(f,f->text,i);}}
     else if(state==DOK_FRONTEND_LANGUAGE){label(f,labels[lang][3],8,8,2);line(f,labels[0][13],0);line(f,labels[1][13],1);}
-    else if(state==DOK_FRONTEND_CONTROLS){label(f,labels[lang][4],8,8,2);for(unsigned i=0;i<11u;++i)label(f,controls[lang][i],8,24u+i*12u,2);}
+    else if(state==DOK_FRONTEND_CONTROLS){
+        label(f,labels[lang][4],8,8,2);
+        for(unsigned i=0;i<2u;++i)label(f,schemes[lang][i],i?136u:8u,24, 2u);
+        label(f,(const unsigned char *)">",f->state.selection?128u:0u,24,2);
+        for(unsigned i=0;i<11u;++i)label(f,f->state.selection?classic[lang][i]:controls[lang][i],8,40u+i*12u,2);
+    }
     else if(state==DOK_FRONTEND_EXIT){label(f,labels[lang][6],8,8,2);label(f,labels[lang][16],8,80,2);}
     else if(index>=0){
-        label(f,labels[lang][index==0?5:state==DOK_FRONTEND_INTRO?17:state==DOK_FRONTEND_OUTRO?18:19],8,8,2);
+        if(state==DOK_FRONTEND_STORY||state==DOK_FRONTEND_ENDING)
+            label(f,labels[lang][index==0?5:19],8,8,2);
         if(!read_entry(f,1,f->state.language*16u+(unsigned)index,f->text,32768,&bytes))return 0;
         f->text_bytes=bytes;PageDraw draw={f,f->text};
         uint32_t pages=dok_ui_paginate(f->text,bytes,30,9,f->state.page,page_glyph,&draw);
         if(pages!=f->state.page_count)return 0;
-        unsigned char number[7];unsigned n=dok_ui_number((int16_t)(f->state.page+1u),number);text(f,f->bottom,number,n,208,8,2);
-        text(f,f->bottom,(const unsigned char *)"/",1,224,8,2);n=dok_ui_number((int16_t)pages,number);text(f,f->bottom,number,n,232,8,2);
+        if(pages>1u){
+            unsigned char number[7];unsigned n=dok_ui_number((int16_t)(f->state.page+1u),number);
+            text(f,f->bottom,number,n,208,184,2);
+            text(f,f->bottom,(const unsigned char *)"/",1,224,184,2);
+            n=dok_ui_number((int16_t)pages,number);text(f,f->bottom,number,n,232,184,2);
+        }
     }
-    if(state!=DOK_FRONTEND_TITLE&&state!=DOK_FRONTEND_EXIT)label(f,labels[lang][index>=0?15:14],8,176,2);
+    if(index>=0){
+        unsigned hint=f->state.page?15u:20u;
+        if(f->state.page_count==1u)hint=21u;
+        if(state==DOK_FRONTEND_STORY)hint=15u;
+        label(f,labels[lang][hint],8,172,2);
+    }else if(state!=DOK_FRONTEND_TITLE&&state!=DOK_FRONTEND_EXIT)label(f,labels[lang][14],8,176,2);
 #if FRONTEND_FIXTURES
     if(state==DOK_FRONTEND_CONTROLS)label(f,(const unsigned char *)"Fixture: Sel+Start/X/Y",8,160,2);
 #endif

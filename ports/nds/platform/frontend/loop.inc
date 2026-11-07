@@ -84,8 +84,10 @@ static int frontend_actions(uint32_t action)
     if(action&DOK_FRONTEND_LANGUAGE_CHANGED){
         if(world_active&&!nds_ui_language(ui,world,scratch,frontend->state.language))return GAMEPLAY_FAILURE();
         /* Failed writes never roll back the user's in-memory selection. */
-        (void)nds_frontend_settings_write(frontend);
+
     }
+    if(action&(DOK_FRONTEND_LANGUAGE_CHANGED|DOK_FRONTEND_CONTROLS_CHANGED))
+        (void)nds_frontend_settings_write(frontend);
     if(action&DOK_FRONTEND_STOP_TITLE)if(!nds_audio_runtime_clear())return GAMEPLAY_FAILURE();
     if(action&DOK_FRONTEND_STOP_GAME){
 #if GAMEPLAY_FLOW

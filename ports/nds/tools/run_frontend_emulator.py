@@ -207,7 +207,7 @@ class FrontendObserver(transport.Frontend):
 
     def choose(self, state, selection):
         self.wait_for(state)
-        count = {2: 5, 3: 3, 4: 2, 9: 4}[state]
+        count = {2: 5, 3: 3, 4: 2, 5: 2, 9: 4}[state]
         for _ in range(count + 1):
             if self.probe[5] == selection:
                 return
@@ -339,8 +339,8 @@ def full_flow(frontend, language):
     f.report["all_original_pages_covered"] = True
 
 
-def settings_bytes(language):
-    raw = bytearray(b"DOKS\x01\x00\x10\x00" + bytes([language, 0, 0, 0]))
+def settings_bytes(language,scheme=0):
+    raw = bytearray(b"DOKS\x02\x00\x10\x00" + bytes([language, scheme, 0, 0]))
     value = 2166136261
     for code in raw:
         value = ((value ^ code) * 16777619) & 0xffffffff

@@ -33,6 +33,7 @@ typedef struct NdsEffectsRuntime {
     uint32_t door_ticks[256],door_fraction[256];
     uint16_t door_kind[256];
 #endif
+    uint32_t failure_stage,failure_status;
     volatile NdsEffectTrace *traces;
     struct NdsGameplay *game;
     dok_sprite_list *simulation_list;

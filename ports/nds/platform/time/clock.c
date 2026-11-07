@@ -4,14 +4,18 @@
 #include "clock.h"
 
 static uint32_t started;
+static uint64_t last_sample;
 
 _Static_assert(BUS_CLOCK == 33513982u, "Re-audit N08 if SDK clock changes");
 
 static uint64_t read_counter(void *context)
 {
     (void)context;
-    return systemCounterGetTicks();
+    last_sample=systemCounterGetTicks();
+    return last_sample;
 }
+
+uint64_t dok_nds_clock_last_sample(void) { return last_sample; }
 
 dok_status dok_nds_clock_initialize(dok_platform_services *out_services)
 {
