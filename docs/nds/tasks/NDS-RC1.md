@@ -20,7 +20,7 @@
   возможности и управление. Внутренние проверки/ограничения — в этом
   паспорте и [resident53](../spec/resident53-20261108.md).
 
-## Подготовленный результат
+## Результат
 
 `package_rc1.py` проверяет SHA принятой ROM, отсутствие audit/frontend fixtures,
 встроенные NitroFS payload и записывает ZIP с ROM, README.md и SHA256SUMS.txt.
@@ -51,11 +51,22 @@ ROM приведены в resident53; физических DS/DraStic замер
 
 ## Публикация
 
-Подготовка завершена; публикация и проверка удалённого ZIP выполняются
-в рамках этого поручения. Запись будет дополнена фактическими commit/tag,
-URL и результатом сверки загруженного архива.
+Опубликован [Dungeons of Kremlin — Nintendo DS 1.0-RC1](https://github.com/RetrogamingNaBalkone/DoK-port/releases/tag/nds-1.0-rc1).
+GitHub prerelease=true, draft=false; существующий стабильный latest не менялся.
+Коммит всех изменений — `1116889cb787cfb0adee7780d9db4d60f28167f7`,
+аннотированный тег `nds-1.0-rc1` на сервере указывает на тот же коммит.
 
-Ожидаемый URL:
-https://github.com/RetrogamingNaBalkone/DoK-port/releases/tag/nds-1.0-rc1
+Опубликован [ZIP](https://github.com/RetrogamingNaBalkone/DoK-port/releases/download/nds-1.0-rc1/Dungeons.of.Kremlin.DS.1.0-RC1.zip).
+Архив скачан обратно через GitHub CLI: побайтно совпал с локальным,
+SHA-256 совпал также с digest GitHub asset. ROM внутри имеет принятый SHA.
+Название и body релиза сверены с пользовательским Markdown-файлом.
+Фактические release/asset IDs и время публикации записаны в компактном
+release JSON; повторная копия проверки — в локальном `remote-check/`.
+
+Паспорт выполнен. После публикации отдельным документационным коммитом
+фиксируется эта квитанция; release tag сохраняется на коммите игровых
+изменений. Внешние QR-библиотеки и их лицензии включены без изменения
+upstream-форматирования; локальный vendor/.gitattributes исключает их
+пробельный стиль из whitespace-проверки.
 
 После доставки остановиться: новой игровой задачи нет. GBA/SDL2 не менялись.
