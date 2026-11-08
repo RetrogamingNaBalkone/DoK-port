@@ -1,0 +1,19 @@
+{
+  "version": 4,
+  "name": "ogdok.zip",
+  "items": ["OGDoK.sh", "ogdok/"],
+  "items_opt": [],
+  "attr": {
+    "title": "OGDoK",
+    "porter": ["RetrogamingNaBalkone"],
+    "desc": "SDL2 engine for Old Gold and Dungeons of the Kremlin (PKR/PKE). Original RES files required.",
+    "inst": "Copy OLD_GOLD.RES, PKR.RES and/or PKE.RES from your originals into ports/ogdok, next to OGDoK.",
+    "genres": ["fps"],
+    "rtr": false,
+    "exp": true,
+    "runtime": [],
+    "reqs": [],
+    "arch": ["aarch64"],
+    "min_glibc": "2.35"
+  }
+}

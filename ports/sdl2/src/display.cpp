@@ -2,6 +2,7 @@
 #include "dok/png.hpp"
 #include "dok/presentation.hpp"
 #include "dok/filters.hpp"
+#include "dok/gl_api.hpp"
 #include <algorithm>
 #include <stdexcept>
 
@@ -11,8 +12,7 @@ Display::Display(const VideoSettings& s,bool vsync){
         world_gl_=s.renderer==RendererKind::opengl;
         const bool try_gl=world_gl_||!SDL_GetHintBoolean("DOK_SOFTWARE_SDL_PRESENTATION",SDL_FALSE);
         if(try_gl){
-            SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION,2);SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION,0);
-            SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER,1);SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE,world_gl_?24:0);
+            configure_gl_context(world_gl_?24:0);
         }
         const auto create_window=[&](bool opengl){return SDL_CreateWindow("OGDoK",SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED,s.width,s.height,
             SDL_WINDOW_RESIZABLE|SDL_WINDOW_ALLOW_HIGHDPI|SDL_WINDOW_HIDDEN|(opengl?SDL_WINDOW_OPENGL:0));};

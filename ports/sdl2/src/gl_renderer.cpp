@@ -1,5 +1,4 @@
-#define GL_GLEXT_PROTOTYPES
-#include <SDL_opengl.h>
+#include "dok/gl_api.hpp"
 #include "dok/gl_renderer.hpp"
 #include "dok/png.hpp"
 #include "dok/presentation.hpp"
@@ -12,7 +11,7 @@
 namespace dok {
 #include "xbr_shader.inc"
 #define GL_FUNCTIONS(X) \
- X(GetIntegerv) X(CreateShader) X(ShaderSource) X(CompileShader) X(GetShaderiv) X(GetShaderInfoLog) X(DeleteShader) \
+ X(GetString) X(GetIntegerv) X(CreateShader) X(ShaderSource) X(CompileShader) X(GetShaderiv) X(GetShaderInfoLog) X(DeleteShader) \
  X(CreateProgram) X(AttachShader) X(BindAttribLocation) X(LinkProgram) X(GetProgramiv) X(GetProgramInfoLog) X(DeleteProgram) \
  X(UseProgram) X(GetUniformLocation) X(Uniform1i) X(Uniform2f) X(GenBuffers) X(BindBuffer) X(BufferData) X(DeleteBuffers) \
  X(EnableVertexAttribArray) X(DisableVertexAttribArray) X(VertexAttribPointer) X(GenTextures) X(BindTexture) X(TexParameteri) X(TexImage2D) X(TexSubImage2D) \
@@ -146,7 +145,13 @@ GlRenderer::GlRenderer(SDL_Window* window):impl_(std::make_unique<Impl>()){
 #define LOAD_FRAME(name) g.name=reinterpret_cast<decltype(g.name)>(SDL_GL_GetProcAddress("gl" #name));if(!g.name)g.name=reinterpret_cast<decltype(g.name)>(SDL_GL_GetProcAddress("gl" #name "EXT"));
     FRAME_FUNCTIONS(LOAD_FRAME)
 #undef LOAD_FRAME
-    int profile=0;SDL_GL_GetAttribute(SDL_GL_CONTEXT_PROFILE_MASK,&profile);g.derivatives=profile!=SDL_GL_CONTEXT_PROFILE_ES||SDL_GL_ExtensionSupported("GL_OES_standard_derivatives");
+    int profile=0;SDL_GL_GetAttribute(SDL_GL_CONTEXT_PROFILE_MASK,&profile);g.derivatives=(profile!=SDL_GL_CONTEXT_PROFILE_ES||SDL_GL_ExtensionSupported("GL_OES_standard_derivatives"))&&!SDL_GetHintBoolean("DOK_DISABLE_GL_DERIVATIVES",SDL_FALSE);
+#ifdef DOK_GLES2
+    if(profile!=SDL_GL_CONTEXT_PROFILE_ES)throw std::runtime_error("GLES2 build requires an ES context");
+#endif
+    SDL_Log("OGDoK graphics: %s; %s; %s; SDL video: %s",
+        reinterpret_cast<const char*>(g.GetString(GL_VENDOR)),reinterpret_cast<const char*>(g.GetString(GL_RENDERER)),
+        reinterpret_cast<const char*>(g.GetString(GL_VERSION)),SDL_GetCurrentVideoDriver());
     const auto vertex=g.shader(GL_VERTEX_SHADER,R"(
 attribute vec4 position; attribute vec2 uv; attribute float depth; attribute vec4 material;
 VARYING vec2 texcoord; VARYING float shade; VARYING vec4 mat;

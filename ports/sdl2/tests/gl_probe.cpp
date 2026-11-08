@@ -1,7 +1,7 @@
 #include "dok/gl_renderer.hpp"
 #include "dok/display.hpp"
 #include "dok/gpu_geometry.hpp"
-#include <SDL_opengl.h>
+#include "dok/gl_api.hpp"
 #include <algorithm>
 #include <array>
 #include <iostream>
@@ -11,9 +11,7 @@ static void check(bool okay,const char* message){if(!okay)throw std::runtime_err
 int main(){
     SDL_SetMainReady();
     if(SDL_Init(SDL_INIT_VIDEO))return 1;
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION,2);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION,0);
-    SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE,24);
+    dok::configure_gl_context();
     auto* window=SDL_CreateWindow("GL regression",0,0,640,384,SDL_WINDOW_OPENGL|SDL_WINDOW_HIDDEN);
     try{
         check(window,"Window creation failed");
@@ -144,7 +142,7 @@ int main(){
         // FXAA changes diagonal scene edges, leaves flat regions exact, and UI
         // submitted afterwards remains byte-exact. No temporal history involved.
         const dok::Image white{1,1,0,{255}};
-        {
+        if(gl.mip_filters_supported()){
             auto colors=palette;colors[35]=0xff232323;colors[220]=0xffdcdcdc;
             auto table=lut;for(int r=0;r<16;++r){table[r*256+1]=35;table[r*256+2]=220;}
             const dok::Bytes lighting{table.data(),table.size()};
@@ -172,6 +170,14 @@ int main(){
             check(detail>60,"Anisotropy must preserve detail along the minor footprint axis");
             gl.set_texture_filter(0);
             std::cout<<"Mipmaps/trilinear/aniso 2/4/8: RGB minification, batching, palette invalidation and alpha passed\n";
+        }else{
+            gl.set_texture_filter(1);gl.begin();gl.world(palette);gl.polygon(quad(100),checker,light,dok::RasterAxis::vertical);const auto linear=rgba();
+            for(int filter=2;filter<=6;++filter){
+                gl.set_texture_filter(filter);gl.begin();gl.world(palette);gl.polygon(quad(100),checker,light,dok::RasterAxis::vertical);
+                check(rgba()==linear,"Missing derivatives must fall back to linear filtering");
+            }
+            gl.set_texture_filter(0);
+            std::cout<<"No derivatives: all mip filters fall back to linear exactly\n";
         }
         for(int row=0;row<16;++row)lut[row*256+255]=255;
         gl.set_linear_filter(false);

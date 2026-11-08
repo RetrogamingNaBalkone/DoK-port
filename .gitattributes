@@ -1,0 +1,4 @@
+# Shell entrypoints are also executed from Windows checkouts through WSL.
+ports/sdl2/**/*.sh text eol=lf
+ports/sdl2/tools/*.Dockerfile text eol=lf
+.github/workflows/*.yml text eol=lf

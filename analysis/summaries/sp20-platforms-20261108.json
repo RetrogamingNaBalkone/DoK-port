@@ -1,0 +1,77 @@
+{
+  "schema": 1,
+  "source_revision": "91dfce919e29b12316fedb60e7ca23e4693ac077",
+  "source_dirty": true,
+  "ctest": {
+    "windows": 20,
+    "linux_opengl": 20,
+    "linux_gles2": 20,
+    "aarch64_qemu": 20
+  },
+  "hardware": {
+    "rg_vita_pro_rocknix": "pending_user_access",
+    "rg_ds_plus_1024x768": "future",
+    "rk3326": "unverified_estimate"
+  },
+  "ci": "workflow_added_not_run_remotely",
+  "limitations": [
+    "No hardware FPS, physical input, real audio, suspend, full playthrough or microSD acceptance.",
+    "Save exchange covers PKR quicksave only; ARM under QEMU."
+  ],
+  "reports": {
+    "linux-opengl-01": {
+      "path": "build/sdl2/checks/linux-opengl-01/report.json",
+      "sha256": "cdb8227ff796b04e1b1eaccaa4a84f7b971152bc1e1e9a191aff313c87bbf422",
+      "processes": 14,
+      "originals_unchanged": true
+    },
+    "linux-gles2-final": {
+      "path": "build/sdl2/checks/linux-gles2-final/report.json",
+      "sha256": "ff98366203532ec8edcb6b0cedd4d6be89dffeb94ee89a9ec4f90524eef743d6",
+      "processes": 15,
+      "originals_unchanged": true
+    },
+    "linux-runtime-01": {
+      "path": "build/sdl2/checks/linux-runtime-01/report.json",
+      "sha256": "08029de72f7167d64dd806c2e0a85d43bae07a867a1b7b7c1f2bd14977a3c11e",
+      "processes": 15,
+      "originals_unchanged": true
+    }
+  },
+  "save_exchange": {
+    "windows": {
+      "loads": 3,
+      "report_sha256": "fe8c1ec42cfd2e1bd185c4114bed8574391260975b0a4649d6a99e713d60d4a7"
+    },
+    "linux": {
+      "loads": 3,
+      "report_sha256": "51752c4d4d5af91143d1a1cb20d662feaa32ab048db2973e8b9dfb87189652f0"
+    },
+    "arm64": {
+      "loads": 3,
+      "report_sha256": "51752c4d4d5af91143d1a1cb20d662feaa32ab048db2973e8b9dfb87189652f0"
+    }
+  },
+  "artifacts": {
+    "artifacts/sdl2/OGDoK-Linux-x86_64-playtest-20261108-r2.tar.gz": {
+      "sha256": "545dfdd8ec6e60a27b5c7e50226a0fee05918197a8c55ede7c04c2eb88e0d74e",
+      "bytes": 502338
+    },
+    "artifacts/sdl2/OGDoK-PortMaster-playtest-20261108-r3.zip": {
+      "sha256": "daf7419d89517a04bbe035635bbe17cfb4431739d0049703681f95dc5058c28a",
+      "bytes": 462556
+    }
+  },
+  "evidence_root": "research/evidence/source-port/sp20-platforms-20261108",
+  "portmaster_layout": {
+    "root_files": [
+      "OGDoK.sh"
+    ],
+    "metadata": [
+      "ogdok/port.json",
+      "ogdok/gameinfo.xml",
+      "ogdok/ogdok.md"
+    ],
+    "regression_tests": 4
+  }
+}

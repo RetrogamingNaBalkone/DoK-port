@@ -19,6 +19,7 @@
 #include "dok/cheat.hpp"
 #include "dok/launch.hpp"
 #include "dok/input_replay.hpp"
+#include "dok/frame_timings.hpp"
 #include <chrono>
 #include <cmath>
 #include <cctype>
@@ -69,8 +70,10 @@ int main(int argc,char** argv){
     // ALLOW_HIGHDPI alone does not declare Windows DPI awareness. Request it
     // before video initialization so Windows never bitmap-scales our glyphs.
     // SDL falls back to the available awareness level on older Windows.
+#ifdef _WIN32
     SDL_SetHint(SDL_HINT_WINDOWS_DPI_AWARENESS,"permonitorv2");
     SDL_SetHint(SDL_HINT_WINDOWS_DPI_SCALING,"0"); // Selected sizes are pixels.
+#endif
     if(SDL_Init(SDL_INIT_VIDEO|SDL_INIT_GAMECONTROLLER|SDL_INIT_AUDIO)!=0)return fail(SDL_GetError());SdlEnd sdl;
     try{
         const auto arguments=dok::parse_launch_arguments(argc,argv);
@@ -285,7 +288,9 @@ int main(int argc,char** argv){
         unsigned frames=0,fps_frames=0,fps_value=0;auto previous_time=SDL_GetPerformanceCounter(),fps_time=previous_time;
         unsigned drawn_fps=0;dok::DatasetId fps_dataset=dok::DatasetId::unknown;
         std::vector<std::uint32_t> fps_pixels;int fps_width=0;
+        dok::FrameTimings frame_timings;
         while(running){
+            frame_timings.begin();
             const auto before=settings;bool settings_dirty=false,flow_changed=false,capture_requested=false,map_closed=false;
             bool video_changed=false;std::vector<std::string> captures;menu.update(SDL_GetTicks64());
             for(const auto& event:script)if(event.frame==frames){
@@ -575,13 +580,14 @@ int main(int argc,char** argv){
             if(capture_requested){try{auto dir=user_path/"screenshots";std::filesystem::create_directories(dir);
                 const auto stamp=std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();captures.push_back((dir/("screenshot-"+std::to_string(stamp)+"-"+std::to_string(frames)+".png")).u8string());}catch(const std::exception& e){log<<"Screenshot failed: "<<e.what()<<'\n';}}
             for(const auto& capture:captures)try{display->screenshot(capture);verbose<<"Screenshot saved: "<<capture<<'\n';}catch(const std::exception& e){log<<"Screenshot failed: "<<e.what()<<'\n';}
-            display->present();if((frame_limit&&frames>=frame_limit)||(!frame_limit&&replay&&replay->finished()))running=false;SDL_Delay(1);
+            frame_timings.ready();display->present();if((frame_limit&&frames>=frame_limit)||(!frame_limit&&replay&&replay->finished()))running=false;SDL_Delay(1);frame_timings.end();
         }
         if(replay&&world){const auto& actor=world->objects.at(*world->player);const auto& p=*actor.pose;const auto& player=*actor.player_state;
             verbose<<"REPLAY ticks="<<world->simulation_ticks()<<" pose="<<p.x<<','<<p.y<<','<<p.z<<','<<p.heading
                <<" hp="<<player.health()<<" charge="<<player.charge()<<" score="<<player.score<<" current="<<player.current_weapon<<" weapons=";
             verbose<<player.weapons[1]<<','<<player.weapons[2]<<" shots="<<projectiles->active()<<'\n';
         }
+        frame_timings.write();
         verbose<<"Clean shutdown; frames="<<frames<<" datasets="<<sets.size()<<" menu="<<int(menu.screen())<<'\n';
         if(world){const auto& pose=*world->objects.at(*world->player).pose;verbose<<"Player x="<<pose.x<<" z="<<pose.z<<" heading="<<pose.heading<<" ticks="<<world->simulation_ticks()<<'\n';}
         std::cout<<"SDL completed: "<<frames<<" frames, "<<sets.size()<<" datasets\n";return 0;

@@ -4,7 +4,7 @@
 #include "dok/weapons.hpp"
 #include "dok/hud.hpp"
 #include "dok/png.hpp"
-#include <SDL_opengl.h>
+#include "dok/gl_api.hpp"
 #include <algorithm>
 #include <chrono>
 #include <cmath>
@@ -132,8 +132,7 @@ int main(int argc,char** argv){try{
     using Finish=decltype(&glFinish);using Read=decltype(&glReadPixels);using Get=decltype(&glGetString);using Error=decltype(&glGetError);
     Finish finish=nullptr;Read read=nullptr;Error error=nullptr;std::string vendor,renderer,version;int swap_interval=0;
     if(backend=="gl"){
-        SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION,2);SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION,0);
-        SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE,24);SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER,1);
+        dok::configure_gl_context();SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER,1);
         window.p=SDL_CreateWindow("DoK render benchmark",0,0,width,height,SDL_WINDOW_OPENGL|SDL_WINDOW_HIDDEN);
         require(window.p,SDL_GetError());gl=std::make_unique<dok::GlRenderer>(window.p);
         SDL_GL_SetSwapInterval(0);swap_interval=SDL_GL_GetSwapInterval();gl->set_texture_filter(int(selected-filters.begin()));

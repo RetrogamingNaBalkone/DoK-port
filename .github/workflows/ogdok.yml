@@ -1,0 +1,69 @@
+name: OGDoK platform checks
+on:
+  push:
+    paths: ['ports/sdl2/**', '.github/workflows/ogdok.yml']
+  pull_request:
+    paths: ['ports/sdl2/**', '.github/workflows/ogdok.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  linux:
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        api: [OPENGL, GLES2]
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build -t ogdok-linux -f ports/sdl2/tools/linux-builder.Dockerfile ports/sdl2/tools
+      - run: docker run --rm -v "$PWD:/workspace" ogdok-linux bash ports/sdl2/tools/build-linux.sh ${{ matrix.api }}
+      - name: Resource-free real graphics checks
+        run: |
+          api=$(echo '${{ matrix.api }}' | tr '[:upper:]' '[:lower:]')
+          docker run --init --rm -v "$PWD:/workspace" ogdok-linux xvfb-run -a python3 ports/sdl2/tools/check_unix.py --exe "build/sdl2/linux-x86_64-$api/OGDoK" --expect-api '${{ matrix.api }}' --out "build/sdl2/checks/ci-$api"
+          docker run --init --rm -e MESA_GLES_VERSION_OVERRIDE=2.0 -e SDL_AUDIODRIVER=dummy -v "$PWD:/workspace" ogdok-linux xvfb-run -a "build/sdl2/linux-x86_64-$api/dok_gl_probe"
+          docker run --rm -v "$PWD:/workspace" ogdok-linux python3 ports/sdl2/tests/test_unix_tools.py
+          docker run --rm -v "$PWD:/workspace" ogdok-linux python3 ports/sdl2/tests/test_portmaster_launcher.py
+      - name: Package x86_64
+        if: matrix.api == 'OPENGL'
+        run: |
+          docker run --rm -v "$PWD:/workspace" ogdok-linux python3 ports/sdl2/tools/package_unix.py linux-x86_64 --build build/sdl2/linux-x86_64-opengl --name OGDoK-Linux-x86_64-ci
+          docker run --rm -v "$PWD:/workspace" ogdok-linux python3 ports/sdl2/tools/check_unix_package.py artifacts/sdl2/OGDoK-Linux-x86_64-ci.tar.gz
+      - uses: actions/upload-artifact@v4
+        if: matrix.api == 'OPENGL'
+        with:
+          name: OGDoK-Linux-x86_64
+          path: artifacts/sdl2/*.tar.gz*
+  arm:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-qemu-action@v3
+        with:
+          platforms: arm64
+      - name: Build and test ARM under QEMU (not hardware acceptance)
+        run: docker run --rm --platform linux/arm64 -v "$PWD:/workspace" -w /workspace ghcr.io/monkeyx-net/portmaster-build-templates/portmaster-builder@sha256:88aefcc72eae495732c8706e416439b5a6eef7ec58c439374c947838dc6e39c6 bash ports/sdl2/tools/build-linux.sh GLES2
+      - name: Package PortMaster
+        run: |
+          docker build -t ogdok-linux -f ports/sdl2/tools/linux-builder.Dockerfile ports/sdl2/tools
+          docker run --rm -v "$PWD:/workspace" ogdok-linux python3 ports/sdl2/tools/package_unix.py portmaster-aarch64 --build build/sdl2/portmaster-aarch64-gles2 --name OGDoK-PortMaster-ci
+          docker run --rm -v "$PWD:/workspace" ogdok-linux python3 ports/sdl2/tools/check_unix_package.py artifacts/sdl2/OGDoK-PortMaster-ci.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: OGDoK-PortMaster
+          path: artifacts/sdl2/*.zip*
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: msys2/setup-msys2@v2
+        with:
+          msystem: UCRT64
+          update: true
+          install: mingw-w64-ucrt-x86_64-gcc mingw-w64-ucrt-x86_64-cmake mingw-w64-ucrt-x86_64-ninja mingw-w64-ucrt-x86_64-SDL2
+      - name: Shared code regression
+        shell: msys2 {0}
+        run: |
+          cmake -S ports/sdl2 -B build/sdl2/windows-ci -G Ninja -DCMAKE_BUILD_TYPE=Release
+          cmake --build build/sdl2/windows-ci --parallel 2
+          SDL_AUDIODRIVER=dummy SDL_VIDEODRIVER=dummy ctest --test-dir build/sdl2/windows-ci --output-on-failure

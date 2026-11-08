@@ -1,7 +1,7 @@
 #include "dok/display.hpp"
 #include "dok/filters.hpp"
 #include "dok/scene.hpp"
-#include <SDL_opengl.h>
+#include "dok/gl_api.hpp"
 #include <algorithm>
 #include <chrono>
 #include <fstream>
@@ -15,7 +15,7 @@ int main(int argc,char** argv){
     SDL_SetMainReady();if(SDL_Init(SDL_INIT_VIDEO))return 2;
     try{
         check(argc==3||(argc==4&&std::string(argv[3])=="--measure-only"),"Usage: dok_xbr_probe ROOT OUT [--measure-only]");const bool measure_only=argc==4;const auto root=std::filesystem::u8path(argv[1]),out=std::filesystem::u8path(argv[2]);std::filesystem::create_directories(out);
-        SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION,2);SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION,0);
+        dok::configure_gl_context();
         auto* window=SDL_CreateWindow("xBR GPU probe",0,0,960,480,SDL_WINDOW_OPENGL|SDL_WINDOW_HIDDEN);check(window,SDL_GetError());
         {
             dok::GlRenderer gl(window);SDL_GL_SetSwapInterval(0);
@@ -28,7 +28,7 @@ int main(int argc,char** argv){
                 std::cout<<name<<" CPU/GPU max channel delta="<<maximum<<"; channels >1="<<over1<<'\n';if(!measure_only)check(over1==0,"GPU xBR changed contours beyond rounding tolerance");
                 SDL_SetHint("DOK_DISABLE_GPU_XBR","1");gl.begin();gl.image(source,w,h,target,true,3);check(gl.read_pixels()==reference,"CPU fallback changed pixels");
                 SDL_SetHint("DOK_XBR_CPU_TILES","1");gl.begin();gl.image(source,w,h,target,true,3);check(gl.read_pixels()==reference,"Small GL texture limit fallback changed pixels");
-                SDL_ResetHint("DOK_XBR_CPU_TILES");SDL_ResetHint("DOK_DISABLE_GPU_XBR");
+                SDL_SetHint("DOK_XBR_CPU_TILES","0");SDL_SetHint("DOK_DISABLE_GPU_XBR","0");
             };
             std::vector<std::uint32_t> pattern(13*11);for(int y=0;y<11;++y)for(int x=0;x<13;++x)pattern[y*13+x]=x>y?0xffffffff:0xff000000;
             compare(pattern,13,11,"diagonal");for(auto& p:pattern)if(p==0xff000000)p=0;compare(pattern,13,11,"alpha diagonal");

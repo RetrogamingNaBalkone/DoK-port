@@ -1,3 +1,4 @@
+#include "dok/gl_api.hpp"
 #include "dok/hud.hpp"
 #include "dok/scene.hpp"
 #include "dok/weapons.hpp"
@@ -64,8 +65,7 @@ int main(int argc,char** argv){
             check(cached.desktop(width,sample,colors,message,time).pixels==expected,"HUD redraw differs");
         }
         check(SDL_Init(SDL_INIT_VIDEO)==0,"SDL init");
-        SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION,2);SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION,0);
-        SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE,24);
+        dok::configure_gl_context();
         window=SDL_CreateWindow("HUD desktop acceptance",0,0,1280,720,SDL_WINDOW_OPENGL|SDL_WINDOW_HIDDEN);
         check(window,"Window creation");
         {

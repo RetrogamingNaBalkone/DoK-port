@@ -14,3 +14,7 @@ Windows RC2 объединяет PKR/PKE/Old Gold, программную отр
 Движок восстанавливается по оригиналам независимо от GBA и NDS.
 
 Команды сборки и реальные результаты: [building](../../docs/source-port/building.md).
+
+Linux x86_64 и PortMaster aarch64: [сборка и плейтест](../../docs/source-port/linux-portmaster.md).
+Основное устройство PortMaster — RG Vita Pro/ROCKNIX; будущие проверки
+RG DS Plus в 1024×768 ведутся отдельно. Аппаратная приёмка пока открыта.

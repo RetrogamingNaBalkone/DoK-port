@@ -40,7 +40,7 @@ int main(){
         }
         SDL_SetHint(SDL_HINT_PREFERRED_LOCALES,"ru_RU");check(dok::AppSettings{}.locale==dok::LocaleId::ru,"Russian OS locale");
         SDL_SetHint(SDL_HINT_PREFERRED_LOCALES,"de_DE");check(dok::AppSettings{}.locale==dok::LocaleId::en,"Other OS locale");
-        SDL_ResetHint(SDL_HINT_PREFERRED_LOCALES);
+        SDL_ClearHints();
         std::string warning;auto s=dok::load_settings(path,warning);check(warning.empty()&&s.locale==dok::system_locale(),"First-run locale");
         check(!s.show_fps&&!s.fxaa&&s.texture_filter()==0&&s.frame_filter==0,"First-run presentation defaults");
         s.locale=s.locale==dok::LocaleId::ru?dok::LocaleId::en:dok::LocaleId::ru;
