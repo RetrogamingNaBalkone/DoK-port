@@ -17,6 +17,8 @@ static dok_asset_entry chunks[8];
 static uint32_t chunk_count,position,samples,rate,looping;
 static uint32_t stream_filling,stream_part,stream_bytes,packed_used,cold_max;
 static uint32_t pending_id,pending_pcm,pending_loop,active_id,epoch,retired;
+static unsigned char *menu_pcm;
+static uint32_t menu_bytes;
 static uint32_t starts,rejects,stops,completed,requests,read_bytes,read_calls,service_max,fault;
 static uint32_t catalog_index,catalog_wait,catalog_phase;
 static void (*loading_progress)(unsigned);
@@ -32,6 +34,7 @@ static void publish(void)
         read_bytes,read_calls,service_max,fault,rate,samples,position,looping,pending_id,
         (uint32_t)(uintptr_t)cache,(uint32_t)(uintptr_t)fill,425984u,indices[catalog_index<23?catalog_index:22],cold_max,packed_used,stream_filling,stream_bytes,
         s.producer_samples,s.preparing,s.consumer_started};
+    a[39]=(uint32_t)(uintptr_t)menu_pcm;a[40]=menu_bytes;
     uint32_t sequence=g_nds_audio_probe[63]+1u;g_nds_audio_probe[63]=sequence;
     DC_FlushRange((const void *)&g_nds_audio_probe[56],32);
     memcpy((void *)g_nds_audio_probe,a,63u*4u);DC_FlushRange((const void *)g_nds_audio_probe,sizeof(a));
@@ -90,7 +93,8 @@ int nds_audio_runtime_init(const dok_asset_session *s,unsigned char *backing,uin
     if(!audio_ready)return 0;catalog_phase=1;publish();return 1;
 }
 int nds_audio_runtime_clear(void)
-{int ok=1;if(session){ok=nds_audio_stop(0);++stops;}active_id=pending_id=stream_filling=0;presentation=NULL;publish();
+{int ok=1;if(session){ok=nds_audio_stop(0);++stops;}active_id=pending_id=stream_filling=0;presentation=NULL;
+ if(ok){menu_pcm=NULL;menu_bytes=0;}publish();
  NdsAudioStatus s=nds_audio_status();return ok&&!s.playing&&!s.preparing&&!s.underruns&&!s.stale_commands;}
 void nds_audio_runtime_world(const dok_level_presentation *p,uint32_t e)
 {nds_audio_runtime_clear();presentation=p;epoch=e;publish();}
@@ -198,7 +202,7 @@ int nds_audio_runtime_service(void)
         if(!start_pending())fault=1;
         if(cold){uint32_t dt=cpuGetTiming()-start;if(dt>cold_max)cold_max=dt;start=cpuGetTiming();}}
     s=nds_audio_status();
-    if(s.playing&&!current&&s.consumed_parts!=retired&&!stream_filling){
+    if(s.playing&&!current&&!menu_pcm&&s.consumed_parts!=retired&&!stream_filling){
         if(s.consumed_parts-retired!=1u)fault=2;
         stream_filling=1;stream_part=(s.consumed_parts-1u)&1u;stream_bytes=0;
     }
@@ -241,3 +245,23 @@ int nds_audio_runtime_catalog(void)
 }
 int nds_audio_runtime_title(void)
 {request((SPRITE_LANGUAGE<<30)|(110u<<18)|(DOK_ASSET_PCM_CLIP<<10),0x8000006eu,0,0);return nds_audio_runtime_service();}
+int nds_audio_runtime_menu(unsigned char *pcm,uint32_t capacity)
+{
+    /* The immutable full track also works when an emulator snapshots sound
+     * memory at channel start instead of observing subsequent ring writes. */
+    if(active_id==0x8000006eu&&menu_pcm)return 1;
+    if(!pcm||((uintptr_t)pcm&31u)||capacity<474364u||active_id||pending_id)return 0;
+    uint32_t offset=0;dok_asset_view view;
+    for(unsigned i=0;i<chunk_count;++i){
+        if(chunks[i].bytes>474361u-offset||
+           dok_assets_load(session,chunks[i].id,pcm+offset,capacity-offset,&view)!=DOK_ASSET_OK)return 0;
+        offset+=chunks[i].bytes;
+    }
+    if(offset!=474361u)return 0;
+    /* DS sound length is measured in words: three silent samples, 0.272ms. */
+    memset(pcm+offset,0,3);
+    if(!nds_audio_pcm_loop((const int8_t *)pcm,474364u,11025u,0x8000006eu))return 0;
+    menu_pcm=pcm;menu_bytes=474364u;current=NULL;
+    rate=11025u;samples=474364u;position=samples;looping=1;retired=stream_filling=0;
+    active_id=0x8000006eu;++starts;publish();return 1;
+}

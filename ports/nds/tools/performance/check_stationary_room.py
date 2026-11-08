@@ -8,6 +8,7 @@ from route_profile import stats
 def main():
     p=argparse.ArgumentParser();p.add_argument('--target',type=Path,required=True)
     p.add_argument('--cells',type=int,default=7);p.add_argument('--frames',type=int,default=120)
+    p.add_argument('--level',type=int,choices=(1,2,3),default=1)
     p.add_argument('--angles',type=int,nargs='+',default=list(range(0,360,45)))
     p.add_argument('--point',type=int,nargs=2,help='World X/Z target reached with real movement keys')
     p.add_argument('--run-id',required=True);args=p.parse_args()
@@ -17,7 +18,8 @@ def main():
     try:
         f=RouteObserver(front.CORE,target,directory);report=f.report
         image=f.save/'melonDS DS/dldi_sd_card.bin';front.write_fixture(image,front.settings_bytes(1))
-        f.load(target/'dok_nds_gameplay.nds');f.start_level(1);f.navigate(1,args.cells)
+        f.load(target/'dok_nds_gameplay.nds');f.start_level(args.level)
+        if args.cells:f.navigate(args.level,args.cells)
         if args.point:
             for _ in range(600):
                 dx=args.point[0]-f.last_pose[0];dz=args.point[1]-f.last_pose[2]
@@ -42,7 +44,7 @@ def main():
             samples.append(sample);(directory/'samples.json').write_text(json.dumps(samples,indent=2)+'\n','utf8')
             f.phase='turn'
         report.update(passed=True,samples=samples,arguments={k:str(v)if isinstance(v,Path)else v for k,v in vars(args).items()},
-            observer=pin(Path(__file__)),scope='Real-input stationary LEVEL1 views; no model/VRAM writes; emulator only')
+            observer=pin(Path(__file__)),scope='Real-input stationary views; no model/VRAM writes; emulator only')
     except Exception:report['error']=traceback.format_exc()
     finally:
         if f:f.close();transport.flush_native_stdio()

@@ -16,7 +16,7 @@ typedef struct {
     uint32_t padding[2];
 } NdsInputMailbox;
 enum { NDS_AUDIO_ATTACH = 1, NDS_AUDIO_PLAY, NDS_AUDIO_STOP, NDS_AUDIO_VOLUME,
-       NDS_AUDIO_RESIDENT };
+       NDS_AUDIO_RESIDENT, NDS_AUDIO_PCM_LOOP };
 /* FIFO sends one mailbox address. ARM9 flushes immutable command bytes and
  * keeps them until ARM7 copies and acknowledges; timeout forbids reuse.
  * In streamed mode ARM9 owns PCM and ready[]; in

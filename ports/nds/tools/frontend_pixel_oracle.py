@@ -81,7 +81,7 @@ class OriginalFrontendArt:
         return bytes(out)
 
 
-def text_pages(raw, columns, rows):
+def text_pages(raw, columns, rows, *, prose=False):
     """Wrap complete CP866 source, retaining spaces and explicit blank lines.
 
     Source CR/LF, NUL and DOS '$' are controls. Printable bytes are never
@@ -92,20 +92,41 @@ def text_pages(raw, columns, rows):
     source = raw[:stop].replace(b"\r", b"")
     lines = []
     for logical in source.split(b"\n"):
+        wrapped=False
         while len(logical) > columns:
             split = logical.rfind(b" ", 0, columns + 1)
             # Include the separator in the previous line where it fits.
             take = split + 1 if 0 < split < columns else columns
             lines.append(logical[:take])
             logical = logical[take:]
-        lines.append(logical)
+            wrapped=True
+            if prose:logical=logical.lstrip(b' ')
+        if not (prose and wrapped and not logical):lines.append(logical)
     # A final line-feed moves the cursor but contains no following line of
     # text. Do not invent a wholly empty page after a full final source row.
     if source.endswith(b"\n"):
         lines.pop()
     pages = [lines[i:i + rows] for i in range(0, len(lines), rows)] or [[b""]]
-    assert b"".join(line for page in pages for line in page) == source.replace(b"\n", b"")
+    actual=b"".join(line for page in pages for line in page)
+    expected=source.replace(b"\n", b"")
+    assert actual.replace(b' ',b'')==expected.replace(b' ',b'') if prose else actual==expected
     return pages
+
+
+def prepared_text(raw, index):
+    """Remove original display wrapping, retaining reviewed paragraph boundaries."""
+    import re
+    stop=next((i for i,b in enumerate(raw) if b in (0,36)),len(raw))
+    blocks=re.split(rb'\n[ \n]*\n',raw[:stop].replace(b'\r',b'').strip())
+    paragraphs=[]
+    for block in blocks:
+        words=block.split()
+        if not words:continue
+        value=b' '.join(words)
+        if index in (2,4,6) and paragraphs and paragraphs[-1][-1:] not in (b'.',b'!',b'?'):
+            paragraphs[-1]+=b' '+value
+        else:paragraphs.append(value)
+    return b'\n\n'.join(paragraphs)
 
 
 def digest(pixels):
@@ -132,7 +153,7 @@ def render_frontend(art, labels, controls, state, language, selection, level, pa
     text_index = {6: 0, 7: 2 * level - 1, 10: 2 * level, 11: 7}.get(state)
     background = (0 if state in (1, 6) else text_index if state in (7, 10) else 7)
     top, top_palette = art.background(language, background)
-    bottom = bytearray(49152)
+    bottom = art.tiled(language) if text_index is not None or state==1 else bytearray(49152)
     copy = labels[lang]
 
     def label(value, x=8, y=8, color=2, height=8):
@@ -169,21 +190,37 @@ def render_frontend(art, labels, controls, state, language, selection, level, pa
     elif state == 5:
         label(copy[4])
         copy_all=json.loads((ROOT/'ports/nds/platform/frontend/labels.json').read_text('utf8'))
-        for i,value in enumerate(copy_all['schemes'][lang]):
-            label(value,136 if i else 8,24,2)
-        label('>',128 if selection else 0,24,2)
-        for row,value in enumerate(copy_all['classic'][lang] if selection else controls[lang]):
-            label(value,8,40+12*row,2)
+        for i,value in enumerate(copy_all['schemes'][lang]):menu_line(value,i)
         if fixtures:
             label("Fixture: Sel+Start/X/Y", 8, 160, 2)
     elif state == 12:
         label(copy[6])
         label(copy[16], 8, 80, 2)
+    elif state == 11:
+        copy_all=json.loads((ROOT/'ports/nds/platform/frontend/labels.json').read_text('utf8'))
+        pages=[[]]
+        assert page==0
+        def center(value,y):label(value,(256-len(value.encode('cp866'))*8)//2,y)
+        top=bytearray(top)
+        for value,y in [(copy[6],8),*zip(copy_all['authors'][lang],(32,48,76,92,108,132,148))]:
+            art.text(top,language,value,(256-len(value.encode('cp866'))*8)//2,y)
+        # Independently encode the channel URL; never read the runtime mask.
+        import importlib.util
+        spec=importlib.util.spec_from_file_location('nds_qr_reference',ROOT/'ports/nds/tools/vendor/nayuki/qrcodegen.py')
+        module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+        qr=module.QrCode.encode_segments([module.QrSegment.make_bytes(b'https://t.me/RetroGamingNaBalkone')],
+            module.QrCode.Ecc.MEDIUM,minversion=3,maxversion=3,boostecl=False)
+        for y in range(74):
+            for x in range(74):
+                bottom[(48+y)*256+12+x]=254 if qr.get_module(x//2-4,y//2-4) else 255
+        for i,value in enumerate(copy_all['port'][lang]):label(value,104,60+20*i)
+        center('t.me/RetroGamingNaBalkone',140)
+        label(copy[22],8,172)
     else:
         name = ("README", "BINTRO1", "EINTRO1", "BINTRO2", "EINTRO2",
                 "BINTRO3", "EINTRO3", "ENDTXT")[text_index]
-        message = art.resources[language][name]
-        pages = text_pages(message, 30, 9)
+        message = prepared_text(art.resources[language][name],text_index)
+        pages = text_pages(message, 30, 11, prose=True)
         assert 0 <= page < len(pages)
         if state in (6,11):label(copy[5 if state==6 else 19])
         if len(pages)>1:
@@ -191,24 +228,34 @@ def render_frontend(art, labels, controls, state, language, selection, level, pa
             label('/',224,184)
             label(str(len(pages)),232,184)
         for row, line in enumerate(pages[page]):
-            label(line, 8, (8 if state in (7,10) else 28) + 16 * row, 2, 8)
-    if state not in (1, 12):
+            label(line, 8, (8 if state in (7,10) else 28) + 12 * row, 2, 8)
+    if state not in (1, 11, 12):
         if text_index is not None:
             hint=15 if page else 20
             if len(pages)==1:hint=21
             if state==6:hint=15
+            if state==7:
+                hint=(15 if page+1<len(pages) else 25) if page else (23 if page+1<len(pages) else 24)
             label(copy[hint],8,172,2)
-        else:label(copy[14],8,176,2)
+        else:label(copy[26 if state==2 else 14],8,176,2)
     if text_index is None and state != 1:
         top = bytearray(top)
         for y in range(192):
             for x in range(256):
                 at = y*256+x
-                selected = state in (2,3,4,9) and 8 <= x < 248 and 28+24*selection <= y < 48+24*selection
+                selected = state in (2,3,4,5,9) and 8 <= x < 248 and 28+24*selection <= y < 48+24*selection
                 if bottom[at] or selected:
                     top[at] = bottom[at]
         bottom = bytearray(49152)
         top_palette = art.palette(language, "МЕНЮ_ПАЛ")
+        if state==5:
+            bottom=art.tiled(language)
+            value=copy_all['schemes'][lang][selection]
+            label(value,(256-len(value.encode('cp866'))*8)//2,8)
+            for row,value in enumerate(copy_all['classic'][lang] if selection else controls[lang]):
+                label(value,8,32+12*row,2)
+    bottom_palette=art.palette(language, "МЕНЮ_ПАЛ")
+    if state==11:bottom_palette[254:256]=[0,32767]
     return dict(top=bytes(top), bottom=bytes(bottom), top_palette=top_palette,
-                bottom_palette=art.palette(language, "МЕНЮ_ПАЛ"), background=background,
+                bottom_palette=bottom_palette, background=background,
                 text_index=text_index, message=message, pages=len(pages) if pages else 1)

@@ -15,8 +15,32 @@ static uint16_t flags[256];
 static uint32_t rng=0x638c41f7u,cases,hits,overflows;
 static uint32_t random32(void){rng^=rng<<13;rng^=rng>>17;rng^=rng<<5;return rng;}
 static unsigned word(const unsigned char *p){return (unsigned)p[0]|(unsigned)p[1]<<8;}
+extern dok_status baseline_dok_map_record_geometry(const dok_geometry_quad *,const dok_nds_render_camera *,dok_map_render_record *);
+static int32_t signed_bits(uint32_t n){return n<=INT32_MAX?(int32_t)n:-1-(int32_t)(UINT32_MAX-n);}
+static int projection_vectors(void)
+{
+    /* Exercise low-DWORD overflow, the near plane, both horizontal kinds and
+     * arbitrary public quads that must retain independent transforms. */
+    for(unsigned n=0;n<20000u;++n){
+        dok_geometry_quad q={0};dok_nds_render_camera c={0};dok_map_render_record a,b;
+        int32_t x=signed_bits(random32()),z=signed_bits(random32());
+        int32_t bx=signed_bits((uint32_t)x+(random32()%961u)),az=signed_bits((uint32_t)z-(random32()%961u));
+        c.x=signed_bits(random32());c.z=signed_bits(random32());
+        if(!dok_render_trig(n%361u,&c.sin_q15,&c.cos_q15))return 0;
+        q.kind=n&1u?DOK_GEOMETRY_FLOOR_QUAD:DOK_GEOMETRY_CEILING_QUAD;
+        q.cell_x=n%64u;q.cell_z=(n/64u)%64u;q.object_flags=(uint16_t)random32();
+        q.vertices[0].x=q.vertices[3].x=x;q.vertices[1].x=q.vertices[2].x=bx;
+        q.vertices[0].z=q.vertices[1].z=z;q.vertices[2].z=q.vertices[3].z=az;
+        if(n%3u==0u)q.vertices[2].x=signed_bits((uint32_t)bx+1u);
+        memset(&a,0xa5,sizeof(a));b=a;
+        dok_status sa=baseline_dok_map_record_geometry(&q,&c,&a),sb=dok_map_record_geometry(&q,&c,&b);
+        if(sa!=sb||memcmp(&a,&b,sizeof(a)))return 0;
+    }
+    return 1;
+}
 int main(int argc,char **argv)
 {
+    if(!projection_vectors())return 20;
     if(argc!=3)return 1;
     FILE *file=fopen(argv[1],"rb");if(!file)return 2;
     size_t bytes=fread(source,1,sizeof(source),file);fclose(file);
@@ -65,6 +89,6 @@ int main(int argc,char **argv)
     }
     if(DOK_MAP_STATIC_RECORDS>=256u&&!hits)return 8;
     if(DOK_MAP_STATIC_RECORDS<=8u&&!overflows)return 9;
-    printf("{\"passed\":true,\"cases\":%u,\"hits\":%u,\"overflow_fallbacks\":%u,\"cache_bytes\":%u}\n",cases,hits,overflows,(unsigned)sizeof(cache));
+    printf("{\"passed\":true,\"projection_vectors\":20000,\"cases\":%u,\"hits\":%u,\"overflow_fallbacks\":%u,\"cache_bytes\":%u}\n",cases,hits,overflows,(unsigned)sizeof(cache));
     return 0;
 }

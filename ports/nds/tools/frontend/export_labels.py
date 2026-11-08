@@ -14,22 +14,52 @@ CONTROLS = [
 ROWS[0] += ["A: \u0414\u0430\u043b\u0435\u0435", "A: \u041f\u0440\u043e\u0434\u043e\u043b\u0436\u0438\u0442\u044c"]
 ROWS[1] += ["A: Next", "A: Continue"]
 SCHEMES = [["\u0421\u043e\u0432\u0440\u0435\u043c\u0435\u043d\u043d\u0430\u044f", "\u041a\u043b\u0430\u0441\u0441\u0438\u0447\u0435\u0441\u043a\u0430\u044f"], ["Modern", "Classic"]]
+SCHEMES[0] = ["Современное", "Классическое"]
+DEATH = [
+    ["ПОПРОБУЙ СНОВА", "ИГРА ОКОНЧЕНА", "Осталась 1 попытка", "Осталось 2 попытки",
+     "A/Start: Продолжить", "B: Выбор уровня", "A/Start: Выбор уровня"],
+    ["TRY AGAIN", "GAME OVER", "1 attempt left", "2 attempts left",
+     "A/Start: Continue", "B: Select level", "A/Start: Select level"],
+]
+AUTHORS = [
+    ["(C) NewCom", "Москва, 1995", "Авторы трехмерной технологии", "Александр Разбаков", "Андрей Разбаков", "Художник", "Дмитрий Цирухин"],
+    ["(C) NewCom", "Moscow, RUSSIA, 1995", "3-D technics by", "Alexander Razbakov", "Andrey Razbakov", "Design by", "Dmitri Tsirukhin"],
+]
+PORT = [["DS-порт", "Ретрогейминг", "на балконе"],
+        ["DS port by", "Retrogaming", "Na Balkone"]]
+ROWS[0][6] = "Об авторах"
+ROWS[1][6] = "Credits"
+ROWS[0] += ["A / B: В меню"]
+ROWS[1] += ["A / B: Menu"]
+ROWS[0] += ["A: Далее  B: В меню", "A: Продолжить  B: В меню"]
+ROWS[1] += ["A: Next  B: Menu", "A: Continue  B: Menu"]
+ROWS[0] += ["A: Продолжить  B: Назад"]
+ROWS[1] += ["A: Continue  B: Back"]
+ROWS[0] += ["A: Далее"]
+ROWS[1] += ["A: Next"]
 CLASSIC = [row.copy() for row in CONTROLS]
 CLASSIC[0][1:6] = ["\u0412\u043b\u0435\u0432\u043e/\u0432\u043f\u0440\u0430\u0432\u043e: \u043f\u043e\u0432\u043e\u0440\u043e\u0442", "L / R: \u0441\u0442\u0440\u0435\u0439\u0444", "Y: \u0441\u0442\u0440\u0435\u043b\u044f\u0442\u044c", "B: \u0431\u0435\u0433 (\u0443\u0434\u0435\u0440\u0436\u0438\u0432\u0430\u0442\u044c)", "X: \u0434\u0432\u0435\u0440\u0438, \u0434\u0435\u0439\u0441\u0442\u0432\u0438\u0435"]
 CLASSIC[1][1:6] = ["Left/right: turn", "L / R: strafe", "Y: fire", "Hold B: run", "X: door / use"]
+
+for language in range(2):
+    CONTROLS[language][5] = ["X: двери, действие", "X: door / use"][language]
+    CONTROLS[language][6] = ["B: следующее оружие", "B: next weapon"][language]
+    CLASSIC[language][6] = ["A: следующее оружие", "A: next weapon"][language]
+    for rows in (CONTROLS, CLASSIC):
+        rows[language].insert(8, ["Select: счётчик FPS", "Select: toggle FPS"][language])
 
 def generate():
     target = Path(__file__).resolve().parents[2] / 'platform/frontend'
     def literal(value):
         return '"' + ''.join('\\x%02x' % c for c in value.encode('cp866')) + '"'
     lines = ['/* N21 NDS menu labels, CP866; original font is unmodified. */']
-    for name, rows in [('labels', ROWS), ('controls', CONTROLS), ('schemes', SCHEMES), ('classic', CLASSIC)]:
+    for name, rows in [('labels', ROWS), ('controls', CONTROLS), ('schemes', SCHEMES), ('classic', CLASSIC), ('death', DEATH), ('authors', AUTHORS), ('port', PORT)]:
         lines.append(f'static const unsigned char *const {name}[2][{len(rows[0])}]={{')
         for row in rows:
             lines.append('{' + ','.join('(const unsigned char *)' + literal(s) for s in row) + '},')
         lines.append('};')
     (target/'labels.inc').write_text('\n'.join(lines)+'\n', 'utf8')
-    (target/'labels.json').write_text(json.dumps(dict(labels=ROWS, controls=CONTROLS, schemes=SCHEMES, classic=CLASSIC), ensure_ascii=False, indent=2)+'\n', 'utf8')
+    (target/'labels.json').write_text(json.dumps(dict(labels=ROWS, controls=CONTROLS, schemes=SCHEMES, classic=CLASSIC, death=DEATH, authors=AUTHORS, port=PORT), ensure_ascii=False, indent=2)+'\n', 'utf8')
 
 if __name__ == '__main__':
     generate()

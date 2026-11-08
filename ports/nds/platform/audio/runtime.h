@@ -18,4 +18,6 @@ void nds_audio_runtime_interaction(const dok_interaction_output *);
 int nds_audio_runtime_service(void);
 int nds_audio_runtime_catalog(void);
 int nds_audio_runtime_title(void);
+/* Borrows a disjoint inactive gameplay-assets region until clear/STOP ACK. */
+int nds_audio_runtime_menu(unsigned char *,uint32_t capacity);
 #endif

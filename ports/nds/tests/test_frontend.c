@@ -20,7 +20,7 @@ static uint32_t press(dok_frontend *s,uint32_t key)
 static void main_menu(dok_frontend *s,unsigned language)
 {
     dok_frontend_init(s,(uint8_t)language,pages);
-    CHECK(dok_frontend_step(s,DOK_FRONTEND_KEY_A,0,1)==DOK_FRONTEND_STOP_TITLE);
+    CHECK(dok_frontend_step(s,DOK_FRONTEND_KEY_A,0,1)==DOK_FRONTEND_OPEN_MAIN);
     CHECK(s->state==DOK_FRONTEND_MAIN&&s->blocked);
     release(s);
 }
@@ -50,7 +50,7 @@ static void title_cases(void)
         CHECK(dok_frontend_step(&s,button,0,0)==0);
         CHECK(s.state==DOK_FRONTEND_TITLE&&s.title_pending);
         if(release_before_ready)CHECK(dok_frontend_step(&s,0,0,0)==0);
-        CHECK(dok_frontend_step(&s,release_before_ready?0:button,0,1)==DOK_FRONTEND_STOP_TITLE);
+        CHECK(dok_frontend_step(&s,release_before_ready?0:button,0,1)==DOK_FRONTEND_OPEN_MAIN);
         CHECK(s.state==DOK_FRONTEND_MAIN&&s.selection==0);
         for(unsigned i=0;i<30;++i)CHECK(dok_frontend_step(&s,button,0,1)==0);
         CHECK(s.state==DOK_FRONTEND_MAIN&&s.selection==0);
@@ -87,13 +87,13 @@ static void input_cases(void)
     CHECK(press(&s,DOK_FRONTEND_KEY_B)==0&&s.state==DOK_FRONTEND_MAIN);
     choose(&s,4);CHECK(press(&s,DOK_FRONTEND_KEY_A)==0);
     CHECK(s.state==DOK_FRONTEND_ENDING&&dok_frontend_text_index(&s)==7);
-    for(unsigned page=0;page<pages[0][7];++page){
-        CHECK(s.page==page&&s.page_count==pages[0][7]);
+    for(unsigned page=0;page<1u;++page){
+        CHECK(s.page==page&&s.page_count==1u);
         CHECK(press(&s,DOK_FRONTEND_KEY_A)==
-              (page+1u==pages[0][7]?DOK_FRONTEND_STOP_GAME:0u));
+              (page+1u==1u?DOK_FRONTEND_STOP_GAME:0u));
     }
-    CHECK(s.state==DOK_FRONTEND_EXIT);
-    release(&s);CHECK(press(&s,DOK_FRONTEND_KEY_START)==0&&s.state==DOK_FRONTEND_EXIT);
+    CHECK(s.state==DOK_FRONTEND_MAIN);
+    release(&s);CHECK(press(&s,DOK_FRONTEND_KEY_START)==0&&s.state==DOK_FRONTEND_MAIN);
 }
 static void menus_and_text(void)
 {
@@ -151,12 +151,12 @@ static void menus_and_text(void)
             CHECK(press(&s,DOK_FRONTEND_KEY_START)==DOK_FRONTEND_PAUSE_GAME);
             CHECK(dok_frontend_show_ending(&s)==0); /* no double pause */
             CHECK(s.state==DOK_FRONTEND_ENDING&&dok_frontend_text_index(&s)==7);
-            count=pages[s.language-1u][7];
+            count=1;
             for(unsigned page=0;page<count;++page){
                 CHECK(s.page==page&&s.page_count==count);
                 CHECK(press(&s,DOK_FRONTEND_KEY_A)==(page+1u==count?DOK_FRONTEND_STOP_GAME:0u));
             }
-            CHECK(s.state==DOK_FRONTEND_EXIT);
+            CHECK(s.state==DOK_FRONTEND_MAIN);
         }
     }
     dok_frontend s;play(&s,1,1);
@@ -170,24 +170,25 @@ static void menus_and_text(void)
     play(&s,1,2);CHECK(dok_frontend_show_outro(&s,0)==DOK_FRONTEND_PAUSE_GAME);
     CHECK(s.level==1);CHECK(press(&s,DOK_FRONTEND_KEY_B)==0&&s.state==DOK_FRONTEND_OUTRO);
     CHECK(dok_frontend_show_ending(&s)==0);
-    CHECK(press(&s,DOK_FRONTEND_KEY_B)==0&&s.state==DOK_FRONTEND_ENDING);
+    CHECK(press(&s,DOK_FRONTEND_KEY_B)==DOK_FRONTEND_STOP_GAME&&s.state==DOK_FRONTEND_MAIN);
     main_menu(&s,1);CHECK(press(&s,DOK_FRONTEND_KEY_A)==0);
     CHECK(press(&s,DOK_FRONTEND_KEY_DOWN)==0);
     CHECK(press(&s,DOK_FRONTEND_KEY_A)==0&&s.level==2);
-    CHECK(press(&s,DOK_FRONTEND_KEY_B)==0&&s.state==DOK_FRONTEND_INTRO&&s.page==0);
-    dok_frontend_init(&s,1,0);CHECK(press(&s,DOK_FRONTEND_KEY_A)==DOK_FRONTEND_STOP_TITLE);
+    CHECK(press(&s,DOK_FRONTEND_KEY_B)==DOK_FRONTEND_STOP_GAME&&s.state==DOK_FRONTEND_MAIN&&s.selection==0);
+    dok_frontend_init(&s,1,0);CHECK(press(&s,DOK_FRONTEND_KEY_A)==DOK_FRONTEND_OPEN_MAIN);
     choose(&s,3);CHECK(press(&s,DOK_FRONTEND_KEY_A)==0&&s.page_count==1);
 }
 static void scheme_cases(void)
 {
     const uint32_t physical[]={DOK_BUTTON_UP,DOK_BUTTON_DOWN,DOK_BUTTON_LEFT,DOK_BUTTON_RIGHT,
-        DOK_BUTTON_L,DOK_BUTTON_R,DOK_BUTTON_Y,DOK_BUTTON_B,DOK_BUTTON_X,DOK_BUTTON_SELECT,DOK_BUTTON_START};
+        DOK_BUTTON_L,DOK_BUTTON_R,DOK_BUTTON_Y,DOK_BUTTON_B,DOK_BUTTON_X,DOK_BUTTON_A,DOK_BUTTON_START};
     const uint32_t modern[]={DOK_BUTTON_UP,DOK_BUTTON_DOWN,DOK_BUTTON_Y,DOK_BUTTON_A,
         DOK_BUTTON_LEFT,DOK_BUTTON_RIGHT,DOK_BUTTON_R,DOK_BUTTON_L,DOK_BUTTON_X,DOK_BUTTON_SELECT,DOK_BUTTON_START};
     for(unsigned keys=0;keys<4096u;++keys){
         uint32_t expected=0;
         for(unsigned i=0;i<11u;++i)if(keys&physical[i])expected|=modern[i];
-        CHECK(dok_frontend_game_buttons(keys,0)==keys);
+        CHECK(dok_frontend_game_buttons(keys,0)==((keys&~(DOK_BUTTON_B|DOK_BUTTON_SELECT))|
+            ((keys&DOK_BUTTON_B)?DOK_BUTTON_SELECT:0u)));
         CHECK(dok_frontend_game_buttons(keys,1)==expected);
     }
     dok_frontend s;main_menu(&s,1);choose(&s,2);
@@ -199,6 +200,31 @@ static void scheme_cases(void)
     CHECK(press(&s,DOK_FRONTEND_KEY_A)==0);
     CHECK(press(&s,DOK_FRONTEND_KEY_UP)==0&&s.selection==0);
     CHECK(press(&s,DOK_FRONTEND_KEY_B)==0&&s.control_scheme==1);
+}
+static void fps_cases(void)
+{
+    for(unsigned scheme=0;scheme<2u;++scheme){
+        dok_frontend s;play(&s,1,1);s.control_scheme=(uint8_t)scheme;
+        CHECK(s.show_fps==1);
+        CHECK(press(&s,DOK_BUTTON_SELECT)==DOK_FRONTEND_FPS_CHANGED&&!s.show_fps);
+        for(unsigned n=0;n<30u;++n)CHECK(dok_frontend_step(&s,DOK_BUTTON_SELECT,0,1)==0&&!s.show_fps);
+        CHECK(press(&s,DOK_BUTTON_SELECT)==DOK_FRONTEND_FPS_CHANGED&&s.show_fps);
+        CHECK(press(&s,DOK_BUTTON_START|DOK_BUTTON_SELECT)==DOK_FRONTEND_PAUSE_GAME&&s.show_fps);
+        CHECK(press(&s,DOK_BUTTON_SELECT)==0&&s.show_fps);
+        CHECK(press(&s,DOK_FRONTEND_KEY_A)==DOK_FRONTEND_RESUME_GAME);
+        CHECK(dok_frontend_step(&s,DOK_BUTTON_SELECT,0,1)==0&&s.show_fps);
+        release(&s);
+        CHECK(press(&s,DOK_BUTTON_SELECT)==DOK_FRONTEND_FPS_CHANGED&&!s.show_fps);
+        CHECK(dok_frontend_show_death(&s,2)==DOK_FRONTEND_PAUSE_GAME);
+        CHECK(press(&s,DOK_BUTTON_SELECT)==0&&!s.show_fps);
+        CHECK(press(&s,DOK_FRONTEND_KEY_A)==(DOK_FRONTEND_RETRY_GAME|DOK_FRONTEND_RESUME_GAME));
+        CHECK(!s.show_fps);
+        release(&s);
+        uint32_t weapon=scheme?DOK_BUTTON_A:DOK_BUTTON_B;
+        CHECK(dok_frontend_game_buttons(weapon,(uint8_t)scheme)==DOK_BUTTON_SELECT);
+        CHECK(dok_frontend_game_buttons(DOK_BUTTON_SELECT,(uint8_t)scheme)==0);
+        CHECK(dok_frontend_game_buttons(DOK_BUTTON_X,(uint8_t)scheme)==DOK_BUTTON_X);
+    }
 }
 static void settings_cases(void)
 {
@@ -236,9 +262,49 @@ static void settings_cases(void)
         CHECK(dok_settings_decode(out,16,&language,&scheme)&&language==lang&&scheme==control);
     }
 }
+static void death_cases(void)
+{
+    for(unsigned lang=1;lang<=2u;++lang)for(int attempts=0;attempts<=2;++attempts)
+    for(unsigned key=0;key<2u;++key){
+        dok_frontend s;play(&s,(uint8_t)lang,2);
+        CHECK(dok_frontend_show_death(&s,(int16_t)attempts)==
+              (DOK_FRONTEND_PAUSE_GAME|(attempts?0u:DOK_FRONTEND_STOP_GAME)));
+        CHECK(s.state==DOK_FRONTEND_DEATH&&!dok_frontend_game_input(&s));
+        CHECK(dok_frontend_step(&s,DOK_FRONTEND_KEY_A,0,1)==0&&s.state==DOK_FRONTEND_DEATH);
+        CHECK(dok_frontend_step(&s,0,1,1)==0&&s.blocked);
+        CHECK(dok_frontend_step(&s,0,0,1)==0&&!s.blocked);
+        CHECK(dok_frontend_step(&s,key?DOK_FRONTEND_KEY_START:DOK_FRONTEND_KEY_A,0,1)==
+              (attempts?(DOK_FRONTEND_RETRY_GAME|DOK_FRONTEND_RESUME_GAME):0u));
+        CHECK(s.state==(attempts?DOK_FRONTEND_PLAY:DOK_FRONTEND_LEVELS)&&s.level==2&&s.blocked);
+        CHECK(!dok_frontend_game_input(&s));
+        if(attempts){
+            CHECK(dok_frontend_show_death(&s,(int16_t)attempts)==DOK_FRONTEND_PAUSE_GAME);
+            CHECK(press(&s,DOK_FRONTEND_KEY_B)==DOK_FRONTEND_STOP_GAME);
+            CHECK(s.state==DOK_FRONTEND_LEVELS);
+        }
+    }
+}
 int main(void)
 {
-    title_cases();input_cases();menus_and_text();scheme_cases();settings_cases();
+    {unsigned char text[]="  Forces of evil,\r\n  mutant bats.\r\n\r\n\r\nThe digger.\r\n";
+     unsigned n=dok_frontend_text_prepare(text,sizeof(text),0);
+     const char *expected="Forces of evil, mutant bats.\n\nThe digger.";
+     CHECK(n==strlen(expected)&&!memcmp(text,expected,n));}
+    {unsigned char text[]="Completed\r\n\r\nwith honor!\r\n\r\n\r\nNow safe.";
+     unsigned n=dok_frontend_text_prepare(text,sizeof(text),6);
+     const char *expected="Completed with honor!\n\nNow safe.";
+     CHECK(n==strlen(expected)&&!memcmp(text,expected,n));}
+    {dok_frontend s;dok_frontend_init(&s,1,pages);
+     CHECK(press(&s,DOK_FRONTEND_KEY_B)==DOK_FRONTEND_OPEN_MAIN&&s.state==DOK_FRONTEND_MAIN);}
+    for(unsigned language=1;language<=2;++language)for(unsigned level=1;level<=3;++level){
+        dok_frontend s;main_menu(&s,language);CHECK(press(&s,DOK_FRONTEND_KEY_A)==0);
+        choose(&s,level-1u);CHECK(press(&s,DOK_FRONTEND_KEY_A)==0);
+        CHECK(press(&s,DOK_FRONTEND_KEY_A)==0&&s.page==1);
+        CHECK(press(&s,DOK_FRONTEND_KEY_B)==0&&s.state==DOK_FRONTEND_INTRO&&s.page==0);
+        CHECK(press(&s,DOK_FRONTEND_KEY_B)==DOK_FRONTEND_STOP_GAME&&s.state==DOK_FRONTEND_MAIN);
+        CHECK(dok_frontend_step(&s,DOK_FRONTEND_KEY_B,0,1)==0&&s.state==DOK_FRONTEND_MAIN);
+    }
+    title_cases();input_cases();menus_and_text();scheme_cases();settings_cases();death_cases();fps_cases();
     printf("frontend checks=%u state_bytes=%u\n",checks,(unsigned)sizeof(dok_frontend));
     return 0;
 }

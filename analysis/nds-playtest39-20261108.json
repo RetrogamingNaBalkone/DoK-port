@@ -1,0 +1,1336 @@
+{
+  "task": "N23",
+  "build": "playtest39b-ru",
+  "death_screen_fixed": true,
+  "level2_fps_fixed": false,
+  "user_stability_observation": "About 30 minutes active play on profiling38 without reported crash; user report, not exhaustive proof",
+  "user_fps_observation": "Brief dips, including stationary view toward bars in LEVEL2 left third room from bottom",
+  "artifact": {
+    "path": "artifacts/nds/dok.nds",
+    "bytes": 10180096,
+    "sha256": "92041822e7f357cdd86d8502349b528ce232f7617234215947a08196fb9acb27"
+  },
+  "build_manifest": {
+    "path": "build/nds/n23/playtest39b-ru/build-manifest.json",
+    "bytes": 117098,
+    "sha256": "fe3e343c91bdacc7e9cb8376c67dbb00fd2156b985a1e4c061c4299c5df76dab"
+  },
+  "compiled_source_pins_verified": 340,
+  "checks": {
+    "frontend": 151572,
+    "flow": 655965,
+    "death_screens": 6,
+    "discovery_updates": 24576,
+    "projection_vectors": 240000
+  },
+  "baseline": [
+    {
+      "name": "river-north",
+      "angle": 0,
+      "pose": [
+        5520,
+        -300,
+        8823,
+        0
+      ],
+      "final_pose": [
+        5497,
+        -300,
+        8151,
+        0
+      ],
+      "fps": 59.82609828808083,
+      "cpu_ms": {
+        "samples": 90,
+        "mean": 11.370639938346395,
+        "median": 10.866449710452192,
+        "p95": 14.526921927689763,
+        "p99": 16.38381855071713,
+        "maximum": 16.38381855071713
+      },
+      "minimum_fps_500ms": null,
+      "minimum_fps_1s": null
+    },
+    {
+      "name": "river-north",
+      "angle": 60,
+      "pose": [
+        5520,
+        -300,
+        8822,
+        60
+      ],
+      "final_pose": [
+        5288,
+        -300,
+        8145,
+        60
+      ],
+      "fps": 46.02007560621602,
+      "cpu_ms": {
+        "samples": 70,
+        "mean": 15.422632517121617,
+        "median": 14.635652665803782,
+        "p95": 20.04912457135055,
+        "p99": 20.715234614615476,
+        "maximum": 20.715234614615476
+      },
+      "minimum_fps_500ms": null,
+      "minimum_fps_1s": null
+    },
+    {
+      "name": "river-north",
+      "angle": 120,
+      "pose": [
+        5520,
+        -300,
+        8785,
+        120
+      ],
+      "final_pose": [
+        5392,
+        -300,
+        8140,
+        120
+      ],
+      "fps": 55.8376917355421,
+      "cpu_ms": {
+        "samples": 84,
+        "mean": 14.884196762442386,
+        "median": 14.448477056531212,
+        "p95": 17.355442871575214,
+        "p99": 20.148694953646512,
+        "maximum": 20.148694953646512
+      },
+      "minimum_fps_500ms": null,
+      "minimum_fps_1s": null
+    },
+    {
+      "name": "river-north",
+      "angle": 180,
+      "pose": [
+        5520,
+        -300,
+        8807,
+        180
+      ],
+      "final_pose": [
+        5497,
+        -300,
+        8138,
+        180
+      ],
+      "fps": 59.82609828808083,
+      "cpu_ms": {
+        "samples": 90,
+        "mean": 11.564374667398354,
+        "median": 11.36994105922716,
+        "p95": 12.806177433645455,
+        "p99": 14.73871412833008,
+        "maximum": 14.73871412833008
+      },
+      "minimum_fps_500ms": null,
+      "minimum_fps_1s": null
+    },
+    {
+      "name": "river-north",
+      "angle": 240,
+      "pose": [
+        5520,
+        -300,
+        8794,
+        240
+      ],
+      "final_pose": [
+        5474,
+        -300,
+        8144,
+        240
+      ],
+      "fps": 59.82609828808083,
+      "cpu_ms": {
+        "samples": 90,
+        "mean": 11.880796498607657,
+        "median": 11.500274721159665,
+        "p95": 13.31530821971558,
+        "p99": 17.165402786216212,
+        "maximum": 17.165402786216212
+      },
+      "minimum_fps_500ms": null,
+      "minimum_fps_1s": null
+    },
+    {
+      "name": "river-north",
+      "angle": 300,
+      "pose": [
+        5520,
+        -300,
+        8823,
+        300
+      ],
+      "final_pose": [
+        5520,
+        -300,
+        8137,
+        300
+      ],
+      "fps": 59.82609828808083,
+      "cpu_ms": {
+        "samples": 90,
+        "mean": 12.024283542976844,
+        "median": 11.69183655943958,
+        "p95": 14.754409070220303,
+        "p99": 17.362514546913584,
+        "maximum": 17.362514546913584
+      },
+      "minimum_fps_500ms": null,
+      "minimum_fps_1s": null
+    },
+    {
+      "name": "river-south",
+      "angle": 0,
+      "pose": [
+        5464,
+        -300,
+        19440,
+        0
+      ],
+      "final_pose": [
+        4768,
+        -300,
+        19440,
+        0
+      ],
+      "fps": 59.82609828808083,
+      "cpu_ms": {
+        "samples": 90,
+        "mean": 12.893731603988117,
+        "median": 12.589611106194424,
+        "p95": 15.44098818218617,
+        "p99": 17.80782122518297,
+        "maximum": 17.80782122518297
+      },
+      "minimum_fps_500ms": null,
+      "minimum_fps_1s": null
+    },
+    {
+      "name": "river-south",
+      "angle": 60,
+      "pose": [
+        5446,
+        -300,
+        19440,
+        60
+      ],
+      "final_pose": [
+        4466,
+        -300,
+        19440,
+        60
+      ],
+      "fps": 43.20773765250282,
+      "cpu_ms": {
+        "samples": 65,
+        "mean": 16.43972128041732,
+        "median": 16.3674074898053,
+        "p95": 18.7808479457917,
+        "p99": 22.97617155729212,
+        "maximum": 22.97617155729212
+      },
+      "minimum_fps_500ms": null,
+      "minimum_fps_1s": null
+    },
+    {
+      "name": "river-south",
+      "angle": 120,
+      "pose": [
+        5458,
+        -300,
+        19440,
+        120
+      ],
+      "final_pose": [
+        4688,
+        -300,
+        19440,
+        120
+      ],
+      "fps": 56.50242616096523,
+      "cpu_ms": {
+        "samples": 85,
+        "mean": 14.840778640845905,
+        "median": 14.397781797459938,
+        "p95": 16.88337124487326,
+        "p99": 18.33885331799725,
+        "maximum": 18.33885331799725
+      },
+      "minimum_fps_500ms": null,
+      "minimum_fps_1s": null
+    },
+    {
+      "name": "river-south",
+      "angle": 180,
+      "pose": [
+        5463,
+        -300,
+        19440,
+        180
+      ],
+      "final_pose": [
+        4765,
+        -300,
+        19440,
+        180
+      ],
+      "fps": 59.82609828808083,
+      "cpu_ms": {
+        "samples": 90,
+        "mean": 11.091026956384287,
+        "median": 10.846965305405964,
+        "p95": 12.347145140795266,
+        "p99": 14.09671342545926,
+        "maximum": 14.09671342545926
+      },
+      "minimum_fps_500ms": null,
+      "minimum_fps_1s": null
+    },
+    {
+      "name": "river-south",
+      "angle": 240,
+      "pose": [
+        5464,
+        -300,
+        19440,
+        240
+      ],
+      "final_pose": [
+        4728,
+        -300,
+        19440,
+        240
+      ],
+      "fps": 58.49662943723459,
+      "cpu_ms": {
+        "samples": 88,
+        "mean": 13.145192315146664,
+        "median": 12.74626214217099,
+        "p95": 14.977360792280667,
+        "p99": 16.684230480281336,
+        "maximum": 16.684230480281336
+      },
+      "minimum_fps_500ms": null,
+      "minimum_fps_1s": null
+    },
+    {
+      "name": "river-south",
+      "angle": 300,
+      "pose": [
+        5458,
+        -300,
+        19440,
+        300
+      ],
+      "final_pose": [
+        4706,
+        -300,
+        19440,
+        300
+      ],
+      "fps": 56.50242616096523,
+      "cpu_ms": {
+        "samples": 85,
+        "mean": 14.799256023948452,
+        "median": 14.313578135835963,
+        "p95": 17.617512595190867,
+        "p99": 22.597971199005837,
+        "maximum": 22.597971199005837
+      },
+      "minimum_fps_500ms": null,
+      "minimum_fps_1s": null
+    },
+    {
+      "name": "baba-ammo",
+      "angle": 0,
+      "pose": [
+        7440,
+        -300,
+        20400,
+        0
+      ],
+      "final_pose": [
+        7440,
+        -300,
+        20400,
+        0
+      ],
+      "fps": 59.82609828808083,
+      "cpu_ms": {
+        "samples": 90,
+        "mean": 11.123133290722926,
+        "median": 10.799164360713686,
+        "p95": 11.796210906838823,
+        "p99": 15.095281724505313,
+        "maximum": 15.095281724505313
+      },
+      "minimum_fps_500ms": null,
+      "minimum_fps_1s": null
+    },
+    {
+      "name": "baba-ammo",
+      "angle": 60,
+      "pose": [
+        7440,
+        -300,
+        20400,
+        60
+      ],
+      "final_pose": [
+        7440,
+        -300,
+        20400,
+        60
+      ],
+      "fps": 59.16136386265771,
+      "cpu_ms": {
+        "samples": 89,
+        "mean": 15.071553911942006,
+        "median": 14.773923313559099,
+        "p95": 15.764166728978967,
+        "p99": 15.782905176711022,
+        "maximum": 15.782905176711022
+      },
+      "minimum_fps_500ms": null,
+      "minimum_fps_1s": null
+    },
+    {
+      "name": "baba-ammo",
+      "angle": 120,
+      "pose": [
+        7440,
+        -300,
+        20400,
+        120
+      ],
+      "final_pose": [
+        7440,
+        -300,
+        20400,
+        120
+      ],
+      "fps": 59.82609828808083,
+      "cpu_ms": {
+        "samples": 90,
+        "mean": 13.364612351280064,
+        "median": 13.037394362746868,
+        "p95": 13.645737471602152,
+        "p99": 17.027967610652773,
+        "maximum": 17.027967610652773
+      },
+      "minimum_fps_500ms": null,
+      "minimum_fps_1s": null
+    },
+    {
+      "name": "baba-ammo",
+      "angle": 180,
+      "pose": [
+        7440,
+        -300,
+        20400,
+        180
+      ],
+      "final_pose": [
+        7440,
+        -300,
+        20400,
+        180
+      ],
+      "fps": 59.82609828808083,
+      "cpu_ms": {
+        "samples": 90,
+        "mean": 9.52096318751048,
+        "median": 9.314351245996372,
+        "p95": 10.039929006347261,
+        "p99": 13.138784880889416,
+        "maximum": 13.138784880889416
+      },
+      "minimum_fps_500ms": null,
+      "minimum_fps_1s": null
+    },
+    {
+      "name": "baba-ammo",
+      "angle": 240,
+      "pose": [
+        7440,
+        -300,
+        20400,
+        240
+      ],
+      "final_pose": [
+        7440,
+        -300,
+        20400,
+        240
+      ],
+      "fps": 55.8376917355421,
+      "cpu_ms": {
+        "samples": 84,
+        "mean": 14.026746181567413,
+        "median": 12.998604582409813,
+        "p95": 18.665373753557546,
+        "p99": 25.857446602435964,
+        "maximum": 25.857446602435964
+      },
+      "minimum_fps_500ms": null,
+      "minimum_fps_1s": null
+    },
+    {
+      "name": "baba-ammo",
+      "angle": 300,
+      "pose": [
+        7440,
+        -300,
+        20400,
+        300
+      ],
+      "final_pose": [
+        7440,
+        -300,
+        20400,
+        300
+      ],
+      "fps": 59.82609828808083,
+      "cpu_ms": {
+        "samples": 90,
+        "mean": 13.856301992271629,
+        "median": 13.47458502543804,
+        "p95": 15.219796919387257,
+        "p99": 18.56428161834067,
+        "maximum": 18.56428161834067
+      },
+      "minimum_fps_500ms": null,
+      "minimum_fps_1s": null
+    }
+  ],
+  "candidate": [
+    {
+      "name": "river-north",
+      "angle": 0,
+      "pose": [
+        5520,
+        -300,
+        8751,
+        0
+      ],
+      "final_pose": [
+        5428,
+        -300,
+        8151,
+        0
+      ],
+      "fps": 59.82609828808083,
+      "cpu_ms": {
+        "samples": 90,
+        "mean": 11.30811943239425,
+        "median": 10.769505097902123,
+        "p95": 14.574185783115835,
+        "p99": 16.301255995184338,
+        "maximum": 16.301255995184338
+      },
+      "minimum_fps_500ms": null,
+      "minimum_fps_1s": null
+    },
+    {
+      "name": "river-north",
+      "angle": 60,
+      "pose": [
+        5520,
+        -300,
+        8745,
+        60
+      ],
+      "final_pose": [
+        5256,
+        -300,
+        8152,
+        60
+      ],
+      "fps": 49.1903474813109,
+      "cpu_ms": {
+        "samples": 74,
+        "mean": 15.197231105803237,
+        "median": 14.197328147995067,
+        "p95": 20.236061474282586,
+        "p99": 20.54312734308922,
+        "maximum": 20.54312734308922
+      },
+      "minimum_fps_500ms": null,
+      "minimum_fps_1s": null
+    },
+    {
+      "name": "river-north",
+      "angle": 120,
+      "pose": [
+        5520,
+        -300,
+        8737,
+        120
+      ],
+      "final_pose": [
+        5368,
+        -300,
+        8137,
+        120
+      ],
+      "fps": 57.16716058638835,
+      "cpu_ms": {
+        "samples": 86,
+        "mean": 14.61482449672137,
+        "median": 14.317367598991966,
+        "p95": 16.424249437145367,
+        "p99": 17.987775967654336,
+        "maximum": 17.987775967654336
+      },
+      "minimum_fps_500ms": null,
+      "minimum_fps_1s": null
+    },
+    {
+      "name": "river-north",
+      "angle": 180,
+      "pose": [
+        5520,
+        -300,
+        8761,
+        180
+      ],
+      "final_pose": [
+        5451,
+        -300,
+        8140,
+        180
+      ],
+      "fps": 59.82609828808083,
+      "cpu_ms": {
+        "samples": 90,
+        "mean": 11.455665479162299,
+        "median": 11.273444021065595,
+        "p95": 12.685153318993846,
+        "p99": 14.333450438685562,
+        "maximum": 14.333450438685562
+      },
+      "minimum_fps_500ms": null,
+      "minimum_fps_1s": null
+    },
+    {
+      "name": "river-north",
+      "angle": 240,
+      "pose": [
+        5520,
+        -300,
+        8751,
+        240
+      ],
+      "final_pose": [
+        5428,
+        -300,
+        8149,
+        240
+      ],
+      "fps": 59.82609828808083,
+      "cpu_ms": {
+        "samples": 90,
+        "mean": 11.743457137117012,
+        "median": 11.313695877738432,
+        "p95": 13.295973006132186,
+        "p99": 17.05700026932043,
+        "maximum": 17.05700026932043
+      },
+      "minimum_fps_500ms": null,
+      "minimum_fps_1s": null
+    },
+    {
+      "name": "river-north",
+      "angle": 300,
+      "pose": [
+        5520,
+        -300,
+        8749,
+        300
+      ],
+      "final_pose": [
+        5428,
+        -300,
+        8154,
+        300
+      ],
+      "fps": 59.82609828808083,
+      "cpu_ms": {
+        "samples": 90,
+        "mean": 11.835662765734279,
+        "median": 11.362212941452317,
+        "p95": 14.281084235230537,
+        "p99": 17.225944681834584,
+        "maximum": 17.225944681834584
+      },
+      "minimum_fps_500ms": null,
+      "minimum_fps_1s": null
+    },
+    {
+      "name": "river-south",
+      "angle": 0,
+      "pose": [
+        5391,
+        -300,
+        19440,
+        0
+      ],
+      "final_pose": [
+        4698,
+        -300,
+        19440,
+        0
+      ],
+      "fps": 59.82609828808083,
+      "cpu_ms": {
+        "samples": 90,
+        "mean": 12.836020036188014,
+        "median": 12.587552264007304,
+        "p95": 15.346042735238086,
+        "p99": 17.762825079991988,
+        "maximum": 17.762825079991988
+      },
+      "minimum_fps_500ms": null,
+      "minimum_fps_1s": null
+    },
+    {
+      "name": "river-south",
+      "angle": 60,
+      "pose": [
+        5372,
+        -300,
+        19440,
+        60
+      ],
+      "final_pose": [
+        4403,
+        -300,
+        19440,
+        60
+      ],
+      "fps": 45.20194092877218,
+      "cpu_ms": {
+        "samples": 68,
+        "mean": 16.077665382624303,
+        "median": 16.03676936987076,
+        "p95": 18.581916049247745,
+        "p99": 22.980348918251494,
+        "maximum": 22.980348918251494
+      },
+      "minimum_fps_500ms": null,
+      "minimum_fps_1s": null
+    },
+    {
+      "name": "river-south",
+      "angle": 120,
+      "pose": [
+        5396,
+        -300,
+        19440,
+        120
+      ],
+      "final_pose": [
+        4626,
+        -300,
+        19440,
+        120
+      ],
+      "fps": 56.50242616096523,
+      "cpu_ms": {
+        "samples": 85,
+        "mean": 14.631362270371389,
+        "median": 14.216156110604821,
+        "p95": 16.794035396927764,
+        "p99": 18.219082411633448,
+        "maximum": 18.219082411633448
+      },
+      "minimum_fps_500ms": null,
+      "minimum_fps_1s": null
+    },
+    {
+      "name": "river-south",
+      "angle": 180,
+      "pose": [
+        5391,
+        -300,
+        19440,
+        180
+      ],
+      "final_pose": [
+        4696,
+        -300,
+        19440,
+        180
+      ],
+      "fps": 59.82609828808083,
+      "cpu_ms": {
+        "samples": 90,
+        "mean": 11.007865314244068,
+        "median": 10.730864509027903,
+        "p95": 12.484998052454644,
+        "p99": 14.000037357542293,
+        "maximum": 14.000037357542293
+      },
+      "minimum_fps_500ms": null,
+      "minimum_fps_1s": null
+    },
+    {
+      "name": "river-south",
+      "angle": 240,
+      "pose": [
+        5391,
+        -300,
+        19440,
+        240
+      ],
+      "final_pose": [
+        4655,
+        -300,
+        19440,
+        240
+      ],
+      "fps": 58.49662943723459,
+      "cpu_ms": {
+        "samples": 88,
+        "mean": 13.032143162326589,
+        "median": 12.63153390725101,
+        "p95": 14.8540391291014,
+        "p99": 16.578304541668608,
+        "maximum": 16.578304541668608
+      },
+      "minimum_fps_500ms": null,
+      "minimum_fps_1s": null
+    },
+    {
+      "name": "river-south",
+      "angle": 300,
+      "pose": [
+        5388,
+        -300,
+        19440,
+        300
+      ],
+      "final_pose": [
+        4637,
+        -300,
+        19440,
+        300
+      ],
+      "fps": 56.50242616096523,
+      "cpu_ms": {
+        "samples": 85,
+        "mean": 14.618395601537994,
+        "median": 14.186944422181762,
+        "p95": 16.901244382120872,
+        "p99": 18.181844222509877,
+        "maximum": 18.181844222509877
+      },
+      "minimum_fps_500ms": null,
+      "minimum_fps_1s": null
+    },
+    {
+      "name": "baba-ammo",
+      "angle": 0,
+      "pose": [
+        7440,
+        -300,
+        20400,
+        0
+      ],
+      "final_pose": [
+        7440,
+        -300,
+        20400,
+        0
+      ],
+      "fps": 59.82609828808083,
+      "cpu_ms": {
+        "samples": 90,
+        "mean": 11.01318415566242,
+        "median": 10.68903122284902,
+        "p95": 11.584985633757277,
+        "p99": 15.357739345924337,
+        "maximum": 15.357739345924337
+      },
+      "minimum_fps_500ms": null,
+      "minimum_fps_1s": null
+    },
+    {
+      "name": "baba-ammo",
+      "angle": 60,
+      "pose": [
+        7440,
+        -300,
+        20400,
+        60
+      ],
+      "final_pose": [
+        7440,
+        -300,
+        20400,
+        60
+      ],
+      "fps": 57.16716058638835,
+      "cpu_ms": {
+        "samples": 86,
+        "mean": 15.023853709496462,
+        "median": 14.649169412336619,
+        "p95": 15.888562570690645,
+        "p99": 19.335690996074415,
+        "maximum": 19.335690996074415
+      },
+      "minimum_fps_500ms": null,
+      "minimum_fps_1s": null
+    },
+    {
+      "name": "baba-ammo",
+      "angle": 120,
+      "pose": [
+        7440,
+        -300,
+        20400,
+        120
+      ],
+      "final_pose": [
+        7440,
+        -300,
+        20400,
+        120
+      ],
+      "fps": 59.82609828808083,
+      "cpu_ms": {
+        "samples": 90,
+        "mean": 13.244543061990596,
+        "median": 12.916310571510124,
+        "p95": 13.782605719606819,
+        "p99": 16.88632523583739,
+        "maximum": 16.88632523583739
+      },
+      "minimum_fps_500ms": null,
+      "minimum_fps_1s": null
+    },
+    {
+      "name": "baba-ammo",
+      "angle": 180,
+      "pose": [
+        7440,
+        -300,
+        20400,
+        180
+      ],
+      "final_pose": [
+        7440,
+        -300,
+        20400,
+        180
+      ],
+      "fps": 59.82609828808083,
+      "cpu_ms": {
+        "samples": 90,
+        "mean": 9.616272330091297,
+        "median": 9.396227520800124,
+        "p95": 10.262283962556285,
+        "p99": 13.602949360061123,
+        "maximum": 13.602949360061123
+      },
+      "minimum_fps_500ms": null,
+      "minimum_fps_1s": null
+    },
+    {
+      "name": "baba-ammo",
+      "angle": 240,
+      "pose": [
+        7440,
+        -300,
+        20400,
+        240
+      ],
+      "final_pose": [
+        7440,
+        -300,
+        20400,
+        240
+      ],
+      "fps": 58.49662943723459,
+      "cpu_ms": {
+        "samples": 88,
+        "mean": 12.962241875915877,
+        "median": 12.482819857097256,
+        "p95": 13.532948725699024,
+        "p99": 17.621719794442807,
+        "maximum": 17.621719794442807
+      },
+      "minimum_fps_500ms": null,
+      "minimum_fps_1s": null
+    },
+    {
+      "name": "baba-ammo",
+      "angle": 300,
+      "pose": [
+        7440,
+        -300,
+        20400,
+        300
+      ],
+      "final_pose": [
+        7440,
+        -300,
+        20400,
+        300
+      ],
+      "fps": 59.82609828808083,
+      "cpu_ms": {
+        "samples": 90,
+        "mean": 13.687211372123896,
+        "median": 13.355947974191787,
+        "p95": 14.579676028948157,
+        "p99": 14.848608559854213,
+        "maximum": 14.848608559854213
+      },
+      "minimum_fps_500ms": null,
+      "minimum_fps_1s": null
+    }
+  ],
+  "room_spikes": [
+    {
+      "name": "baba-ammo",
+      "angle": 45,
+      "pose": [
+        7440,
+        -300,
+        20400,
+        45
+      ],
+      "final_pose": [
+        7440,
+        -300,
+        20400,
+        45
+      ],
+      "fps": 59.82609828808083,
+      "cpu_ms": {
+        "samples": 600,
+        "mean": 14.637735677007884,
+        "median": 14.372836984873954,
+        "p95": 15.199745586782257,
+        "p99": 15.891546399947341,
+        "maximum": 15.941823922922678
+      },
+      "minimum_fps_500ms": 59.82609828808083,
+      "minimum_fps_1s": 59.82609828808083
+    },
+    {
+      "name": "baba-ammo",
+      "angle": 90,
+      "pose": [
+        7440,
+        -300,
+        20400,
+        90
+      ],
+      "final_pose": [
+        7440,
+        -300,
+        20400,
+        90
+      ],
+      "fps": 59.82609828808083,
+      "cpu_ms": {
+        "samples": 600,
+        "mean": 10.64871924201666,
+        "median": 10.420188206820663,
+        "p95": 11.158238373464544,
+        "p99": 11.845921502255386,
+        "maximum": 11.906165014948089
+      },
+      "minimum_fps_500ms": 59.82609828808083,
+      "minimum_fps_1s": 59.82609828808083
+    },
+    {
+      "name": "baba-ammo",
+      "angle": 135,
+      "pose": [
+        7440,
+        -300,
+        20400,
+        135
+      ],
+      "final_pose": [
+        7440,
+        -300,
+        20400,
+        135
+      ],
+      "fps": 59.82609828808083,
+      "cpu_ms": {
+        "samples": 600,
+        "mean": 12.698275603298946,
+        "median": 12.479269100281787,
+        "p95": 13.07797444063794,
+        "p99": 13.293824649067366,
+        "maximum": 13.349890800800692
+      },
+      "minimum_fps_500ms": 59.82609828808083,
+      "minimum_fps_1s": 59.82609828808083
+    },
+    {
+      "name": "baba-ammo",
+      "angle": 225,
+      "pose": [
+        7440,
+        -300,
+        20400,
+        225
+      ],
+      "final_pose": [
+        7440,
+        -300,
+        20400,
+        225
+      ],
+      "fps": 59.82609828808083,
+      "cpu_ms": {
+        "samples": 600,
+        "mean": 12.265972005355854,
+        "median": 11.972972952005524,
+        "p95": 13.171219104909706,
+        "p99": 13.493830724143733,
+        "maximum": 16.330079785804028
+      },
+      "minimum_fps_500ms": 59.82609828808083,
+      "minimum_fps_1s": 59.82609828808083
+    },
+    {
+      "name": "baba-ammo",
+      "angle": 270,
+      "pose": [
+        7440,
+        -300,
+        20400,
+        270
+      ],
+      "final_pose": [
+        7440,
+        -300,
+        20400,
+        270
+      ],
+      "fps": 59.82609828808083,
+      "cpu_ms": {
+        "samples": 600,
+        "mean": 10.339517399036618,
+        "median": 10.01546160644235,
+        "p95": 10.80886180579795,
+        "p99": 11.34419061274187,
+        "maximum": 14.207055431371897
+      },
+      "minimum_fps_500ms": 59.82609828808083,
+      "minimum_fps_1s": 59.82609828808083
+    },
+    {
+      "name": "baba-ammo",
+      "angle": 315,
+      "pose": [
+        7440,
+        -300,
+        20400,
+        315
+      ],
+      "final_pose": [
+        7440,
+        -300,
+        20400,
+        315
+      ],
+      "fps": 59.82609828808083,
+      "cpu_ms": {
+        "samples": 600,
+        "mean": 13.586177056887282,
+        "median": 13.261062203828837,
+        "p95": 14.055536581716849,
+        "p99": 14.589254120862153,
+        "maximum": 17.458683363856913
+      },
+      "minimum_fps_500ms": 59.82609828808083,
+      "minimum_fps_1s": 59.82609828808083
+    }
+  ],
+  "room_spikes60": [
+    {
+      "name": "baba-ammo",
+      "angle": 60,
+      "pose": [
+        7440,
+        -300,
+        20400,
+        60
+      ],
+      "final_pose": [
+        7440,
+        -300,
+        20400,
+        60
+      ],
+      "fps": 59.82609828808083,
+      "cpu_ms": {
+        "samples": 600,
+        "mean": 14.804342706873808,
+        "median": 14.546764392246795,
+        "p95": 15.373911700495633,
+        "p99": 16.06165450587161,
+        "maximum": 16.13702603289576
+      },
+      "minimum_fps_500ms": 59.82609828808083,
+      "minimum_fps_1s": 59.82609828808083
+    },
+    {
+      "name": "baba-ammo",
+      "angle": 240,
+      "pose": [
+        7440,
+        -300,
+        20400,
+        240
+      ],
+      "final_pose": [
+        7440,
+        -300,
+        20400,
+        240
+      ],
+      "fps": 59.82609828808083,
+      "cpu_ms": {
+        "samples": 600,
+        "mean": 12.7715649148068,
+        "median": 12.419294132222188,
+        "p95": 14.573022089705724,
+        "p99": 15.304597346862572,
+        "maximum": 17.97339391063706
+      },
+      "minimum_fps_500ms": 59.82609828808083,
+      "minimum_fps_1s": 59.82609828808083
+    }
+  ],
+  "reports": [
+    {
+      "path": "research/evidence/nds/n23/playtest39/death.json",
+      "bytes": 7474,
+      "sha256": "8a16697a2d0591926e328108b2d25bc8a0c7a09758d57994066af839884bc31f"
+    },
+    {
+      "path": "research/evidence/nds/n23/playtest39/ui.json",
+      "bytes": 44332,
+      "sha256": "b36b60f501c76b115f34cb3d1741dfaf84201eef0058190a7c0e4e26d07506b2"
+    },
+    {
+      "path": "research/evidence/nds/n23/playtest39/reloads.json",
+      "bytes": 4716,
+      "sha256": "b8e6945027b8598f34ae565f170a50a1fad4b589bf1927725be3d909c5886a95"
+    },
+    {
+      "path": "research/evidence/nds/n23/playtest39/level2.json",
+      "bytes": 56825,
+      "sha256": "1a0208f8400305c0c5f55304b0397fcdaa1b1bc8385cb83dc92c69475f6368c8"
+    },
+    {
+      "path": "research/evidence/nds/n23/playtest39/baseline.json",
+      "bytes": 54562,
+      "sha256": "2fee8d94f736bb8bafa8b27dd2335de09b297abc5d83c211139ff54515fcee3b"
+    },
+    {
+      "path": "research/evidence/nds/n23/playtest39/room_spikes.json",
+      "bytes": 98775,
+      "sha256": "c2f55f75dcfbb258e8a74ddb3d2b0ae0ef0f4e132f4d0bc12b899d26e67b8b8a"
+    },
+    {
+      "path": "research/evidence/nds/n23/playtest39/room_spikes60.json",
+      "bytes": 33129,
+      "sha256": "f55fe4c46b5947e37d97814964c78babbb16c3175732727252e8374ed041dccb"
+    },
+    {
+      "path": "research/evidence/nds/n23/playtest39/baseline_spikes.json",
+      "bytes": 98767,
+      "sha256": "8e00b72f32b92a54bd9151891f9f4e863f3bf8078eb764afbfa1d662a8e0aa9b"
+    },
+    {
+      "path": "research/evidence/nds/n23/playtest39/frontend_host.json",
+      "bytes": 1560,
+      "sha256": "9342c70ce57cc4865590b090484a0f04027717909e1d9029497b3f4953c9b2b4"
+    },
+    {
+      "path": "research/evidence/nds/n23/playtest39/flow_host.json",
+      "bytes": 17050,
+      "sha256": "bf3705612e8fa9b1115e265ac8d6a67d24cf40e02f5aff33e0d6d6681b27a176"
+    },
+    {
+      "path": "research/evidence/nds/n23/playtest39/discovery_host.json",
+      "bytes": 13488,
+      "sha256": "3a198f8dbb263f0f63573babfde502786b027e822a1788063c9441eb2780e88a"
+    },
+    {
+      "path": "research/evidence/nds/n23/playtest39/baseline-runtime-profile.json",
+      "bytes": 6188798,
+      "sha256": "8c4f3d2c993187a643a5199d4ec009e71e31246dcd123d7da4f70b412b94d790"
+    },
+    {
+      "path": "research/evidence/nds/n23/playtest39/final-runtime-profile.json",
+      "bytes": 6654076,
+      "sha256": "bbc23bb248b62306df06c5afad35bf4b5c33f1a4992fd315c97d5095af0a2b85"
+    },
+    {
+      "path": "research/evidence/nds/n23/playtest39/spikes-runtime-profile.json",
+      "bytes": 13405861,
+      "sha256": "a8be2d0763efc0787ed432430bc28e2c433ceb499f118fa1719bfcbe7e1e9e5c"
+    },
+    {
+      "path": "research/evidence/nds/n23/playtest39/spikes60-runtime-profile.json",
+      "bytes": 4549187,
+      "sha256": "5226fa36b6108c8c501089e5e586e7d3c59d4e4e847d1107294ee7899d001808"
+    },
+    {
+      "path": "research/evidence/nds/n23/playtest39/death-1-2.png",
+      "bytes": 7184,
+      "sha256": "70de9b27a4c1c605e9a1ea4e1fef185612c9f9ad24c4cbe2b5fc3118ea0a66b9"
+    },
+    {
+      "path": "research/evidence/nds/n23/playtest39/death-1-0.png",
+      "bytes": 6591,
+      "sha256": "76884bc32cd0544ca5d496cfa2e1a6f605ad4fe34be487211ea8d213812b8239"
+    },
+    {
+      "path": "research/evidence/nds/n23/playtest39/death-2-0.png",
+      "bytes": 6517,
+      "sha256": "84dcbeed74ce2b456f1e10388d7ba22e6e1a94bacec59d3d39c90c6edcc1064e"
+    }
+  ],
+  "limitations": [
+    "Temporary spawn/HP RAM fixtures; normal native retry and live AI, not a playthrough",
+    "Dynamic poses differ; no identical-scene causal FPS proof",
+    "Stationary user view/history not exactly matched",
+    "Physical DS and new DraStic candidate untested",
+    "No new long soak; FPS acceptance remains open"
+  ],
+  "next_id": "N23",
+  "queued_scenarios": [
+    {
+      "level": 3,
+      "user_minimum_fps": 50,
+      "executed": false,
+      "reproduction": "Turn around from spawn, go left; retain four executioners alive; open key/monster room; run while enemies fire actively"
+    },
+    {
+      "scope": "Monster shots, not player shots",
+      "user_sustained_fps_loss": "1-2",
+      "executed": false,
+      "verification": "Compare same view/world without and with monster fire; separate AI/combat/projectiles/sprites/audio"
+    }
+  ]
+}

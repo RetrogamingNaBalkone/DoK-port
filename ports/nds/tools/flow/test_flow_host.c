@@ -140,12 +140,15 @@ static void frontend_transitions(void)
             s.previous_keys=DOK_FRONTEND_KEY_A;s.page=2;s.page_count=3;
             uint32_t result=dok_frontend_game_over(&s);
             CHECK(result==(DOK_FRONTEND_STOP_GAME|(paused?0u:DOK_FRONTEND_PAUSE_GAME)));
-            CHECK(s.state==DOK_FRONTEND_LEVELS&&s.selection==level-1u&&s.language==language);
+            CHECK(s.state==DOK_FRONTEND_DEATH&&s.attempts==0&&s.language==language);
             CHECK(s.blocked&&s.page==0&&s.page_count==1);
             CHECK(dok_frontend_step(&s,DOK_FRONTEND_KEY_A,0,1)==0);
-            CHECK(s.state==DOK_FRONTEND_LEVELS);
+            CHECK(s.state==DOK_FRONTEND_DEATH);
             CHECK(dok_frontend_step(&s,0,0,1)==0);
             CHECK(!s.blocked);
+            CHECK(dok_frontend_step(&s,DOK_FRONTEND_KEY_A,0,1)==0);
+            CHECK(s.state==DOK_FRONTEND_LEVELS&&s.selection==level-1u);
+            CHECK(dok_frontend_step(&s,0,0,1)==0);
             CHECK(dok_frontend_step(&s,DOK_FRONTEND_KEY_A,0,1)==0);
             CHECK(s.state==DOK_FRONTEND_INTRO&&s.level==level&&s.page_count==pages[language-1u][2u*level-1u]);
             unsigned count=s.page_count;

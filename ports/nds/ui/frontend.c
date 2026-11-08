@@ -8,6 +8,26 @@ static uint8_t safe_language(uint8_t language)
 {
     return language==2u?2u:1u;
 }
+uint32_t dok_frontend_text_prepare(unsigned char *data,uint32_t bytes,unsigned index)
+{
+    uint32_t read=0,written=0;unsigned breaks=0,space=0;
+    if(!data)return 0;
+    while(read<bytes&&data[read]&&data[read]!=36u){
+        unsigned char c=data[read++];
+        if(c==13u)continue;
+        if(c==10u){++breaks;space=1;continue;}
+        if(c==32u){space=1;continue;}
+        if(written&&space){
+            unsigned char previous=data[written-1u];
+            int outro=index==2u||index==4u||index==6u;
+            int paragraph=breaks>=2u&&(!outro||previous=='.'||previous=='!'||previous=='?');
+            if(paragraph){data[written++]='\n';data[written++]='\n';}
+            else data[written++]=' ';
+        }
+        data[written++]=c;breaks=space=0;
+    }
+    return written;
+}
 int dok_frontend_text_index(const dok_frontend *s)
 {
     if(s->state==DOK_FRONTEND_STORY)return 0;
@@ -22,6 +42,7 @@ static void enter(dok_frontend *s,uint8_t state,uint8_t selection)
     int index=dok_frontend_text_index(s);
     if(index>=0){s->page_count=s->pages[s->language-1u][index];
         if(!s->page_count)s->page_count=1;}
+    if(state==DOK_FRONTEND_ENDING)s->page_count=1;
     s->blocked=1;++s->revision;++s->transitions;
 }
 static void child(dok_frontend *s,uint8_t state)
@@ -39,7 +60,7 @@ void dok_frontend_init(dok_frontend *s,uint8_t language,
 {
     memset(s,0,sizeof(*s));s->language=safe_language(language);s->level=1;
     if(pages)memcpy(s->pages,pages,sizeof(s->pages));
-    s->state=DOK_FRONTEND_TITLE;s->page_count=1;s->revision=1;
+    s->state=DOK_FRONTEND_TITLE;s->page_count=1;s->revision=1;s->show_fps=1;
 }
 int dok_frontend_game_input(const dok_frontend *s)
 {
@@ -63,17 +84,30 @@ uint32_t dok_frontend_step(dok_frontend *s,uint32_t keys,
     if(s->blocked){if(!keys&&!touch){s->blocked=0;s->previous_keys=0;}
         return 0;}
     if(s->state==DOK_FRONTEND_TITLE){
-        if(pressed&(DOK_FRONTEND_KEY_A|DOK_FRONTEND_KEY_START))s->title_pending=1;
+        if(pressed&(DOK_FRONTEND_KEY_A|DOK_FRONTEND_KEY_B|DOK_FRONTEND_KEY_START))s->title_pending=1;
         if(ready&&s->title_pending){s->title_pending=0;
-            enter(s,DOK_FRONTEND_MAIN,0);return DOK_FRONTEND_STOP_TITLE;}
+            enter(s,DOK_FRONTEND_MAIN,0);return DOK_FRONTEND_OPEN_MAIN;}
         return 0;
     }
     if(s->state==DOK_FRONTEND_PLAY){
         if(pressed&DOK_FRONTEND_KEY_START){enter(s,DOK_FRONTEND_PAUSE,0);
             return DOK_FRONTEND_PAUSE_GAME;}
+        if(pressed&DOK_BUTTON_SELECT){s->show_fps=!s->show_fps;++s->revision;
+            return DOK_FRONTEND_FPS_CHANGED;}
         return 0;
     }
     if(s->state==DOK_FRONTEND_EXIT)return 0;
+    if(s->state==DOK_FRONTEND_DEATH){
+        if(pressed&(DOK_FRONTEND_KEY_A|DOK_FRONTEND_KEY_START)){
+            if(s->attempts){enter(s,DOK_FRONTEND_PLAY,0);
+                return DOK_FRONTEND_RETRY_GAME|DOK_FRONTEND_RESUME_GAME;}
+            enter(s,DOK_FRONTEND_LEVELS,s->level-1u);return 0;
+        }
+        if(s->attempts&&(pressed&DOK_FRONTEND_KEY_B)){
+            enter(s,DOK_FRONTEND_LEVELS,s->level-1u);return DOK_FRONTEND_STOP_GAME;
+        }
+        return 0;
+    }
     if(s->state==DOK_FRONTEND_PAUSE&&
        (pressed&(DOK_FRONTEND_KEY_START|DOK_FRONTEND_KEY_B))){
         enter(s,DOK_FRONTEND_PLAY,0);return DOK_FRONTEND_RESUME_GAME;
@@ -82,15 +116,21 @@ uint32_t dok_frontend_step(dok_frontend *s,uint32_t keys,
     if(text>=0){
         if(pressed&DOK_FRONTEND_KEY_B){
             if(s->page){--s->page;++s->revision;}
+            else if(s->state==DOK_FRONTEND_INTRO){
+                enter(s,DOK_FRONTEND_MAIN,0);return DOK_FRONTEND_STOP_GAME;
+            }
             else if(s->state==DOK_FRONTEND_STORY)back(s);
+            else if(s->state==DOK_FRONTEND_ENDING){
+                enter(s,DOK_FRONTEND_MAIN,4);return DOK_FRONTEND_STOP_GAME;
+            }
         }else if(pressed&DOK_FRONTEND_KEY_A){
             if(s->page+1u<s->page_count){++s->page;++s->revision;}
             else if(s->state==DOK_FRONTEND_INTRO){
                 enter(s,DOK_FRONTEND_PLAY,0);return DOK_FRONTEND_NEW_LEVEL;
             }else if(s->state==DOK_FRONTEND_OUTRO||s->state==DOK_FRONTEND_ENDING){
                 uint8_t outro=s->state==DOK_FRONTEND_OUTRO;
-                enter(s,outro?DOK_FRONTEND_LEVELS:DOK_FRONTEND_EXIT,
-                      outro?s->level-1u:0u);return DOK_FRONTEND_STOP_GAME;
+                enter(s,outro?DOK_FRONTEND_LEVELS:DOK_FRONTEND_MAIN,
+                      outro?s->level-1u:4u);return DOK_FRONTEND_STOP_GAME;
             }else back(s);
         }
         return 0;
@@ -155,9 +195,13 @@ uint32_t dok_frontend_show_ending(dok_frontend *s)
 }
 uint32_t dok_frontend_game_over(dok_frontend *s)
 {
+    return dok_frontend_show_death(s,0);
+}
+uint32_t dok_frontend_show_death(dok_frontend *s,int16_t attempts)
+{
     uint32_t action=s->state==DOK_FRONTEND_PLAY?DOK_FRONTEND_PAUSE_GAME:0u;
-    enter(s,DOK_FRONTEND_LEVELS,s->level-1u);
-    return action|DOK_FRONTEND_STOP_GAME;
+    s->attempts=attempts;enter(s,DOK_FRONTEND_DEATH,0);
+    return action|(attempts?0u:DOK_FRONTEND_STOP_GAME);
 }
 static uint32_t checksum(const uint8_t *p)
 {
@@ -188,14 +232,16 @@ int dok_settings_decode(const void *input,size_t bytes,uint8_t *language,uint8_t
  * Menu keys and release gating operate on physical buttons before this call. */
 uint32_t dok_frontend_game_buttons(uint32_t buttons,uint8_t scheme)
 {
-    if(scheme!=1u)return buttons;
+    if(scheme!=1u)return (buttons&~(DOK_BUTTON_B|DOK_BUTTON_SELECT))|
+        ((buttons&DOK_BUTTON_B)?DOK_BUTTON_SELECT:0u);
     uint32_t mapped=buttons&(DOK_BUTTON_UP|DOK_BUTTON_DOWN|DOK_BUTTON_X|
-                             DOK_BUTTON_SELECT|DOK_BUTTON_START);
+                             DOK_BUTTON_START);
     if(buttons&DOK_BUTTON_LEFT)mapped|=DOK_BUTTON_Y;
     if(buttons&DOK_BUTTON_RIGHT)mapped|=DOK_BUTTON_A;
     if(buttons&DOK_BUTTON_L)mapped|=DOK_BUTTON_LEFT;
     if(buttons&DOK_BUTTON_R)mapped|=DOK_BUTTON_RIGHT;
     if(buttons&DOK_BUTTON_Y)mapped|=DOK_BUTTON_R;
     if(buttons&DOK_BUTTON_B)mapped|=DOK_BUTTON_L;
+    if(buttons&DOK_BUTTON_A)mapped|=DOK_BUTTON_SELECT;
     return mapped;
 }

@@ -1,0 +1,737 @@
+{
+  "task": "N23",
+  "reproduction_passed": true,
+  "gameplay_changed": false,
+  "rom": {
+    "path": "artifacts/nds/dok.nds",
+    "bytes": 10184192,
+    "sha256": "a46a9a94753dc1153bf601bbd8c3e92877b9f1762f8fc7875ce5aef796383d09"
+  },
+  "open_door": {
+    "phase": 58,
+    "extent": 59,
+    "state": 1,
+    "ready": 1
+  },
+  "corridor_group": [
+    {
+      "glyph": 128,
+      "x": 27457,
+      "z": 25801,
+      "health": 12,
+      "state": 1
+    },
+    {
+      "glyph": 129,
+      "x": 27373,
+      "z": 25201,
+      "health": 12,
+      "state": 1
+    },
+    {
+      "glyph": 130,
+      "x": 27457,
+      "z": 24239,
+      "health": 12,
+      "state": 1
+    },
+    {
+      "glyph": 160,
+      "x": 28081,
+      "z": 26430,
+      "health": 24,
+      "state": 1
+    },
+    {
+      "glyph": 161,
+      "x": 29038,
+      "z": 25681,
+      "health": 24,
+      "state": 2
+    },
+    {
+      "glyph": 162,
+      "x": 29038,
+      "z": 25201,
+      "health": 24,
+      "state": 1
+    },
+    {
+      "glyph": 194,
+      "x": 28080,
+      "z": 25657,
+      "health": 22,
+      "state": 1
+    },
+    {
+      "glyph": 195,
+      "x": 28560,
+      "z": 25201,
+      "health": 22,
+      "state": 1
+    },
+    {
+      "glyph": 196,
+      "x": 29040,
+      "z": 24721,
+      "health": 22,
+      "state": 1
+    },
+    {
+      "glyph": 197,
+      "x": 29518,
+      "z": 25890,
+      "health": 22,
+      "state": 1
+    }
+  ],
+  "samples": [
+    {
+      "name": "corridor-firing-135",
+      "pose": [
+        29040,
+        -300,
+        26160,
+        135
+      ],
+      "fps": 58.62957632231922,
+      "minimum_window_fps": {
+        "0.25": 47.86087863046466,
+        "0.5": 49.85508190673402,
+        "1": 52.96080832059614
+      },
+      "shots": 11,
+      "maximum_projectiles": 6,
+      "stages_ms": {
+        "cpu_excluding_wait": {
+          "samples": 882,
+          "mean": 13.497546606476229,
+          "median": 13.136576847239459,
+          "p95": 16.313370341966525,
+          "p99": 21.75056369010403,
+          "maximum": 25.149741979332685
+        },
+        "simulation": {
+          "samples": 882,
+          "mean": 0.7161723042724589,
+          "median": 0.6701382127614678,
+          "p95": 1.5842641438430085,
+          "p99": 1.9762796315877953,
+          "maximum": 2.408009886739212
+        },
+        "geometry": {
+          "samples": 882,
+          "mean": 3.513736290261793,
+          "median": 3.5136678178081016,
+          "p95": 3.5136678178081016,
+          "p99": 3.5161742343837266,
+          "maximum": 3.5162339109688605
+        },
+        "sprites": {
+          "samples": 882,
+          "mean": 3.192782827571845,
+          "median": 3.182283740559388,
+          "p95": 3.3499749447857314,
+          "p99": 3.4412502817480775,
+          "maximum": 6.366835191353865
+        },
+        "discovery": {
+          "samples": 882,
+          "mean": 1.2697902253862168,
+          "median": 1.2665161662973978,
+          "p95": 1.2815845040437153,
+          "p99": 1.282599005990992,
+          "maximum": 1.2828377123315278
+        },
+        "entry_audio": {
+          "samples": 882,
+          "mean": 0.050303030994151836,
+          "median": 0.05021784639020215,
+          "p95": 0.05024768468276912,
+          "p99": 0.05024768468276912,
+          "maximum": 0.09017132013736834
+        },
+        "post_map_audio": {
+          "samples": 882,
+          "mean": 0.04806847441747023,
+          "median": 0.048099327617947635,
+          "p95": 0.048099327617947635,
+          "p99": 0.048099327617947635,
+          "maximum": 0.048099327617947635
+        },
+        "effects": {
+          "samples": 882,
+          "mean": 0.9891941697917911,
+          "median": 0.8180167907233464,
+          "p95": 1.0469361712971021,
+          "p99": 8.045149633367947,
+          "maximum": 8.895033720552814
+        },
+        "submit_including_wait": {
+          "samples": 882,
+          "mean": 2.9501527177333053,
+          "median": 2.9513651943836456,
+          "p95": 2.99516780787195,
+          "p99": 3.0129812685344284,
+          "maximum": 3.015069949014116
+        },
+        "map": {
+          "samples": 882,
+          "mean": 1.240815111997082,
+          "median": 1.1199803115010327,
+          "p95": 1.1199803115010327,
+          "p99": 4.62287650569246,
+          "maximum": 4.748555393984517
+        }
+      },
+      "peak_uploads": [
+        {
+          "frame_id": 652,
+          "uploads": 2,
+          "upload_bytes": 40960,
+          "texture_bytes": 165888,
+          "input_quads": 164
+        },
+        {
+          "frame_id": 706,
+          "uploads": 3,
+          "upload_bytes": 43008,
+          "texture_bytes": 169984,
+          "input_quads": 165
+        },
+        {
+          "frame_id": 731,
+          "uploads": 2,
+          "upload_bytes": 40960,
+          "texture_bytes": 164352,
+          "input_quads": 164
+        },
+        {
+          "frame_id": 828,
+          "uploads": 2,
+          "upload_bytes": 40960,
+          "texture_bytes": 168960,
+          "input_quads": 165
+        },
+        {
+          "frame_id": 1116,
+          "uploads": 3,
+          "upload_bytes": 40960,
+          "texture_bytes": 193024,
+          "input_quads": 164
+        },
+        {
+          "frame_id": 1349,
+          "uploads": 3,
+          "upload_bytes": 45056,
+          "texture_bytes": 182272,
+          "input_quads": 167
+        },
+        {
+          "frame_id": 1364,
+          "uploads": 3,
+          "upload_bytes": 45056,
+          "texture_bytes": 198656,
+          "input_quads": 166
+        },
+        {
+          "frame_id": 1366,
+          "uploads": 4,
+          "upload_bytes": 41472,
+          "texture_bytes": 178688,
+          "input_quads": 165
+        }
+      ]
+    },
+    {
+      "name": "corridor-firing-90",
+      "pose": [
+        29040,
+        -300,
+        26160,
+        94
+      ],
+      "fps": 58.0313153394384,
+      "minimum_window_fps": {
+        "0.25": 47.86087863046466,
+        "0.5": 49.85508190673402,
+        "1": 51.84928518300339
+      },
+      "shots": 11,
+      "maximum_projectiles": 4,
+      "stages_ms": {
+        "cpu_excluding_wait": {
+          "samples": 873,
+          "mean": 10.727961205564206,
+          "median": 10.053833650683467,
+          "p95": 14.754409070220303,
+          "p99": 21.15830342094234,
+          "maximum": 24.1876062355109
+        },
+        "simulation": {
+          "samples": 873,
+          "mean": 0.6525755578158927,
+          "median": 0.43199879978451977,
+          "p95": 1.6253514727077194,
+          "p99": 2.0461012361944935,
+          "maximum": 2.3595226613178943
+        },
+        "geometry": {
+          "samples": 873,
+          "mean": 2.8758242077322906,
+          "median": 2.875754961018956,
+          "p95": 2.875754961018956,
+          "p99": 2.878291215887148,
+          "maximum": 2.878321054179715
+        },
+        "sprites": {
+          "samples": 873,
+          "mean": 2.358113596656536,
+          "median": 2.2421089800668867,
+          "p95": 2.49445142030571,
+          "p99": 5.663099061161995,
+          "maximum": 7.457036886873067
+        },
+        "discovery": {
+          "samples": 873,
+          "mean": 1.0044535177408063,
+          "median": 1.0043569278040432,
+          "p95": 1.0114286031424138,
+          "p99": 1.012025368993753,
+          "maximum": 1.0137261516700702
+        },
+        "entry_audio": {
+          "samples": 873,
+          "mean": 0.05020304687052118,
+          "median": 0.05021784639020215,
+          "p95": 0.05024768468276912,
+          "p99": 0.05024768468276912,
+          "maximum": 0.05024768468276912
+        },
+        "post_map_audio": {
+          "samples": 873,
+          "mean": 0.04807810244076082,
+          "median": 0.048099327617947635,
+          "p95": 0.048099327617947635,
+          "p99": 0.048099327617947635,
+          "maximum": 0.05063558248613967
+        },
+        "effects": {
+          "samples": 873,
+          "mean": 0.8186094209121422,
+          "median": 0.5831297516361977,
+          "p95": 0.781643912084216,
+          "p99": 9.266729331059496,
+          "maximum": 9.826734405956296
+        },
+        "submit_including_wait": {
+          "samples": 873,
+          "mean": 1.973108535429639,
+          "median": 1.9684321606426833,
+          "p95": 2.0300482347934663,
+          "p99": 2.0341360808751405,
+          "maximum": 2.054008383724739
+        },
+        "map": {
+          "samples": 873,
+          "mean": 1.1969411292079712,
+          "median": 1.1198907966233318,
+          "p95": 1.1198907966233318,
+          "p99": 4.632842495409826,
+          "maximum": 5.218210118988546
+        }
+      },
+      "peak_uploads": [
+        {
+          "frame_id": 1625,
+          "uploads": 2,
+          "upload_bytes": 36864,
+          "texture_bytes": 151552,
+          "input_quads": 113
+        },
+        {
+          "frame_id": 1633,
+          "uploads": 4,
+          "upload_bytes": 41984,
+          "texture_bytes": 140288,
+          "input_quads": 113
+        },
+        {
+          "frame_id": 1674,
+          "uploads": 3,
+          "upload_bytes": 40960,
+          "texture_bytes": 126976,
+          "input_quads": 110
+        },
+        {
+          "frame_id": 1863,
+          "uploads": 3,
+          "upload_bytes": 33280,
+          "texture_bytes": 152064,
+          "input_quads": 112
+        },
+        {
+          "frame_id": 1922,
+          "uploads": 5,
+          "upload_bytes": 74752,
+          "texture_bytes": 173056,
+          "input_quads": 115
+        },
+        {
+          "frame_id": 1934,
+          "uploads": 4,
+          "upload_bytes": 66560,
+          "texture_bytes": 181248,
+          "input_quads": 114
+        },
+        {
+          "frame_id": 1945,
+          "uploads": 3,
+          "upload_bytes": 57344,
+          "texture_bytes": 188416,
+          "input_quads": 113
+        },
+        {
+          "frame_id": 2217,
+          "uploads": 3,
+          "upload_bytes": 49152,
+          "texture_bytes": 163840,
+          "input_quads": 113
+        }
+      ]
+    },
+    {
+      "name": "corridor-firing-180",
+      "pose": [
+        29040,
+        -300,
+        26160,
+        175
+      ],
+      "fps": 59.82609828808083,
+      "minimum_window_fps": {
+        "0.25": 59.82609828808083,
+        "0.5": 59.82609828808083,
+        "1": 59.82609828808083
+      },
+      "shots": 4,
+      "maximum_projectiles": 2,
+      "stages_ms": {
+        "cpu_excluding_wait": {
+          "samples": 900,
+          "mean": 9.497465664728631,
+          "median": 9.388887300828651,
+          "p95": 10.904881431278444,
+          "p99": 11.625744741403752,
+          "maximum": 13.723257355691127
+        },
+        "simulation": {
+          "samples": 900,
+          "mean": 0.6076308025043929,
+          "median": 0.408784608167421,
+          "p95": 1.4212277132571116,
+          "p99": 1.6456116733606887,
+          "maximum": 1.9563774904456295
+        },
+        "geometry": {
+          "samples": 900,
+          "mean": 2.415962123244893,
+          "median": 2.4159170342694583,
+          "p95": 2.4159170342694583,
+          "p99": 2.4184234508450833,
+          "maximum": 2.418483127430217
+        },
+        "sprites": {
+          "samples": 900,
+          "mean": 2.185268126797546,
+          "median": 2.1815372461559477,
+          "p95": 2.2097344326317296,
+          "p99": 2.287851082572044,
+          "maximum": 2.332459329959657
+        },
+        "discovery": {
+          "samples": 900,
+          "mean": 0.8866467865395538,
+          "median": 0.886644863627366,
+          "p95": 0.8869134082604687,
+          "p99": 0.8869134082604687,
+          "maximum": 0.8894198248360938
+        },
+        "entry_audio": {
+          "samples": 900,
+          "mean": 0.05020402131464612,
+          "median": 0.05021784639020215,
+          "p95": 0.05024768468276912,
+          "p99": 0.05024768468276912,
+          "maximum": 0.055200841248885316
+        },
+        "post_map_audio": {
+          "samples": 900,
+          "mean": 0.04807181008146921,
+          "median": 0.048099327617947635,
+          "p95": 0.048099327617947635,
+          "p99": 0.048099327617947635,
+          "maximum": 0.05063558248613967
+        },
+        "effects": {
+          "samples": 900,
+          "mean": 0.5744848357454045,
+          "median": 0.5655549973142553,
+          "p95": 0.6881008648867807,
+          "p99": 0.711762630892384,
+          "maximum": 0.716059345022027
+        },
+        "submit_including_wait": {
+          "samples": 900,
+          "mean": 1.749530257417801,
+          "median": 1.7495086080788609,
+          "p95": 1.7495086080788609,
+          "p99": 1.7519851863619191,
+          "maximum": 1.752015024654486
+        },
+        "map": {
+          "samples": 900,
+          "mean": 1.1435223264924672,
+          "median": 1.1200698263787334,
+          "p95": 1.1200996646713004,
+          "p99": 1.1226060812469256,
+          "maximum": 4.637377915880005
+        }
+      },
+      "peak_uploads": [
+        {
+          "frame_id": 2624,
+          "uploads": 0,
+          "upload_bytes": 0,
+          "texture_bytes": 131072,
+          "input_quads": 98
+        },
+        {
+          "frame_id": 2663,
+          "uploads": 1,
+          "upload_bytes": 8192,
+          "texture_bytes": 131072,
+          "input_quads": 98
+        },
+        {
+          "frame_id": 3135,
+          "uploads": 1,
+          "upload_bytes": 8192,
+          "texture_bytes": 139264,
+          "input_quads": 98
+        },
+        {
+          "frame_id": 3173,
+          "uploads": 0,
+          "upload_bytes": 0,
+          "texture_bytes": 126976,
+          "input_quads": 98
+        },
+        {
+          "frame_id": 3182,
+          "uploads": 2,
+          "upload_bytes": 24576,
+          "texture_bytes": 143360,
+          "input_quads": 98
+        },
+        {
+          "frame_id": 3300,
+          "uploads": 0,
+          "upload_bytes": 0,
+          "texture_bytes": 131072,
+          "input_quads": 98
+        },
+        {
+          "frame_id": 3332,
+          "uploads": 2,
+          "upload_bytes": 24576,
+          "texture_bytes": 143360,
+          "input_quads": 98
+        },
+        {
+          "frame_id": 3338,
+          "uploads": 1,
+          "upload_bytes": 8192,
+          "texture_bytes": 131072,
+          "input_quads": 98
+        }
+      ]
+    },
+    {
+      "name": "corridor-firing-45",
+      "pose": [
+        29040,
+        -300,
+        26160,
+        51
+      ],
+      "fps": 56.50242616096523,
+      "minimum_window_fps": {
+        "0.25": 43.87247207792594,
+        "0.5": 45.8666753541953,
+        "1": 50.8521835448687
+      },
+      "shots": 18,
+      "maximum_projectiles": 6,
+      "stages_ms": {
+        "cpu_excluding_wait": {
+          "samples": 850,
+          "mean": 13.367352520649618,
+          "median": 12.669309185640786,
+          "p95": 20.73113842455367,
+          "p99": 22.390744257128265,
+          "maximum": 25.394624846429767
+        },
+        "simulation": {
+          "samples": 850,
+          "mean": 0.7395023085834304,
+          "median": 0.6924572556015576,
+          "p95": 1.6468350433559342,
+          "p99": 2.1910556614848096,
+          "maximum": 2.4941530373800402
+        },
+        "geometry": {
+          "samples": 850,
+          "mean": 3.6771207909582335,
+          "median": 3.6770324696122354,
+          "p95": 3.6770623079048024,
+          "p99": 3.6795687244804274,
+          "maximum": 3.6795985627729944
+        },
+        "sprites": {
+          "samples": 850,
+          "mean": 2.8931734679994685,
+          "median": 2.8063212542156286,
+          "p95": 3.04216311866492,
+          "p99": 7.224029660217637,
+          "maximum": 8.363882274568269
+        },
+        "discovery": {
+          "samples": 850,
+          "mean": 1.2950379231885611,
+          "median": 1.2982939478812157,
+          "p95": 1.32204522876452,
+          "p99": 1.3225823180307252,
+          "maximum": 1.3228508626638278
+        },
+        "entry_audio": {
+          "samples": 850,
+          "mean": 0.05027661027462227,
+          "median": 0.05021784639020215,
+          "p95": 0.05024768468276912,
+          "p99": 0.05024768468276912,
+          "maximum": 0.0951543149960515
+        },
+        "post_map_audio": {
+          "samples": 850,
+          "mean": 0.04814914001459766,
+          "median": 0.048099327617947635,
+          "p95": 0.048099327617947635,
+          "p99": 0.048099327617947635,
+          "maximum": 0.08805280136511381
+        },
+        "effects": {
+          "samples": 850,
+          "mean": 1.1527460565036793,
+          "median": 0.7846575796334796,
+          "p95": 3.065347471989452,
+          "p99": 8.523308271753562,
+          "maximum": 9.157730048312374
+        },
+        "submit_including_wait": {
+          "samples": 850,
+          "mean": 2.7893539022187284,
+          "median": 2.7836143135721683,
+          "p95": 2.8472295533249374,
+          "p99": 2.8671018561745365,
+          "maximum": 2.8703243917717685
+        },
+        "map": {
+          "samples": 850,
+          "mean": 1.1898320703351601,
+          "median": 1.119562575405095,
+          "p95": 1.119592413697662,
+          "p99": 4.628635296157884,
+          "maximum": 4.662800141147059
+        }
+      },
+      "peak_uploads": [
+        {
+          "frame_id": 3527,
+          "uploads": 3,
+          "upload_bytes": 49152,
+          "texture_bytes": 167936,
+          "input_quads": 162
+        },
+        {
+          "frame_id": 3689,
+          "uploads": 3,
+          "upload_bytes": 40960,
+          "texture_bytes": 140288,
+          "input_quads": 161
+        },
+        {
+          "frame_id": 3875,
+          "uploads": 3,
+          "upload_bytes": 49152,
+          "texture_bytes": 155648,
+          "input_quads": 160
+        },
+        {
+          "frame_id": 3957,
+          "uploads": 3,
+          "upload_bytes": 49152,
+          "texture_bytes": 164864,
+          "input_quads": 162
+        },
+        {
+          "frame_id": 4040,
+          "uploads": 4,
+          "upload_bytes": 49664,
+          "texture_bytes": 156160,
+          "input_quads": 163
+        },
+        {
+          "frame_id": 4092,
+          "uploads": 2,
+          "upload_bytes": 40960,
+          "texture_bytes": 192512,
+          "input_quads": 162
+        },
+        {
+          "frame_id": 4181,
+          "uploads": 3,
+          "upload_bytes": 49152,
+          "texture_bytes": 164864,
+          "input_quads": 162
+        },
+        {
+          "frame_id": 4225,
+          "uploads": 3,
+          "upload_bytes": 49152,
+          "texture_bytes": 152576,
+          "input_quads": 161
+        }
+      ]
+    }
+  ],
+  "proofs": [
+    {
+      "path": "build/nds/n23/angles51d-ru/lure52e-lure-live/result.json",
+      "bytes": 691136,
+      "sha256": "4f8c76ab88784e8ad07b2ab3d5cf778577ebbc2e77e93eaa6d0db67b6e03136d"
+    },
+    {
+      "path": "build/nds/n23/angles51d-ru/lure52e-lure-live/runtime-profile.json",
+      "bytes": 15499298,
+      "sha256": "3d1e1988c43f9595363162fda9adea9aadd1c121a2ed365562353a4e7a862194"
+    }
+  ],
+  "limitations": [
+    "Hero spawn/retry, HP30000 and key8 fixtures; no enemy writes.",
+    "All six room actors crossed the door and all four executioners remained alive.",
+    "This is not a complete ordinary-input route or proof that all ten actors stayed inside the camera simultaneously.",
+    "DS-mode melonDS; no new physical DS or DraStic test."
+  ],
+  "next_task": "N23: preserve reusable animation textures in spare VRAM, with pressure eviction and upload deadlines unchanged"
+}

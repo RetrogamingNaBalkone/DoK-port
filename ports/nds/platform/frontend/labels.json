@@ -7,7 +7,7 @@
       "Язык",
       "Управление",
       "Предыстория",
-      "Выход",
+      "Об авторах",
       "Пауза",
       "Продолжить",
       "Язык",
@@ -22,7 +22,12 @@
       "Уровень завершён",
       "Конец игры",
       "A: Далее",
-      "A: Продолжить"
+      "A: Продолжить",
+      "A / B: В меню",
+      "A: Далее  B: В меню",
+      "A: Продолжить  B: В меню",
+      "A: Продолжить  B: Назад",
+      "A: Далее"
     ],
     [
       "Kremlin Dungeons",
@@ -31,7 +36,7 @@
       "Language",
       "Controls",
       "Story",
-      "Exit",
+      "Credits",
       "Paused",
       "Continue",
       "Language",
@@ -46,7 +51,12 @@
       "Level completed",
       "The end",
       "A: Next",
-      "A: Continue"
+      "A: Continue",
+      "A / B: Menu",
+      "A: Next  B: Menu",
+      "A: Continue  B: Menu",
+      "A: Continue  B: Back",
+      "A: Next"
     ]
   ],
   "controls": [
@@ -56,9 +66,10 @@
       "Y / A: поворот влево/вправо",
       "R: стрелять",
       "L: бег (удерживать)",
-      "X / B: двери, действие",
-      "Select: следующее оружие",
+      "X: двери, действие",
+      "B: следующее оружие",
       "Start: пауза / продолжить",
+      "Select: счётчик FPS",
       "Карта: перетащите стилусом",
       "- / +: масштаб карты",
       "Центр: следить за героем"
@@ -69,9 +80,10 @@
       "Y / A: turn left/right",
       "R: fire",
       "Hold L: run",
-      "X / B: door / use",
-      "Select: next weapon",
+      "X: door / use",
+      "B: next weapon",
       "Start: pause / continue",
+      "Select: toggle FPS",
       "Map: drag with stylus",
       "- / +: map zoom",
       "Center: follow hero"
@@ -79,8 +91,8 @@
   ],
   "schemes": [
     [
-      "Современная",
-      "Классическая"
+      "Современное",
+      "Классическое"
     ],
     [
       "Modern",
@@ -95,8 +107,9 @@
       "Y: стрелять",
       "B: бег (удерживать)",
       "X: двери, действие",
-      "Select: следующее оружие",
+      "A: следующее оружие",
       "Start: пауза / продолжить",
+      "Select: счётчик FPS",
       "Карта: перетащите стилусом",
       "- / +: масштаб карты",
       "Центр: следить за героем"
@@ -108,11 +121,64 @@
       "Y: fire",
       "Hold B: run",
       "X: door / use",
-      "Select: next weapon",
+      "A: next weapon",
       "Start: pause / continue",
+      "Select: toggle FPS",
       "Map: drag with stylus",
       "- / +: map zoom",
       "Center: follow hero"
+    ]
+  ],
+  "death": [
+    [
+      "ПОПРОБУЙ СНОВА",
+      "ИГРА ОКОНЧЕНА",
+      "Осталась 1 попытка",
+      "Осталось 2 попытки",
+      "A/Start: Продолжить",
+      "B: Выбор уровня",
+      "A/Start: Выбор уровня"
+    ],
+    [
+      "TRY AGAIN",
+      "GAME OVER",
+      "1 attempt left",
+      "2 attempts left",
+      "A/Start: Continue",
+      "B: Select level",
+      "A/Start: Select level"
+    ]
+  ],
+  "authors": [
+    [
+      "(C) NewCom",
+      "Москва, 1995",
+      "Авторы трехмерной технологии",
+      "Александр Разбаков",
+      "Андрей Разбаков",
+      "Художник",
+      "Дмитрий Цирухин"
+    ],
+    [
+      "(C) NewCom",
+      "Moscow, RUSSIA, 1995",
+      "3-D technics by",
+      "Alexander Razbakov",
+      "Andrey Razbakov",
+      "Design by",
+      "Dmitri Tsirukhin"
+    ]
+  ],
+  "port": [
+    [
+      "DS-порт",
+      "Ретрогейминг",
+      "на балконе"
+    ],
+    [
+      "DS port by",
+      "Retrogaming",
+      "Na Balkone"
     ]
   ]
 }

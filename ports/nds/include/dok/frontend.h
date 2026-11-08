@@ -7,13 +7,15 @@ enum {
     DOK_FRONTEND_TITLE=1, DOK_FRONTEND_MAIN, DOK_FRONTEND_LEVELS,
     DOK_FRONTEND_LANGUAGE, DOK_FRONTEND_CONTROLS, DOK_FRONTEND_STORY,
     DOK_FRONTEND_INTRO, DOK_FRONTEND_PLAY, DOK_FRONTEND_PAUSE,
-    DOK_FRONTEND_OUTRO, DOK_FRONTEND_ENDING, DOK_FRONTEND_EXIT
+    DOK_FRONTEND_OUTRO, DOK_FRONTEND_ENDING, DOK_FRONTEND_EXIT,
+    DOK_FRONTEND_DEATH
 };
 enum {
     DOK_FRONTEND_PAUSE_GAME=1u, DOK_FRONTEND_RESUME_GAME=2u,
     DOK_FRONTEND_LANGUAGE_CHANGED=4u, DOK_FRONTEND_NEW_LEVEL=8u,
-    DOK_FRONTEND_STOP_GAME=16u, DOK_FRONTEND_STOP_TITLE=32u,
-    DOK_FRONTEND_CONTROLS_CHANGED=64u
+    DOK_FRONTEND_STOP_GAME=16u, DOK_FRONTEND_OPEN_MAIN=32u,
+    DOK_FRONTEND_CONTROLS_CHANGED=64u, DOK_FRONTEND_RETRY_GAME=128u,
+    DOK_FRONTEND_FPS_CHANGED=256u
 };
 enum {
     DOK_FRONTEND_KEY_A=1u, DOK_FRONTEND_KEY_B=2u,
@@ -32,6 +34,8 @@ typedef struct dok_frontend {
     uint8_t state,selection,language,level;
     uint8_t control_scheme; /* 0 modern, 1 classic */
     uint8_t return_state,return_selection,blocked,title_pending;
+    int16_t attempts;
+    uint8_t show_fps; /* Session-only display preference; Select toggles in PLAY. */
 } dok_frontend;
 
 void dok_frontend_init(dok_frontend *,uint8_t language,
@@ -39,12 +43,17 @@ void dok_frontend_init(dok_frontend *,uint8_t language,
 uint32_t dok_frontend_step(dok_frontend *,uint32_t keys,
                            uint8_t touch_held,uint8_t title_ready);
 int dok_frontend_text_index(const dok_frontend *);
+/* Compact DOS display wrapping in place; returns printable payload bytes.
+ * Outro text uses sentence paragraphs instead of its spaced source lines. */
+uint32_t dok_frontend_text_prepare(unsigned char *,uint32_t bytes,unsigned index);
 int dok_frontend_game_input(const dok_frontend *);
-/* OUTRO finishes to LEVELS; ENDING finishes to EXIT. B moves to the
- * previous text page; page zero cannot cancel an intermission. */
+/* OUTRO finishes to LEVELS; dual-display ENDING credits finish to MAIN.
+ * B returns to the previous page, or from credits to MAIN. */
 uint32_t dok_frontend_show_outro(dok_frontend *,uint8_t level);
 uint32_t dok_frontend_show_ending(dok_frontend *);
-/* Native Game Over returns directly to independent level selection. */
+/* Death pauses the existing world; retry is deferred until acknowledgement.
+ * Zero attempts stops the world and acknowledges to level selection. */
+uint32_t dok_frontend_show_death(dok_frontend *,int16_t attempts);
 uint32_t dok_frontend_game_over(dok_frontend *);
 
 /* Exact little-endian 16-byte settings-only record. Decode always writes a

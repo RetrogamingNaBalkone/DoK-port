@@ -18,6 +18,8 @@ void nds_audio_boot_debug(uint32_t out[32]);
 int nds_audio_write(unsigned part, const int8_t *pcm, size_t bytes);
 int nds_audio_begin(uint32_t rate, uint32_t total_samples, int loop,
                     uint32_t identity);
+/* Immutable, word-aligned complete PCM, borrowed until the STOP ACK. */
+int nds_audio_pcm_loop(const int8_t *,uint32_t bytes,uint32_t rate,uint32_t identity);
 /* 0 is the global lifecycle stop; other identities stop only their own voice. */
 int nds_audio_stop(uint32_t identity);
 /* Global linear hardware volume, 0..127. Applies immediately and to next play. */

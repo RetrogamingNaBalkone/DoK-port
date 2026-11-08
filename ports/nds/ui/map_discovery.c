@@ -84,21 +84,41 @@ DOK_NDS_HOT_CODE static dok_status record_geometry(const dok_geometry_quad *q,
     dok_map_render_record r={0};
     int32_t depth[4],lateral[4],screen[4],minimum=INT32_MAX,maximum=INT32_MIN;
     uint32_t i,count,horizontal;
-#if N23_DISCOVERY_CACHE
     int32_t raw_depth[4];
-#endif
     if(!q || !out || !camera_ok(c) || q->kind>DOK_GEOMETRY_CEILING_BAND ||
         q->cell_x>=64u || q->cell_z>=64u) return DOK_STATUS_INVALID_ARGUMENT;
     r.cell=(uint16_t)((uint32_t)q->cell_z*64u+q->cell_x);
     horizontal=q->kind==DOK_GEOMETRY_FLOOR_QUAD || q->kind==DOK_GEOMETRY_CEILING_QUAD;
     count=horizontal?4u:2u;
+#if !N23_DISCOVERY_CACHE
+    if(horizontal&&q->vertices[0].z==q->vertices[1].z&&
+       q->vertices[1].x==q->vertices[2].x&&q->vertices[2].z==q->vertices[3].z&&
+       q->vertices[3].x==q->vertices[0].x){
+        /* Native floors are axis-aligned rectangles. Distribute the low-DWORD
+         * affine transform before SAR; all adds/products deliberately wrap.
+         * Shared edges need eight multiplies instead of sixteen. The public
+         * arbitrary-quad path below retains its independent vertex transforms. */
+        uint32_t dx=(uint32_t)q->vertices[1].x-(uint32_t)q->vertices[0].x;
+        uint32_t dz=(uint32_t)q->vertices[3].z-(uint32_t)q->vertices[0].z;
+        uint32_t ddx=0u-dx*(uint32_t)c->sin_q15,ddz=dz*(uint32_t)c->cos_q15;
+        uint32_t ldx=dx*(uint32_t)c->cos_q15,ldz=dz*(uint32_t)c->sin_q15;
+        uint32_t d=(uint32_t)rotate(c,q->vertices[0].x,q->vertices[0].z,1u);
+        uint32_t l=(uint32_t)rotate(c,q->vertices[0].x,q->vertices[0].z,0u);
+        raw_depth[0]=bits(d);raw_depth[1]=bits(d+ddx);
+        raw_depth[2]=bits(d+ddx+ddz);raw_depth[3]=bits(d+ddz);
+        lateral[0]=sar(bits(l),15);lateral[1]=sar(bits(l+ldx),15);
+        lateral[2]=sar(bits(l+ldx+ldz),15);lateral[3]=sar(bits(l+ldz),15);
+        for(i=0;i<4u;++i)depth[i]=sar(raw_depth[i],15);
+    }else
+#endif
     for(i=0;i<count;++i) {
 #if N23_DISCOVERY_CACHE
         int32_t raw_lateral;
         project_point(c,q->vertices[i].x,q->vertices[i].z,workspace,&raw_depth[i],&raw_lateral);
         depth[i]=sar(raw_depth[i],15);lateral[i]=sar(raw_lateral,15);
 #else
-        depth[i]=sar(rotate(c,q->vertices[i].x,q->vertices[i].z,1u),15);
+        raw_depth[i]=rotate(c,q->vertices[i].x,q->vertices[i].z,1u);
+        depth[i]=sar(raw_depth[i],15);
         lateral[i]=sar(rotate(c,q->vertices[i].x,q->vertices[i].z,0u),15);
 #endif
     }
@@ -107,11 +127,7 @@ DOK_NDS_HOT_CODE static dok_status record_geometry(const dok_geometry_quad *q,
         for(i=0;i<4u;++i) if(depth[i]>0) positive=1;
         if(!positive) { *out=r;return DOK_STATUS_OK; }
         for(i=0;i<4u;++i) if(depth[i]<0)
-#if N23_DISCOVERY_CACHE
             depth[i]=sar(raw_depth[i],20);
-#else
-            depth[i]=sar(rotate(c,q->vertices[i].x,q->vertices[i].z,1u),20);
-#endif
     } else {
         if(depth[0]<=0 && depth[1]<=0) { *out=r;return DOK_STATUS_OK; }
         if(depth[0]<0) {

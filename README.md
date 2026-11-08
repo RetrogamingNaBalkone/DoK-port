@@ -8,15 +8,12 @@
 | Nintendo DS/DS Lite: «Подземелья Кремля» | [ports/nds](ports/nds/) | [План](docs/nds/plan.md) | [Handoff](docs/nds/handoff.md) |
 | OGDoK (SDL2): Old Gold/PKR/PKE; Windows/Linux/PortMaster | [ports/sdl2](ports/sdl2/) | [План](docs/source-port/plan.md) | [Handoff](docs/source-port/handoff.md) |
 
-GBA содержит реализацию и host-тесты. NDS прошёл этапы N01–N11: готовы платформа,
-данные мира, ранний 3D renderer, часы, события, ввод/движение и столкновения;
-проверка пока на эмуляторе. N11 добавила двери, ключи, сенсоры/conveyor и
-триггеры; её эмуляторная приёмка завершена. По просьбе пользователя работа
-остановлена после N11; N12 до нового указания не начинается.
-После этого отдельно выполнена [оптимизация N07P](docs/nds/tasks/N07P.md):
-старты renderer — около 59,83 FPS, диагностический N11 — 58,23 FPS в эмуляторе.
-В NDS-план добавлены три промежуточные оптимизации: после объектов со светом/водой,
-полного боя и двух экранов. Физический FPS пока не проверен.
+GBA содержит реализацию и host-тесты.
+Для Nintendo DS / DS Lite подготовлен
+[Dungeons of Kremlin 1.0-RC1](https://github.com/RetrogamingNaBalkone/DoK-port/releases/tag/nds-1.0-rc1):
+три уровня, RU/EN, две схемы управления и интерактивная карта на нижнем экране.
+Игра поставляется одним `.nds`-файлом в ZIP.
+[Особенности и управление](docs/nds/releases/1.0-RC1.md).
 OGDoK — общий SDL2-порт Old Gold/PKR/PKE; текущие возможности и сборки описаны
 в [плане](docs/source-port/plan.md) и [инструкции](ports/sdl2/PLAYTEST.md).
 Завершение одного направления не требуется для работы над другим. Игровые статусы и следующий ID определяются

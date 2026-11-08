@@ -1,0 +1,96 @@
+{
+  "task": "N23",
+  "passed": true,
+  "build": "controls41-ru",
+  "rom": {
+    "path": "artifacts/nds/dok.nds",
+    "bytes": 10180096,
+    "sha256": "3a1a37fdb334489ce9f87594fe1f90aad3cedf0269116d814b6bc1e7da6ac44e"
+  },
+  "build_manifest": {
+    "path": "build/nds/n23/controls41-ru/build-manifest.json",
+    "bytes": 118021,
+    "sha256": "989c9cfd53ad15c84ee7d3b15270780c5ec07197e917f090d6f820c9cca00840"
+  },
+  "buttons": {
+    "modern": {
+      "weapon": "B",
+      "fps": "Select",
+      "use": "X"
+    },
+    "classic": {
+      "weapon": "A",
+      "fps": "Select",
+      "use": "X"
+    }
+  },
+  "host_checks": 151718,
+  "flow_checks": 655965,
+  "emulator_schemes": 2,
+  "index8_checks": 6979584,
+  "rgb_checks": 6979584,
+  "memory": {
+    "static_bytes": 349636,
+    "heap_start_gap": 32,
+    "static_startup_bytes": 520192,
+    "managed_bytes": 2293760,
+    "sdk_heap_available": 200704,
+    "reserve_bytes": 655360,
+    "closure_bytes": 3670016,
+    "partition": {
+      "ceilings": {
+        "world": 393216,
+        "events": 36864,
+        "scratch": 131072,
+        "scene": 262144,
+        "assets": 1077248,
+        "audio": 262144,
+        "io": 131072
+      },
+      "provenance": "ELF-bound compiled memory_budget.h; approved N03 or N22 partition",
+      "header": {
+        "path": "research/evidence/nds/n23/candidates/controls41-ru/sources/ports/nds/include/dok/memory_budget.h",
+        "bytes": 1774,
+        "sha256": "9712601e813afffe4563822602a8ea104087f69bb6d64276332b68abf9c3c4ff"
+      },
+      "elf": {
+        "path": "build/nds/n23/controls41-ru/dok_nds_gameplay.elf",
+        "bytes": 2461768,
+        "sha256": "7ec1d86b5d45576ad6d8db585fc691c1d98a8e1fc5308c02343e0eb508e2981c"
+      }
+    }
+  },
+  "proofs": [
+    {
+      "path": "research/evidence/nds/n23/controls41/keys.json",
+      "bytes": 5017,
+      "sha256": "a8c696a65a12207c1879a3b6a80c7ae63fedda6dcb53d214ee376facca646570"
+    },
+    {
+      "path": "research/evidence/nds/n23/controls41/ui.json",
+      "bytes": 44231,
+      "sha256": "a1d07b6246cc8ba1ba97ca0626549d0ac0a73b61e47f65769e0f866ea724173e"
+    },
+    {
+      "path": "research/evidence/nds/n23/controls41/host.json",
+      "bytes": 1560,
+      "sha256": "e9703cfb134391fdc17591e747fb384be2246847c41c7caa5cfd321fa6669fc8"
+    },
+    {
+      "path": "research/evidence/nds/n23/controls41/flow.json",
+      "bytes": 17050,
+      "sha256": "3e1cd85513f3c6bb87fcea8f8ffa31fd7b349bf995f68a652f3456033ccf45e3"
+    }
+  ],
+  "observer": {
+    "path": "ports/nds/tools/check_controls41_emulator.py",
+    "bytes": 3579,
+    "sha256": "6dc888d225b6d13324db6f72d92133e9ab5b794ac82308ce1254081da4523806"
+  },
+  "limits": [
+    "Inventory RAM fixture; no full playthrough.",
+    "Emulator only; physical DS and DraStic not tested.",
+    "N23 crowd/FPS issues remain open."
+  ],
+  "next_id": "N23"
+}

@@ -26,13 +26,13 @@ def main():
     needle='    for(unsigned n=0;n<256u;++n){';assert derived.count(needle)==1
     derived=derived.replace(needle,'    uint32_t used;\n    if(!dok_static_geometry_load(&world,bindings,geometry_backing,sizeof(geometry_backing),&used))return 19;\n'+needle)
     generated=out/'static-harness.c';generated.write_text(derived,'utf8')
-    for capacity,static in ((256,0),(8,0),(256,1)):
-        exe=out/f'cache-{capacity}-{static}.exe'
+    for capacity,static,points in ((256,0,0),(8,0,0),(256,1,0),(256,1,1)):
+        exe=out/f'cache-{capacity}-{static}-{points}.exe'
         selected=common if not static else [p for p in common if not p.endswith('test_discovery_static_cache.c')]+[str(generated),'ports/nds/render/static_geometry.c']
-        run(flags+[f'-DDOK_MAP_STATIC_RECORDS={capacity}',f'-DN23_STATIC_GEOMETRY={static}','-Iports/nds/render',*selected,str(out/'baseline.o'),'-o',str(exe)])
+        run(flags+[f'-DDOK_MAP_STATIC_RECORDS={capacity}',f'-DN23_STATIC_GEOMETRY={static}',f'-DN23_DISCOVERY_CACHE={points}','-Iports/nds/render',*selected,str(out/'baseline.o'),'-o',str(exe)])
         for level in (1,2,3):
             result=json.loads(run([str(exe),str(ROOT/f'build/nds/n07/geometry-level{level}.cp866'),str(ROOT/f'build/nds/n07/geometry-bindings{level}.bin')]))
-            assert result['passed'];results.append(dict(level=level,capacity=capacity,static_geometry=static,**result))
+            assert result['passed'];results.append(dict(level=level,capacity=capacity,static_geometry=static,point_cache=points,**result))
     report=dict(passed=True,results=results,commands=commands,baseline=artifact(base),
         sources=[artifact(ROOT/p)for p in common+['ports/nds/render/static_geometry.c','ports/nds/render/static_geometry.h','ports/nds/include/dok/map_discovery.h','ports/nds/tools/performance/check_static_discovery_cache.py']],generated_harness=artifact(generated))
     (out/'result.json').write_text(json.dumps(report,indent=2)+'\n','utf8');print(json.dumps(results))

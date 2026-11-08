@@ -1,5 +1,6 @@
 #include "dok/combat.h"
 #include "dok/ai.h"
+#include "dok/cell_math.h"
 #include <limits.h>
 #include <stddef.h>
 #include <string.h>
@@ -40,7 +41,14 @@ static dok_status valid(const dok_combat *s)
 static const dok_level_object *object(const dok_combat *s,uint32_t glyph)
 {uint32_t n=s->items->world->glyph_index[glyph];return n?&s->items->world->definition->objects[n-1u]:NULL;}
 static const dok_world_object_seed *seed(const dok_combat *s,dok_object_ref ref)
-{uint32_t i;for(i=0;i<s->items->world->object_count;++i)if(same(s->items->world->objects[i].reference,ref))return &s->items->world->objects[i];return NULL;}
+{
+    /* N05 assigns object_id = definition_index + 1. Validate the complete
+     * reference after indexing: stale generations/epochs remain rejected. */
+    const dok_initial_world *w=s->items->world;
+    if(!ref.object_id||ref.object_id>w->object_count)return NULL;
+    const dok_world_object_seed *p=&w->objects[ref.object_id-1u];
+    return same(p->reference,ref)?p:NULL;
+}
 static int32_t field(const dok_level_object *o,uint16_t off)
 {const dok_level_field *f=dok_level_field_at(o,off);return f?f->value:0;}
 static dok_status now(dok_combat *s,uint32_t *out)
@@ -51,16 +59,25 @@ static void emit(dok_combat *s,uint32_t kind,dok_object_ref instance,dok_object_
     dok_combat_output o={instance,source,target,kind,damage,glyph};
     if(s->services.sink)s->services.sink(s->services.context,&o);
 }
-static const dok_sprite_animation *animation(const dok_combat *s,uint8_t glyph,uint16_t kind)
+static const dok_sprite_animation *resolve_animation(const dok_combat *s,uint8_t glyph,uint16_t kind)
 {
     dok_presentation_value v;uint32_t i;
     if(dok_presentation_get(s->presentation,glyph,kind,&v)!=DOK_BALANCE_OK)return NULL;
     for(i=0;i<s->bank->animation_count;++i)if(s->bank->animations[i]==v.asset_id)return &s->bank->sequences[i];
     return NULL;
 }
+static const dok_sprite_animation *animation(const dok_combat *s,uint8_t glyph,uint16_t kind)
+{
+    const dok_level_object *o=object(s,glyph);
+    if(o&&o->class_id==8u&&(kind==DOK_PRESENT_ANIMATION||kind==0x77||kind==0x7b)){
+        uint32_t index=s->projectile_animations[glyph][kind==0x77?1u:kind==0x7b?2u:0u];
+        return index?&s->bank->sequences[index-1u]:NULL;
+    }
+    return resolve_animation(s,glyph,kind);
+}
 static uint32_t cell(const dok_combat *s,int32_t x,int32_t z)
 {
-    const dok_level_definition *d=s->items->world->definition;int32_t cx=word(x/d->settings[3]),cz=word(z/d->settings[3]);
+    const dok_level_definition *d=s->items->world->definition;int32_t cx=word(dok_cell_quotient(x,d->settings[3])),cz=word(dok_cell_quotient(z,d->settings[3]));
     if(cx<0)cx=0;if(cz<0)cz=0;if(cx>=d->settings[0])cx=d->settings[0]-1;if(cz>=d->settings[2])cz=d->settings[2]-1;
     return (uint32_t)cz*(uint16_t)d->settings[0]+(uint32_t)cx;
 }
@@ -99,6 +116,16 @@ dok_status dok_combat_bind(dok_combat *s,dok_items *items,dok_event_scheduler *s
         return DOK_STATUS_INVALID_STATE;
     memset(s,0,sizeof(*s));s->items=items;s->scheduler=scheduler;s->presentation=presentation;s->bank=bank;s->services=*services;
     s->epoch=items->epoch;s->tag=TAG;s->revision=1;s->executing=UINT32_MAX;
+    /* Metadata and presentation are pinned for this world. Resolve CP866
+     * resource names once, rather than on every flight/effect/render frame. */
+    for(uint32_t glyph=0;glyph<256u;++glyph){
+        const dok_level_object *o=object(s,glyph);
+        if(!o||o->class_id!=8u)continue;
+        for(uint32_t kind=0;kind<3u;++kind){
+            const dok_sprite_animation *a=resolve_animation(s,(uint8_t)glyph,kind==1u?0x77:kind==2u?0x7b:DOK_PRESENT_ANIMATION);
+            if(a)s->projectile_animations[glyph][kind]=(uint8_t)(a-s->bank->sequences+1u);
+        }
+    }
     for(uint32_t i=0;i<DOK_WEAPON_SLOTS;++i)s->weapons[i].state=4;
     return dok_collision_projectiles(items->collision,s->occupied);
 }

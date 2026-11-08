@@ -15,6 +15,7 @@ static uint32_t generation[2], source_length, source_cursor, consumer_loop, expe
 static unsigned char expected[500000];
 static _Alignas(32) unsigned char slab[262144];
 static _Alignas(32) unsigned char extra_slab[163840];
+static _Alignas(32) unsigned char menu_loan[474364];
 static dok_asset_workspace workspace;
 static dok_asset_session asset_session;
 static int fail_reads;
@@ -61,6 +62,13 @@ int nds_audio_stop(uint32_t id)
     return !consumer.playing;
 }
 int nds_audio_volume(uint32_t volume) { return volume <= 127u; }
+int nds_audio_pcm_loop(const int8_t *pcm,uint32_t bytes,uint32_t hz,uint32_t id)
+{
+    CHECK(!consumer.playing&&bytes==474364u&&hz==11025u&&id==0x8000006eu);
+    CHECK(!memcmp(pcm,expected,474361u));
+    CHECK(!pcm[474361]&&!pcm[474362]&&!pcm[474363]);
+    consumer.playing=1;consumer.identity=id;return 1;
+}
 int nds_audio_resident(const unsigned char *packed, uint32_t bytes,
     uint32_t length, uint32_t hz, int loop, uint32_t id)
 {
@@ -262,6 +270,12 @@ int main(int argc, char **argv)
     while (consumer.playing) { consume_part(); refill_service(); }
     CHECK(consumer.consumed_samples == 474361u && !active_id);
     CHECK(nds_audio_runtime_service() && !consumer.playing);
+    oracle(110);
+    CHECK(nds_audio_runtime_menu(menu_loan,sizeof(menu_loan))&&menu_pcm==menu_loan);
+    {unsigned calls=reader_calls,initial_starts=starts;
+     for(unsigned i=0;i<100u;++i)CHECK(nds_audio_runtime_menu(menu_loan,sizeof(menu_loan)));
+     CHECK(reader_calls==calls&&starts==initial_starts);}
+    CHECK(nds_audio_runtime_clear()&&!menu_pcm&&!menu_bytes);
     /* Resident effects remain usable if all later package reads fail. */
     oracle(86); fail_reads = 1; request(pcm_id(86), 86, 0, 0);
     CHECK(service_checked() && consumer.playing);

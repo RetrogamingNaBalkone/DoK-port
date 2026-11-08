@@ -1,0 +1,61 @@
+{
+  "task": "N23",
+  "passed": true,
+  "spec": "docs/nds/spec/music48-20261108.md",
+  "candidate": "music48-ru",
+  "published": {
+    "path": "artifacts/nds/dok.nds",
+    "bytes": 10182144,
+    "sha256": "ce20a7062955448435c9a3009321c62af4fa55df774ae058b8c7f32d4802c2e9"
+  },
+  "host_audio_checks_per_language": 9097628,
+  "full_pcm_bytes": 474364,
+  "original_pcm_samples": 474361,
+  "silent_padding_samples": 3,
+  "immutable_full_track": true,
+  "waveform": {
+    "whole_coefficient": 0.9924074035108924,
+    "complete_source_covered": true,
+    "repeats": 2,
+    "source_samples": 474364,
+    "expected_duration_seconds": 86.05760783663368
+  },
+  "sdk_heap_available": 196608,
+  "reserve_bytes": 655360,
+  "smoke": {
+    "passed": true,
+    "index8_checks": 3932160,
+    "rgb_checks": 3932160,
+    "cold_restart_classic": true
+  },
+  "credits": [
+    {
+      "language": 1,
+      "pages": 1,
+      "displays": 2,
+      "decoded": {
+        "data": "https://t.me/RetroGamingNaBalkone",
+        "version": 3
+      }
+    },
+    {
+      "language": 2,
+      "pages": 1,
+      "displays": 2,
+      "decoded": {
+        "data": "https://t.me/RetroGamingNaBalkone",
+        "version": 3
+      }
+    }
+  ],
+  "full_reports": [
+    "build/nds/n23/music48-ru/music45-story/result.json",
+    "build/nds/n23/music48-ru/playtest34/result.json",
+    "build/nds/n23/music48-ru/credits42/result.json"
+  ],
+  "limits": [
+    "DraStic symptom fix not yet confirmed on DraStic",
+    "No physical DS verification"
+  ],
+  "next_task": "N23"
+}

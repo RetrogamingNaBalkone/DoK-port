@@ -1,0 +1,644 @@
+{
+  "task": "N23",
+  "passed": true,
+  "optimization_accepted": true,
+  "all_heavy_views_60fps": false,
+  "rom": {
+    "path": "artifacts/nds/dok.nds",
+    "bytes": 10184192,
+    "sha256": "a46a9a94753dc1153bf601bbd8c3e92877b9f1762f8fc7875ce5aef796383d09"
+  },
+  "build_manifest": {
+    "path": "build/nds/n23/angles51d-ru/build-manifest.json",
+    "bytes": 120036,
+    "sha256": "4bbdb361e55fab65fac047160969ec653fa1429b7d7e6ac8eeec1fe91bceb8c9"
+  },
+  "memory": {
+    "extra_assets_bytes": 256,
+    "slab_and_reserve_changed": false
+  },
+  "checks": {
+    "host": {
+      "path": "build/nds/n23/angles51-host/result.json",
+      "bytes": 3584,
+      "sha256": "c3a8ac18b964fd63a268b94de20a93c13263f6e6922f4d517f14bca043ac8729"
+    },
+    "stream": {
+      "path": "build/nds/n23/stream51-host/result.json",
+      "bytes": 711,
+      "sha256": "b2cb345c0cc991c2d3cc8553e516fb837ebd252e32a89f99b9d9386075df7bf1"
+    },
+    "discovery": {
+      "path": "build/nds/n23/static-discovery-check/result.json",
+      "bytes": 13489,
+      "sha256": "185df430e455796df0139923c01111d6bcf7d2e938603344aa1200d886440029"
+    },
+    "ui": {
+      "path": "build/nds/n23/angles51d-ru/playtest34/result.json",
+      "bytes": 30700,
+      "sha256": "826ca41948ca67fccffd7fade3aa13c8db46ed33b2379cdc8162ef2b0ac7aeb4"
+    },
+    "reloads": {
+      "path": "build/nds/n23/angles51d-ru/map38-restarts/result.json",
+      "bytes": 4716,
+      "sha256": "65c05858c9e4c4993c218fdd309469c99e3d59f9c38cdd75525adbfd7fdf5c32"
+    },
+    "live": {
+      "path": "build/nds/n23/angles51d-ru/joint-frontend/live/result.json",
+      "bytes": 3694999,
+      "sha256": "1e620d03330460845601356440eb9e71fd09024f377dcd97eda37c986c0b57b5"
+    }
+  },
+  "comparisons": [
+    {
+      "section": "firstroom",
+      "name": "east-room-45",
+      "baseline_pose": [
+        28080,
+        -300,
+        25200,
+        45
+      ],
+      "final_pose": [
+        28080,
+        -300,
+        25200,
+        45
+      ],
+      "baseline_fps": 56.7402263297938,
+      "final_fps": 57.536580383545285,
+      "baseline_minimum_window_fps": {
+        "0.5": 49.85508190673402,
+        "1": 50.8521835448687
+      },
+      "final_minimum_window_fps": {
+        "0.5": 51.84928518300339,
+        "1": 52.84638682113806
+      },
+      "baseline_geometry_ms": {
+        "samples": 570,
+        "mean": 4.184089232609547,
+        "median": 4.184014898617538,
+        "p95": 4.184014898617538,
+        "p99": 4.1865511534857305,
+        "maximum": 4.186580991778297
+      },
+      "final_geometry_ms": {
+        "samples": 578,
+        "mean": 3.7273455094479275,
+        "median": 3.7272801542950043,
+        "p95": 3.7272801542950043,
+        "p99": 3.7298164091631962,
+        "maximum": 3.7298164091631962
+      },
+      "baseline_cpu_ms": {
+        "samples": 570,
+        "mean": 15.257287111213316,
+        "median": 15.055417765635847,
+        "p95": 16.566727284152627,
+        "p99": 19.387699140018636,
+        "maximum": 20.43696269813596
+      },
+      "final_cpu_ms": {
+        "samples": 578,
+        "mean": 14.817979087924131,
+        "median": 14.580720369188,
+        "p95": 16.530533435268897,
+        "p99": 19.8707810966778,
+        "maximum": 22.710461561983294
+      },
+      "baseline_ai": 6,
+      "final_ai": 6
+    },
+    {
+      "section": "firstroom",
+      "name": "east-room-135",
+      "baseline_pose": [
+        28080,
+        -300,
+        25200,
+        135
+      ],
+      "final_pose": [
+        28080,
+        -300,
+        25200,
+        135
+      ],
+      "baseline_fps": 58.03131533943841,
+      "final_fps": 59.12812714138655,
+      "baseline_minimum_window_fps": {
+        "0.5": 49.85508190673402,
+        "1": 53.84348845927275
+      },
+      "final_minimum_window_fps": {
+        "0.5": 57.83189501181146,
+        "1": 57.83189501181146
+      },
+      "baseline_geometry_ms": {
+        "samples": 582,
+        "mean": 4.157104142446035,
+        "median": 4.157011243844435,
+        "p95": 4.157041082137002,
+        "p99": 4.159577337005194,
+        "maximum": 4.159577337005194
+      },
+      "final_geometry_ms": {
+        "samples": 593,
+        "mean": 3.695578704397231,
+        "median": 3.6955023727111866,
+        "p95": 3.6955023727111866,
+        "p99": 3.6980087892868116,
+        "maximum": 3.6980386275793786
+      },
+      "baseline_cpu_ms": {
+        "samples": 582,
+        "mean": 14.589467654347619,
+        "median": 14.393992334303933,
+        "p95": 16.10441277912007,
+        "p99": 18.75566442686518,
+        "maximum": 20.335870562919084
+      },
+      "final_cpu_ms": {
+        "samples": 593,
+        "mean": 14.058018443340075,
+        "median": 13.719706598875657,
+        "p95": 16.00887056632065,
+        "p99": 18.787203502108465,
+        "maximum": 19.94540666638778
+      },
+      "baseline_ai": 8,
+      "final_ai": 8
+    },
+    {
+      "section": "approach",
+      "name": "executioners",
+      "baseline_pose": [
+        29040,
+        -300,
+        22800,
+        180
+      ],
+      "final_pose": [
+        29040,
+        -300,
+        22806,
+        180
+      ],
+      "baseline_fps": 59.82609828808083,
+      "final_fps": 59.82609828808083,
+      "baseline_minimum_window_fps": {
+        "0.5": 59.82609828808083,
+        "1": 59.82609828808083
+      },
+      "final_minimum_window_fps": {
+        "0.5": 59.82609828808083,
+        "1": 59.82609828808083
+      },
+      "baseline_geometry_ms": {
+        "samples": 300,
+        "mean": 2.2172576607976135,
+        "median": 2.2172238440660377,
+        "p95": 2.2172238440660377,
+        "p99": 2.21976009893423,
+        "maximum": 2.21976009893423
+      },
+      "final_geometry_ms": {
+        "samples": 300,
+        "mean": 1.9651405991286461,
+        "median": 1.9650902718751833,
+        "p95": 1.9650902718751833,
+        "p99": 1.9675966884508085,
+        "maximum": 1.9676265267433752
+      },
+      "baseline_cpu_ms": {
+        "samples": 300,
+        "mean": 9.075175648579549,
+        "median": 8.598769313655417,
+        "p95": 13.052582053663453,
+        "p99": 14.491623227583043,
+        "maximum": 17.12923877562505
+      },
+      "final_cpu_ms": {
+        "samples": 300,
+        "mean": 8.794129268196182,
+        "median": 8.34893328999222,
+        "p95": 12.72689709029503,
+        "p99": 13.547509812471702,
+        "maximum": 14.532292820351817
+      },
+      "baseline_ai": 11,
+      "final_ai": 11
+    },
+    {
+      "section": "approach",
+      "name": "closed-key-room",
+      "baseline_pose": [
+        27600,
+        -300,
+        24720,
+        90
+      ],
+      "final_pose": [
+        27600,
+        -300,
+        24720,
+        90
+      ],
+      "baseline_fps": 59.427257632826965,
+      "final_fps": 59.82609828808083,
+      "baseline_minimum_window_fps": {
+        "0.5": 57.83189501181146,
+        "1": 58.82899664994615
+      },
+      "final_minimum_window_fps": {
+        "0.5": 59.82609828808083,
+        "1": 59.82609828808083
+      },
+      "baseline_geometry_ms": {
+        "samples": 298,
+        "mean": 2.7354553093690868,
+        "median": 2.735395632783953,
+        "p95": 2.735395632783953,
+        "p99": 2.737931887652145,
+        "maximum": 2.7379617259447118
+      },
+      "final_geometry_ms": {
+        "samples": 300,
+        "mean": 2.1773802746964934,
+        "median": 2.1773300469040056,
+        "p95": 2.1773300469040056,
+        "p99": 2.1798364634796306,
+        "maximum": 2.1798663017721975
+      },
+      "baseline_cpu_ms": {
+        "samples": 298,
+        "mean": 9.7174643757491,
+        "median": 9.02256258298402,
+        "p95": 13.533336623502393,
+        "p99": 19.108770781102645,
+        "maximum": 20.13661044515689
+      },
+      "final_cpu_ms": {
+        "samples": 300,
+        "mean": 9.099862757778729,
+        "median": 8.799640699216226,
+        "p95": 12.091550326666644,
+        "p99": 14.675248080040145,
+        "maximum": 19.003978697607465
+      },
+      "baseline_ai": 12,
+      "final_ai": 12
+    },
+    {
+      "section": "approach",
+      "name": "open-key-room",
+      "baseline_pose": [
+        27600,
+        -300,
+        24720,
+        90
+      ],
+      "final_pose": [
+        27600,
+        -300,
+        24720,
+        90
+      ],
+      "baseline_fps": 59.82609828808083,
+      "final_fps": 59.62667796045389,
+      "baseline_minimum_window_fps": {
+        "0.5": 59.82609828808083,
+        "1": 59.82609828808083
+      },
+      "final_minimum_window_fps": {
+        "0.5": 57.83189501181146,
+        "1": 58.82899664994615
+      },
+      "baseline_geometry_ms": {
+        "samples": 300,
+        "mean": 2.7127182320501335,
+        "median": 2.7126588538479255,
+        "p95": 2.7126588538479255,
+        "p99": 2.7151951087161175,
+        "maximum": 2.7152249470086844
+      },
+      "final_geometry_ms": {
+        "samples": 299,
+        "mean": 2.1550915375157604,
+        "median": 2.155040842356483,
+        "p95": 2.155040842356483,
+        "p99": 2.157577097224675,
+        "maximum": 2.157577097224675
+      },
+      "baseline_cpu_ms": {
+        "samples": 300,
+        "mean": 9.318154434766958,
+        "median": 9.171694369233713,
+        "p95": 10.709351100087122,
+        "p99": 12.830167420869296,
+        "maximum": 14.92177205322841
+      },
+      "final_cpu_ms": {
+        "samples": 299,
+        "mean": 8.780263672105791,
+        "median": 8.816350143053725,
+        "p95": 9.780634243940336,
+        "p99": 11.959724750105792,
+        "maximum": 20.09877549018198
+      },
+      "baseline_ai": 12,
+      "final_ai": 12
+    },
+    {
+      "section": "approach",
+      "name": "door-angle-45",
+      "baseline_pose": [
+        27600,
+        -300,
+        24720,
+        45
+      ],
+      "final_pose": [
+        27600,
+        -300,
+        24720,
+        45
+      ],
+      "baseline_fps": 58.03131533943841,
+      "final_fps": 59.427257632826965,
+      "baseline_minimum_window_fps": {
+        "0.5": 53.84348845927275,
+        "1": 55.8376917355421
+      },
+      "final_minimum_window_fps": {
+        "0.5": 55.8376917355421,
+        "1": 57.83189501181146
+      },
+      "baseline_geometry_ms": {
+        "samples": 291,
+        "mean": 3.8694488519823675,
+        "median": 3.869370103498892,
+        "p95": 3.869370103498892,
+        "p99": 3.871936196659651,
+        "maximum": 3.871936196659651
+      },
+      "final_geometry_ms": {
+        "samples": 298,
+        "mean": 3.550115091921652,
+        "median": 3.550070534739799,
+        "p95": 3.550070534739799,
+        "p99": 3.552576951315424,
+        "maximum": 3.552606789607991
+      },
+      "baseline_cpu_ms": {
+        "samples": 291,
+        "mean": 13.460418911527794,
+        "median": 13.072394679927918,
+        "p95": 16.4341557502776,
+        "p99": 21.983928976270263,
+        "maximum": 25.848584629543573
+      },
+      "final_cpu_ms": {
+        "samples": 298,
+        "mean": 12.896623506382838,
+        "median": 12.669786598321858,
+        "p95": 15.342253272082083,
+        "p99": 17.682619749571984,
+        "maximum": 21.838109240495506
+      },
+      "baseline_ai": 13,
+      "final_ai": 13
+    },
+    {
+      "section": "approach",
+      "name": "door-angle-135",
+      "baseline_pose": [
+        27600,
+        -300,
+        24720,
+        135
+      ],
+      "final_pose": [
+        27600,
+        -300,
+        24720,
+        135
+      ],
+      "baseline_fps": 59.82609828808083,
+      "final_fps": 58.43015599469227,
+      "baseline_minimum_window_fps": {
+        "0.5": 59.82609828808083,
+        "1": 59.82609828808083
+      },
+      "final_minimum_window_fps": {
+        "0.5": 55.8376917355421,
+        "1": 56.83479337367679
+      },
+      "baseline_geometry_ms": {
+        "samples": 300,
+        "mean": 2.863529217944518,
+        "median": 2.8634615844813665,
+        "p95": 2.8634615844813665,
+        "p99": 2.8659978393495584,
+        "maximum": 2.8659978393495584
+      },
+      "final_geometry_ms": {
+        "samples": 293,
+        "mean": 2.5238339915100907,
+        "median": 2.5237824618990365,
+        "p95": 2.5237824618990365,
+        "p99": 2.5262888784746615,
+        "maximum": 2.5263187167672285
+      },
+      "baseline_cpu_ms": {
+        "samples": 300,
+        "mean": 10.981610998458295,
+        "median": 10.7538101560119,
+        "p95": 13.147527500611536,
+        "p99": 14.375731299252951,
+        "maximum": 15.796123540318186
+      },
+      "final_cpu_ms": {
+        "samples": 293,
+        "mean": 10.854643421127395,
+        "median": 10.513761092310666,
+        "p95": 13.590118894257328,
+        "p99": 21.581470086127037,
+        "maximum": 21.582991839047953
+      },
+      "baseline_ai": 13,
+      "final_ai": 13
+    },
+    {
+      "section": "approach",
+      "name": "door-angle-180",
+      "baseline_pose": [
+        27600,
+        -300,
+        24720,
+        180
+      ],
+      "final_pose": [
+        27600,
+        -300,
+        24720,
+        180
+      ],
+      "baseline_fps": 59.82609828808083,
+      "final_fps": 59.82609828808083,
+      "baseline_minimum_window_fps": {
+        "0.5": 59.82609828808083,
+        "1": 59.82609828808083
+      },
+      "final_minimum_window_fps": {
+        "0.5": 59.82609828808083,
+        "1": 59.82609828808083
+      },
+      "baseline_geometry_ms": {
+        "samples": 300,
+        "mean": 2.7770355668270037,
+        "median": 2.776990212622302,
+        "p95": 2.776990212622302,
+        "p99": 2.779526467490494,
+        "maximum": 2.779556305783061
+      },
+      "final_geometry_ms": {
+        "samples": 300,
+        "mean": 2.2411811086290294,
+        "median": 2.241154154704744,
+        "p95": 2.241154154704744,
+        "p99": 2.243660571280369,
+        "maximum": 2.243660571280369
+      },
+      "baseline_cpu_ms": {
+        "samples": 300,
+        "mean": 10.607829591840206,
+        "median": 10.410550438321534,
+        "p95": 12.282933135191158,
+        "p99": 14.13574191213685,
+        "maximum": 15.968559033062679
+      },
+      "final_cpu_ms": {
+        "samples": 300,
+        "mean": 9.927193969370753,
+        "median": 9.8704475045669,
+        "p95": 11.133741135267066,
+        "p99": 12.066784543836063,
+        "maximum": 14.386860982380428
+      },
+      "baseline_ai": 13,
+      "final_ai": 13
+    },
+    {
+      "section": "approach",
+      "name": "door-angle-270",
+      "baseline_pose": [
+        27600,
+        -300,
+        24720,
+        270
+      ],
+      "final_pose": [
+        27600,
+        -300,
+        24720,
+        270
+      ],
+      "baseline_fps": 59.82609828808083,
+      "final_fps": 59.62667796045389,
+      "baseline_minimum_window_fps": {
+        "0.5": 59.82609828808083,
+        "1": 59.82609828808083
+      },
+      "final_minimum_window_fps": {
+        "0.5": 57.83189501181146,
+        "1": 58.82899664994615
+      },
+      "baseline_geometry_ms": {
+        "samples": 300,
+        "mean": 2.472852872770137,
+        "median": 2.4727888199020933,
+        "p95": 2.4728186581946603,
+        "p99": 2.4753250747702853,
+        "maximum": 2.4753847513554192
+      },
+      "final_geometry_ms": {
+        "samples": 299,
+        "mean": 1.7899049659143622,
+        "median": 1.7898798179219646,
+        "p95": 1.7898798179219646,
+        "p99": 1.7923862344975896,
+        "maximum": 1.7923862344975896
+      },
+      "baseline_cpu_ms": {
+        "samples": 300,
+        "mean": 8.821784690739921,
+        "median": 8.757658221574506,
+        "p95": 10.465393220059616,
+        "p99": 11.241039635337872,
+        "maximum": 11.480402418310065
+      },
+      "final_cpu_ms": {
+        "samples": 299,
+        "mean": 8.335650060531647,
+        "median": 8.097217453897303,
+        "p95": 9.982639484618689,
+        "p99": 12.938152201669142,
+        "maximum": 20.151827974366043
+      },
+      "baseline_ai": 13,
+      "final_ai": 13
+    }
+  ],
+  "proofs": [
+    {
+      "path": "build/nds/n23/wrap49b-ru/angles51exact-firstroom-live/result.json",
+      "bytes": 36162,
+      "sha256": "68d21e833a2a25ee755bd285e39c673d730f487c00520821e35f967ab4e214e0"
+    },
+    {
+      "path": "build/nds/n23/wrap49b-ru/angles51exact-firstroom-live/runtime-profile.json",
+      "bytes": 4440269,
+      "sha256": "5329f4b8ba430d19be3ea2ebd6c14454df526a512eb34cac7503a0bb3b106a63"
+    },
+    {
+      "path": "build/nds/n23/angles51d-ru/angles51exact-firstroom-live/result.json",
+      "bytes": 36208,
+      "sha256": "0904f9794579c1c5273805e38492422800f3cc11f1dec8390a91564f4fe9a83e"
+    },
+    {
+      "path": "build/nds/n23/angles51d-ru/angles51exact-firstroom-live/runtime-profile.json",
+      "bytes": 4526452,
+      "sha256": "6e70a72df0978f88edacc064edbeffeaced858ae50fe5516a8859ddc63d22726"
+    },
+    {
+      "path": "build/nds/n23/wrap49b-ru/angles51exact-approach-live/result.json",
+      "bytes": 124596,
+      "sha256": "be55c07253749f0228f2ba30dd946d69228d1a3aae3fb59bd7a3e1f8522cd88d"
+    },
+    {
+      "path": "build/nds/n23/wrap49b-ru/angles51exact-approach-live/runtime-profile.json",
+      "bytes": 8692785,
+      "sha256": "ab37f54b7c0053d61e9028dfe8ea88a03cac895420904a3c8d30e60404cf725a"
+    },
+    {
+      "path": "build/nds/n23/angles51d-ru/angles51exact-approach-live/result.json",
+      "bytes": 124676,
+      "sha256": "138c5b9f6bfcbfe36d5c9317828b11655fc3600d5782fec12cadf2b5ac2963dc"
+    },
+    {
+      "path": "build/nds/n23/angles51d-ru/angles51exact-approach-live/runtime-profile.json",
+      "bytes": 8641846,
+      "sha256": "d1e01a0fdce369908088124072ffac543e6f4aee9ba5102cd9fe66a2a52912c2"
+    }
+  ],
+  "limitations": [
+    "DS-mode melonDS; no physical DS or DraStic test.",
+    "Explicit spawn/retry/HP/key and heading fixtures; not a full playthrough.",
+    "Exact paired camera poses do not freeze enemy/projectile histories.",
+    "Remaining effects/texture-planning/map tails can still miss one VBlank.",
+    "LEVEL1 fixtures do not reproduce the exact user route from the blaster."
+  ],
+  "next_task": "N23: remaining renderer tails and full route acceptance; N24 not started"
+}

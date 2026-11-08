@@ -12,6 +12,10 @@ typedef void (*dok_ui_glyph_fn)(void *,uint32_t offset,uint32_t col,uint32_t row
  * advances a row. Words wrap intact when possible; long words split. */
 uint32_t dok_ui_paginate(const unsigned char *,uint32_t,uint32_t columns,
     uint32_t rows,uint32_t page,dok_ui_glyph_fn,void *);
+/* Prose layout drops space separators after an automatically full line,
+ * including at page boundaries; explicit source indentation is retained. */
+uint32_t dok_ui_paginate_prose(const unsigned char *,uint32_t,uint32_t columns,
+    uint32_t rows,uint32_t page,dok_ui_glyph_fn,void *);
 uint32_t dok_ui_number(int16_t,unsigned char out[7]);
 void dok_ui_hud(unsigned char out[DOK_UI_HUD_BYTES],const unsigned char bank[DOK_UI_BANK_BYTES],
     uint32_t language,const dok_ui_values *,const unsigned char *,uint32_t,uint32_t page);

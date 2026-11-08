@@ -25,7 +25,7 @@ static void frontend_flow_probe(void)
 }
 static int frontend_stop_world(void)
 {
-    if(!world_active)return nds_audio_runtime_clear();
+    if(!world_active)return 1;
     if(storage->effects.scheduler._dispatching||storage->game.collision._active)return GAMEPLAY_FAILURE();
     if(scene->leased&&dok_render_scene_release(scene,scene->generation)!=DOK_RENDER_SCENE_OK)return GAMEPLAY_FAILURE();
     if(!nds_audio_runtime_clear()||dok_combat_clear(&storage->game.combat)!=DOK_STATUS_OK||
@@ -69,6 +69,16 @@ static void frontend_game_probe(void)
 static int frontend_actions(uint32_t action)
 {
     frontend->actions=action;
+    if(action&DOK_FRONTEND_FPS_CHANGED){
+        /* Restore the original overlay even if its weapon image is retained.
+         * This removes the old FPS tile rather than leaving stale pixels. */
+        ui->overlay_valid=0;ui->overlay_blank=0;
+    }
+    if(action&DOK_FRONTEND_RETRY_GAME){
+#if GAMEPLAY_FLOW
+        if(nds_gameplay_retry(&storage->game)!=DOK_STATUS_OK)return GAMEPLAY_FAILURE();
+#endif
+    }
     if(action&DOK_FRONTEND_PAUSE_GAME){
         if(dok_world_clock_pause(&storage->effects.clock)!=DOK_STATUS_OK)return GAMEPLAY_FAILURE();
         map_ui->paused=1;++map_ui->pauses;
@@ -88,7 +98,6 @@ static int frontend_actions(uint32_t action)
     }
     if(action&(DOK_FRONTEND_LANGUAGE_CHANGED|DOK_FRONTEND_CONTROLS_CHANGED))
         (void)nds_frontend_settings_write(frontend);
-    if(action&DOK_FRONTEND_STOP_TITLE)if(!nds_audio_runtime_clear())return GAMEPLAY_FAILURE();
     if(action&DOK_FRONTEND_STOP_GAME){
 #if GAMEPLAY_FLOW
         if(!frontend_stop_world())return GAMEPLAY_FAILURE();
@@ -112,10 +121,11 @@ static void frontend_restore_game(void)
 }
 static int frontend_loop(void)
 {
-    dok_render_case play={0};uint32_t ordinal=0,shown=0,new_level=0;
+    dok_render_case play={0};uint32_t ordinal=0,shown=0,new_level=0,menu_music=1;
     if(!nds_frontend_initialize(frontend,&session,scratch,ui->bank))return GAMEPLAY_FAILURE();
     bgHide(0);
-    if(!nds_frontend_draw(frontend,bgGetGfxPtr(hud_bg),bgGetGfxPtr(map_bg))||!nds_audio_runtime_title())return GAMEPLAY_FAILURE();
+    if(!nds_frontend_draw(frontend,bgGetGfxPtr(hud_bg),bgGetGfxPtr(map_bg))||
+       !nds_audio_runtime_menu(assets,DOK_NDS_ASSETS_BYTES))return GAMEPLAY_FAILURE();
     frontend->ready=1;
     if(!frontend_actions(dok_frontend_step(&frontend->state,0,0,1)))return GAMEPLAY_FAILURE();
     obs.status=NDS_RENDER_RUNNING;
@@ -124,8 +134,9 @@ static int frontend_loop(void)
         scanKeys();uint32_t keys=keysHeld()&4095u,touching=(keysHeld()&KEY_TOUCH)!=0;
         uint32_t edge_keys=keys|nds_frontend_take_edges();
         touchPosition pen={0};if(touching)touchRead(&pen);
-        uint32_t before=frontend->state.state,revision=frontend->state.revision,action=0;
+        uint32_t revision=frontend->state.revision,action=0;
 #if FRONTEND_FIXTURES
+        uint32_t before=frontend->state.state;
         uint32_t visual_chord=(keys&(KEY_SELECT|KEY_Y))==(KEY_SELECT|KEY_Y);
         if(before==DOK_FRONTEND_PLAY&&!frontend->state.blocked&&visual_chord&&!frontend->visual_chord)
             frontend->visual_fixture=!frontend->visual_fixture;
@@ -148,9 +159,22 @@ static int frontend_loop(void)
             DC_FlushRange((void *)g_nds_frontend_probe,32);
         }
         if(!frontend_actions(action))return GAMEPLAY_FAILURE();
-        if(before!=DOK_FRONTEND_STORY&&frontend->state.state==DOK_FRONTEND_STORY){
-            if(!nds_audio_runtime_title())return GAMEPLAY_FAILURE();
-        }else if(before==DOK_FRONTEND_STORY&&frontend->state.state!=DOK_FRONTEND_STORY)nds_audio_runtime_clear();
+        unsigned state=frontend->state.state;
+        unsigned wants_music=state==DOK_FRONTEND_TITLE||state==DOK_FRONTEND_MAIN||
+            state==DOK_FRONTEND_LEVELS||state==DOK_FRONTEND_STORY||
+            state==DOK_FRONTEND_INTRO||state==DOK_FRONTEND_ENDING||
+            ((state==DOK_FRONTEND_LANGUAGE||state==DOK_FRONTEND_CONTROLS)&&
+             frontend->state.return_state==DOK_FRONTEND_MAIN);
+        if(wants_music){
+#if GAMEPLAY_FLOW
+            /* Menu music borrows decoded gameplay assets only after all
+             * scene/AI/effect borrowers are released and STOP is acknowledged. */
+            if(world_active&&!frontend_stop_world())return GAMEPLAY_FAILURE();
+#endif
+            if(!nds_audio_runtime_menu(assets,DOK_NDS_ASSETS_BYTES))return GAMEPLAY_FAILURE();
+        }
+        else if(menu_music&&!nds_audio_runtime_clear())return GAMEPLAY_FAILURE();
+        menu_music=wants_music;
         if(action&DOK_FRONTEND_NEW_LEVEL)new_level=1;
         if(frontend->state.state==DOK_FRONTEND_PLAY){
             if(new_level){
@@ -168,6 +192,10 @@ static int frontend_loop(void)
                 if(!memory_check())return GAMEPLAY_FAILURE();
             }
             if(!shown){frontend_restore_game();shown=1;}
+            if(action&DOK_FRONTEND_RETRY_GAME){
+                play.x=storage->game.hero.x;play.y=storage->game.hero.y;
+                play.z=storage->game.hero.z;play.heading=storage->game.hero.heading;
+            }
             frontend_keys=dok_frontend_game_input(&frontend->state)?keys&~KEY_START:0;
 #if FRONTEND_FIXTURES
             if(frontend->visual_chord)frontend_keys&=~(KEY_SELECT|KEY_Y);
@@ -188,14 +216,11 @@ static int frontend_loop(void)
                 if(!DIAG_CHECK(DIAG_AUDIO,nds_audio_runtime_service(),1,g_nds_audio_probe[22],g_nds_audio_probe[8]))return GAMEPLAY_FAILURE();
                 ui->lives=g->lives;ui->message_kind=0;ui->dirty=1;
             }
-            if(flow_result==DOK_FLOW_RETRY){
+            if(flow_result==DOK_FLOW_RETRY||flow_result==DOK_FLOW_GAMEOVER||flow_result==DOK_FLOW_FINISH){
                 if(scene->leased&&dok_render_scene_release(scene,scene->generation)!=DOK_RENDER_SCENE_OK)return GAMEPLAY_FAILURE();
-                if(nds_gameplay_retry(g)!=DOK_STATUS_OK)return GAMEPLAY_FAILURE();
-                play.x=g->hero.x;play.y=g->hero.y;play.z=g->hero.z;play.heading=g->hero.heading;
-            }else if(flow_result==DOK_FLOW_FINISH||flow_result==DOK_FLOW_GAMEOVER){
                 uint32_t transition=flow_result==DOK_FLOW_FINISH?
                     dok_frontend_show_outro(&frontend->state,frontend->state.level)|DOK_FRONTEND_STOP_GAME:
-                    dok_frontend_game_over(&frontend->state);
+                    dok_frontend_show_death(&frontend->state,g->lives);
                 if(!frontend_actions(transition))return GAMEPLAY_FAILURE();
                 /* Publish a non-PLAY descriptor only after its own complete
                  * buffers/palettes exist. PLAY scratch was borrowed by the

@@ -7,8 +7,8 @@ uint32_t dok_ui_number(int16_t value,unsigned char out[7])
     do{reverse[n++]=(unsigned char)('0'+v%10);v/=10;}while(v);
     while(n)out[p++]=reverse[--n];out[p]=0;return p;
 }
-uint32_t dok_ui_paginate(const unsigned char *data,uint32_t bytes,uint32_t cols,
-    uint32_t rows,uint32_t wanted,dok_ui_glyph_fn glyph,void *context)
+static uint32_t paginate(const unsigned char *data,uint32_t bytes,uint32_t cols,
+    uint32_t rows,uint32_t wanted,dok_ui_glyph_fn glyph,void *context,int prose)
 {
     uint32_t stop=0,offset=0,page=0;
     if(!data||!cols||!rows)return 0;
@@ -17,7 +17,15 @@ uint32_t dok_ui_paginate(const unsigned char *data,uint32_t bytes,uint32_t cols,
         while(offset<stop){unsigned char c=data[offset];
             if(c==13u){++offset;continue;}
             if(c==10u){++offset;++row;col=0;if(row==rows)break;continue;}
-            if(col==cols){col=0;++row;}
+            if(col==cols){col=0;++row;
+                /* A separator after an exactly full line belongs to neither
+                 * the next line nor the next page. Consume its complete run. */
+                if(prose&&c==32u){
+                    while(offset<stop&&data[offset]==32u)++offset;
+                    if(row==rows)break;
+                    continue;
+                }
+            }
             if(c!=32u&&col&&(!offset||data[offset-1u]==10u||data[offset-1u]==13u||data[offset-1u]==32u)){
                 uint32_t end=offset;while(end<stop&&data[end]!=10u&&data[end]!=13u&&data[end]!=32u)++end;
                 if(end-offset<=cols&&col+end-offset>cols){col=0;++row;}
@@ -30,6 +38,12 @@ uint32_t dok_ui_paginate(const unsigned char *data,uint32_t bytes,uint32_t cols,
     }while(offset<stop);
     return page;
 }
+uint32_t dok_ui_paginate(const unsigned char *data,uint32_t bytes,uint32_t cols,
+    uint32_t rows,uint32_t wanted,dok_ui_glyph_fn glyph,void *context)
+{return paginate(data,bytes,cols,rows,wanted,glyph,context,0);}
+uint32_t dok_ui_paginate_prose(const unsigned char *data,uint32_t bytes,uint32_t cols,
+    uint32_t rows,uint32_t wanted,dok_ui_glyph_fn glyph,void *context)
+{return paginate(data,bytes,cols,rows,wanted,glyph,context,1);}
 static void text(unsigned char *out,const unsigned char *bank,const unsigned char *s,uint32_t n,uint32_t x,uint32_t y,uint32_t h)
 {
     const unsigned char *font=bank+(h==16u?2048u:0u);

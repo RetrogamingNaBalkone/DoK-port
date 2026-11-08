@@ -50,6 +50,9 @@ static int8_t *ring;
 static volatile bool exit_loop;
 static volatile uint32_t voice_generation;
 static volatile int resident_mode;
+static int direct_mode;
+static const int8_t *direct_pcm;
+static uint32_t direct_bytes;
 static const unsigned char *packed_source;
 static uint32_t packed_bytes, resident_samples, source_position;
 static unsigned char decode_scratch[1024] __attribute__((aligned(4)));
@@ -60,7 +63,8 @@ static void stop_voice(void)
     REG_IF = IRQ_TIMER1;
     /* Retire the streamed title's PCM as well as its channel. A later
      * resident voice must never expose bytes borrowed from the title. */
-    if (ring && !resident_mode) memset(ring, 0, NDS_AUDIO_RING_BYTES);
+    if (ring && !resident_mode && !direct_mode) memset(ring, 0, NDS_AUDIO_RING_BYTES);
+    direct_mode=0;
     ++voice_generation; resident_mode = 0;
     if (shared) {
         shared->status.playing = 0;
@@ -79,10 +83,10 @@ static void start_channel(void)
 {
     uint32_t period = shared->status.timer_period;
     SCHANNEL_CR(0) = 0;
-    SCHANNEL_SOURCE(0) = (uint32_t)(uintptr_t)ring;
+    SCHANNEL_SOURCE(0) = (uint32_t)(uintptr_t)(direct_mode?direct_pcm:ring);
     SCHANNEL_REPEAT_POINT(0) = 0;
     int one_shot = resident_mode && !looping;
-    SCHANNEL_LENGTH(0) = one_shot ? (resident_samples + 3u) / 4u :
+    SCHANNEL_LENGTH(0) = direct_mode?direct_bytes/4u:one_shot ? (resident_samples + 3u) / 4u :
                                   NDS_AUDIO_RING_BYTES / 4u;
     SCHANNEL_TIMER(0) = (uint16_t)(0u - period);
     TIMER0_CR = 0;
@@ -107,7 +111,7 @@ static void audio_irq(void)
     else {
         uint32_t next = shared->status.consumed_parts;
         uint32_t need = looping || remaining > unit ? unit : remaining;
-        int ready = resident_mode ?
+        int ready = direct_mode?1:resident_mode ?
             shared->status.producer_samples - shared->status.consumed_samples >= need :
             shared->part_ready[next & 1u] == next;
         if (!ready) {
@@ -179,7 +183,24 @@ static void receive(void *address, void *unused)
     }
     if (!shared) return;
     ++shared->status.status_sequence;
-    if (message.op == NDS_AUDIO_PLAY || message.op == NDS_AUDIO_RESIDENT) {
+    if(message.op==NDS_AUDIO_PCM_LOOP){
+        if(shared->status.playing)++shared->status.rejected_busy;
+        else if(message.rate<8000u||message.rate>48000u||!message.identity||
+                !message.samples||(message.samples&3u)||message.samples>0xffffcu||
+                message.packed_bytes!=message.samples||(message.packed&31u)||
+                message.packed<0x02000000u||message.packed>0x02380000u-message.samples)
+            ++shared->status.stale_commands;
+        else{
+            ++voice_generation;resident_mode=0;direct_mode=1;
+            direct_pcm=(const int8_t *)(uintptr_t)message.packed;direct_bytes=message.samples;
+            remaining=message.samples;looping=1;unit=1024u;
+            shared->status.identity=message.identity;
+            shared->status.consumed_parts=shared->status.consumed_samples=0;
+            shared->status.timer_period=(BUS_CLOCK/2u+message.rate/2u)/message.rate;
+            shared->status.playing=1;shared->status.producer_samples=message.samples;
+            start_channel();
+        }
+    }else if (message.op == NDS_AUDIO_PLAY || message.op == NDS_AUDIO_RESIDENT) {
         int is_resident = message.op == NDS_AUDIO_RESIDENT;
         if (shared->status.playing) ++shared->status.rejected_busy;
         else if (message.rate < 8000 || message.rate > 48000 ||

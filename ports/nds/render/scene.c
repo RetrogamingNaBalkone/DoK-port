@@ -1,6 +1,9 @@
 #include "dok/hotcode.h"
 #include "dok/render_scene.h"
 #include "geometry_private.h"
+#if N23_STATIC_GEOMETRY
+#include "static_geometry.h"
+#endif
 #include <limits.h>
 #include <string.h>
 #if N21P_GEOMETRY_PROFILE
@@ -133,12 +136,15 @@ typedef struct scene_camera_dot {
     int64_t lateral,depth;
 #if N23_FUSED_CULL
     int32_t x[5],z[5];int64_t offset[5];
+#if N23_STATIC_GEOMETRY
+    int64_t minimum[3],maximum[3],step[3];
+#endif
 #endif
 } scene_camera_dot;
 DOK_NDS_HOT_CODE static int visible(const dok_geometry_quad *quad,const dok_nds_render_camera *camera,
-    const scene_camera_dot *dot)
+    const scene_camera_dot *dot,uint32_t active_planes)
 {
-    uint32_t vertex,common_outside=31u;
+    uint32_t vertex,common_outside=active_planes;
 #if N23_FUSED_CULL
     (void)camera;
 #endif
@@ -190,6 +196,9 @@ DOK_NDS_HOT_CODE dok_render_scene_result dok_render_scene_prepare(dok_render_sce
     dok_geometry_field54 prepared[DOK_LEVEL_MAX_OBJECTS];
 #endif
     scene_camera_dot dot;
+#if N23_STATIC_GEOMETRY && N23_FUSED_CULL
+    int64_t box_origin[3]={0};
+#endif
     dok_render_gather_bounds bounds;
     int32_t x,z,side;
     uint32_t quad_count=0,cell_count=0;
@@ -223,6 +232,14 @@ DOK_NDS_HOT_CODE dok_render_scene_result dok_render_scene_prepare(dok_render_sce
     dot.offset[3]=-164*dot.depth-(int64_t)camera->y*13107200+INT64_C(164)*200*32768;
     dot.x[4]=-166*camera->sin_q15;dot.z[4]=166*camera->cos_q15;
     dot.offset[4]=-166*dot.depth+(int64_t)camera->y*13107200+INT64_C(166)*200*32768;
+#if N23_STATIC_GEOMETRY
+    for(uint32_t p=0;p<3u;++p){
+        int64_t dx=(int64_t)dot.x[p]*480,dz=(int64_t)dot.z[p]*480;
+        dot.step[p]=dx;
+        dot.minimum[p]=dot.offset[p]+(dx<0?dx:0)+(dz<0?dz:0);
+        dot.maximum[p]=dot.offset[p]+(dx>0?dx:0)+(dz>0?dz:0);
+    }
+#endif
 #endif
     memset(&scene->counts,0,sizeof(scene->counts));scene->counts.bounds=bounds;
 #if N21P_GEOMETRY_PROFILE
@@ -230,7 +247,7 @@ DOK_NDS_HOT_CODE dok_render_scene_result dok_render_scene_prepare(dok_render_sce
 #endif
     side=world->definition->settings[DOK_LEVEL_CELL_SIDE];
     for(z=bounds.min_z;z<=bounds.max_z;++z) for(x=bounds.min_x;x<=bounds.max_x;++x) {
-        uint32_t i,start=quad_count;
+        uint32_t i,start=quad_count,active_planes=31u;
         int32_t origin_x=((x*side+side/2+256)/512)*512;
         int32_t origin_z=((z*side+side/2+256)/512)*512;
         if(x==bounds.min_x) {
@@ -238,6 +255,20 @@ DOK_NDS_HOT_CODE dok_render_scene_result dok_render_scene_prepare(dok_render_sce
             for(k=0;k<5u;++k) previous[k]=UINT32_MAX;
         }
         ++scene->counts.gathered_cells;
+#if N23_STATIC_GEOMETRY && N23_FUSED_CULL
+        uint32_t source_count;
+        for(uint32_t p=0;p<3u;++p){
+            if(x==bounds.min_x)box_origin[p]=(int64_t)x*480*dot.x[p]+(int64_t)z*480*dot.z[p];
+            else box_origin[p]+=dot.step[p];
+        }
+        active_planes=dok_static_geometry_cull(world,bindings,(uint32_t)x,(uint32_t)z,
+            box_origin,dot.minimum,dot.maximum,&source_count);
+        if(active_planes==32u){
+            scene->counts.source_quads+=source_count;
+            scene->counts.frustum_rejected+=source_count;
+            continue;
+        }
+#endif
 #if N21P_GEOMETRY_PROFILE
         profile_stamp=cpuGetTiming();
 #endif
@@ -258,7 +289,7 @@ DOK_NDS_HOT_CODE dok_render_scene_result dok_render_scene_prepare(dok_render_sce
 #if N21P_GEOMETRY_PROFILE
             profile_stamp=cpuGetTiming();
 #endif
-            int source_visible=visible(source,camera,&dot);
+            int source_visible=visible(source,camera,&dot,active_planes);
 #if N21P_GEOMETRY_PROFILE
             scene->profile_ticks[1]+=cpuGetTiming()-profile_stamp;
 #endif

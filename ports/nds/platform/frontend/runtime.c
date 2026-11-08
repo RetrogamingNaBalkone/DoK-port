@@ -45,7 +45,8 @@ int nds_frontend_initialize(NdsFrontend *f,const dok_asset_session *assets,void 
         if(e->offset<640u||e->offset>le32(h+20)||e->bytes>le32(h+20)-e->offset)return 0;}
     for(unsigned lang=1;lang<=2u;++lang)for(unsigned id=0;id<8u;++id){uint32_t bytes;
         if(!read_entry(f,1,lang*16u+id,f->text,32768,&bytes))return 0;
-        pages[lang-1][id]=(uint16_t)dok_ui_paginate(f->text,bytes,30,9,0,NULL,NULL);}
+        bytes=dok_frontend_text_prepare(f->text,bytes,id);
+        pages[lang-1][id]=(uint16_t)dok_ui_paginate_prose(f->text,bytes,30,11,0,NULL,NULL);}
     FILE *settings_file=fopen("fat:/dok/settings.dat","rb");
     if(settings_file){size_t n=fread(settings,1,sizeof(settings),settings_file);int io=ferror(settings_file);fclose(settings_file);
         f->settings_status=!io&&dok_settings_decode(settings,n,&language,&scheme)?1u:2u;}
@@ -73,7 +74,34 @@ static void text(NdsFrontend *f,unsigned char *out,const unsigned char *s,uint32
     if(f->font[s[c]*8u+r]&(128u>>b))out[(y+r)*256u+x+c*8u+b]=(unsigned char)color;}
 static void label(NdsFrontend *f,const unsigned char *s,unsigned x,unsigned y,unsigned color)
 {text(f,f->bottom,s,(uint32_t)strlen((const char *)s),x,y,color);}
+static void centered(NdsFrontend *f,const unsigned char *s,unsigned y)
+{label(f,s,(256u-8u*(unsigned)strlen((const char *)s))/2u,y,2);}
 #include "labels.inc"
+#include "channel_qr.inc"
+static void credits(NdsFrontend *f,unsigned lang)
+{
+    unsigned char *lower=f->bottom;
+    f->bottom=f->top;
+    centered(f,labels[lang][6],8);
+    static const unsigned rows[7]={32,48,76,92,108,132,148};
+    for(unsigned i=0;i<7u;++i)centered(f,authors[lang][i],rows[i]);
+    f->bottom=lower;
+    {
+        /* 29 modules, two pixels per module, four-module white quiet zone. */
+        f->palettes[1][254]=0;f->palettes[1][255]=0x7fffu;
+        for(unsigned y=0;y<74u;++y)for(unsigned x=0;x<74u;++x){
+            unsigned mx=x/2u,my=y/2u;int dark=0;
+            if(mx>=4u&&mx<33u&&my>=4u&&my<33u){
+                unsigned at=(my-4u)*29u+mx-4u;
+                dark=(ui_channel_qr[at/8u]>>(at%8u))&1u;
+            }
+            f->bottom[(48u+y)*256u+12u+x]=(unsigned char)(dark?254:255);
+        }
+        for(unsigned i=0;i<3u;++i)label(f,port[lang][i],104,60u+20u*i,2);
+        centered(f,(const unsigned char *)ui_channel_url,140);
+    }
+    label(f,labels[lang][22],8,172,2);
+}
 static void line(NdsFrontend *f,const unsigned char *s,unsigned row)
 {
     unsigned y=28u+24u*row,color=2;
@@ -84,7 +112,7 @@ typedef struct PageDraw {NdsFrontend *f;const unsigned char *data;} PageDraw;
 static void page_glyph(void *p,uint32_t offset,uint32_t col,uint32_t row)
 {PageDraw *d=p;NdsFrontend *f=d->f;
  unsigned top=(f->state.state==DOK_FRONTEND_INTRO||f->state.state==DOK_FRONTEND_OUTRO)?8u:28u;
- unsigned x=8u+8u*col,y=top+16u*row;
+ unsigned x=8u+8u*col,y=top+12u*row;
  for(unsigned r=0;r<8u;++r)for(unsigned b=0;b<8u;++b)
     if(f->font[d->data[offset]*8u+r]&(128u>>b))f->bottom[(y+r)*256u+x+b]=2;}
 static int background(NdsFrontend *f,unsigned id)
@@ -102,6 +130,16 @@ static int background(NdsFrontend *f,unsigned id)
        dok_assets_load(f->assets,le32(links+4),(unsigned char *)f->palettes[1],512,&view)!=DOK_ASSET_OK)return 0;
     f->background=id;return 1;
 }
+static int text_background(NdsFrontend *f)
+{
+    unsigned char links[8];uint32_t bytes;dok_asset_view view;
+    if(!read_entry(f,3,f->state.language*16u+7u,links,8,&bytes)||bytes!=8u||
+       dok_assets_load(f->assets,le32(links),f->text,32768,&view)!=DOK_ASSET_OK||
+       view.entry.width!=46u||view.entry.height!=46u||view.entry.bytes!=46u*46u)return 0;
+    for(unsigned y=0;y<192u;++y)for(unsigned x=0;x<256u;++x)
+        f->bottom[y*256u+x]=f->text[(y%46u)*46u+x%46u];
+    return 1;
+}
 int nds_frontend_draw(NdsFrontend *f,void *top,void *bottom)
 {
     if(f->drawn_revision==f->state.revision)return 1;
@@ -113,6 +151,7 @@ int nds_frontend_draw(NdsFrontend *f,void *top,void *bottom)
     else if(state==DOK_FRONTEND_INTRO||state==DOK_FRONTEND_OUTRO)bg=(unsigned)index;
     if(!background(f,bg))return 0;
     memset(f->bottom,0,49152);f->text_index=index<0?UINT32_MAX:(uint32_t)index;f->text_bytes=0;
+    if((index>=0||state==DOK_FRONTEND_TITLE)&&!text_background(f))return 0;
     if(state==DOK_FRONTEND_TITLE){label(f,labels[lang][0],8,8,2);label(f,(const unsigned char *)"A / Start",88,88,2);}
     else if(state==DOK_FRONTEND_MAIN){label(f,labels[lang][1],8,8,2);for(unsigned i=0;i<5u;++i)line(f,labels[lang][2+i],i);}
     else if(state==DOK_FRONTEND_PAUSE){label(f,labels[lang][7],8,8,2);for(unsigned i=0;i<4u;++i)line(f,labels[lang][8+i],i);}
@@ -120,17 +159,24 @@ int nds_frontend_draw(NdsFrontend *f,void *top,void *bottom)
     else if(state==DOK_FRONTEND_LANGUAGE){label(f,labels[lang][3],8,8,2);line(f,labels[0][13],0);line(f,labels[1][13],1);}
     else if(state==DOK_FRONTEND_CONTROLS){
         label(f,labels[lang][4],8,8,2);
-        for(unsigned i=0;i<2u;++i)label(f,schemes[lang][i],i?136u:8u,24, 2u);
-        label(f,(const unsigned char *)">",f->state.selection?128u:0u,24,2);
-        for(unsigned i=0;i<11u;++i)label(f,f->state.selection?classic[lang][i]:controls[lang][i],8,40u+i*12u,2);
+        for(unsigned i=0;i<2u;++i)line(f,schemes[lang][i],i);
     }
+    else if(state==DOK_FRONTEND_DEATH){
+        centered(f,death[lang][f->state.attempts?0:1],64);
+        if(f->state.attempts){
+            centered(f,death[lang][f->state.attempts==1?2:3],88);
+            centered(f,death[lang][4],144);centered(f,death[lang][5],164);
+        }else centered(f,death[lang][6],156);
+    }
+    else if(state==DOK_FRONTEND_ENDING)credits(f,lang);
     else if(state==DOK_FRONTEND_EXIT){label(f,labels[lang][6],8,8,2);label(f,labels[lang][16],8,80,2);}
     else if(index>=0){
         if(state==DOK_FRONTEND_STORY||state==DOK_FRONTEND_ENDING)
             label(f,labels[lang][index==0?5:19],8,8,2);
         if(!read_entry(f,1,f->state.language*16u+(unsigned)index,f->text,32768,&bytes))return 0;
+        bytes=dok_frontend_text_prepare(f->text,bytes,(unsigned)index);
         f->text_bytes=bytes;PageDraw draw={f,f->text};
-        uint32_t pages=dok_ui_paginate(f->text,bytes,30,9,f->state.page,page_glyph,&draw);
+        uint32_t pages=dok_ui_paginate_prose(f->text,bytes,30,11,f->state.page,page_glyph,&draw);
         if(pages!=f->state.page_count)return 0;
         if(pages>1u){
             unsigned char number[7];unsigned n=dok_ui_number((int16_t)(f->state.page+1u),number);
@@ -139,28 +185,39 @@ int nds_frontend_draw(NdsFrontend *f,void *top,void *bottom)
             n=dok_ui_number((int16_t)pages,number);text(f,f->bottom,number,n,232,184,2);
         }
     }
-    if(index>=0){
+    if(index>=0&&state!=DOK_FRONTEND_ENDING){
         unsigned hint=f->state.page?15u:20u;
         if(f->state.page_count==1u)hint=21u;
         if(state==DOK_FRONTEND_STORY)hint=15u;
+        if(state==DOK_FRONTEND_INTRO){
+            int more=f->state.page+1u<f->state.page_count;
+            hint=f->state.page?(more?15u:25u):(more?23u:24u);
+        }
         label(f,labels[lang][hint],8,172,2);
-    }else if(state!=DOK_FRONTEND_TITLE&&state!=DOK_FRONTEND_EXIT)label(f,labels[lang][14],8,176,2);
+    }else if(index<0&&state!=DOK_FRONTEND_TITLE&&state!=DOK_FRONTEND_EXIT&&state!=DOK_FRONTEND_DEATH)
+        label(f,labels[lang][state==DOK_FRONTEND_MAIN?26:14],8,176,2);
 #if FRONTEND_FIXTURES
     if(state==DOK_FRONTEND_CONTROLS)label(f,(const unsigned char *)"Fixture: Sel+Start/X/Y",8,160,2);
 #endif
     /* Menus share one screen with their original tiled background. Only
-     * title/story/intermission pages use the second display for text. */
+     * title/story/intermission and control descriptions use both displays. */
     if(index<0&&state!=DOK_FRONTEND_TITLE){
         /* Index zero is also the selected row's foreground. Composite the
          * complete menu canvas over FON rather than treating zero as alpha. */
         for(unsigned y=0;y<192u;++y)for(unsigned x=0;x<256u;++x){
             unsigned at=y*256u+x;
             if(f->bottom[at]|| (x>=8u&&x<248u&&y>=28u+24u*f->state.selection&&y<48u+24u*f->state.selection&&
-               (state==DOK_FRONTEND_MAIN||state==DOK_FRONTEND_PAUSE||state==DOK_FRONTEND_LEVELS||state==DOK_FRONTEND_LANGUAGE)))
+               (state==DOK_FRONTEND_MAIN||state==DOK_FRONTEND_PAUSE||state==DOK_FRONTEND_LEVELS||state==DOK_FRONTEND_LANGUAGE||state==DOK_FRONTEND_CONTROLS)))
                 f->top[at]=f->bottom[at];
         }
         memset(f->bottom,0,49152);
         memcpy(f->palettes[0],f->palettes[1],512);
+        if(state==DOK_FRONTEND_CONTROLS){
+            if(!text_background(f))return 0;
+            centered(f,schemes[lang][f->state.selection],8);
+            for(unsigned i=0;i<12u;++i)
+                label(f,f->state.selection?classic[lang][i]:controls[lang][i],8,32u+i*12u,2);
+        }
     }
     DC_FlushRange(f->top,49152);DC_FlushRange(f->bottom,49152);
     if(f->text_bytes)DC_FlushRange(f->text,f->text_bytes);
@@ -198,6 +255,7 @@ void nds_frontend_publish(NdsFrontend *f,const uint32_t game[16])
     f->visual_dirty=0;
     DC_FlushRange(f->visual_descriptor,sizeof(f->visual_descriptor));
     p[38]=N21P_AUDIT;
+    p[39]=f->state.show_fps;
     memcpy((void *)g_nds_frontend_probe,p,sizeof(p));DC_FlushRange((void *)g_nds_frontend_probe,256);
     ++g_nds_frontend_probe[2];DC_FlushRange((void *)g_nds_frontend_probe,32);
 }

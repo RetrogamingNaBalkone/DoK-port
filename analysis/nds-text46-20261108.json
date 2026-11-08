@@ -1,0 +1,214 @@
+{
+  "task": "N23",
+  "passed": true,
+  "spec": "docs/nds/spec/text46-20261108.md",
+  "candidate": "text46-ru",
+  "published": {
+    "path": "artifacts/nds/dok.nds",
+    "bytes": 10181120,
+    "sha256": "ef9f1f79358f17d63e94a7c93ed4840cc5fe8b8a78bfddc05761d8cfffc07653"
+  },
+  "frontend_host_checks": 151740,
+  "flow_host_checks": 655965,
+  "texts": [
+    {
+      "language": 1,
+      "name": "README",
+      "pages": 2,
+      "paragraphs": [
+        "В раскопках под Кремлем археологи нашли таинственные деревянные хоромы... Что-то разбудило недобрый дух древних хозяев. Проснулись под землей силы зла, размножились летучие мыши-мутанты.",
+        "Спасти город от нависшей опасности может только бесстрашный диггер. Он будет осторожней и смелее своих несчастных предшественников...",
+        "У него есть задание: очистить подвалы Кремля от нечисти!"
+      ]
+    },
+    {
+      "language": 1,
+      "name": "BINTRO1",
+      "pages": 2,
+      "paragraphs": [
+        "Вот они, таинственные хоромы, поросшие ядовитыми грибами... Здесь столетиями пряталась нечисть...",
+        "Двери с хитрыми замками, чарки с горьким пойлом и ковши с живой водою... Духи злых хозяев и летучие мыши-мутанты.",
+        "Ваши предшественники сложили здесь головы, бросив оружие и патроны... Проснувшееся зло надо уничтожить!"
+      ]
+    },
+    {
+      "language": 1,
+      "name": "EINTRO1",
+      "pages": 1,
+      "paragraphs": [
+        "Исправив роковую ошибку археологов, вы уничтожили гнездо нечистой силы!"
+      ]
+    },
+    {
+      "language": 1,
+      "name": "BINTRO2",
+      "pages": 1,
+      "paragraphs": [
+        "Замурованное под землей русло древней реки...",
+        "Сюда вырвались духи зла из своей вековой могилы. Притаились в заводях ведьмы, воют воем духи бояр-нелюдей.",
+        "Бесстрашный диггер должен преградить им путь на волю!"
+      ]
+    },
+    {
+      "language": 1,
+      "name": "EINTRO2",
+      "pages": 1,
+      "paragraphs": [
+        "Дело сделано!",
+        "Вы отрезали путь нечисти.",
+        "Теперь ей не вырваться из подземелий!"
+      ]
+    },
+    {
+      "language": 1,
+      "name": "BINTRO3",
+      "pages": 2,
+      "paragraphs": [
+        "Нечистая сила проникла в подземные сооружения современного Кремля!",
+        "Из древних могил вырвался в подвалы затхлый дух тлена, разнося споры ядовитых грибов.",
+        "По бункерам разлетелись жуткие воплощения пыток и жестокостей давних времен.",
+        "Бесстрашный диггер должен навсегда похоронить их, снять с подземелий Кремля колдовские чары!"
+      ]
+    },
+    {
+      "language": 1,
+      "name": "EINTRO3",
+      "pages": 1,
+      "paragraphs": [
+        "Вы выполнили задание с честью!",
+        "Теперь ничего не грозит родному городу.",
+        "Силы зла навеки покинули подземелья Кремля!"
+      ]
+    },
+    {
+      "language": 2,
+      "name": "README",
+      "pages": 2,
+      "paragraphs": [
+        "During excavations under the Kremlin archeologists found a mystical wooden palace. Something called out the wicked spirits of the former habitants. Forces of evil woke up down there, and mutant bats bred in the dark.",
+        "Only a fearless digger can save the city from this danger. The one that should be more careful and bold than his predecessors.",
+        "His mission is to clear the Kremlin dungeons of evil..."
+      ]
+    },
+    {
+      "language": 2,
+      "name": "BINTRO1",
+      "pages": 2,
+      "paragraphs": [
+        "Here it is the mysterious palace, poisonous mushrooms growing in it...",
+        "Evil was hidden here for ages...",
+        "Doors with puzzling locks, jugs with bitter swill, and scoops with alive water...",
+        "Spirits of wicked habitants and mutant bats. Your predecessors lost their lives here, leaving arms and cartridges",
+        "You need to destroy the awakened evil!"
+      ]
+    },
+    {
+      "language": 2,
+      "name": "EINTRO1",
+      "pages": 1,
+      "paragraphs": [
+        "Checking the fatal error of the archeologists you destroyed the den of evil!",
+        "Great!"
+      ]
+    },
+    {
+      "language": 2,
+      "name": "BINTRO2",
+      "pages": 2,
+      "paragraphs": [
+        "An old river bed bricked under the ground...",
+        "Here evil spirits broke away from their ancient graves. Witches hid in the corners of the river,we hear fearful howling of spirits of dead noblemen.",
+        "Brave digger must cut their way out!"
+      ]
+    },
+    {
+      "language": 2,
+      "name": "EINTRO2",
+      "pages": 1,
+      "paragraphs": [
+        "Done!",
+        "You've seased their way.",
+        "Now the ghosts will never tear them out!"
+      ]
+    },
+    {
+      "language": 2,
+      "name": "BINTRO3",
+      "pages": 2,
+      "paragraphs": [
+        "Evil forces has penetrated in the underground rooms of the modern Kremlin!",
+        "Musty air of decay burst out of ancient graves spreading spores of poisonous mushrooms.",
+        "Terrible visions of tortures and cruelty of older times put their nests in chambers.",
+        "Brave digger has to bury them forever. He must sweep the envious magic off the walls of underground Kremlin!"
+      ]
+    },
+    {
+      "language": 2,
+      "name": "EINTRO3",
+      "pages": 1,
+      "paragraphs": [
+        "You completed your task!",
+        "There's no more danger for the sity.",
+        "Evil forces leaved the underground Kremlin forever!",
+        "Congratulations!"
+      ]
+    }
+  ],
+  "cancels": [
+    {
+      "language": 1,
+      "level": 1,
+      "pages": 2
+    },
+    {
+      "language": 1,
+      "level": 2,
+      "pages": 1
+    },
+    {
+      "language": 1,
+      "level": 3,
+      "pages": 2
+    },
+    {
+      "language": 2,
+      "level": 1,
+      "pages": 2
+    },
+    {
+      "language": 2,
+      "level": 2,
+      "pages": 2
+    },
+    {
+      "language": 2,
+      "level": 3,
+      "pages": 2
+    }
+  ],
+  "text_pixel_checks": {
+    "index8_checks": 6979584,
+    "rgb_checks": 6979584
+  },
+  "smoke": {
+    "passed": true,
+    "index8_checks": 3932160,
+    "rgb_checks": 3932160,
+    "cold_restart_classic": true
+  },
+  "music": {
+    "complete_source_covered": true,
+    "whole_coefficient": 0.9923059291924643,
+    "repeats": 2
+  },
+  "full_reports": [
+    "build/nds/n23/text46-ru/text46/result.json",
+    "build/nds/n23/text46-ru/playtest34/result.json",
+    "build/nds/n23/text46-ru/music45-story/result.json"
+  ],
+  "limits": [
+    "No physical DS/DraStic verification",
+    "No full playthrough"
+  ],
+  "next_task": "N23"
+}

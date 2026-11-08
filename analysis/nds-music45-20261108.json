@@ -1,0 +1,74 @@
+{
+  "task": "N23",
+  "passed": true,
+  "candidate": "ui44-ru",
+  "runtime_changed": false,
+  "user_observation": "Previous build, not ui44",
+  "story_hold": true,
+  "rom_sha256": "a691c90a7fceba647bfe9bc0136114ecb8197100772409a48ccfe312d165daa0",
+  "full_report": "build/nds/n23/ui44-ru/music45-story/result.json",
+  "waveform": {
+    "whole_coefficient": 0.9923138238705199,
+    "complete_source_covered": true,
+    "expected_duration_seconds": 86.05706358617726,
+    "source_samples": 474361,
+    "effective_rate": 11024.336184210526,
+    "repeats": 2
+  },
+  "states": [
+    {
+      "state": 1,
+      "selection": 0,
+      "consumed": 32768
+    },
+    {
+      "state": 2,
+      "selection": 0,
+      "consumed": 65536
+    },
+    {
+      "state": 4,
+      "selection": 0,
+      "consumed": 98304
+    },
+    {
+      "state": 5,
+      "selection": 0,
+      "consumed": 131072
+    },
+    {
+      "state": 11,
+      "selection": 0,
+      "consumed": 196608
+    },
+    {
+      "state": 6,
+      "selection": 0,
+      "consumed": 229376
+    },
+    {
+      "state": 3,
+      "selection": 0,
+      "consumed": 294912
+    },
+    {
+      "state": 6,
+      "selection": 0,
+      "consumed": 327680
+    },
+    {
+      "state": 6,
+      "selection": 0,
+      "consumed": 1015808
+    },
+    {
+      "state": 7,
+      "selection": 0,
+      "consumed": 1048576
+    }
+  ],
+  "next_task": "N23",
+  "limits": [
+    "No physical DS/DraStic verification"
+  ]
+}

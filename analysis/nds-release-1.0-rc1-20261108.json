@@ -1,0 +1,32 @@
+{
+  "tag": "nds-1.0-rc1",
+  "title": "Dungeons of Kremlin — Nintendo DS 1.0-RC1",
+  "prerelease": true,
+  "publication": "prepared",
+  "release_url": "https://github.com/RetrogamingNaBalkone/DoK-port/releases/tag/nds-1.0-rc1",
+  "rom": {
+    "path": "artifacts/nds/releases/nds-1.0-rc1/Dungeons of Kremlin.nds",
+    "bytes": 10184192,
+    "sha256": "f2634c7697db63ed2df53a2956a8632c4f6707061c6e14f227645bbea8f90703"
+  },
+  "archive": {
+    "path": "artifacts/nds/releases/nds-1.0-rc1/Dungeons.of.Kremlin.DS.1.0-RC1.zip",
+    "bytes": 3309481,
+    "sha256": "726a3914aaeb9f00be8091b13a03f99029c95f36079016a632c7899bc282a71d"
+  },
+  "entries": [
+    "Dungeons of Kremlin.nds",
+    "README.md",
+    "SHA256SUMS.txt"
+  ],
+  "source_build_manifest": {
+    "path": "build/nds/n23/resident53c-ru/build-manifest.json",
+    "bytes": 120442,
+    "sha256": "10294c5ff37541f4095e7baa3a6f57cc25c5f2ecf586151dd0e8da946d339fbb"
+  },
+  "notes": {
+    "path": "docs/nds/releases/1.0-RC1.md",
+    "bytes": 2827,
+    "sha256": "ef62a8bde1a58709e48c97121dcf9dcfcec5f5a0d6cdd6751281c100cca200a8"
+  }
+}

@@ -84,6 +84,15 @@ int dok_combat_cases(dok_combat_cases_workspace *s,dok_combat_cases_report *r,co
         CHECK(bind(s)==DOK_STATUS_OK);
         {dok_object_ref instance={0},previous={0};uint32_t count=0;
          const dok_world_object_seed *hero=&s->world.initial.objects[s->world.initial.hero.object_id-1u];
+         /* Direct seed lookup must reject forged IDs, epochs and generations
+          * without consuming a slot or changing the caller's output. */
+         dok_object_ref invalid[5]={hero->reference,hero->reference,hero->reference,hero->reference,hero->reference};
+         invalid[0].object_id=0;invalid[1].object_id=s->world.initial.object_count+1u;
+         invalid[2].object_id=UINT32_MAX;++invalid[3].world_epoch;++invalid[4].generation;
+         for(uint32_t bad=0;bad<5u;++bad){
+             CHECK(dok_combat_spawn(&s->combat,invalid[bad],'1',hero->x,hero->z,hero->heading,&instance)==DOK_STATUS_STALE_REFERENCE);
+             CHECK(!instance.object_id&&!s->combat.active&&!s->scheduler._event_count);
+         }
          while(dok_combat_spawn(&s->combat,hero->reference,'1',hero->x,hero->z,hero->heading,&instance)==DOK_STATUS_OK){
              CHECK(instance.object_id>previous.object_id);previous=instance;CHECK(++count<=256u);}
          CHECK(count>0&&count==s->combat.active&&instance.object_id==previous.object_id);

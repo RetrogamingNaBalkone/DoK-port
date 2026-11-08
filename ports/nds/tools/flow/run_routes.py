@@ -463,9 +463,14 @@ class RouteObserver(transport.Frontend):
         self.wait_for(1);self.tap(A);self.wait_for(2)
         self.choose(2,0);self.tap(A);self.wait_for(3)
         self.choose(3,level-1);self.tap(A)
-        p=self.wait_for(7)
-        for page in range(p[8]):
-            self.wait_for(7);self.tap(A)
+        self.wait_for(7)
+        # INTRO pagination is prepared lazily. Follow the actual state instead
+        # of trusting the provisional count in its first published probe.
+        for _ in range(32):
+            self.hold([],12)
+            if self.probe[3]!=7:break
+            self.tap(A)
+        else:raise AssertionError(('INTRO did not finish',self.probe))
         self.wait_for(8);self.tick(6)
 
     def heading(self):

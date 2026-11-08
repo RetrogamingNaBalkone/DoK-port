@@ -171,6 +171,19 @@ int nds_audio_stop(uint32_t identity)
     message.op = NDS_AUDIO_STOP; message.identity = identity;
     return command(&message) && !nds_audio_status().playing;
 }
+int nds_audio_pcm_loop(const int8_t *pcm,uint32_t bytes,uint32_t rate,uint32_t identity)
+{
+    NdsAudioCommand message={0};NdsAudioStatus state=nds_audio_status();
+    if(!shared||!state.ready||state.playing||!pcm||((uintptr_t)pcm&31u)||
+       !bytes||(bytes&3u)||bytes>0xffffcu||rate<8000u||rate>48000u||!identity)return 0;
+    DC_FlushRange(pcm,bytes);
+    message.op=NDS_AUDIO_PCM_LOOP;message.rate=rate;message.samples=bytes;
+    message.loop=1;message.identity=identity;message.packed=(uint32_t)(uintptr_t)pcm;
+    message.packed_bytes=bytes;
+    if(!command(&message))return 0;
+    state=nds_audio_status();prefilled=0;resident_active=1;
+    return state.playing&&state.identity==identity;
+}
 int nds_audio_volume(uint32_t volume)
 {
     NdsAudioCommand message = {0};

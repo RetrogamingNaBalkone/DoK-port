@@ -154,7 +154,7 @@ class FrontendObserver(transport.Frontend):
         expected = render_frontend(self.art, self.labels, self.controls,
                                    p[3], p[4], p[5], p[6], p[7], p[31])
         index = expected["text_index"]
-        assert p[16] == (0xffffffff if index is None else index)
+        assert p[16] == (0xffffffff if index is None else index),('Text index',p[3],p[16],index,p[11],p[24])
         assert p[19] == expected["background"]
         assert p[8] == expected["pages"]
         assert p[17] == len(expected["message"])
@@ -219,7 +219,7 @@ class FrontendObserver(transport.Frontend):
     def text_to(self, state, destination, backward=True):
         p = self.wait_for(state)
         pages = p[8]
-        if backward and pages > 1:
+        if backward and pages > 1 and state != 7:
             self.tap(A)
             self.wait_for(state, page=1)
             self.tap(B)

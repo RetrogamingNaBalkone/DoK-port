@@ -41,6 +41,9 @@ typedef struct dok_combat {
     const dok_level_presentation *presentation;
     const dok_sprite_asset_bank *bank;
     dok_combat_services services;
+    /* Immutable per-world projectile animation bindings: bank index + 1;
+     * zero retains the existing missing-animation refusal. No pixel copies. */
+    uint8_t projectile_animations[256][3];
     dok_projectile projectiles[256];
     dok_weapon_runtime weapons[DOK_WEAPON_SLOTS];
     unsigned char occupied[512];

@@ -1,0 +1,139 @@
+{
+  "task": "N23",
+  "passed": true,
+  "spec": "docs/nds/spec/wrap49-20261108.md",
+  "candidate": "wrap49b-ru",
+  "published": {
+    "path": "artifacts/nds/dok.nds",
+    "bytes": 10182144,
+    "sha256": "702cd204c2e453057e2af0e2150d37e269af889eb71a359383d8b3795a0e2868"
+  },
+  "frontend_host_checks": 151752,
+  "flow_host_checks": 655965,
+  "prose_cases": 19,
+  "unchanged_hud_pagination_pages": 1697,
+  "texts": [
+    {
+      "language": 1,
+      "name": "README",
+      "pages": 2
+    },
+    {
+      "language": 1,
+      "name": "BINTRO1",
+      "pages": 2
+    },
+    {
+      "language": 1,
+      "name": "EINTRO1",
+      "pages": 1
+    },
+    {
+      "language": 1,
+      "name": "BINTRO2",
+      "pages": 1
+    },
+    {
+      "language": 1,
+      "name": "EINTRO2",
+      "pages": 1
+    },
+    {
+      "language": 1,
+      "name": "BINTRO3",
+      "pages": 2
+    },
+    {
+      "language": 1,
+      "name": "EINTRO3",
+      "pages": 1
+    },
+    {
+      "language": 2,
+      "name": "README",
+      "pages": 2
+    },
+    {
+      "language": 2,
+      "name": "BINTRO1",
+      "pages": 2
+    },
+    {
+      "language": 2,
+      "name": "EINTRO1",
+      "pages": 1
+    },
+    {
+      "language": 2,
+      "name": "BINTRO2",
+      "pages": 2
+    },
+    {
+      "language": 2,
+      "name": "EINTRO2",
+      "pages": 1
+    },
+    {
+      "language": 2,
+      "name": "BINTRO3",
+      "pages": 2
+    },
+    {
+      "language": 2,
+      "name": "EINTRO3",
+      "pages": 1
+    }
+  ],
+  "cancels": [
+    {
+      "language": 1,
+      "level": 1,
+      "pages": 2
+    },
+    {
+      "language": 1,
+      "level": 2,
+      "pages": 1
+    },
+    {
+      "language": 1,
+      "level": 3,
+      "pages": 2
+    },
+    {
+      "language": 2,
+      "level": 1,
+      "pages": 2
+    },
+    {
+      "language": 2,
+      "level": 2,
+      "pages": 2
+    },
+    {
+      "language": 2,
+      "level": 3,
+      "pages": 2
+    }
+  ],
+  "text_pixel_checks": {
+    "index8_checks": 7471104,
+    "rgb_checks": 7471104
+  },
+  "smoke": {
+    "passed": true,
+    "index8_checks": 3932160,
+    "rgb_checks": 3932160,
+    "cold_restart_classic": true
+  },
+  "full_reports": [
+    "build/nds/n23/prose49-host/result.json",
+    "build/nds/n23/wrap49b-ru/text46/result.json",
+    "build/nds/n23/wrap49b-ru/playtest34/result.json"
+  ],
+  "limits": [
+    "DraStic music fix remains unconfirmed",
+    "No physical DS verification"
+  ],
+  "next_task": "N23"
+}

@@ -53,6 +53,8 @@ def build():
 EXPORT uint32_t n19_number(int16_t v,unsigned char out[7]) {return dok_ui_number(v,out);}
 EXPORT uint32_t n19_paginate(const unsigned char *p,uint32_t n,uint32_t cols,uint32_t rows,uint32_t page,dok_ui_glyph_fn fn,void *c)
 {return dok_ui_paginate(p,n,cols,rows,page,fn,c);}
+EXPORT uint32_t n49_prose(const unsigned char *p,uint32_t n,uint32_t cols,uint32_t rows,uint32_t page,dok_ui_glyph_fn fn,void *c)
+{return dok_ui_paginate_prose(p,n,cols,rows,page,fn,c);}
 EXPORT void n19_hud(unsigned char *out,const unsigned char *bank,uint32_t language,const dok_ui_values *v,const unsigned char *m,uint32_t n,uint32_t page)
 {dok_ui_hud(out,bank,language,v,m,n,page);}
 EXPORT void n19_glyph(unsigned char *out,const unsigned char *bank,unsigned char glyph,uint32_t height)

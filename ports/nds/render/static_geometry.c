@@ -13,6 +13,7 @@ typedef struct LevelGeometry {
     uint16_t patterns,quads;
     uint16_t offset[257];
     uint8_t cell[4096];
+    uint8_t bounded[256];
     PackedQuad quad[512];
 } LevelGeometry;
 static const LevelGeometry *geometry;
@@ -59,6 +60,11 @@ int dok_static_geometry_load(const dok_initial_world *world,const dok_geometry_b
             uint32_t next=g->quads+cell.count;
             if(pattern==256u||next>512u||offsetof(LevelGeometry,quad)+next*sizeof(PackedQuad)>capacity)return 0;
             memcpy(g->quad+g->quads,packed,cell.count*sizeof(PackedQuad));
+            g->bounded[pattern]=1;
+            for(uint32_t q=0;q<cell.count;++q)for(uint32_t v=0;v<4u;++v)
+                if(packed[q].vertex[v][0]<0||packed[q].vertex[v][0]>480||
+                   packed[q].vertex[v][2]<0||packed[q].vertex[v][2]>480)
+                    g->bounded[pattern]=0;
             g->quads=(uint16_t)next;g->offset[++g->patterns]=(uint16_t)next;
         }
         g->cell[z*64u+x]=(uint8_t)pattern;
@@ -87,6 +93,25 @@ DOK_NDS_HOT_CODE int dok_static_geometry_read(const dok_initial_world *world,
         }
     }
     return 1;
+}
+DOK_NDS_HOT_CODE uint32_t dok_static_geometry_cull(const dok_initial_world *world,
+    const dok_geometry_binding bindings[256],uint32_t x,uint32_t z,
+    const int64_t origin[3],
+    const int64_t minimum[3],const int64_t maximum[3],uint32_t *count)
+{
+    const LevelGeometry *g=geometry;
+    if(!g||world!=bound_world||bindings!=bound_bindings||x>=64u||z>=64u)return 31u;
+    uint32_t pattern=g->cell[z*64u+x];
+    if(!g->bounded[pattern])return 31u;
+    *count=g->offset[pattern+1u]-g->offset[pattern];
+    if(!*count)return 32u;
+    uint32_t mask=24u;
+    for(uint32_t p=0;p<3u;++p){
+        int64_t value=origin[p];
+        if(value+maximum[p]<0)return 32u;
+        if(value+minimum[p]<0)mask|=1u<<p;
+    }
+    return mask;
 }
 DOK_NDS_HOT_CODE int dok_static_geometry_shapes(const dok_initial_world *world,
     const dok_geometry_binding bindings[256],uint32_t x,uint32_t z,

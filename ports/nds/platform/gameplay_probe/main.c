@@ -1145,7 +1145,7 @@ static int render_one(const dok_render_case *c,uint32_t ordinal)
 #endif
 #if GAMEPLAY_FRONTEND && GAMEPLAY_UI
     /* Redraw after any weapon bitmap replacement, before scene submission. */
-    draw_fps();
+    if(frontend->state.show_fps)draw_fps();
 #endif
     /* Weapon admission may compact raw LRU storage. Resolve every borrowed
      * sprite pointer again before effect generation/stream planning. */

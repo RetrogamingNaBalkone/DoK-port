@@ -792,6 +792,7 @@ static const uint16_t *stream_palette;
 static uint32_t stream_colors, stream_palette_pending, stream_planned;
 static int stream_palette_id;
 static uint32_t stream_repacking;
+static uint32_t stream_recycle_cursor;
 #ifndef N22_STREAM_LARGEST_MISSES
 #define N22_STREAM_LARGEST_MISSES 0
 #endif
@@ -820,7 +821,7 @@ dok_nds_render_result dok_nds_stream_reset(const uint16_t *palette,uint32_t colo
 #endif
         REG_DISPCNT&=~DISPLAY_BG0_ACTIVE;powerOff(POWER_3D_CORE);loading=1;
     }
-    glResetTextures();memset(stream_slots,0,sizeof(stream_slots));
+    glResetTextures();memset(stream_slots,0,sizeof(stream_slots));stream_recycle_cursor=0;
     stream_palette=palette;stream_colors=colors;stream_palette_pending=1;stream_planned=0;
     if(!glGenTextures(1,&stream_palette_id)) return DOK_NDS_RENDER_TEXTURE;
     glBindTexture(0,stream_palette_id);
@@ -933,6 +934,42 @@ static void stream_bulk_begin(void)
     REG_DISPCNT&=~DISPLAY_BG0_ACTIVE;powerOff(POWER_3D_CORE);loading=1;
 }
 int dok_nds_stream_loading(void){return loading;}
+static void stream_recycle_retired(const dok_nds_stream_texture *textures,
+    uint32_t count,dok_nds_stream_stats *result,uint32_t drop_unmatched)
+{
+    uint32_t i,j;
+    /* Rotate through unrequested entries so old formats cannot permanently
+     * partition the cache. A compatible victim keeps its SDK/VRAM allocation;
+     * an incompatible one frees space. Texels change only at normal commit. */
+    for(i=0;i<count;++i){
+        const dok_nds_stream_texture *t=&textures[i];
+        for(j=0;j<DOK_NDS_RENDER_TEXTURE_CAPACITY;++j)
+            if(stream_slots[j].valid&&stream_slots[j].key==t->key)break;
+        if(j<DOK_NDS_RENDER_TEXTURE_CAPACITY)continue;
+        for(uint32_t step=0;step<DOK_NDS_RENDER_TEXTURE_CAPACITY;++step){
+            j=(stream_recycle_cursor+step)%DOK_NDS_RENDER_TEXTURE_CAPACITY;
+            StreamSlot *s=&stream_slots[j];
+            if(s->valid&&!s->pinned){
+                if(s->texture.storage_width==t->texture.storage_width&&
+                   s->texture.storage_height==t->texture.storage_height&&
+                   s->texture.color0_transparent==t->texture.color0_transparent){
+                    s->key=t->key;s->texture=t->texture;s->pinned=s->pending=1;
+                    ++result->misses;
+                }else{
+                    if(drop_unmatched)continue;
+                    glDeleteTextures(1,&s->sdk_id);s->valid=s->pending=0;
+                }
+                stream_recycle_cursor=(j+1u)%DOK_NDS_RENDER_TEXTURE_CAPACITY;
+                ++result->evictions;break;
+            }
+        }
+    }
+    for(i=0;i<DOK_NDS_RENDER_TEXTURE_CAPACITY;++i){
+        StreamSlot *s=&stream_slots[i];
+        if(drop_unmatched&&s->valid&&!s->pinned){glDeleteTextures(1,&s->sdk_id);s->valid=0;++result->evictions;}
+    }
+}
+
 dok_nds_render_result dok_nds_stream_plan(const dok_nds_stream_texture *textures,
     uint32_t count,dok_nds_stream_stats *stats)
 {
@@ -956,12 +993,19 @@ dok_nds_render_result dok_nds_stream_plan(const dok_nds_stream_texture *textures
         if(!s->valid) continue;
         for(j=0;j<count;++j) if(s->key==textures[j].key) break;
         if(j<count) { s->pinned=1;++result.hits; }
-        else { glDeleteTextures(1,&s->sdk_id);s->valid=0;++result.evictions; }
     }
 #if N22_STREAM_LARGEST_MISSES || N22_STREAM_PARTIAL_DEFRAG
-    /* Keep resident allocations in place. New requests alone are sorted, so
-     * a small miss cannot consume the only span needed by a later large one. */
+    /* Keep unused animation frames resident until allocation pressure. Their
+     * CPU leases can expire: a hit needs only the existing SDK/VRAM image. */
     i=stream_allocate_missing(textures,count)?count:0u;
+    if(i<count){
+        stream_recycle_retired(textures,count,&result,0u);
+        i=stream_allocate_missing(textures,count)?count:0u;
+    }
+    if(i<count){
+        stream_recycle_retired(textures,count,&result,1u);
+        i=stream_allocate_missing(textures,count)?count:0u;
+    }
 #if N22_STREAM_PARTIAL_DEFRAG
     for(uint32_t attempt=0;i<count&&attempt<4u;++attempt){
         if(!stream_partial_relocation(textures,count,&result))break;
@@ -969,6 +1013,7 @@ dok_nds_render_result dok_nds_stream_plan(const dok_nds_stream_texture *textures
     }
 #endif
 #else
+    stream_recycle_retired(textures,count,&result,1u);
     for(i=0;i<count;++i) {
         for(j=0;j<DOK_NDS_RENDER_TEXTURE_CAPACITY;++j)
             if(stream_slots[j].valid && stream_slots[j].key==textures[i].key) break;
@@ -1010,6 +1055,7 @@ dok_nds_render_result dok_nds_stream_plan(const dok_nds_stream_texture *textures
     for(i=0;i<DOK_NDS_RENDER_TEXTURE_CAPACITY;++i) if(stream_slots[i].valid) {
         used+=stream_slots[i].texture.bytes;++result.resident_count;
         if(stream_slots[i].pending) { ++result.uploads;result.upload_bytes+=stream_slots[i].texture.bytes; }
+        else stream_slots[i].texture.pixels=NULL; /* VRAM-only resident. */
     }
     if(stream_palette_pending) result.upload_bytes+=stream_colors*2u+(stream_colors==4096u?512u:0u);
 #if N22_STREAM_LARGEST_MISSES || N22_STREAM_PARTIAL_DEFRAG

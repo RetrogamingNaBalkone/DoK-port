@@ -1,0 +1,48 @@
+{
+  "task": "N23",
+  "passed": true,
+  "spec": "docs/nds/spec/credits42-20261108.md",
+  "candidate": "credits42c-ru",
+  "frontend_host_checks": 151673,
+  "flow_host_checks": 655965,
+  "languages": [
+    {
+      "language": 1,
+      "pages": 2,
+      "decoded": {
+        "data": "https://t.me/RetroGamingNaBalkone",
+        "version": 3
+      }
+    },
+    {
+      "language": 2,
+      "pages": 2,
+      "decoded": {
+        "data": "https://t.me/RetroGamingNaBalkone",
+        "version": 3
+      }
+    }
+  ],
+  "index8_checks": 3637248,
+  "rgb_checks": 3637248,
+  "smoke": {
+    "passed": true,
+    "index8_checks": 6782976,
+    "rgb_checks": 6782976,
+    "cold_restart_classic": true
+  },
+  "published": {
+    "path": "artifacts/nds/dok.nds",
+    "bytes": 10181120,
+    "sha256": "c6b17347e255e37d5a6cccea97eb35b6248751116eb388ec36e697f50fb434eb"
+  },
+  "full_reports": [
+    "build\\nds\\n23\\credits42c-ru\\credits42\\result.json",
+    "build\\nds\\n23\\credits42c-ru\\playtest34\\result.json"
+  ],
+  "limits": [
+    "No physical DS/DraStic verification",
+    "No full playthrough"
+  ],
+  "next_task": "N23"
+}
