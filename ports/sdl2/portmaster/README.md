@@ -9,8 +9,9 @@ replace the program files and keep that directory and your RES files.
 The package never supplies a user profile. Saves can be copied between
 Windows, Linux and PortMaster; resource paths and settings are device specific.
 
-The default canvas is 1280x720, GLES2, Nearest, FXAA/xBR off. The launcher
-starts fullscreen on the first run and does not override saved video settings.
+On the first run SDL detects the primary display resolution and saves it as
+the window and fullscreen canvas size. The game starts fullscreen, with
+GLES2, Nearest and FXAA/xBR off. Existing video settings are preserved.
 Native SDL gamepad input is used; the PortMaster exit combination is provided
 by gptokeyb. No keyboard emulation is installed.
 

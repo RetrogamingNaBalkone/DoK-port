@@ -67,6 +67,11 @@ SDL2 и драйвер устройства используются систе�
 
 ## Пакеты
 
+При новом профиле во всех версиях SDL определяет разрешение дисплея 0 и
+сохраняет его для окна и GL-fullscreen; существующий settings.ini приоритетен.
+PortMaster стартует fullscreen, Windows/Linux — оконно. Целевой benchmark
+1280×720 на Vita остаётся отдельным измеряемым режимом, а не дефолтом запуска.
+
 ```sh
 docker run --rm -v "$PWD:/workspace" ogdok-linux:22.04 python3 ports/sdl2/tools/package_unix.py linux-x86_64 --build build/sdl2/linux-x86_64-opengl --name OGDoK-Linux-x86_64-playtest
 docker run --rm -v "$PWD:/workspace" ogdok-linux:22.04 python3 ports/sdl2/tools/package_unix.py portmaster-aarch64 --build build/sdl2/portmaster-aarch64-gles2 --name OGDoK-PortMaster-playtest
@@ -164,14 +169,14 @@ python3 ports/sdl2/tools/summarize_frames.py new.csv --warmup 300 --output new-s
 
 Готовые архивы без RES:
 
-- `artifacts/sdl2/OGDoK-Linux-x86_64-playtest-20261108-r2.tar.gz`
-- `artifacts/sdl2/OGDoK-PortMaster-playtest-20261108-r3.zip`
+- `artifacts/sdl2/OGDoK-Linux-x86_64-playtest-20261108-r3.tar.gz`
+- `artifacts/sdl2/OGDoK-PortMaster-playtest-20261108-r4.zip`
 
 Рядом — SHA256.txt; проверка полного состава и executable mode:
 
 ```sh
-python3 ports/sdl2/tools/check_unix_package.py artifacts/sdl2/OGDoK-Linux-x86_64-playtest-20261108-r2.tar.gz
-python3 ports/sdl2/tools/check_unix_package.py artifacts/sdl2/OGDoK-PortMaster-playtest-20261108-r3.zip
+python3 ports/sdl2/tools/check_unix_package.py artifacts/sdl2/OGDoK-Linux-x86_64-playtest-20261108-r3.tar.gz
+python3 ports/sdl2/tools/check_unix_package.py artifacts/sdl2/OGDoK-PortMaster-playtest-20261108-r4.zip
 ```
 
 Восстановление матрицы обмена PKR quicksave: для Windows, Linux и ARM/QEMU

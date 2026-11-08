@@ -24,6 +24,7 @@ jobs:
           docker run --init --rm -e MESA_GLES_VERSION_OVERRIDE=2.0 -e SDL_AUDIODRIVER=dummy -v "$PWD:/workspace" ogdok-linux xvfb-run -a "build/sdl2/linux-x86_64-$api/dok_gl_probe"
           docker run --rm -v "$PWD:/workspace" ogdok-linux python3 ports/sdl2/tests/test_unix_tools.py
           docker run --rm -v "$PWD:/workspace" ogdok-linux python3 ports/sdl2/tests/test_portmaster_launcher.py
+          docker run --init --rm -v "$PWD:/workspace" ogdok-linux bash ports/sdl2/tools/check-display-modes.sh "build/sdl2/linux-x86_64-$api/OGDoK" "build/sdl2/checks/native-$api"
       - name: Package x86_64
         if: matrix.api == 'OPENGL'
         run: |

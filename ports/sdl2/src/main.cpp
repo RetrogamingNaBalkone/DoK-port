@@ -121,7 +121,17 @@ int main(int argc,char** argv){
         if(!log)throw std::runtime_error("Cannot write profile log: "+log_path.u8string());
         std::ostream verbose(verbose_logging?log.rdbuf():nullptr);
         verbose<<"Profile mode: "<<profile_mode<<"\nProfile directory: "<<user_path.u8string()<<'\n';
+        const bool new_profile=!std::filesystem::exists(user_path/"settings.ini");
         std::string warning;auto stored=dok::load_settings(user_path/"settings.ini",warning);
+        if(new_profile){
+            SDL_DisplayMode desktop{};
+            if(SDL_GetDesktopDisplayMode(0,&desktop)==0&&desktop.w>=320&&desktop.h>=200&&desktop.w<=7680&&desktop.h<=4320){
+                stored.video.width=stored.video.fullscreen_width=desktop.w;
+                stored.video.height=stored.video.fullscreen_height=desktop.h;
+                verbose<<"Initial display resolution: "<<desktop.w<<'x'<<desktop.h<<'\n';
+            }else log<<"Cannot determine initial display resolution; using 1280x720: "<<SDL_GetError()<<'\n';
+            stored.video.fullscreen=SDL_GetHintBoolean("DOK_PORTMASTER",SDL_FALSE);
+        }
         bool settings_backup_required=!warning.empty();
         for(auto& path:stored.resource_paths)path=dok::resolve_resource_path(path,user_path).u8string();
         for(auto& path:stored.resource_choices)if(!path.empty())path=dok::resolve_resource_path(path,user_path).u8string();

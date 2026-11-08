@@ -74,7 +74,6 @@ def main():
             shutil.copyfile(ROOT / 'ports/sdl2/portmaster' / name, game / name)
         shutil.copyfile(ROOT / 'ports/sdl2/portmaster/README.md', game / 'ogdok.md')
         (out / 'OGDoK.sh').chmod(0o755)
-        shutil.copyfile(ROOT / 'ports/sdl2/portmaster/default-settings.ini', game / 'default-settings.ini')
         shutil.copyfile(ROOT / 'ports/sdl2/tools/collect-device.sh', game / 'collect-device.sh')
     if expected == 183:
         metadata_path = game / 'port.json'

@@ -16,11 +16,11 @@ get_controls
 GAMEDIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)/ogdok"
 cd "$GAMEDIR" || exit 1
 mkdir -p user || exit 1
-if [ ! -e user/settings.ini ]; then cp -n default-settings.ini user/settings.ini || exit 1; fi
 exec > >(tee user/launcher.log) 2>&1
 if [ "${DEVICE_ARCH:-$(uname -m)}" != aarch64 ]; then echo 'OGDoK requires aarch64'; exit 1; fi
 export SDL_GAMECONTROLLERCONFIG="${sdl_controllerconfig:-${SDL_GAMECONTROLLERCONFIG:-}}"
 export LD_LIBRARY_PATH="$GAMEDIR/libs.aarch64${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+export DOK_PORTMASTER=1
 cleanup() { pm_finish; }
 trap cleanup EXIT
 trap 'exit 130' INT

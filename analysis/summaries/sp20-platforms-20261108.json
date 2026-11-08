@@ -53,13 +53,17 @@
     }
   },
   "artifacts": {
-    "artifacts/sdl2/OGDoK-Linux-x86_64-playtest-20261108-r2.tar.gz": {
-      "sha256": "545dfdd8ec6e60a27b5c7e50226a0fee05918197a8c55ede7c04c2eb88e0d74e",
-      "bytes": 502338
+    "artifacts/sdl2/OGDoK-Linux-x86_64-playtest-20261108-r3.tar.gz": {
+      "sha256": "737cb49f813abf7d9a8bb09108746b60af67d39163255c61ba0608ff4d5b2e8e",
+      "bytes": 502832
     },
-    "artifacts/sdl2/OGDoK-PortMaster-playtest-20261108-r3.zip": {
-      "sha256": "daf7419d89517a04bbe035635bbe17cfb4431739d0049703681f95dc5058c28a",
-      "bytes": 462556
+    "artifacts/sdl2/OGDoK-PortMaster-playtest-20261108-r4.zip": {
+      "sha256": "e484ab6c91c5e1c331a7b8c4046af2ceb38428fcaef55c256e07d1d0af9379ab",
+      "bytes": 462221
+    },
+    "artifacts/sdl2/OGDoK-Win-native-display-20261108.zip": {
+      "sha256": "001a433bc3fde183e9b89b7f3467e9660ef3ccca209b54f8e1fc388393ac398f",
+      "bytes": 1441676
     }
   },
   "evidence_root": "research/evidence/source-port/sp20-platforms-20261108",
@@ -73,5 +77,16 @@
       "ogdok/ogdok.md"
     ],
     "regression_tests": 4
+  },
+  "native_display": {
+    "first_run": "SDL desktop display 0, all platforms",
+    "saved_profile": "preserved",
+    "cli_size": "temporary",
+    "windows": "PASS",
+    "linux_gl_gles_modes": [
+      "1024x768",
+      "1920x1080"
+    ],
+    "portmaster_hardware": "pending"
   }
 }
