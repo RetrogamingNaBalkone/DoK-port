@@ -58,6 +58,7 @@ int main(int argc,char** argv){
 #endif
     const bool diagnostic_hidden=std::any_of(argv+1,argv+argc,[](const char* arg){return std::string(arg)=="--hidden";});
     std::filesystem::path log_path;
+    std::optional<SdlEnd> sdl;
     const auto fail=[&](const char* message){
         std::cerr<<message<<'\n';
         if(!log_path.empty()){std::ofstream log(log_path,std::ios::app);log<<"Fatal error: "<<message<<'\n';}
@@ -74,7 +75,6 @@ int main(int argc,char** argv){
     SDL_SetHint(SDL_HINT_WINDOWS_DPI_AWARENESS,"permonitorv2");
     SDL_SetHint(SDL_HINT_WINDOWS_DPI_SCALING,"0"); // Selected sizes are pixels.
 #endif
-    if(SDL_Init(SDL_INIT_VIDEO|SDL_INIT_GAMECONTROLLER|SDL_INIT_AUDIO)!=0)return fail(SDL_GetError());SdlEnd sdl;
     try{
         const auto arguments=dok::parse_launch_arguments(argc,argv);
         dok::AppSettings settings;
@@ -121,21 +121,17 @@ int main(int argc,char** argv){
         if(!log)throw std::runtime_error("Cannot write profile log: "+log_path.u8string());
         std::ostream verbose(verbose_logging?log.rdbuf():nullptr);
         verbose<<"Profile mode: "<<profile_mode<<"\nProfile directory: "<<user_path.u8string()<<'\n';
+        const bool portmaster=SDL_GetHintBoolean("DOK_PORTMASTER",SDL_FALSE);
         const bool new_profile=!std::filesystem::exists(user_path/"settings.ini");
         std::string warning;auto stored=dok::load_settings(user_path/"settings.ini",warning);
-        if(new_profile){
-            SDL_DisplayMode desktop{};
-            if(SDL_GetDesktopDisplayMode(0,&desktop)==0&&desktop.w>=320&&desktop.h>=200&&desktop.w<=7680&&desktop.h<=4320){
-                stored.video.width=stored.video.fullscreen_width=desktop.w;
-                stored.video.height=stored.video.fullscreen_height=desktop.h;
-                verbose<<"Initial display resolution: "<<desktop.w<<'x'<<desktop.h<<'\n';
-            }else log<<"Cannot determine initial display resolution; using 1280x720: "<<SDL_GetError()<<'\n';
-            stored.video.fullscreen=SDL_GetHintBoolean("DOK_PORTMASTER",SDL_FALSE);
+        if(portmaster){
+            stored.input.gamepad_enabled=true;
+            stored.video.fullscreen=true;
         }
         bool settings_backup_required=!warning.empty();
         for(auto& path:stored.resource_paths)path=dok::resolve_resource_path(path,user_path).u8string();
         for(auto& path:stored.resource_choices)if(!path.empty())path=dok::resolve_resource_path(path,user_path).u8string();
-        settings=stored;apply_arguments();
+        settings=stored;
         if(replay_live_input&&replay_path.empty())throw std::runtime_error("--replay-live-input requires --input-replay");
         if(!replay_path.empty()){
             if(!skip_intro||level_name.empty())throw std::runtime_error("Input replay requires --level and --skip-intro");
@@ -145,15 +141,7 @@ int main(int argc,char** argv){
         std::vector<ScriptEvent> script;
         if(!script_path.empty()){std::ifstream f(std::filesystem::u8path(script_path));if(!f)throw std::runtime_error("Cannot read UI script");std::string line;
             while(std::getline(f,line)){if(line.empty()||line[0]=='#')continue;std::istringstream in(line);ScriptEvent event{};in>>event.frame>>event.action;std::getline(in>>std::ws,event.value);script.push_back(event);}}
-        std::unique_ptr<dok::Display> display;
-        try{display=std::make_unique<dok::Display>(settings.video,!replay&&!hidden);}catch(const std::exception& e){
-            if(settings.video.renderer!=dok::RendererKind::opengl)throw;log<<"OpenGL fallback: "<<e.what()<<'\n';settings.video.renderer=dok::RendererKind::software;
-            display=std::make_unique<dok::Display>(settings.video,!replay&&!hidden);warning="OpenGL unavailable; software renderer selected.";
-        }
-        if(!replay&&!hidden)SDL_ShowWindow(display->window());dok::SdlInput input(settings.input);dok::Frontend menu(settings);
-        if(hidden)verbose<<"Diagnostic hidden presentation: no shown window, VSync or mouse capture; natural input/world timing retained\n";
-        if(replay)verbose<<"Replay presentation: hidden window, VSync off; ordinary world callbacks and every rendered frame retained\n";
-        verbose<<"Audio driver: "<<(SDL_GetCurrentAudioDriver()?SDL_GetCurrentAudioDriver():"unavailable")<<'\n';
+        dok::Frontend menu(settings,portmaster);
         std::vector<Loaded> sets;dok::ResourceSources sources;std::string resource_errors;
         auto refresh_sets=[&]{
             sets.clear();std::string errors=resource_errors;
@@ -194,6 +182,10 @@ int main(int argc,char** argv){
         }
         for(auto& path:paths)path=std::filesystem::absolute(std::filesystem::u8path(path)).lexically_normal().u8string();
         for(const auto& path:paths)load(path);
+        if(portmaster&&sources.sources().empty()){
+            log<<"No usable game resources. See the PortMaster launcher message.\n";
+            return 66; // EX_NOINPUT: OGDoK.sh displays the resource instructions.
+        }
         for(unsigned id=1;id<4;++id)if(!arguments.explicit_resources&&!stored.resource_choices[id].empty()){
             const auto chosen=sources.find_source(std::filesystem::u8path(stored.resource_choices[id]));
             bool known=true;for(const auto& candidate:sources.sources())if(candidate.archive.identify()==dok::DatasetId(id)&&std::find(stored.resource_paths.begin(),stored.resource_paths.end(),candidate.path.u8string())==stored.resource_paths.end())known=false;
@@ -204,7 +196,32 @@ int main(int argc,char** argv){
             if(!chosen)throw std::runtime_error("--res-source must name an admitted --res source: "+path);
             const auto& source=sources.sources()[*chosen];sources.select(source.archive.identify(),*chosen);verbose<<"Selected source: "<<source.path.u8string()<<'\n';
         }
+        if(SDL_Init(SDL_INIT_VIDEO|SDL_INIT_GAMECONTROLLER|SDL_INIT_AUDIO)!=0)return fail(SDL_GetError());
+        sdl.emplace();
+        if(new_profile){
+            SDL_DisplayMode desktop{};
+            if(SDL_GetDesktopDisplayMode(0,&desktop)==0&&desktop.w>=320&&desktop.h>=200&&desktop.w<=7680&&desktop.h<=4320){
+                stored.video.width=stored.video.fullscreen_width=desktop.w;
+                stored.video.height=stored.video.fullscreen_height=desktop.h;
+                verbose<<"Initial display resolution: "<<desktop.w<<'x'<<desktop.h<<'\n';
+            }else log<<"Cannot determine initial display resolution; using 1280x720: "<<SDL_GetError()<<'\n';
+        }
+        settings=stored;apply_arguments();
         refresh_sets();
+        std::unique_ptr<dok::Display> display;
+        try{display=std::make_unique<dok::Display>(settings.video,!replay&&!hidden);}catch(const std::exception& e){
+            if(settings.video.renderer!=dok::RendererKind::opengl)throw;log<<"OpenGL fallback: "<<e.what()<<'\n';settings.video.renderer=dok::RendererKind::software;
+            display=std::make_unique<dok::Display>(settings.video,!replay&&!hidden);warning="OpenGL unavailable; software renderer selected.";
+        }
+        if(!replay&&!hidden)SDL_ShowWindow(display->window());dok::SdlInput input(settings.input,portmaster);
+        const auto render_menu=[&](const std::array<int,2>& size)->const dok::MenuFrame&{
+            if(!portmaster)return menu.render(size[0],size[1]);
+            const auto [dpi,height]=display->menu_display_metrics();
+            return menu.render(size[0],size[1],dpi,height);
+        };
+        if(hidden)verbose<<"Diagnostic hidden presentation: no shown window, VSync or mouse capture; natural input/world timing retained\n";
+        if(replay)verbose<<"Replay presentation: hidden window, VSync off; ordinary world callbacks and every rendered frame retained\n";
+        verbose<<"Audio driver: "<<(SDL_GetCurrentAudioDriver()?SDL_GetCurrentAudioDriver():"unavailable")<<'\n';
         std::size_t current=menu.dataset_index();
         std::unique_ptr<dok::World> world;std::unique_ptr<dok::SoftwareScene> scene;std::unique_ptr<dok::Weapons> weapons;
         std::unique_ptr<dok::Projectiles> projectiles;std::unique_ptr<dok::Monsters> monsters;std::unique_ptr<dok::GameFlow> flow;std::unique_ptr<dok::Animations> animations;
@@ -345,7 +362,7 @@ int main(int argc,char** argv){
                     if(e.key.keysym.sym==SDLK_F12)capture_requested=true;
                     if(e.key.keysym.sym==SDLK_F3)settings.show_fps=!settings.show_fps;
                     if(e.key.keysym.sym==SDLK_F4){if(settings.video.renderer==dok::RendererKind::opengl)settings.texture_filter(settings.texture_filter()?0:6);else settings.frame_filter=(settings.frame_filter+1)%4;}
-                    if(e.key.keysym.sym==SDLK_F11&&!menu.video_pending()){
+                    if(e.key.keysym.sym==SDLK_F11&&!portmaster&&!menu.video_pending()){
                         const bool next=!settings.video.fullscreen;
                         auto video=settings.video;video.fullscreen=next;
                         if(next)SDL_GetWindowSize(display->window(),&video.width,&video.height);
@@ -413,7 +430,7 @@ int main(int argc,char** argv){
                 case dok::MenuCommand::keep_video:{auto old=settings;old.video=menu.previous_video();settings_dirty|=dok::merge_settings_edits(stored,old,settings);break;}
                 case dok::MenuCommand::revert_video:
                     try{auto next=std::make_unique<dok::Display>(settings.video,!replay&&!hidden);display=std::move(next);if(!replay&&!hidden)SDL_ShowWindow(display->window());video_changed=true;}
-                    catch(const std::exception& e){log<<"Video rollback failed: "<<e.what()<<'\n';settings.video.renderer=dok::RendererKind::software;settings.video.fullscreen=false;display=std::make_unique<dok::Display>(settings.video,!replay&&!hidden);if(!replay&&!hidden)SDL_ShowWindow(display->window());menu.notice("Возврат видеорежима не удался. Включён software.","Video rollback failed. Software renderer enabled.");}break;
+                    catch(const std::exception& e){log<<"Video rollback failed: "<<e.what()<<'\n';settings.video.renderer=dok::RendererKind::software;settings.video.fullscreen=portmaster;display=std::make_unique<dok::Display>(settings.video,!replay&&!hidden);if(!replay&&!hidden)SDL_ShowWindow(display->window());menu.notice("Возврат видеорежима не удался. Включён software.","Video rollback failed. Software renderer enabled.");}break;
                 }
             }
             settings_dirty|=dok::merge_settings_edits(stored,before,settings,false);
@@ -510,7 +527,7 @@ int main(int argc,char** argv){
             SDL_Rect gameplay_rect{0,0,output[0],output[1]};
             const bool full_map=map_visible();
             if((menu_blocks()||full_map)&&!capture_preview){
-                const auto& frame=menu.render(output[0],output[1]);
+                const auto& frame=render_menu(output);
                 display->pixels(frame.pixels,frame.width,frame.height,false);
             }else if(world){
                 const auto view=dok::player_view(*world,settings.camera_bobbing,capture_preview?std::array<double,4>{}:view_motion.offset(world->presentation_ticks()));
@@ -554,9 +571,13 @@ int main(int argc,char** argv){
                     for(std::size_t i=0;i<pixels.size();++i)pixels[i]=scene->palette()[panel.pixels[native_height*320+i]];
                     display->overlay(pixels,320,200-native_height,rect(layout.panel));
                 }else{
-                    const int hud_scale=std::max(1,frame_rect.h/720);
-                    const auto& frame=hud->desktop(std::max(320,frame_rect.w/hud_scale),*world->objects.at(*world->player).player_state,scene->palette(),world->visible_message(settings.locale),world->presentation_ticks()*119.0/dok::GameClock::pit_hz);
-                    display->overlay(frame.pixels,frame.width,frame.height,{frame_rect.x,frame_rect.y+frame_rect.h-frame.height*hud_scale,frame.width*hud_scale,frame.height*hud_scale});
+                    double scale=dok::modern_hud_scale(frame_rect.w,frame_rect.h,settings.hud_scale);
+                    const int width=std::max(dok::modern_hud_min_width,int(frame_rect.w/scale));
+                    const auto& frame=hud->desktop(width,*world->objects.at(*world->player).player_state,scene->palette(),world->visible_message(settings.locale),world->presentation_ticks()*119.0/dok::GameClock::pit_hz);
+                    scale=std::min(scale,double(frame_rect.h)/frame.height);
+                    const int drawn_width=std::max(1,int(std::lround(frame.width*scale)));
+                    const int drawn_height=std::max(1,int(std::lround(frame.height*scale)));
+                    display->overlay(frame.pixels,frame.width,frame.height,{frame_rect.x,frame_rect.y+frame_rect.h-drawn_height,drawn_width,drawn_height});
                 }
             }
             if(capture_preview){
@@ -574,7 +595,7 @@ int main(int argc,char** argv){
                 }catch(const std::exception& error){log<<"SAVE write failed: "<<error.what()<<'\n';menu.notice("Не удалось сохранить игру. Предыдущая запись сохранена. Проверьте доступ к папке профиля; подробности в port.log.","Could not save game. The previous save is preserved. Check the profile directory; see port.log.");}
             }
             if(capture_preview)previous_time=SDL_GetPerformanceCounter();
-            if(capture_preview&&(menu_blocks()||full_map)){const auto& frame=menu.render(output[0],output[1]);display->pixels(frame.pixels,frame.width,frame.height,false);}
+            if(capture_preview&&(menu_blocks()||full_map)){const auto& frame=render_menu(output);display->pixels(frame.pixels,frame.width,frame.height,false);}
             ++frames;++fps_frames;const auto fps_now=SDL_GetPerformanceCounter();const auto seconds=double(fps_now-fps_time)/SDL_GetPerformanceFrequency();
             if(seconds>=0.5){fps_value=unsigned(fps_frames/seconds+0.5);fps_frames=0;fps_time=fps_now;}
             if(settings.show_fps&&world&&!menu.active()){

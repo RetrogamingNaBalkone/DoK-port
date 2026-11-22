@@ -89,10 +89,16 @@ int main(int argc,char** argv){
             player.attributes[0]=10;
             draw("-critical",std::string(38,'M'),5);
             player.attributes[0]=32767;player.attributes[1]=32767;
-            for(int width:{640,800,1280,1920}){
+            player.score=-32768;
+            for(int width:{320,480,640,800,1280,1920}){
                 const auto frame=hud.desktop(width,player,scene.palette(),std::string(38,'W'),6);
-                check(frame.width==width&&frame.pixels.size()==std::size_t(width*100),"HUD extreme values");
+                check(frame.width==width&&frame.pixels.size()==std::size_t(width*frame.height),"HUD extreme values");
+                for(int y=0;y<frame.height;++y)
+                    check(frame.pixels[(y+1)*width-1]==0,"HUD content reached the right edge");
+                if(width==320)check(frame.height>152,"Narrow HUD wraps the message above both rows");
             }
+            check(dok::modern_hud_scale(480,360,200)==1.5,"Narrow frame caps HUD scale");
+            check(dok::modern_hud_scale(640,480,200)==2&&dok::modern_hud_scale(1024,768,175)==1.75,"Handheld frame scales HUD");
         }
         SDL_DestroyWindow(window);SDL_Quit();
         std::cout<<"IDKFA sequence, keys/weapons, idempotence, fire/switch; desktop GL HUD captures passed\n";

@@ -101,8 +101,8 @@ int main(int argc,char** argv){
                 menu.main_menu();save("main");
                 for(int i=0;i<3;++i)key(menu,SDLK_DOWN);key(menu,SDLK_RETURN);save("credits");
                 menu.main_menu();key(menu,SDLK_DOWN);key(menu,SDLK_RETURN);key(menu,SDLK_RETURN);save("graphics");
-                while(menu.focused_row()!=9)key(menu,SDLK_DOWN);save("graphics-interface");
-                while(menu.focused_row()!=0)key(menu,SDLK_DOWN);
+                while(menu.focused_row()!=10)key(menu,SDLK_DOWN);save("graphics-interface");
+                while(menu.focused_row()!=0)key(menu,SDLK_UP);
                 key(menu,SDLK_ESCAPE);key(menu,SDLK_DOWN);key(menu,SDLK_RETURN);save("sound");
                 key(menu,SDLK_ESCAPE);key(menu,SDLK_DOWN);key(menu,SDLK_RETURN);key(menu,SDLK_RETURN);save("keyboard");
                 key(menu,SDLK_ESCAPE);key(menu,SDLK_DOWN);key(menu,SDLK_RETURN);save("pad");
@@ -134,8 +134,8 @@ int main(int argc,char** argv){
                 menu.preview_level(1);save("intro");menu.outcome(dok::SessionPhase::retry);save("outcome");
                 menu.main_menu();key(menu,SDLK_DOWN);key(menu,SDLK_RETURN);key(menu,SDLK_DOWN);key(menu,SDLK_DOWN);key(menu,SDLK_RETURN);key(menu,SDLK_RETURN);key(menu,SDLK_DOWN);key(menu,SDLK_DOWN);key(menu,SDLK_RETURN);save("bindings");
                 menu.main_menu();key(menu,SDLK_DOWN);key(menu,SDLK_RETURN);key(menu,SDLK_RETURN);save("graphics");
-                while(menu.focused_row()!=9)key(menu,SDLK_DOWN);save("graphics-interface");
-                while(menu.focused_row()!=0)key(menu,SDLK_DOWN);
+                while(menu.focused_row()!=10)key(menu,SDLK_DOWN);save("graphics-interface");
+                while(menu.focused_row()!=0)key(menu,SDLK_UP);
                 key(menu,SDLK_ESCAPE);key(menu,SDLK_DOWN);key(menu,SDLK_RETURN);save("sound");
                 key(menu,SDLK_ESCAPE);key(menu,SDLK_DOWN);key(menu,SDLK_RETURN);key(menu,SDLK_RETURN);save("keyboard");
                 key(menu,SDLK_ESCAPE);key(menu,SDLK_DOWN);key(menu,SDLK_RETURN);save("pad");

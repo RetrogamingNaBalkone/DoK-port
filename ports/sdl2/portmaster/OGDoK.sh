@@ -30,4 +30,17 @@ $GPTOKEYB OGDoK &
 pm_platform_helper "$GAMEDIR/OGDoK"
 ./OGDoK --user-dir "$GAMEDIR/user" "$@"
 result=$?
+if [ "$result" -eq 66 ]; then
+    # EX_NOINPUT from OGDoK: no usable RES archive was found.
+    case "${LC_ALL:-${LC_MESSAGES:-${LANGUAGE:-${LANG:-}}}}" in
+        ru|ru[_@.:]*)
+            message='Скопируйте хотя бы один файл из оригинальной игры в папку ogdok рядом с OGDoK: OLD_GOLD.RES, PKR.RES или PKE.RES. Затем запустите OGDoK снова.'
+            ;;
+        *)
+            message='Copy at least one original game file into the ogdok folder beside OGDoK: OLD_GOLD.RES, PKR.RES, or PKE.RES. Then launch OGDoK again.'
+            ;;
+    esac
+    printf '%s\n' "$message"
+    pm_show_error "$message"
+fi
 exit "$result"

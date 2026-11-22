@@ -6,6 +6,25 @@
 static void check(bool value){if(!value)throw std::runtime_error("Input scenario failed");}
 static void key(dok::SdlInput& input,SDL_Scancode code,bool down){SDL_Event event{};event.type=down?SDL_KEYDOWN:SDL_KEYUP;event.key.keysym.scancode=code;input.handle(event);}
 static void pump(dok::SdlInput& input){SDL_Event event;SDL_PumpEvents();while(SDL_PollEvent(&event))input.handle(event);}
+static void touch_mouse_tests(){
+    dok::SdlInput portmaster(dok::InputBindings::defaults(),true);
+    dok::SdlInput desktop;
+    SDL_Event click{};
+    click.type=SDL_MOUSEBUTTONDOWN;click.button.button=SDL_BUTTON_LEFT;click.button.which=SDL_TOUCH_MOUSEID;
+    portmaster.handle(click);desktop.handle(click);
+    auto actions=portmaster.sample();check(!actions.fire&&!actions.fire_pressed);
+    click.type=SDL_MOUSEBUTTONUP;portmaster.handle(click);desktop.handle(click);
+    actions=portmaster.sample();check(!actions.fire&&!actions.fire_pressed);
+    check(desktop.sample().fire_pressed);
+    click.type=SDL_MOUSEBUTTONDOWN;click.button.which=0;portmaster.handle(click);
+    actions=portmaster.sample();check(actions.fire&&actions.fire_pressed);
+    click.type=SDL_MOUSEBUTTONUP;click.button.which=SDL_TOUCH_MOUSEID;portmaster.handle(click);
+    check(portmaster.sample().fire);
+    click.button.which=0;portmaster.handle(click);check(!portmaster.sample().fire);
+    SDL_Event wheel{};wheel.type=SDL_MOUSEWHEEL;wheel.wheel.y=1;wheel.wheel.which=SDL_TOUCH_MOUSEID;
+    portmaster.handle(wheel);check(!portmaster.sample().next_weapon);
+    wheel.wheel.which=0;portmaster.handle(wheel);check(portmaster.sample().next_weapon);
+}
 static void wheel_tests(){
     dok::SdlInput input;
     auto wheel=[&](int y,bool flipped=false){SDL_Event e{};e.type=SDL_MOUSEWHEEL;e.wheel.y=y;e.wheel.direction=flipped?SDL_MOUSEWHEEL_FLIPPED:SDL_MOUSEWHEEL_NORMAL;input.handle(e);};
@@ -24,7 +43,7 @@ static void wheel_tests(){
     wheel(1);check(input.sample().map);check(!input.sample().map);
 }
 static void disabled_device_tests(){
-    dok::SdlInput input;
+    dok::SdlInput input(dok::InputBindings::defaults(),true);
     auto settings=input.bindings;settings.mouse_enabled=false;settings.gamepad_enabled=false;
     // Disabling also drops presses accumulated before the next player sample.
     SDL_Event e{};e.type=SDL_MOUSEBUTTONDOWN;e.button.button=SDL_BUTTON_LEFT;input.handle(e);
@@ -60,7 +79,10 @@ static void disabled_device_tests(){
     e={};e.type=SDL_MOUSEBUTTONDOWN;e.button.button=SDL_BUTTON_LEFT;input.handle(e);
     e.type=SDL_MOUSEBUTTONUP;input.handle(e);check(input.sample().fire_pressed);
     e={};e.type=SDL_CONTROLLERAXISMOTION;e.caxis.which=SDL_JoystickInstanceID(joystick);e.caxis.axis=SDL_CONTROLLER_AXIS_TRIGGERRIGHT;e.caxis.value=24000;input.handle(e);
-    settings.gamepad_enabled=false;input.configure(settings);check(!input.sample().fire_pressed);
+    check(input.sample().fire_pressed);
+    e.caxis.value=0;input.handle(e);
+    e.caxis.value=24000;input.handle(e);
+    settings.gamepad_enabled=false;input.configure(settings);state=input.sample();check(!state.fire&&!state.fire_pressed);
     settings.gamepad(dok::InputPreset::classic);settings.keyboard(dok::InputPreset::classic);
     check(!settings.gamepad_enabled);input.configure(settings);
     SDL_Event focus{};focus.type=SDL_WINDOWEVENT;focus.window.event=SDL_WINDOWEVENT_FOCUS_LOST;input.handle(focus);
@@ -108,6 +130,7 @@ int main(){
     int result=0;
     try{
         short_press_tests();
+        touch_mouse_tests();
         wheel_tests();
         disabled_device_tests();
         dok::SdlInput input;

@@ -3,6 +3,7 @@
 #include <sstream>
 #include <cmath>
 #include <map>
+#include <string_view>
 #ifdef _WIN32
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
@@ -11,6 +12,18 @@
 
 namespace dok {
 LocaleId system_locale(){
+    // SDL's Unix locale backend only reads LANG and LANGUAGE. Handheld
+    // launchers can also pass the system's message locale through LC_*.
+    if(SDL_GetHintBoolean("DOK_PORTMASTER",SDL_FALSE)&&!SDL_GetHint(SDL_HINT_PREFERRED_LOCALES)){
+        for(const char* name:{"LC_ALL","LC_MESSAGES","LANGUAGE","LANG"}){
+            const char* value=SDL_getenv(name);
+            if(!value)continue;
+            const std::string_view locale(value);
+            const auto language=locale.substr(0,locale.find_first_of("_-.@:"));
+            if(language.empty()||language=="C"||language=="POSIX")continue;
+            return language=="ru"?LocaleId::ru:LocaleId::en;
+        }
+    }
     SDL_Locale* locales=SDL_GetPreferredLocales();
     const bool russian=locales&&locales[0].language&&std::string(locales[0].language)=="ru";
     SDL_free(locales);return russian?LocaleId::ru:LocaleId::en;
@@ -46,7 +59,7 @@ std::string encode_settings(const AppSettings& s){
     std::ostringstream o;o<<"[settings]\nversion=1\n[video]\nrenderer="<<int(s.video.renderer)<<"\nwidth="<<s.video.width<<"\nheight="<<s.video.height
       <<"\nsoftware_mode="<<s.video.software_mode<<"\nfullscreen="<<s.video.fullscreen<<"\nlinear="<<(s.texture_filter()!=0)
       <<"\nmip_filter="<<(s.texture_filter()?5:0)<<"\nframe_filter="<<s.frame_filter<<"\nfxaa="<<s.fxaa<<"\nclassic_hud="<<s.classic_hud<<"\nauto_hud="<<s.auto_hud<<"\nfullscreen_width="<<s.video.fullscreen_width<<"\nfullscreen_height="<<s.video.fullscreen_height
-      <<"\n[interface]\nlocale="<<int(s.locale)<<"\nfps="<<s.show_fps<<"\nlast_dataset="<<int(s.last_dataset)
+      <<"\nhud_scale="<<s.hud_scale<<"\n[interface]\nlocale="<<int(s.locale)<<"\nfps="<<s.show_fps<<"\nlast_dataset="<<int(s.last_dataset)
       <<"\n[gameplay]\ninertia="<<s.inertia<<"\nsaves_enabled="<<s.saves_enabled<<"\ncamera_bobbing="<<s.camera_bobbing<<"\nboundary_hits="<<s.boundary_hits<<"\n[audio]\nmaster=100\neffects="<<s.effects_volume<<"\nmusic="<<s.music_volume
       <<"\n[input]\nkeyboard_preset="<<int(s.input.keyboard_preset)<<"\npad_preset="<<int(s.input.pad_preset)<<"\nclassic_pad="<<s.input.classic_pad
       <<"\nmouse_enabled="<<s.input.mouse_enabled<<"\ngamepad_enabled="<<s.input.gamepad_enabled
@@ -77,6 +90,7 @@ AppSettings load_settings(const std::filesystem::path& file,std::string& warning
         s.video.fullscreen_width=integer(m,"video.fullscreen_width",s.video.width,320,7680);
         s.video.fullscreen_height=integer(m,"video.fullscreen_height",s.video.height,200,4320);
         s.auto_hud=integer(m,"video.auto_hud",1,0,1);
+        s.hud_scale=integer(m,"video.hud_scale",AppSettings::hud_scale_default,AppSettings::hud_scale_default,AppSettings::hud_scale_max);
         s.frame_filter=integer(m,"video.frame_filter",0,0,3);s.fxaa=integer(m,"video.fxaa",0,0,1);s.classic_hud=integer(m,"video.classic_hud",0,0,1);
         s.mip_filter=integer(m,"video.mip_filter",0,0,5);s.linear=integer(m,"video.linear",0,0,1);s.locale=LocaleId(integer(m,"interface.locale",int(s.locale),0,1));
         s.texture_filter(s.texture_filter()); // Normalize legacy smoothing choices.
@@ -142,6 +156,7 @@ bool merge_settings_edits(AppSettings& stored,const AppSettings& a,const AppSett
 #define EDIT(f) if(a.f!=b.f&&stored.f!=b.f){stored.f=b.f;changed=true;}
     EDIT(saves_enabled) EDIT(camera_bobbing) EDIT(boundary_hits) EDIT(mip_filter) EDIT(resource_paths) EDIT(resource_choices) EDIT(auto_hud) EDIT(frame_filter) EDIT(fxaa) EDIT(classic_hud) EDIT(locale) EDIT(linear) EDIT(show_fps) EDIT(inertia) EDIT(effects_volume) EDIT(music_volume) EDIT(last_dataset)
     EDIT(input.mouse_enabled) EDIT(input.gamepad_enabled)
+    EDIT(hud_scale)
     EDIT(input.keys) EDIT(input.buttons) EDIT(input.triggers) EDIT(input.mouse) EDIT(input.classic_pad)
     EDIT(input.keyboard_preset) EDIT(input.pad_preset) EDIT(input.mouse_degrees_per_count) EDIT(input.turn_sensitivity) EDIT(input.stick_deadzone)
 #undef EDIT

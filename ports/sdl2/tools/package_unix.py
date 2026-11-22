@@ -45,9 +45,11 @@ def main():
     maximum = max(versions, default=(0, 0))
     if maximum > (2, 35):
         parser.error(f'ELF requires glibc {maximum}, exceeds 2.35 baseline')
-    out = ROOT / 'artifacts/sdl2' / args.name
-    archive = out.with_suffix('.tar.gz' if expected == 62 else '.zip')
-    if out.exists() or archive.exists():
+    release = ROOT / 'artifacts/sdl2' / args.name
+    out = release if expected == 62 else release / 'package'
+    # PortMaster records the ZIP filename as the installed port's name.
+    archive = release.with_suffix('.tar.gz') if expected == 62 else release / 'ogdok.zip'
+    if release.exists() or archive.exists():
         parser.error('Output exists; use a new name (user profiles are never overwritten)')
     git = ['git', '-c', f'safe.directory={ROOT}']
     revision = subprocess.check_output(git + ['rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
@@ -70,7 +72,7 @@ def main():
         shutil.copyfile(ROOT / 'ports/sdl2/README-linux.txt', game / 'README.txt')
     else:
         shutil.copyfile(ROOT / 'ports/sdl2/portmaster/OGDoK.sh', out / 'OGDoK.sh')
-        for name in ['port.json', 'gameinfo.xml']:
+        for name in ['port.json', 'gameinfo.xml', 'screenshot.png']:
             shutil.copyfile(ROOT / 'ports/sdl2/portmaster' / name, game / name)
         shutil.copyfile(ROOT / 'ports/sdl2/portmaster/README.md', game / 'ogdok.md')
         (out / 'OGDoK.sh').chmod(0o755)

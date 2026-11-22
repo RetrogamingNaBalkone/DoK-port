@@ -14,6 +14,7 @@ struct VideoSettings {
 bool operator==(const VideoSettings& a,const VideoSettings& b);
 inline bool operator!=(const VideoSettings& a,const VideoSettings& b){return !(a==b);}
 struct AppSettings {
+    static constexpr int hud_scale_default=100, hud_scale_max=200, hud_scale_step=25;
     VideoSettings video;
     LocaleId locale=system_locale();
     bool linear=false,show_fps=false,inertia=true;
@@ -26,6 +27,7 @@ struct AppSettings {
     // Independent presentation options; never enter simulation state.
     int frame_filter=0; // nearest, linear, sharp bilinear, experimental xBR
     bool fxaa=false,classic_hud=false,auto_hud=true;
+    int hud_scale=hud_scale_default;
     int effects_volume=100,music_volume=100;
     DatasetId last_dataset=DatasetId::unknown;
     InputBindings input=InputBindings::defaults();

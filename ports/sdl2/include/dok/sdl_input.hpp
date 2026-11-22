@@ -26,7 +26,7 @@ struct InputBindings {
 };
 class SdlInput {
 public:
-    explicit SdlInput(InputBindings bindings=InputBindings::defaults());
+    explicit SdlInput(InputBindings bindings=InputBindings::defaults(),bool ignore_touch_mouse=false);
     ~SdlInput();
     SdlInput(const SdlInput&)=delete;
     SdlInput& operator=(const SdlInput&)=delete;
@@ -38,6 +38,7 @@ public:
     InputBindings bindings;
     std::size_t controller_count() const noexcept {return controllers_.size();}
 private:
+    const bool ignore_touch_mouse_;
     struct Controller {
         SDL_GameController* handle{};
         std::array<Sint16,SDL_CONTROLLER_AXIS_MAX> axes{};

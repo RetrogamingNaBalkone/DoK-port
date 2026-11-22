@@ -12,7 +12,7 @@ def validate_portmaster_layout(files):
     # Independent of our manifest: a self-consistent manifest can describe a
     # wrongly laid out ZIP. Match PortMaster's build_port_zip output contract.
     required = {'OGDoK.sh', 'ogdok/OGDoK', 'ogdok/port.json',
-                'ogdok/gameinfo.xml', 'ogdok/ogdok.md'}
+                'ogdok/gameinfo.xml', 'ogdok/ogdok.md', 'ogdok/screenshot.png'}
     if not required <= files.keys():
         raise ValueError('PortMaster metadata must be inside ogdok/')
     if {name for name in files if '/' not in name} != {'OGDoK.sh'}:
@@ -22,8 +22,18 @@ def validate_portmaster_layout(files):
     metadata = json.loads(files['ogdok/port.json'])
     if metadata['items'] != ['OGDoK.sh', 'ogdok/'] or metadata['name'] != 'ogdok.zip':
         raise ValueError('PortMaster items do not match install layout')
-    if ET.fromstring(files['ogdok/gameinfo.xml']).findtext('game/path') != './OGDoK.sh':
+    if metadata.get('attr', {}).get('image', {}).get('screenshot') != 'screenshot.png':
+        raise ValueError('PortMaster preview must point to the installed screenshot')
+    gameinfo = ET.fromstring(files['ogdok/gameinfo.xml'])
+    if gameinfo.findtext('game/path') != './OGDoK.sh':
         raise ValueError('Gameinfo launch path must be relative to ports directory')
+    if gameinfo.findtext('game/image') != './ogdok/screenshot.png':
+        raise ValueError('Gameinfo image must point to the installed screenshot')
+    screenshot = files['ogdok/screenshot.png']
+    if (screenshot[:16] != b'\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR'
+            or int.from_bytes(screenshot[16:20], 'big') != 640
+            or int.from_bytes(screenshot[20:24], 'big') != 480):
+        raise ValueError('PortMaster screenshot must be a 640x480 PNG')
 
 
 def verify(package):
@@ -57,6 +67,8 @@ def verify(package):
     manifest = json.loads(files[manifest_name])
     if manifest['platform'] == 'portmaster-aarch64':
         validate_portmaster_layout(files)
+        if package.name != json.loads(files['ogdok/port.json'])['name']:
+            raise ValueError('PortMaster archive name must match port.json')
     if set(files) != set(manifest['files']) | {manifest_name}:
         raise ValueError('Manifest file set mismatch')
     for name, digest in manifest['files'].items():

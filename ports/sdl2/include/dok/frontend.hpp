@@ -15,11 +15,11 @@ enum class MenuCommand {start,resume,main,quit,apply_video,keep_video,revert_vid
 struct MenuFrame {int width=640,height=480;std::vector<std::uint32_t> pixels;};
 class Frontend {
 public:
-    explicit Frontend(AppSettings& settings);
+    explicit Frontend(AppSettings& settings,bool portmaster=false);
     void datasets(std::vector<FrontendDataset> values,const std::string& errors={});
     void handle(const SDL_Event& event,int window_width,int window_height);
     void update(std::uint64_t milliseconds);
-    const MenuFrame& render(int output_width,int output_height);
+    const MenuFrame& render(int output_width,int output_height,float vertical_dpi=0,int presented_height=0);
     std::vector<MenuCommand> commands();
     void main_menu();
     void pause();
@@ -58,10 +58,11 @@ public:
     const VideoSettings& previous_video() const {return old_video_;}
 private:
     enum class Item {none,graphics,sound,controls,gameplay,keyboard,pad,renderer,window_mode,resolution,aspect,apply_video,
-        inertia,saving,camera_bobbing,boundary_hits,filtering,fxaa,hud,language,fps,effects,music,device_enabled,preset,bindings,sensitivity,deadzone,defaults,back,resource_gold,resource_pkr,resource_pke};
+        inertia,saving,camera_bobbing,boundary_hits,filtering,fxaa,hud,hud_scale,language,fps,effects,music,device_enabled,preset,bindings,sensitivity,deadzone,defaults,back,resource_gold,resource_pkr,resource_pke};
     struct Row {std::string label,value,help;bool enabled=true;Item id=Item::none;bool adjustable=false;};
     struct Hit {SDL_Rect rect;int row;};
     AppSettings& s_;
+    const bool portmaster_;
     std::vector<FrontendDataset> sets_;
     const World* world_=nullptr;
     struct SourceRow {std::size_t index;DatasetId dataset;std::string path;bool selected;};
@@ -70,6 +71,7 @@ private:
     int save_slot_=0,save_operation_=0;
     std::string save_name_;
     MenuScreen save_return_=MenuScreen::pause;
+    int first_load_slot() const {return portmaster_?1:0;}
     void open_saves(bool saving);
     bool has_loadable_saves();
     void leave_game_menu();
@@ -99,6 +101,14 @@ private:
     std::vector<MenuCommand> commands_;
     std::vector<Hit> hits_;
     std::vector<Row> rows_;
+    struct ListScroll {
+        double position=0,target=0;
+        int limit=0;
+        bool follow_focus=true,laid_out=false;
+        std::uint64_t last_frame=0;
+    } scroll_;
+    bool settings_list() const;
+    int clip_top_=0,clip_bottom_=0;
     MenuFrame frame_;
     std::array<std::uint8_t,4096> font_{};
     std::array<std::uint8_t,4096> menu_font_{};
@@ -120,7 +130,7 @@ private:
     void enter_item(MenuScreen screen,Item item);
     void back();
     void apply_video();
-    void choose(int delta=0);
+    void choose(int delta=0,bool mouse_click=false);
     void begin_game();
     void browse(const std::filesystem::path& path);
     static Item resource_item(DatasetId id);

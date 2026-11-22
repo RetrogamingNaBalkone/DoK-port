@@ -3,6 +3,7 @@
 #include "gl_renderer.hpp"
 #include <memory>
 #include <unordered_map>
+#include <utility>
 namespace dok {
 // Owns presentation resources only; replacing it never owns or resets the world.
 class Display {
@@ -23,8 +24,10 @@ public:
     std::vector<std::uint32_t> read_pixels();
     void screenshot(const std::string& path);
     std::array<int,2> size()const;
+    std::pair<float,int> menu_display_metrics()const;
     bool menu_event(SDL_Event& event)const;
 private:
+    std::array<int,2> drawable_size()const;
     int frame_width_=0,frame_height_=0;
     bool world_gl_=false;
     SDL_Window* window_=nullptr;

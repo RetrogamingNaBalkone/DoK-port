@@ -1,9 +1,14 @@
 #pragma once
 #include "world.hpp"
 #include "raster.hpp"
+#include <algorithm>
 namespace dok {
 struct HudPanel {int x,y,width,height;};
 struct HudFrame {int width,height;std::vector<std::uint32_t> pixels;};
+inline constexpr int modern_hud_min_width=320;
+inline double modern_hud_scale(int width,int height,int percent){
+    return std::min(std::max(1,height/720)*percent/100.0,double(width)/modern_hud_min_width);
+}
 class Hud {
 public:
     explicit Hud(const Archive& archive);

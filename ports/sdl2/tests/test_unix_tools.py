@@ -1,6 +1,5 @@
 """Behaviour checks for package rejection and complete-frame summaries."""
 import importlib.util
-import json
 from pathlib import Path
 import struct
 import subprocess
@@ -22,10 +21,11 @@ class UnixToolsTests(unittest.TestCase):
     def test_portmaster_install_layout_is_not_source_layout(self):
         validator = module('check_unix_package').validate_portmaster_layout
         files = {'OGDoK.sh': b'', 'ogdok/OGDoK': b'', 'ogdok/ogdok.md': b'',
-                 'ogdok/port.json': json.dumps({'name': 'ogdok.zip', 'items': ['OGDoK.sh', 'ogdok/']}).encode(),
-                 'ogdok/gameinfo.xml': b'<gameList><game><path>./OGDoK.sh</path></game></gameList>'}
+                 'ogdok/port.json': (TOOLS.parent / 'portmaster/port.json').read_bytes(),
+                 'ogdok/gameinfo.xml': (TOOLS.parent / 'portmaster/gameinfo.xml').read_bytes(),
+                 'ogdok/screenshot.png': (TOOLS.parent / 'portmaster/screenshot.png').read_bytes()}
         validator(files)
-        for name in ['port.json', 'gameinfo.xml']:
+        for name in ['port.json', 'gameinfo.xml', 'screenshot.png']:
             wrong = dict(files)
             wrong[name] = wrong.pop('ogdok/' + name)
             with self.subTest(name=name), self.assertRaises(ValueError):

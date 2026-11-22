@@ -36,14 +36,29 @@ if __name__ == '__main__':
         assert settings.getint('video', 'fullscreen_width') == width
         assert settings.getint('video', 'fullscreen_height') == height
         assert settings.getboolean('video', 'fullscreen') == portmaster
-        settings['video'].update(width='800', height='600', fullscreen_width='800', fullscreen_height='600', fullscreen='0')
+        window_width, window_height = (640, 480) if (width, height) == (800, 600) else (800, 600)
+        settings['video'].update(width=str(window_width), height=str(window_height),
+                                 fullscreen_width='800', fullscreen_height='600', fullscreen='0')
         with path.open('w', encoding='utf-8') as file:
             settings.write(file)
         original = path.read_bytes()
-        process = subprocess.run(command, env=env, capture_output=True, timeout=60)
+        script = profile / 'fullscreen.txt'
+        script.write_text('1 state startup\n' + ('2 key F11\n3 state after_f11\n' if portmaster else ''),
+                          encoding='ascii')
+        process = subprocess.run(
+            [str(args.exe.resolve()), '--verbose', '--renderer', 'software',
+             '--frames', '4', '--user-dir', str(profile), '--ui-script', str(script)],
+            env=env, capture_output=True, timeout=60,
+        )
         assert process.returncode == 0, process.stderr
         assert path.read_bytes() == original, 'Existing profile was changed'
-        assert 'Initial display resolution:' not in (profile / 'port.log').read_text(encoding='utf-8')
-        report.append(f'{portmaster=} detected={width}x{height}; saved settings preserved')
+        log = (profile / 'port.log').read_text(encoding='utf-8')
+        assert 'Initial display resolution:' not in log
+        actual = f'{width}x{height}' if portmaster else f'{window_width}x{window_height}'
+        states = {line.split()[1]: line for line in log.splitlines() if line.startswith('STATE ')}
+        assert f' size={actual} ' in states['startup'], log
+        if portmaster:
+            assert f' size={actual} ' in states['after_f11'], log
+        report.append(f'{portmaster=} detected={width}x{height}; existing profile startup={actual}; saved settings preserved')
     (root / 'result.txt').write_text('\n'.join(report) + '\n', encoding='utf-8')
     print('Native defaults, CLI isolation and existing profiles: PASS')

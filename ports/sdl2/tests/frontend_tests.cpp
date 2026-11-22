@@ -161,12 +161,12 @@ int main(){
         check(s.input.keys[0][0]==SDL_SCANCODE_LCTRL&&s.input.keys[int(dok::Action::fire)][0]==SDL_SCANCODE_UNKNOWN,"Conflict replace");
         key(menu,SDLK_ESCAPE);key(menu,SDLK_ESCAPE);key(menu,SDLK_ESCAPE);down(menu,1);key(menu,SDLK_RETURN);down(menu,2);key(menu,SDLK_RETURN);key(menu,SDLK_RETURN);
         check(menu.capturing(),"Gamepad capture");pad(menu,SDL_CONTROLLER_BUTTON_START);pad(menu,SDL_CONTROLLER_BUTTON_BACK);check(!menu.capturing(),"Gamepad-only cancel capture");
-        menu.pause();down(menu,1);key(menu,SDLK_RETURN);key(menu,SDLK_RETURN);for(int n=0;n<12&&menu.focused_row()!=8;++n)key(menu,SDLK_DOWN);auto locale=s.locale;key(menu,SDLK_RIGHT);check(s.locale!=locale,"Live menu locale");
+        menu.pause();down(menu,1);key(menu,SDLK_RETURN);key(menu,SDLK_RETURN);for(int n=0;n<13&&menu.focused_row()!=9;++n)key(menu,SDLK_DOWN);auto locale=s.locale;key(menu,SDLK_RIGHT);check(s.locale!=locale,"Live menu locale");
         key(menu,SDLK_ESCAPE);key(menu,SDLK_ESCAPE);check(menu.screen()==dok::MenuScreen::pause,"Settings returns to pause");key(menu,SDLK_UP);key(menu,SDLK_RETURN);check(!menu.active()&&command(menu,dok::MenuCommand::resume),"Resume flow");
         menu.pause();menu.request_quit();key(menu,SDLK_RETURN);check(menu.screen()==dok::MenuScreen::pause,"Exit default is cancel");
         {
             dok::AppSettings edits;dok::Frontend revised(edits);revised.render(640,480);
-            auto focus=[&](int row){for(int n=0;n<20&&revised.focused_row()!=row;++n)key(revised,SDLK_DOWN);check(revised.focused_row()==row,"Revised row reachable");};
+            auto focus=[&](int row){for(int n=0;n<20&&revised.focused_row()!=row;++n)key(revised,revised.focused_row()<row?SDLK_DOWN:SDLK_UP);check(revised.focused_row()==row,"Revised row reachable");};
             down(revised,1);key(revised,SDLK_RETURN);down(revised,4);check(revised.focused_row()==4,"Four settings categories and Back");
             key(revised,SDLK_UP);key(revised,SDLK_UP);key(revised,SDLK_UP);key(revised,SDLK_UP);key(revised,SDLK_RETURN);
             focus(5);key(revised,SDLK_RIGHT);check(edits.linear&&edits.frame_filter==0,"GL filtering independent");
@@ -175,9 +175,19 @@ int main(){
             check(edits.linear&&edits.frame_filter==2,"Software Sharp Bilinear independent");
             key(revised,SDLK_DOWN);check(revised.focused_row()==7,"Software skips disabled FXAA");
             focus(0);key(revised,SDLK_RIGHT);focus(5);check(edits.frame_filter==2&&edits.linear,"Filter values survive renderer roundtrip");
-            const auto locale=edits.locale;focus(8);key(revised,SDLK_RIGHT);check(edits.locale!=locale&&revised.focused_row()==8,"Language preserves semantic focus");
-            focus(9);key(revised,SDLK_RIGHT);check(edits.show_fps,"FPS applies immediately");
-            focus(10);key(revised,SDLK_RETURN);check(edits.locale==dok::system_locale()&&!edits.show_fps&&!edits.fxaa&&edits.texture_filter()==0&&edits.frame_filter==0,"Combined defaults");
+            focus(7);key(revised,SDLK_RIGHT);key(revised,SDLK_DOWN);
+            check(edits.classic_hud&&revised.focused_row()==9,"Classic skips modern HUD scale");
+            focus(7);key(revised,SDLK_RIGHT);focus(8);
+            const auto before_scale=edits;
+            for(int n=0;n<5;++n)pad(revised,SDL_CONTROLLER_BUTTON_DPAD_RIGHT);
+            check(!edits.auto_hud&&!edits.classic_hud&&edits.hud_scale==200&&edits.video==before_scale.video&&!revised.video_pending(),"HUD scale applies directly and stops at 200%");
+            pad(revised,SDL_CONTROLLER_BUTTON_DPAD_LEFT);check(edits.hud_scale==175,"Gamepad can reduce HUD scale");
+            auto stored_scale=before_scale;
+            check(dok::merge_settings_edits(stored_scale,before_scale,edits,false)&&dok::save_settings(path,stored_scale,warning),"Persist HUD scale independently of video mode");
+            check(dok::load_settings(path,warning).hud_scale==175&&warning.empty(),"HUD scale survives restart");
+            const auto locale=edits.locale;focus(9);key(revised,SDLK_RIGHT);check(edits.locale!=locale&&revised.focused_row()==9,"Language preserves semantic focus");
+            focus(10);key(revised,SDLK_RIGHT);check(edits.show_fps,"FPS applies immediately");
+            focus(11);key(revised,SDLK_RETURN);check(edits.locale==dok::system_locale()&&!edits.show_fps&&!edits.fxaa&&edits.texture_filter()==0&&edits.frame_filter==0&&edits.hud_scale==100,"Combined defaults");
             key(revised,SDLK_ESCAPE);down(revised,2);key(revised,SDLK_RETURN);key(revised,SDLK_RETURN);
             key(revised,SDLK_RETURN);check(!edits.input.mouse_enabled,"Disable mouse gameplay");
             pad(revised,SDL_CONTROLLER_BUTTON_DPAD_DOWN);key(revised,SDLK_RETURN);
@@ -261,7 +271,74 @@ int main(){
         down(fullscreen,1);key(fullscreen,SDLK_RETURN);
         check(fullscreen.video_pending()&&fs.video.fullscreen&&fs.video.width==800&&fs.video.height==600&&fs.video.fullscreen_width==1280&&fs.video.fullscreen_height==720,"Fullscreen preset must not change window size");
         key(fullscreen,SDLK_RETURN);check(!fullscreen.video_pending()&&command(fullscreen,dok::MenuCommand::keep_video),"Confirm fullscreen mode");
-        for(int n=0;n<12&&fullscreen.focused_row()!=6;++n)key(fullscreen,SDLK_DOWN);check(fullscreen.focused_row()==6,"FXAA row navigation");down(fullscreen,4);check(fullscreen.focused_row()==10,"Defaults row navigation");
+        {
+            dok::AppSettings edits;
+            edits.video.fullscreen=true;
+            edits.video.fullscreen_width=640;
+            edits.video.fullscreen_height=480;
+            dok::Frontend handheld(edits,true);
+            handheld.render(480,320);
+            pad(handheld,SDL_CONTROLLER_BUTTON_DPAD_DOWN);pad(handheld,SDL_CONTROLLER_BUTTON_A);
+            pad(handheld,SDL_CONTROLLER_BUTTON_A);
+            pad(handheld,SDL_CONTROLLER_BUTTON_DPAD_DOWN);
+            pad(handheld,SDL_CONTROLLER_BUTTON_DPAD_LEFT);
+            pad(handheld,SDL_CONTROLLER_BUTTON_DPAD_DOWN);pad(handheld,SDL_CONTROLLER_BUTTON_A);
+            check(command(handheld,dok::MenuCommand::apply_video)&&edits.video.fullscreen&&edits.video.fullscreen_width==480&&edits.video.fullscreen_height==320,"PortMaster offers the 480x320 fullscreen preset directly after Renderer");
+            handheld.render(480,320);
+            pad(handheld,SDL_CONTROLLER_BUTTON_A);
+            check(command(handheld,dok::MenuCommand::keep_video),"PortMaster confirms the 480x320 mode by gamepad");
+            down(handheld,8);
+            pad(handheld,SDL_CONTROLLER_BUTTON_A);
+            pad(handheld,SDL_CONTROLLER_BUTTON_B);
+            check(handheld.screen()==dok::MenuScreen::video_unsaved,"PortMaster stages graphics defaults");
+            pad(handheld,SDL_CONTROLLER_BUTTON_DPAD_UP);
+            pad(handheld,SDL_CONTROLLER_BUTTON_DPAD_UP);
+            pad(handheld,SDL_CONTROLLER_BUTTON_A);
+            check(command(handheld,dok::MenuCommand::apply_video)&&edits.video.fullscreen,
+                  "PortMaster keeps fullscreen when applying graphics defaults");
+        }
+        {
+            using Screen=dok::MenuScreen;
+            dok::AppSettings edits;
+            dok::Frontend handheld(edits,true);
+            check(handheld.render(1920,1080).height==480,"PortMaster scales Full HD menus with no DPI");
+            check(handheld.render(1920,1080,96,1080).height==480,"Generic DPI cannot shrink a Full HD menu");
+            check(handheld.render(1920,1080,400,1080).height==400,"High DPI increases PortMaster menu size");
+            check(handheld.render(480,320,400,320).height==320,"Small menu canvas keeps its layout");
+            check(handheld.render(640,480,200,1080).height==480,"DPI uses presented height for a scaled canvas");
+            pad(handheld,SDL_CONTROLLER_BUTTON_DPAD_DOWN);pad(handheld,SDL_CONTROLLER_BUTTON_A);
+            pad(handheld,SDL_CONTROLLER_BUTTON_DPAD_DOWN);pad(handheld,SDL_CONTROLLER_BUTTON_DPAD_DOWN);
+            pad(handheld,SDL_CONTROLLER_BUTTON_A);pad(handheld,SDL_CONTROLLER_BUTTON_A);
+            check(handheld.screen()==Screen::pad,"PortMaster controls opens with Gamepad first");
+            pad(handheld,SDL_CONTROLLER_BUTTON_DPAD_RIGHT);
+            check(edits.input.gamepad_enabled&&edits.input.pad_preset==dok::InputPreset::classic,"First gamepad row changes preset");
+            pad(handheld,SDL_CONTROLLER_BUTTON_DPAD_DOWN);pad(handheld,SDL_CONTROLLER_BUTTON_A);
+            check(handheld.screen()==Screen::bindings,"PortMaster allows gamepad remapping");
+
+            handheld.save_catalog=[]{
+                std::vector<dok::SaveEntry> entries(11);
+                for(const int slot:{0,1,10}){entries[slot].slot=slot;entries[slot].exists=true;}
+                return entries;
+            };
+            handheld.pause();down(handheld,2);pad(handheld,SDL_CONTROLLER_BUTTON_A);
+            check(handheld.screen()==Screen::load_slots,"PortMaster opens named save slots");
+            pad(handheld,SDL_CONTROLLER_BUTTON_A);
+            check(handheld.screen()==Screen::save_entry&&handheld.pending_save_slot()==1,"Load starts at named slot 1");
+            pad(handheld,SDL_CONTROLLER_BUTTON_B);
+            check(handheld.focused_row()==0,"Back restores focus to slot 1");
+            down(handheld,9);pad(handheld,SDL_CONTROLLER_BUTTON_A);
+            check(handheld.pending_save_slot()==10,"Load ends at named slot 10");
+            pad(handheld,SDL_CONTROLLER_BUTTON_A);
+            check(handheld.screen()==Screen::save_confirm,"Damaged save can be deleted");
+            pad(handheld,SDL_CONTROLLER_BUTTON_DPAD_UP);
+            pad(handheld,SDL_CONTROLLER_BUTTON_A);
+            check(command(handheld,dok::MenuCommand::delete_game)&&handheld.screen()==Screen::load_slots&&handheld.focused_row()==9,
+                  "Deleting slot 10 restores focus to its row");
+            pad(handheld,SDL_CONTROLLER_BUTTON_B);down(handheld,2);pad(handheld,SDL_CONTROLLER_BUTTON_A);
+            pad(handheld,SDL_CONTROLLER_BUTTON_DPAD_UP);pad(handheld,SDL_CONTROLLER_BUTTON_A);
+            check(command(handheld,dok::MenuCommand::quit),"Pause goes from Load through Main menu to Quit");
+        }
+        for(int n=0;n<12&&fullscreen.focused_row()!=6;++n)key(fullscreen,SDLK_DOWN);check(fullscreen.focused_row()==6,"FXAA row navigation");down(fullscreen,5);check(fullscreen.focused_row()==11,"Defaults row navigation");
         {
             dok::AppSettings edits;dok::Frontend staged(edits);staged.render(640,480);
             down(staged,1);key(staged,SDLK_RETURN);key(staged,SDLK_RETURN);
@@ -286,7 +363,7 @@ int main(){
             down(staged,1);check(staged.focused_row()==4,"Aspect directly below resolution is read-only");key(staged,SDLK_UP);
             if(route==0)key(staged,SDLK_ESCAPE);
             else if(route==1)pad(staged,SDL_CONTROLLER_BUTTON_B);
-            else{key(staged,SDLK_UP);key(staged,SDLK_UP);key(staged,SDLK_UP);key(staged,SDLK_RETURN);}
+            else{down(staged,12);key(staged,SDLK_RETURN);}
             check(staged.screen()==dok::MenuScreen::video_unsaved&&staged.focused_row()==2&&edits.video==unchanged,"Staged video leave prompt defaults to continue");
             key(staged,SDLK_RETURN);check(staged.screen()==dok::MenuScreen::graphics,"Continue editing");
             key(staged,SDLK_ESCAPE);key(staged,SDLK_ESCAPE);check(staged.screen()==dok::MenuScreen::graphics,"Escape preserves staged mode");
@@ -298,18 +375,58 @@ int main(){
             check(staged.video_pending()&&edits.video!=unchanged&&command(staged,dok::MenuCommand::apply_video),"Prompt applies preserved draft");
             staged.update(35001);check(edits.video==unchanged&&command(staged,dok::MenuCommand::revert_video),"Prompt apply retains timed rollback");
         }
+        for(auto size:{std::array<int,2>{320,200},{480,320}}){
+            dok::AppSettings prefs;dok::Frontend list(prefs);
+            down(list,1);key(list,SDLK_RETURN);key(list,SDLK_RETURN);
+            auto thumb_y=[&](int time){
+                list.update(time);
+                const auto& frame=list.render(size[0],size[1]);
+                const auto track=std::find(frame.pixels.begin(),frame.pixels.end(),0xff444038);
+                check(track!=frame.pixels.end(),"Graphics list has a scroll track");
+                const int x=int(track-frame.pixels.begin())%frame.width;
+                for(int y=0;y<frame.height;++y)
+                    if(frame.pixels[y*frame.width+x]==0xffffff00)return y;
+                throw std::runtime_error("Missing scroll thumb");
+            };
+            const int start=thumb_y(1000);
+            SDL_Event move{};move.type=SDL_KEYDOWN;move.key.keysym.sym=SDLK_UP;
+            list.handle(move,size[0],size[1]);
+            check(list.focused_row()==0,"Up stops at the first setting");
+            SDL_Event wheel{};wheel.type=SDL_MOUSEWHEEL;wheel.wheel.y=-100;
+            list.handle(wheel,size[0],size[1]);
+            const int midway=thumb_y(1016),end=thumb_y(1500);
+            check(start<midway&&midway<end&&list.focused_row()==0,"Wheel animates the viewport independently");
+            list.handle(wheel,size[0],size[1]);
+            check(thumb_y(1800)==end,"Wheel stops at the bottom");
+            SDL_Event dpad{};dpad.type=SDL_CONTROLLERBUTTONDOWN;dpad.cbutton.button=SDL_CONTROLLER_BUTTON_DPAD_DOWN;
+            for(int i=0;i<18;++i)list.handle(dpad,size[0],size[1]);
+            check(list.focused_row()==12&&thumb_y(2000)==end,"D-pad stops at the last setting");
+            list.handle(move,size[0],size[1]);
+            check(list.focused_row()==11&&thumb_y(2300)==end,"Reversing within viewport keeps rows still");
+            wheel.wheel.y=100;list.handle(wheel,size[0],size[1]);
+            check(thumb_y(2800)==start&&list.focused_row()==11,"Wheel stops at the top");
+        }
         // Right click decrements values but never activates a navigation/action row.
         for(auto size:{std::array<int,2>{640,480},std::array<int,2>{1280,720}}){
             dok::AppSettings edits;dok::Frontend mouse(edits);mouse.render(size[0],size[1]);
-            auto right=[&]{const auto& f=mouse.render(size[0],size[1]);const auto selected=std::find(f.pixels.begin(),f.pixels.end(),0xff302b20);
-                check(selected!=f.pixels.end(),"Mouse test focus visible");const auto at=selected-f.pixels.begin();SDL_Event click{};click.type=SDL_MOUSEBUTTONDOWN;click.button.button=SDL_BUTTON_RIGHT;
+            auto click_row=[&](Uint8 button=SDL_BUTTON_RIGHT){const auto& f=mouse.render(size[0],size[1]);const auto selected=std::find(f.pixels.begin(),f.pixels.end(),0xff302b20);
+                check(selected!=f.pixels.end(),"Mouse test focus visible");const auto at=selected-f.pixels.begin();SDL_Event click{};click.type=SDL_MOUSEBUTTONDOWN;click.button.button=button;
                 click.button.x=(int(at%f.width)+8)*size[0]/f.width;click.button.y=(int(at/f.width)+4)*size[1]/f.height;mouse.handle(click,size[0],size[1]);};
-            down(mouse,1);right();check(mouse.screen()==dok::MenuScreen::main,"Right click never opens settings");key(mouse,SDLK_RETURN);key(mouse,SDLK_RETURN);
-            down(mouse,2);right();key(mouse,SDLK_ESCAPE);key(mouse,SDLK_UP);key(mouse,SDLK_UP);key(mouse,SDLK_RETURN);
+            down(mouse,1);click_row();check(mouse.screen()==dok::MenuScreen::main,"Right click never opens settings");key(mouse,SDLK_RETURN);key(mouse,SDLK_RETURN);
+            down(mouse,2);click_row();key(mouse,SDLK_ESCAPE);key(mouse,SDLK_UP);key(mouse,SDLK_UP);key(mouse,SDLK_RETURN);
             check(edits.video.width==1280&&edits.video.height==800,"Right click cycles resolution backwards");key(mouse,SDLK_RETURN);
-            for(int n=0;n<12&&mouse.focused_row()!=11;++n)key(mouse,SDLK_DOWN);
-            right();check(mouse.screen()==dok::MenuScreen::graphics&&!mouse.video_pending(),"Right click cannot activate action rows");
-            key(mouse,SDLK_ESCAPE);down(mouse,1);key(mouse,SDLK_RETURN);right();check(edits.effects_volume==95,"Right click decrements volume");
+            for(int n=0;n<13&&mouse.focused_row()!=8;++n)key(mouse,SDLK_DOWN);
+            check(mouse.focused_row()==8,"HUD scale row reached");
+            for(int expected:{125,150,175,200,100}){
+                click_row(SDL_BUTTON_LEFT);check(edits.hud_scale==expected,"Left click cycles HUD scale up");
+            }
+            for(int expected:{200,175,150,125,100}){
+                click_row(SDL_BUTTON_RIGHT);check(edits.hud_scale==expected,"Right click cycles HUD scale down");
+            }
+            key(mouse,SDLK_LEFT);check(edits.hud_scale==100,"Keyboard keeps HUD scale at lower bound");
+            for(int n=0;n<13&&mouse.focused_row()!=12;++n)key(mouse,SDLK_DOWN);
+            click_row();check(mouse.screen()==dok::MenuScreen::graphics&&!mouse.video_pending(),"Right click cannot activate action rows");
+            key(mouse,SDLK_ESCAPE);down(mouse,1);key(mouse,SDLK_RETURN);click_row();check(edits.effects_volume==95,"Right click decrements volume");
         }
         {dok::AppSettings errors;dok::Frontend returning(errors);returning.hide();returning.notice("error","error");returning.render(640,480);key(returning,SDLK_ESCAPE);
             check(returning.screen()==dok::MenuScreen::hidden&&command(returning,dok::MenuCommand::resume),"Notice dismissed to live game must resume input");

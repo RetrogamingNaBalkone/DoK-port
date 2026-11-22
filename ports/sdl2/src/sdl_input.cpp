@@ -55,7 +55,8 @@ void InputBindings::gamepad(InputPreset preset){
         triggers[index(Action::fire)]=SDL_CONTROLLER_AXIS_TRIGGERRIGHT;triggers[index(Action::run)]=SDL_CONTROLLER_AXIS_TRIGGERLEFT;
     }
 }
-SdlInput::SdlInput(InputBindings settings):bindings(std::move(settings)){
+SdlInput::SdlInput(InputBindings settings,bool ignore_touch_mouse)
+    :bindings(std::move(settings)),ignore_touch_mouse_(ignore_touch_mouse){
     for(int i=0;i<SDL_NumJoysticks();++i)open(i);
 }
 SdlInput::~SdlInput(){for(auto& entry:controllers_)SDL_GameControllerClose(entry.second.handle);if(capture_)SDL_SetRelativeMouseMode(SDL_FALSE);SDL_ShowCursor(SDL_ENABLE);}
@@ -102,12 +103,17 @@ void SdlInput::handle(const SDL_Event& event){
             keys_[event.key.keysym.scancode]=event.type==SDL_KEYDOWN;
         }
         break;
-    case SDL_MOUSEMOTION:if(bindings.mouse_enabled&&focused_&&capture_)mouse_x_+=event.motion.xrel;break;
+    case SDL_MOUSEMOTION:
+        if(ignore_touch_mouse_&&event.motion.which==SDL_TOUCH_MOUSEID)break;
+        if(bindings.mouse_enabled&&focused_&&capture_)mouse_x_+=event.motion.xrel;
+        break;
     case SDL_MOUSEWHEEL:
+        if(ignore_touch_mouse_&&event.wheel.which==SDL_TOUCH_MOUSEID)break;
         if(bindings.mouse_enabled&&focused_){const auto button=wheel_binding(event.wheel);
             if(button)for(unsigned i=0;i<wheel_presses_.size();++i)if(bindings.mouse[i]==button)wheel_presses_[i]=true;
         }break;
     case SDL_MOUSEBUTTONDOWN:case SDL_MOUSEBUTTONUP:
+        if(ignore_touch_mouse_&&event.button.which==SDL_TOUCH_MOUSEID)break;
         if(bindings.mouse_enabled&&focused_&&event.button.button<mouse_buttons_.size()){
             if(event.type==SDL_MOUSEBUTTONUP&&mouse_buttons_[event.button.button]&&bindings.mouse[index(Action::map)]==event.button.button)
                 presses_[index(Action::map)]=true;

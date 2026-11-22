@@ -65,7 +65,7 @@ std::array<std::uint8_t,4096> bootstrap_font(){
     return out;
 }
 }
-Frontend::Frontend(AppSettings& settings):s_(settings){font_=bootstrap_font();menu_font_=font_;menu_yo16(menu_font_);for(int c=0;c<256;++c)for(int y=0;y<8;++y)font8_[c*8+y]=menu_font_[c*16+y*2+1];frame_.pixels.resize(640*480);}
+Frontend::Frontend(AppSettings& settings,bool portmaster):s_(settings),portmaster_(portmaster){font_=bootstrap_font();menu_font_=font_;menu_yo16(menu_font_);for(int c=0;c<256;++c)for(int y=0;y<8;++y)font8_[c*8+y]=menu_font_[c*16+y*2+1];frame_.pixels.resize(640*480);}
 std::string Frontend::tr(MenuString id)const{return menu_text(id,s_.locale);}
 std::string Frontend::tr(const char* ru,const char* en)const{return s_.locale==LocaleId::ru?ru:en;}
 const Archive* Frontend::archive()const{return sets_.empty()?nullptr:sets_[dataset_].archive;}
@@ -90,7 +90,16 @@ void Frontend::datasets(std::vector<FrontendDataset> sets,const std::string& err
 }
 void Frontend::select_dataset(std::size_t index){if(index<sets_.size()){dataset_=index;s_.last_dataset=archive()->identify();themed_=nullptr;art_.clear();}}
 void Frontend::preview_level(int level){level_=level;in_session_=false;enter(MenuScreen::levels);}
-void Frontend::enter(MenuScreen screen,int focus){if(screen_==MenuScreen::path||screen_==MenuScreen::save_name)SDL_StopTextInput();remembered_focus_[screen_]=focus_;if(focus_>=0&&focus_<int(rows_.size()))remembered_item_[screen_]=rows_[focus_].id;rows_.clear();screen_=screen;focus_=focus;page_=0;capture_start_=false;last_axis_=0;hits_.clear();}
+bool Frontend::settings_list() const {
+    switch(screen_){
+    case MenuScreen::settings: case MenuScreen::graphics: case MenuScreen::sound:
+    case MenuScreen::controls: case MenuScreen::keyboard: case MenuScreen::pad:
+    case MenuScreen::bindings: case MenuScreen::key_slots: case MenuScreen::gameplay:
+    case MenuScreen::interface: return true;
+    default: return false;
+    }
+}
+void Frontend::enter(MenuScreen screen,int focus){if(screen_==MenuScreen::path||screen_==MenuScreen::save_name)SDL_StopTextInput();remembered_focus_[screen_]=focus_;if(focus_>=0&&focus_<int(rows_.size()))remembered_item_[screen_]=rows_[focus_].id;rows_.clear();scroll_={};screen_=screen;focus_=focus;page_=0;capture_start_=false;last_axis_=0;hits_.clear();}
 void Frontend::enter_item(MenuScreen screen,Item item){
     enter(screen);build_rows();
     for(int i=0;i<int(rows_.size());++i)if(rows_[i].id==item&&rows_[i].enabled){focus_=i;break;}
@@ -175,7 +184,7 @@ void Frontend::build_rows(){
     case MenuScreen::graphics:{
         const bool software=draft_.renderer==RendererKind::software;
         setting(Item::renderer,tr(MenuString::renderer),software?tr(MenuString::software):"OpenGL");
-        setting(Item::window_mode,tr(MenuString::window_mode),draft_.fullscreen?tr(MenuString::borderless):tr(MenuString::windowed));
+        if(!portmaster_)setting(Item::window_mode,tr(MenuString::window_mode),draft_.fullscreen?tr(MenuString::borderless):tr(MenuString::windowed));
         auto mode=software?software_modes[draft_.software_mode]:draft_.fullscreen?std::array<int,2>{draft_.fullscreen_width,draft_.fullscreen_height}:std::array<int,2>{draft_.width,draft_.height};
         setting(Item::resolution,software?tr(MenuString::original_resolution):draft_.fullscreen?tr("Разрешение кадра","Frame resolution"):tr(MenuString::window_resolution),std::to_string(mode[0])+" x "+std::to_string(mode[1]),
             software?tr(MenuString::software_framebuffer_size_also_resizes_a_window_manual):
@@ -189,15 +198,19 @@ void Frontend::build_rows(){
             software?tr("Увеличение кадра сцены. xBR — экспериментальное сглаживание пиксельных контуров.","Scene scaling. xBR is experimental pixel contour smoothing."):s_.texture_filter()?tr("Смягчает пиксели текстур и уменьшает рябь вдали. Интерфейс остаётся чётким.","Softens texture pixels and reduces distant shimmer. The interface stays crisp."):tr("Сохраняет резкие границы исходных пикселей текстур.","Keeps the sharp edges of the original texture pixels."));
         setting(Item::fxaa,"FXAA",on(s_.fxaa),tr(MenuString::video_fxaa_help),!software);
         setting(Item::hud,tr(MenuString::video_hud),s_.auto_hud?tr(MenuString::automatic):s_.classic_hud?tr(MenuString::classic):tr(MenuString::modern));
+        setting(Item::hud_scale,tr("Масштаб HUD","HUD scale"),std::to_string(s_.hud_scale)+"%",
+            tr("Для современного HUD. Размер ограничен границами кадра.","For the modern HUD. Size is limited by the frame."),!s_.classic_hud||s_.auto_hud);
         setting(Item::language,"Язык / Language",s_.locale==LocaleId::ru?"Русский":"English",tr(MenuString::all_game_texts_follow_selected_language));
         setting(Item::fps,tr(MenuString::show_fps),on(s_.show_fps));finish();break;}
     case MenuScreen::sound:
         setting(Item::effects,tr(MenuString::effects),std::to_string(s_.effects_volume)+"%");
         setting(Item::music,tr(MenuString::title_music),std::to_string(s_.music_volume)+"%");finish();break;
-    case MenuScreen::controls:item(Item::keyboard,tr(MenuString::keyboard_and_mouse));item(Item::pad,tr(MenuString::gamepad));item(Item::back,tr(MenuString::back));break;
+    case MenuScreen::controls:
+        if(!portmaster_)item(Item::keyboard,tr(MenuString::keyboard_and_mouse));
+        item(Item::pad,tr(MenuString::gamepad));item(Item::back,tr(MenuString::back));break;
     case MenuScreen::keyboard:case MenuScreen::pad:{
         const bool pad=screen_==MenuScreen::pad;
-        setting(Item::device_enabled,tr(pad?MenuString::gamepad_in_game:MenuString::mouse_in_game),on(pad?s_.input.gamepad_enabled:s_.input.mouse_enabled),tr(MenuString::device_in_game_help));
+        if(!portmaster_)setting(Item::device_enabled,tr(pad?MenuString::gamepad_in_game:MenuString::mouse_in_game),on(pad?s_.input.gamepad_enabled:s_.input.mouse_enabled),tr(MenuString::device_in_game_help));
         setting(Item::preset,tr(MenuString::preset),preset(pad?s_.input.pad_preset:s_.input.keyboard_preset));
         item(Item::bindings,tr(MenuString::remap_controls));
         setting(Item::sensitivity,tr(pad?MenuString::turn_sensitivity:MenuString::mouse_sensitivity),decimal(pad?s_.input.turn_sensitivity:s_.input.mouse_degrees_per_count));
@@ -208,14 +221,20 @@ void Frontend::build_rows(){
     case MenuScreen::key_slots:row(tr(MenuString::primary_key),binding_name(action_,false,0));row(tr(MenuString::secondary_key),binding_name(action_,false,1));row(tr(MenuString::mouse_button),binding_name(action_,false,2));row(tr(MenuString::clear_bindings));backrow();break;
     case MenuScreen::gameplay:
         setting(Item::inertia,tr(MenuString::movement_inertia),on(s_.inertia),tr(MenuString::off_instant_start_and_stop_water_currents_still_move_th));
-        setting(Item::saving,tr(MenuString::saving),on(s_.saves_enabled),tr("В оригинале сохранений не было. Выкл.: сохранение и загрузка игры недоступны, включая F5/F9. Файлы остаются.","The originals had no saves. Off disables saving and loading, including F5/F9. Existing files are kept."));
+        setting(Item::saving,tr(MenuString::saving),on(s_.saves_enabled),portmaster_
+            ?tr("Отключает сохранение и загрузку игры. Файлы остаются.","Disables saving and loading. Existing files are kept.")
+            :tr("В оригинале сохранений не было. Выкл.: сохранение и загрузка игры недоступны, включая F5/F9. Файлы остаются.","The originals had no saves. Off disables saving and loading, including F5/F9. Existing files are kept."));
         setting(Item::camera_bobbing,tr("Покачивание в «Старом Золоте»","Bobbing in Old Gold"),on(s_.camera_bobbing),tr("Покачивание камеры при движении в «Старом Золоте». Не влияет на «Подземелья Кремля».","Camera bobbing while moving in Old Gold. Does not affect Kremlin Dungeon."));
         setting(Item::boundary_hits,tr("Исправление попаданий","Hit detection fix"),on(s_.boundary_hits),tr("Исправляет промахи рядом с монстром на границе клеток. Выкл.: поведение оригинала. Правила простреливания стен и дверей сохраняются.","Fixes near misses at monster cell boundaries. Off: original behavior. Preserves wall and door penetration rules."));
         finish();break;
-    case MenuScreen::pause:row(tr(MenuString::resume));row(tr(MenuString::settings));row(tr("Карта","Map"),{},{},world_!=nullptr);row(tr("Сохранить игру","Save game"),{},{},save_allowed());row(tr("Загрузить игру","Load game"),{},{},s_.saves_enabled);row(tr("Быстро сохранить","Quicksave"),"F5",{},save_allowed());row(tr("Быстро загрузить","Quickload"),"F9",{},s_.saves_enabled);row(tr(MenuString::main_menu));row(tr(MenuString::quit));break;
+    case MenuScreen::pause:
+        row(tr(MenuString::resume));row(tr(MenuString::settings));row(tr("Карта","Map"),{},{},world_!=nullptr);
+        row(tr("Сохранить игру","Save game"),{},{},save_allowed());row(tr("Загрузить игру","Load game"),{},{},s_.saves_enabled);
+        if(!portmaster_){row(tr("Быстро сохранить","Quicksave"),"F5",{},save_allowed());row(tr("Быстро загрузить","Quickload"),"F9",{},s_.saves_enabled);}
+        row(tr(MenuString::main_menu));row(tr(MenuString::quit));break;
     case MenuScreen::dataset_menu:row(tr("Новая игра","New game"));row(tr("Загрузить игру","Load game"),{},{},s_.saves_enabled);backrow();break;
     case MenuScreen::save_slots:case MenuScreen::load_slots:
-        for(int i=screen_==MenuScreen::save_slots?1:0;i<=10;++i){const auto& e=saves_.at(i);row((i?std::to_string(i)+". ":tr("Быстрое: ","Quick: "))+(e.exists?(e.valid?e.metadata.name:tr("Повреждено / несовместимо","Damaged / incompatible")):tr("Пусто","Empty")),{},e.error);}
+        for(int i=screen_==MenuScreen::save_slots?1:first_load_slot();i<=10;++i){const auto& e=saves_.at(i);row((i?std::to_string(i)+". ":tr("Быстрое: ","Quick: "))+(e.exists?(e.valid?e.metadata.name:tr("Повреждено / несовместимо","Damaged / incompatible")):tr("Пусто","Empty")),{},e.error);}
         backrow();break;
     case MenuScreen::save_entry:row(tr("Загрузить","Load"),{},{},saves_.at(save_slot_).valid);row(tr("Удалить…","Delete?"));backrow();break;
     case MenuScreen::save_name:row(tr("Сохранить","Save"));backrow();break;
@@ -295,15 +314,18 @@ void Frontend::back(){
     case MenuScreen::save_slots:case MenuScreen::load_slots:
         if(save_return_==MenuScreen::dataset_menu&&!has_loadable_saves())leave_game_menu();
         else enter(save_return_,remembered_focus_[save_return_]);break;
-    case MenuScreen::save_entry:enter(MenuScreen::load_slots,save_slot_);break;
+    case MenuScreen::save_entry:enter(MenuScreen::load_slots,save_slot_-first_load_slot());break;
     case MenuScreen::save_name:enter(MenuScreen::save_slots,save_slot_-1);break;
-    case MenuScreen::save_confirm:enter(save_operation_==0?MenuScreen::save_name:MenuScreen::save_entry,save_operation_==0?0:1);if(save_operation_==0)SDL_StartTextInput();break;
+    case MenuScreen::save_confirm:
+        if(portmaster_&&save_slot_==0)enter(save_return_,remembered_focus_[save_return_]);
+        else {enter(save_operation_==0?MenuScreen::save_name:MenuScreen::save_entry,save_operation_==0?0:1);if(save_operation_==0)SDL_StartTextInput();}
+        break;
     case MenuScreen::video_confirm:s_.video=old_video_;draft_=old_video_;enter_item(MenuScreen::graphics,Item::apply_video);commands_.push_back(MenuCommand::revert_video);break;
     case MenuScreen::ending:case MenuScreen::outcome:commands_.push_back(MenuCommand::main);main_menu();break;
     default:commands_.push_back(MenuCommand::music_stop);enter(MenuScreen::main);break;
     }
 }
-void Frontend::choose(int delta){
+void Frontend::choose(int delta,bool mouse_click){
     build_rows();if(rows_.empty()||!rows_[focus_].enabled)return;
     const int d=delta?delta:1;
     switch(screen_){
@@ -313,7 +335,7 @@ void Frontend::choose(int delta){
     case MenuScreen::dataset_menu:
         if(focus_==0)enter(archive()->identify()==DatasetId::old_gold?MenuScreen::levels:MenuScreen::readme);
         else if(focus_==1)open_saves(false);else back();break;
-    case MenuScreen::save_slots:case MenuScreen::load_slots:{const bool saving=screen_==MenuScreen::save_slots;const int slot=focus_+(saving?1:0);if(slot>10){back();break;}save_slot_=slot;
+    case MenuScreen::save_slots:case MenuScreen::load_slots:{const bool saving=screen_==MenuScreen::save_slots;const int slot=focus_+(saving?1:first_load_slot());if(slot>10){back();break;}save_slot_=slot;
         if(saving){save_name_=saves_[slot].exists&&saves_[slot].valid?saves_[slot].metadata.name:game_level_name(archive()->identify(),level_,s_.locale);path_buffer_=save_name_;path_selected_=true;enter(MenuScreen::save_name);SDL_StartTextInput();}
         else if(saves_[slot].exists)enter(MenuScreen::save_entry);break;}
     case MenuScreen::save_name:
@@ -325,7 +347,7 @@ void Frontend::choose(int delta){
     case MenuScreen::save_confirm:
         if(focus_){back();break;}
         commands_.push_back(save_operation_==0?MenuCommand::save_game:save_operation_==1?MenuCommand::load_game:MenuCommand::delete_game);
-        if(save_operation_==0)enter(MenuScreen::pause);else if(save_operation_==2)enter(MenuScreen::load_slots,save_slot_);break;
+        if(save_operation_==0)enter(MenuScreen::pause);else if(save_operation_==2)enter(MenuScreen::load_slots,save_slot_-first_load_slot());break;
     case MenuScreen::readme:
         if(focus_==1){back();break;}
         if(++page_>=page_count_)enter(MenuScreen::levels);break;
@@ -347,6 +369,7 @@ void Frontend::choose(int delta){
             if(draft_.renderer==RendererKind::software){draft_.software_mode=(draft_.software_mode+d+5)%5;const auto size=software_modes[draft_.software_mode];draft_.width=size[0];draft_.height=size[1];}
             else{
                 std::vector<std::array<int,2>> sizes{{640,480},{800,600},{1024,768},{1280,800},{1280,720},{1280,768},{1600,900},{1920,1080},{2560,1440}};
+                if(portmaster_)sizes.insert(sizes.begin(),{480,320});
                 SDL_DisplayMode desktop{};if(SDL_GetDesktopDisplayMode(0,&desktop)==0&&desktop.w>=320&&desktop.h>=200&&desktop.w<=7680&&desktop.h<=4320)sizes.push_back({desktop.w,desktop.h});
                 int& w=draft_.fullscreen?draft_.fullscreen_width:draft_.width;
                 int& h=draft_.fullscreen?draft_.fullscreen_height:draft_.height;
@@ -362,8 +385,14 @@ void Frontend::choose(int delta){
             int layout=s_.auto_hud?0:s_.classic_hud?1:2;layout=(layout+d+3)%3;
             s_.auto_hud=layout==0;s_.classic_hud=layout==1;
         }else if(rows_[focus_].id==Item::language)s_.locale=s_.locale==LocaleId::ru?LocaleId::en:LocaleId::ru;
+        else if(rows_[focus_].id==Item::hud_scale){
+            constexpr int min=AppSettings::hud_scale_default,max=AppSettings::hud_scale_max;
+            if(mouse_click&&d>0&&s_.hud_scale==max)s_.hud_scale=min;
+            else if(mouse_click&&d<0&&s_.hud_scale==min)s_.hud_scale=max;
+            else s_.hud_scale=std::clamp(s_.hud_scale+d*AppSettings::hud_scale_step,min,max);
+        }
         else if(rows_[focus_].id==Item::fps)s_.show_fps=!s_.show_fps;
-        else if(rows_[focus_].id==Item::defaults){draft_=VideoSettings{};s_.linear=false;s_.mip_filter=0;s_.frame_filter=0;s_.fxaa=false;s_.classic_hud=false;s_.auto_hud=true;s_.locale=system_locale();s_.show_fps=false;}else back();break;
+        else if(rows_[focus_].id==Item::defaults){draft_=VideoSettings{};draft_.fullscreen=portmaster_;s_.linear=false;s_.mip_filter=0;s_.frame_filter=0;s_.fxaa=false;s_.classic_hud=false;s_.auto_hud=true;s_.hud_scale=AppSettings::hud_scale_default;s_.locale=system_locale();s_.show_fps=false;}else back();break;
     case MenuScreen::video_unsaved:
         if(focus_==0)apply_video();
         else if(focus_==1){draft_=s_.video;enter_item(MenuScreen::settings,Item::graphics);}
@@ -388,7 +417,15 @@ void Frontend::choose(int delta){
     case MenuScreen::bindings:if(focus_==actions)back();else{action_=focus_;enter(binding_parent_==MenuScreen::pad?MenuScreen::capture:MenuScreen::key_slots);}break;
     case MenuScreen::key_slots:if(focus_<3){slot_=focus_;enter(MenuScreen::capture);}else if(focus_==3){s_.input.keys[action_]={};s_.input.mouse[action_]=0;s_.input.keyboard_preset=InputPreset::custom;}else back();break;
     case MenuScreen::gameplay:if(rows_[focus_].id==Item::inertia)s_.inertia=!s_.inertia;else if(rows_[focus_].id==Item::saving)s_.saves_enabled=!s_.saves_enabled;else if(rows_[focus_].id==Item::camera_bobbing)s_.camera_bobbing=!s_.camera_bobbing;else if(rows_[focus_].id==Item::boundary_hits)s_.boundary_hits=!s_.boundary_hits;else if(rows_[focus_].id==Item::defaults){s_.inertia=true;s_.saves_enabled=true;s_.camera_bobbing=true;s_.boundary_hits=false;}else back();break;
-    case MenuScreen::pause:if(focus_==0){hide();commands_.push_back(MenuCommand::resume);}else if(focus_==1)enter(MenuScreen::settings);else if(focus_==2)show_map();else if(focus_==3)open_saves(true);else if(focus_==4)open_saves(false);else if(focus_==5)commands_.push_back(MenuCommand::quicksave);else if(focus_==6)commands_.push_back(MenuCommand::quickload);else{confirm_quit_=focus_==8;fallback_=false;enter(MenuScreen::confirm,1);}break;
+    case MenuScreen::pause:
+        if(focus_==0){hide();commands_.push_back(MenuCommand::resume);}
+        else if(focus_==1)enter(MenuScreen::settings);
+        else if(focus_==2)show_map();
+        else if(focus_==3)open_saves(true);
+        else if(focus_==4)open_saves(false);
+        else if(!portmaster_&&focus_<=6)commands_.push_back(focus_==5?MenuCommand::quicksave:MenuCommand::quickload);
+        else{confirm_quit_=focus_==int(rows_.size())-1;fallback_=false;enter(MenuScreen::confirm,1);}
+        break;
     case MenuScreen::confirm:if(focus_==1)back();else if(fallback_){fallback_=false;old_video_=s_.video;draft_=s_.video;draft_.renderer=RendererKind::software;s_.video=draft_;video_deadline_=now_+15000;enter(MenuScreen::video_confirm);commands_.push_back(MenuCommand::apply_video);}else{commands_.push_back(confirm_quit_?MenuCommand::quit:MenuCommand::main);if(!confirm_quit_)main_menu();}break;
     case MenuScreen::conflict:if(focus_==0)accept_binding();else back();break;
     case MenuScreen::video_confirm:if(focus_==0){draft_=s_.video;enter_item(MenuScreen::graphics,Item::apply_video);commands_.push_back(MenuCommand::keep_video);}else back();break;
@@ -502,6 +539,18 @@ void Frontend::handle(const SDL_Event& e,int ww,int wh){
         case SDL_CONTROLLER_BUTTON_DPAD_LEFT:adjust=-1;break;case SDL_CONTROLLER_BUTTON_DPAD_RIGHT:adjust=1;break;case SDL_CONTROLLER_BUTTON_A:accept=true;break;
         case SDL_CONTROLLER_BUTTON_B:cancel=true;break;case SDL_CONTROLLER_BUTTON_LEFTSHOULDER:page_=std::max(0,page_-1);break;case SDL_CONTROLLER_BUTTON_RIGHTSHOULDER:++page_;break;default:break;}}
     if(e.type==SDL_CONTROLLERAXISMOTION&&e.caxis.axis==SDL_CONTROLLER_AXIS_LEFTY){int axis=e.caxis.value<-18000?-1:e.caxis.value>18000?1:0;if(axis&&axis!=last_axis_)nav=axis;last_axis_=axis;}
+    if(e.type==SDL_MOUSEWHEEL&&settings_list()){
+        double ticks=e.wheel.y;
+#if SDL_VERSION_ATLEAST(2,0,18)
+        if(e.wheel.preciseY!=0)ticks=e.wheel.preciseY;
+#endif
+        if(e.wheel.direction==SDL_MOUSEWHEEL_FLIPPED)ticks=-ticks;
+        if(ticks!=0&&scroll_.limit>0){
+            scroll_.follow_focus=false;
+            scroll_.target=std::clamp(scroll_.target-ticks*line_height_,0.0,double(scroll_.limit));
+        }
+        return;
+    }
     if(e.type==SDL_MOUSEWHEEL)nav=e.wheel.y>0?-1:e.wheel.y<0?1:0;
     if(e.type==SDL_MOUSEMOTION||e.type==SDL_MOUSEBUTTONDOWN){
         const int x=(e.type==SDL_MOUSEMOTION?e.motion.x:e.button.x)*frame_.width/std::max(1,ww);
@@ -509,7 +558,8 @@ void Frontend::handle(const SDL_Event& e,int ww,int wh){
         for(const auto& hit:hits_)if(inside(hit.rect,x,y)){
             if(hit.row>=100){if(e.type==SDL_MOUSEBUTTONDOWN&&e.button.button==SDL_BUTTON_LEFT){level_=hit.row-100;page_=0;}return;}
             if(!rows_[hit.row].enabled)return;
-            focus_=hit.row;if(e.type==SDL_MOUSEBUTTONDOWN){
+            focus_=hit.row;if(settings_list())scroll_.follow_focus=false;
+            if(e.type==SDL_MOUSEBUTTONDOWN){
                 accept=e.button.button==SDL_BUTTON_LEFT;
                 if(e.button.button==SDL_BUTTON_RIGHT){
                     const bool adjustable=rows_[focus_].adjustable||(screen_==MenuScreen::gameplay&&focus_==0);
@@ -519,22 +569,35 @@ void Frontend::handle(const SDL_Event& e,int ww,int wh){
         }
     }
     if(cancel){back();return;}
-    if(nav){for(int i=0;i<int(rows_.size());++i){focus_=(focus_+nav+int(rows_.size()))%int(rows_.size());if(rows_[focus_].enabled)break;}}
+    if(settings_list()&&nav){
+        scroll_.follow_focus=true;
+        for(int next=focus_+nav;next>=0&&next<int(rows_.size());next+=nav){
+            if(rows_[next].enabled){
+                focus_=next;
+                scroll_.target=scroll_.position;
+                break;
+            }
+        }
+    }else if(nav){for(int i=0;i<int(rows_.size());++i){focus_=(focus_+nav+int(rows_.size()))%int(rows_.size());if(rows_[focus_].enabled)break;}}
+    if(settings_list()&&(adjust||accept)&&e.type!=SDL_MOUSEBUTTONDOWN&&!scroll_.follow_focus){
+        scroll_.follow_focus=true;
+        if(std::none_of(hits_.begin(),hits_.end(),[&](const Hit& hit){return hit.row==focus_;}))return;
+    }
     if(adjust){
         if(screen_==MenuScreen::levels&&archive()->identify()!=DatasetId::old_gold){level_=(level_-1+adjust+3)%3+1;page_=0;}
         else if(screen_==MenuScreen::help)page_=(page_+adjust+page_count_)%page_count_;
         else if(screen_==MenuScreen::credits)credit_page_=(credit_page_+adjust+page_count_)%page_count_;
         else if(screen_==MenuScreen::graphics||screen_==MenuScreen::sound||screen_==MenuScreen::keyboard||screen_==MenuScreen::pad||screen_==MenuScreen::gameplay||screen_==MenuScreen::interface){
-            if(rows_[focus_].adjustable||(screen_==MenuScreen::gameplay&&focus_==0))choose(adjust);
+            if(rows_[focus_].adjustable||(screen_==MenuScreen::gameplay&&focus_==0))choose(adjust,e.type==SDL_MOUSEBUTTONDOWN);
         }
     }
-    if(accept)choose();
+    if(accept)choose(0,e.type==SDL_MOUSEBUTTONDOWN);
 }
 bool Frontend::save_allowed()const{return s_.saves_enabled&&world_&&world_->player&&!world_->level_complete&&world_->objects.at(*world_->player).player_state->health()>0;}
 void Frontend::refresh_saves(){saves_=save_catalog?save_catalog():std::vector<SaveEntry>{};if(saves_.size()!=11){saves_.resize(11);for(int i=0;i<11;++i)saves_[i].slot=i;}}
 bool Frontend::has_loadable_saves(){
     if(!s_.saves_enabled)return false;
-    refresh_saves();return std::any_of(saves_.begin(),saves_.end(),[](const SaveEntry& entry){return entry.exists&&entry.valid;});
+    refresh_saves();return std::any_of(saves_.begin()+first_load_slot(),saves_.end(),[](const SaveEntry& entry){return entry.exists&&entry.valid;});
 }
 void Frontend::leave_game_menu(){
     commands_.push_back(MenuCommand::music_stop);
@@ -547,7 +610,7 @@ const MenuFrame& Frontend::render_saves(){
     const int w=frame_.width,h=frame_.height,t=text_height_;
     const bool compact=h<300,list=screen_==MenuScreen::save_slots||screen_==MenuScreen::load_slots;
     const bool saving=screen_==MenuScreen::save_slots,details=list||screen_==MenuScreen::save_entry;
-    const int selected=list?focus_+(saving?1:0):save_slot_;
+    const int selected=list?focus_+(saving?1:first_load_slot()):save_slot_;
     const SaveEntry* entry=selected>=0&&selected<int(saves_.size())?&saves_[selected]:nullptr;
     if(!background_.pixels.empty())for(int y=0;y<h;++y)for(int x=0;x<w;++x){const auto c=colors_[background_.pixels[(y%background_.height)*background_.width+x%background_.width]];frame_.pixels[y*w+x]=0xff000000|((c&0x00fefefe)>>1);}
     // Match the ordinary menu width, header, padding and row rhythm.
@@ -596,7 +659,7 @@ void Frontend::theme(){
     int best=-10000;for(auto c:colors_){int r=(c>>16)&255,g=(c>>8)&255,b=c&255;int score=r+g-b*2-std::abs(r-g);if(score>best){best=score;accent_=c;}}
     shade_=colors_[0]|0xff000000;
 }
-void Frontend::fill(SDL_Rect r,std::uint32_t color){for(int y=std::max(0,r.y);y<std::min(frame_.height,r.y+r.h);++y)for(int x=std::max(0,r.x);x<std::min(frame_.width,r.x+r.w);++x)frame_.pixels[y*frame_.width+x]=color;}
+void Frontend::fill(SDL_Rect r,std::uint32_t color){for(int y=std::max(clip_top_,r.y);y<std::min(clip_bottom_?clip_bottom_:frame_.height,r.y+r.h);++y)for(int x=std::max(0,r.x);x<std::min(frame_.width,r.x+r.w);++x)frame_.pixels[y*frame_.width+x]=color;}
 void Frontend::box(SDL_Rect r){fill(r,shade_);fill({r.x,r.y,r.w,1},ink_);fill({r.x,r.y,1,r.h},ink_);fill({r.x+r.w-1,r.y,1,r.h},0xff444444);fill({r.x,r.y+r.h-1,r.w,1},0xff444444);}
 void Frontend::text(const std::string& value,int x,int y,std::uint32_t color,bool encoded){
     const auto bytes=encoded?value:cp866(value);
@@ -623,7 +686,7 @@ std::vector<TextPage> Frontend::story(const std::string& name,int columns,int ro
     const auto bytes=translated.empty()?archive()->get(name):Bytes{reinterpret_cast<const std::uint8_t*>(encoded.data()),encoded.size()};
     auto result=paginate_story(bytes,columns,rows);if(result.empty())result.push_back({});return result;
 }
-const MenuFrame& Frontend::render(int width,int height){
+const MenuFrame& Frontend::render(int width,int height,float vertical_dpi,int presented_height){
     output_width_=width;output_height_=height;
     native_text_=false;
     if(screen_==MenuScreen::map&&world_&&archive()){
@@ -654,7 +717,16 @@ const MenuFrame& Frontend::render(int width,int height){
     // Keep the full reading area instead of magnifying a 360-line canvas.
     // Fractional scaling avoids a sudden font-size jump during window resizing.
     const bool story_text=screen_==MenuScreen::readme||screen_==MenuScreen::levels||screen_==MenuScreen::ending;
-    const double scale=std::max(1.0,std::min(width/640.0,height/(story_text?576.0:720.0)));
+    double scale=std::max(1.0,std::min(width/640.0,height/(story_text?576.0:720.0)));
+    if(portmaster_){
+        // Aim for a 3 mm glyph cell where the display reports a credible DPI.
+        // The size on a 480-line canvas is a floor even with generic DPI values.
+        // Leave room for wrapped labels, dialog buttons and save previews.
+        const double density_scale=vertical_dpi>=72&&vertical_dpi<=650&&presented_height>0
+            ?(vertical_dpi/135.0)*height/presented_height:1.0;
+        const double desired_scale=std::max({scale,height/480.0,density_scale});
+        scale=std::max(1.0,std::min({desired_scale,width/420.0,height/400.0}));
+    }
     frame_.width=std::max(320,int(width/scale));frame_.height=std::max(200,int(height/scale));
     text_height_=frame_.height<300?8:16;line_height_=text_height_+(frame_.height<300?8:12);
     frame_.pixels.assign(std::size_t(frame_.width)*frame_.height,shade_);theme();hits_.clear();build_rows();
@@ -846,10 +918,35 @@ const MenuFrame& Frontend::render(int width,int height){
         return lines*(text_height_+4)+(compact?6:10)+(screen_==MenuScreen::graphics&&rows_[i].id==Item::filtering?(compact?6:12):0);
     };
     top+=4;bottom-=4;
-    int first=0;
-    for(int i=0,total=0;i<=focus_&&i<int(rows_.size());++i){total+=row_height(i);while(total>bottom-top&&first<i){total-=row_height(first++);}}
-    int y=top,last=first;
-    for(int i=first;i<int(rows_.size());++i){const auto& row=rows_[i];const int rh=row_height(i);if(y+rh>bottom&&i>first)break;
+    int first=0,y=top;
+    const bool scrolling=settings_list();
+    if(scrolling){
+        const int viewport=std::max(1,bottom-top);
+        int total=0;
+        for(int i=0;i<int(rows_.size());++i){
+            const int height=row_height(i);
+            if(i==focus_&&scroll_.follow_focus)
+                scroll_.target=std::clamp(scroll_.target,double(total+std::min(height,viewport)-viewport),double(total));
+            total+=height;
+        }
+        scroll_.limit=std::max(0,total-viewport);
+        scroll_.target=std::clamp(scroll_.target,0.0,double(scroll_.limit));
+        // Exponential approach retargets immediately and is independent of frame rate.
+        const double elapsed=double(now_-scroll_.last_frame);
+        if(!scroll_.laid_out||!now_)scroll_.position=scroll_.target;
+        else scroll_.position+=(scroll_.target-scroll_.position)*(-std::expm1(-elapsed/36.0));
+        scroll_.position=std::clamp(scroll_.position,0.0,double(scroll_.limit));
+        scroll_.laid_out=true;
+        scroll_.last_frame=now_;
+        y-=int(std::lround(scroll_.position));
+        clip_top_=top;
+        clip_bottom_=bottom;
+    }else for(int i=0,total=0;i<=focus_&&i<int(rows_.size());++i){total+=row_height(i);while(total>bottom-top&&first<i){total-=row_height(first++);}}
+    int last=first;
+    for(int i=first;i<int(rows_.size());++i){const auto& row=rows_[i];const int rh=row_height(i);if(scrolling){
+            if(y+rh<=top){y+=rh;continue;}
+            if(y>=bottom)break;
+        }else if(y+rh>bottom&&i>first)break;
         const int gap=screen_==MenuScreen::graphics&&rows_[i].id==Item::filtering?(compact?6:12):0;
         if(gap)fill({content_x,y+3,content_w,1},0xff575047);
         SDL_Rect r{content_x-4,y+gap,content_w+8,std::min(rh-gap-4,bottom-y-gap)};
@@ -872,9 +969,18 @@ const MenuFrame& Frontend::render(int width,int height){
             const bool split=editions||int(cp866(row.label).size()+cp866(row.value).size())*8>content_w-44;
             text(row.value,split?content_x+12:content_x+content_w-12-int(cp866(row.value).size())*8,split?ty:y+gap+4,color);
         }
-        hits_.push_back({r,i});y+=rh;last=i+1;
+        if(scrolling&&r.y<top){r.h-=top-r.y;r.y=top;}
+        if(r.h>0)hits_.push_back({r,i});
+        y+=rh;last=i+1;
     }
-    if(first>0||last<int(rows_.size())){
+    clip_top_=clip_bottom_=0;
+    if(scrolling&&scroll_.limit>0){
+        const int track=std::max(1,bottom-top);
+        const int thumb=std::min(track,std::max(8,track*track/(track+scroll_.limit)));
+        const int offset=int(std::lround((track-thumb)*scroll_.position/scroll_.limit));
+        fill({margin+panel_width-7,top,2,track},0xff444038);
+        fill({margin+panel_width-7,top+offset,2,thumb},accent_);
+    }else if(first>0||last<int(rows_.size())){
         const int track=std::max(1,bottom-top),thumb=std::max(8,track*(last-first)/int(rows_.size()));
         fill({margin+panel_width-7,top,2,track},0xff444038);
         fill({margin+panel_width-7,top+(track-thumb)*first/std::max(1,int(rows_.size())-(last-first)),2,thumb},accent_);

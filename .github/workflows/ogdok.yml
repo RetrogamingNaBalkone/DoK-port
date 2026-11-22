@@ -48,11 +48,11 @@ jobs:
         run: |
           docker build -t ogdok-linux -f ports/sdl2/tools/linux-builder.Dockerfile ports/sdl2/tools
           docker run --rm -v "$PWD:/workspace" ogdok-linux python3 ports/sdl2/tools/package_unix.py portmaster-aarch64 --build build/sdl2/portmaster-aarch64-gles2 --name OGDoK-PortMaster-ci
-          docker run --rm -v "$PWD:/workspace" ogdok-linux python3 ports/sdl2/tools/check_unix_package.py artifacts/sdl2/OGDoK-PortMaster-ci.zip
+          docker run --rm -v "$PWD:/workspace" ogdok-linux python3 ports/sdl2/tools/check_unix_package.py artifacts/sdl2/OGDoK-PortMaster-ci/ogdok.zip
       - uses: actions/upload-artifact@v4
         with:
           name: OGDoK-PortMaster
-          path: artifacts/sdl2/*.zip*
+          path: artifacts/sdl2/OGDoK-PortMaster-ci/ogdok.zip*
   windows:
     runs-on: windows-latest
     steps:

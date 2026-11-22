@@ -9,7 +9,9 @@ struct Painter {
     HudFrame frame;
     const std::array<std::uint32_t,256>& palette;
     const std::array<std::uint8_t,2048>& font;
+    int offset_y=0;
     void pixel(int x,int y,std::uint32_t color) {
+        y+=offset_y;
         if(x<0||y<0||x>=frame.width||y>=frame.height)return;
         auto& dst=frame.pixels[y*frame.width+x];
         const unsigned a=color>>24,da=dst>>24,out=a+(da*(255-a)+127)/255;
@@ -68,7 +70,7 @@ std::vector<std::string> wrap(std::string value,int columns) {
 
 const HudFrame& Hud::desktop(int width,const PlayerState& p,const std::array<std::uint32_t,256>& palette,
                       const std::string& message,double seconds) {
-    if(width<320)throw std::invalid_argument("Desktop HUD requires width >=320");
+    if(width<modern_hud_min_width)throw std::invalid_argument("Desktop HUD requires width >=320");
     const int hp=std::max(0,int(p.health())),ammo=std::max(0,int(p.charge()));
     int active=p.current_weapon>=1&&p.current_weapon<=2&&p.weapons[p.current_weapon]?p.current_weapon:0;
     if(!active)for(int i=1;i<=2;++i)if(p.weapons[i]){active=i;break;}
@@ -82,11 +84,37 @@ const HudFrame& Hud::desktop(int width,const PlayerState& p,const std::array<std
        desktop_player_.weapons==p.weapons&&desktop_player_.current_weapon==p.current_weapon&&
        desktop_player_.score==p.score&&desktop_message_==message&&desktop_palette_==palette&&
        desktop_animated_==animated&&(!animated||desktop_seconds_==seconds))return desktop_frame_;
-    Painter out{{width,100,std::vector<std::uint32_t>(std::size_t(width)*100)},palette,font_};
     constexpr std::uint32_t bone=0xffe7dfc9,amber=0xffe3bd7c;
     const auto health_text=std::to_string(hp),ammo_text=std::to_string(ammo);
     // Never reserve five digits for ordinary values; do expand for real extremes.
     const int health_right=64+std::max(3,int(health_text.size()))*24;
+    const int deck_x=health_right+18;
+    const int ammo_width=25+std::max(3,int(ammo_text.size()))*24;
+    const std::string money_text=old_gold_?std::to_string(p.score)+"/105":"";
+    const int money_width=old_gold_?42+int(money_text.size())*16:0;
+    int ammo_x=deck_x+(active?105:8);
+    const bool stacked=ammo_x+ammo_width+money_width>width-8;
+    constexpr int row_gap=52;
+    if(stacked)ammo_x=18;
+    const int ammo_right=ammo_x+ammo_width;
+    const int money_scale=ammo_right+money_width<=width-8?2:1;
+    const int right=ammo_right+(old_gold_?42+int(money_text.size())*8*money_scale:0);
+
+    int message_x=right+26,message_y=42,message_scale=3,message_height=0;
+    std::vector<std::string> lines;
+    if(!message.empty()){
+        int columns=std::min(24,(width-message_x-24)/(8*message_scale));
+        if(columns<18){message_scale=2;columns=std::min(24,(width-message_x-24)/(8*message_scale));}
+        const bool above=columns<12;
+        if(above){message_x=18;message_y=8;columns=(width-36)/(8*message_scale);}
+        lines=wrap(message.substr(0,38),columns);
+        const int text_height=int(lines.size())*(8*message_scale+3)-3;
+        if(above)message_height=text_height+12;
+        else message_y=std::max(6,std::min(42,80-text_height));
+    }
+    const int height=100+(stacked?row_gap:0)+message_height;
+    Painter out{{width,height,std::vector<std::uint32_t>(std::size_t(width)*height)},palette,font_};
+    out.offset_y=message_height+(stacked?row_gap:0);
     out.shadow(8,30,health_right,60);
     out.image(health_,18,42,38,26);
     out.text(64,42,health_text,3,hp<=p.max_health()/4?0xffffa18a:bone);
@@ -104,7 +132,6 @@ const HudFrame& Hud::desktop(int width,const PlayerState& p,const std::array<std
                  (alpha<<24)|(health_delta_>0?0xb9db8c:0xffa18a));
     }
 
-    const int deck_x=health_right+18;
     const double ease=t*t*(3-2*t);
     auto card=[&](int slot,bool front){
         if(slot<1||slot>2||!p.weapons[slot])return;
@@ -123,26 +150,18 @@ const HudFrame& Hud::desktop(int width,const PlayerState& p,const std::array<std
     };
     if(active){card(active==1?2:1,false);card(active,true);}
 
-    const int ammo_x=deck_x+(active?105:8);
+    out.offset_y=message_height;
     out.shadow(ammo_x-8,30,40+std::max(3,int(ammo_text.size()))*24,60);
     out.image(charge_,ammo_x,44,17,18);
     out.text(ammo_x+25,42,ammo_text,3,amber);
     for(int i=0;i<3;++i)if(p.keys()&(1<<i))out.image(keys_[i],ammo_x+25+i*19,68,13,15);
-    int right=ammo_x+25+std::max(3,int(ammo_text.size()))*24;
     if(old_gold_){
-        const auto money_text=std::to_string(p.score)+"/105";
-        out.image(money_,right+16,46,20,19);out.text(right+42,48,money_text,2,amber);
-        right+=42+int(money_text.size())*16;
+        out.image(money_,ammo_right+16,46,20,19);
+        out.text(ammo_right+42,56-4*money_scale,money_text,money_scale,amber);
     }
-    if(!message.empty()){
-        int x=right+26,y=42;
-        int scale=3; // Same FONT8 scale as health and charge numerals.
-        int columns=std::min(24,(width-x-24)/(8*scale));
-        // Safe fallback for small desktop windows; portable layout is separate work.
-        if(columns<18){scale=2;columns=std::min(24,(width-x-24)/(8*scale));}
-        if(columns<12){x=18;y=2;scale=1;columns=std::max(1,std::min(38,(width-36)/8));}
-        const auto lines=wrap(message.substr(0,38),columns);
-        if(scale>1)y=std::max(6,std::min(42,80-(int(lines.size())*(8*scale+3)-3)));
+    if(!lines.empty()){
+        out.offset_y=0;
+        const int x=message_x,y=message_y,scale=message_scale;
         int longest=0;for(const auto& line:lines)longest=std::max(longest,int(line.size()));
         const int box_width=longest*8*scale+20,box_height=int(lines.size())*(8*scale+3)+12;
         for(int dy=0;dy<box_height;++dy)for(int dx=0;dx<box_width;++dx){

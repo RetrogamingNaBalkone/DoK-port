@@ -29,11 +29,24 @@ Display::Display(const VideoSettings& s,bool vsync){
     }catch(...){gl_.reset();if(renderer_)SDL_DestroyRenderer(renderer_);if(window_)SDL_DestroyWindow(window_);throw;}
 }
 Display::~Display(){gl_.reset();if(texture_)SDL_DestroyTexture(texture_);if(sharp_texture_)SDL_DestroyTexture(sharp_texture_);for(const auto& overlay:overlay_textures_)SDL_DestroyTexture(overlay.second);if(renderer_)SDL_DestroyRenderer(renderer_);if(window_)SDL_DestroyWindow(window_);}
-std::array<int,2> Display::size()const{if(frame_width_)return {frame_width_,frame_height_};int w,h;if(gl_)SDL_GL_GetDrawableSize(window_,&w,&h);else SDL_GetRendererOutputSize(renderer_,&w,&h);return {std::max(1,w),std::max(1,h)};}
+std::array<int,2> Display::drawable_size()const{
+    int w=1,h=1;
+    if(gl_)SDL_GL_GetDrawableSize(window_,&w,&h);else SDL_GetRendererOutputSize(renderer_,&w,&h);
+    return {std::max(1,w),std::max(1,h)};
+}
+std::array<int,2> Display::size()const{return frame_width_?std::array<int,2>{frame_width_,frame_height_}:drawable_size();}
+std::pair<float,int> Display::menu_display_metrics()const{
+    float dpi=0;
+    const int index=SDL_GetWindowDisplayIndex(window_);
+    if(index>=0&&SDL_GetDisplayDPI(index,nullptr,nullptr,&dpi)!=0)dpi=0;
+    const auto [dw,dh]=drawable_size();
+    const int height=frame_width_?fit_frame(dw,dh,frame_width_,frame_height_).h:dh;
+    return {dpi,height};
+}
 bool Display::menu_event(SDL_Event& event)const{
     if(event.type!=SDL_MOUSEMOTION&&event.type!=SDL_MOUSEBUTTONDOWN&&event.type!=SDL_MOUSEBUTTONUP)return true;
     int ww=1,wh=1;SDL_GetWindowSize(window_,&ww,&wh);
-    int dw=1,dh=1;if(gl_)SDL_GL_GetDrawableSize(window_,&dw,&dh);else SDL_GetRendererOutputSize(renderer_,&dw,&dh);
+    const auto [dw,dh]=drawable_size();
     const auto size=this->size();const auto rect=fit_frame(dw,dh,size[0],size[1]);
     const int x=(event.type==SDL_MOUSEMOTION?event.motion.x:event.button.x)*dw/std::max(1,ww);
     const int y=(event.type==SDL_MOUSEMOTION?event.motion.y:event.button.y)*dh/std::max(1,wh);

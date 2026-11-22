@@ -68,16 +68,19 @@ SDL2 и драйвер устройства используются систе�
 ## Пакеты
 
 При новом профиле во всех версиях SDL определяет разрешение дисплея 0 и
-сохраняет его для окна и GL-fullscreen; существующий settings.ini приоритетен.
-PortMaster стартует fullscreen, Windows/Linux — оконно. Целевой benchmark
-1280×720 на Vita остаётся отдельным измеряемым режимом, а не дефолтом запуска.
+сохраняет его для окна и полноэкранного кадра OpenGL. В Windows/Linux по
+умолчанию используется оконный режим, выбор сохраняется в профиле.
+В PortMaster игра всегда работает во весь экран, пункт «Режим окна» скрыт.
+Размер игрового кадра OpenGL/GLES2 можно выбрать в настройках.
+Целевой benchmark 1280×720 на Vita запускается отдельно.
 
 ```sh
 docker run --rm -v "$PWD:/workspace" ogdok-linux:22.04 python3 ports/sdl2/tools/package_unix.py linux-x86_64 --build build/sdl2/linux-x86_64-opengl --name OGDoK-Linux-x86_64-playtest
 docker run --rm -v "$PWD:/workspace" ogdok-linux:22.04 python3 ports/sdl2/tools/package_unix.py portmaster-aarch64 --build build/sdl2/portmaster-aarch64-gles2 --name OGDoK-PortMaster-playtest
 ```
 
-Выходы — `artifacts/sdl2/`: Linux tar.gz и PortMaster ZIP с executable mode.
+Выходы — `artifacts/sdl2/`: Linux tar.gz и PortMaster `<имя сборки>/ogdok.zip`
+с executable mode. PortMaster использует имя ZIP для регистрации порта.
 В установочном PortMaster ZIP в корне только `OGDoK.sh`, остальные файлы —
 в `ogdok/`, включая `port.json`, `gameinfo.xml` и инструкцию `ogdok.md`.
 Шаблоны исходников лежат рядом в ports/sdl2/portmaster; это другая структура.
@@ -90,8 +93,10 @@ Git не менялись. Это ограничение упаковщика в
 Упаковщик проверяет ELF64/архитектуру, API, GLIBC <=2.35, записывает зависимости,
 хеши файлов/исходников, git revision и dirty-флаг, SHA-256 архива. Старый выход
 не перезаписывается. RES, пользовательский профиль, build и SDK не включаются.
-Лицензии движка и включённых материалов поставляются. Для установки на Vita
-распаковать `OGDoK.sh` и `ogdok/` в каталог ports, добавить свои RES и запустить
+Лицензии движка и включённых материалов поставляются. Для установки на ROCKNIX
+положить `ogdok.zip` в `/roms/ports/autoinstall/` и открыть PortMaster. При
+включённом обновлении списка игр установщик импортирует `gameinfo.xml`
+со ссылкой на `ogdok/screenshot.png`. Добавить свои RES и запустить
 через оболочку. Библиотеки из builder и графические драйверы не копировать
 на устройство вслепую. Подача в каталог, включая каталожный screenshot, отдельно.
 
