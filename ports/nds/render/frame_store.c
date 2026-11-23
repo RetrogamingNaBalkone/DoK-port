@@ -13,14 +13,14 @@
 #endif
 #if N23_CACHE_REPLACE
 static uint32_t packed_valid(const dok_frame_store *,const dok_frame_record *);
-static uint32_t replacement_source_ok(const dok_frame_store *s,const dok_frame_record *r,const dok_texture_cache *c)
+static uint32_t separate_pools(const dok_frame_store *s,const dok_texture_cache *c)
 {
     if(!s->pool)return 0;
     /* Protect future resident packed records as well as this request. */
     uintptr_t source=(uintptr_t)s->pool,destination=(uintptr_t)c->pool;
     uintptr_t source_end=source+s->bytes,destination_end=destination+c->capacity;
     return source_end>=source&&destination_end>=destination&&
-        (source_end<=destination||destination_end<=source)&&packed_valid(s,r);
+        (source_end<=destination||destination_end<=source);
 }
 #endif
 #if N23_CODEC_SMALL
@@ -171,7 +171,7 @@ dok_status dok_frame_store_require(dok_frame_store *s,dok_texture_cache *c,const
         uint32_t oldest=UINT32_MAX;
         for(uint32_t i=0;i<c->count;++i)
             if(!c->records[i].pinned&&(oldest==UINT32_MAX||c->records[i].age<c->records[oldest].age))oldest=i;
-        if(oldest!=UINT32_MAX&&c->records[oldest].bytes==e->bytes&&replacement_source_ok(s,r,c)){
+        if(oldest!=UINT32_MAX&&c->records[oldest].bytes==e->bytes&&separate_pools(s,c)&&packed_valid(s,r)){
             uint32_t offset=c->records[oldest].offset,bytes=e->bytes;dok_asset_id id=e->id;
             c->records[oldest]=c->records[--c->count];c->used-=bytes;++c->evictions;N23_ADD(5,1u);
             N23_TIME(decode_start);
@@ -222,6 +222,42 @@ static uint32_t packed_valid(const dok_frame_store *s,const dok_frame_record *r)
     return decoded==r->decoded_bytes;
 }
 
+#if N23_CACHE_REPLACE
+/* Keep old blocks at their real addresses when the new blocks tile all
+ * holes in the final packed extent. Preserve the original compacting plan
+ * until the entire placement succeeds. Only new scratch offsets change on
+ * failure; the old-block copy still uses the same original offsets. */
+static int keep_live_offsets(dok_frame_batch_workspace *w,uint32_t old_count)
+{
+    dok_texture_cache *plan=&w->planned;
+    uint32_t at=0,placed=old_count;
+    for(uint32_t n=0;n<=old_count;++n){
+        uint32_t end=n==old_count?plan->used:w->original_offsets[w->order[n]];
+        if(end<at||end>plan->used)return 0;
+        while(at<end){
+            uint32_t best=UINT32_MAX;
+            for(uint32_t i=0;i<plan->count;++i){
+                uint32_t size=plan->records[i].bytes;
+                if(w->original_offsets[i]==UINT32_MAX&&size&&size<=end-at&&
+                   (best==UINT32_MAX||size>plan->records[best].bytes))best=i;
+            }
+            if(best==UINT32_MAX)return 0;
+            w->original_offsets[best]=at;
+            at+=plan->records[best].bytes;
+            ++placed;
+        }
+        if(n<old_count){
+            uint32_t size=plan->records[w->order[n]].bytes;
+            if(size>plan->used-at)return 0;
+            at+=size;
+        }
+    }
+    if(placed!=plan->count)return 0;
+    for(uint32_t i=0;i<plan->count;++i)plan->records[i].offset=w->original_offsets[i];
+    return 1;
+}
+#endif
+
 dok_status dok_frame_store_require_many(dok_frame_store *s,dok_texture_cache *c,
     const dok_asset_entry *const *entries,uint32_t count,dok_frame_batch_workspace *w)
 {
@@ -245,9 +281,6 @@ dok_status dok_frame_store_require_many(dok_frame_store *s,dok_texture_cache *c,
     dok_texture_cache *p=&w->planned;*p=*c;
     for(uint32_t i=0;i<p->count;++i){w->original_offsets[i]=p->records[i].offset;w->sources[i]=NULL;}
     uint32_t misses=0,decoded_bytes=0;
-#if N23_CACHE_REPLACE
-    uint32_t victim_offset=0,victim_bytes=0;
-#endif
     for(uint32_t n=first;n<count;++n){const dok_asset_entry *e=entries[n];
         if(!e||e->bytes>p->capacity)goto fallback;
         uint32_t i;for(i=0;i<p->count;++i)if(p->records[i].key==e->id)break;
@@ -259,9 +292,6 @@ dok_status dok_frame_store_require_many(dok_frame_store *s,dok_texture_cache *c,
             uint32_t oldest=UINT32_MAX;
             for(i=0;i<p->count;++i)if(!p->records[i].pinned&&(oldest==UINT32_MAX||p->records[i].age<p->records[oldest].age))oldest=i;
             if(oldest==UINT32_MAX)goto fallback;
-#if N23_CACHE_REPLACE
-            if(p->evictions==c->evictions){victim_offset=w->original_offsets[oldest];victim_bytes=p->records[oldest].bytes;}
-#endif
             uint32_t offset=p->records[oldest].offset,bytes=p->records[oldest].bytes;
             for(i=0;i<p->count;++i)if(p->records[i].offset>offset)p->records[i].offset-=bytes;
             --p->count;p->records[oldest]=p->records[p->count];
@@ -274,26 +304,18 @@ dok_status dok_frame_store_require_many(dok_frame_store *s,dok_texture_cache *c,
     /* Provenance travels through swap-removal: an initially cached ID evicted
      * and later requested is NEW, even if the final key existed at entry. */
     uint32_t old_count=0;
-#if N23_CACHE_REPLACE
-    uint32_t replacement=0;
-    if(misses==1u&&p->evictions-c->evictions==1u){
-        for(uint32_t i=0;i<p->count;++i)if(w->sources[i]&&p->records[i].bytes==victim_bytes&&replacement_source_ok(s,w->sources[i],c)){
-            p->records[i].offset=victim_offset;replacement=1u;break;
-        }
-    }
-    if(replacement){
-        for(uint32_t i=0;i<p->count;++i)if(!w->sources[i])p->records[i].offset=w->original_offsets[i];
-    }else
-#endif
-    {
     for(uint32_t i=0;i<p->count;++i)if(!w->sources[i]){
         uint32_t at=old_count;
         while(at&&w->original_offsets[w->order[at-1u]]>w->original_offsets[i]){w->order[at]=w->order[at-1u];--at;}
         w->order[at]=(uint16_t)i;++old_count;
     }
-    for(uint32_t n=0;n<old_count;++n){uint32_t i=w->order[n],from=w->original_offsets[i],to=p->records[i].offset,size=p->records[i].bytes;
-        if(from!=to){memmove(c->pool+to,c->pool+from,size);N23_ADD(4,size);}
-    }
+#if N23_CACHE_REPLACE
+    if(!separate_pools(s,c)||!keep_live_offsets(w,old_count))
+#endif
+    {
+        for(uint32_t n=0;n<old_count;++n){uint32_t i=w->order[n],from=w->original_offsets[i],to=p->records[i].offset,size=p->records[i].bytes;
+            if(from!=to){memmove(c->pool+to,c->pool+from,size);N23_ADD(4,size);}
+        }
     }
     N23_ADD(0,dok_n23_profile_time()-start);N23_ADD(5,p->evictions-c->evictions);
     for(uint32_t i=0;i<p->count;++i)if(w->sources[i]){

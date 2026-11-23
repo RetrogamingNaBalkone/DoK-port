@@ -1,7 +1,8 @@
 #include "sounds_hash.inc"
 #include "dok/sha256.h"
-static int load_packed_sounds(unsigned char *banks[2],uint32_t used[2])
+static int load_packed_sounds(unsigned char *banks[2],uint32_t used[2],uint32_t extra_bytes)
 {
+    const uint32_t capacity[2]={163840u,extra_bytes};
     FILE *f=fopen(NDS_RESOURCE_ROOT "sounds.dat","rb");if(!f)return 0;
     uint32_t h[4]={0},records[22][4],order[22];dok_sha256 hash;unsigned char digest[32];
     int ok=fread(h,1,16,f)==16&&h[0]==0x31415044u&&h[1]==1u&&h[2]==22u&&h[3]<=327680u&&
@@ -19,8 +20,8 @@ static int load_packed_sounds(unsigned char *banks[2],uint32_t used[2])
         for(unsigned i=0;i<22u;++i)for(unsigned j=i+1u;j<22u;++j)
             if(resident[order[j]].bytes>resident[order[i]].bytes){uint32_t t=order[i];order[i]=order[j];order[j]=t;}
         for(unsigned k=0;ok&&k<22u;++k){AudioResident *a=&resident[order[k]];unsigned b=used[0]<=used[1]?0:1;
-            if(used[b]+a->bytes>163840u)b^=1u;
-            if(used[b]+a->bytes>163840u){ok=0;break;}
+            if(used[b]+a->bytes>capacity[b])b^=1u;
+            if(used[b]+a->bytes>capacity[b]){ok=0;break;}
             a->packed=banks[b]+used[b];used[b]+=a->bytes;
         }
         for(unsigned i=0;ok&&i<22u;++i){AudioResident *a=&resident[i];

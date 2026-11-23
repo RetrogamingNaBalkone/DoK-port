@@ -2,6 +2,7 @@
 import json
 import os
 import hashlib
+import re
 from pathlib import Path
 from check_items import ROOT, artifact, run
 
@@ -23,8 +24,12 @@ def main():
         exe = target / f'map-runtime-{audit}.exe'
         run([*common, f'-DN21P_AUDIT={audit}', '-o', exe], env=env)
         output = run([exe])
-        assert 'checks=16972175' in output and 'draws=44 skips=164 deferred=111 PASS' in output
-        results.append(dict(audit=audit, output=output.strip(), artifact=artifact(exe)))
+        match = re.fullmatch(r'N21P dirty map checks=(\d+) draws=(\d+) skips=(\d+) deferred=(\d+) PASS', output.strip())
+        assert match, output
+        results.append(dict(audit=audit, checks=int(match[1]), cadence=list(map(int,match.groups()[1:])),
+                            output=output.strip(), artifact=artifact(exe)))
+    assert results[0]['checks'] == results[1]['checks']
+    assert results[0]['cadence'] == results[1]['cadence']
     linux = target / 'map-runtime-linux'
     run([*common, '-DN21P_AUDIT=0', '-target', 'x86_64-linux-musl', '-static', '-o', linux], env=env)
     from map.original_map import original_map_result
@@ -47,7 +52,7 @@ def main():
                                 first_sha256=hashlib.sha256(before).hexdigest(),
                                 followup_sha256=hashlib.sha256(after).hexdigest(),
                                 export_manifest=artifact(ROOT / 'research/evidence/automap' / language / 'manifest.json')))
-    report = dict(task='N21P', passed=True, checks_per_mode=16972175, modes=results,
+    report = dict(task='N21P', passed=True, checks_per_mode=results[0]['checks'], modes=results,
                   native_followup_vectors=native_rows,
                   linux_execution=False, linux_artifact=artifact(linux),
                   scope=['actual production runtime with deterministic RAM/DMA device',
@@ -72,7 +77,7 @@ def main():
                       'ports/nds/tools/map/original_map.py',
                       'ports/nds/tools/check_map_dirty.py']])
     (evidence / 'host-dirty-map.json').write_text(json.dumps(report, indent=2) + '\n', encoding='utf8')
-    print(json.dumps(dict(passed=True, checks=33944350, native_followup_vectors=2,
+    print(json.dumps(dict(passed=True, checks=sum(row['checks'] for row in results), native_followup_vectors=2,
                           report='research/evidence/nds/n21p/host-dirty-map.json')))
 
 

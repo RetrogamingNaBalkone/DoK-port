@@ -1,4 +1,4 @@
-"""Controlled GPU/audio injections verify frozen two-screen diagnostics."""
+"""Controlled load and gameplay faults verify frozen two-screen diagnostics."""
 import argparse
 import ctypes as C
 import json
@@ -13,7 +13,7 @@ import run_frontend_emulator as front
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('target', type=Path)
-    parser.add_argument('--fault', choices=('gpu', 'audio', 'plan', 'clock', 'events'), default='gpu')
+    parser.add_argument('--fault', choices=('gpu', 'audio', 'plan', 'clock', 'events', 'load-memory'), default='gpu')
     args = parser.parse_args()
     target = args.target.resolve()
     directory = target / ('crash-diagnostic-' + args.fault)
@@ -30,12 +30,21 @@ def main():
         f.tap(front.A)
         f.wait_for(3)
         f.tap(front.A)
-        f.text_to(7, 8)
-        f.wait_for(8)
-        f.tick(30)
         obs, _ = front.transport.elf_symbol(elf, 'obs')
         pointer = f.core.retro_get_memory_data(2)
         size = f.core.retro_get_memory_size(2)
+        if args.fault == 'load-memory':
+            pages = f.wait_for(7)[8]
+            for page in range(1, pages):
+                f.tap(front.A)
+                f.wait_for(7, page=page)
+            # Raise only the observed lower bound, without altering the allocator.
+            offset = obs - 0x02000000 + 4 * f.render_fields.index('static_end')
+            injected = 0x02090000
+        else:
+            f.text_to(7, 8)
+            f.wait_for(8)
+            f.tick(30)
         if args.fault in ('clock','events'):
             ram=front.render.ram(f,0x02000000,size)
             candidates=[];at=0
@@ -58,7 +67,7 @@ def main():
             audio_fault, _ = front.transport.elf_symbol(elf, 'fault')
             offset = audio_fault - 0x02000000
             injected = 51
-        else:
+        elif args.fault == 'plan':
             palette, _ = front.transport.elf_symbol(elf, 'stream_palette')
             offset = palette - 0x02000000
             injected = 0  # Actual stream_plan must return ARGUMENT, not a fabricated status.
@@ -67,11 +76,22 @@ def main():
         # Bypass FrontendObserver.tick, which correctly rejects failed frames.
         payload=struct.pack('<Q' if args.fault=='clock' else '<I',injected)
         C.memmove(pointer+offset,payload,len(payload))
+        if args.fault == 'load-memory':
+            f.joypad = 1 << front.A
+            for _ in range(8):
+                f.core.retro_run()
+            f.joypad = 0
         for _ in range(60):
             f.core.retro_run()
+        if args.fault == 'load-memory':
+            for _ in range(600):
+                renderer = front.render.observe(f, f.render_address, f.render_fields, 0x37524b44)
+                if renderer['status'] == 3 or renderer['frame_id']:
+                    break
+                f.core.retro_run()
         assert not f.callback_error and not f.shutdown
         renderer = front.render.observe(f, f.render_address, f.render_fields, 0x37524b44)
-        assert renderer['error_bits'] == 65536 and renderer['status'] == 3
+        assert renderer['error_bits'] == 65536 and renderer['status'] == 3, renderer
         line_at, _ = front.transport.elf_symbol(elf, 'failure_line')
         function_at, _ = front.transport.elf_symbol(elf, 'failure_function')
         line = struct.unpack('<I', front.render.ram(f, line_at, 4))[0]
@@ -97,6 +117,10 @@ def main():
             assert (operation,status,b)==(4,3,0)
         elif args.fault == 'plan':
             assert (operation, status) == (8, 1) and a > 0
+        elif args.fault == 'load-memory':
+            assert function == 'memory_check' and 'DIAG_CHECK(DIAG_MEMORY' in source[line - 1]
+            assert (operation, status, a, b) == (19, 0, renderer['heap_end'], injected + renderer['managed_bytes'])
+            assert renderer['frame_id'] == 0 and renderer['presented_frame_id'] == 0
         else:
             assert (operation, status, a) == ((13, 1, 1) if args.fault == 'gpu' else (2, 0, 51))
         history = [struct.unpack_from('<5I', frozen, 28 + 20 * ((count - 8 + i) & 7)) for i in range(8)]

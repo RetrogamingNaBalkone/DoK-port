@@ -3,25 +3,25 @@
 #include <limits.h>
 #include <stddef.h>
 #include <string.h>
-typedef struct PackedQuad {
-    int16_t vertex[4][5];
-    uint16_t image_flags,object_flags;
-    uint8_t material,orientation,kind,glyph;
-} PackedQuad;
-_Static_assert(sizeof(PackedQuad)==48u,"fixed game geometry record");
+_Static_assert(sizeof(dok_static_quad)==48u,"fixed game geometry record");
 typedef struct LevelGeometry {
     uint16_t patterns,quads;
+    int16_t min_y,max_y;
     uint16_t offset[257];
     uint8_t cell[4096];
     uint8_t bounded[256];
-    PackedQuad quad[512];
+    dok_static_quad quad[512];
 } LevelGeometry;
 static const LevelGeometry *geometry;
 static const dok_initial_world *bound_world;
 static const dok_geometry_binding *bound_bindings;
 void dok_static_geometry_reset(void)
 {geometry=NULL;bound_world=NULL;bound_bindings=NULL;}
-static int pack(const dok_geometry_quad *q,uint32_t x,uint32_t z,PackedQuad *out)
+int dok_static_geometry_bound(const dok_initial_world *world,const dok_geometry_binding bindings[256])
+{
+    return geometry && world==bound_world && bindings==bound_bindings;
+}
+static int pack(const dok_geometry_quad *q,uint32_t x,uint32_t z,dok_static_quad *out)
 {
     if(!q->material||q->material>255u||q->orientation>270u||q->orientation%90u||q->kind>4u)return 0;
     for(uint32_t v=0;v<4u;++v){
@@ -41,7 +41,7 @@ static int pack(const dok_geometry_quad *q,uint32_t x,uint32_t z,PackedQuad *out
 int dok_static_geometry_load(const dok_initial_world *world,const dok_geometry_binding bindings[256],
     void *backing,uint32_t capacity,uint32_t *used)
 {
-    dok_geometry_cell candidate,cell;PackedQuad packed[DOK_GEOMETRY_CELL_MAX];
+    dok_geometry_cell candidate,cell;dok_static_quad packed[DOK_GEOMETRY_CELL_MAX];
     LevelGeometry *g=backing;uint32_t pattern;
     dok_static_geometry_reset();
     if(!world||!world->definition||!bindings||!backing||!used||
@@ -49,63 +49,94 @@ int dok_static_geometry_load(const dok_initial_world *world,const dok_geometry_b
        world->definition->settings[0]!=64||world->definition->settings[2]!=64||
        world->definition->settings[3]!=480)return 0;
     g->patterns=g->quads=0;g->offset[0]=0;
+    g->min_y=INT16_MAX;g->max_y=INT16_MIN;
     for(uint32_t z=0;z<64u;++z)for(uint32_t x=0;x<64u;++x){
         if(dok_geometry_build_cell(world,bindings,x,z,&candidate,&cell)!=DOK_GEOMETRY_OK)return 0;
         for(uint32_t q=0;q<cell.count;++q)if(!pack(&cell.quads[q],x,z,&packed[q]))return 0;
         for(pattern=0;pattern<g->patterns;++pattern){
             uint32_t start=g->offset[pattern],count=g->offset[pattern+1u]-start;
-            if(count==cell.count&&!memcmp(g->quad+start,packed,count*sizeof(PackedQuad)))break;
+            if(count==cell.count&&!memcmp(g->quad+start,packed,count*sizeof(*packed)))break;
         }
         if(pattern==g->patterns){
             uint32_t next=g->quads+cell.count;
-            if(pattern==256u||next>512u||offsetof(LevelGeometry,quad)+next*sizeof(PackedQuad)>capacity)return 0;
-            memcpy(g->quad+g->quads,packed,cell.count*sizeof(PackedQuad));
+            if(pattern==256u||next>512u||offsetof(LevelGeometry,quad)+next*sizeof(*packed)>capacity)return 0;
+            memcpy(g->quad+g->quads,packed,cell.count*sizeof(*packed));
             g->bounded[pattern]=1;
-            for(uint32_t q=0;q<cell.count;++q)for(uint32_t v=0;v<4u;++v)
+            for(uint32_t q=0;q<cell.count;++q)for(uint32_t v=0;v<4u;++v){
+                int16_t y=packed[q].vertex[v][1];
+                if(y<g->min_y)g->min_y=y;
+                if(y>g->max_y)g->max_y=y;
                 if(packed[q].vertex[v][0]<0||packed[q].vertex[v][0]>480||
                    packed[q].vertex[v][2]<0||packed[q].vertex[v][2]>480)
                     g->bounded[pattern]=0;
+            }
             g->quads=(uint16_t)next;g->offset[++g->patterns]=(uint16_t)next;
         }
         g->cell[z*64u+x]=(uint8_t)pattern;
     }
-    *used=(uint32_t)offsetof(LevelGeometry,quad)+g->quads*(uint32_t)sizeof(PackedQuad);
+    *used=(uint32_t)offsetof(LevelGeometry,quad)+g->quads*(uint32_t)sizeof(*packed);
     bound_world=world;bound_bindings=bindings;geometry=g;return 1;
 }
-DOK_NDS_HOT_CODE int dok_static_geometry_read(const dok_initial_world *world,
-    const dok_geometry_binding bindings[256],uint32_t x,uint32_t z,dok_geometry_cell *out)
+const dok_static_quad *dok_static_geometry_span(const dok_initial_world *world,
+    const dok_geometry_binding bindings[256],uint32_t x,uint32_t z,uint32_t *count)
 {
     const LevelGeometry *g=geometry;
-    if(!g||world!=bound_world||bindings!=bound_bindings||!out||x>=64u||z>=64u)return 0;
-    uint32_t pattern=g->cell[z*64u+x],start=g->offset[pattern],count=g->offset[pattern+1u]-start;
+    if(!g||world!=bound_world||bindings!=bound_bindings||x>=64u||z>=64u)return NULL;
+    uint32_t pattern=g->cell[z*64u+x],start=g->offset[pattern];
+    *count=g->offset[pattern+1u]-start;
+    return g->quad+start;
+}
+void dok_static_geometry_unpack(const dok_static_quad *p,uint32_t x,uint32_t z,
+    dok_geometry_quad *q)
+{
     int32_t xx=(int32_t)x*480,zz=(int32_t)z*480;
-    out->count=(uint16_t)count;out->reserved=0;
-    for(uint32_t i=0;i<count;++i){
-        const PackedQuad *p=&g->quad[start+i];dok_geometry_quad *q=&out->quads[i];
-        q->material=p->material;q->image_flags=p->image_flags;q->object_flags=p->object_flags;
-        q->orientation=(uint16_t)(p->orientation*90u);q->kind=p->kind;
-        q->cell_x=(uint8_t)x;q->cell_z=(uint8_t)z;q->source_glyph=p->glyph;
-        for(uint32_t v=0;v<4u;++v){
-            q->vertices[v].x=xx+p->vertex[v][0];q->vertices[v].y=p->vertex[v][1];
-            q->vertices[v].z=zz+p->vertex[v][2];
-            q->vertices[v].u_q16=(int32_t)p->vertex[v][3]*65536;
-            q->vertices[v].v_q16=(int32_t)p->vertex[v][4]*65536;
-        }
+    q->material=p->material;q->image_flags=p->image_flags;q->object_flags=p->object_flags;
+    q->orientation=(uint16_t)(p->orientation*90u);q->kind=p->kind;
+    q->cell_x=(uint8_t)x;q->cell_z=(uint8_t)z;q->source_glyph=p->glyph;
+    for(uint32_t v=0;v<4u;++v){
+        q->vertices[v].x=xx+p->vertex[v][0];q->vertices[v].y=p->vertex[v][1];
+        q->vertices[v].z=zz+p->vertex[v][2];
+        q->vertices[v].u_q16=(int32_t)p->vertex[v][3]*65536;
+        q->vertices[v].v_q16=(int32_t)p->vertex[v][4]*65536;
     }
+}
+int dok_static_geometry_read(const dok_initial_world *world,
+    const dok_geometry_binding bindings[256],uint32_t x,uint32_t z,dok_geometry_cell *out)
+{
+    uint32_t count;
+    if(!out)return 0;
+    const dok_static_quad *span=dok_static_geometry_span(world,bindings,x,z,&count);
+    if(!span)return 0;
+    out->count=(uint16_t)count;out->reserved=0;
+    for(uint32_t i=0;i<count;++i)dok_static_geometry_unpack(&span[i],x,z,&out->quads[i]);
     return 1;
+}
+void dok_static_geometry_depth_limits(int32_t camera_y,int64_t limits[2])
+{
+    if(!geometry){limits[0]=limits[1]=INT64_MAX;return;}
+    /* eye = near-plane value + 199*32768. Signed division truncates toward
+     * zero, so only a positive remainder needs rounding up. */
+    int64_t low=((int64_t)camera_y-geometry->min_y)*13107200;
+    int64_t high=((int64_t)geometry->max_y-camera_y)*13107200;
+    limits[0]=low/164+(low%164>0)-199*32768;
+    limits[1]=high/166+(high%166>0)-199*32768;
 }
 DOK_NDS_HOT_CODE uint32_t dok_static_geometry_cull(const dok_initial_world *world,
     const dok_geometry_binding bindings[256],uint32_t x,uint32_t z,
     const int64_t origin[3],
-    const int64_t minimum[3],const int64_t maximum[3],uint32_t *count)
+    const int64_t minimum[3],const int64_t maximum[3],const int64_t limits[2],
+    const dok_static_quad **span,uint32_t *count)
 {
     const LevelGeometry *g=geometry;
+    *span=NULL;
     if(!g||world!=bound_world||bindings!=bound_bindings||x>=64u||z>=64u)return 31u;
     uint32_t pattern=g->cell[z*64u+x];
-    if(!g->bounded[pattern])return 31u;
     *count=g->offset[pattern+1u]-g->offset[pattern];
+    *span=g->quad+g->offset[pattern];
     if(!*count)return 32u;
-    uint32_t mask=24u;
+    if(!g->bounded[pattern])return 31u;
+    int64_t near_min=origin[0]+minimum[0];
+    uint32_t mask=(near_min<limits[0]?8u:0u)|(near_min<limits[1]?16u:0u);
     for(uint32_t p=0;p<3u;++p){
         int64_t value=origin[p];
         if(value+maximum[p]<0)return 32u;
@@ -122,7 +153,7 @@ DOK_NDS_HOT_CODE int dok_static_geometry_shapes(const dok_initial_world *world,
     uint32_t pattern=g->cell[z*64u+x],start=g->offset[pattern],end=g->offset[pattern+1u],n=0;
     int32_t xx=(int32_t)x*480,zz=(int32_t)z*480;
     for(uint32_t i=start;i<end;++i){
-        const PackedQuad *p=&g->quad[i];
+        const dok_static_quad *p=&g->quad[i];
         /* The native constructor emits the floor record only; paired ceiling
          * geometry has never had an independent disclosure record. */
         if(p->kind==DOK_GEOMETRY_CEILING_QUAD)continue;

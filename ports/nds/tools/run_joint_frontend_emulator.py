@@ -463,7 +463,8 @@ def main():
     parser.add_argument('--phase',type=int,choices=range(8),default=0)
     parser.add_argument('--button',choices=('A','Start'),default='A')
     parser.add_argument('--max-ui-latency-vblanks',type=int)
-    parser.add_argument('--max-touch-latency-vblanks',type=int)
+    parser.add_argument('--max-touch-latency-vblanks',type=int,
+                        help='Maximum LCD latency for touches that require a visible change')
     args = parser.parse_args()
     target = args.target.absolute()
     assert target.is_relative_to(ROOT/'build/nds')
@@ -511,6 +512,8 @@ def main():
             live_flow(f,args.language,args.levels,args.steady_presentations)
         summarize(f)
         for event in report['input_latency']:
+            if event['kind'] == 'pointer' and not event.get('visible_change_required', True):
+                continue
             bound = args.max_touch_latency_vblanks if event['kind'] == 'pointer' else args.max_ui_latency_vblanks
             if bound is not None and 'latency_upper_vblanks' in event:
                 assert event['latency_upper_vblanks'] <= bound, ('Explicit latency bound exceeded',bound,event)

@@ -4,6 +4,12 @@
 #include "dok/combat.h"
 #include "dok/ai.h"
 #include "dok/interactions.h"
+#if NDS_EMBEDDED_RESOURCES
+/* The packed shipping bank uses 157106 bytes in the second allocation. */
+#define NDS_AUDIO_EXTRA_BYTES 157696u
+#else
+#define NDS_AUDIO_EXTRA_BYTES 163840u
+#endif
 extern volatile uint32_t g_nds_audio_probe[64];
 void nds_audio_runtime_loading(void (*progress)(unsigned));
 int nds_audio_runtime_init(const dok_asset_session *,unsigned char *,uint32_t,

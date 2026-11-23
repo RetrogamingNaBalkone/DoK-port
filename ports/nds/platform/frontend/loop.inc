@@ -34,7 +34,7 @@ static int frontend_stop_world(void)
     storage->effects.game=NULL;storage->effects.simulation_list=NULL;
     storage->effects.world=NULL;storage->effects.sprites=NULL;
     memset(&storage->game,0,sizeof(storage->game));memset(&storage->list,0,sizeof(storage->list));
-    memset(demand,0,sizeof(demand));demand_count=0;stream_ready=0;mask_identity_count=0;
+    memset(demand,0,DOK_NDS_RENDER_TEXTURE_CAPACITY*sizeof(*demand));demand_count=0;stream_ready=0;mask_identity_count=0;
     frontend->visual_descriptor_bytes=0;frontend->visual_asset=0;frontend->visual_pixels=0;
     frontend->visual_bytes=0;frontend->visual_references=0;
     ui->message_kind=0;ui->message_bytes=0;ui->message_address=0;ui->dirty=1;
@@ -118,6 +118,9 @@ static void frontend_restore_game(void)
     /* Next accepted presentation reuploads the entire lower map and dirty HUD.
      * Reset interval accounting so UI reading time is not called gameplay FPS. */
     previous_present_ticks=0;previous_present_vblank=vblank_counter;
+#if N23_HW_PROFILE && N21P_PROFILE
+    memset(&hardware_profile,0,sizeof(hardware_profile));
+#endif
 }
 static int frontend_loop(void)
 {
@@ -179,7 +182,8 @@ static int frontend_loop(void)
         if(frontend->state.state==DOK_FRONTEND_PLAY){
             if(new_level){
                 if(scene->leased&&(dok_render_scene_release(scene,scene->generation)!=DOK_RENDER_SCENE_OK))return GAMEPLAY_FAILURE();
-                if(!level_load(frontend->state.level))return GAMEPLAY_FAILURE();
+                if(!DIAG_CHECK(DIAG_LEVEL_LOAD,level_load(frontend->state.level),1,
+                    frontend->state.level,loading_stage))return GAMEPLAY_FAILURE();
 #if GAMEPLAY_FLOW
                 flow_result=0;
 #endif
@@ -232,7 +236,14 @@ static int frontend_loop(void)
 #endif
         }else{
             shown=0;bgHide(0);
+#if N23_HW_PROFILE && N21P_PROFILE
+            uint32_t drawn_revision=frontend->drawn_revision;
+#endif
             if(!nds_frontend_draw(frontend,bgGetGfxPtr(hud_bg),bgGetGfxPtr(map_bg)))return GAMEPLAY_FAILURE();
+#if N23_HW_PROFILE && N21P_PROFILE
+            if(state==DOK_FRONTEND_PAUSE&&drawn_revision!=frontend->drawn_revision)
+                hardware_profile_draw();
+#endif
             swiWaitForVBlank();
         }
         ++frontend->frames;frontend_game_probe();

@@ -12,7 +12,7 @@ from map.compiler_cache import compiler_environment
 
 
 def main():
-    out = ROOT/'build/nds/n23/angles51-host'
+    out = ROOT/(sys.argv[1] if len(sys.argv)>1 else 'build/nds/n23/angles51-host')
     out.mkdir(parents=True, exist_ok=True)
     baseline = ROOT/'research/evidence/nds/n23/angles51/baseline_scene.c'
     flags = [Path.home()/'AppData/Local/Programs/Zig/0.13.0/zig.exe', 'cc',
@@ -32,8 +32,8 @@ def main():
     harness = harness.replace(needle,
         '    if(argc==4)for(uint32_t n=0;n<256u;++n)for(uint32_t k=0;k<4u;++k)bindings[n].images[k].width*=2u;\n'
         '    uint32_t used;\n    if(!dok_static_geometry_load(&world,bindings,backing,sizeof(backing),&used))return 19;\n'
-        '    if(argc==4){uint32_t fallback=0,count;int64_t o[3]={0};\n'
-        '        for(uint32_t z=0;z<64u;++z)for(uint32_t x=0;x<64u;++x)fallback+=dok_static_geometry_cull(&world,bindings,x,z,o,o,o,&count)==31u;\n'
+        '    if(argc==4){uint32_t fallback=0,count;int64_t o[3]={0};const dok_static_quad *span;\n'
+        '        for(uint32_t z=0;z<64u;++z)for(uint32_t x=0;x<64u;++x)fallback+=dok_static_geometry_cull(&world,bindings,x,z,o,o,o,o,&span,&count)==31u;\n'
         '        if(!fallback)return 20;}\n'+needle)
     generated = out/'equivalence.c'
     generated.write_text(harness, 'utf8')

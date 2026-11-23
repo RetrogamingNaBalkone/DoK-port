@@ -104,6 +104,13 @@ typedef struct dok_nds_stream_stats {
 dok_nds_render_result dok_nds_stream_reset(const uint16_t *palette,uint32_t colors);
 dok_nds_render_result dok_nds_stream_plan(const dok_nds_stream_texture *textures,
     uint32_t count,dok_nds_stream_stats *stats);
+/* Resolve NULL sources only for final pending uploads, including relocated
+ * and rebuilt slots. The resolver pins all returned pixels through commit. */
+typedef int (*dok_nds_stream_resolve)(const dok_nds_render_texture *const *uploads,
+    const unsigned char **pixels,uint32_t count);
+dok_nds_render_result dok_nds_stream_plan_deferred(
+    const dok_nds_stream_texture *textures,uint32_t count,
+    dok_nds_stream_stats *stats,dok_nds_stream_resolve resolve);
 dok_nds_render_result dok_nds_stream_commit(dok_nds_stream_stats *stats);
 int dok_nds_stream_loading(void);
 

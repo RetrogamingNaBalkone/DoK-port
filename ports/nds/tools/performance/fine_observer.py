@@ -31,7 +31,7 @@ def install_fine_observer():
         values=struct.unpack('<648I',render.ram(self.observer,self.fine_address,2592))
         if values[0]!=0x23504b44:return
         assert values[1]==1
-        fields='frame_id compaction_ticks decode_ticks gather_ticks lookup_comparisons moved_bytes evictions decodes lookup_fast_hits callback_start callback_end level ordinal reserved3 reserved4 reserved5'.split()
+        fields='frame_id compaction_ticks decode_ticks gather_ticks lookup_comparisons moved_bytes evictions decodes lookup_fast_hits callback_start callback_end level ordinal bulk_wait_ticks reserved4 reserved5'.split()
         for offset in range(8,136,16):
             row=dict(zip(fields,values[offset:offset+16]))
             if row['frame_id']:self.fine_frames[row['frame_id']]=row

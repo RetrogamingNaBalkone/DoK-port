@@ -23,8 +23,12 @@ dok_status dok_controls_initialize(dok_control_latch *c){memset(c,0,sizeof(*c));
 #define CHECK(x) do{++checks;if(!(x)){fprintf(stderr,"line%d: %s\n",__LINE__,#x);exit(1);}}while(0)
 static void update(uint32_t language){
     dok_nds_render_camera camera={0};
+    uint32_t transfers_before=dmas;
     ++frame;
     nds_map_update(&map,&world,&game,font,language,pixels,vram,frame*123u,1,7,frame,0,63,&camera,0);
+    CHECK(dmas-transfers_before==(map.pending_reason!=0u && map.pending_upload_bytes!=0u));
+    if(dmas==transfers_before)
+        CHECK(!map.profile[4]&&map.profile[10]==UINT32_MAX&&map.profile[11]==UINT32_MAX);
     CHECK(!(g_nds_map_probe[2]&1u));CHECK(g_nds_map_probe[1]==2u);CHECK(g_nds_map_probe[5]==frame);
     CHECK(map.live[0]==frame);CHECK(!map.fault);CHECK(!memcmp(pixels,vram,sizeof(pixels)));
     CHECK(dok_map_raster(reference_pixels,&map.snapshot,dok_map_scales[map.control.zoom],-map.left,-map.top));
@@ -103,7 +107,8 @@ static void split_presentation(void){
      * A simulated long VBlank wait cannot create DMA or inflate CPU stage7. */
     update(1);CHECK(pixels[448]==12);before=dmas;remember();++frame;
     nds_map_prepare(&map,&world,&game,font,1,pixels,456,1,7,frame,0,63,&camera,0);
-    CHECK(g_nds_map_probe[2]&1u);CHECK(map.pending_reason==0&&map.updates==2);retained();
+    CHECK(!(g_nds_map_probe[2]&1u));CHECK(map.live[0]!=frame);
+    CHECK(map.pending_reason==0&&map.updates==2);retained();
     CHECK(map.profile[10]==UINT32_MAX&&map.profile[11]==UINT32_MAX);
     CHECK(dmas==before);prepare_cpu=map.profile[7];clock_ticks+=BUS_CLOCK/2u;
     nds_map_commit(&map,pixels,vram);CHECK(!(g_nds_map_probe[2]&1u));
@@ -144,6 +149,19 @@ static void incremental_updates(void)
             if(step%19u==0u)game.items.inventory.map_available^=1u;
             clock_ticks+=BUS_CLOCK/12u;update(1);
         }
+        /* Move the viewport by <=2 cells in both directions while changing
+         * PRE floor visibility and wall inputs across the retained area. */
+        map.control.follow=1;
+        for(unsigned step=0;step<80u;++step){
+            unsigned x=width/2u+(step%4u==1u)-(step%4u==3u);
+            unsigned z=length/2u+(step%5u==1u)-(step%5u==4u);
+            unsigned n=z*width+x;
+            game.hero.x=(int32_t)x*480;game.hero.z=(int32_t)z*480;
+            game.hero.heading=(int16_t)(random_word()%360u);
+            world.initial.maps[3][n]^=1u;
+            world.initial.maps[1][n]=(uint8_t)(random_word()%16u);
+            clock_ticks+=BUS_CLOCK/12u;update(1);
+        }
     }
 }
 int main(void){
@@ -179,12 +197,13 @@ int main(void){
     nds_map_invalidate(&map);update(1);remember();
     uint32_t before=dmas;world.initial.maps[0][11]=1;update(1);
     CHECK(dmas==before&&world.initial.maps[3][11]==1&&map.hero_visited==2);retained();
-    CHECK(post[11]==0&&map.visited_snapshot[11]==0);CHECK(map.live[47]>0);
+    CHECK(post[11]==0&&map.visited_snapshot[11]==0);
     clock_ticks+=BUS_CLOCK/12u;update(1);CHECK(dmas==before+1);
     CHECK(map.visited_snapshot[11]==1&&post[11]==1&&planes[11]==1);remember();
     /* Dynamic hero/door/corpse state is aggregated at 12Hz. */
     game.hero.heading=180;game.interactions.doors[2].ready=1;game.interactions.doors[2].marker=250;
     game.ai.count=1;game.ai.enemies[0].glyph=3;game.ai.enemies[0].corpse=1;
+    game.ai.corpses[0]=1u<<3;
     before=dmas;update(1);CHECK(dmas==before);retained();
     CHECK(map.snapshot.heading==90);clock_ticks+=BUS_CLOCK/12u;update(1);
     CHECK(dmas==before+1&&map.snapshot.heading==180&&map.glyphs[2].marker==250&&map.glyphs[3].monster_state==4);
@@ -210,19 +229,25 @@ int main(void){
     nds_map_input(&map,&clock,0,0,110,75,&game);update(2);CHECK(!map.control.blocked);
     /* 120Hz input/world sampling must aggregate actual dynamic draws to 12Hz.
      * Each skipped update still executes class1 writes in the live world. */
-    nds_map_invalidate(&map);update(2);before=dmas;uint32_t visited_writes=map.hero_visited;
+    nds_map_invalidate(&map);update(2);before=map.updates;uint32_t visited_writes=map.hero_visited;
     for(unsigned i=0;i<120u;++i){
         clock_ticks+=BUS_CLOCK/120u;game.hero.heading=(int16_t)(i%360u);
         world.initial.maps[0][100u+i]=1;
-        uint32_t previous=dmas;remember();update(2);
+        uint32_t previous=map.updates;remember();update(2);
         CHECK(world.initial.maps[3][100u+i]==1);CHECK(map.hero_visited==visited_writes+i+1u);
-        if(dmas==previous){retained();CHECK(map.profile[1]==0&&map.profile[4]==0);}
+        if(map.updates==previous){retained();CHECK(map.profile[1]==0&&map.profile[4]==0);}
     }
-    CHECK(dmas-before>=11u&&dmas-before<=13u);
+    CHECK(map.updates-before>=11u&&map.updates-before<=13u);
     /* Flush the final pending dynamic state, then remain idle for two seconds. */
     clock_ticks+=BUS_CLOCK/12u;update(2);before=dmas;remember();
     for(unsigned i=0;i<24u;++i){clock_ticks+=BUS_CLOCK/12u;update(2);retained();}
     CHECK(dmas==before);
+    /* An idle poll keeps the 12 Hz deadline even if it did not change scanout. */
+    world.effective.objects[4].marker^=1u;
+    uint32_t displayed=map.updates;
+    update(2);CHECK(dmas==before);retained();
+    clock_ticks+=BUS_CLOCK/12u;update(2);CHECK(map.updates==displayed+1u);
+    CHECK(map.glyphs[4].marker==world.effective.objects[4].marker);
     /* Zoom buttons at every scale, including saturation, remain immediate.
      * Their held highlight changes even when the viewport is clamped. */
     for(unsigned i=0;i<10u;++i){
@@ -237,7 +262,9 @@ int main(void){
 #else
     CHECK(map.verified==0);
 #endif
-    CHECK(dmas==map.updates);
+    /* Updates wholly outside the viewport can publish new PRE/POST
+     * snapshots with zero changed VRAM bytes. */
+    CHECK(dmas<=map.updates);
     uint32_t primary_draws=dmas,primary_skips=map.skips,primary_deferred=map.deferred;
     /* Rotate without translation, then combine turns with each map plane,
      * visitation and glyph changes. Every displayed byte must still match

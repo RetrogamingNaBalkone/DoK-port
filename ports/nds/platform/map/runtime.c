@@ -10,6 +10,9 @@
 #ifndef N23_MAP_SECTOR_DIRTY
 #define N23_MAP_SECTOR_DIRTY 0
 #endif
+enum {
+    MAP_WRITE_PLANES=1u,MAP_WRITE_POST=2u,MAP_WRITE_GLYPHS=4u,MAP_WRITE_PALETTE=8u
+};
 _Alignas(32) volatile uint32_t g_nds_map_probe[64];
 _Static_assert(sizeof(dok_map_glyph)==4,"N20 metadata ABI");
 /* Platform-only GCC/Clang alias extension permits aligned WORD reads of byte
@@ -69,9 +72,15 @@ void nds_map_load(NdsMapRuntime *m,dok_render_world *w,NdsGameplay *g,uint32_t l
         if(m->class1_count<4u)m->class1_glyphs[m->class1_count]=w->effective.objects[i].glyph;
         ++m->class1_count;
     }
+    /* Bound gameplay can only place class 1 through hero movement/respawn.
+     * Other MMap writers place enemies or a blank. The visited plane only
+     * grows until the next level load. Synthetic maps retain the full scan. */
+    m->track_hero_cell=g->items.world==&w->initial && w->initial.definition==&w->effective &&
+        w->effective.settings[DOK_LEVEL_CELL_SIDE]==480 && m->class1_count==1u &&
+        m->class1_glyphs[0]!=' ' && w->initial.hero.object_id!=0;
     m->force=1;
 }
-void nds_map_invalidate(NdsMapRuntime *m){m->force=1;m->input_pending=0;}
+void nds_map_invalidate(NdsMapRuntime *m){m->force=1;m->input_pending=0;m->palette_dirty=1;}
 uint32_t nds_map_input(NdsMapRuntime *m,dok_world_clock *clock,uint32_t keys,
     uint32_t held,int16_t x,int16_t y,NdsGameplay *g)
 {
@@ -121,6 +130,15 @@ static void buttons(NdsMapRuntime *m,unsigned char *out,const unsigned char *fon
     }
 }
 #if N23_MAP_BUTTON_CACHE
+static void include_arrow_rows(const dok_map_arrow_patch *patch,int32_t *first,int32_t *last)
+{
+    for(unsigned i=0;i<patch->count;++i){
+        int32_t row=patch->offsets[i]/256;
+        if(row<*first)*first=row;
+        if(row>*last)*last=row;
+    }
+}
+
 static uint32_t prepare_buttons(NdsMapRuntime *m,unsigned char *out,const unsigned char *font,uint32_t language)
 {
     static const unsigned char glyphs[2][8]={{'-','+',0x96,0xa5,0xad,0xe2,0xe0,0},{'-','+','C','e','n','t','e','r'}};
@@ -189,11 +207,11 @@ void nds_map_prepare(NdsMapRuntime *m,dok_render_world *w,NdsGameplay *g,
 {
     uint32_t profile_start=cpuGetTiming(),phase=profile_start;
     uint32_t count=m->control.width*m->control.length;
-    uint8_t monsters[256]={0};
     int32_t left,top;
     uint32_t changed=!m->updates,reason=0;
-    for(uint32_t i=0;i<g->ai.count;++i)if(g->ai.enemies[i].corpse)monsters[g->ai.enemies[i].glyph]=4;
     int16_t hero_x=(int16_t)(g->hero.x/480),hero_z=(int16_t)(g->hero.z/480);
+    if(m->transfer_deferred&&m->input_pending&&!m->force)m->force=2;
+    uint32_t held=m->transfer_deferred&&!m->force&&m->language==language;
     if(m->control.follow&&!m->paused)dok_map_control_step(&m->control,
         (dok_map_touch){(int16_t)m->touch_x,(int16_t)m->touch_y,(uint8_t)m->touch_held,0},hero_x,hero_z);
     dok_map_control_view(&m->control,&left,&top);
@@ -205,16 +223,19 @@ void nds_map_prepare(NdsMapRuntime *m,dok_render_world *w,NdsGameplay *g,
 #endif
     if(m->snapshot.hero_x!=hero_x||m->snapshot.hero_z!=hero_z||
        m->snapshot.map_available!=(uint8_t)g->items.inventory.map_available||m->left!=left||m->top!=top)changed=1;
-    /* A pending turn already guarantees the next 12Hz update. Compare the
-     * other raster inputs at that deadline, not on every intervening frame.
+    /* Poll the expensive source planes on the map's 12 Hz clock, including
+     * after a clean poll. Touch and invalidation still sample immediately.
      * The class1 world side effect below still runs on every frame. */
-    uint32_t compare_inputs=!heading_changed||(uint32_t)(profile_start-m->last_draw_ticks)>=BUS_CLOCK/12u;
+    uint32_t due=(uint32_t)(profile_start-m->last_scan_ticks)>=BUS_CLOCK/12u;
+    uint32_t compare_inputs=!held&&(due||m->force||m->language!=language);
+    if(compare_inputs)m->last_scan_ticks=profile_start;
     /* A cheap known difference already establishes the dirty OR. Avoid
      * rescanning the full planes while aggregating the same pending movement. */
     for(uint32_t i=0;i<w->effective.object_count&&!changed&&compare_inputs;++i){const dok_level_object *o=&w->effective.objects[i];
         const dok_map_glyph *p=&m->glyphs[o->glyph];uint8_t marker=o->marker;
         if(o->class_id==7u&&g->interactions.doors[o->glyph].ready)marker=g->interactions.doors[o->glyph].marker;
-        if(p->class_id!=o->class_id||p->marker!=marker||p->monster_state!=monsters[o->glyph])changed=1;
+        uint8_t corpse=(g->ai.corpses[o->glyph/8u]&(1u<<(o->glyph%8u)))?4u:0u;
+        if(p->class_id!=o->class_id||p->marker!=marker||p->monster_state!=corpse)changed=1;
     }
     /* Exact comparisons avoid hash collisions. Only active cells affect the
      * source raster; full fixed-stride planes are copied on a real redraw. */
@@ -225,63 +246,115 @@ void nds_map_prepare(NdsMapRuntime *m,dok_render_world *w,NdsGameplay *g,
     if(m->language!=language)reason|=4u;
     uint32_t reuse=m->updates&&!m->force&&m->language==language&&m->left==left&&m->top==top&&
         m->snapshot.map_available==(uint8_t)g->items.inventory.map_available;
-    if((changed||heading_changed)&&(uint32_t)(profile_start-m->last_draw_ticks)>=BUS_CLOCK/12u)reason|=8u;
-    if((changed||heading_changed)&&!reason)++m->deferred;
+    if((changed||heading_changed)&&due)reason|=8u;
+    if(held)reason=m->pending_reason;
+    else if((changed||heading_changed)&&!reason)++m->deferred;
     m->profile[0]=cpuGetTiming()-phase;
     for(uint32_t i=1;i<8u;++i)m->profile[i]=0;
     m->profile[10]=UINT32_MAX;m->profile[11]=UINT32_MAX;
     m->profile[12]=0;m->profile[13]=0;
-    if(reason){
+    /* A superseding full redraw still owns any dirty RAM from the old plan. */
+    uint32_t snapshot_writes=m->transfer_deferred?m->pending_snapshot_writes:0;
+    if(reason&&!held){
         nds_map_begin();
+        m->pending_upload_offset=0;
+        m->pending_upload_bytes=DOK_MAP_VIEW_BYTES;
         phase=cpuGetTiming();
         uint32_t glyph_changed=0;
         int32_t box[4]={256,160,-1,-1};
-        for(uint32_t i=0;i<w->effective.object_count;++i){const dok_level_object *o=&w->effective.objects[i];
+        /* A completed equality scan already checked all live glyphs. */
+        for(uint32_t i=0;(changed||!compare_inputs)&&i<w->effective.object_count;++i){
+            const dok_level_object *o=&w->effective.objects[i];
             dok_map_glyph *p=&m->glyphs[o->glyph];
             uint8_t marker=o->marker;
             if(o->class_id==7u&&g->interactions.doors[o->glyph].ready)marker=g->interactions.doors[o->glyph].marker;
-            glyph_changed|=p->class_id!=o->class_id||p->marker!=marker||p->monster_state!=monsters[o->glyph];
-            p->class_id=o->class_id;p->marker=marker;p->monster_state=monsters[o->glyph];
+            uint8_t corpse=(g->ai.corpses[o->glyph/8u]&(1u<<(o->glyph%8u)))?4u:0u;
+            if(p->class_id!=o->class_id||p->marker!=marker||p->monster_state!=corpse){
+                glyph_changed=1;
+                p->class_id=o->class_id;p->marker=marker;p->monster_state=corpse;
+            }
         }
+        if(glyph_changed||!m->updates)snapshot_writes|=MAP_WRITE_GLYPHS;
         /* Definition/door-marker/corpse changes are infrequent and can affect
          * many occurrences of a glyph. Use the bounded complete path then. */
         if(glyph_changed)reuse=0;
         if(reuse&&changed)dirty_region(box,m,w,count,left,top);
-        memcpy(m->planes,w->initial.maps,3u*DOK_LEVEL_MAX_CELLS);
-        memcpy(m->visited_snapshot,w->initial.maps[3],sizeof(m->visited_snapshot));
+        /* On a pure turn the equality checks above already verified every
+         * displayed byte. Smaller maps also expose their unused snapshot tails. */
+        if(changed||!compare_inputs||count!=DOK_LEVEL_MAX_CELLS){
+            memcpy(m->planes,w->initial.maps,3u*DOK_LEVEL_MAX_CELLS);
+            memcpy(m->visited_snapshot,w->initial.maps[3],sizeof(m->visited_snapshot));
+            snapshot_writes|=MAP_WRITE_PLANES;
+        }
         m->snapshot=(dok_map_snapshot){{m->planes,m->planes+DOK_LEVEL_MAX_CELLS,m->planes+2u*DOK_LEVEL_MAX_CELLS},
             m->visited_snapshot,m->glyphs,m->control.width,m->control.length,hero_x,hero_z,
             (uint16_t)g->hero.heading,(uint8_t)g->items.inventory.map_available};
         m->left=left;m->top=top;
         m->profile[0]+=cpuGetTiming()-phase;phase=cpuGetTiming();
         if(reuse){
+#if N23_MAP_BUTTON_CACHE
+            int32_t first=box[1]<0?0:box[1],last=box[3]>=160?159:box[3];
+            include_arrow_rows(&m->arrow_patch,&first,&last);
+#endif
             dok_map_arrow_restore(pixels,&m->arrow_patch);
             if(!dok_map_raster_region(pixels,&m->snapshot,dok_map_scales[m->control.zoom],-left,-top,
                                       box[0],box[1],box[2],box[3]))m->fault=3;
             dok_map_arrow_draw(pixels,&m->snapshot,dok_map_scales[m->control.zoom],-left,-top,&m->arrow_patch);
+#if N23_MAP_BUTTON_CACHE
+            include_arrow_rows(&m->arrow_patch,&first,&last);
+            m->pending_upload_offset=first<=last?(uint32_t)first*256u:0u;
+            m->pending_upload_bytes=first<=last?(uint32_t)(last-first+1)*256u:0u;
+#endif
         }else if(!dok_map_raster_patched(pixels,&m->snapshot,dok_map_scales[m->control.zoom],-left,-top,&m->arrow_patch))m->fault=3;
         m->profile[1]=cpuGetTiming()-phase;
     }
     phase=cpuGetTiming();
-    /* Source automap class1 writes belong to its logical update, rather than
-     * DMA. Keep the identical second-pass side effect on EVERY world frame,
-     * including frames whose last displayed PRE/POST snapshots remain cached.
-     * Class IDs are immutable level definitions; a first frame always draws. */
-    m->hero_visited+=class1_visit(m,w,count);
+    /* The first update marks every initial placement, after the PRE raster.
+     * Afterwards only the hero's actual map cell can gain an unvisited
+     * class-1 glyph. Use the same clamped coordinates as collision. */
+    uint32_t writes=0;
+    if(m->track_hero_cell && m->updates){
+        int32_t x=hero_x,z=hero_z;
+        if(x<0)x=0;else if(x>=m->control.width)x=m->control.width-1;
+        if(z<0)z=0;else if(z>=m->control.length)z=m->control.length-1;
+        uint32_t cell=(uint32_t)z*m->control.width+(uint32_t)x;
+        if(w->initial.maps[DOK_WORLD_MMAP][cell]==m->class1_glyphs[0]){
+            unsigned char *seen=&w->initial.maps[DOK_WORLD_VISITED][cell];
+            if(!*seen){*seen=1;writes=1;}
+        }else{
+            writes=class1_visit(m,w,count);
+        }
+    }else{
+        writes=class1_visit(m,w,count);
+    }
+    m->hero_visited+=writes;
     m->profile[2]=cpuGetTiming()-phase;
-    if(reason){
+    if(reason&&!held){
         phase=cpuGetTiming();
-        memcpy(m->post_visited,w->initial.maps[3],DOK_LEVEL_MAX_CELLS);
+        if((snapshot_writes&MAP_WRITE_PLANES)||writes||!m->post_matches_pre){
+            memcpy(m->post_visited,w->initial.maps[3],DOK_LEVEL_MAX_CELLS);
+            snapshot_writes|=MAP_WRITE_POST;
+            m->post_matches_pre=!writes;
+        }
 #if N23_MAP_BUTTON_CACHE
-        m->pending_upload_bytes=prepare_buttons(m,pixels,font,language);
+        if(prepare_buttons(m,pixels,font,language)==DOK_MAP_SCREEN_BYTES){
+            m->pending_upload_offset=0;
+            m->pending_upload_bytes=DOK_MAP_SCREEN_BYTES;
+        }
 #else
         buttons(m,pixels,font,language);m->pending_upload_bytes=DOK_MAP_SCREEN_BYTES;
 #endif
         m->profile[3]=cpuGetTiming()-phase;phase=cpuGetTiming();
         /* Clean the RAM source before the wait; commit still performs the
          * actual VRAM transfer. No second framebuffer is allocated. */
-        DC_FlushRange(pixels,m->pending_upload_bytes);
-        for(uint32_t i=0;i<256u;++i)m->palette[i]=BG_PALETTE_SUB[i];
+        if(m->pending_upload_bytes)DC_FlushRange(pixels+m->pending_upload_offset,m->pending_upload_bytes);
+        /* SUB palette is installed at level load and restored by the
+         * frontend before nds_map_invalidate requests a full redraw. */
+        if(!m->updates||m->palette_dirty){
+            for(uint32_t i=0;i<256u;++i)m->palette[i]=BG_PALETTE_SUB[i];
+            snapshot_writes|=MAP_WRITE_PALETTE;
+            m->palette_dirty=0;
+        }
         m->profile[0]+=cpuGetTiming()-phase;phase=cpuGetTiming();
         m->language=language;
         uint32_t p[64]={0x20504b44u,2,g_nds_map_probe[2],level,w->initial.epoch,frame,ordinal,case_id,
@@ -308,20 +381,28 @@ void nds_map_prepare(NdsMapRuntime *m,dok_render_world *w,NdsGameplay *g,
         m->discovery_records,m->discovery_marked,m->hero_visited,(uint32_t)(uintptr_t)w->initial.maps[3],(uint32_t)(uintptr_t)w->initial.maps[0],
         (uint32_t)m->control.follow_x_q16,(uint32_t)m->control.follow_z_q16,g->items.inventory.map_available,m->input_ticks,m->latency_max,
         m->updates,m->upload_bytes,m->verified,m->fault,reason,m->skips,m->deferred};
-    if(!reason)nds_map_begin();
-    memcpy(m->live,live,sizeof(live));
-    m->prepared=1;m->pending_reason=reason;m->pending_ticks=profile_start;
+    memcpy(m->pending_live,live,sizeof(live));
+    m->prepared=1;m->pending_reason=reason;
+    if(!held)m->pending_ticks=profile_start;
+    m->pending_snapshot_writes=snapshot_writes;
     m->profile[6]+=cpuGetTiming()-phase;
     m->prepare_ticks=cpuGetTiming()-profile_start;m->profile[7]=m->prepare_ticks;
+}
+int nds_map_defer_transfer(NdsMapRuntime *m)
+{
+    if(N21P_AUDIT||m->prepared!=1u||m->pending_reason!=8u||
+       !m->pending_upload_bytes||m->input_pending||m->transfer_deferred)return 0;
+    m->transfer_deferred=1;
+    return 1;
 }
 void nds_map_transfer(NdsMapRuntime *m,unsigned char *pixels,void *vram)
 {
     if(m->prepared!=1u)return;
     uint32_t start=cpuGetTiming(),phase=start;
-    if(m->pending_reason){
+    if(m->pending_reason&&m->pending_upload_bytes){
         m->profile[12]=phase;
         m->profile[10]=REG_VCOUNT;
-        dmaCopy(pixels,vram,m->pending_upload_bytes);
+        dmaCopy(pixels+m->pending_upload_offset,(unsigned char *)vram+m->pending_upload_offset,m->pending_upload_bytes);
         m->profile[11]=REG_VCOUNT;
         m->profile[13]=cpuGetTiming();
         m->profile[4]=m->profile[13]-phase;
@@ -340,12 +421,18 @@ void nds_map_commit(NdsMapRuntime *m,unsigned char *pixels,void *vram)
         m->profile[5]=cpuGetTiming()-phase;
 #endif
         phase=cpuGetTiming();
-        DC_FlushRange(m->planes,3u*DOK_LEVEL_MAX_CELLS);DC_FlushRange(m->post_visited,DOK_LEVEL_MAX_CELLS);
-        DC_FlushRange(m->visited_snapshot,sizeof(m->visited_snapshot));DC_FlushRange(m->glyphs,sizeof(m->glyphs));
-        DC_FlushRange(m->palette,sizeof(m->palette));
-        uint32_t count=m->pending_probe[8]*m->pending_probe[9],visited=0;
-        for(uint32_t n=0;n<count;++n)visited+=m->visited_snapshot[n]!=0;
-        m->pending_probe[34]=visited;
+        uint32_t writes=m->pending_snapshot_writes;
+        if(writes&MAP_WRITE_PLANES){
+            DC_FlushRange(m->planes,3u*DOK_LEVEL_MAX_CELLS);
+            DC_FlushRange(m->visited_snapshot,sizeof(m->visited_snapshot));
+            uint32_t count=m->pending_probe[8]*m->pending_probe[9],visited=0;
+            for(uint32_t n=0;n<count;++n)visited+=m->visited_snapshot[n]!=0;
+            m->pre_visited_count=visited;
+        }
+        if(writes&MAP_WRITE_POST)DC_FlushRange(m->post_visited,DOK_LEVEL_MAX_CELLS);
+        if(writes&MAP_WRITE_GLYPHS)DC_FlushRange(m->glyphs,sizeof(m->glyphs));
+        if(writes&MAP_WRITE_PALETTE)DC_FlushRange(m->palette,sizeof(m->palette));
+        m->pending_probe[34]=m->pre_visited_count;
         m->upload_bytes+=m->pending_upload_bytes;++m->updates;
         m->last_draw_ticks=m->pending_ticks;m->last_draw_frame=m->pending_probe[62];
         m->last_draw_reason=m->pending_reason;m->force=0;
@@ -354,16 +441,23 @@ void nds_map_commit(NdsMapRuntime *m,unsigned char *pixels,void *vram)
         m->pending_probe[32]=m->upload_bytes;m->pending_probe[33]=m->updates;
         m->pending_probe[37]=m->latency_max;m->pending_probe[42]=m->verified;
         memcpy((void *)g_nds_map_probe,m->pending_probe,sizeof(m->pending_probe));
-    }else {++m->skips;phase=cpuGetTiming();}
-    m->live[40]=m->latency_max;m->live[41]=m->updates;m->live[42]=m->upload_bytes;
-    m->live[43]=m->verified;m->live[44]=m->fault;m->live[46]=m->skips;
+    }else {
+        ++m->skips;phase=cpuGetTiming();
+        /* A clean frame keeps the last visible snapshot readable across
+         * VBlank. Only lock when its new live scalars are ready to publish. */
+        nds_map_begin();
+    }
+    uint32_t *live=m->pending_live;
+    live[40]=m->latency_max;live[41]=m->updates;live[42]=m->upload_bytes;
+    live[43]=m->verified;live[44]=m->fault;live[46]=m->skips;
+    memcpy(m->live,live,sizeof(m->live));
     DC_FlushRange(m->live,sizeof(m->live));
     /* Script time advances even when scanout reuses the cached image. Every
      * other display field describes the last actual raster/DMA snapshot. */
     g_nds_map_probe[5]=m->live[0];g_nds_map_probe[31]=m->fault;
     DC_FlushRange((void *)g_nds_map_probe,sizeof(g_nds_map_probe));
     ++g_nds_map_probe[2];DC_FlushRange((void *)g_nds_map_probe,32);
-    m->prepared=0;m->profile[6]+=cpuGetTiming()-phase;
+    m->prepared=0;m->transfer_deferred=0;m->profile[6]+=cpuGetTiming()-phase;
     m->profile[7]+=cpuGetTiming()-start;
     DC_FlushRange(m->profile,8u*sizeof(uint32_t));
 }

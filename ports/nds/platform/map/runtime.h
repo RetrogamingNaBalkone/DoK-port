@@ -39,6 +39,12 @@ typedef struct NdsMapRuntime {
     /* Keep existing planes/visited/profile alignment and observer offsets. */
     dok_map_arrow_patch arrow_patch;
     dok_map_static_cache discovery_cache;
+    uint32_t pending_upload_offset;
+    uint32_t track_hero_cell;
+    uint32_t pending_snapshot_writes,pre_visited_count,post_matches_pre,palette_dirty;
+    uint32_t transfer_deferred;
+    uint32_t last_scan_ticks;
+    uint32_t pending_live[48];
 } NdsMapRuntime;
 #ifdef N21P_HOST_TEST
 int nds_map_test_bytes_differ(const void *,const void *,uint32_t);
@@ -71,4 +77,8 @@ void nds_map_commit(NdsMapRuntime *,unsigned char *pixels,void *vram);
 /* Bounded DMA only; keep snapshot odd until later commit verifies/publishes.
  * Repeated transfer is inert. Commit calls transfer if the caller omitted it. */
 void nds_map_transfer(NdsMapRuntime *,unsigned char *pixels,void *vram);
+/* Hold a periodic redraw for at most one presentation. The caller skips
+ * transfer and commit when this returns true. Interactive/full redraws
+ * retain their current deadline. */
+int nds_map_defer_transfer(NdsMapRuntime *);
 #endif

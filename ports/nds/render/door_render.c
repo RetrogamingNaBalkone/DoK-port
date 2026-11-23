@@ -1,6 +1,9 @@
 #include "dok/hotcode.h"
 #include "dok/door_render.h"
 #include "geometry_private.h"
+#if N23_STATIC_GEOMETRY
+#include "static_geometry.h"
+#endif
 #include <string.h>
 #ifndef N23_DOOR_INPLACE
 #define N23_DOOR_INPLACE 0
@@ -73,6 +76,11 @@ DOK_NDS_HOT_CODE dok_door_geometry_result dok_door_geometry_build(const dok_geom
 
 typedef struct source_cache {
     uint32_t cell_id,valid;
+#if N23_STATIC_GEOMETRY
+    const dok_static_quad *packed;
+    uint32_t packed_count;
+    dok_geometry_quad door;
+#endif
     dok_geometry_cell cell;
 #if N23_DOOR_INPLACE
     /* Private builder writes active quads directly. No second full cell. */
@@ -80,23 +88,45 @@ typedef struct source_cache {
     dok_geometry_cell candidate;
 #endif
 } source_cache;
-static const dok_geometry_quad *source_quad(source_cache *cache,uint32_t id,
-    const dok_initial_world *world,const dok_geometry_binding bindings[256])
+/* Invalid source IDs fail. A valid source surface may have no door. */
+static int source_door(source_cache *cache,uint32_t id,
+    const dok_initial_world *world,const dok_geometry_binding bindings[256],
+    const dok_geometry_quad **door)
 {
     uint32_t cell,ordinal,x,z;
-    if(id==0u) return NULL;
+    *door=NULL;
+    if(id==0u) return 0;
     --id;cell=id/DOK_GEOMETRY_CELL_MAX;ordinal=id%DOK_GEOMETRY_CELL_MAX;
     x=cell%64u;z=cell/64u;
     if(!cache->valid || cache->cell_id!=cell) {
-#if N23_DOOR_INPLACE
-        if(dok_geometry_build_cell_inplace(world,bindings,x,z,&cache->cell)!=DOK_GEOMETRY_OK)
-#else
-        if(dok_geometry_build_cell(world,bindings,x,z,&cache->candidate,&cache->cell)!=DOK_GEOMETRY_OK)
+#if N23_STATIC_GEOMETRY
+        cache->packed=dok_static_geometry_span(world,bindings,x,z,&cache->packed_count);
+        if(!cache->packed)
 #endif
-            return NULL;
+        {
+#if N23_DOOR_INPLACE
+            if(dok_geometry_build_cell_inplace(world,bindings,x,z,&cache->cell)!=DOK_GEOMETRY_OK)
+#else
+            if(dok_geometry_build_cell(world,bindings,x,z,&cache->candidate,&cache->cell)!=DOK_GEOMETRY_OK)
+#endif
+                return 0;
+        }
         cache->cell_id=cell;cache->valid=1;
     }
-    return ordinal<cache->cell.count ? &cache->cell.quads[ordinal]:NULL;
+#if N23_STATIC_GEOMETRY
+    if(cache->packed){
+        if(ordinal>=cache->packed_count)return 0;
+        const dok_static_quad *packed=&cache->packed[ordinal];
+        if(packed->kind==DOK_GEOMETRY_DOOR){
+            dok_static_geometry_unpack(packed,x,z,&cache->door);
+            *door=&cache->door;
+        }
+        return 1;
+    }
+#endif
+    if(ordinal>=cache->cell.count)return 0;
+    if(cache->cell.quads[ordinal].kind==DOK_GEOMETRY_DOOR)*door=&cache->cell.quads[ordinal];
+    return 1;
 }
 
 /* Only TMap classes4/7 can emit DOK_GEOMETRY_DOOR (geometry.c). Most
@@ -117,7 +147,7 @@ DOK_NDS_HOT_CODE static int changed(const dok_geometry_quad *q,const dok_initial
     uint32_t index=world->definition->glyph_index[q->source_glyph];
     dok_geometry_quad cropped;
     dok_door_geometry_result result;
-    if(q->kind!=DOK_GEOMETRY_DOOR || index==0u ||
+    if(index==0u ||
        world->definition->objects[index-1u].class_id!=7u) return 0;
     result=dok_door_geometry_build(q,&bindings[q->source_glyph].images[DOK_GEOMETRY_IMAGE],
         phases->phase[q->source_glyph],phases->extent[q->source_glyph],&cropped);
@@ -132,7 +162,7 @@ DOK_NDS_HOT_CODE dok_render_scene_result dok_door_scene_prepare(dok_render_scene
 {
     const dok_nds_render_frame *base=NULL;
     dok_door_render_counts result={0};
-    source_cache cache={0};
+    source_cache cache;
     uint32_t i,j,quads=0,cells=0;
 #if N21P_PROFILE && N21P_GEOMETRY_PROFILE
     uint32_t door_start;
@@ -153,30 +183,41 @@ DOK_NDS_HOT_CODE dok_render_scene_result dok_door_scene_prepare(dok_render_scene
 #endif
         *counts=result;*out=base;return DOK_RENDER_SCENE_OK;
     }
+    cache.valid=0;
     for(i=0;i<scene->counts.merged_quads;++i) {
         const dok_render_merge_record *m=&scene->merges[i];
         const dok_geometry_quad *q;
         if(source_door_class(m->retained_surface_id,world)==7u) {
-            q=source_quad(&cache,m->retained_surface_id,world,bindings);
-            if(!q || changed(q,world,bindings,phases)) goto failed;
+            if(!source_door(&cache,m->retained_surface_id,world,bindings,&q) ||
+               (q && changed(q,world,bindings,phases))) goto failed;
         }
         if(source_door_class(m->consumed_surface_id,world)==7u) {
-            q=source_quad(&cache,m->consumed_surface_id,world,bindings);
-            if(!q || changed(q,world,bindings,phases)) goto failed;
+            if(!source_door(&cache,m->consumed_surface_id,world,bindings,&q) ||
+               (q && changed(q,world,bindings,phases))) goto failed;
         }
     }
     for(i=0;i<base->cell_count;++i) {
         dok_nds_render_cell old=scene->cells[i];
         uint32_t start=quads;
+        /* Base scene cells retain their source IDs even when a surface
+         * absorbs its neighbour. Class is constant across a cell's quads. */
+        uint32_t source_class=source_door_class(old.quads[0].source_surface_id,world);
+        if(source_class!=4u&&source_class!=7u){
+            if(scene->quads+start!=old.quads)
+                memmove(scene->quads+start,old.quads,old.quad_count*sizeof(*old.quads));
+            old.quads=scene->quads+start;
+            scene->cells[cells++]=old;
+            quads+=old.quad_count;
+            continue;
+        }
         for(j=0;j<old.quad_count;++j) {
             const dok_nds_render_quad *source=&old.quads[j];
             dok_nds_render_quad *dest=&scene->quads[quads];
             uint32_t copied=0;
-            uint32_t source_class=source_door_class(source->source_surface_id,world);
-            if(source_class==4u || source_class==7u) {
-                const dok_geometry_quad *q=source_quad(&cache,source->source_surface_id,world,bindings);
-                if(!q) goto failed;
-                if(q->kind!=DOK_GEOMETRY_DOOR) {
+            {
+                const dok_geometry_quad *q;
+                if(!source_door(&cache,source->source_surface_id,world,bindings,&q)) goto failed;
+                if(!q) {
                     if(dest!=source)*dest=*source;
                     ++quads;continue;
                 }

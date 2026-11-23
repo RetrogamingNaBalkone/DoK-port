@@ -11,6 +11,7 @@ _Alignas(32) volatile uint32_t g_nds_audio_probe[64];
 static const dok_asset_session *session;
 static const dok_level_presentation *presentation;
 static unsigned char *cache,*fill;
+static uint32_t backing_bytes;
 typedef struct AudioResident {uint32_t pcm,rate,samples,bytes;unsigned char *packed;} AudioResident;
 static AudioResident resident[22],*current;
 static dok_asset_entry chunks[8];
@@ -32,7 +33,7 @@ static void publish(void)
         s.playing,s.identity,s.consumed_parts,s.consumed_samples,s.underruns,s.stale_commands,
         s.command_ack,s.irq_count,s.timer_period,epoch,starts,rejects,stops,completed,requests,
         read_bytes,read_calls,service_max,fault,rate,samples,position,looping,pending_id,
-        (uint32_t)(uintptr_t)cache,(uint32_t)(uintptr_t)fill,425984u,indices[catalog_index<23?catalog_index:22],cold_max,packed_used,stream_filling,stream_bytes,
+        (uint32_t)(uintptr_t)cache,(uint32_t)(uintptr_t)fill,backing_bytes,indices[catalog_index<23?catalog_index:22],cold_max,packed_used,stream_filling,stream_bytes,
         s.producer_samples,s.preparing,s.consumer_started};
     a[39]=(uint32_t)(uintptr_t)menu_pcm;a[40]=menu_bytes;
     uint32_t sequence=g_nds_audio_probe[63]+1u;g_nds_audio_probe[63]=sequence;
@@ -45,12 +46,13 @@ static void publish(void)
 #endif
 int nds_audio_runtime_init(const dok_asset_session *s,unsigned char *backing,uint32_t bytes,unsigned char *extra,uint32_t extra_bytes)
 {
-    if(!s||bytes<262144u||!extra||extra_bytes<163840u)return 0;
+    if(!s||bytes<262144u||!extra||extra_bytes<NDS_AUDIO_EXTRA_BYTES)return 0;
+    backing_bytes=bytes+extra_bytes;
     session=s;cache=backing;fill=backing+65536;
     unsigned char *banks[2]={backing+98304,extra};uint32_t used[2]={0,0};
     dok_asset_view view;unsigned char descriptor[128];
 #if NDS_EMBEDDED_RESOURCES
-    if(!load_packed_sounds(banks,used))return 0;
+    if(!load_packed_sounds(banks,used,extra_bytes))return 0;
 #else
     unsigned order[22];
     for(uint32_t i=0;i<22u;++i){

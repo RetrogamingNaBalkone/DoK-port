@@ -79,26 +79,16 @@ dok_status dok_sprite_project(const dok_nds_render_camera *c,const dok_sprite_po
     *out=r;return DOK_STATUS_OK;
 }
 static dok_status gather_one(const dok_sprite_snapshot *s,const dok_nds_render_camera *c,
-    uint32_t plane,uint32_t cell,uint32_t x,uint32_t z,dok_sprite_list *list,
+    uint32_t plane,uint32_t cell,uint32_t x,uint32_t z,uint32_t glyph,
+    const dok_level_object *o,dok_sprite_list *list,
     const uint16_t *runtime_flags,const unsigned char *zero_height)
 {
     const dok_initial_world *w=s->world;
     const dok_level_definition *d=w->definition;
-    uint32_t glyph=w->maps[plane][cell],index=d->glyph_index[glyph],fc;
-    const dok_level_object *o;const dok_sprite_binding *b;
+    uint32_t fc;
+    const dok_sprite_binding *b;
     dok_sprite_pose p={0};dok_sprite_projection projection;
-    if(!index) return DOK_STATUS_INVALID_STATE;
-    o=&d->objects[index-1u];
     if(runtime_flags&&(runtime_flags[glyph]&0x400u))return DOK_STATUS_OK;
-    /* PKR1098:42A9..42AE skips the entire remaining cell, including MMap,
-     * for a solid TMap wall. An initial seed behind that wall is not drawn. */
-    if(plane==DOK_WORLD_MMAP) {
-        uint32_t tile=d->glyph_index[w->maps[DOK_WORLD_TMAP][cell]];
-        if(!tile)return DOK_STATUS_INVALID_STATE;
-        if(d->objects[tile-1u].class_id==2u)return DOK_STATUS_OK;
-    }
-    if(plane==DOK_WORLD_TMAP ? !(o->class_id==3u || o->class_id==6u || o->class_id==9u || o->class_id==10u)
-                           : !(o->class_id==3u || o->class_id==9u)) return DOK_STATUS_OK;
     ++list->considered;b=&s->bindings[glyph];
     if(!b->frame.image || !b->frame.width || !b->frame.height) return DOK_STATUS_INVALID_STATE;
     fc=d->glyph_index[w->maps[DOK_WORLD_FCMAP][cell]];
@@ -128,19 +118,38 @@ dok_status dok_sprites_gather_live(const dok_sprite_snapshot *s,const uint16_t *
     const unsigned char *zero_height,const dok_nds_render_camera *c,uint32_t heading,
     dok_sprite_list *list,const dok_sprite_list **out)
 {
-    dok_render_gather_bounds bounds;int32_t x,z;uint32_t plane,width;
+    dok_render_gather_bounds bounds;
     if(!s || !s->world || !s->world->definition || !s->bindings || !c || !list || !out ||
        !s->revision || s->world_epoch!=s->world->epoch || !s->world_epoch)
         return DOK_STATUS_INVALID_ARGUMENT;
     if(dok_render_bounds(s->world,c,heading,&bounds)!=DOK_RENDER_SCENE_OK)
         return DOK_STATUS_INVALID_ARGUMENT;
     list->count=list->considered=list->rejected=0;list->world_epoch=s->world_epoch;list->revision=s->revision;
-    width=(uint32_t)s->world->definition->settings[DOK_LEVEL_WIDTH];
-    for(z=bounds.min_z;z<=bounds.max_z;++z) for(x=bounds.min_x;x<=bounds.max_x;++x)
-        for(plane=0;plane<2u;++plane) {
-            dok_status r=gather_one(s,c,plane,(uint32_t)z*width+(uint32_t)x,(uint32_t)x,(uint32_t)z,list,runtime_flags,zero_height);
-            if(r!=DOK_STATUS_OK) return r;
+    const dok_initial_world *world=s->world;
+    const dok_level_definition *level=world->definition;
+    uint32_t width=(uint32_t)level->settings[DOK_LEVEL_WIDTH];
+    const uint8_t *actors=world->maps[DOK_WORLD_MMAP],*tiles=world->maps[DOK_WORLD_TMAP];
+    for(int32_t z=bounds.min_z;z<=bounds.max_z;++z) {
+        uint32_t cell=(uint32_t)z*width+(uint32_t)bounds.min_x;
+        for(int32_t x=bounds.min_x;x<=bounds.max_x;++x,++cell) {
+            uint32_t actor_glyph=actors[cell],tile_glyph=tiles[cell];
+            uint32_t actor_index=level->glyph_index[actor_glyph],tile_index=level->glyph_index[tile_glyph];
+            if(!actor_index||!tile_index)return DOK_STATUS_INVALID_STATE;
+            const dok_level_object *actor=&level->objects[actor_index-1u],*tile=&level->objects[tile_index-1u];
+            /* A solid TMap wall suppresses MMap sprites (PKR1098:42A9..42AE).
+             * Admit MMap before TMap to keep stable ordering for equal depths. */
+            if(tile->class_id!=2u&&(actor->class_id==3u||actor->class_id==9u)) {
+                dok_status status=gather_one(s,c,DOK_WORLD_MMAP,cell,(uint32_t)x,(uint32_t)z,
+                    actor_glyph,actor,list,runtime_flags,zero_height);
+                if(status!=DOK_STATUS_OK)return status;
+            }
+            if(tile->class_id==3u||tile->class_id==6u||tile->class_id==9u||tile->class_id==10u) {
+                dok_status status=gather_one(s,c,DOK_WORLD_TMAP,cell,(uint32_t)x,(uint32_t)z,
+                    tile_glyph,tile,list,runtime_flags,zero_height);
+                if(status!=DOK_STATUS_OK)return status;
+            }
         }
+    }
     *out=list;return DOK_STATUS_OK;
 }
 dok_status dok_sprites_gather(const dok_sprite_snapshot *s,const dok_nds_render_camera *c,

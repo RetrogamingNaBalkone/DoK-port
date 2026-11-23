@@ -9,8 +9,49 @@ static dok_sprite_asset_bank bank;static dok_frame_store store;static dok_textur
 static unsigned char assets[DOK_NDS_ASSETS_BYTES],pool[524288],raw[65536],packed[131072],decoded[65536],water[32768],reference[16384];
 static uint32_t checks;
 #define CHECK(e) do{++checks;if(!(e)){fprintf(stderr,"frame_store:%d\n",__LINE__);return 1;}}while(0)
+#if N23_CACHE_REPLACE
+static int check_batch_placement(void)
+{
+    static dok_frame_batch_workspace workspace;
+    unsigned char encoded[14],pixels[256];
+    dok_asset_entry entries[7]={0};
+    for(uint32_t i=0;i<7u;++i){
+        uint32_t size=i==6u?128u:64u;
+        entries[i].id=i+1u;entries[i].bytes=size;
+        store.records[i]=(dok_frame_record){i+1u,i*2u,2u,size};
+        encoded[i*2u]=(unsigned char)(127u+size);
+        encoded[i*2u+1u]=(unsigned char)(i+1u);
+    }
+    store.pool=encoded;store.bytes=sizeof(encoded);store.count=7;
+    for(uint32_t fallback=0;fallback<2u;++fallback){
+        dok_texture_cache_init(&cache,pixels,sizeof(pixels));
+        for(uint32_t i=0;i<4u;++i){
+            CHECK(dok_texture_cache_begin(&cache)==DOK_STATUS_OK);
+            CHECK(dok_frame_store_require(&store,&cache,&entries[i])==DOK_STATUS_OK);
+        }
+        CHECK(dok_texture_cache_begin(&cache)==DOK_STATUS_OK);
+        const dok_asset_entry *requests[]={&entries[1],&entries[3],
+            &entries[fallback?6u:4u],&entries[fallback?6u:5u]};
+        CHECK(dok_frame_store_require_many(&store,&cache,requests,4,&workspace)==DOK_STATUS_OK);
+        CHECK(cache.used==sizeof(pixels)&&cache.evictions==2u);
+        for(uint32_t i=0;i<4u;++i){
+            const unsigned char *p=dok_texture_cache_pixels(&cache,requests[i]->id);
+            CHECK(p);
+            for(uint32_t n=0;n<requests[i]->bytes;++n)CHECK(p[n]==requests[i]->id);
+        }
+        CHECK(dok_texture_cache_pixels(&cache,2u)==pixels+(fallback?0u:64u));
+        CHECK(dok_texture_cache_pixels(&cache,4u)==pixels+(fallback?64u:192u));
+        CHECK(dok_texture_cache_pixels(&cache,1u)==NULL&&dok_texture_cache_pixels(&cache,3u)==NULL);
+    }
+    memset(&store,0,sizeof(store));memset(&cache,0,sizeof(cache));
+    return 0;
+}
+#endif
 int main(int argc,char **argv)
 {
+#if N23_CACHE_REPLACE
+    if(check_batch_placement())return 1;
+#endif
     uint32_t used,seed=171029u;
     for(uint32_t n=0;n<=65536u;n=n<256u?n+1u:n+257u){
         for(uint32_t i=0;i<n;++i){seed=seed*1664525u+1013904223u;raw[i]=(unsigned char)((i/128u)%3u?seed>>24u:i/128u);}

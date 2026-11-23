@@ -22,6 +22,11 @@ static int effects_prepare(const dok_render_case *c,uint32_t ordinal)
     unsigned char mask_rows[DOK_NDS_RENDER_TEXTURE_CAPACITY][16];
     NdsEffectsRuntime *r=&storage->effects;
     uint32_t i,j,old_count=demand_count;uint32_t pct=99;
+#if EFFECT_GPU_FOG
+    /* With uniform row 0, a raw slot has one resolved material for this
+     * frame. Cache ordinary slots; animated UV slots still shift each quad. */
+    uint16_t resolved[DOK_NDS_RENDER_TEXTURE_CAPACITY]={0};
+#endif
     int16_t near_depth=c->source_kind==17u?-2000:1920;
 #if EFFECT_GPU_FOG
     /* Keep exact two controlled alpha/depth fixtures as reference. Flat
@@ -34,7 +39,6 @@ static int effects_prepare(const dok_render_case *c,uint32_t ordinal)
         /* Darkness changes RGB after rasterization. Keep the source index0
          * silhouette, without LIGHT-induced holes or face-centre mask pops.
          * Distant objects disappear fully at the black fog endpoint. */
-        for(i=0;i<scene->counts.published_quads;++i)scene->quads[i].reserved=0;
         light_counts.rows[0]=scene->counts.published_quads;
         g_nds_effect_probe[30]=DOK_RENDER_SCENE_OK;
     } else g_nds_effect_probe[30]=dok_light_scene_apply(scene,near_depth,(dok_light_workspace *)(void *)scratch,&light_counts);
@@ -63,6 +67,15 @@ static int effects_prepare(const dok_render_case *c,uint32_t ordinal)
     for(i=0;i<scene->counts.published_quads;++i) {
         dok_nds_render_quad *q=&scene->quads[i];uint32_t slot=q->texture_slot;
         if(slot==UINT16_MAX){q->reserved=0;continue;}
+#if EFFECT_GPU_FOG
+        if(gpu_darkness || (c->flags&DOK_RENDER_CASE_FLAT)){
+            q->reserved=0;
+            if(slot<old_count && resolved[slot]){
+                q->texture_slot=(uint16_t)(resolved[slot]-1u);
+                continue;
+            }
+        }
+#endif
         if(slot>=old_count || q->reserved>15u)do{if(!g_nds_effect_probe[31])g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return GAMEPLAY_FAILURE();}while(0);
         const dok_nds_render_texture *t=&raw[slot].texture;
         uint32_t material=raw_material[slot],phase=0,flags=0,code=0,mask=0;
@@ -103,12 +116,28 @@ static int effects_prepare(const dok_render_case *c,uint32_t ordinal)
             }
         }
         q->texture_slot=(uint16_t)j;
+#if EFFECT_GPU_FOG
+        if(!tiled && (gpu_darkness || (c->flags&DOK_RENDER_CASE_FLAT)))
+            resolved[slot]=(uint16_t)(j+1u);
+#endif
     }
     for(i=0;i<demand_count;++i)if(demand[i].key>>33) {
         demand[i].texture.pixels=dok_effect_cache_pixels(&r->cache,demand[i].key);
         if(!demand[i].texture.pixels)do{if(!g_nds_effect_probe[31])g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return GAMEPLAY_FAILURE();}while(0);
     }
-    if(!DIAG_CHECK(DIAG_PLAN,dok_nds_stream_plan(demand,demand_count,&stream_stats),DOK_NDS_RENDER_OK,demand_count,storage->cache.used))do{if(!g_nds_effect_probe[31])g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return GAMEPLAY_FAILURE();}while(0);
+    dok_nds_render_result plan;
+#if GAMEPLAY_FRONTEND && GAMEPLAY_FRAME_STORE && N23_FRAME_BATCH && EFFECT_GPU_FOG
+    if(defer_sprite_pixels(c))
+        plan=dok_nds_stream_plan_deferred(demand,demand_count,&stream_stats,resolve_sprite_uploads);
+    else
+#endif
+        plan=dok_nds_stream_plan(demand,demand_count,&stream_stats);
+    if(!DIAG_CHECK(DIAG_PLAN,plan,DOK_NDS_RENDER_OK,demand_count,storage->cache.used))do{if(!g_nds_effect_probe[31])g_nds_effect_probe[31]=__LINE__;DC_FlushRange((const void *)g_nds_effect_probe,128);return GAMEPLAY_FAILURE();}while(0);
+    sprite_obs.cache_bytes=storage->cache.used;sprite_obs.cpu_hits=storage->cache.hits;
+    sprite_obs.cpu_misses=storage->cache.misses;sprite_obs.cpu_evictions=storage->cache.evictions;
+    sprite_obs.cpu_reads=storage->cache.read_bytes;sprite_obs.gpu_hits=stream_stats.hits;
+    sprite_obs.gpu_misses=stream_stats.misses;sprite_obs.gpu_evictions=stream_stats.evictions;
+    sprite_obs.gpu_rebuilds=stream_stats.rebuilds;
     sprite_obs.demand_count=demand_count;obs.texture_count=demand_count;obs.texture_bytes=stream_stats.resident_bytes;
     uint32_t data[32]={0x13504b44u,1,32u*4u,0,address(r->light),address(r->rgb6),address(r->palette),
         (uint32_t)(int32_t)near_depth,r->percentage,light_counts.source_quads,light_counts.published_quads,

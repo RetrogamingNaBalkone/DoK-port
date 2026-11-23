@@ -17,6 +17,31 @@ static uint32_t random32(void){rng^=rng<<13;rng^=rng>>17;rng^=rng<<5;return rng;
 static unsigned word(const unsigned char *p){return (unsigned)p[0]|(unsigned)p[1]<<8;}
 extern dok_status baseline_dok_map_record_geometry(const dok_geometry_quad *,const dok_nds_render_camera *,dok_map_render_record *);
 static int32_t signed_bits(uint32_t n){return n<=INT32_MAX?(int32_t)n:-1-(int32_t)(UINT32_MAX-n);}
+extern dok_status baseline_dok_map_discovery_records(dok_map_discovery_workspace *,
+    unsigned char [DOK_LEVEL_MAX_CELLS],dok_map_discovery_stats *);
+static int sort_vectors(void)
+{
+    static const int32_t keys[]={0,17,0xfffff,0x100000,-1,INT32_MIN,INT32_MAX};
+    static const unsigned counts[]={0,1,127,256,1024,DOK_MAP_DISCOVERY_RECORDS};
+    for(unsigned mode=0;mode<2;++mode)for(unsigned n=0;n<sizeof(counts)/sizeof(counts[0]);++n){
+        dok_map_discovery_stats a,b;
+        old_work.count=new_work.count=counts[n];
+        for(unsigned i=0;i<counts[n];++i){
+            int32_t key=keys[(i*31u+i/7u)%(mode?7u:3u)];
+            dok_map_render_record r={key,(int16_t)(i%320),(int16_t)(i%320+7),
+                (uint16_t)i,(uint16_t)(1u|((i%3u==0u)?2u:0u))};
+            old_work.records[i]=new_work.records[i]=r;
+        }
+        memset(old_visit,0,sizeof(old_visit));memset(new_visit,0,sizeof(new_visit));
+        if(baseline_dok_map_discovery_records(&old_work,old_visit,&a)!=DOK_STATUS_OK||
+           dok_map_discovery_records(&new_work,new_visit,&b)!=DOK_STATUS_OK||
+           memcmp(&a,&b,sizeof(a))||memcmp(old_visit,new_visit,sizeof(old_visit))||
+           memcmp(old_work.order,new_work.order,counts[n]*sizeof(old_work.order[0]))||
+           memcmp(old_work.records,new_work.records,counts[n]*sizeof(old_work.records[0]))||
+           memcmp(old_work.columns,new_work.columns,sizeof(old_work.columns)))return 0;
+    }
+    return 1;
+}
 static int projection_vectors(void)
 {
     /* Exercise low-DWORD overflow, the near plane, both horizontal kinds and
@@ -40,7 +65,7 @@ static int projection_vectors(void)
 }
 int main(int argc,char **argv)
 {
-    if(!projection_vectors())return 20;
+    if(!sort_vectors()||!projection_vectors())return 20;
     if(argc!=3)return 1;
     FILE *file=fopen(argv[1],"rb");if(!file)return 2;
     size_t bytes=fread(source,1,sizeof(source),file);fclose(file);

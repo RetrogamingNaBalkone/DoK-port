@@ -91,7 +91,7 @@ DOK_NDS_HOT_CODE int dok_render_merge(const dok_nds_render_quad *a,const dok_nds
     *out=result;return 1;
 }
 
-DOK_NDS_HOT_CODE dok_render_scene_result dok_render_bounds(const dok_initial_world *world,
+dok_render_scene_result dok_render_bounds(const dok_initial_world *world,
     const dok_nds_render_camera *camera,uint32_t heading,dok_render_gather_bounds *out)
 {
     int32_t s,c,r,t,bx,bz,side;
@@ -142,6 +142,9 @@ typedef struct scene_camera_dot {
 #endif
 } scene_camera_dot;
 DOK_NDS_HOT_CODE static int visible(const dok_geometry_quad *quad,const dok_nds_render_camera *camera,
+#if N23_STATIC_GEOMETRY && N23_FUSED_CULL
+    const dok_static_quad *packed,int32_t cell_x,int32_t cell_z,
+#endif
     const scene_camera_dot *dot,uint32_t active_planes)
 {
     uint32_t vertex,common_outside=active_planes;
@@ -155,12 +158,20 @@ DOK_NDS_HOT_CODE static int visible(const dok_geometry_quad *quad,const dok_nds_
 #if N23_FUSED_CULL
         /* Exact distribution of the original five integer plane equations.
          * Coefficients depend only on this camera; no precision is discarded. */
+        int32_t x,y,z;
+#if N23_STATIC_GEOMETRY
+        if(packed){
+            x=cell_x+packed->vertex[vertex][0];y=packed->vertex[vertex][1];
+            z=cell_z+packed->vertex[vertex][2];
+        }else
+#endif
+        {x=v->x;y=v->y;z=v->z;}
         uint32_t outside=0;
-        if(common_outside&1u)outside|=(int64_t)v->x*dot->x[0]+(int64_t)v->z*dot->z[0]+dot->offset[0]<0?1u:0u;
-        if(common_outside&2u)outside|=(int64_t)v->x*dot->x[1]+(int64_t)v->z*dot->z[1]+dot->offset[1]<0?2u:0u;
-        if(common_outside&4u)outside|=(int64_t)v->x*dot->x[2]+(int64_t)v->z*dot->z[2]+dot->offset[2]<0?4u:0u;
-        if(common_outside&8u)outside|=(int64_t)v->x*dot->x[3]+(int64_t)v->z*dot->z[3]+(int64_t)v->y*13107200+dot->offset[3]<0?8u:0u;
-        if(common_outside&16u)outside|=(int64_t)v->x*dot->x[4]+(int64_t)v->z*dot->z[4]-(int64_t)v->y*13107200+dot->offset[4]<0?16u:0u;
+        if(common_outside&1u)outside|=(int64_t)x*dot->x[0]+(int64_t)z*dot->z[0]+dot->offset[0]<0?1u:0u;
+        if(common_outside&2u)outside|=(int64_t)x*dot->x[1]+(int64_t)z*dot->z[1]+dot->offset[1]<0?2u:0u;
+        if(common_outside&4u)outside|=(int64_t)x*dot->x[2]+(int64_t)z*dot->z[2]+dot->offset[2]<0?4u:0u;
+        if(common_outside&8u)outside|=(int64_t)x*dot->x[3]+(int64_t)z*dot->z[3]+(int64_t)y*13107200+dot->offset[3]<0?8u:0u;
+        if(common_outside&16u)outside|=(int64_t)x*dot->x[4]+(int64_t)z*dot->z[4]-(int64_t)y*13107200+dot->offset[4]<0?16u:0u;
 #else
         int64_t depth=(int64_t)v->z*camera->cos_q15-(int64_t)v->x*camera->sin_q15-dot->depth;
         int64_t eye=depth+INT64_C(200)*32768;
@@ -197,7 +208,7 @@ DOK_NDS_HOT_CODE dok_render_scene_result dok_render_scene_prepare(dok_render_sce
 #endif
     scene_camera_dot dot;
 #if N23_STATIC_GEOMETRY && N23_FUSED_CULL
-    int64_t box_origin[3]={0};
+    int64_t box_origin[3]={0},depth_limits[2];
 #endif
     dok_render_gather_bounds bounds;
     int32_t x,z,side;
@@ -215,6 +226,10 @@ DOK_NDS_HOT_CODE dok_render_scene_result dok_render_scene_prepare(dok_render_sce
     status=dok_render_bounds(world,camera,heading,&bounds);
     if(status!=DOK_RENDER_SCENE_OK) return status;
 #if !GAMEPLAY_GEOMETRY_CACHE
+#if N23_STATIC_GEOMETRY
+    /* Every cell of a bound 64x64 level already contains the resolved fields. */
+    if(!dok_static_geometry_bound(world,bindings) || bounds.max_x>=64 || bounds.max_z>=64)
+#endif
     dok_geometry_prepare_fields(world->definition,prepared);
 #endif
     dot.lateral=(int64_t)camera->x*camera->cos_q15+(int64_t)camera->z*camera->sin_q15;
@@ -233,6 +248,7 @@ DOK_NDS_HOT_CODE dok_render_scene_result dok_render_scene_prepare(dok_render_sce
     dot.x[4]=-166*camera->sin_q15;dot.z[4]=166*camera->cos_q15;
     dot.offset[4]=-166*dot.depth+(int64_t)camera->y*13107200+INT64_C(166)*200*32768;
 #if N23_STATIC_GEOMETRY
+    dok_static_geometry_depth_limits(camera->y,depth_limits);
     for(uint32_t p=0;p<3u;++p){
         int64_t dx=(int64_t)dot.x[p]*480,dz=(int64_t)dot.z[p]*480;
         dot.step[p]=dx;
@@ -247,7 +263,7 @@ DOK_NDS_HOT_CODE dok_render_scene_result dok_render_scene_prepare(dok_render_sce
 #endif
     side=world->definition->settings[DOK_LEVEL_CELL_SIDE];
     for(z=bounds.min_z;z<=bounds.max_z;++z) for(x=bounds.min_x;x<=bounds.max_x;++x) {
-        uint32_t i,start=quad_count,active_planes=31u;
+        uint32_t i,start=quad_count,active_planes=31u,source_count;
         int32_t origin_x=((x*side+side/2+256)/512)*512;
         int32_t origin_z=((z*side+side/2+256)/512)*512;
         if(x==bounds.min_x) {
@@ -256,13 +272,13 @@ DOK_NDS_HOT_CODE dok_render_scene_result dok_render_scene_prepare(dok_render_sce
         }
         ++scene->counts.gathered_cells;
 #if N23_STATIC_GEOMETRY && N23_FUSED_CULL
-        uint32_t source_count;
+        const dok_static_quad *span;
         for(uint32_t p=0;p<3u;++p){
             if(x==bounds.min_x)box_origin[p]=(int64_t)x*480*dot.x[p]+(int64_t)z*480*dot.z[p];
             else box_origin[p]+=dot.step[p];
         }
         active_planes=dok_static_geometry_cull(world,bindings,(uint32_t)x,(uint32_t)z,
-            box_origin,dot.minimum,dot.maximum,&source_count);
+            box_origin,dot.minimum,dot.maximum,depth_limits,&span,&source_count);
         if(active_planes==32u){
             scene->counts.source_quads+=source_count;
             scene->counts.frustum_rejected+=source_count;
@@ -272,34 +288,64 @@ DOK_NDS_HOT_CODE dok_render_scene_result dok_render_scene_prepare(dok_render_sce
 #if N21P_GEOMETRY_PROFILE
         profile_stamp=cpuGetTiming();
 #endif
-#if GAMEPLAY_GEOMETRY_CACHE
-        if(dok_geometry_build_cell(world,bindings,(uint32_t)x,(uint32_t)z,&scratch,&cell)!=DOK_GEOMETRY_OK)
-#else
-        if(dok_geometry_build_cell_prepared(world,bindings,(uint32_t)x,(uint32_t)z,&cell,prepared)!=DOK_GEOMETRY_OK)
+#if N23_STATIC_GEOMETRY && N23_FUSED_CULL
+        if(!span)
 #endif
-            return DOK_RENDER_SCENE_GEOMETRY;
+        {
+#if GAMEPLAY_GEOMETRY_CACHE
+            if(dok_geometry_build_cell(world,bindings,(uint32_t)x,(uint32_t)z,&scratch,&cell)!=DOK_GEOMETRY_OK)
+#else
+            if(dok_geometry_build_cell_prepared(world,bindings,(uint32_t)x,(uint32_t)z,&cell,prepared)!=DOK_GEOMETRY_OK)
+#endif
+                return DOK_RENDER_SCENE_GEOMETRY;
+            source_count=cell.count;
+        }
 #if N21P_GEOMETRY_PROFILE
         scene->profile_ticks[0]+=cpuGetTiming()-profile_stamp;
 #endif
-        scene->counts.source_quads+=cell.count;
-        for(i=0;i<cell.count;++i) {
+        scene->counts.source_quads+=source_count;
+        for(i=0;i<source_count;++i) {
             const dok_geometry_quad *source=&cell.quads[i];
             dok_nds_render_quad *dest;
             uint32_t j;
 #if N21P_GEOMETRY_PROFILE
             profile_stamp=cpuGetTiming();
 #endif
-            int source_visible=visible(source,camera,&dot,active_planes);
+#if N23_STATIC_GEOMETRY && N23_FUSED_CULL
+            const dok_static_quad *packed=span?&span[i]:NULL;
+#endif
+            int source_visible=!active_planes || visible(source,camera,
+#if N23_STATIC_GEOMETRY && N23_FUSED_CULL
+                packed,x*side,z*side,
+#endif
+                &dot,active_planes);
 #if N21P_GEOMETRY_PROFILE
             scene->profile_ticks[1]+=cpuGetTiming()-profile_stamp;
 #endif
             if(!source_visible) { ++scene->counts.frustum_rejected;continue; }
-            if(!source->material) return DOK_RENDER_SCENE_GEOMETRY;
+            uint32_t material,kind;
+#if N23_STATIC_GEOMETRY && N23_FUSED_CULL
+            if(packed){material=packed->material;kind=packed->kind;}else
+#endif
+            {material=source->material;kind=source->kind;}
+            if(!material) return DOK_RENDER_SCENE_GEOMETRY;
             if(quad_count==DOK_RENDER_QUADS) return DOK_RENDER_SCENE_LIMIT;
-            dest=&scene->quads[quad_count];memset(dest,0,sizeof(*dest));
-            dest->texture_slot=(uint16_t)(source->material-1u);
+            dest=&scene->quads[quad_count];
+            dest->texture_slot=(uint16_t)(material-1u);
             dest->source_surface_id=((uint32_t)z*64u+(uint32_t)x)*DOK_GEOMETRY_CELL_MAX+i+1u;
             dest->color_rgb555=32767u;
+            dest->flags=0;
+            dest->reserved=0;
+#if N23_STATIC_GEOMETRY && N23_FUSED_CULL
+            if(packed){
+                int32_t dx=x*side-origin_x,dz=z*side-origin_z;
+                for(j=0;j<4u;++j){
+                    const int16_t *v=packed->vertex[j];
+                    dest->vertex[j].x=dx+v[0];dest->vertex[j].y=v[1];dest->vertex[j].z=dz+v[2];
+                    dest->vertex[j].u_q16=(int32_t)v[3]*65536;dest->vertex[j].v_q16=(int32_t)v[4]*65536;
+                }
+            }else
+#endif
             for(j=0;j<4u;++j) {
                 dest->vertex[j].x=source->vertices[j].x-origin_x;
                 dest->vertex[j].y=source->vertices[j].y;
@@ -307,10 +353,8 @@ DOK_NDS_HOT_CODE dok_render_scene_result dok_render_scene_prepare(dok_render_sce
                 dest->vertex[j].u_q16=source->vertices[j].u_q16;
                 dest->vertex[j].v_q16=source->vertices[j].v_q16;
             }
-            if(source->kind<5u && previous[source->kind]!=UINT32_MAX &&
-               previous_x[source->kind]+1==x) {
+            if(kind<5u && previous[kind]!=UINT32_MAX && previous_x[kind]+1==x) {
                 dok_nds_render_quad shifted=*dest;
-                uint32_t kind=source->kind;
                 for(j=0;j<4u;++j) {
                     shifted.vertex[j].x+=origin_x-previous_origin_x[kind];
                     shifted.vertex[j].z+=origin_z-previous_origin_z[kind];
@@ -333,8 +377,7 @@ DOK_NDS_HOT_CODE dok_render_scene_result dok_render_scene_prepare(dok_render_sce
                     previous_x[kind]=x;continue;
                 }
             }
-            if(source->kind<5u) {
-                uint32_t kind=source->kind;
+            if(kind<5u) {
                 previous[kind]=quad_count;previous_x[kind]=x;
                 previous_origin_x[kind]=origin_x;previous_origin_z[kind]=origin_z;
             }

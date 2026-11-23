@@ -153,11 +153,18 @@ static dok_status hero_service(NdsGameplay *g,NdsEffectsRuntime *r)
     if(!trig(g,(uint16_t)g->hero.heading,&camera.sin_q15,&camera.cos_q15))return DOK_STATUS_INVALID_STATE;
     DO(dok_ai_consider_camera(&g->ai,&camera,(uint16_t)g->hero.heading));
     if(r->simulation_list){
-        dok_render_gather_bounds bounds;const dok_sprite_list *list;
+        const dok_sprite_list *list;
         dok_sprite_snapshot snapshot={g->items.world->epoch,g->hero_callbacks+1u,r->sprites->bindings,g->items.world};
+#if !GAMEPLAY_FRONTEND
+        dok_render_gather_bounds bounds;
         if(dok_render_bounds(g->items.world,&camera,(uint16_t)g->hero.heading,&bounds)!=DOK_RENDER_SCENE_OK)return DOK_STATUS_INVALID_STATE;
+#endif
         DO(dok_sprites_gather_live(&snapshot,g->collision.flags,g->ai.corpses,&camera,(uint16_t)g->hero.heading,r->simulation_list,&list));
+#if GAMEPLAY_FRONTEND
+        DO(nds_effects_arm_bounds(r,NULL,list));
+#else
         DO(nds_effects_arm_bounds(r,&bounds,list));
+#endif
     }
     DO(dok_controls_take(&g->controls,&commands));
 #if defined(ARM9)

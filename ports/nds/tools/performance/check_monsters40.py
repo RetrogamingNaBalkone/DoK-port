@@ -4,6 +4,11 @@ Hero spawn/HP are diagnostic fixtures; enemies, doors and projectiles are live.
 The approach section also grants key8 and asserts that the k door opened.
 The firstroom section surveys two early LEVEL1 rooms without claiming the
 user's route or enemy history.
+The lowceiling section verifies that the LEVEL1 door under the lowered
+ceiling is submitted at front and oblique camera angles.
+The westroom section samples the nearest two-mice-and-boyar room in LEVEL1.
+The mapfollow section walks the west room at two map scales.
+The weaponoverlay section picks up the LEVEL1 weapon and fires with FPS both on and off.
 The optional quiet fixture resets burst clocks before every video frame; the
 silent fixture disconnects combat audio notifications. Neither is gameplay.
 """
@@ -17,7 +22,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'flow'))
 from check_death39_emulator import layout, put
-from run_routes import RouteObserver, front, render, transport, X, LEFT
+from run_routes import RouteObserver, front, render, transport, X, LEFT, R
 from route_profile import stats
 
 
@@ -27,11 +32,13 @@ def main():
     p.add_argument('--mode', choices=('live', 'quiet', 'silent'), default='live')
     p.add_argument('--frames', type=int, default=180)
     p.add_argument('--run-id', default='monsters40')
-    p.add_argument('--section', choices=('crowd','shotgun','exit','approach','firstroom','lure'), default='crowd')
-    p.add_argument('--angles',type=int,nargs='+',default=[0,45,90,135,180,225,270,315])
+    p.add_argument('--section', choices=('crowd','shotgun','exit','approach','firstroom','lure','lowceiling','westroom','mapfollow','weaponoverlay'), default='crowd')
+    p.add_argument('--angles',type=int,nargs='+')
     p.add_argument('--rooms',nargs='+',choices=('south-room','east-room'),default=['south-room','east-room'])
     p.add_argument('--exact-heading',action='store_true',help='Diagnostic hero-heading RAM fixture for paired camera poses')
     args = p.parse_args()
+    if args.angles is None:
+        args.angles = [90,45,135] if args.section == 'lowceiling' else [0,45,90,135,180,225,270,315]
     assert args.frames > 0 and args.run_id.replace('-', '').isalnum()
     target = args.target.resolve()
     elf = target / 'dok_nds_gameplay.elf'
@@ -104,7 +111,7 @@ def main():
                           ('name','fps','pose','final_pose','shots','ranged','callback_ticks','ai_active')}), flush=True)
     try:
         f.load(target / 'dok_nds_gameplay.nds')
-        f.start_level(1 if args.section=='firstroom' else 3)
+        f.start_level(1 if args.section in ('firstroom','lowceiling','westroom','mapfollow','weaponoverlay') else 3)
         base = read(transport.elf_symbol(elf, 'storage')[0])
         # DWARF member offset in the array's containing structure is independent
         # of the enemy size; the two adjacent array fields determine its size.
@@ -112,15 +119,19 @@ def main():
         put(f, base + off('game','items','inventory','health'), struct.pack('<h',30000))
         if args.mode == 'silent':
             put(f, base + off('game','combat','services','sink'), bytes(4))
-        def go(x,z,heading):
+        def go(x,z,heading,observe=None):
             if args.section=='lure':f.turn_precise(heading)
             else:f.turn_to(heading)
             for _ in range(260):
                 dx=x*480+240-f.last_pose[0]; dz=z*480+240-f.last_pose[2]
                 if max(abs(dx),abs(dz))<65:break
                 f.game_step(f.movement_buttons(dx,dz,precise=args.section!='lure')+[X])
+                if observe:
+                    observe()
             else:raise AssertionError(('Route blocked',x,z,f.last_pose))
             f.hold([],8)
+            if observe:
+                observe()
             report['route'].append(dict(cell=[x,z],pose=f.last_pose,ai_active=f.game[5],dead=f.game[23],shots=f.game[21]))
             print(json.dumps(report['route'][-1]),flush=True)
         # Fixture entry beyond the starting corridor; normal retry owns occupancy.
@@ -197,6 +208,73 @@ def main():
             for angle in (90,180,45):
                 face(angle);sample('corridor-firing-'+str(angle))
             report['final_group']=actors(room_glyphs+executioner_glyphs)
+        elif args.section=='lowceiling':
+            # LEVEL1 TMap n at (23,39). The sole ceiling band, floor and
+            # ceiling precede the door in the cell's source-order geometry.
+            cell=39*64+23
+            door_source_id=cell*12+4
+            scene_offset=layout(elf,'dok_render_scene')
+            quad_offset=layout(elf,'dok_nds_render_quad')
+            scene_at=read(transport.elf_symbol(elf,'scene')[0])
+            quad_stride=quad_offset('reserved')+2
+            source_offset=quad_offset('source_surface_id')
+            def submitted_door():
+                count=read(scene_at+scene_offset('counts','published_quads'))
+                quads=render.ram(f,scene_at+scene_offset('quads'),count*quad_stride)
+                return any(struct.unpack_from('<I',quads,i)[0]==door_source_id
+                    for i in range(source_offset,len(quads),quad_stride))
+            reposition(24,39,90)
+            for angle in args.angles:
+                face(angle)
+                assert submitted_door(),('Low-ceiling door absent',f.last_pose)
+                sample('low-ceiling-'+str(angle))
+                assert submitted_door(),('Low-ceiling door disappeared',f.last_pose)
+            report['door_source_id']=door_source_id
+        elif args.section=='westroom':
+            report['room_placements']={'mice':[[14,51,163],[19,54,162]],'boyar':[17,57,128]}
+            for x,z in ((23,47),(19,52)):
+                reposition(x,z,270)
+                for angle in args.angles:
+                    face(angle);sample(f'west-{x}-{z}-{angle}')
+        elif args.section=='mapfollow':
+            def viewport():
+                p=struct.unpack('<64I', render.ram(f,f.map_address,256))
+                return p[62],p[10],p[49:51]
+            report['walks']=[]
+            for scale in (3,8):
+                reposition(19,52,0)
+                if scale==8:
+                    for point in ((125,175),(125,175),(125,175),(210,175)):
+                        f.touch=point;f.tick(12);f.touch=None;f.tick(12)
+                _,actual,previous=viewport()
+                assert actual==scale,(actual,scale)
+                changed=set()
+                def observe():
+                    nonlocal previous
+                    frame,_,view=viewport()
+                    if view!=previous:
+                        changed.add(frame)
+                        previous=view
+                first=f.frames
+                for x,z in ((21,52),(21,54)):
+                    go(x,z,0,observe)
+                rows=[r for r in f.report['profile_rows'] if r['observer_video_frame']>first]
+                moves=[r for r in rows if r['frame_id'] in changed]
+                assert scale==3 or moves,('Missing follow pans',changed)
+                report['walks'].append(dict(scale=scale,frames=len(rows),pan_frames=len(moves),
+                    map_ms=stats([r['map']*1000/r['timer_hz'] for r in rows]),
+                    pan_map_ms=stats([r['map']*1000/r['timer_hz'] for r in moves])))
+        elif args.section=='weaponoverlay':
+            reposition(34,43,0)
+            f.hold([],90)
+            assert f.game[42] and f.probe[39],('Expected weapon and FPS tile',f.last_pose)
+            sample('weapon-fps-visible',(R,))
+            assert report['samples'][-1]['shots']>0
+            f.tap(front.SELECT)
+            assert not f.probe[39]
+            sample('weapon-fps-hidden',(R,))
+            f.tap(front.SELECT)
+            assert f.probe[39]
         elif args.section=='firstroom':
             # Independent cost fixtures around the early LEVEL1 rooms. These
             # do not claim to reproduce the user's route from the blaster.

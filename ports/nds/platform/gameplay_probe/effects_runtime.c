@@ -121,24 +121,23 @@ dok_status nds_effects_begin(NdsEffectsRuntime *r)
 }
 dok_status nds_effects_arm_bounds(NdsEffectsRuntime *r,const dok_render_gather_bounds *bounds,const dok_sprite_list *sprites)
 {
-    int32_t x,z;uint32_t i,width;
+    if(!r || !sprites)return DOK_STATUS_INVALID_ARGUMENT;
+#if GAMEPLAY_FRONTEND
+    /* Production water advances by world time in begin(). */
+    (void)bounds;
+#else
     unsigned char water_seen[256]={0};
-    if(!r || !bounds || !sprites)return DOK_STATUS_INVALID_ARGUMENT;
-    width=(uint32_t)r->world->effective.settings[DOK_LEVEL_WIDTH];
+    if(!bounds)return DOK_STATUS_INVALID_ARGUMENT;
+    uint32_t width=(uint32_t)r->world->effective.settings[DOK_LEVEL_WIDTH];
     /* The native builder calls floor getters throughout the gather AABB, before
      * projection rejection. Do not arm only the polygons surviving the frustum. */
-    for(z=bounds->min_z;z<=bounds->max_z;++z)
-        for(x=bounds->min_x;x<=bounds->max_x;++x) {
+    for(int32_t z=bounds->min_z;z<=bounds->max_z;++z)
+        for(int32_t x=bounds->min_x;x<=bounds->max_x;++x) {
             uint32_t cell=(uint32_t)z*width+(uint32_t)x;
             uint32_t t=r->world->effective.glyph_index[r->world->initial.maps[DOK_WORLD_TMAP][cell]];
             if(!t || r->world->effective.objects[t-1u].class_id==2u)continue;
             uint32_t glyph=r->world->initial.maps[DOK_WORLD_FCMAP][cell];uint32_t index=r->world->initial.glyph_index[glyph],arm;
             if(!index || r->world->effective.objects[index-1u].class_id!=12u)continue;
-#if GAMEPLAY_FRONTEND
-            /* Production water is driven once by world time in begin(). */
-            (void)arm;
-            continue;
-#endif
             /* No callback dispatch occurs inside this builder sweep. First
              * getter resets18 to0 even on a capacity refusal; subsequent
              * getters of that glyph cannot rearm. Preserve first-call order. */
@@ -153,7 +152,8 @@ dok_status nds_effects_arm_bounds(NdsEffectsRuntime *r,const dok_render_gather_b
                 else if(result!=DOK_STATUS_OK)return result;
             }
         }
-    for(i=0;i<sprites->count;++i) {
+#endif
+    for(uint32_t i=0;i<sprites->count;++i) {
         uint32_t glyph=sprites->poses[i].glyph;
         if(glyph>255u || !r->players[glyph].animation.count || r->players[glyph].remaining)continue;
         uint32_t index=r->world->initial.glyph_index[glyph];

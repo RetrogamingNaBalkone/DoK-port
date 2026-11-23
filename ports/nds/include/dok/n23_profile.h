@@ -9,6 +9,7 @@
  * Published once after presentation; the observer reads without guest writes. */
 extern uint32_t g_nds_n23_profile[8 + 8 * 16 + 128 * 4];
 extern uint32_t dok_n23_fine[8];
+extern uint32_t dok_n23_bulk_wait_ticks;
 uint32_t dok_n23_profile_time(void);
 #define N23_TIME(name) uint32_t name = dok_n23_profile_time()
 #define N23_ADD(index,value) (dok_n23_fine[index] += (value))

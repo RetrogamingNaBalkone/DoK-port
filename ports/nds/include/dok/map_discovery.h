@@ -30,6 +30,11 @@ typedef struct dok_map_discovery_workspace {
     /* N23 optional, exact-key transient transforms for this update's camera. */
     dok_map_projection_point points[128];
     uint32_t point_valid[4];
+    /* Adjacent floors share corners. Only the current and next grid rows
+     * are live during the row-major native gather, including the east edge. */
+    struct { int32_t depth,screen; } floor_points[2][65];
+    uint8_t floor_rows[2][65];
+    uint32_t sort_entries[DOK_MAP_DISCOVERY_RECORDS];
 } dok_map_discovery_workspace;
 typedef struct dok_map_discovery_stats {
     uint32_t records, eligible, occluded, newly_visited;

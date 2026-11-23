@@ -56,6 +56,7 @@ def build(label,features=None):
     relative_matrices=2 if chosen('relmataudit') else int(chosen('relmat'))
     command=command.replace(' GAMEPLAY_WATER_UV=1',f' NDS_EMBEDDED_RESOURCES={embedded} GAMEPLAY_WATER_UV=1')
     command=command.replace(' GAMEPLAY_WATER_UV=1',f' N23_CAPTURE_HOLD={int(chosen("capturehold"))} GAMEPLAY_WATER_UV=1')
+    command=command.replace(' GAMEPLAY_WATER_UV=1',f' N23_HW_PROFILE={int(chosen("hwprofile"))} GAMEPLAY_WATER_UV=1')
     command=command.replace(' GAMEPLAY_WATER_UV=1',f' N23_PIPELINE_PROFILE={int(chosen("pipeline"))} N23_STATIC_GEOMETRY={int(chosen("staticgeom"))} N23_SIMPLE_QUADS={int(chosen("simplequads"))} N23_RELATIVE_MATRICES={relative_matrices} GAMEPLAY_WATER_UV=1')
     # Build this candidate's matching ARM7 without touching accepted N18 inputs.
     arm7=target/'arm7/dok_audio_arm7.elf'
@@ -96,6 +97,7 @@ def build(label,features=None):
     report['input_ram_mailbox']=bool(embedded)
     report['embedded_resources']=bool(embedded)
     report['capture_hold']=bool(chosen('capturehold'))
+    report['hardware_profile']=bool(chosen('hwprofile'))
     report['static_geometry']=bool(chosen('staticgeom'))
     report['simple_quads']=bool(chosen('simplequads'))
     report['relative_matrices']=relative_matrices
@@ -120,6 +122,6 @@ if __name__=='__main__':
     args=parser.parse_args()
     features=None if args.features is None else args.features.split(',')
     allowed={'batch','math','arm','vert','corners','frames','clip','fastclock','fused','floorruns','door','workset','fine','geomfine','bench','group','clockbench','mapbench','codecbench','smallcodec','widecodec','discovercache','mapbuttons','discoverbits','discoversort','compactsource','object','overlayreuse','combatsar','overlayraw','replace','mapfine','sector','huddma','mapseen','scn','audit'}
-    allowed.update(('pipeline','staticgeom','simplequads','relmat','relmataudit','external','capturehold'))
+    allowed.update(('pipeline','staticgeom','simplequads','relmat','relmataudit','external','capturehold','hwprofile'))
     assert features is None or set(features)<=allowed, 'Unknown feature token'
     build(args.label,features)

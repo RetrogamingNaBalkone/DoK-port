@@ -1,4 +1,5 @@
 #include "dok/hotcode.h"
+#include "dok/n23_profile.h"
 #include "render_backend.h"
 #include "dok/vram_layout.h"
 
@@ -278,20 +279,46 @@ DOK_NDS_HOT_CODE static void load_cell_clip(const m4x4 *clip)
 }
 
 DOK_NDS_HOT_CODE static int vertex_valid(const dok_nds_render_vertex *vertex,
-                        const ResidentTexture *texture)
+                        uint32_t max_u,uint32_t max_v)
 {
-    if (vertex->x < -4096 || vertex->x > 4095 ||
-        vertex->y < -4096 || vertex->y > 4095 ||
-        vertex->z < -4096 || vertex->z > 4095)
-        return 0;
+    /* All three biased coordinates must fit in 13 unsigned bits. */
+    uint32_t position = ((uint32_t)vertex->x + 4096u) |
+                        ((uint32_t)vertex->y + 4096u) |
+                        ((uint32_t)vertex->z + 4096u);
     /* A padded non-POT resource cannot repeat at its storage boundary. The
-     * builder splits at logical UV resets and supplies bounded coordinates. */
-    if (vertex->u_q16 < 0 || vertex->v_q16 < 0 ||
-        (int64_t)vertex->u_q16 > (int64_t)texture->width * 65536 ||
-        (int64_t)vertex->v_q16 > (int64_t)texture->height * 65536)
-        return 0;
-    return 1;
+     * unsigned UV bounds also reject negative signed coordinates. */
+    return position <= 8191u && (uint32_t)vertex->u_q16 <= max_u &&
+           (uint32_t)vertex->v_q16 <= max_v;
 }
+
+static inline int quad_texture_valid(const dok_nds_render_quad *q)
+{
+    return (q->texture_slot < resident_count || q->texture_slot == UINT16_MAX) &&
+           q->flags == 0 && q->color_rgb555 <= 32767u &&
+           (light_palette_rows ? q->reserved < light_palette_rows : q->reserved == 0);
+}
+
+#if N23_SIMPLE_QUADS
+DOK_NDS_HOT_CODE static dok_nds_render_result validate_bounded_quads(
+    const dok_nds_render_quad *quads, uint32_t count)
+{
+    uint32_t slot = UINT16_MAX;
+    uint32_t max_u = 1024u << 16, max_v = 1024u << 16;
+    for (uint32_t j = 0; j < count; ++j) {
+        const dok_nds_render_quad *q = &quads[j];
+        if (!quad_texture_valid(q)) return DOK_NDS_RENDER_TEXTURE;
+        if (q->texture_slot != slot) {
+            slot = q->texture_slot;
+            max_u = (slot == UINT16_MAX ? 1024u : (uint32_t)resident[slot].width) << 16;
+            max_v = (slot == UINT16_MAX ? 1024u : (uint32_t)resident[slot].height) << 16;
+        }
+        for (uint32_t k = 0; k < 4u; ++k) {
+            if (!vertex_valid(&q->vertex[k], max_u, max_v)) return DOK_NDS_RENDER_RANGE;
+        }
+    }
+    return DOK_NDS_RENDER_OK;
+}
+#endif
 
 static int vertex_inside(const m4x4 *clip,
                          const dok_nds_render_vertex *vertex)
@@ -312,19 +339,25 @@ static int vertex_inside(const m4x4 *clip,
            out[2] > -out[3] + 4 && out[2] < out[3] - 4;
 }
 
-DOK_NDS_HOT_CODE static int clip_range_bounded(const m4x4 *clip)
+DOK_NDS_HOT_CODE static void clip_translation_limits(const m4x4 *basis,int64_t limits[4])
 {
     unsigned row, col;
     for (row = 0; row < 4; ++row) {
-        int64_t bound = 0, translation = clip->m[12 + row];
+        int64_t bound = 1;
         /* |local| <= 4096; vertex_inside multiplies it by eight and
          * divides by 4096. Include a floor-rounding unit conservatively. */
         for (col = 0; col < 3; ++col) {
-            int64_t coefficient = clip->m[col * 4 + row];
+            int64_t coefficient = basis->m[col * 4 + row];
             bound += (coefficient < 0 ? -coefficient : coefficient) * 8;
         }
-        if (translation - bound - 1 < INT32_MIN ||
-            translation + bound + 1 > INT32_MAX) return 0;
+        limits[row]=INT32_MAX-bound;
+    }
+}
+DOK_NDS_HOT_CODE static int clip_range_bounded(const m4x4 *clip,const int64_t limits[4])
+{
+    for(unsigned row=0;row<4;++row){
+        int64_t translation=clip->m[12+row];
+        if(translation>limits[row]||translation< -1-limits[row])return 0;
     }
     return 1;
 }
@@ -474,20 +507,27 @@ void dok_nds_render_present(void)
 
 #if N23_PIPELINE_PROFILE
 /* Diagnostic-only split of validation and FIFO emission. No omitted work. */
+#if N23_HW_PROFILE
+uint32_t g_nds_hw_validate_ticks,g_nds_hw_emit_ticks;
+#else
 _Alignas(32) uint32_t g_nds_n23_submit_profile[8+8*16];
+#endif
 #endif
 DOK_NDS_HOT_CODE dok_nds_render_result dok_nds_render_submit(
     const dok_nds_render_frame *frame, dok_nds_render_stats *stats)
 {
 #if N23_PIPELINE_PROFILE
-    uint32_t pipeline_start=cpuGetTiming(),pipeline_camera,pipeline_validated;
-    uint32_t pipeline_fenced,pipeline_emitted,pipeline_completed;
+    uint32_t pipeline_camera,pipeline_validated,pipeline_fenced,pipeline_emitted;
+#if !N23_HW_PROFILE
+    uint32_t pipeline_start=cpuGetTiming(),pipeline_completed;
+#endif
 #endif
     uint32_t i, j, k, quads = 0, vertex_bound = 0;
     uint32_t bound_quads = 0;
     int worst_case_fits;
     m4x4 clip;
     CameraPlan plan;
+    int64_t translation_limits[4];
     dok_nds_render_result result;
     if (!initialized || resident_count == 0 || frame == NULL || stats == NULL ||
         frame->cells == NULL || frame->cell_count == 0)
@@ -506,6 +546,7 @@ DOK_NDS_HOT_CODE dok_nds_render_result dok_nds_render_submit(
     worst_case_fits = bound_quads <= DOK_NDS_RENDER_VERTEX_LIMIT / 10u;
     result=camera_plan(&frame->camera,&plan);
     if(result!=DOK_NDS_RENDER_OK) return result;
+    if(worst_case_fits)clip_translation_limits(&plan.basis,translation_limits);
 #if N23_PIPELINE_PROFILE
     pipeline_camera=cpuGetTiming();
 #endif
@@ -520,24 +561,33 @@ DOK_NDS_HOT_CODE dok_nds_render_result dok_nds_render_submit(
 #if N23_CLIP_CACHE
         if(frame->cell_count<=64u)checked_clip[i]=clip;
 #endif
-        transform_bounded = worst_case_fits && clip_range_bounded(&clip);
+        transform_bounded = worst_case_fits && clip_range_bounded(&clip,translation_limits);
         if (cell->quad_count != 0 && cell->quads == NULL)
             return DOK_NDS_RENDER_ARGUMENT;
-        if (cell->quad_count > DOK_NDS_RENDER_POLYGON_LIMIT - quads)
-            return DOK_NDS_RENDER_CAPACITY;
         quads += cell->quad_count;
+#if N23_SIMPLE_QUADS
+        /* The prepass already bounded the entire frame at ten vertices per
+         * quad. These cells require neither clip math nor per-quad counts. */
+        if (transform_bounded) {
+            result = validate_bounded_quads(cell->quads, cell->quad_count);
+            if (result != DOK_NDS_RENDER_OK) return result;
+            vertex_bound += cell->quad_count * 10u;
+            continue;
+        }
+#endif
         for (j = 0; j < cell->quad_count; ++j) {
             const dok_nds_render_quad *q = &cell->quads[j];
             int inside = 1;
             uint32_t outside_any=0,outside_all=63u;
-            if ((q->texture_slot >= resident_count && q->texture_slot != UINT16_MAX) ||
-                q->flags != 0 || (light_palette_rows?q->reserved>=light_palette_rows:q->reserved!=0) || q->color_rgb555 > 32767u)
+            if (!quad_texture_valid(q))
                 return DOK_NDS_RENDER_TEXTURE;
+            uint32_t max_u=1024u<<16,max_v=1024u<<16;
+            if(q->texture_slot!=UINT16_MAX){
+                max_u=(uint32_t)resident[q->texture_slot].width<<16;
+                max_v=(uint32_t)resident[q->texture_slot].height<<16;
+            }
             for (k = 0; k < 4; ++k) {
-                const ResidentTexture flat = {0, 1024, 1024};
-                const ResidentTexture *texture = q->texture_slot == UINT16_MAX
-                    ? &flat : &resident[q->texture_slot];
-                if (!vertex_valid(&q->vertex[k], texture))
+                if (!vertex_valid(&q->vertex[k],max_u,max_v))
                     return DOK_NDS_RENDER_RANGE;
                 if (!transform_bounded) {
                     int position = vertex_inside(&clip, &q->vertex[k]);
@@ -673,8 +723,9 @@ DOK_NDS_HOT_CODE dok_nds_render_result dok_nds_render_submit(
             for (k = 0; k < 4; ++k) {
                 const dok_nds_render_vertex *v = &q->vertex[k];
 #endif
-                glTexCoord2t16((t16)nearest_div(v->u_q16, 4096),
-                              (t16)nearest_div(v->v_q16, 4096));
+                /* Admission bounds UVs to [0, 1024 << 16]. */
+                glTexCoord2t16((t16)(((uint32_t)v->u_q16 + 2048u) >> 12),
+                              (t16)(((uint32_t)v->v_q16 + 2048u) >> 12));
                 glVertex3v16((v16)(v->x * 8), (v16)(v->y * 8), (v16)(v->z * 8));
                 ++submitted_vertices;
             }
@@ -700,6 +751,10 @@ DOK_NDS_HOT_CODE dok_nds_render_result dok_nds_render_submit(
         return DOK_NDS_RENDER_HARDWARE;
     glFlush(GL_ZBUFFERING);
 #if N23_PIPELINE_PROFILE
+#if N23_HW_PROFILE
+    g_nds_hw_validate_ticks=pipeline_validated-pipeline_camera;
+    g_nds_hw_emit_ticks=pipeline_emitted-pipeline_fenced;
+#else
     pipeline_completed=cpuGetTiming();
     uint32_t total=g_nds_n23_submit_profile[2]+1u;
     uint32_t *record=g_nds_n23_submit_profile+8+((total-1u)%8u)*16;
@@ -717,6 +772,7 @@ DOK_NDS_HOT_CODE dok_nds_render_result dok_nds_render_submit(
     g_nds_n23_submit_profile[0]=0x23534b44u;g_nds_n23_submit_profile[1]=1;
     g_nds_n23_submit_profile[2]=total;g_nds_n23_submit_profile[3]=33513982u;
     DC_FlushRange(g_nds_n23_submit_profile,sizeof(g_nds_n23_submit_profile));
+#endif
 #endif
     return DOK_NDS_RENDER_OK;
 }
@@ -910,7 +966,13 @@ static void stream_bulk_begin(void)
     if(loading)return;
     /* Large replacements cannot fit the rasterizer's short VRAM window.
      * Enter the existing preload path before submitting the next geometry. */
+#if N23_FINE_PROFILE
+    uint32_t wait_start=cpuGetTiming();
+#endif
     swiWaitForVBlank();
+#if N23_FINE_PROFILE
+    dok_n23_bulk_wait_ticks+=cpuGetTiming()-wait_start;
+#endif
 #if N23_CAPTURE_HOLD
     if(capture_valid){
         REG_DISPCAPCNT=0;capture_display=REG_DISPCNT;
@@ -970,8 +1032,29 @@ static void stream_recycle_retired(const dok_nds_stream_texture *textures,
     }
 }
 
-dok_nds_render_result dok_nds_stream_plan(const dok_nds_stream_texture *textures,
-    uint32_t count,dok_nds_stream_stats *stats)
+static int stream_resolve_uploads(dok_nds_stream_resolve resolve)
+{
+    const dok_nds_render_texture *uploads[DOK_NDS_RENDER_TEXTURE_CAPACITY];
+    const unsigned char *pixels[DOK_NDS_RENDER_TEXTURE_CAPACITY];
+    uint32_t count=0;
+    for(uint32_t i=0;i<DOK_NDS_RENDER_TEXTURE_CAPACITY;++i){
+        const StreamSlot *s=&stream_slots[i];
+        if(s->valid&&s->pending&&!s->texture.pixels)uploads[count++]=&s->texture;
+    }
+    if(!count)return 1;
+    memset(pixels,0,count*sizeof(*pixels));
+    if(!resolve(uploads,pixels,count))return 0;
+    for(uint32_t i=0;i<count;++i)if(!pixels[i])return 0;
+    count=0;
+    for(uint32_t i=0;i<DOK_NDS_RENDER_TEXTURE_CAPACITY;++i){
+        StreamSlot *s=&stream_slots[i];
+        if(s->valid&&s->pending&&!s->texture.pixels)s->texture.pixels=pixels[count++];
+    }
+    return 1;
+}
+
+static dok_nds_render_result stream_plan(const dok_nds_stream_texture *textures,
+    uint32_t count,dok_nds_stream_stats *stats,dok_nds_stream_resolve resolve)
 {
     uint32_t i,j,total=0,used=0;dok_nds_stream_stats result={0};
     if(!initialized || !stream_palette || !textures || !stats || !count || stream_planned)
@@ -979,7 +1062,7 @@ dok_nds_render_result dok_nds_stream_plan(const dok_nds_stream_texture *textures
     if(count>DOK_NDS_RENDER_TEXTURE_CAPACITY) return DOK_NDS_RENDER_CAPACITY;
     for(i=0;i<count;++i) {
         const dok_nds_render_texture *t=&textures[i].texture;
-        if(!textures[i].key || !t->pixels || !pot(t->storage_width) || !pot(t->storage_height) ||
+        if(!textures[i].key || (!t->pixels&&!resolve) || !pot(t->storage_width) || !pot(t->storage_height) ||
            !t->logical_width || !t->logical_height || t->logical_width>t->storage_width ||
            t->logical_height>t->storage_height || t->bytes!=(uint32_t)t->storage_width*t->storage_height ||
            t->color0_transparent>1u) return DOK_NDS_RENDER_TEXTURE;
@@ -1061,9 +1144,29 @@ dok_nds_render_result dok_nds_stream_plan(const dok_nds_stream_texture *textures
 #if N22_STREAM_LARGEST_MISSES || N22_STREAM_PARTIAL_DEFRAG
     result.misses=result.uploads;result.hits=count-result.misses;
 #endif
+    if(resolve&&result.uploads&&!stream_resolve_uploads(resolve)){
+        /* Allocation may already have replaced residents. Leave a clean,
+         * loading-only state with no partially resolved plan to commit. */
+        const uint16_t *palette=stream_palette;
+        uint32_t colors=stream_colors;
+        dok_nds_render_result reset=dok_nds_stream_reset(palette,colors);
+        return reset==DOK_NDS_RENDER_OK?DOK_NDS_RENDER_TEXTURE:reset;
+    }
     result.resident_bytes=resident_bytes=used;resident_count=count;
     if(result.upload_bytes>32768u)stream_bulk_begin();
     stream_planned=1;*stats=result;return DOK_NDS_RENDER_OK;
+}
+dok_nds_render_result dok_nds_stream_plan(const dok_nds_stream_texture *textures,
+    uint32_t count,dok_nds_stream_stats *stats)
+{
+    return stream_plan(textures,count,stats,NULL);
+}
+dok_nds_render_result dok_nds_stream_plan_deferred(
+    const dok_nds_stream_texture *textures,uint32_t count,
+    dok_nds_stream_stats *stats,dok_nds_stream_resolve resolve)
+{
+    if(!resolve)return DOK_NDS_RENDER_ARGUMENT;
+    return stream_plan(textures,count,stats,resolve);
 }
 dok_nds_render_result dok_nds_stream_prepare_uploads(void)
 {

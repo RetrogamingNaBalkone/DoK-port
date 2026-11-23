@@ -8,11 +8,13 @@
 enum {
     DIAG_BOOT, DIAG_FRAME, DIAG_AUDIO, DIAG_INPUT, DIAG_SIMULATION,
     DIAG_SPRITES, DIAG_TEXTURE, DIAG_EFFECTS, DIAG_PLAN, DIAG_SUBMIT,
-    DIAG_WAIT, DIAG_UPLOAD, DIAG_MAP, DIAG_GPU, DIAG_DEADLINE, DIAG_CLOCK
+    DIAG_WAIT, DIAG_UPLOAD, DIAG_MAP, DIAG_GPU, DIAG_DEADLINE, DIAG_CLOCK,
+    DIAG_LEVEL_LOAD, DIAG_GAME_BIND, DIAG_STREAM_RESET, DIAG_MEMORY
 };
 static const char *const diagnostic_names[]={
     "boot","frame","audio","input","simulation","sprites","texture",
-    "effects","plan","submit","wait","upload","map","GPU","deadline","clock"
+    "effects","plan","submit","wait","upload","map","GPU","deadline","clock",
+    "level load","game bind","stream reset","memory"
 };
 typedef struct {uint32_t frame,ticks,operation,a,b;} DiagnosticEvent;
 typedef struct {

@@ -7,7 +7,7 @@ from check_items import artifact
 from map.compiler_cache import compiler_environment
 
 def main():
-    out=ROOT/'build/nds/n23/static-discovery-check';out.mkdir(parents=True,exist_ok=True)
+    out=ROOT/(sys.argv[1] if len(sys.argv)>1 else 'build/nds/n23/static-discovery-check');out.mkdir(parents=True,exist_ok=True)
     base=ROOT/'research/evidence/nds/n23/candidates/mapcache31-ru/sources/ports/nds/ui/map_discovery.c'
     flags=[str(Path.home()/'AppData/Local/Programs/Zig/0.13.0/zig.exe'),'cc','-std=c11','-O2','-Wall','-Wextra','-Werror','-pedantic',
         '-Iports/nds/include','-Ibuild/nds/n07/generated','-DN23_DISCOVERY_BITSET=1','-DN23_DISCOVERY_SORT=1']
