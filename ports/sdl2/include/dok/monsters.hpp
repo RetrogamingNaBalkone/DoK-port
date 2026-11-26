@@ -12,6 +12,7 @@ public:
     bool damage(OwnerId owner,std::int16_t amount);
     void event(OwnerId owner);
     std::vector<PositionedImage> images(CellBounds bounds) const;
+    void texture_frames(const std::function<void(const Image&)>& use) const;
 private:
     struct Target {OwnerId owner;unsigned cls;std::uint16_t flags;};
     std::size_t cell(Pose pose) const;

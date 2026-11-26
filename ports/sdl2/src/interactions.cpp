@@ -126,8 +126,14 @@ Image door_image(const Image& source,const DoorState& state){
     if(modes!=0x40&&modes!=0x100)throw std::invalid_argument("Unsupported door crop mode");
     const unsigned dx=modes==0x40?(source.width/state.extent)*state.phase:0;
     const unsigned dy=modes==0x100?(source.height/state.extent)*state.phase:0;
-    for(unsigned y=0;y<source.height;++y)for(unsigned x=0;x<source.width;++x)
-        result.pixels[y*source.width+x]=x<dx||y<dy?0:source.pixels[(y-dy)*source.width+x-dx];
+    if(!dx&&!dy)return result;
+    const auto width=source.width;
+    std::fill_n(result.pixels.begin(),std::size_t(dy)*width,0);
+    for(unsigned y=dy;y<source.height;++y){
+        auto row=result.pixels.begin()+std::size_t(y)*width;
+        std::fill_n(row,dx,0);
+        std::copy_n(source.pixels.begin()+std::size_t(y-dy)*width,width-dx,row+dx);
+    }
     return result;
 }
 }

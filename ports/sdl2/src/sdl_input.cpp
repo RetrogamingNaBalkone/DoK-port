@@ -55,8 +55,9 @@ void InputBindings::gamepad(InputPreset preset){
         triggers[index(Action::fire)]=SDL_CONTROLLER_AXIS_TRIGGERRIGHT;triggers[index(Action::run)]=SDL_CONTROLLER_AXIS_TRIGGERLEFT;
     }
 }
-SdlInput::SdlInput(InputBindings settings,bool ignore_touch_mouse)
-    :bindings(std::move(settings)),ignore_touch_mouse_(ignore_touch_mouse){
+SdlInput::SdlInput(InputBindings settings,bool portmaster)
+    :bindings(std::move(settings)),portmaster_(portmaster){
+    if(portmaster_)SDL_ShowCursor(SDL_DISABLE);
     for(int i=0;i<SDL_NumJoysticks();++i)open(i);
 }
 SdlInput::~SdlInput(){for(auto& entry:controllers_)SDL_GameControllerClose(entry.second.handle);if(capture_)SDL_SetRelativeMouseMode(SDL_FALSE);SDL_ShowCursor(SDL_ENABLE);}
@@ -82,7 +83,7 @@ bool SdlInput::capture_mouse(bool enabled){
     gameplay_mouse_=enabled;
     const bool capture=enabled&&bindings.mouse_enabled;
     const bool ok=SDL_SetRelativeMouseMode(capture&&focused_?SDL_TRUE:SDL_FALSE)==0;
-    SDL_ShowCursor(enabled&&focused_?SDL_DISABLE:SDL_ENABLE);
+    SDL_ShowCursor(portmaster_||(enabled&&focused_)?SDL_DISABLE:SDL_ENABLE);
     if(ok)capture_=capture;
     mouse_x_=0;return ok;
 }
@@ -104,16 +105,16 @@ void SdlInput::handle(const SDL_Event& event){
         }
         break;
     case SDL_MOUSEMOTION:
-        if(ignore_touch_mouse_&&event.motion.which==SDL_TOUCH_MOUSEID)break;
+        if(portmaster_&&event.motion.which==SDL_TOUCH_MOUSEID)break;
         if(bindings.mouse_enabled&&focused_&&capture_)mouse_x_+=event.motion.xrel;
         break;
     case SDL_MOUSEWHEEL:
-        if(ignore_touch_mouse_&&event.wheel.which==SDL_TOUCH_MOUSEID)break;
+        if(portmaster_&&event.wheel.which==SDL_TOUCH_MOUSEID)break;
         if(bindings.mouse_enabled&&focused_){const auto button=wheel_binding(event.wheel);
             if(button)for(unsigned i=0;i<wheel_presses_.size();++i)if(bindings.mouse[i]==button)wheel_presses_[i]=true;
         }break;
     case SDL_MOUSEBUTTONDOWN:case SDL_MOUSEBUTTONUP:
-        if(ignore_touch_mouse_&&event.button.which==SDL_TOUCH_MOUSEID)break;
+        if(portmaster_&&event.button.which==SDL_TOUCH_MOUSEID)break;
         if(bindings.mouse_enabled&&focused_&&event.button.button<mouse_buttons_.size()){
             if(event.type==SDL_MOUSEBUTTONUP&&mouse_buttons_[event.button.button]&&bindings.mouse[index(Action::map)]==event.button.button)
                 presses_[index(Action::map)]=true;

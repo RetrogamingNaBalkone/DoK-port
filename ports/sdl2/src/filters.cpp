@@ -14,22 +14,39 @@ MipAtlas make_mip_atlas(const Image& image,const std::array<std::uint32_t,256>& 
     MipAtlas atlas;int w=image.width,h=image.height;
     for(;;){atlas.tile_width+=w;if(w==1&&h==1)break;w=std::max(1,w/2);h=std::max(1,h/2);}
     atlas.width=4*atlas.tile_width;atlas.height=4*image.height;atlas.pixels.resize(std::size_t(atlas.width)*atlas.height);
+    std::vector<Color> level,next;
+    std::array<bool,256> used{};
+    for(const auto index:image.pixels)used[index]=true;
     for(int row=0;row<16;++row){
-        std::vector<Color> level(image.pixels.size());
-        for(std::size_t i=0;i<level.size();++i){const auto index=image.pixels[i];level[i]=transparent&&index==0?Color{}:unpack(palette[light.data[row*256+index]]);}
+        std::array<Color,256> decoded;
+        std::array<std::uint32_t,256> packed;
+        for(std::size_t index=0;index<used.size();++index)if(used[index]){
+            decoded[index]=transparent&&index==0?Color{}:unpack(palette[light.data[row*256+index]]);
+            packed[index]=pack(decoded[index]);
+        }
+        const auto tile=std::size_t(row/4)*image.height*atlas.width+(row%4)*atlas.tile_width;
+        level.resize(image.pixels.size());
+        for(unsigned y=0;y<image.height;++y)for(unsigned x=0;x<image.width;++x){
+            const auto i=std::size_t(y)*image.width+x;
+            const auto index=image.pixels[i];
+            level[i]=decoded[index];
+            atlas.pixels[tile+std::size_t(y)*atlas.width+x]=packed[index];
+        }
         w=image.width;h=image.height;int offset=0;
-        for(;;){
-            for(int y=0;y<h;++y)for(int x=0;x<w;++x)atlas.pixels[std::size_t((row/4)*image.height+y)*atlas.width+(row%4)*atlas.tile_width+offset+x]=pack(level[std::size_t(y)*w+x]);
-            offset+=w;if(w==1&&h==1)break;
-            const int nw=std::max(1,w/2),nh=std::max(1,h/2);std::vector<Color> next(std::size_t(nw)*nh);
+        while(w!=1||h!=1){
+            offset+=w;
+            const int nw=std::max(1,w/2),nh=std::max(1,h/2);
+            next.resize(std::size_t(nw)*nh);
             // Area resampling includes the last row/column of odd-sized images.
             for(int y=0;y<nh;++y)for(int x=0;x<nw;++x){
                 const double x0=double(x)*w/nw,x1=double(x+1)*w/nw,y0=double(y)*h/nh,y1=double(y+1)*h/nh;
                 Color sum{};double weight=0;
                 for(int sy=int(y0);sy<int(std::ceil(y1));++sy)for(int sx=int(x0);sx<int(std::ceil(x1));++sx){const double a=(std::min(x1,double(sx+1))-std::max(x0,double(sx)))*(std::min(y1,double(sy+1))-std::max(y0,double(sy)));weight+=a;for(int c=0;c<4;++c)sum[c]+=float(a)*level[std::size_t(sy)*w+sx][c];}
-                for(auto& c:sum)c/=float(weight);next[std::size_t(y)*nw+x]=sum;
+                for(auto& c:sum)c/=float(weight);
+                next[std::size_t(y)*nw+x]=sum;
+                atlas.pixels[tile+std::size_t(y)*atlas.width+offset+x]=pack(sum);
             }
-            level=std::move(next);w=nw;h=nh;
+            level.swap(next);w=nw;h=nh;
         }
     }return atlas;
 }

@@ -1,4 +1,5 @@
 #include "dok/display.hpp"
+#include "dok/hud.hpp"
 #include "dok/png.hpp"
 #include "dok/presentation.hpp"
 #include "dok/filters.hpp"
@@ -87,6 +88,10 @@ void Display::pixels(const std::vector<std::uint32_t>& data,int width,int height
     if(SDL_RenderCopy(renderer_,source,nullptr,&r)!=0)throw std::runtime_error(SDL_GetError());
 }
 void Display::present(){if(gl_)gl_->present();else SDL_RenderPresent(renderer_);}
+void Display::overlay(const HudFrame& frame,SDL_Rect r){
+    if(gl_){gl_->image(frame.pixels,frame.width,frame.height,r,true,0,frame.revision);return;}
+    overlay(frame.pixels,frame.width,frame.height,r);
+}
 void Display::overlay(const std::vector<std::uint32_t>& pixels,int w,int h,SDL_Rect r){
     if(gl_){gl_->image(pixels,w,h,r,true);return;}
     // Weapon, HUD and FPS layers coexist every frame. Retain each shape instead

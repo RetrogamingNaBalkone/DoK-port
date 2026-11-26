@@ -114,6 +114,22 @@ SoftwareScene::SoftwareScene(const Archive& archive,const LevelDefinition& level
     software_resolution(320,200);
 }
 std::size_t SoftwareScene::resource(const std::string& name)const{return names_.at(name);}
+void SoftwareScene::door_frames(const std::function<void(const Image&)>& use)const{
+    std::vector<const Image*> distinct;
+    for(const auto& entry:door_sources_){
+        const auto& image=entry.second;
+        const auto mode=image.flags&0x3fc0;
+        if(mode!=0x40&&mode!=0x100)continue;
+        if(std::any_of(distinct.begin(),distinct.end(),[&](const Image* other){
+            return image.width==other->width&&image.height==other->height&&
+                mode==(other->flags&0x3fc0)&&image.pixels==other->pixels;
+        }))continue;
+        distinct.push_back(&image);
+        DoorState state;
+        state.extent=30;
+        for(;state.phase<state.extent;++state.phase)use(door_image(image,state));
+    }
+}
 void SoftwareScene::software_resolution(int width,int height){
     if(!((width==320&&height==200)||(width==640&&(height==400||height==480))||(width==800&&height==600)||(width==1024&&height==768)))
         throw std::invalid_argument("Not an original software video mode");
@@ -297,6 +313,11 @@ const IndexedSurface& SoftwareScene::render(const World& world,Pose pose,const s
         if(polygon){
             const int x=std::clamp(instance.pose.x/side,0,level.width-1),z=std::clamp(instance.pose.z/side,0,level.length-1);
             polygon->map_cell=z*level.width+x;
+            if(discovering_){
+                // Map discovery consumes only geometry, flags and cell IDs.
+                add(std::move(polygon),0);
+                continue;
+            }
             const auto material=images_.size();
             // GPU sprites do not mutate winding. Reuse already-transparent
             // immutable animation frames; retain the copy fallback for other flags.

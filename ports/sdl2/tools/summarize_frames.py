@@ -16,7 +16,9 @@ def summarize(path, warmup):
               'capture_sha256': hashlib.sha256(path.read_bytes()).hexdigest(),
               'boundary': 'Full frame including input, simulation, rendering, present and SDL_Delay; CPU work overlaps GPU execution; not GPU timer queries.',
               'capture_limit_frames': 120000}
-    for key in ['work_ms', 'present_ms', 'total_ms']:
+    keys = ['work_ms', 'present_ms', 'total_ms']
+    keys.extend(key for key in ['simulation_ms', 'discovery_ms', 'world_draw_ms', 'swap_ms'] if key in rows[0])
+    for key in keys:
         values = sorted(float(row[key]) for row in rows)
         if not all(math.isfinite(x) and x >= 0 for x in values):
             raise ValueError('Invalid frame time')

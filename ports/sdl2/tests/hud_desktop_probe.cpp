@@ -47,6 +47,7 @@ int main(int argc,char** argv){
         // Compare reuse against forced repaint with identical animation history.
         dok::Hud cached(archive),repaint(archive);
         auto sample=player;auto colors=scene.palette();
+        const int native_height=archive.identify()==dok::DatasetId::old_gold?170:160;
         for(int step=0;step<80;++step){
             const double time=step*0.05;
             if(step==4)sample.attributes[0]-=7;
@@ -59,6 +60,11 @@ int main(int argc,char** argv){
             if(step==32)sample.weapons[2]=0;
             const std::string message=step<36?"":"changed";
             const int width=step<40?1024:800;
+            const auto classic=repaint.classic(dok::IndexedSurface(320,native_height),sample,message);
+            const auto& panel=cached.classic_panel(sample,colors,message);
+            check(panel.width==320&&panel.height==200-native_height,"Cached classic panel size");
+            for(std::size_t i=0;i<panel.pixels.size();++i)
+                check(panel.pixels[i]==colors[classic.pixels[native_height*320+i]],"Cached classic panel changed pixels");
             repaint.desktop(width+1,sample,colors,message,time);
             const auto expected=repaint.desktop(width,sample,colors,message,time).pixels;
             check(cached.desktop(width,sample,colors,message,time).pixels==expected,"HUD cache froze state/animation");

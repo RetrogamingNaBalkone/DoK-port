@@ -21,6 +21,12 @@ if [ "${DEVICE_ARCH:-$(uname -m)}" != aarch64 ]; then echo 'OGDoK requires aarch
 export SDL_GAMECONTROLLERCONFIG="${sdl_controllerconfig:-${SDL_GAMECONTROLLERCONFIG:-}}"
 export LD_LIBRARY_PATH="$GAMEDIR/libs.aarch64${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
 export DOK_PORTMASTER=1
+if [[ -f user/trace-frames && -z "${DOK_FRAME_TIMINGS:-}" ]]; then
+    if trace_dir=$(mktemp -d "$GAMEDIR/user/frames.XXXXXX"); then
+        export DOK_FRAME_TIMINGS="$trace_dir/timings.csv"
+        printf 'OGDoK frame timing: %s\n' "$DOK_FRAME_TIMINGS"
+    fi
+fi
 cleanup() { pm_finish; }
 trap cleanup EXIT
 trap 'exit 130' INT

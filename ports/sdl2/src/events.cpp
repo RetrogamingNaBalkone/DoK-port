@@ -1,4 +1,5 @@
 #include "dok/events.hpp"
+#include <algorithm>
 #include <stdexcept>
 
 namespace dok {
@@ -141,6 +142,18 @@ std::vector<Event> Events::events(OwnerId id) const {
     if (found == owners_.end() || found->second.destroyed) return {};
     const auto& owner = found->second;
     return {owner.slots.begin(), owner.slots.begin() + owner.count};
+}
+std::optional<std::uint32_t> Events::next_deadline()const{
+    if(!active_)return std::nullopt;
+    auto deadline=UINT32_MAX;
+    auto id=cursor_;
+    for(std::size_t i=0;i<active_;++i){
+        const auto& owner=owners_.at(id);
+        for(std::size_t slot=0;slot<owner.count;++slot)
+            deadline=std::min(deadline,owner.slots[slot].deadline);
+        id=owner.next;
+    }
+    return deadline;
 }
 Events::Snapshot Events::snapshot() const {
     if(dispatching_)throw std::logic_error("Snapshot during event dispatch");

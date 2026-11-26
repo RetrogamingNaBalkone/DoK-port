@@ -100,6 +100,10 @@ int main(int argc,char** argv){try{
         audio.command({dok::AudioAction::stop_all,0,{}});check(!audio.snapshot().voice.id,"Stop all failed");
         check(audio.restore(state),"Valid snapshot rejected");check(audio.snapshot().voice.phase==state.voice.phase,"Restored phase differs");
         audio.pause(false);SDL_Delay(35);audio.pause(true);check(audio.snapshot().voice.phase>state.voice.phase,"Restored voice did not resume");
+        for(unsigned id=10;id<310;++id)audio.command({dok::AudioAction::priority_once,id,title});
+        check(audio.snapshot().voice.id==309,"A full sound queue reordered or dropped commands");
+        audio.command({dok::AudioAction::stop_all,0,{}});
+        check(audio.restore(state)&&audio.snapshot().voice.id==state.voice.id,"Pending sound survived restore");
         std::cout<<profile<<": "<<count<<" source sounds rendered; SDL pause/identity/gain/transactional snapshot PASS\n";
     }
     SDL_Quit();return 0;

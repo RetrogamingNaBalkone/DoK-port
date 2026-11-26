@@ -2,6 +2,7 @@
 #include <cstdint>
 #include <functional>
 #include <map>
+#include <optional>
 #include <vector>
 
 namespace dok {
@@ -33,6 +34,7 @@ public:
     void dispatch(const Clock& clock, const Invoke& invoke);
     std::vector<Event> events(OwnerId id) const;
     std::size_t active_owners() const noexcept { return active_; }
+    std::optional<std::uint32_t> next_deadline() const;
 private:
     struct Owner {
         std::vector<Event> slots;

@@ -2,6 +2,7 @@
 #include "dok/arithmetic.hpp"
 #include "dok/localization.hpp"
 #include "dok/text.hpp"
+#include <algorithm>
 #include <stdexcept>
 
 namespace dok {
@@ -101,14 +102,20 @@ void World::advance_events(std::uint64_t nanoseconds,const Events::Invoke& handl
     advancing_=true;
     clock_.advance_nanoseconds(nanoseconds);
     try{
-        // One sweep per native tick, independent of presentation. This removes
-        // DOS frame-latency drift without replacing every event by a 60 Hz tick.
-        // Elapsed time is never dropped. Future optimizations must preserve ring
-        // order, compaction and the unsigned deadline rollover behaviour.
+        // A sweep with no due callbacks visits the entire ring without changing
+        // its cursor or events. Skip only those sweeps. Recheck the ring after
+        // every real dispatch, including compaction and zero-interval callbacks.
         while(simulated_ticks_<clock_.ticks()){
+            const auto deadline=events.next_deadline();
+            if(!deadline){simulated_ticks_=clock_.ticks();break;}
+            const auto next=static_cast<std::uint32_t>(simulated_ticks_+1);
+            // Dispatch uses unsigned comparison, including at wraparound.
+            if(next<*deadline){
+                simulated_ticks_+=std::min<std::uint64_t>(clock_.ticks()-simulated_ticks_,*deadline-next);
+                continue;
+            }
             ++simulated_ticks_;
-            if(events.active_owners())events.dispatch(
-                [this]{return static_cast<std::uint32_t>(simulated_ticks_);},handler);
+            events.dispatch([this]{return static_cast<std::uint32_t>(simulated_ticks_);},handler);
         }
     }catch(...){advancing_=false;throw;}
     advancing_=false;

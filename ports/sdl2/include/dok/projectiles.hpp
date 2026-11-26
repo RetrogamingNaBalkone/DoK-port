@@ -12,6 +12,7 @@ public:
     void event(OwnerId owner);
     std::vector<PositionedImage> images() const;
     std::size_t active() const;
+    void texture_frames(const std::function<void(const Image&)>& use) const;
     static constexpr OwnerId owner_base=0x10000;
 private:
     struct Clips {std::vector<AnimationFrame> flight,hit,miss;};

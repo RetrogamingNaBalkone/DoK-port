@@ -6,7 +6,7 @@
 namespace dok {
 namespace {
 struct Painter {
-    HudFrame frame;
+    HudFrame& frame;
     const std::array<std::uint32_t,256>& palette;
     const std::array<std::uint8_t,2048>& font;
     int offset_y=0;
@@ -14,8 +14,10 @@ struct Painter {
         y+=offset_y;
         if(x<0||y<0||x>=frame.width||y>=frame.height)return;
         auto& dst=frame.pixels[y*frame.width+x];
-        const unsigned a=color>>24,da=dst>>24,out=a+(da*(255-a)+127)/255;
-        if(!out)return;
+        const unsigned a=color>>24,da=dst>>24;
+        if(!a)return;
+        if(a==255||!da){dst=color;return;}
+        const unsigned out=a+(da*(255-a)+127)/255;
         std::uint32_t value=out<<24;
         for(int shift:{0,8,16}){
             const unsigned premul=((color>>shift)&255)*a+(((dst>>shift)&255)*da*(255-a)+127)/255;
@@ -113,7 +115,10 @@ const HudFrame& Hud::desktop(int width,const PlayerState& p,const std::array<std
         else message_y=std::max(6,std::min(42,80-text_height));
     }
     const int height=100+(stacked?row_gap:0)+message_height;
-    Painter out{{width,height,std::vector<std::uint32_t>(std::size_t(width)*height)},palette,font_};
+    desktop_frame_.width=width;
+    desktop_frame_.height=height;
+    desktop_frame_.pixels.assign(std::size_t(width)*height,0);
+    Painter out{desktop_frame_,palette,font_};
     out.offset_y=message_height+(stacked?row_gap:0);
     out.shadow(8,30,health_right,60);
     out.image(health_,18,42,38,26);
@@ -164,14 +169,14 @@ const HudFrame& Hud::desktop(int width,const PlayerState& p,const std::array<std
         const int x=message_x,y=message_y,scale=message_scale;
         int longest=0;for(const auto& line:lines)longest=std::max(longest,int(line.size()));
         const int box_width=longest*8*scale+20,box_height=int(lines.size())*(8*scale+3)+12;
-        for(int dy=0;dy<box_height;++dy)for(int dx=0;dx<box_width;++dx){
-            const int fade=std::min(24,box_width-1-dx);
-            out.pixel(x-10+dx,y-6+dy,std::uint32_t(160*fade/24)<<24);
-        }
+        out.rect(x-10,y-6,box_width-24,box_height,0xa0000000);
+        for(int fade=1;fade<24;++fade)
+            out.rect(x-10+box_width-1-fade,y-6,1,box_height,std::uint32_t(160*fade/24)<<24);
         out.rect(x-10,y-3,2,box_height-6,0xb0b49a66);
         for(std::size_t row=0;row<lines.size();++row)out.text(x,y+int(row)*(8*scale+3),lines[row],scale,bone);
     }
-    desktop_frame_=std::move(out.frame);desktop_player_=p;desktop_palette_=palette;desktop_message_=message;
+    desktop_player_=p;desktop_palette_=palette;desktop_message_=message;
+    stamp(desktop_frame_);
     desktop_valid_=true;desktop_animated_=animated;desktop_seconds_=seconds;
     return desktop_frame_;
 }

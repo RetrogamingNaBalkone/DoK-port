@@ -1,4 +1,5 @@
 #include "dok/monsters.hpp"
+#include <set>
 #include "dok/arithmetic.hpp"
 #include "dok/movement.hpp"
 #include "dok/items.hpp"
@@ -39,6 +40,15 @@ Monsters::Monsters(World& w,const Archive& archive,Projectiles& shots):world_(w)
     projectiles_.monster_hit=[this](auto owner,auto amount){return damage(owner,amount);};
 }
 Monsters::~Monsters(){projectiles_.monster_hit={};}
+void Monsters::texture_frames(const std::function<void(const Image&)>& use)const{
+    std::set<std::string> seen;
+    for(const auto& entry:clips_){
+        const auto& definition=world_.definition.objects[world_.object_for_owner(entry.first).definition_index];
+        const std::array<std::string,3> names{definition.animation,definition.resource(0xe8),definition.resource(0xec)};
+        for(std::size_t i=0;i<names.size();++i)if(seen.insert(names[i]).second)
+            for(const auto& frame:entry.second[i])use(frame.image);
+    }
+}
 std::size_t Monsters::cell(Pose p)const{
     const auto& d=world_.definition;
     return std::clamp<int>(word(divide32(p.z,d.cell_side)),0,d.length-1)*d.width+

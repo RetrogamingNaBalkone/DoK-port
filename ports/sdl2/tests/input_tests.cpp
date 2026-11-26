@@ -43,7 +43,7 @@ static void wheel_tests(){
     wheel(1);check(input.sample().map);check(!input.sample().map);
 }
 static void disabled_device_tests(){
-    dok::SdlInput input(dok::InputBindings::defaults(),true);
+    dok::SdlInput input;
     auto settings=input.bindings;settings.mouse_enabled=false;settings.gamepad_enabled=false;
     // Disabling also drops presses accumulated before the next player sample.
     SDL_Event e{};e.type=SDL_MOUSEBUTTONDOWN;e.button.button=SDL_BUTTON_LEFT;input.handle(e);
@@ -90,6 +90,28 @@ static void disabled_device_tests(){
     check(!input.sample().fire);
     check(SDL_JoystickDetachVirtual(device)==0);pump(input);SDL_JoystickClose(joystick);check(input.controller_count()==baseline);
 }
+static void portmaster_cursor_tests(){
+    auto settings=dok::InputBindings::defaults();
+    settings.mouse_enabled=false;
+    {
+        dok::SdlInput input(settings,true);
+        check(SDL_ShowCursor(SDL_QUERY)==SDL_DISABLE);
+        check(input.capture_mouse(true));
+        check(SDL_GetRelativeMouseMode()==SDL_FALSE);
+        check(SDL_ShowCursor(SDL_QUERY)==SDL_DISABLE);
+        check(input.capture_mouse(false));
+        check(SDL_ShowCursor(SDL_QUERY)==SDL_DISABLE);
+        SDL_Event focus{};
+        focus.type=SDL_WINDOWEVENT;
+        focus.window.event=SDL_WINDOWEVENT_FOCUS_LOST;
+        input.handle(focus);
+        check(SDL_ShowCursor(SDL_QUERY)==SDL_DISABLE);
+        focus.window.event=SDL_WINDOWEVENT_FOCUS_GAINED;
+        input.handle(focus);
+        check(SDL_ShowCursor(SDL_QUERY)==SDL_DISABLE);
+    }
+    check(SDL_ShowCursor(SDL_QUERY)==SDL_ENABLE);
+}
 static void short_press_tests(){
     dok::SdlInput input;
     key(input,SDL_SCANCODE_LCTRL,true);key(input,SDL_SCANCODE_LCTRL,false);
@@ -133,6 +155,7 @@ int main(){
         touch_mouse_tests();
         wheel_tests();
         disabled_device_tests();
+        portmaster_cursor_tests();
         dok::SdlInput input;
         key(input,SDL_SCANCODE_W,true);key(input,SDL_SCANCODE_D,true);key(input,SDL_SCANCODE_RIGHT,true);
         auto state=input.sample();check(state.forward==1&&state.strafe==1&&state.turn==1);

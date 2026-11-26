@@ -24,8 +24,11 @@ public:
     void world(const std::array<std::uint32_t,256>& palette,bool defer=false,bool immutable_images=false);
     // Deferred polygons preserve submission order; flush before readback/timing.
     void flush_world();
+    void preload_indexed(const Image& image);
     void polygon(const std::vector<RasterVertex>& vertices,const Image& image,Bytes light,RasterAxis axis);
-    void image(const std::vector<std::uint32_t>& pixels,int width,int height,SDL_Rect logical_rect,bool screen_pixels=false,int filter=0);
+    // Nonzero revision identifies an immutable snapshot across repeated draws.
+    void image(const std::vector<std::uint32_t>& pixels,int width,int height,SDL_Rect logical_rect,bool screen_pixels=false,int filter=0,
+               std::uint64_t revision=0);
     void present();
     std::vector<std::uint32_t> read_pixels();
     void screenshot(const std::string& path);

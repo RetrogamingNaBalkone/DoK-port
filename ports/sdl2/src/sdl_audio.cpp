@@ -16,8 +16,10 @@ SdlAudio::SdlAudio(const Archive& archive){
 }
 SdlAudio::~SdlAudio(){if(device_)SDL_CloseAudioDevice(device_);}
 void SdlAudio::callback(void* ptr,Uint8* stream,int bytes){
-    auto& self=*static_cast<SdlAudio*>(ptr);self.voice_.render(reinterpret_cast<std::int16_t*>(stream),bytes/2,self.rate_);
-    apply_audio_gain(reinterpret_cast<std::int16_t*>(stream),bytes/2,self.volume_);
+    auto& self=*static_cast<SdlAudio*>(ptr);
+    self.consume_commands();
+    self.voice_.render(reinterpret_cast<std::int16_t*>(stream),bytes/2,self.rate_);
+    if(self.volume_!=100)apply_audio_gain(reinterpret_cast<std::int16_t*>(stream),bytes/2,self.volume_);
 }
 void SdlAudio::volume(int percent){
     percent=std::clamp(percent,0,100);if(percent==requested_volume_)return;
@@ -26,18 +28,33 @@ void SdlAudio::volume(int percent){
 void SdlAudio::pause(bool paused){if(paused==paused_)return;SDL_PauseAudioDevice(device_,paused?1:0);paused_=paused;}
 void SdlAudio::command(const AudioCommand& c){
     const auto sound=sounds_.find(c.resource);
-    SDL_LockAudioDevice(device_);
-    if(c.action==AudioAction::stop_all)voice_.stop();
-    else if(c.action==AudioAction::stop)voice_.stop(c.id);
-    else if(sound!=sounds_.end()){
-        if(c.action==AudioAction::priority_once&&voice_.active()!=c.id)voice_.stop();
-        if(c.action!=AudioAction::priority_once||voice_.active()!=c.id)
-            voice_.play(c.id,sound->second,c.action==AudioAction::loop,old_gold_);
+    if(sound==sounds_.end()&&c.action!=AudioAction::stop&&c.action!=AudioAction::stop_all)return;
+    const auto write=write_command_.load(std::memory_order_relaxed);
+    if(write-read_command_.load(std::memory_order_acquire)==commands_.size()){
+        // A paused device or a large burst must not lose sound ordering.
+        SDL_LockAudioDevice(device_);consume_commands();SDL_UnlockAudioDevice(device_);
     }
-    SDL_UnlockAudioDevice(device_);
+    commands_[write%commands_.size()]={c.action,c.id,sound==sounds_.end()?nullptr:&sound->second};
+    write_command_.store(write+1,std::memory_order_release);
+}
+void SdlAudio::consume_commands(){
+    auto read=read_command_.load(std::memory_order_relaxed);
+    const auto write=write_command_.load(std::memory_order_acquire);
+    for(;read!=write;++read){
+        const auto& c=commands_[read%commands_.size()];
+        if(c.action==AudioAction::stop_all)voice_.stop();
+        else if(c.action==AudioAction::stop)voice_.stop(c.id);
+        else{
+            if(c.action==AudioAction::priority_once&&voice_.active()!=c.id)voice_.stop();
+            if(c.action!=AudioAction::priority_once||voice_.active()!=c.id)
+                voice_.play(c.id,*c.sound,c.action==AudioAction::loop,old_gold_);
+        }
+    }
+    read_command_.store(read,std::memory_order_release);
 }
 SdlAudioSnapshot SdlAudio::snapshot(){
     SDL_LockAudioDevice(device_);
+    consume_commands();
     SdlAudioSnapshot state{voice_.snapshot(),{},paused_,volume_};
     if(state.voice.id){
         // SoundId belongs to an owner/binding and does not identify PCM bytes.
@@ -63,7 +80,10 @@ bool SdlAudio::restore(const SdlAudioSnapshot& state){
     SDL_PauseAudioDevice(device_,1);
     SDL_LockAudioDevice(device_);
     const bool result=voice_.restore(adjusted,found==sounds_.end()?nullptr:&found->second);
-    if(result){volume_=requested_volume_=state.volume;}
+    if(result){
+        read_command_.store(write_command_.load(std::memory_order_relaxed),std::memory_order_release);
+        volume_=requested_volume_=state.volume;
+    }
     SDL_UnlockAudioDevice(device_);
     if(result)paused_=state.paused;
     SDL_PauseAudioDevice(device_,paused_?1:0);

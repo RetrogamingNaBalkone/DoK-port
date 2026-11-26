@@ -32,6 +32,7 @@ public:
         const Draw& gpu={},int view_width=320,std::array<double,4> camera_offset={},const ImageGetter& getter={},int gpu_height=160);
     const std::array<std::uint32_t,256>& palette() const noexcept {return palette_;}
     std::size_t polygon_count() const noexcept {return polygon_count_;}
+    void door_frames(const std::function<void(const Image&)>& use) const;
     // Native 320-pixel camera and horizontal column occlusion, independent of
     // the presentation backend/FOV. Does not rasterize or mutate the world.
     std::vector<std::size_t> discovered_cells(const World& world,Pose pose,

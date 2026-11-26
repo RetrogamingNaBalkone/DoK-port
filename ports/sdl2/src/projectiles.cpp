@@ -23,6 +23,9 @@ Projectiles::Projectiles(World& world,const Archive& archive):world_(world){
         const bool og=world.definition.dataset==DatasetId::old_gold;
         Clips clips{archive.animation(d.animation),og?archive.animation(d.animation):archive.animation(d.resource(0x77)),og?archive.animation(d.animation):archive.animation(d.resource(0x7b))};
         if(clips.flight.empty()||clips.hit.empty()||clips.miss.empty())throw std::runtime_error("Empty projectile animation");
+        // Dynamic sprites treat index zero as transparent. Mark shared frames
+        // once so GL can reuse the original pixels.
+        for(auto* clip:{&clips.flight,&clips.hit,&clips.miss})for(auto& frame:*clip)frame.image.flags|=8;
         clips_.emplace(i,std::move(clips));
     }
 }
@@ -220,6 +223,12 @@ void Projectiles::event(OwnerId owner){
 }
 std::size_t Projectiles::active()const{
     return std::count_if(world_.projectiles.begin(),world_.projectiles.end(),[](const auto& p){return p.has_value();});
+}
+void Projectiles::texture_frames(const std::function<void(const Image&)>& use)const{
+    for(const auto& entry:clips_){
+        const auto& clips=entry.second;
+        for(const auto* clip:{&clips.flight,&clips.hit,&clips.miss})for(const auto& frame:*clip)use(frame.image);
+    }
 }
 std::vector<PositionedImage> Projectiles::images()const{
     std::vector<PositionedImage> result;

@@ -213,7 +213,8 @@ int main(int argc,char** argv){
             if(settings.video.renderer!=dok::RendererKind::opengl)throw;log<<"OpenGL fallback: "<<e.what()<<'\n';settings.video.renderer=dok::RendererKind::software;
             display=std::make_unique<dok::Display>(settings.video,!replay&&!hidden);warning="OpenGL unavailable; software renderer selected.";
         }
-        if(!replay&&!hidden)SDL_ShowWindow(display->window());dok::SdlInput input(settings.input,portmaster);
+        dok::SdlInput input(settings.input,portmaster);
+        if(!replay&&!hidden)SDL_ShowWindow(display->window());
         const auto render_menu=[&](const std::array<int,2>& size)->const dok::MenuFrame&{
             if(!portmaster)return menu.render(size[0],size[1]);
             const auto [dpi,height]=display->menu_display_metrics();
@@ -234,6 +235,14 @@ int main(int argc,char** argv){
         auto menu_blocks=[&]{return menu.active()&&!map_visible();};
         bool running=true,use_pending=false,use_previous=false;
         auto clear_world=[&]{menu.session_world(nullptr);audio.reset();hud.reset();flow.reset();monsters.reset();projectiles.reset();weapons.reset();animations.reset();scene.reset();world.reset();discovery_ticks=~std::uint64_t(0);view_motion.reset();cheat.reset();input.clear();fire_press.clear();input.capture_mouse(false);};
+        const auto preload_scene=[&](const auto& materials,const auto& shots,const auto& actors){
+            auto* gl=display->gl();
+            if(!portmaster||!gl||settings.texture_filter()!=0)return;
+            const auto upload=[&](const dok::Image& image){gl->preload_indexed(image);};
+            materials.door_frames(upload);
+            shots.texture_frames(upload);
+            actors.texture_frames(upload);
+        };
         auto start=[&](const std::string& level){
             clear_world();music.reset();current=menu.dataset_index();const auto& a=sets.at(current).archive;level_name=level;
             if(replay&&!replay->finished()){const auto id=a.identify();const std::string dataset=id==dok::DatasetId::old_gold?"old_gold":id==dok::DatasetId::kremlin_pkr?"kremlin_pkr":"kremlin_pke";
@@ -243,6 +252,7 @@ int main(int argc,char** argv){
             projectiles->boundary_hits=settings.boundary_hits;
             animations=std::make_unique<dok::Animations>(*world,a);
             flow=std::make_unique<dok::GameFlow>(*world);hud=std::make_unique<dok::Hud>(a);scene=std::make_unique<dok::SoftwareScene>(a,world->definition);
+            preload_scene(*scene,*projectiles,*monsters);
             try{audio=std::make_unique<dok::SdlAudio>(a);world->audio=[&](const dok::AudioCommand& c){audio->command(c);};}catch(const std::exception& e){log<<"Audio unavailable: "<<e.what()<<'\n';}
             menu.session_world(world.get());menu.hide();input.clear();fire_press.clear();input.capture_mouse(!replay&&!hidden);use_pending=use_previous=false;verbose<<"Started "<<dok::dataset_name(a.identify())<<' '<<level<<'\n';
         };
@@ -275,6 +285,7 @@ int main(int argc,char** argv){
                 auto next_animations=std::make_unique<dok::Animations>(*next_world,a);
                 auto next_flow=std::make_unique<dok::GameFlow>(*next_world);next_flow->restore(saved.flow);
                 auto next_hud=std::make_unique<dok::Hud>(a);auto next_scene=std::make_unique<dok::SoftwareScene>(a,next_world->definition);
+                preload_scene(*next_scene,*next_shots,*next_monsters);
                 std::unique_ptr<dok::SdlAudio> created_audio;auto* candidate_audio=audio?audio.get():music.get();
                 if(!candidate_audio)try{created_audio=std::make_unique<dok::SdlAudio>(a);candidate_audio=created_audio.get();}catch(const std::exception& error){log<<"Audio unavailable: "<<error.what()<<'\n';}
                 dok::SdlAudioSnapshot audio_state;audio_state.voice=saved.audio.voice;audio_state.resource=saved.audio.resource;audio_state.volume=settings.effects_volume;audio_state.paused=true;
@@ -438,6 +449,7 @@ int main(int argc,char** argv){
             if(projectiles)projectiles->boundary_hits=settings.boundary_hits;
             if(audio){audio->volume(settings.effects_volume);audio->pause(menu_blocks());}
             if(music)music->volume(settings.music_volume);
+            if(video_changed&&world){preload_scene(*scene,*projectiles,*monsters);previous_time=SDL_GetPerformanceCounter();}
             const auto now=SDL_GetPerformanceCounter();const auto elapsed_ns=replay?16666667ULL:static_cast<std::uint64_t>(double(now-previous_time)*1e9/SDL_GetPerformanceFrequency());previous_time=now;
             const auto actions=input.sample();
             if(world&&!menu_blocks()&&actions.quickload){quickload();flow_changed=true;}
@@ -450,6 +462,7 @@ int main(int argc,char** argv){
             if(menu_blocks()){use_pending=false;fire_press.clear();input.capture_mouse(false);view_motion.reset();}
             if(world&&!menu_blocks()&&!flow_changed&&flow->phase()==dok::SessionPhase::playing&&(!replay||replay_live_input))fire_press.observe(actions);
             else fire_press.clear();
+            frame_timings.simulation_start();
             if(world&&!menu_blocks()&&!flow_changed&&flow->phase()==dok::SessionPhase::playing){
                 if(!replay||replay_live_input){
                     // Live 1/2 and either wheel direction all request the other owned weapon.
@@ -508,6 +521,7 @@ int main(int argc,char** argv){
                 const auto phase=flow->observe();if(replay&&!frame_limit&&phase!=dok::SessionPhase::playing&&!replay->finished())throw std::runtime_error("Input replay interrupted by game outcome before its final sample");if(phase!=dok::SessionPhase::playing){if(phase==dok::SessionPhase::completed)menu.ending();else menu.outcome(phase);input.capture_mouse(false);input.clear();fire_press.clear();use_pending=false;}
             }
             if(video_changed)view_motion.reset();
+            frame_timings.simulation_ready();
             if(world&&!menu_blocks()&&flow->phase()==dok::SessionPhase::playing){
                 const auto p=*world->objects.at(*world->player).pose;
                 const std::array<std::int32_t,4> key{{p.x,p.y,p.z,p.heading}};
@@ -522,6 +536,7 @@ int main(int argc,char** argv){
                     world->visited.at(z*world->definition.width+x)=1;
                 }
             }
+            frame_timings.discovery_ready();
             const bool capture_preview=world&&(pending_save.has_value()||(menu_blocks()&&preview_ticks!=world->simulation_ticks()));
             display->begin();auto* gl=display->gl();const auto output=display->size();
             SDL_Rect gameplay_rect{0,0,output[0],output[1]};
@@ -555,21 +570,19 @@ int main(int argc,char** argv){
                     std::transform(frame.pixels.begin(),frame.pixels.end(),scene_pixels.begin(),[&](auto c){return scene->palette()[c];});
                     display->pixels(scene_pixels,frame.width(),frame.height(),false,settings.frame_filter,&scene_rect);
                 }
+                frame_timings.world_ready();
                 // Weapons use a fixed central DOS canvas, independent of the expanded world.
                 dok::IndexedSurface weapon(320,scene_height);weapons->overlay(weapon);
                 std::vector<std::uint32_t> pixels(weapon.pixels.size());
                 for(std::size_t i=0;i<pixels.size();++i)if(weapon.pixels[i])pixels[i]=scene->palette()[weapon.pixels[i]];
                 display->overlay(pixels,weapon.width(),weapon.height(),rect(layout.weapon));
                 if(layout.classic){
-                    const auto backdrop=hud->classic_backdrop(view_width);
-                    pixels.resize(backdrop.pixels.size());
-                    std::transform(backdrop.pixels.begin(),backdrop.pixels.end(),pixels.begin(),[&](auto c){return scene->palette()[c];});
-                    display->overlay(pixels,backdrop.width(),backdrop.height(),{frame_rect.x,layout.panel.y,frame_rect.w,layout.panel.h});
-                    const int native_height=world->definition.dataset==dok::DatasetId::old_gold?170:160;
-                    const auto panel=hud->classic(dok::IndexedSurface(320,native_height),*world->objects.at(*world->player).player_state,world->visible_message(settings.locale));
-                    pixels.resize(320*(200-native_height));
-                    for(std::size_t i=0;i<pixels.size();++i)pixels[i]=scene->palette()[panel.pixels[native_height*320+i]];
-                    display->overlay(pixels,320,200-native_height,rect(layout.panel));
+                    if(layout.panel.w!=frame_rect.w){
+                        const auto& backdrop=hud->classic_backdrop_frame(view_width,scene->palette());
+                        display->overlay(backdrop,{frame_rect.x,layout.panel.y,frame_rect.w,layout.panel.h});
+                    }
+                    const auto& panel=hud->classic_panel(*world->objects.at(*world->player).player_state,scene->palette(),world->visible_message(settings.locale));
+                    display->overlay(panel,rect(layout.panel));
                 }else{
                     double scale=dok::modern_hud_scale(frame_rect.w,frame_rect.h,settings.hud_scale);
                     const int width=std::max(dok::modern_hud_min_width,int(frame_rect.w/scale));
@@ -577,7 +590,7 @@ int main(int argc,char** argv){
                     scale=std::min(scale,double(frame_rect.h)/frame.height);
                     const int drawn_width=std::max(1,int(std::lround(frame.width*scale)));
                     const int drawn_height=std::max(1,int(std::lround(frame.height*scale)));
-                    display->overlay(frame.pixels,frame.width,frame.height,{frame_rect.x,frame_rect.y+frame_rect.h-drawn_height,drawn_width,drawn_height});
+                    display->overlay(frame,{frame_rect.x,frame_rect.y+frame_rect.h-drawn_height,drawn_width,drawn_height});
                 }
             }
             if(capture_preview){
@@ -611,7 +624,13 @@ int main(int argc,char** argv){
             if(capture_requested){try{auto dir=user_path/"screenshots";std::filesystem::create_directories(dir);
                 const auto stamp=std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();captures.push_back((dir/("screenshot-"+std::to_string(stamp)+"-"+std::to_string(frames)+".png")).u8string());}catch(const std::exception& e){log<<"Screenshot failed: "<<e.what()<<'\n';}}
             for(const auto& capture:captures)try{display->screenshot(capture);verbose<<"Screenshot saved: "<<capture<<'\n';}catch(const std::exception& e){log<<"Screenshot failed: "<<e.what()<<'\n';}
-            frame_timings.ready();display->present();if((frame_limit&&frames>=frame_limit)||(!frame_limit&&replay&&replay->finished()))running=false;SDL_Delay(1);frame_timings.end();
+            frame_timings.ready();display->present();
+            frame_timings.swapped();
+            if((frame_limit&&frames>=frame_limit)||(!frame_limit&&replay&&replay->finished()))running=false;
+            // A synchronized gameplay swap already waits for the display.
+            // Keep yielding in menus, diagnostics and unsynchronized modes.
+            if(!portmaster||hidden||replay||!world||menu.active()||!display->gl()||SDL_GL_GetSwapInterval()==0)SDL_Delay(1);
+            frame_timings.end();
         }
         if(replay&&world){const auto& actor=world->objects.at(*world->player);const auto& p=*actor.pose;const auto& player=*actor.player_state;
             verbose<<"REPLAY ticks="<<world->simulation_ticks()<<" pose="<<p.x<<','<<p.y<<','<<p.z<<','<<p.heading

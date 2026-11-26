@@ -45,13 +45,14 @@ void MonoVoice::render(std::int16_t* out,std::size_t count,unsigned rate){
     if(!sound_){std::fill_n(out,count,0);return;}
     if(output_rate_&&output_rate_!=rate)throw std::invalid_argument("Output rate changed during playback");
     output_rate_=rate;
+    const auto sample_period=std::uint64_t(period_)*rate;
+    const auto duration=sample_period*(sample_count_+(old_gold_&&loop_?1:0));
     for(std::size_t i=0;i<count;++i){
         out[i]=0;if(!sound_)continue;
         // OG's zero-terminator IRQ resets the pointer without writing the DAC.
         // Thus each loop holds the final byte for one extra PIT interval.
-        const auto duration=std::uint64_t(period_)*rate*(sample_count_+(old_gold_&&loop_?1:0));
         if(phase_>=duration){if(loop_)phase_%=duration;else{stop();continue;}}
-        const auto at=phase_/(std::uint64_t(period_)*rate);
+        const auto at=phase_/sample_period;
         const auto value=at<sample_count_?sound_->samples[at]:(sample_count_?sound_->samples[sample_count_-1]:128);
         out[i]=static_cast<std::int16_t>((int(value)-128)*256);
         phase_+=source_clock_;

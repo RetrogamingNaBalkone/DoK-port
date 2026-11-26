@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include <utility>
 namespace dok {
+struct HudFrame;
 // Owns presentation resources only; replacing it never owns or resets the world.
 class Display {
 public:
@@ -20,6 +21,7 @@ public:
     void begin();
     void pixels(const std::vector<std::uint32_t>& pixels,int width,int height,bool game,int filter=0,const SDL_Rect* target=nullptr);
     void overlay(const std::vector<std::uint32_t>& pixels,int width,int height,SDL_Rect target);
+    void overlay(const HudFrame& frame,SDL_Rect target);
     void present();
     std::vector<std::uint32_t> read_pixels();
     void screenshot(const std::string& path);

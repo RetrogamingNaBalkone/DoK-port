@@ -38,6 +38,11 @@ on your screen, set the HUD to Modern first. The scale takes effect immediately
 and is saved in your profile. The HUD limits enlargement to fit the game frame.
 With a mouse, left click cycles the scale up and right click cycles it down.
 
+To record a slowdown, create an empty file named `trace-frames` in
+`ogdok/user/` before launching. Reproduce the scene and quit through the
+game menu. The newest `ogdok/user/frames.*/timings.csv` contains the recording.
+Remove `trace-frames` to turn off recording.
+
 Hardware acceptance is pending on RG Vita Pro/ROCKNIX. Future RG DS Plus
 tests use 1024x768 on one screen and record the state of the second screen.
 Neither device establishes performance on RK3326.

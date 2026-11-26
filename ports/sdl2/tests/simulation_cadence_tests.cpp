@@ -42,8 +42,32 @@ static std::vector<std::uint64_t> replay(const dok::Archive& a,const char* level
  }
  if(calls==0)throw std::runtime_error("No gameplay callbacks");trace.push_back(digest(w));return trace;
 }
+static void rollover(const dok::LevelDefinition& definition){
+ dok::World world(definition);world.events.clear();
+ constexpr std::uint64_t start=std::uint64_t(UINT32_MAX)-5, ticks=20;
+ world.restore_time({start,0},start);
+ world.events.schedule(1,1,3,static_cast<std::uint32_t>(start));
+ world.events.schedule(2,2,10,static_cast<std::uint32_t>(start));
+ world.events.schedule(2,3,6,static_cast<std::uint32_t>(start));
+ dok::Events reference;reference.restore(world.events.snapshot());
+ std::vector<std::uint64_t> expected,actual;
+ auto invoke=[](dok::Events& events,std::vector<std::uint64_t>& trace,std::uint64_t tick,dok::OwnerId owner,dok::CallbackId id){
+  trace.insert(trace.end(),{tick,owner,id});
+  if(id==1)events.schedule(3,4,7,static_cast<std::uint32_t>(tick));
+  if(id==4)events.set_first_interval(0);
+  else events.cancel_current();
+ };
+ for(auto tick=start+1;tick<=start+ticks;++tick)
+  reference.dispatch([&]{return static_cast<std::uint32_t>(tick);},
+                     [&](auto owner,auto id){invoke(reference,expected,tick,owner,id);});
+ world.advance_events((ticks*dok::GameClock::denominator+dok::GameClock::pit_hz-1)/dok::GameClock::pit_hz,
+                      [&](auto owner,auto id){invoke(world.events,actual,world.simulation_ticks(),owner,id);});
+ if(expected!=actual||world.simulation_ticks()!=start+ticks||reference.snapshot().ring!=world.events.snapshot().ring)
+  throw std::runtime_error("Skipped sweeps changed order across 32-bit rollover");
+}
 int main(int argc,char** argv){try{unsigned levels=0;for(int i=1;i<argc;++i){auto a=dok::Archive::open(argv[i]);
  for(const auto* level:{"LEVEL1","LEVEL2","LEVEL3","LEVEL4"})if(a.find(level)){
+  rollover(dok::load_level(a,level));
   auto baseline=replay(a,level,30);for(auto fps:{60u,144u})if(replay(a,level,fps)!=baseline)throw std::runtime_error(std::string("Cadence differs: ")+level);
   std::cout<<dok::dataset_name(a.identify())<<' '<<level<<": "<<(baseline.size()-1)/3<<" identical gameplay callbacks at30/60/144; pause PASS\n";++levels;
  }}if(levels!=7)throw std::runtime_error("Expected seven levels");}catch(const std::exception& e){std::cerr<<e.what()<<'\n';return 1;}}

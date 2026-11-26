@@ -131,6 +131,55 @@ int main(){
         }
         // Independent frame scaling: crisp interiors at a non-integer scale.
         auto rgba=[&]{std::vector<unsigned char> bytes(640*384*4);read(0,0,640,384,GL_RGBA,GL_UNSIGNED_BYTE,bytes.data());return bytes;};
+        auto layered=[&](bool deferred){
+            gl.set_linear_filter(false);gl.begin();gl.world(palette,deferred);
+            gl.polygon(quad(100),materials[1],light,dok::RasterAxis::vertical);
+            gl.polygon(quad(100),materials[2],light,dok::RasterAxis::vertical);
+            gl.flush_world();
+            gl.world(palette,deferred);
+            gl.polygon(quad(100),materials[3],light,dok::RasterAxis::vertical);
+            gl.flush_world();
+            return rgba();
+        };
+        check(layered(false)==layered(true),"Nearest depth ties changed across a polygon flush");
+        dok::Image cutout{64,64,8,std::vector<std::uint8_t>(64*64)};
+        auto doorway=quad(300);
+        doorway[0].depth=doorway[3].depth=130;
+        doorway[1].u=doorway[2].u=63;
+        doorway[2].v=doorway[3].v=63;
+        for(int side:{0,1,2,3}){
+            for(int y=0;y<64;++y)for(int x=0;x<64;++x){
+                const bool solid=side==0?x>42:side==1?x<22:side==2?y>42:y<22;
+                cutout.pixels[y*64+x]=solid?2:0;
+            }
+            const auto draw=[&](bool deferred){
+                gl.begin();gl.scene_view({13,9,600,350},320,160);gl.world(palette,deferred);
+                gl.polygon(doorway,cutout,light,dok::RasterAxis::vertical);
+                gl.polygon(quad(700),materials[1],light,dok::RasterAxis::vertical);
+                gl.flush_world();return rgba();
+            };
+            check(draw(false)==draw(true),"Masked world scissor clipped a visible pixel or leaked into the next polygon");
+        }
+        std::vector<std::uint32_t> sparse(32*32,0);
+        sparse[16*32+16]=0xffff0000;
+        gl.begin();
+        gl.image(sparse,32,32,{0,0,640,384},true);
+        gl.image({0xff00ff00},1,1,{0,0,10,10},true);
+        const auto clipped=gl.read_pixels();
+        check(clipped[194*640+325]==0xffff0000&&clipped[3*640+3]==0xff00ff00
+              &&clipped[50*640+50]==0xff000000,"Transparent overlay bounds or subsequent UI scissor");
+        // Modify a subrectangle in a reused texture, including erasing a pixel.
+        sparse[16*32+16]=0;sparse[10*32+24]=0xff3050f0;
+        gl.begin();gl.image(sparse,32,32,{0,0,640,384},true);
+        const auto updated=gl.read_pixels();
+        check(updated[124*640+485]==0xff3050f0&&updated[194*640+325]==0xff000000,
+              "Partial overlay texture upload did not apply both changes");
+        const auto target_rect=SDL_Rect{0,0,10,10};
+        gl.begin();
+        gl.image({0xff0000ff},1,1,target_rect,true,0,1);
+        gl.image({0xffff0000},1,1,target_rect,true);
+        gl.image({0xff0000ff},1,1,target_rect,true,0,1);
+        check(gl.read_pixels()[3*640+3]==0xff0000ff,"Unversioned overlay overwrote a cached HUD texture");
         const std::vector<std::uint32_t> split{0xff000000,0xffffffff,0xff000000,0xffffffff};
         std::array<int,3> transitions{};
         for(int filter=0;filter<3;++filter){
@@ -203,7 +252,22 @@ int main(){
         }
         std::cout<<"Sharp transitions "<<transitions[0]<<","<<transitions[1]<<","<<transitions[2]<<"; FXAA changed "<<changes<<" edge pixels; classic viewport 160/170 passed\n";
         std::cout<<"Smooth LIGHT anchors/ramp, wall occlusion, transparent depth, UI and nearest/linear passed\n";
+        const auto get=reinterpret_cast<decltype(&glGetIntegerv)>(SDL_GL_GetProcAddress("glGetIntegerv"));
+        GLint red=0,green=0,blue=0,depth=0;
+        get(GL_RED_BITS,&red);get(GL_GREEN_BITS,&green);get(GL_BLUE_BITS,&blue);get(GL_DEPTH_BITS,&depth);
+        gl.frame_size(640,384);gl.begin();
+        GLint target=-1;
+        get(GL_FRAMEBUFFER_BINDING,&target);
+        if(red==8&&green==8&&blue==8&&depth>=16)
+            check(target==0,"Native fullscreen should render directly");
+        gl.image({0x00000000,0xffff0000},2,1,{0,0,640,384},true);
+        const auto native=gl.read_pixels();
+        check(native[192*640+160]==0xff000000&&native[192*640+480]==0xffff0000,
+              "Native framebuffer readback or transparent overlay failed");
+
         gl.frame_size(320,240);gl.begin();
+        get(GL_FRAMEBUFFER_BINDING,&target);
+        check(target!=0,"Scaled fullscreen must render to the internal canvas");
         gl.image({0xffff0000},1,1,{0,0,320,120},true);
         gl.image({0xff0000ff},1,1,{0,120,320,120},true);
         gl.finish_frame();

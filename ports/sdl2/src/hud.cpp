@@ -1,5 +1,6 @@
 #include "dok/hud.hpp"
 #include <algorithm>
+#include <atomic>
 #include <stdexcept>
 namespace dok {
 namespace {
@@ -31,6 +32,11 @@ Hud::Hud(const Archive& a){
     keys_={a.image("\x8f\x8a\x8b\x9e\x97\x8c"),a.image("\x8f\x8a\x8b\x9e\x97\x86"),a.image("\x8f\x8a\x8b\x9e\x97\x87")};
     weapons_={a.image("\x8f\x8e\x90\x93\x86\x88\x85\x31"),a.image("\x8f\x8e\x90\x93\x86\x88\x85\x32")};
     const auto f=a.font("FONT8");std::copy(f.data,f.data+f.size,font_.begin());
+}
+void Hud::stamp(HudFrame& frame){
+    // Display may survive a level/resource reload and retain the old texture.
+    static std::atomic<std::uint64_t> next{1};
+    frame.revision=next.fetch_add(1,std::memory_order_relaxed);
 }
 void Hud::text(IndexedSurface& s,int x,int y,const std::string& value)const{
     for(unsigned char c:value){
@@ -87,6 +93,31 @@ IndexedSurface Hud::classic_backdrop(int width)const{
         out.pixels[y*out.width()+x]=panel_.pixels[sy*panel_.width+sx];
     }
     return out;
+}
+const HudFrame& Hud::classic_panel(const PlayerState& p,const std::array<std::uint32_t,256>& palette,const std::string& message){
+    if(classic_panel_.width&&classic_player_.attributes==p.attributes&&classic_player_.weapons==p.weapons&&
+       classic_player_.score==p.score&&classic_message_==message&&classic_palette_==palette)
+        return classic_panel_;
+    const int native_height=old_gold_?170:160;
+    const auto panel=classic(IndexedSurface(320,native_height),p,message);
+    classic_panel_.width=320;classic_panel_.height=200-native_height;
+    classic_panel_.pixels.resize(std::size_t(classic_panel_.width)*classic_panel_.height);
+    std::transform(panel.pixels.begin()+native_height*320,panel.pixels.end(),classic_panel_.pixels.begin(),
+                   [&](auto index){return palette[index];});
+    classic_player_=p;classic_message_=message;classic_palette_=palette;
+    stamp(classic_panel_);
+    return classic_panel_;
+}
+const HudFrame& Hud::classic_backdrop_frame(int width,const std::array<std::uint32_t,256>& palette){
+    if(classic_backdrop_frame_.width==width&&backdrop_palette_==palette)return classic_backdrop_frame_;
+    const auto backdrop=classic_backdrop(width);
+    classic_backdrop_frame_.width=width;classic_backdrop_frame_.height=backdrop.height();
+    classic_backdrop_frame_.pixels.resize(backdrop.pixels.size());
+    std::transform(backdrop.pixels.begin(),backdrop.pixels.end(),classic_backdrop_frame_.pixels.begin(),
+                   [&](auto index){return palette[index];});
+    backdrop_palette_=palette;
+    stamp(classic_backdrop_frame_);
+    return classic_backdrop_frame_;
 }
 IndexedSurface Hud::classic_mode(const IndexedSurface& scene,int frame_height,const PlayerState& p,const std::string& message)const{
     if(scene.width()==320&&frame_height==200)return classic(scene,p,message);

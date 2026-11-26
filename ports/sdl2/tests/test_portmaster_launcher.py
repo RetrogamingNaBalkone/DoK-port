@@ -33,6 +33,7 @@ pm_show_error() { printf '%s\\n' "$1" > "$MOCK_DIALOG"; printf 'dialog\\n' >> "$
 printf '%s\\n' "$@" > "$MOCK_ARGS"
 printf '%s' "$SDL_GAMECONTROLLERCONFIG" > "$MOCK_MAPPING"
 printf '%s' "$DOK_PORTMASTER" > "$MOCK_PLATFORM"
+if [[ -n "${DOK_FRAME_TIMINGS:-}" ]]; then printf 'trace\n' > "$DOK_FRAME_TIMINGS"; fi
 exit "${MOCK_EXIT:-0}"
 ''')
             executable.chmod(0o755)
@@ -46,6 +47,7 @@ exit "${MOCK_EXIT:-0}"
             settings = game / 'user/settings.ini'
             self.assertFalse(settings.exists(), 'Launcher must not seed fixed video settings')
             self.assertEqual((root / 'platform').read_text(), '1')
+            self.assertFalse(list((game / 'user').glob('frames.*')))
             settings.write_text('existing user settings')
             env['MOCK_EXIT'] = '7'
             process = subprocess.run(['bash', str(ports / 'OGDoK.sh')], env=env, capture_output=True, timeout=15)
@@ -67,6 +69,15 @@ exit "${MOCK_EXIT:-0}"
                     self.assertIn(message, (game / 'user/launcher.log').read_text(encoding='utf-8'))
                     self.assertEqual((root / 'record').read_text().splitlines()[-3:],
                                      ['platform', 'dialog', 'cleanup'])
+            env['MOCK_EXIT'] = '0'
+            (game / 'user/trace-frames').touch()
+            for expected in (1, 2):
+                process = subprocess.run(['bash', str(ports / 'OGDoK.sh')], env=env,
+                                         capture_output=True, timeout=15)
+                self.assertEqual(process.returncode, 0, process.stderr)
+                traces = list((game / 'user').glob('frames.*/timings.csv'))
+                self.assertEqual(len(traces), expected)
+                self.assertTrue(all(trace.read_text() == 'trace\n' for trace in traces))
 
 
 if __name__ == '__main__':
